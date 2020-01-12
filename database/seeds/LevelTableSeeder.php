@@ -14,9 +14,7 @@ class LevelTableSeeder extends Seeder
     public function run()
     {
         DB::table('levels')->insert([
-            ['name' => Level::NATIONAL, 'value' => 1],
-            ['name' => Level::PROVINCIAL, 'value' => 2],
-            ['name' => Level::LOCAL, 'value' => 3]
+            ['name' => Level::LOCAL, 'value' => 1],
         ]);
     }
 }

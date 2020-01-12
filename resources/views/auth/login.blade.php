@@ -63,7 +63,7 @@
                         <div class="clearfix"></div>
 
                     </div> <!-- end login -->
-                    <div class="logo">LOGO
+                    <div class="logo">Enviromantal MS
 
                         <div class="clearfix"></div>
                     </div>

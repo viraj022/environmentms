@@ -20,30 +20,6 @@ class PrivilegeTableSeeder extends Seeder
 
         $p = new Privilege();
         $p->name = 'userRole';
-
-        $p->save();
-        $p = new Privilege();
-        $p->name = 'localAuthority';
-        $p->save();
-
-        $p = new Privilege();
-        $p->name = 'plant';
-        $p->save();
-
-        $p = new Privilege();
-        $p->name = 'transferStation';
-        $p->save();
-
-        $p = new Privilege();
-        $p->name = 'dumpsite';
-        $p->save();
-
-        $p = new Privilege();
-        $p->name = 'sampath';
-        $p->save();
-
-        $p = new Privilege();
-        $p->name = 'suboffice';
         $p->save();
 
     }
