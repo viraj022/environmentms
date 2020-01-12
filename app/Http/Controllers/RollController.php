@@ -22,7 +22,7 @@ class RollController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth', 'national']);
+        $this->middleware(['auth']);
     }
 
     public function create()

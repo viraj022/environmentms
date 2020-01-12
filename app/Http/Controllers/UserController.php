@@ -19,18 +19,7 @@ class UserController extends Controller
     {
 
         $user = Auth::user();
-        if ($user->office() == User::NATIONAL) {
-            $users = User::with('roll')->get();
-
-        } else if ($user->office() == User::PROVINCIAL) {
-            $users = User::with('roll')->join('rolls', 'users.roll_id', 'rolls.id')->where('rolls.level_id', 2)->where('users.institute_Id', $user->institute_Id)->get();
-
-        } else if ($user->office() == User::LOCAL) {
-            $users = User::with('roll')->join('rolls', 'users.roll_id', 'rolls.id')->where('rolls.level_id', 3)->where('users.institute_Id', $user->institute_Id)->get();
-
-        } else {
-            abort(403);
-        }
+        $users = User::get();
         $level = Level::get();
         $pageAuth = $user->authentication(config('auth.privileges.userCreate'));
         return view('user', ['levels' => $level, 'users' => $users, 'pageAuth' => $pageAuth]);
@@ -103,23 +92,8 @@ class UserController extends Controller
     {
         $aUser = Auth::user();
 
-        if ($aUser->office() == User::NATIONAL) {
-            $user = User::with('roll')->findOrFail($id);
+        $user = User::findOrFail($id);
 
-        } else if ($aUser->office() == User::PROVINCIAL) {
-            $user = User::with('roll')->join('rolls', 'users.roll_id', 'rolls.id')->where('rolls.level_id', 2)->where('users.institute_Id', $aUser->institute_Id)->where('users.id', $id)->first();
-
-        } else if ($aUser->office() == User::LOCAL) {
-
-            $user = User::with('roll')->join('rolls', 'users.roll_id', 'rolls.id')->where('rolls.level_id', 3)->where('users.institute_Id', $aUser->institute_Id)->where('users.id', $id)->first();
-            // dd($aUser);
-
-        } else {
-            abort(403);
-        }
-        if (empty($user)) {
-            abort(404);
-        }
         $level = $user->roll->level;
         $privileges = Privilege::get();
         $roles = Level::find($user->roll->level_id)->rolls;

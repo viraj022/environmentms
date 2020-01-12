@@ -44,7 +44,8 @@
                     @endforeach
 
                 </ul>
-            </li>        <li class="nav-item has-treeview menu-open">
+            </li>
+             {{-- <li class="nav-item has-treeview menu-open">
                 <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-edit"></i>
                     <p>
@@ -69,7 +70,7 @@
                                     <p>Suboffice Registration</p>
                                 </a>
                             </li>
-                        @endif
+                        @endif --}}
                         {{-- @if($pre['id']===config('auth.privileges.userCreate'))
                             <li class="nav-item">
                                 <a href="{{ url('/survey') }}" class="nav-link {{ Request::is('survey') ? 'active' : '' }}">
@@ -86,7 +87,7 @@
                                 </a>
                             </li>
                         @endif --}}
-                        @if($pre['id']===config('auth.privileges.plant'))
+                        {{-- @if($pre['id']===config('auth.privileges.plant'))
                             <li class="nav-item">
                                 <a href="{{ url('/plant') }}" class="nav-link {{ Request::is('plant') ? 'active' : '' }}">
                                     <i class="fas fa-tree nav-icon"></i>
@@ -176,7 +177,7 @@
                             </li>
    @endforeach
     @endif
-                    @endforeach
+                    @endforeach --}}
 
                 </ul>
             </li>

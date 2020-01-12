@@ -52,18 +52,6 @@ class User extends Authenticatable
         return $this->belongsTo(Roll::class);
     }
 
-    public function institute()
-    {
-        $level = $this->roll->level->name;
-        if ($level === Level::PROVINCIAL) {
-            return $this->belongsTo(ProvincialCouncil::class, 'institute_Id', 'id');
-        } else if ($level === Level::LOCAL) {
-            return $this->belongsTo(LocalAuthority::class, 'institute_Id', 'id');
-        } else {
-            return 0;
-        }
-    }
-
     public function privileges()
     {
         return $this->belongsToMany(Privilege::class)->withPivot('is_read', 'is_create', 'is_update', 'is_delete');
@@ -79,24 +67,5 @@ class User extends Authenticatable
         }
         return null;
     }
-    public function surveys()
-    {
-        return SurveySession::where('session_status', "1")->get();
-    }
-    public function office()
-    {
-        $level = $this->roll->level->name;
-        if ($level === Level::NATIONAL) {
-            return User::NATIONAL;
-        } else if ($level === Level::PROVINCIAL) {
-            return User::PROVINCIAL;
-        } else if ($level === Level::LOCAL) {
-            $office = LocalAuthority::find($this->institute_Id);
-            if ($office->parent_id == null) {
-                return User::LOCAL;
-            } else {
-                return User::SUBOFFICE;
-            }
-        }
-    }
+
 }
