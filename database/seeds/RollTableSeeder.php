@@ -15,7 +15,7 @@ class RollTableSeeder extends Seeder
     {
         $roll = new Roll();
         $roll->name = 'Super Roll';
-        $roll->level_id = Level::where('name', Level::NATIONAL)->first()->id;
+        $roll->level_id = Level::where('name', Level::LOCAL)->first()->id;
         $roll->save();
 
         $roll = ROll::where('name', 'Super Roll')->first();

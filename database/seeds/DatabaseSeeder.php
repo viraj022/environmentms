@@ -13,7 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             LevelTableSeeder::class,
-            ProvinceTableSeeder::class,
             PrivilegeTableSeeder::class,
             RollTableSeeder::class,
             UserTableSeeder::class,
