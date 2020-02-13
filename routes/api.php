@@ -77,16 +77,87 @@ Route::middleware('auth:api')->get('/attachement/id/{id}','AttachemntsController
 
 
 Route::middleware('auth:api')->put('/attachement/id/{id}','AttachemntsController@store'); //update attachment
-/*
-{
-	"name":"Hansana"
-}*/
+
 
 
 Route::middleware('auth:api')->delete('/attachement/id/{id}','AttachemntsController@destroy'); //delete attachment
-/*
-{
-	"name":"Hansana"
-}*/
+
 
 //end attachment_api
+
+
+//IndustryCategory api
+Route::middleware('auth:api')->post('/industrycategory','IndustryCategoryController@create'); //insert Industry Category
+/*
+{
+	"name":"Agriculture Farm",
+	"code":"AG"
+}*/
+
+
+Route::middleware('auth:api')->get('/industrycategory/id/{id}','IndustryCategoryController@find'); //get a IndustryCategory by id
+/*
+[
+    
+]
+*/
+
+Route::middleware('auth:api')->get('/industrycategories','IndustryCategoryController@show'); //get all IndustryCategory
+/*
+[
+    {
+        "id": 1,
+        "name": "Agriculture Farm",
+        "code": "AG",
+        "created_at": "2020-02-13 08:41:18",
+        "updated_at": "2020-02-13 08:41:18"
+    }
+]
+*/
+
+Route::middleware('auth:api')->delete('/industrycategory/id/{id}','IndustryCategoryController@destroy'); //delete IndustryCategory
+Route::middleware('auth:api')->put('/industrycategory/id/{id}','IndustryCategoryController@store'); //update IndustryCategory
+
+
+
+
+//end IndustryCategory api
+
+
+
+//Pradesheeyasaba api
+Route::middleware('auth:api')->post('/pradesheeyasaba','PradesheeyasabaController@create'); //insert  Pradesheeyasaba
+/*
+{
+	"name":"Agriculture Farm",
+	"code":"AG"
+}*/
+
+
+Route::middleware('auth:api')->get('/pradesheeyasaba/id/{id}','PradesheeyasabaController@find'); //get a Pradesheeyasaba by id
+/*
+[
+    
+]
+*/
+
+Route::middleware('auth:api')->get('/pradesheeyasabas','PradesheeyasabaController@show'); //get all Pradesheeyasaba
+/*
+[
+    {
+        "id": 1,
+        "name": "Agriculture Farm",
+        "code": "AG",
+        "created_at": "2020-02-13 08:41:18",
+        "updated_at": "2020-02-13 08:41:18"
+    }
+]
+*/
+
+Route::middleware('auth:api')->delete('/pradesheeyasaba/id/{id}','PradesheeyasabaController@destroy'); //delete Pradesheeyasaba
+Route::middleware('auth:api')->put('/pradesheeyasaba/id/{id}','PradesheeyasabaController@store'); //update Pradesheeyasaba
+
+
+
+
+//end Pradesheeyasaba api
