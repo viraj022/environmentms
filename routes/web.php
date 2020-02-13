@@ -21,5 +21,6 @@ Auth::routes(['register' => false]);
 
 Route::get('/attachments', 'AttachemntsController@index');
 Route::get('/pradesheyasaba', 'PradesheeyasabaController@index');
+Route::get('/industry_category', 'IndustryCategoryController@index');
 
 //ui routs

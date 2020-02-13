@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePradesheeyasabasTable extends Migration
+class CreateIndustryCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePradesheeyasabasTable extends Migration
      */
     public function up()
     {
-        Schema::create('pradesheeyasabas', function (Blueprint $table) {
+        Schema::create('industry_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name',255)->unique(); 
             $table->string('code',10)->unique();
@@ -28,6 +28,6 @@ class CreatePradesheeyasabasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pradesheeyasabas');
+        Schema::dropIfExists('industry_categories');
     }
 }

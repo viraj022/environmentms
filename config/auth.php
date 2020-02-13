@@ -119,6 +119,7 @@ return [
         'userRole' => 2,
         'attachments' => 3,
         'pradesheyasaba' => 4,
+        'industry' => 5,
         
     ],
 
