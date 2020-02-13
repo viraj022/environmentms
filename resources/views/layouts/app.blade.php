@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Environmental MS') }}</title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -37,7 +37,7 @@
             background: -webkit-radial-gradient(center, ellipse cover, #0264d6 1%, #1c2b5a 100%); /* Chrome10+,Safari5.1+ */
             background: -o-radial-gradient(center, ellipse cover, #0264d6 1%, #1c2b5a 100%); /* Opera 12+ */
             background: -ms-radial-gradient(center, ellipse cover, #0264d6 1%, #1c2b5a 100%); /* IE10+ */
-            background: radial-gradient(ellipse at center, #0264d6 1%, #1c2b5a 100%); /* W3C */
+            background: radial-gradient(ellipse at center, #199a5e 1%, #03170d 100%); /* W3C */
             filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0264d6', endColorstr='#1c2b5a', GradientType=1); /* IE6-9 fallback on horizontal gradient */
             height: calc(100vh);
             width: 100%;
