@@ -117,7 +117,8 @@ return [
     'privileges' => [
         'userCreate' => 1,
         'userRole' => 2,
-        'attachments' => 2,
+        'attachments' => 3,
+        'pradesheyasaba' => 4,
         
     ],
 

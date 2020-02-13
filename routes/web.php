@@ -20,5 +20,6 @@ Auth::routes(['register' => false]);
 // ui routs
 
 Route::get('/attachments', 'AttachemntsController@index');
+Route::get('/pradesheyasaba', 'PradesheeyasabaController@index');
 
 //ui routs

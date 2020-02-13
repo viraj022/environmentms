@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Level;
-use App\Attachemnts;
+use App\Pradesheeyasaba;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AttachemntsController extends Controller
+class PradesheeyasabaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +16,8 @@ class AttachemntsController extends Controller
     public function index()
     {
         $user = Auth::user();           
-        $pageAuth = $user->authentication(config('auth.privileges.attachments'));
-        return view('attachements', ['pageAuth' => $pageAuth]);   
-    
+        $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
+        return view('pradesheyasaba', ['pageAuth' => $pageAuth]);  
     }
 
     /**
@@ -30,13 +27,7 @@ class AttachemntsController extends Controller
      */
     public function create()
     {
-        $user = Auth::user();           
-        $pageAuth = $user->authentication(config('auth.privileges.attachments'));
-        if($pageAuth['is_create']){
-            return true;
-        }else{
-             return false;
-        }
+        //
     }
 
     /**
@@ -53,10 +44,10 @@ class AttachemntsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Attachemnts  $attachemnts
+     * @param  \App\Pradesheeyasaba  $pradesheeyasaba
      * @return \Illuminate\Http\Response
      */
-    public function show(Attachemnts $attachemnts)
+    public function show(Pradesheeyasaba $pradesheeyasaba)
     {
         //
     }
@@ -64,10 +55,10 @@ class AttachemntsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Attachemnts  $attachemnts
+     * @param  \App\Pradesheeyasaba  $pradesheeyasaba
      * @return \Illuminate\Http\Response
      */
-    public function edit(Attachemnts $attachemnts)
+    public function edit(Pradesheeyasaba $pradesheeyasaba)
     {
         //
     }
@@ -76,10 +67,10 @@ class AttachemntsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Attachemnts  $attachemnts
+     * @param  \App\Pradesheeyasaba  $pradesheeyasaba
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Attachemnts $attachemnts)
+    public function update(Request $request, Pradesheeyasaba $pradesheeyasaba)
     {
         //
     }
@@ -87,10 +78,10 @@ class AttachemntsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Attachemnts  $attachemnts
+     * @param  \App\Pradesheeyasaba  $pradesheeyasaba
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Attachemnts $attachemnts)
+    public function destroy(Pradesheeyasaba $pradesheeyasaba)
     {
         //
     }
