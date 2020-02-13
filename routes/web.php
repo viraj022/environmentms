@@ -19,6 +19,6 @@ Auth::routes(['register' => false]);
 
 // ui routs
 
-Route::view('/ui1', 'application');
+Route::get('/attachments', 'AttachemntsController@index');
 
 //ui routs

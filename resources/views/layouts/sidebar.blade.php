@@ -57,9 +57,9 @@
                     @foreach((auth()->user()->privileges) as $indexKey=>$pre)
                         @if($pre['id']===config('auth.privileges.userCreate'))
                             <li class="nav-item">
-                                <a href="{{ url('/users') }}" class="nav-link {{ Request::is('users') ? 'active' : '' }}">
+                                <a href="{{ url('/attachments') }}" class="nav-link {{ Request::is('attachments') ? 'active' : '' }}">
                                     <i class="fas fa-user-plus nav-icon"></i>
-                                    <p>User Create</p>
+                                    <p>Attachements</p>
                                 </a>
                             </li>
                         @endif

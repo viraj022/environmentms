@@ -15,7 +15,9 @@ class CreateAttachemntsTable extends Migration
     {
         Schema::create('attachemnts', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->text('name');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

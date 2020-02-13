@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
+use App\Level;
 use App\Attachemnts;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AttachemntsController extends Controller
 {
@@ -14,8 +17,9 @@ class AttachemntsController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $user = Auth::user();           
+        $pageAuth = $user->authentication(config('auth.privileges.attachments'));
+        return view('attachements', ['pageAuth' => $pageAuth]);    }
 
     /**
      * Show the form for creating a new resource.
@@ -24,7 +28,13 @@ class AttachemntsController extends Controller
      */
     public function create()
     {
-        //
+        $user = Auth::user();           
+        $pageAuth = $user->authentication(config('auth.privileges.attachments'));
+        if($pageAuth['is_create']){
+            return true;
+        }else{
+             return false;
+        }
     }
 
     /**
