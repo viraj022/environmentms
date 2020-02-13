@@ -117,14 +117,10 @@ return [
     'privileges' => [
         'userCreate' => 1,
         'userRole' => 2,
-        'localAuthority' => 3,
-        'plant' => 4,
-        'transferStation' => 5,
-        'dumpsite' => 6,
-        'sampath' => 7,
-        'suboffice' => 8,
-        'ward' => 9,
-        'vehicle' => 10,
+        'attachments' => 3,
+        'pradesheyasaba' => 4,
+        'industry' => 5,
+        
     ],
 
 ];

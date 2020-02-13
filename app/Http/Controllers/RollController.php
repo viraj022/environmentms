@@ -29,9 +29,7 @@ class RollController extends Controller
     {
         request()->validate([
             'roll' => ['required', 'string'],
-            'start_date' => ['required', 'date'],
-            'year' => ['required|digits:4|integer|min:1900|max:' . (date('Y') + 1)],
-            'end_date' => ['required', 'date'],
+            'level' => ['required', 'numeric'],
         ]);
         $roll = new Roll();
         $roll->name = request('roll');

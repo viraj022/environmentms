@@ -55,19 +55,27 @@
                 </a>
                 <ul class="nav nav-treeview">
                     @foreach((auth()->user()->privileges) as $indexKey=>$pre)
-                        @if($pre['id']===config('auth.privileges.userCreate'))
+                        @if($pre['id']===config('auth.privileges.attachments'))
                             <li class="nav-item">
-                                <a href="{{ url('/users') }}" class="nav-link {{ Request::is('users') ? 'active' : '' }}">
+                                <a href="{{ url('/attachments') }}" class="nav-link {{ Request::is('attachments') ? 'active' : '' }}">
                                     <i class="fas fa-user-plus nav-icon"></i>
-                                    <p>User Create</p>
+                                    <p>Attachements</p>
                                 </a>
                             </li>
                         @endif
-                        @if($pre['id']===config('auth.privileges.userRole') && auth()->user()->roll->level->value == 1)
+                        @if($pre['id']===config('auth.privileges.pradesheyasaba') && auth()->user()->roll->level->value == 1)
                             <li class="nav-item">
-                                <a href="{{ url('/rolls') }}" class="nav-link {{ Request::is('rolls') ? 'active' : '' }}">
+                                <a href="{{ url('/pradesheyasaba') }}" class="nav-link {{ Request::is('pradesheyasaba') ? 'active' : '' }}">
                                     <i class="fas fa-users-cog nav-icon"></i>
-                                    <p>ROll Create</p>
+                                    <p>Pradesheya Saba</p>
+                                </a>
+                            </li>
+                        @endif
+                        @if($pre['id']===config('auth.privileges.industry') && auth()->user()->roll->level->value == 1)
+                            <li class="nav-item">
+                                <a href="{{ url('/industry_category') }}" class="nav-link {{ Request::is('industry_category') ? 'active' : '' }}">
+                                    <i class="fas fa-users-cog nav-icon"></i>
+                                    <p>Industry Category</p>
                                 </a>
                             </li>
                         @endif
