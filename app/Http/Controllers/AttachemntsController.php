@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Level;
-use App\Attachemnts;
+use App\Attachemnt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AttachemntsController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware(['auth']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -32,10 +36,22 @@ class AttachemntsController extends Controller
     {
         $user = Auth::user();           
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
+           request()->validate([
+                'name' => 'required',             
+
+            ]);
         if($pageAuth['is_create']){
-            return true;
+        $attachment = new Attachemnt();
+        $attachment->name= \request('name');
+       $msg =  $attachment->save();
+
+       if ($msg) {
+        return array('id' => 1, 'message' => 'true');
+    } else {
+        return array('id' => 0, 'message' => 'false');
+    }
         }else{
-             return false;
+         abort(401);
         }
     }
 
@@ -45,9 +61,28 @@ class AttachemntsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($id)
     {
-        //
+        
+    $user = Auth::user();           
+        $pageAuth = $user->authentication(config('auth.privileges.attachments'));
+           request()->validate([
+                'name' => 'required',             
+
+            ]);
+        if($pageAuth['is_update']){
+        $attachment = Attachemnt::findOrFail($id);;
+        $attachment->name= \request('name');
+       $msg =  $attachment->save();
+
+       if ($msg) {
+        return array('id' => 1, 'message' => 'true');
+    } else {
+        return array('id' => 0, 'message' => 'false');
+    }
+        }else{
+         abort(401);
+        }
     }
 
     /**
@@ -56,9 +91,27 @@ class AttachemntsController extends Controller
      * @param  \App\Attachemnts  $attachemnts
      * @return \Illuminate\Http\Response
      */
-    public function show(Attachemnts $attachemnts)
+    public function show()
     {
-        //
+        $user = Auth::user();           
+        $pageAuth = $user->authentication(config('auth.privileges.attachments'));
+         if($pageAuth['is_read']){
+       return Attachemnt::get();
+   }else{
+         abort(401);
+        }
+    }
+
+    public function find($id)
+    {
+
+        $user = Auth::user();           
+        $pageAuth = $user->authentication(config('auth.privileges.attachments'));
+         if($pageAuth['is_read']){
+       return Attachemnt::findOrFail($id);
+   }else{
+         abort(401);
+        }
     }
 
     /**
@@ -67,7 +120,7 @@ class AttachemntsController extends Controller
      * @param  \App\Attachemnts  $attachemnts
      * @return \Illuminate\Http\Response
      */
-    public function edit(Attachemnts $attachemnts)
+    public function edit()
     {
         //
     }
@@ -79,7 +132,7 @@ class AttachemntsController extends Controller
      * @param  \App\Attachemnts  $attachemnts
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Attachemnts $attachemnts)
+    public function update(Request $request, Attachemnt $attachemnts)
     {
         //
     }
@@ -90,8 +143,26 @@ class AttachemntsController extends Controller
      * @param  \App\Attachemnts  $attachemnts
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Attachemnts $attachemnts)
+    public function destroy($id)
     {
-        //
+          $user = Auth::user();           
+        $pageAuth = $user->authentication(config('auth.privileges.attachments'));
+           request()->validate([
+                'name' => 'required',             
+
+            ]);
+        if($pageAuth['is_delete']){
+        $attachment = Attachemnt::findOrFail($id);;
+        //$attachment->name= \request('name');
+       $msg =  $attachment->delete();
+
+       if ($msg) {
+        return array('id' => 1, 'message' => 'true');
+    } else {
+        return array('id' => 0, 'message' => 'false');
+    }
+        }else{
+         abort(401);
+        }
     }
 }

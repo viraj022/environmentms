@@ -27,3 +27,66 @@ Route::middleware('auth:api')->get('/rolls/privilege/add', 'RollController@Previ
 Route::middleware('auth:api')->get('/user/privilege/add/{id}', 'UserController@PrevilagesAddById');
 Route::middleware('auth:api')->get('/user/activity/{id}', 'UserController@activeStatus');
 Route::middleware('auth:api')->get('/level/institutes/id/{id}', 'LevelController@instituteById')->name('level_institues_by_id');
+
+//attachment_api
+Route::middleware('auth:api')->post('/attachement','AttachemntsController@create'); //insert attachment
+/*
+{
+	"name":"Hansana"
+}*/
+
+Route::middleware('auth:api')->get('/attachements','AttachemntsController@show'); //get all attachments
+/*
+[
+    {
+        "id": 1,
+        "name": "nadun",
+        "created_at": "2020-02-13 07:12:27",
+        "updated_at": "2020-02-13 07:12:27",
+        "deleted_at": null
+    },
+    {
+        "id": 2,
+        "name": "Hansana",
+        "created_at": "2020-02-13 07:14:12",
+        "updated_at": "2020-02-13 07:14:12",
+        "deleted_at": null
+    }
+]
+*/
+
+Route::middleware('auth:api')->get('/attachement/id/{id}','AttachemntsController@find'); //get a attachment by id
+/*
+[
+    {
+        "id": 1,
+        "name": "nadun",
+        "created_at": "2020-02-13 07:12:27",
+        "updated_at": "2020-02-13 07:12:27",
+        "deleted_at": null
+    },
+    {
+        "id": 2,
+        "name": "Hansana",
+        "created_at": "2020-02-13 07:14:12",
+        "updated_at": "2020-02-13 07:14:12",
+        "deleted_at": null
+    }
+]
+*/
+
+
+Route::middleware('auth:api')->put('/attachement/id/{id}','AttachemntsController@store'); //update attachment
+/*
+{
+	"name":"Hansana"
+}*/
+
+
+Route::middleware('auth:api')->delete('/attachement/id/{id}','AttachemntsController@destroy'); //delete attachment
+/*
+{
+	"name":"Hansana"
+}*/
+
+//end attachment_api
