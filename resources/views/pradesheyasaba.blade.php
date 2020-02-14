@@ -155,13 +155,6 @@
 <script src="../../js/pradeshiyasabajs/delete.js"></script>
 <!-- AdminLTE App -->
 <script>
-    function fromValues() {
-        var data = {
-            name: $('#getName').val(),
-            code: $('#getCode').val()
-        };
-        return data;
-    }
     $(function () {
         const Toast = Swal.mixin({
             toast: true,
@@ -176,6 +169,7 @@
         $('#btnSave').click(function () {
             var data = fromValues();
             if (Validiteinsert(data)) {
+                // if validiated
                 AddPradeshiyasaba(data, function (result) {
                     if (result.id == 1) {
                         Toast.fire({
@@ -195,6 +189,7 @@
         });
 //click update button
         $('#btnUpdate').click(function () {
+            //get form data
             var data = fromValues();
             if (Validiteupdate(data)) {
                 updatePradesheeyasaba($('#btnUpdate').val(), data, function (result) {
@@ -217,22 +212,22 @@
         });
 //click delete button
         $('#btnDelete').click(function () {
-                deletePradesheeyasaba($('#btnDelete').val(), function (result) {
-                    if (result.id == 1) {
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Enviremontal MS</br>Removed!'
-                        });
-                    } else {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Enviremontal MS</br>Error'
-                        });
-                    }
-                    loadTable();
-                    showSave();
-                    resetinputFields();
-                });
+            deletePradesheeyasaba($('#btnDelete').val(), function (result) {
+                if (result.id == 1) {
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Enviremontal MS</br>Removed!'
+                    });
+                } else {
+                    Toast.fire({
+                        type: 'error',
+                        title: 'Enviremontal MS</br>Error'
+                    });
+                }
+                loadTable();
+                showSave();
+                resetinputFields();
+            });
         });
 //select button action 
         $(document).on('click', '.btnAction', function () {
@@ -263,6 +258,14 @@
         $('#getCode').val('');
         $('#btnUpdate').val('');
         $('#btnDelete').val('');
+    }
+//get form values
+    function fromValues() {
+        var data = {
+            name: $('#getName').val(),
+            code: $('#getCode').val()
+        };
+        return data;
     }
 </script>
 @endsection
