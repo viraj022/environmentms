@@ -130,9 +130,6 @@ class PradesheeyasabaController extends Controller
     {
         $user = Auth::user();           
         $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
-           request()->validate([
-                'name' => 'required', 
-            ]);
         if($pageAuth['is_delete']){
         $pradesheyasaba = Pradesheeyasaba::findOrFail($id);;
         //$attachment->name= \request('name');

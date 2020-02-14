@@ -132,9 +132,6 @@ class IndustryCategoryController extends Controller
     {
         $user = Auth::user();           
         $pageAuth = $user->authentication(config('auth.privileges.industry'));
-           request()->validate([
-                'name' => 'required', 
-            ]);
         if($pageAuth['is_delete']){
         $industryCategory = IndustryCategory::findOrFail($id);;
         //$attachment->name= \request('name');
