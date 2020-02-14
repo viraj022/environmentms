@@ -27,3 +27,137 @@ Route::middleware('auth:api')->get('/rolls/privilege/add', 'RollController@Previ
 Route::middleware('auth:api')->get('/user/privilege/add/{id}', 'UserController@PrevilagesAddById');
 Route::middleware('auth:api')->get('/user/activity/{id}', 'UserController@activeStatus');
 Route::middleware('auth:api')->get('/level/institutes/id/{id}', 'LevelController@instituteById')->name('level_institues_by_id');
+
+//attachment_api
+Route::middleware('auth:api')->post('/attachement','AttachemntsController@create'); //insert attachment
+/*
+{
+	"name":"Hansana"
+}*/
+
+Route::middleware('auth:api')->get('/attachements','AttachemntsController@show'); //get all attachments
+/*
+[
+    {
+        "id": 1,
+        "name": "nadun",
+        "created_at": "2020-02-13 07:12:27",
+        "updated_at": "2020-02-13 07:12:27",
+        "deleted_at": null
+    },
+    {
+        "id": 2,
+        "name": "Hansana",
+        "created_at": "2020-02-13 07:14:12",
+        "updated_at": "2020-02-13 07:14:12",
+        "deleted_at": null
+    }
+]
+*/
+
+Route::middleware('auth:api')->get('/attachement/id/{id}','AttachemntsController@find'); //get a attachment by id
+/*
+[
+    {
+        "id": 1,
+        "name": "nadun",
+        "created_at": "2020-02-13 07:12:27",
+        "updated_at": "2020-02-13 07:12:27",
+        "deleted_at": null
+    },
+    {
+        "id": 2,
+        "name": "Hansana",
+        "created_at": "2020-02-13 07:14:12",
+        "updated_at": "2020-02-13 07:14:12",
+        "deleted_at": null
+    }
+]
+*/
+
+
+Route::middleware('auth:api')->put('/attachement/id/{id}','AttachemntsController@store'); //update attachment
+
+
+
+Route::middleware('auth:api')->delete('/attachement/id/{id}','AttachemntsController@destroy'); //delete attachment
+
+
+//end attachment_api
+
+
+//IndustryCategory api
+Route::middleware('auth:api')->post('/industrycategory','IndustryCategoryController@create'); //insert Industry Category
+/*
+{
+	"name":"Agriculture Farm",
+	"code":"AG"
+}*/
+
+
+Route::middleware('auth:api')->get('/industrycategory/id/{id}','IndustryCategoryController@find'); //get a IndustryCategory by id
+/*
+[
+    
+]
+*/
+
+Route::middleware('auth:api')->get('/industrycategories','IndustryCategoryController@show'); //get all IndustryCategory
+/*
+[
+    {
+        "id": 1,
+        "name": "Agriculture Farm",
+        "code": "AG",
+        "created_at": "2020-02-13 08:41:18",
+        "updated_at": "2020-02-13 08:41:18"
+    }
+]
+*/
+
+Route::middleware('auth:api')->delete('/industrycategory/id/{id}','IndustryCategoryController@destroy'); //delete IndustryCategory
+Route::middleware('auth:api')->put('/industrycategory/id/{id}','IndustryCategoryController@store'); //update IndustryCategory
+
+
+
+
+//end IndustryCategory api
+
+
+
+//Pradesheeyasaba api
+Route::middleware('auth:api')->post('/pradesheeyasaba','PradesheeyasabaController@create'); //insert  Pradesheeyasaba
+/*
+{
+	"name":"Agriculture Farm",
+	"code":"AG"
+}*/
+
+
+Route::middleware('auth:api')->get('/pradesheeyasaba/id/{id}','PradesheeyasabaController@find'); //get a Pradesheeyasaba by id
+/*
+[
+    
+]
+*/
+
+Route::middleware('auth:api')->get('/pradesheeyasabas','PradesheeyasabaController@show'); //get all Pradesheeyasaba
+/*
+[
+    {
+        "id": 1,
+        "name": "Agriculture Farm",
+        "code": "AG",
+        "created_at": "2020-02-13 08:41:18",
+        "updated_at": "2020-02-13 08:41:18"
+    }
+]
+*/
+
+Route::middleware('auth:api')->delete('/pradesheeyasaba/id/{id}','PradesheeyasabaController@destroy'); //delete Pradesheeyasaba
+Route::middleware('auth:api')->put('/pradesheeyasaba/id/{id}','PradesheeyasabaController@store'); //update Pradesheeyasaba
+
+
+
+
+//end Pradesheeyasaba api

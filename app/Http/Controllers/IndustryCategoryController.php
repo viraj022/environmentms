@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Auth;
 
 class IndustryCategoryController extends Controller
 {
+     public function __construct() {
+        $this->middleware(['auth']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +19,7 @@ class IndustryCategoryController extends Controller
     public function index()
     {
         $user = Auth::user();           
-        $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
+        $pageAuth = $user->authentication(config('auth.privileges.industry'));
         return view('industry_category', ['pageAuth' => $pageAuth]);  
     }
 
@@ -27,7 +30,26 @@ class IndustryCategoryController extends Controller
      */
     public function create()
     {
-        //
+        $user = Auth::user();           
+        $pageAuth = $user->authentication(config('auth.privileges.industry'));
+        request()->validate([
+            'name' => 'required',             
+            'code' => 'required', 
+        ]);
+        if($pageAuth['is_create']){
+        $industryCategory = new IndustryCategory();
+        $industryCategory->name= \request('name');
+        $industryCategory->code= \request('code');
+       $msg =  $industryCategory->save();
+
+       if ($msg) {
+        return array('id' => 1, 'message' => 'true');
+    } else {
+        return array('id' => 0, 'message' => 'false');
+    }
+        }else{
+         abort(401);
+        }
     }
 
     /**
@@ -36,9 +58,28 @@ class IndustryCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($id)
     {
-        //
+        $user = Auth::user();           
+        $pageAuth = $user->authentication(config('auth.privileges.attachments'));
+           request()->validate([
+                'name' => 'required', 
+                'code' => 'required',          
+            ]);
+        if($pageAuth['is_update']){
+        $industryCategory = IndustryCategory::findOrFail($id);;
+        $industryCategory->name= \request('name');
+        $industryCategory->code= \request('code');
+       $msg =  $industryCategory->save();
+
+       if ($msg) {
+        return array('id' => 1, 'message' => 'true');
+    } else {
+        return array('id' => 0, 'message' => 'false');
+    }
+        }else{
+         abort(401);
+        }
     }
 
     /**
@@ -47,9 +88,15 @@ class IndustryCategoryController extends Controller
      * @param  \App\IndustryCategory  $industryCategory
      * @return \Illuminate\Http\Response
      */
-    public function show(IndustryCategory $industryCategory)
+    public function show()
     {
-        //
+           $user = Auth::user();           
+        $pageAuth = $user->authentication(config('auth.privileges.industry'));
+         if($pageAuth['is_read']){
+       return IndustryCategory::get();
+   }else{
+         abort(401);
+        }
     }
 
     /**
@@ -81,8 +128,41 @@ class IndustryCategoryController extends Controller
      * @param  \App\IndustryCategory  $industryCategory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(IndustryCategory $industryCategory)
+    public function destroy($id)
     {
-        //
+        $user = Auth::user();           
+        $pageAuth = $user->authentication(config('auth.privileges.industry'));
+           request()->validate([
+                'name' => 'required', 
+            ]);
+        if($pageAuth['is_delete']){
+        $industryCategory = IndustryCategory::findOrFail($id);;
+        //$attachment->name= \request('name');
+       $msg =  $industryCategory->delete();
+
+       if ($msg) {
+        return array('id' => 1, 'message' => 'true');
+    } else {
+        return array('id' => 0, 'message' => 'false');
     }
+        }else{
+         abort(401);
+        }
+    }
+
+
+      public function find($id)
+    {
+
+        $user = Auth::user();           
+        $pageAuth = $user->authentication(config('auth.privileges.industry'));
+         if($pageAuth['is_read']){
+       return IndustryCategory::findOrFail($id);
+   }else{
+         abort(401);
+        }
+    }
+
+
+
 }
