@@ -147,10 +147,6 @@ class AttachemntsController extends Controller
     {
           $user = Auth::user();           
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
-           request()->validate([
-                'name' => 'required',             
-
-            ]);
         if($pageAuth['is_delete']){
         $attachment = Attachemnt::findOrFail($id);;
         //$attachment->name= \request('name');

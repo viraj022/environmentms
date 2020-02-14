@@ -5,208 +5,264 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('pageStyles')
-    <!-- Select2 -->
-    <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
-    <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-    <!-- Bootstrap4 Duallistbox -->
-    <link rel="stylesheet" href="/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="/dist/css/adminlte.min.css">
-    <!-- Google Font: Source Sans Pro -->
+<!-- Select2 -->
+<link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<!-- Bootstrap4 Duallistbox -->
+<link rel="stylesheet" href="/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="/dist/css/adminlte.min.css">
+<!-- Google Font: Source Sans Pro -->
 @endsection
 @section('content')
-    @if($pageAuth['is_read']==1 || false)
-        <section class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-12 col-sm-6">
-                        <h1>Pradesheyasaba</h1>
+@if($pageAuth['is_read']==1 || false)
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-12 col-sm-6">
+                <h1>Pradesheyasaba</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <label id="lblTitle">Add New Pradesiyasaba</label>
                     </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Add New Attachments</a></li>
-                            <li class="breadcrumb-item active">Environmental MS</li>
-                        </ol>
+                    <div class="card-body">
+                        <label>Name*</label>
+                        <input id="getName" type="text" class="form-control form-control-sm"
+                               placeholder="Enter Name..."
+                               value="">
+                        <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
                     </div>
+                    <div class="card-body">
+                        <label>Code*</label>
+                        <input id="getCode" type="text" class="form-control form-control-sm"
+                               placeholder="Enter Code..."
+                               value="">
+                        <div id="valCode" class="d-none"><p class="text-danger">Code is required</p></div>
+                    </div>
+
+                    <div class="card-footer">
+                        @if($pageAuth['is_create']==1 || false)
+                        <button id="btnSave" type="submit" class="btn btn-primary">Save</button>
+                        @endif
+                        @if($pageAuth['is_update']==1 || false)
+                        <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
+                        @endif
+                        @if($pageAuth['is_delete']==1 || false)
+                        <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
+                                 data-target="#modal-danger">Delete</button>
+                        @endif
+                    </div>                           
                 </div>
             </div>
-        </section>
-        <section class="content-header">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-5">
-                        <div class="card card-primary">
-                            <div class="card-header">
-                                <label>Roles</label>
-                            </div>
-                            <div class="card-body">
-                                <label>Level</label>
-                                 <input name="roll" type="text" class="form-control form-control-sm"
-                                                               placeholder="Enter Roll..."
-                                                               value="{{old('expert')}}">
-                            </div>
-                           
-                            <div class="card-footer">
-                                @if($pageAuth['is_create']==1 || false)
-                                    <button id="btnUpdateModel" type="submit" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#modal-xl">Save</button>
-                                @endif
-                                @if($pageAuth['is_update']==1 || false)
-                                    <button id="btnUpdateModel" type="submit" class="btn btn-warning" data-toggle="modal"
-                                            data-target="#modal-xl">Update</button>
-                                @endif
-                                @if($pageAuth['is_delete']==1 || false)
-                                    <button type="submit" class="btn btn-danger"  data-toggle="modal"
-                                            data-target="#modal-danger">Delete</button>
-                                @endif
-                            </div>                           
-                                        </div>
-                                </div>
-
-                        </div>
-                        <div class="col-md-7">
-                            <div class="card card-primary">
-                                <div class="card-body">
-                                    <div class="row">
-
-                                        <div class="col-md-12">
-
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <h3 class="card-title">Assigned Privileges</h3>
-                                                </div>
-                                                <!-- /.card-header -->
-                                                <div class="card-body p-0">
-                                                    <table class="table table-condensed assignedPrivilages" id="as">
-                                                        <thead>
-                                                        <tr>
-                                                            <th style="width: 10px">#</th>
-                                                            <th>Previlage</th>
-                                                            <th style="width: 20px">Read</th>
-                                                            <th style="width: 20px">Write</th>
-                                                            <th style="width: 20px">Update</th>
-                                                            <th style="width: 20px">Delete</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        {{-- @foreach($privileges as $indexKey =>$privilege)
-                                                            
-                                                        @endforeach --}}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <!-- /.card-body -->
-                                            </div>
 
 
-                                        </div>                                        
+            <div class="col-md-7">
+                <div class="card card-primary">
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Pradesiyasaba</h3>
                                     </div>
+                                    <!-- /.card-header -->
+                                    <div class="card-body p-0">
+                                        <table class="table table-condensed assignedPrivilages" id="tblPradesiyasaba">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 10px">#</th>
+                                                    <th>Name</th>
+                                                    <th>Code</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.card-body -->
                                 </div>
-                            </div>
+                            </div>                                        
                         </div>
                     </div>
                 </div>
             </div>
-            </div>
-             <div class="modal fade" id="modal-danger">
-                <div class="modal-dialog">
-                    <div class="modal-content bg-danger">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Delete Role</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p><b>Are you sure you want to permanently delete this Role ? </b></p>
-                            <p>Once you continue, this process can not be undone. Please Procede with care.</p>
-                        </div>
-                        <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                                <button id="btnDelRole" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
-                        </div>
-                    </div>
-                    <!-- /.modal-content -->
-                </div>
-                <!-- /.modal-dialog -->
-            </div>
-                  <div class="modal fade" id="modal-xl">
-        <div class="modal-dialog modal-xl">
-          <div class="modal-content">
+        </div>
+    </div>
+</div>
+</div>
+<div class="modal fade" id="modal-danger">
+    <div class="modal-dialog">
+        <div class="modal-content bg-danger">
             <div class="modal-header">
-              <h4 class="modal-title">Update Role</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+                <h4 class="modal-title">Delete  Pradesiyasaba</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                 <div class="card-header">
-                                                        <label>New Role Name</label>
-                                                    </div>
-               <input id="txtupdateRoleName" name="roll" type="text" class="form-control form-control-sm"
-                                                               placeholder="Enter Roll..."
-                                                               value="{{old('expert')}}">
+                <p><b>Are you sure you want to permanently delete this  Pradesiyasaba ? </b></p>
+                <p>Once you continue, this process can not be undone. Please Procede with care.</p>
             </div>
             <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-warning" id="btnUpdateRole" data-dismiss="modal">Update Role</button>
+                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
             </div>
-          </div>
-          <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
-      </div>
-        </section>
-    @endif
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+</section>
+@endif
 @endsection
 
 
 
 @section('pageScripts')
-    <!-- Page script -->
+<!-- Page script -->
 
-    <!-- Select2 -->
-    <script src="../../plugins/select2/js/select2.full.min.js"></script>
-    <!-- Bootstrap4 Duallistbox -->
-    <script src="../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
-    <!-- InputMask -->
-    <script src="../../plugins/moment/moment.min.js"></script>
-    <script src="../../plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
-    <!-- date-range-picker -->
-    <script src="../../plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- bootstrap color picker -->
-    <script src="../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Bootstrap Switch -->
-    <script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-    <script src="../../dist/js/adminlte.min.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="../../dist/js/demo.js"></script>
-    <script src="../../js/userjs/submit.js"></script>
-    <!-- AdminLTE App -->
-    <script>
-        $(function () {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 4000
+<!-- Select2 -->
+<script src="../../plugins/select2/js/select2.full.min.js"></script>
+<!-- Bootstrap4 Duallistbox -->
+<script src="../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+<!-- InputMask -->
+<script src="../../plugins/moment/moment.min.js"></script>
+<script src="../../plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+<!-- date-range-picker -->
+<script src="../../plugins/daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap color picker -->
+<script src="../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Bootstrap Switch -->
+<script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<script src="../../dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../dist/js/demo.js"></script>
+<script src="../../js/pradeshiyasabajs/submit.js"></script>
+<script src="../../js/pradeshiyasabajs/get.js"></script>
+<script src="../../js/pradeshiyasabajs/update.js"></script>
+<script src="../../js/pradeshiyasabajs/delete.js"></script>
+<!-- AdminLTE App -->
+<script>
+    function fromValues() {
+        var data = {
+            name: $('#getName').val(),
+            code: $('#getCode').val()
+        };
+        return data;
+    }
+    $(function () {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 4000
 
-            });
-            @if (session('success'))
-            Toast.fire({
-                type: 'success',
-                title: 'Waste Management System</br>Roll Saved'
-            });
-            @endif
-
-            @if (session('error'))
-            Toast.fire({
-                type: 'error',
-                title: 'Waste Management System</br>Error'
-            });
-            @endif            
         });
-    </script>
+//Load table
+        loadTable();
+//click save button
+        $('#btnSave').click(function () {
+            var data = fromValues();
+            if (Validiteinsert(data)) {
+                AddPradeshiyasaba(data, function (result) {
+                    if (result.id == 1) {
+                        Toast.fire({
+                            type: 'success',
+                            title: 'Enviremontal MS</br>Saved'
+                        });
+                    } else {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Enviremontal MS</br>Error'
+                        });
+                    }
+                    loadTable();
+                    resetinputFields();
+                });
+            }
+        });
+//click update button
+        $('#btnUpdate').click(function () {
+            var data = fromValues();
+            if (Validiteupdate(data)) {
+                updatePradesheeyasaba($('#btnUpdate').val(), data, function (result) {
+                    if (result.id == 1) {
+                        Toast.fire({
+                            type: 'success',
+                            title: 'Enviremontal MS</br>Updated'
+                        });
+                    } else {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Enviremontal MS</br>Error'
+                        });
+                    }
+                    loadTable();
+                    showSave();
+                    resetinputFields();
+                });
+            }
+        });
+//click delete button
+        $('#btnDelete').click(function () {
+                deletePradesheeyasaba($('#btnDelete').val(), function (result) {
+                    if (result.id == 1) {
+                        Toast.fire({
+                            type: 'success',
+                            title: 'Enviremontal MS</br>Removed!'
+                        });
+                    } else {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Enviremontal MS</br>Error'
+                        });
+                    }
+                    loadTable();
+                    showSave();
+                    resetinputFields();
+                });
+        });
+//select button action 
+        $(document).on('click', '.btnAction', function () {
+            getaPradesiyasababyId(this.id, function (result) {
+                $('#getName').val(result.name);
+                $('#getCode').val(result.code);
+                showUpdate();
+                $('#btnUpdate').val(result.id);
+                $('#btnDelete').val(result.id);
+            });
+        });
+    });
+//show update buttons    
+    function showUpdate() {
+        $('#btnSave').addClass('d-none');
+        $('#btnUpdate').removeClass('d-none');
+        $('#btnshowDelete').removeClass('d-none');
+    }
+//show save button    
+    function showSave() {
+        $('#btnSave').removeClass('d-none');
+        $('#btnUpdate').addClass('d-none');
+        $('#btnshowDelete').addClass('d-none');
+    }
+//Reset all fields    
+    function resetinputFields() {
+        $('#getName').val('');
+        $('#getCode').val('');
+        $('#btnUpdate').val('');
+        $('#btnDelete').val('');
+    }
+</script>
 @endsection
