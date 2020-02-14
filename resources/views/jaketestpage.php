@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Attachments</h1>
+                <h1>Pradesheyasaba</h1>
             </div>
         </div>
     </div>
@@ -31,15 +31,23 @@
             <div class="col-md-5">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <label id="lblTitle">Add New Attachment</label>
+                        <label id="lblTitle">Add New Pradesiyasaba</label>
                     </div>
                     <div class="card-body">
-                        <label>Attachment*</label>
-                        <input id="getAttachment" type="text" class="form-control form-control-sm"
-                               placeholder="Enter attachment..."
+                        <label>Name*</label>
+                        <input id="getName" type="text" class="form-control form-control-sm"
+                               placeholder="Enter Name..."
                                value="">
-                        <div id="valAttachment" class="d-none"><p class="text-danger">Attachment is required</p></div>
+                        <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
                     </div>
+                    <div class="card-body">
+                        <label>Code*</label>
+                        <input id="getCode" type="text" class="form-control form-control-sm"
+                               placeholder="Enter Code..."
+                               value="">
+                        <div id="valCode" class="d-none"><p class="text-danger">Code is required</p></div>
+                    </div>
+
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
                         <button id="btnSave" type="submit" class="btn btn-primary">Save</button>
@@ -64,15 +72,16 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">Attachments</h3>
+                                        <h3 class="card-title">Pradesiyasaba</h3>
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body p-0">
-                                        <table class="table table-condensed assignedPrivilages" id="tblAttachments">
+                                        <table class="table table-condensed assignedPrivilages" id="tblPradesiyasaba">
                                             <thead>
                                                 <tr>
                                                     <th style="width: 10px">#</th>
-                                                    <th>Attachments</th>
+                                                    <th>Name</th>
+                                                    <th>Code</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -95,13 +104,13 @@
     <div class="modal-dialog">
         <div class="modal-content bg-danger">
             <div class="modal-header">
-                <h4 class="modal-title">Delete Attachment</h4>
+                <h4 class="modal-title">Delete  Pradesiyasaba</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p><b>Are you sure you want to permanently delete this Attachment ? </b></p>
+                <p><b>Are you sure you want to permanently delete this  Pradesiyasaba ? </b></p>
                 <p>Once you continue, this process can not be undone. Please Procede with care.</p>
             </div>
             <div class="modal-footer justify-content-between">
@@ -140,10 +149,10 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
-<script src="../../js/attachmentsjs/submit.js"></script>
-<script src="../../js/attachmentsjs/get.js"></script>
-<script src="../../js/attachmentsjs/update.js"></script>
-<script src="../../js/attachmentsjs/delete.js"></script>
+<script src="../../js/pradeshiyasabajs/submit.js"></script>
+<script src="../../js/pradeshiyasabajs/get.js"></script>
+<script src="../../js/pradeshiyasabajs/update.js"></script>
+<script src="../../js/pradeshiyasabajs/delete.js"></script>
 <!-- AdminLTE App -->
 <script>
     $(function () {
@@ -161,7 +170,7 @@
             var data = fromValues();
             if (Validiteinsert(data)) {
                 // if validiated
-                AddAttachments(data, function (result) {
+                AddPradeshiyasaba(data, function (result) {
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
@@ -183,7 +192,7 @@
             //get form data
             var data = fromValues();
             if (Validiteupdate(data)) {
-                updateAttachment($('#btnUpdate').val(), data, function (result) {
+                updatePradesheeyasaba($('#btnUpdate').val(), data, function (result) {
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
@@ -203,7 +212,7 @@
         });
 //click delete button
         $('#btnDelete').click(function () {
-            deleteAttachment($('#btnDelete').val(), function (result) {
+            deletePradesheeyasaba($('#btnDelete').val(), function (result) {
                 if (result.id == 1) {
                     Toast.fire({
                         type: 'success',
@@ -222,8 +231,9 @@
         });
 //select button action 
         $(document).on('click', '.btnAction', function () {
-            getaAttachmentbyId(this.id, function (result) {
-                $('#getAttachment').val(result.name);
+            getaPradesiyasababyId(this.id, function (result) {
+                $('#getName').val(result.name);
+                $('#getCode').val(result.code);
                 showUpdate();
                 $('#btnUpdate').val(result.id);
                 $('#btnDelete').val(result.id);
@@ -244,14 +254,16 @@
     }
 //Reset all fields    
     function resetinputFields() {
-        $('#getAttachment').val('');
+        $('#getName').val('');
+        $('#getCode').val('');
         $('#btnUpdate').val('');
         $('#btnDelete').val('');
     }
 //get form values
     function fromValues() {
         var data = {
-            name: $('#getAttachment').val()
+            name: $('#getName').val(),
+            code: $('#getCode').val()
         };
         return data;
     }
