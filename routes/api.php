@@ -82,7 +82,7 @@ Route::middleware('auth:api')->put('/attachement/id/{id}','AttachemntsController
 
 Route::middleware('auth:api')->delete('/attachement/id/{id}','AttachemntsController@destroy'); //delete attachment
 
-
+Route::middleware('auth:api')->get('/attachements/name/{name}','AttachemntsController@isNameUnique'); //check for unique attachments
 //end attachment_api
 
 

@@ -30,8 +30,8 @@ class PradesheeyasabaController extends Controller
         $user = Auth::user();           
         $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
            request()->validate([
-                'name' => 'required',
-                'code' => 'required',               
+                'name' => 'required|unique:pradesheeyasabas,name',
+                'code' => 'required|unique:pradesheeyasabas,code',               
 
             ]);
         if($pageAuth['is_create']){
@@ -61,8 +61,8 @@ class PradesheeyasabaController extends Controller
     $user = Auth::user();           
         $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
            request()->validate([
-                'name' => 'required', 
-                'code' => 'required',          
+                'name' => 'required|unique:pradesheeyasabas,name',
+                'code' => 'required|unique:pradesheeyasabas,code',           
             ]);
         if($pageAuth['is_update']){
         $pradesheyasaba = Pradesheeyasaba::findOrFail($id);
