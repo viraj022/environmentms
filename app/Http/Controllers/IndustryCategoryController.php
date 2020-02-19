@@ -62,14 +62,21 @@ class IndustryCategoryController extends Controller
     {
         $user = Auth::user();           
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
-           request()->validate([
-                'name' => 'required|unique:industry_categories,name', 
-                'code' => 'required|unique:industry_categories,code',          
-            ]);
+     
         if($pageAuth['is_update']){
-        $industryCategory = IndustryCategory::findOrFail($id);;
-        $industryCategory->name= \request('name');
-        $industryCategory->code= \request('code');
+        $industryCategory = IndustryCategory::findOrFail($id);
+        if ($industryCategory->name == \request('name')) {
+                 request()->validate([
+                'code' => 'required|unique:industry_categories,code'          
+            ]);
+        }
+        if ( $industryCategory->code == \request('code')) {
+                request()->validate([
+                'name' => 'required|unique:industry_categories,name'         
+            ]);
+        }
+        $industryCategory->code= \request('code');  
+        $industryCategory->name= \request('name'); 
        $msg =  $industryCategory->save();
 
        if ($msg) {
