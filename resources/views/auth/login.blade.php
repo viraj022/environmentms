@@ -63,9 +63,8 @@
                         <div class="clearfix"></div>
 
                     </div> <!-- end login -->
-                    <div class="logo">Enviromantal MS
-
-                        <div class="clearfix"></div>
+                    <div class="logo">
+<img src="dist/img/uilogo.png" alt="Official Logo">                        
                     </div>
 
                 </div>

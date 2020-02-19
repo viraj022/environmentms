@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAttachemntsTable extends Migration
+class CreateIndustryCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateAttachemntsTable extends Migration
      */
     public function up()
     {
-        Schema::create('attachemnts', function (Blueprint $table) {
+        Schema::create('industry_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->text('name');
+            $table->string('name',255)->unique(); 
+            $table->string('code',10)->unique();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -28,6 +28,6 @@ class CreateAttachemntsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attachemnts');
+        Schema::dropIfExists('industry_categories');
     }
 }

@@ -23,13 +23,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-12 col-sm-6">
-                        <h1>Sysem Users</h1>
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Advanced Form</li>
-                        </ol>
+                        <h1>System Users</h1>
                     </div>
                 </div>
             </div>
@@ -142,7 +136,7 @@
 
                                             </select>
                                         </div>
-                                        <div class="form-group">
+                                        {{-- <div class="form-group">
                                             <label>User Institute</label>
 
                                             <select class="form-control select2 select2-purple instituteCombo"
@@ -150,7 +144,7 @@
                                                     style="width: 100%;" name="institute">
 
                                             </select>
-                                        </div>
+                                        </div> --}}
                                         <div class="form-group">
                                             <label>User Role</label>
 

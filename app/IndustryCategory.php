@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Attachemnts extends Model
+class IndustryCategory extends Model
 {
     //
 }

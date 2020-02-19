@@ -46,7 +46,7 @@ class UserController extends Controller
                 'nic' => ['sometimes', 'nullable', 'unique:users', new nationalID],
                 'roll' => 'integer|required',
                 'password' => 'required|confirmed|min:6',
-                'institute' => 'required|integer',
+                // 'institute' => 'required|integer',
 
             ]);
             $user = new User();
@@ -60,11 +60,11 @@ class UserController extends Controller
             $user->roll_id = request('roll');
             $user->password = Hash::make(request('password'));
             $user->api_token = Str::random(80);
-            if (request('level') == '1') {
-                // set institute id to null
-            } else {
-                $user->institute_id = request('institute');
-            }
+            // if (request('level') == '1') {
+            //     // set institute id to null
+            // } else {
+            //     $user->institute_id = request('institute');
+            // }
 
             $msg = $user->save();
 //         ($user);

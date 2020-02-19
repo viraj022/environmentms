@@ -1,14 +1,13 @@
-
-
-function getPlantsByProvince(id, callBack) {
+function updateAttachment(id,data,callBack) {
     $.ajax({
-        type: "GET",
+        type: "PUT",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/localAuthority/province/id/" + id,
-        data: null,
+        url: "api/attachement/id/"+ id,
+        data: data,
+        dataType: "json",
         cache: false,
         processDaate: false,
         success: function (result) {
@@ -21,4 +20,13 @@ function getPlantsByProvince(id, callBack) {
             alert(textStatus + ':' + errorThrown);
         }
     });
+}
+
+function Validiteupdate(data){
+    var response = true;
+    if(data.name.length == 0){
+        $('#valAttachment').removeClass('d-none');
+        response = false;
+    }
+    return response;
 }

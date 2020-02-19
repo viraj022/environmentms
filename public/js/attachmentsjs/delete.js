@@ -1,14 +1,13 @@
-
-
-function getPlantsByProvince(id, callBack) {
+function deleteAttachment(id, callBack) {
     $.ajax({
-        type: "GET",
+        type: "DELETE",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/localAuthority/province/id/" + id,
+        url: "api/attachement/id/" + id,
         data: null,
+        dataType: "json",
         cache: false,
         processDaate: false,
         success: function (result) {
