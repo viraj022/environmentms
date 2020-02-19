@@ -23,7 +23,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-12 col-sm-6">
-                        <h1>Sysem Users</h1>
+                        <h1>System Users</h1>
                     </div>
                 </div>
             </div>
