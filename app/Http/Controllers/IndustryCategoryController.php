@@ -6,21 +6,21 @@ use App\IndustryCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class IndustryCategoryController extends Controller
-{
-     public function __construct() {
+class IndustryCategoryController extends Controller {
+
+    public function __construct() {
         $this->middleware(['auth']);
     }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $user = Auth::user();           
+    public function index() {
+        $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.industry'));
-        return view('industry_category', ['pageAuth' => $pageAuth]);  
+        return view('industry_category', ['pageAuth' => $pageAuth]);
     }
 
     /**
@@ -28,27 +28,26 @@ class IndustryCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        $user = Auth::user();           
+    public function create() {
+        $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.industry'));
         request()->validate([
-            'name' => 'required|unique:industry_categories,name',             
-            'code' => 'required|unique:industry_categories,code', 
+            'name' => 'required|unique:industry_categories,name',
+            'code' => 'required|unique:industry_categories,code',
         ]);
-        if($pageAuth['is_create']){
-        $industryCategory = new IndustryCategory();
-        $industryCategory->name= \request('name');
-        $industryCategory->code= \request('code');
-       $msg =  $industryCategory->save();
+        if ($pageAuth['is_create']) {
+            $industryCategory = new IndustryCategory();
+            $industryCategory->name = \request('name');
+            $industryCategory->code = \request('code');
+            $msg = $industryCategory->save();
 
-       if ($msg) {
-        return array('id' => 1, 'message' => 'true');
-    } else {
-        return array('id' => 0, 'message' => 'false');
-    }
-        }else{
-         abort(401);
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(401);
         }
     }
 
@@ -58,27 +57,35 @@ class IndustryCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($id)
-    {
-        $user = Auth::user();           
+    public function store($id) {
+        $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
-           request()->validate([
-                'name' => 'required|unique:industry_categories,name', 
-                'code' => 'required|unique:industry_categories,code',          
-            ]);
-        if($pageAuth['is_update']){
-        $industryCategory = IndustryCategory::findOrFail($id);;
-        $industryCategory->name= \request('name');
-        $industryCategory->code= \request('code');
-       $msg =  $industryCategory->save();
 
-       if ($msg) {
-        return array('id' => 1, 'message' => 'true');
-    } else {
-        return array('id' => 0, 'message' => 'false');
-    }
-        }else{
-         abort(401);
+        if ($pageAuth['is_update']) {
+            $industryCategory = IndustryCategory::findOrFail($id);
+            if ($industryCategory->name != \request('name')) {
+                request()->validate([
+                    'name' => 'required|unique:industry_categories,name'
+                ]);
+                $industryCategory->name = \request('name');
+            }
+            if ($industryCategory->code != \request('code')) {
+                request()->validate([
+                    'code' => 'required|unique:industry_categories,code'
+                ]);
+                $industryCategory->code = \request('code');
+            }
+//            $industryCategory->code = \request('code');
+//        $industryCategory->name= \request('name'); 
+            $msg = $industryCategory->save();
+
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(401);
         }
     }
 
@@ -88,14 +95,13 @@ class IndustryCategoryController extends Controller
      * @param  \App\IndustryCategory  $industryCategory
      * @return \Illuminate\Http\Response
      */
-    public function show()
-    {
-           $user = Auth::user();           
+    public function show() {
+        $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.industry'));
-         if($pageAuth['is_read']){
-       return IndustryCategory::get();
-   }else{
-         abort(401);
+        if ($pageAuth['is_read']) {
+            return IndustryCategory::get();
+        } else {
+            abort(401);
         }
     }
 
@@ -105,8 +111,7 @@ class IndustryCategoryController extends Controller
      * @param  \App\IndustryCategory  $industryCategory
      * @return \Illuminate\Http\Response
      */
-    public function edit(IndustryCategory $industryCategory)
-    {
+    public function edit(IndustryCategory $industryCategory) {
         //
     }
 
@@ -117,8 +122,7 @@ class IndustryCategoryController extends Controller
      * @param  \App\IndustryCategory  $industryCategory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, IndustryCategory $industryCategory)
-    {
+    public function update(Request $request, IndustryCategory $industryCategory) {
         //
     }
 
@@ -128,39 +132,37 @@ class IndustryCategoryController extends Controller
      * @param  \App\IndustryCategory  $industryCategory
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        $user = Auth::user();           
+    public function destroy($id) {
+        $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.industry'));
-        if($pageAuth['is_delete']){
-        $industryCategory = IndustryCategory::findOrFail($id);;
-        //$attachment->name= \request('name');
-       $msg =  $industryCategory->delete();
+        if ($pageAuth['is_delete']) {
+            $industryCategory = IndustryCategory::findOrFail($id);
+            ;
+            //$attachment->name= \request('name');
+            $msg = $industryCategory->delete();
 
-       if ($msg) {
-        return array('id' => 1, 'message' => 'true');
-    } else {
-        return array('id' => 0, 'message' => 'false');
-    }
-        }else{
-         abort(401);
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(401);
         }
     }
 
+    public function find($id) {
 
-      public function find($id)
-    {
-
-        $user = Auth::user();           
+        $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.industry'));
-         if($pageAuth['is_read']){
-       return IndustryCategory::findOrFail($id);
-   }else{
-         abort(401);
+        if ($pageAuth['is_read']) {
+            return IndustryCategory::findOrFail($id);
+        } else {
+            abort(401);
         }
     }
 
-public function isNameUnique($name) {
+    public function isNameUnique($name) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.industry'));
 
@@ -173,9 +175,8 @@ public function isNameUnique($name) {
             }
         }
     }
-    
-    
-            public function isCodeUnique($code) {
+
+    public function isCodeUnique($code) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.industry'));
 
@@ -187,6 +188,6 @@ public function isNameUnique($name) {
                 return array('id' => 1, 'message' => 'notunique');
             }
         }
+    }
 
-}
 }
