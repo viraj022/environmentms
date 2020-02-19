@@ -191,16 +191,21 @@
                                     loadTable();
                                     resetinputFields();
                                 });
+                            } else {
+                                $('#valIndustryName').addClass('d-none');
+//                            $('#valUnique').removeClass('d-none');
+                                $('#valCodeUnique').removeClass('d-none');
                             }
                         } else
                         {
                             $('#valIndustryName').addClass('d-none');
                             $('#valUnique').removeClass('d-none');
-                            $('#valCodeUnique').removeClass('d-none');
+//                            $('#valCodeUnique').removeClass('d-none');
                         }
                     });
                 });
             }
+            hideAllErrors();
         });
 //click update button
         $('#btnUpdate').click(function () {
@@ -222,6 +227,7 @@
                     loadTable();
                     showSave();
                     resetinputFields();
+                    hideAllErrors();
                 });
             }
         });
@@ -242,6 +248,7 @@
                 loadTable();
                 showSave();
                 resetinputFields();
+                hideAllErrors();
             });
         });
 //select button action 
@@ -253,6 +260,7 @@
                 $('#btnUpdate').val(result.id);
                 $('#btnDelete').val(result.id);
             });
+            hideAllErrors();
         });
     });
 //show update buttons    
@@ -274,6 +282,11 @@
         $('#btnUpdate').val('');
         $('#btnDelete').val('');
     }
+//HIDE ALL ERROR MSGS   
+    function hideAllErrors() {
+        $('#valCodeUnique').addClass('d-none');
+        $('#valUnique').addClass('d-none');
+    }    
 //get form values
     function fromValues() {
         var data = {

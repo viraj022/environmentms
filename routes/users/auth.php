@@ -19,3 +19,5 @@ Route::put('/users/password/{id}', 'UserController@storePassword');
 
 #delete
 Route::delete('/users/id/{id}', 'UserController@delete');
+Route::get('/users/myProfile', 'UserController@myProfile');
+Route::put('/users/my_password', 'UserController@changeMyPass');
