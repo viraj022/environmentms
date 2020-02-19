@@ -33,8 +33,8 @@ class IndustryCategoryController extends Controller
         $user = Auth::user();           
         $pageAuth = $user->authentication(config('auth.privileges.industry'));
         request()->validate([
-            'name' => 'required',             
-            'code' => 'required', 
+            'name' => 'required|unique:industry_categories,name',             
+            'code' => 'required|unique:industry_categories,code', 
         ]);
         if($pageAuth['is_create']){
         $industryCategory = new IndustryCategory();
@@ -63,8 +63,8 @@ class IndustryCategoryController extends Controller
         $user = Auth::user();           
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
            request()->validate([
-                'name' => 'required', 
-                'code' => 'required',          
+                'name' => 'required|unique:industry_categories,name', 
+                'code' => 'required|unique:industry_categories,code',          
             ]);
         if($pageAuth['is_update']){
         $industryCategory = IndustryCategory::findOrFail($id);;

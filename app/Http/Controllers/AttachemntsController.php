@@ -37,7 +37,7 @@ class AttachemntsController extends Controller
         $user = Auth::user();           
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
            request()->validate([
-                'name' => 'required',             
+                'name' => 'required|unique:attachemnts,name',             
 
             ]);
         if($pageAuth['is_create']){
@@ -67,7 +67,7 @@ class AttachemntsController extends Controller
     $user = Auth::user();           
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
            request()->validate([
-                'name' => 'required',             
+                'name' => 'required|unique:attachemnts,name',             
 
             ]);
         if($pageAuth['is_update']){
