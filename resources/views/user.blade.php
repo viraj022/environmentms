@@ -136,7 +136,7 @@
 
                                             </select>
                                         </div>
-                                        <div class="form-group">
+                                        {{-- <div class="form-group">
                                             <label>User Institute</label>
 
                                             <select class="form-control select2 select2-purple instituteCombo"
@@ -144,7 +144,7 @@
                                                     style="width: 100%;" name="institute">
 
                                             </select>
-                                        </div>
+                                        </div> --}}
                                         <div class="form-group">
                                             <label>User Role</label>
 
