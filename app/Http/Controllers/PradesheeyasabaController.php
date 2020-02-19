@@ -60,14 +60,31 @@ class PradesheeyasabaController extends Controller
     {
     $user = Auth::user();           
         $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
-           request()->validate([
-                'name' => 'required|unique:pradesheeyasabas,name',
-                'code' => 'required|unique:pradesheeyasabas,code',           
-            ]);
+//           request()->validate([
+//                'name' => 'required|unique:pradesheeyasabas,name',
+//                'code' => 'required|unique:pradesheeyasabas,code',           
+//            ]);
+        
+ 
+        
+        
+        
         if($pageAuth['is_update']){
         $pradesheyasaba = Pradesheeyasaba::findOrFail($id);
-        $pradesheyasaba ->name = \request('name');
-        $pradesheyasaba ->code = \request('code');
+         if ($pradesheyasaba->name != \request('name')) {
+                request()->validate([
+                    'name' => 'required|unique:pradesheeyasabas,name'
+                ]);
+                $pradesheyasaba->name = \request('name');
+            }
+            if ($pradesheyasaba->code != \request('code')) {
+                request()->validate([
+                    'code' => 'required|unique:pradesheeyasabas,code'
+                ]);
+                $pradesheyasaba->code = \request('code');
+            }
+//            $pradesheyasaba ->name = \request('name');
+//        $pradesheyasaba ->code = \request('code');
        $msg =  $pradesheyasaba->save();
 
        if ($msg) {
