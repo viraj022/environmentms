@@ -82,7 +82,23 @@ Route::middleware('auth:api')->put('/attachement/id/{id}','AttachemntsController
 
 Route::middleware('auth:api')->delete('/attachement/id/{id}','AttachemntsController@destroy'); //delete attachment
 
-Route::middleware('auth:api')->get('/attachements/name/{name}','AttachemntsController@isNameUnique'); //check for unique attachments
+Route::middleware('auth:api')->get('/attachements/name/{name}','AttachemntsController@isNameUnique'); //check for unique name
+/*
+ value if name is  available 
+ 
+ {
+ "id":1,
+  "message":"unique"
+ }
+ 
+ value if name is not available 
+{
+    "id":1,
+    "message":"notunique"
+        
+}
+*/
+
 //end attachment_api
 
 
@@ -118,9 +134,38 @@ Route::middleware('auth:api')->get('/industrycategories','IndustryCategoryContro
 Route::middleware('auth:api')->delete('/industrycategory/id/{id}','IndustryCategoryController@destroy'); //delete IndustryCategory
 Route::middleware('auth:api')->put('/industrycategory/id/{id}','IndustryCategoryController@store'); //update IndustryCategory
 
-
-
-
+Route::middleware('auth:api')->get('/industrycategory/name/{name}','IndustryCategoryController@isNameUnique'); //check for unique name
+/*
+ value if name is  available 
+ 
+ {
+ "id":1,
+  "message":"unique"
+ }
+ 
+ value if name is not available 
+{
+    "id":1,
+    "message":"notunique"
+        
+}
+*/
+Route::middleware('auth:api')->get('/industrycategory/code/{code}','IndustryCategoryController@isCodeUnique'); //check for unique Code
+/*
+ value if code is  available 
+ 
+ {
+ "id":1,
+  "message":"unique"
+ }
+ 
+ value if code is not available 
+{
+    "id":1,
+    "message":"notunique"
+        
+}
+*/
 //end IndustryCategory api
 
 
@@ -157,7 +202,37 @@ Route::middleware('auth:api')->get('/pradesheeyasabas','PradesheeyasabaControlle
 Route::middleware('auth:api')->delete('/pradesheeyasaba/id/{id}','PradesheeyasabaController@destroy'); //delete Pradesheeyasaba
 Route::middleware('auth:api')->put('/pradesheeyasaba/id/{id}','PradesheeyasabaController@store'); //update Pradesheeyasaba
 
-
-
+Route::middleware('auth:api')->get('/pradesheeyasaba/name/{name}','PradesheeyasabaController@isNameUnique'); //check for unique name
+/*
+ value if name is  available 
+ 
+ {
+ "id":1,
+  "message":"unique"
+ }
+ 
+ value if name is not available 
+{
+    "id":1,
+    "message":"notunique"
+        
+}
+*/
+Route::middleware('auth:api')->get('/pradesheeyasaba/code/{code}','PradesheeyasabaController@isCodeUnique'); //check for unique Code
+/*
+ value if code is  available 
+ 
+ {
+ "id":1,
+  "message":"unique"
+ }
+ 
+ value if code is not available 
+{
+    "id":1,
+    "message":"notunique"
+        
+}
+*/
 
 //end Pradesheeyasaba api

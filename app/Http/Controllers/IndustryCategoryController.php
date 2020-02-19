@@ -160,6 +160,33 @@ class IndustryCategoryController extends Controller
         }
     }
 
+public function isNameUnique($name) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.industry'));
 
+        if ($pageAuth['is_create']) {
+            $raw = IndustryCategory::where('name', '=', $name)->first();
+            if ($raw === null) {
+                return array('id' => 1, 'message' => 'unique');
+            } else {
+                return array('id' => 1, 'message' => 'notunique');
+            }
+        }
+    }
+    
+    
+            public function isCodeUnique($code) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.industry'));
 
+        if ($pageAuth['is_create']) {
+            $raw = IndustryCategory::where('code', '=', $code)->first();
+            if ($raw === null) {
+                return array('id' => 1, 'message' => 'unique');
+            } else {
+                return array('id' => 1, 'message' => 'notunique');
+            }
+        }
+
+}
 }

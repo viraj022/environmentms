@@ -155,4 +155,34 @@ class PradesheeyasabaController extends Controller
          abort(401);
         }
     }
+    
+        public function isNameUnique($name) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
+
+        if ($pageAuth['is_create']) {
+            $raw = Pradesheeyasaba::where('name', '=', $name)->first();
+            if ($raw === null) {
+                return array('id' => 1, 'message' => 'unique');
+            } else {
+                return array('id' => 1, 'message' => 'notunique');
+            }
+        }
+    }
+    
+    
+            public function isCodeUnique($code) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
+
+        if ($pageAuth['is_create']) {
+            $raw = Pradesheeyasaba::where('code', '=', $code)->first();
+            if ($raw === null) {
+                return array('id' => 1, 'message' => 'unique');
+            } else {
+                return array('id' => 1, 'message' => 'notunique');
+            }
+        }
+    }
+
 }
