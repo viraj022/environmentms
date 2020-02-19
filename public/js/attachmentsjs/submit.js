@@ -15,13 +15,16 @@ function AddAttachments(data, callBack) {
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
             }
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            alert(textStatus + ':' + errorThrown);
         }
     });
 }
 
-function Validiteinsert(data){
+function Validiteinsert(data) {
     var response = true;
-    if(data.name.length == 0){
+    if (data.name.length == 0) {
         $('#valAttachment').removeClass('d-none');
         response = false;
     }
