@@ -39,6 +39,7 @@
                                placeholder="Enter attachment..."
                                value="">
                         <div id="valAttachment" class="d-none"><p class="text-danger">Attachment is required</p></div>
+                        <div id="valUnique" class="d-none"><p class="text-danger">Name already taken!</p></div>
                     </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
@@ -161,20 +162,29 @@
             var data = fromValues();
             if (Validiteinsert(data)) {
                 // if validiated
-                AddAttachments(data, function (result) {
-                    if (result.id == 1) {
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Enviremontal MS</br>Saved'
+                uniqueNamecheck(data.name, function (r) {
+//                    alert(JSON.stringify(r));
+                    if (r.message == 'unique') {
+                        AddAttachments(data, function (result) {
+                            if (result.id == 1) {
+                                Toast.fire({
+                                    type: 'success',
+                                    title: 'Enviremontal MS</br>Saved'
+                                });
+                            } else {
+                                Toast.fire({
+                                    type: 'error',
+                                    title: 'Enviremontal MS</br>Error'
+                                });
+                            }
+                            loadTable();
+                            resetinputFields();
                         });
-                    } else {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Enviremontal MS</br>Error'
-                        });
+                    } else
+                    {
+                        $('#valAttachment').addClass('d-none');
+                        $('#valUnique').removeClass('d-none');
                     }
-                    loadTable();
-                    resetinputFields();
                 });
             }
         });
@@ -183,21 +193,29 @@
             //get form data
             var data = fromValues();
             if (Validiteupdate(data)) {
-                updateAttachment($('#btnUpdate').val(), data, function (result) {
-                    if (result.id == 1) {
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Enviremontal MS</br>Updated'
+                uniqueNamecheck(data.name, function (r) {
+                    if (r.message == 'unique') {
+                        updateAttachment($('#btnUpdate').val(), data, function (result) {
+                            if (result.id == 1) {
+                                Toast.fire({
+                                    type: 'success',
+                                    title: 'Enviremontal MS</br>Updated'
+                                });
+                            } else {
+                                Toast.fire({
+                                    type: 'error',
+                                    title: 'Enviremontal MS</br>Error'
+                                });
+                            }
+                            loadTable();
+                            showSave();
+                            resetinputFields();
                         });
-                    } else {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Enviremontal MS</br>Error'
-                        });
+                    } else
+                    {
+                        $('#valAttachment').addClass('d-none');
+                        $('#valUnique').removeClass('d-none');
                     }
-                    loadTable();
-                    showSave();
-                    resetinputFields();
                 });
             }
         });
@@ -230,6 +248,21 @@
             });
         });
     });
+    $('#getAttachment').change(function () {
+        var data = fromValues();
+        uniqueNamecheck(data.name, function (r) {
+//            alert(JSON.stringify(r));
+            if (r.message == 'unique') {
+                $('#valAttachment').addClass('d-none');
+                $('#valUnique').addClass('d-none');
+
+            } else
+            {
+                $('#valAttachment').addClass('d-none');
+                $('#valUnique').removeClass('d-none');
+            }
+        });
+    });
 //show update buttons    
     function showUpdate() {
         $('#btnSave').addClass('d-none');
@@ -247,6 +280,8 @@
         $('#getAttachment').val('');
         $('#btnUpdate').val('');
         $('#btnDelete').val('');
+        $('#valAttachment').addClass('d-none');
+        $('#valUnique').addClass('d-none');
     }
 //get form values
     function fromValues() {

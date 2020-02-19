@@ -26,6 +26,7 @@ function Validiteinsert(data) {
     var response = true;
     if (data.name.length == 0) {
         $('#valAttachment').removeClass('d-none');
+        $('#valUnique').addClass('d-none');
         response = false;
     }
     return response;

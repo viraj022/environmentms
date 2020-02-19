@@ -39,6 +39,7 @@
                                placeholder="Enter Name..."
                                value="">
                         <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                        <div id="valUnique" class="d-none"><p class="text-danger">Name already taken!</p></div>
                     </div>
                     <div class="card-body">
                         <label>Code*</label>

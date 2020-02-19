@@ -39,6 +39,7 @@
                                placeholder="Enter Industry Name..."
                                value="">
                         <div id="valIndustryName" class="d-none"><p class="text-danger">Industry Name is required</p></div>
+                        <div id="valUnique" class="d-none"><p class="text-danger">Name already taken!</p></div>
                     </div>
                     <div class="card-body">
                         <label>Code*</label>
