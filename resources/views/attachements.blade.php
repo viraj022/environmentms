@@ -187,6 +187,7 @@
                     }
                 });
             }
+             hideAllErrors();
         });
 //click update button
         $('#btnUpdate').click(function () {
@@ -210,6 +211,7 @@
                             resetinputFields();
                         });
             }
+             hideAllErrors();
         });
 //click delete button
         $('#btnDelete').click(function () {
@@ -229,6 +231,7 @@
                 showSave();
                 resetinputFields();
             });
+             hideAllErrors();
         });
 //select button action 
         $(document).on('click', '.btnAction', function () {
@@ -238,6 +241,7 @@
                 $('#btnUpdate').val(result.id);
                 $('#btnDelete').val(result.id);
             });
+            hideAllErrors();
         });
     });
 //Check change of name input   
@@ -276,6 +280,10 @@ $('#getAttachment').change(function () {
         $('#valAttachment').addClass('d-none');
         $('#valUnique').addClass('d-none');
     }
+//HIDE ALL ERROR MSGS   
+    function hideAllErrors() {
+        $('#valUnique').addClass('d-none');
+    }     
 //get form values
     function fromValues() {
         var data = {
