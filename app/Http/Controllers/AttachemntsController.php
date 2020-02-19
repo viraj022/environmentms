@@ -26,12 +26,13 @@ class AttachemntsController extends Controller {
     }
 
     public function isNameUnique($name) {
+        
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
 
         if ($pageAuth['is_create']) {
             $raw = Attachemnt::where('name', '=', $name)->first();
-            if ($user === null) {
+            if ($raw === null) {
                 return array('id' => 1, 'message' => 'unique');
             } else {
                 return array('id' => 1, 'message' => 'notunique');
