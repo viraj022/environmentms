@@ -1,11 +1,11 @@
-function deleteAttachment(id,callBack) {
+function deleteAttachment(id, callBack) {
     $.ajax({
         type: "DELETE",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/attachement/id/"+ id,
+        url: "api/attachement/id/" + id,
         data: null,
         dataType: "json",
         cache: false,
@@ -15,6 +15,9 @@ function deleteAttachment(id,callBack) {
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
             }
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            alert(textStatus + ':' + errorThrown);
         }
     });
 }

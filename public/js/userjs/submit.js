@@ -43,6 +43,9 @@ function assignPrivilegesToRolls(callBack) {
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
             }
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            alert(textStatus + ':' + errorThrown);
         }
     });
 }
