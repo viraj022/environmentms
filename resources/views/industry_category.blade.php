@@ -191,12 +191,16 @@
                                     loadTable();
                                     resetinputFields();
                                 });
+                            } else {
+                                $('#valIndustryName').addClass('d-none');
+//                            $('#valUnique').removeClass('d-none');
+                                $('#valCodeUnique').removeClass('d-none');
                             }
                         } else
                         {
                             $('#valIndustryName').addClass('d-none');
                             $('#valUnique').removeClass('d-none');
-                            $('#valCodeUnique').removeClass('d-none');
+//                            $('#valCodeUnique').removeClass('d-none');
                         }
                     });
                 });

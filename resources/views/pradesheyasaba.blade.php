@@ -172,27 +172,35 @@
             var data = fromValues();
             if (Validiteinsert(data)) {
                 uniqueNamecheck(data.name, function (r) {
-                    if (r.message == 'unique') {
-                        AddPradeshiyasaba(data, function (result) {
-                            if (result.id == 1) {
-                                Toast.fire({
-                                    type: 'success',
-                                    title: 'Enviremontal MS</br>Saved'
+                    uniqueCodecheck(data.code, function (re) {
+                        if (r.message == 'unique') {
+                            if (re.message == 'unique') {
+                                AddPradeshiyasaba(data, function (result) {
+                                    if (result.id == 1) {
+                                        Toast.fire({
+                                            type: 'success',
+                                            title: 'Enviremontal MS</br>Saved'
+                                        });
+                                    } else {
+                                        Toast.fire({
+                                            type: 'error',
+                                            title: 'Enviremontal MS</br>Error'
+                                        });
+                                    }
+                                    loadTable();
+                                    resetinputFields();
                                 });
-                            } else {
-                                Toast.fire({
-                                    type: 'error',
-                                    title: 'Enviremontal MS</br>Error'
-                                });
+                            } else
+                            {
+                                $('#valName').addClass('d-none');
+                                $('#valcodeUnique').removeClass('d-none');
                             }
-                            loadTable();
-                            resetinputFields();
-                        });
-                    } else
-                    {
-                        $('#valName').addClass('d-none');
-                        $('#valUnique').removeClass('d-none');
-                    }
+                        } else
+                        {
+                            $('#valName').addClass('d-none');
+                            $('#valUnique').removeClass('d-none');
+                        }
+                    });
                 });
             }
         });
@@ -201,22 +209,22 @@
             //get form data
             var data = fromValues();
             if (Validiteupdate(data)) {
-                        updatePradesheeyasaba($('#btnUpdate').val(), data, function (result) {
-                            if (result.id == 1) {
-                                Toast.fire({
-                                    type: 'success',
-                                    title: 'Enviremontal MS</br>Updated'
-                                });
-                            } else {
-                                Toast.fire({
-                                    type: 'error',
-                                    title: 'Enviremontal MS</br>Error'
-                                });
-                            }
-                            loadTable();
-                            showSave();
-                            resetinputFields();
+                updatePradesheeyasaba($('#btnUpdate').val(), data, function (result) {
+                    if (result.id == 1) {
+                        Toast.fire({
+                            type: 'success',
+                            title: 'Enviremontal MS</br>Updated'
                         });
+                    } else {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Enviremontal MS</br>Error'
+                        });
+                    }
+                    loadTable();
+                    showSave();
+                    resetinputFields();
+                });
             }
         });
 //click delete button
