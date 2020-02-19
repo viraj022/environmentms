@@ -252,5 +252,30 @@ class UserController extends Controller
         return view('auth.login');
 //        $this->middleware('auth');
     }
+    public function myProfile()
+    {
+        $aUser = Auth::user();
+        $pageAuth = $aUser->authentication(config('auth.privileges.userCreate'));
+        return view('my_profile', ['user' => $aUser, 'pageAuth' => $pageAuth]);
+    }
+    public function changeMyPass()
+    {
+        $aUser = Auth::user();
+        request()->validate([
+            'password' => 'required|confirmed|min:6',
+        ]);
+        $aUser->password = Hash::make(request('password'));
+        $msg = $aUser->save();
+        if ($msg) {
+            return redirect()
+                ->back()
+                ->with('success', 'Ok');
+        } else {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Error');
+        }
+    }
 
 }
