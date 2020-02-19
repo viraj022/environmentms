@@ -193,8 +193,6 @@
             //get form data
             var data = fromValues();
             if (Validiteupdate(data)) {
-                uniqueNamecheck(data.name, function (r) {
-                    if (r.message == 'unique') {
                         updateAttachment($('#btnUpdate').val(), data, function (result) {
                             if (result.id == 1) {
                                 Toast.fire({
@@ -211,12 +209,6 @@
                             showSave();
                             resetinputFields();
                         });
-                    } else
-                    {
-                        $('#valAttachment').addClass('d-none');
-                        $('#valUnique').removeClass('d-none');
-                    }
-                });
             }
         });
 //click delete button
@@ -248,7 +240,8 @@
             });
         });
     });
-    $('#getAttachment').change(function () {
+//Check change of name input   
+$('#getAttachment').change(function () {
         var data = fromValues();
         uniqueNamecheck(data.name, function (r) {
 //            alert(JSON.stringify(r));

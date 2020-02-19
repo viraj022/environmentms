@@ -47,6 +47,7 @@
                                placeholder="Enter Code..."
                                value="">
                         <div id="valCode" class="d-none"><p class="text-danger">Code is required</p></div>
+                        <div id="valcodeUnique" class="d-none"><p class="text-danger">Code already taken!</p></div>
                     </div>
 
                     <div class="card-footer">
@@ -170,21 +171,28 @@
         $('#btnSave').click(function () {
             var data = fromValues();
             if (Validiteinsert(data)) {
-                // if validiated
-                AddPradeshiyasaba(data, function (result) {
-                    if (result.id == 1) {
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Enviremontal MS</br>Saved'
+                uniqueNamecheck(data.name, function (r) {
+                    if (r.message == 'unique') {
+                        AddPradeshiyasaba(data, function (result) {
+                            if (result.id == 1) {
+                                Toast.fire({
+                                    type: 'success',
+                                    title: 'Enviremontal MS</br>Saved'
+                                });
+                            } else {
+                                Toast.fire({
+                                    type: 'error',
+                                    title: 'Enviremontal MS</br>Error'
+                                });
+                            }
+                            loadTable();
+                            resetinputFields();
                         });
-                    } else {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Enviremontal MS</br>Error'
-                        });
+                    } else
+                    {
+                        $('#valName').addClass('d-none');
+                        $('#valUnique').removeClass('d-none');
                     }
-                    loadTable();
-                    resetinputFields();
                 });
             }
         });
@@ -193,22 +201,22 @@
             //get form data
             var data = fromValues();
             if (Validiteupdate(data)) {
-                updatePradesheeyasaba($('#btnUpdate').val(), data, function (result) {
-                    if (result.id == 1) {
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Enviremontal MS</br>Updated'
+                        updatePradesheeyasaba($('#btnUpdate').val(), data, function (result) {
+                            if (result.id == 1) {
+                                Toast.fire({
+                                    type: 'success',
+                                    title: 'Enviremontal MS</br>Updated'
+                                });
+                            } else {
+                                Toast.fire({
+                                    type: 'error',
+                                    title: 'Enviremontal MS</br>Error'
+                                });
+                            }
+                            loadTable();
+                            showSave();
+                            resetinputFields();
                         });
-                    } else {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Enviremontal MS</br>Error'
-                        });
-                    }
-                    loadTable();
-                    showSave();
-                    resetinputFields();
-                });
             }
         });
 //click delete button
@@ -239,6 +247,24 @@
                 $('#btnUpdate').val(result.id);
                 $('#btnDelete').val(result.id);
             });
+        });
+    });
+//Check change of name input   
+    $('#getName').change(function () {
+        var data = fromValues();
+        uniqueNamecheck(data.name, function (r) {
+//            alert(JSON.stringify(r));
+            if (r.message == 'unique') {
+                $('#valName').addClass('d-none');
+                $('#valCode').addClass('d-none');
+                $('#valUnique').addClass('d-none');
+
+            } else
+            {
+                $('#valName').addClass('d-none');
+                $('#valCode').addClass('d-none');
+                $('#valUnique').removeClass('d-none');
+            }
         });
     });
 //show update buttons    

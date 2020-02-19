@@ -47,6 +47,7 @@
                                placeholder="Enter Industry Code..."
                                value="">
                         <div id="valIndustryCode" class="d-none"><p class="text-danger">Industry Code is required</p></div>
+                        <div id="valCodeUnique" class="d-none"><p class="text-danger">Code already taken!</p></div>
                     </div>
 
                     <div class="card-footer">
@@ -170,21 +171,34 @@
         $('#btnSave').click(function () {
             var data = fromValues();
             if (Validiteinsert(data)) {
-                // if validiated
-                AddIndustry(data, function (result) {
-                    if (result.id == 1) {
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Enviremontal MS</br>Saved'
-                        });
-                    } else {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Enviremontal MS</br>Error'
-                        });
-                    }
-                    loadTable();
-                    resetinputFields();
+                //if validiated!
+                uniqueNamecheck(data.name, function (r) {
+                    uniqueCodecheck(data.code, function (re) {
+                        if (r.message == 'unique') {
+                            if (re.message == 'unique') {
+                                AddIndustry(data, function (result) {
+                                    if (result.id == 1) {
+                                        Toast.fire({
+                                            type: 'success',
+                                            title: 'Enviremontal MS</br>Saved'
+                                        });
+                                    } else {
+                                        Toast.fire({
+                                            type: 'error',
+                                            title: 'Enviremontal MS</br>Error'
+                                        });
+                                    }
+                                    loadTable();
+                                    resetinputFields();
+                                });
+                            }
+                        } else
+                        {
+                            $('#valIndustryName').addClass('d-none');
+                            $('#valUnique').removeClass('d-none');
+                            $('#valCodeUnique').removeClass('d-none');
+                        }
+                    });
                 });
             }
         });
