@@ -27,7 +27,25 @@ class PaymentTypeController extends Controller
      */
     public function create()
     {
-        //
+         $user = Auth::user();           
+        $pageAuth = $user->authentication(config('auth.privileges.industry'));
+           request()->validate([
+                'name' => 'required|unique:payment_types,name'          
+            ]);
+
+        if($pageAuth['is_create']){
+        $payment_type = new PaymentType();
+        $payment_type->name= \request('name');
+       $msg =  $payment_type->save();
+
+       if ($msg) {
+        return array('id' => 1, 'message' => 'true');
+    } else {
+        return array('id' => 0, 'message' => 'false');
+    }
+        }else{
+         abort(401);
+        }
     }
 
     /**
@@ -36,9 +54,26 @@ class PaymentTypeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($id)
     {
-        //
+          $user = Auth::user();
+    $pageAuth = $user->authentication(config('auth.privileges.industry'));
+    request()->validate([
+                  'name' => 'required|unique:payment_types,name'  
+    ]);
+    if ($pageAuth['is_update']) {
+        $payment_type =  PaymentType::findOrFail($id);
+        $payment_type->name= \request('name');
+         $msg =  $payment_type->save();
+
+     if ($msg) {
+        return array('id' => 1, 'message' => 'true');
+    } else {
+        return array('id' => 0, 'message' => 'false');
+    }
+} else {
+    abort(401);
+}
     }
 
     /**
@@ -47,10 +82,30 @@ class PaymentTypeController extends Controller
      * @param  \App\PaymentType  $paymentType
      * @return \Illuminate\Http\Response
      */
-    public function show(PaymentType $paymentType)
+    public function show()
     {
-        //
+           $user = Auth::user();
+    $pageAuth = $user->authentication(config('auth.privileges.industry'));
+    if ($pageAuth['is_read']) {
+        return PaymentType::get();
+    } else {
+        abort(401);
     }
+    }
+
+
+    //find a paymentType
+public function find($id) {
+
+    $user = Auth::user();
+    $pageAuth = $user->authentication(config('auth.privileges.industry'));
+    if ($pageAuth['is_read']) {
+        return PaymentType::findOrFail($id);
+    } else {
+        abort(401);
+    }
+}
+    //end find a paymentType
 
     /**
      * Show the form for editing the specified resource.
@@ -81,8 +136,22 @@ class PaymentTypeController extends Controller
      * @param  \App\PaymentType  $paymentType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PaymentType $paymentType)
+    public function destroy($id)
     {
-        //
+           $user = Auth::user();
+    $pageAuth = $user->authentication(config('auth.privileges.industry'));
+    if ($pageAuth['is_delete']) {
+       $payment_type = PaymentType::findOrFail($id);    
+       $msg = $payment_type->delete();
+       if ($msg) {
+        return array('id' => 1, 'message' => 'true');
+    } else {
+        return array('id' => 0, 'message' => 'false');
     }
+} else {
+    abort(401);
+}
+    }
+
+
 }
