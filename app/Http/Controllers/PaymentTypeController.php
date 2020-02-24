@@ -16,7 +16,7 @@ class PaymentTypeController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.industry'));
+        $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
         return view('payment_type', ['pageAuth' => $pageAuth]);
     }
 
@@ -28,7 +28,7 @@ class PaymentTypeController extends Controller
     public function create()
     {
          $user = Auth::user();           
-        $pageAuth = $user->authentication(config('auth.privileges.industry'));
+        $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
            request()->validate([
                 'name' => 'required|unique:payment_types,name'          
             ]);
@@ -57,7 +57,7 @@ class PaymentTypeController extends Controller
     public function store($id)
     {
           $user = Auth::user();
-    $pageAuth = $user->authentication(config('auth.privileges.industry'));
+    $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
     request()->validate([
                   'name' => 'required|unique:payment_types,name'  
     ]);
@@ -85,7 +85,7 @@ class PaymentTypeController extends Controller
     public function show()
     {
            $user = Auth::user();
-    $pageAuth = $user->authentication(config('auth.privileges.industry'));
+    $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
     if ($pageAuth['is_read']) {
         return PaymentType::get();
     } else {
@@ -98,7 +98,7 @@ class PaymentTypeController extends Controller
 public function find($id) {
 
     $user = Auth::user();
-    $pageAuth = $user->authentication(config('auth.privileges.industry'));
+    $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
     if ($pageAuth['is_read']) {
         return PaymentType::findOrFail($id);
     } else {
@@ -139,7 +139,7 @@ public function find($id) {
     public function destroy($id)
     {
            $user = Auth::user();
-    $pageAuth = $user->authentication(config('auth.privileges.industry'));
+    $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
     if ($pageAuth['is_delete']) {
        $payment_type = PaymentType::findOrFail($id);    
        $msg = $payment_type->delete();

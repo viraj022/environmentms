@@ -120,6 +120,7 @@ return [
         'attachments' => 3,
         'pradesheyasaba' => 4,
         'industry' => 5,
+        'paymentDetails' => 6,
         
     ],
 
