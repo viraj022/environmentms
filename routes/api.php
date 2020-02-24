@@ -236,3 +236,54 @@ Route::middleware('auth:api')->get('/pradesheeyasaba/code/{code}','Pradesheeyasa
 */
 
 //end Pradesheeyasaba api
+
+
+//payment type
+Route::middleware('auth:api')->post('/payment_type','PaymentTypeController@create'); //insert  Payment type
+/*
+{
+    "name": "card "
+}
+
+*/
+
+Route::middleware('auth:api')->put('/payment_type/id/{id}','PaymentTypeController@store'); //update Payment type
+/*
+{
+    "name": "cash "
+}
+*/
+
+
+Route::middleware('auth:api')->get('/payment_type','PaymentTypeController@show'); //get all payment type
+
+/*
+[
+    {
+        "id": 1,
+        "name": "cash",
+        "created_at": "2020-02-24 08:52:21",
+        "updated_at": "2020-02-24 08:57:28"
+    }
+]
+*/
+
+Route::middleware('auth:api')->get('/payment_type/id/{id}','PaymentTypeController@find'); //get a payment type by id
+/*
+{
+    "id": 1,
+    "name": "cash",
+    "created_at": "2020-02-24 08:52:21",
+    "updated_at": "2020-02-24 08:57:28"
+}
+*/
+
+
+Route::middleware('auth:api')->delete('/payment_type/id/{id}','PaymentTypeController@destroy'); //delete payment type
+/*
+{
+    "id": 1,
+    "message": "true"
+}
+*/
+// end payment type codes
