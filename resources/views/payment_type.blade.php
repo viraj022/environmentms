@@ -34,7 +34,7 @@
                         <label id="lblTitle">Add New Payment Category</label>
                     </div>
                     <div class="card-body">
-                        <label>Name*</label>
+                        <label>Payment Category Name*</label>
                         <input id="getName" type="text" class="form-control form-control-sm"
                                placeholder="Enter Name..."
                                value="">
@@ -75,7 +75,7 @@
                                                     <tr>
                                                         <th style="width: 10px">#</th>
                                                         <th>Name</th>
-                                                        <th>Action</th>
+                                                        <th style="width: 140px">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -178,6 +178,7 @@
                     }
                     loadTable();
                     resetinputFields();
+                    hideAllErrors();
                 });
             }
         });
@@ -201,6 +202,7 @@
                     loadTable();
                     showSave();
                     resetinputFields();
+                    hideAllErrors();
                 });
             }
         });
@@ -221,6 +223,7 @@
                 loadTable();
                 showSave();
                 resetinputFields();
+                hideAllErrors();
             });
         });
 //select button action 
@@ -231,6 +234,7 @@
                 $('#btnUpdate').val(result.id);
                 $('#btnDelete').val(result.id);
             });
+            hideAllErrors();
         });
     });
 //show update buttons    
@@ -258,5 +262,9 @@
         };
         return data;
     }
+//HIDE ALL ERROR MSGS   
+    function hideAllErrors() {
+        $('#valName').addClass('d-none');
+    }    
 </script>
 @endsection
