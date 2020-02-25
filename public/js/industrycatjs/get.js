@@ -75,6 +75,7 @@ function loadTable() {
             table += "</tr>";
         });
         $('#tblIndustryCat tbody').html(table);
+        $("#tblIndustryCat").DataTable();
     });
 }
 

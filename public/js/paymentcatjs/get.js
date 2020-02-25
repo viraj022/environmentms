@@ -54,6 +54,7 @@ function loadTable() {
             table += "</tr>";
         });
         $('#tblPaymentCat tbody').html(table);
+        $("#tblPaymentCat").DataTable();
     });
 }
 

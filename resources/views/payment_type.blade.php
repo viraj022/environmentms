@@ -69,8 +69,8 @@
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body p-0">
-                                        <div class="card-body table-responsive p-0" style="height: 450px;">
-                                            <table class="table table-condensed assignedPrivilages" id="tblPaymentCat">
+                                        <div class="card-body table-responsive" style="height: 450px;">
+                                            <table class="table table-condensed" id="tblPaymentCat">
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 10px">#</th>
