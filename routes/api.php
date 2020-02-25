@@ -287,3 +287,38 @@ Route::middleware('auth:api')->delete('/payment_type/id/{id}','PaymentTypeContro
 }
 */
 // end payment type codes
+
+
+
+//payments codes
+
+Route::middleware('auth:api')->post('/payment', 'PaymentsController@create');
+//data input example 
+/*
+{
+    "payment_type_id": "2",
+    "name":"test",
+    "type":"test",
+    "amount":"25.30"
+}*/
+
+/*
+server response
+
+{
+    "id": 1,
+    "message": "true"
+}
+*/
+Route::middleware('auth:api')->put('/payment/id/{id}','PaymentsController@store'); //update Payment type
+/*
+{
+    "name": "cash "
+}
+*/
+
+
+Route::middleware('auth:api')->get('/payment','PaymentsController@show'); //get  all payment details with payment type name
+
+
+//end payments codes
