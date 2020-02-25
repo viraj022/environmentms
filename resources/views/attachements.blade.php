@@ -69,17 +69,19 @@
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body p-0">
-                                        <table class="table table-condensed assignedPrivilages" id="tblAttachments">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 10px">#</th>
-                                                    <th>Attachments</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
+                                        <div class="card-body table-responsive p-0" style="height: 450px;">
+                                            <table class="table table-condensed assignedPrivilages" id="tblAttachments">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 10px">#</th>
+                                                        <th>Attachments</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                     <!-- /.card-body -->
                                 </div>
@@ -187,31 +189,31 @@
                     }
                 });
             }
-             hideAllErrors();
+            hideAllErrors();
         });
 //click update button
         $('#btnUpdate').click(function () {
             //get form data
             var data = fromValues();
             if (Validiteupdate(data)) {
-                        updateAttachment($('#btnUpdate').val(), data, function (result) {
-                            if (result.id == 1) {
-                                Toast.fire({
-                                    type: 'success',
-                                    title: 'Enviremontal MS</br>Updated'
-                                });
-                            } else {
-                                Toast.fire({
-                                    type: 'error',
-                                    title: 'Enviremontal MS</br>Error'
-                                });
-                            }
-                            loadTable();
-                            showSave();
-                            resetinputFields();
+                updateAttachment($('#btnUpdate').val(), data, function (result) {
+                    if (result.id == 1) {
+                        Toast.fire({
+                            type: 'success',
+                            title: 'Enviremontal MS</br>Updated'
                         });
+                    } else {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Enviremontal MS</br>Error'
+                        });
+                    }
+                    loadTable();
+                    showSave();
+                    resetinputFields();
+                });
             }
-             hideAllErrors();
+            hideAllErrors();
         });
 //click delete button
         $('#btnDelete').click(function () {
@@ -231,7 +233,7 @@
                 showSave();
                 resetinputFields();
             });
-             hideAllErrors();
+            hideAllErrors();
         });
 //select button action 
         $(document).on('click', '.btnAction', function () {
@@ -245,7 +247,7 @@
         });
     });
 //Check change of name input   
-$('#getAttachment').change(function () {
+    $('#getAttachment').change(function () {
         var data = fromValues();
         uniqueNamecheck(data.name, function (r) {
 //            alert(JSON.stringify(r));
@@ -283,7 +285,7 @@ $('#getAttachment').change(function () {
 //HIDE ALL ERROR MSGS   
     function hideAllErrors() {
         $('#valUnique').addClass('d-none');
-    }     
+    }
 //get form values
     function fromValues() {
         var data = {

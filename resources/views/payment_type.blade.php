@@ -77,18 +77,20 @@
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body p-0">
-                                        <table class="table table-condensed assignedPrivilages" id="tblPradesiyasaba">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 10px">#</th>
-                                                    <th>Name</th>
-                                                    <th>Code</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
+                                        <div class="card-body table-responsive p-0" style="height: 450px;">
+                                            <table class="table table-condensed assignedPrivilages" id="tblPradesiyasaba">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 10px">#</th>
+                                                        <th>Name</th>
+                                                        <th>Code</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                     <!-- /.card-body -->
                                 </div>
