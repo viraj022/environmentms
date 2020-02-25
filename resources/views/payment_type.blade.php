@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Pradesheyasaba</h1>
+                <h1>Payment Category</h1>
             </div>
         </div>
     </div>
@@ -31,7 +31,7 @@
             <div class="col-md-5">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <label id="lblTitle">Add New Pradesiyasaba</label>
+                        <label id="lblTitle">Add New Payment Category</label>
                     </div>
                     <div class="card-body">
                         <label>Name*</label>
@@ -41,14 +41,6 @@
                         <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
                         <div id="valUnique" class="d-none"><p class="text-danger">Name already taken!</p></div>
                     </div>
-                    <div class="card-body">
-                        <label>Code*</label>
-                        <input id="getCode" type="text" class="form-control form-control-sm"
-                               placeholder="Enter Code..."
-                               value="">
-                        <div id="valCode" class="d-none"><p class="text-danger">Code is required</p></div>
-                    </div>
-
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
                         <button id="btnSave" type="submit" class="btn btn-primary">Save</button>
@@ -73,17 +65,16 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">Pradesiyasaba</h3>
+                                        <h3 class="card-title">Payment Categories</h3>
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body p-0">
                                         <div class="card-body table-responsive p-0" style="height: 450px;">
-                                            <table class="table table-condensed assignedPrivilages" id="tblPradesiyasaba">
+                                            <table class="table table-condensed assignedPrivilages" id="tblPaymentCat">
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 10px">#</th>
                                                         <th>Name</th>
-                                                        <th>Code</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
@@ -107,13 +98,13 @@
     <div class="modal-dialog">
         <div class="modal-content bg-danger">
             <div class="modal-header">
-                <h4 class="modal-title">Delete  Pradesiyasaba</h4>
+                <h4 class="modal-title">Delete Selected Item</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p><b>Are you sure you want to permanently delete this  Pradesiyasaba ? </b></p>
+                <p><b>Are you sure you want to permanently delete this Item? </b></p>
                 <p>Once you continue, this process can not be undone. Please Procede with care.</p>
             </div>
             <div class="modal-footer justify-content-between">
@@ -152,10 +143,10 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
-<script src="../../js/pradeshiyasabajs/submit.js"></script>
-<script src="../../js/pradeshiyasabajs/get.js"></script>
-<script src="../../js/pradeshiyasabajs/update.js"></script>
-<script src="../../js/pradeshiyasabajs/delete.js"></script>
+<script src="../../js/paymentcatjs/submit.js"></script>
+<script src="../../js/paymentcatjs/get.js"></script>
+<script src="../../js/paymentcatjs/update.js"></script>
+<script src="../../js/paymentcatjs/delete.js"></script>
 <!-- AdminLTE App -->
 <script>
     $(function () {
@@ -173,7 +164,7 @@
             var data = fromValues();
             if (Validiteinsert(data)) {
                 // if validiated
-                AddPradeshiyasaba(data, function (result) {
+                AddPaymentCat(data, function (result) {
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
@@ -195,7 +186,7 @@
             //get form data
             var data = fromValues();
             if (Validiteupdate(data)) {
-                updatePradesheeyasaba($('#btnUpdate').val(), data, function (result) {
+                updatePaymentCat($('#btnUpdate').val(), data, function (result) {
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
@@ -215,7 +206,7 @@
         });
 //click delete button
         $('#btnDelete').click(function () {
-            deletePradesheeyasaba($('#btnDelete').val(), function (result) {
+            deletePaymentCat($('#btnDelete').val(), function (result) {
                 if (result.id == 1) {
                     Toast.fire({
                         type: 'success',
@@ -234,9 +225,8 @@
         });
 //select button action 
         $(document).on('click', '.btnAction', function () {
-            getaPradesiyasababyId(this.id, function (result) {
+            getaPaymentCatbyId(this.id, function (result) {
                 $('#getName').val(result.name);
-                $('#getCode').val(result.code);
                 showUpdate();
                 $('#btnUpdate').val(result.id);
                 $('#btnDelete').val(result.id);
@@ -258,15 +248,13 @@
 //Reset all fields    
     function resetinputFields() {
         $('#getName').val('');
-        $('#getCode').val('');
         $('#btnUpdate').val('');
         $('#btnDelete').val('');
     }
 //get form values
     function fromValues() {
         var data = {
-            name: $('#getName').val(),
-            code: $('#getCode').val()
+            name: $('#getName').val()
         };
         return data;
     }
