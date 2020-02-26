@@ -153,9 +153,24 @@ class PaymentsController extends Controller
     $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
     if ($pageAuth['is_read']) {
      //    PaymentType::get();
-           return \DB::table('payments')
-            ->join('payment_types', 'payments.payment_type_id', '=', 'payment_types.id')
-            ->select('payments.*', 'payment_types.name')
+           return Payment::join('payment_types', 'payments.payment_type_id', '=', 'payment_types.id')
+            ->select('payments.*', 'payment_types.name as type_name')
+            ->get();
+
+                } else {
+        abort(401);
+    }
+    }
+
+    public function showByPaymentType($id)
+    {
+          $user = Auth::user();
+    $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
+    if ($pageAuth['is_read']) {
+     //    PaymentType::get();
+           return Payment::join('payment_types', 'payments.payment_type_id', '=', 'payment_types.id')
+            ->where('payments.payment_type_id','=',$id)
+            ->select('payments.*', 'payment_types.name as type_name')
             ->get();
 
                 } else {
@@ -212,8 +227,6 @@ $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
   }  
 //end deletePayment 
 
-
-
   //find by idPayment 
 public function findPayment($id) 
 { 
@@ -227,9 +240,6 @@ $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
 } 
 }
  //end find by idPayment
-
-
-
 
   //find by type
 public function findPayment_by_type() 
@@ -246,7 +256,6 @@ $user = Auth::user();
 } 
 }
  //end find bytype
-
 
 
 
