@@ -57,7 +57,7 @@
                             </select>
                             <div id="valPayType" class="d-none"><p class="text-danger">Field is required</p></div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="useToHideAmount">
                             <label>Amount*</label>
                             <input id="getPaymentAmount" type="number" class="form-control form-control-sm"
                                    placeholder="Enter Name..."
@@ -280,18 +280,16 @@
     });
 //Show amount by payment type
     $("#getPaymentType").change(function () {
-        if($(this).val() === 'regular'){
-            alert(1);
+        if ($(this).val() === 'regular') {
+            $('#useToHideAmount').removeClass('d-none');
+        } else if ($(this).val() === 'unit') {
+            $('#useToHideAmount').removeClass('d-none');
+        } else if ($(this).val() === 'ranged') {
+            $('#useToHideAmount').addClass('d-none');
+        } else {
+            $('#useToHideAmount').removeClass('d-none');
         }
-        else if($(this).val() === 'unit'){
-            alert(2);
-        }
-        else if($(this).val() === 'ranged'){
-            alert(3);
-        }else{
-             alert('Unkown Error!');
-        }
-    });    
+    });
 //show update buttons    
     function showUpdate() {
         $('#btnSave').addClass('d-none');
