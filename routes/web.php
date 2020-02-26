@@ -23,6 +23,7 @@ Route::get('/attachments', 'AttachemntsController@index');
 Route::get('/pradesheyasaba', 'PradesheeyasabaController@index');
 Route::get('/industry_category', 'IndustryCategoryController@index');
 Route::get('/payment_type', 'PaymentTypeController@index');
+Route::get('/payments', 'PaymentsController@index');
 
 //ui routs
 
