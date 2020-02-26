@@ -192,8 +192,40 @@ class PaymentsController extends Controller
      * @param  \App\Payments  $payments
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Payments $payments)
+    public function destroy($id)
     {
-        //
-    }
+//deletePayment 
+
+ $user = Auth::user();  
+$pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));   
+ if ($pageAuth['is_delete']) {  
+ $payment = Payment::findOrFail($id); 
+ $msg =  $payment->delete();  
+ if ($msg) {  
+ return array('id' => 1, 'message' => 'true');  
+} else {   
+ return array('id' => 0, 'message' => 'false');  
+   } 
+  } else { 
+ abort(401); 
+}
+  }  
+//end deletePayment 
+
+
+
+  //find by idPayment 
+public function findPayment($id) 
+{ 
+$user = Auth::user(); 
+$pageAuth = $user->authentication(config('auth.privileges.paymentDetails')); 
+ if ($pageAuth['is_read']) { 
+  return Payment::findOrFail($id); 
+ } else 
+ { 
+    abort(401); 
+} 
+}
+ //end find by idPayment
+    //
 }
