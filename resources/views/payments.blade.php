@@ -36,7 +36,7 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label>Payment Category*</label>
-                            <select id="getPaymentCat" class="custom-select form-control-sm">
+                            <select id="getPaymentCat" class="form-control form-control-sm">
                                 <option>Loading...</option>
                             </select>
                             <div id="valPayCat" class="d-none"><p class="text-danger">Field is required</p></div>
@@ -50,7 +50,7 @@
                         </div>
                         <div class="form-group">
                             <label>Payment Type*</label>
-                            <select id="getPaymentType" class="custom-select form-control-sm">
+                            <select id="getPaymentType" class="form-control form-control-sm">
                                 <option value="regular">Regular</option>
                                 <option value="unit">Unit</option>
                                 <option value="ranged">Ranged</option>
@@ -193,9 +193,10 @@
 
         });
 //Load table & combo
-        loadTable();
+        loadPayInfoCatCombo(function () {
+            loadTable($('#getPaymentInfobyCat').val());
+        });
         loadPayCatCombo();
-        loadPayInfoCatCombo();
 //click save button
         $('#btnSave').click(function () {
             var data = fromValues();
@@ -213,7 +214,7 @@
                             title: 'Enviremontal MS</br>Error'
                         });
                     }
-                    loadTable();
+                    loadTable($('#getPaymentInfobyCat').val());
                     resetinputFields();
                     hideAllErrors();
                 });
@@ -236,7 +237,7 @@
                             title: 'Enviremontal MS</br>Error'
                         });
                     }
-                    loadTable();
+                    loadTable($('#getPaymentInfobyCat').val());
                     showSave();
                     resetinputFields();
                     hideAllErrors();
@@ -257,7 +258,7 @@
                         title: 'Enviremontal MS</br>Error'
                     });
                 }
-                loadTable();
+                loadTable($('#getPaymentInfobyCat').val());
                 showSave();
                 resetinputFields();
                 hideAllErrors();
@@ -266,17 +267,21 @@
 //select button action 
         $(document).on('click', '.btnAction', function () {
             getaPaymentsbyId(this.id, function (result) {
+                $('#getPaymentCat').val(result.payment_type_id);
                 $('#getName').val(result.name);
+                $('#getPaymentType').val(result.type);
+                $('#getPaymentAmount').val(result.amount);
                 showUpdate();
                 $('#btnUpdate').val(result.id);
                 $('#btnDelete').val(result.id);
             });
+            $( "#getPaymentType" ).prop( "disabled", true );
             hideAllErrors();
         });
     });
 //Payment Cat Info To Loadtable
     $("#getPaymentInfobyCat").change(function () {
-        alert($(this).val());
+        loadTable($(this).val());
     });
 //Show amount by payment type
     $("#getPaymentType").change(function () {

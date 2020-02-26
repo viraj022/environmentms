@@ -1,11 +1,11 @@
-function GetPayments(callBack) {
+function GetPayments(id,callBack) {
     $.ajax({
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/payment",
+        url: "api/payment/payment_type/id/"+ id,
         data: null,
         dataType: "json",
         cache: false,
@@ -21,8 +21,8 @@ function GetPayments(callBack) {
         }
     });
 }
-function loadTable() {
-    GetPayments(function (result) {
+function loadTable(id) {
+    GetPayments(id,function (result) {
         var table = "";
         var id = 1;
         $.each(result, function (index, payvalue) {
