@@ -344,3 +344,11 @@ Route::middleware('auth:api')->get('/payment','PaymentsController@show'); //get 
 
  */
 //end payments codes
+
+
+ Route::middleware('auth:api')->get('/rangedpayment', 'PaymentsController@findPayment_by_type'); //get a Payment 
+//ranged codes
+
+
+
+//end ranged codes
