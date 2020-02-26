@@ -227,5 +227,28 @@ $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
 } 
 }
  //end find by idPayment
+
+
+
+
+  //find by type
+public function findPayment_by_type() 
+{ 
+$user = Auth::user(); 
+  $pageAuth = $user->authentication(config('auth.privileges.paymentDetails')); 
+   if ($pageAuth['is_read']) { 
+  
+   return Payment::where('type', '=', 'ranged')->get();
+
+   } else 
+ { 
+    abort(401); 
+} 
+}
+ //end find bytype
+
+
+
+
     //
 }
