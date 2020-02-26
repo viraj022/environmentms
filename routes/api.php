@@ -320,6 +320,8 @@ Route::middleware('auth:api')->put('/payment/id/{id}','PaymentsController@store'
 
 Route::middleware('auth:api')->get('/payment','PaymentsController@show'); //get  all payment details with payment type name
 
+Route::middleware('auth:api')->get('/payment/payment_type/id/{id}','PaymentsController@showByPaymentType'); //get  all payment details with payment type name
+
 
  Route::middleware('auth:api')->delete('/payment/id/{id}', 'PaymentsController@destroy'); //deletePayment
 /*
