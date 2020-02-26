@@ -280,11 +280,7 @@
     });
 //Show amount by payment type
     $("#getPaymentType").change(function () {
-        if ($(this).val() === 'regular') {
-            $('#useToHideAmount').removeClass('d-none');
-        } else if ($(this).val() === 'unit') {
-            $('#useToHideAmount').removeClass('d-none');
-        } else if ($(this).val() === 'ranged') {
+        if ($(this).val() === 'ranged') {
             $('#useToHideAmount').addClass('d-none');
         } else {
             $('#useToHideAmount').removeClass('d-none');
