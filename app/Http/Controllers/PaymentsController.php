@@ -18,7 +18,9 @@ class PaymentsController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
+        return view('payments', ['pageAuth' => $pageAuth]);
     }
 
     /**
