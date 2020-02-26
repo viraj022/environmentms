@@ -344,3 +344,35 @@ Route::middleware('auth:api')->get('/payment','PaymentsController@show'); //get 
 
  */
 //end payments codes
+
+
+
+//ranged codes
+
+
+ Route::middleware('auth:api')->get('/rangedpayment', 'PaymentsController@findPayment_by_type'); //get a Payment  by type
+ /*
+[
+    {
+        "id": 13,
+        "payment_type_id": 2,
+        "name": "test",
+        "type": "ranged",
+        "amount": null,
+        "created_at": "2020-02-25 11:07:44",
+        "updated_at": "2020-02-26 06:38:03"
+    },
+    {
+        "id": 16,
+        "payment_type_id": 2,
+        "name": "test",
+        "type": "ranged",
+        "amount": null,
+        "created_at": "2020-02-26 05:39:25",
+        "updated_at": "2020-02-26 05:39:25"
+    }
+]
+ */
+
+
+//end ranged codes
