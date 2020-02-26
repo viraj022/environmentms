@@ -373,6 +373,30 @@ Route::middleware('auth:api')->get('/payment','PaymentsController@show'); //get 
     }
 ]
  */
-
+Route::middleware('auth:api')->post('/rangedpayment', 'PaymentsController@createRengedPayment');//save payment range
+/*
+{
+    "payment_id": "13",
+    "range": [
+        {
+            "from": "0",
+            "to": "1000",
+            "amount": "5000.00"
+        },
+         {
+            "from": "0",
+            "to": "1000",
+            "amount": "6500.00"
+        }
+    ]
+}
+*/
+ Route::middleware('auth:api')->delete('/rangedpayment/id/{id}', 'PaymentsController@destroyRangedPayment'); //deletePayment
+/*
+{
+    "id": 1,
+    "message": "true"
+}
+*/
 
 //end ranged codes

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Payment;
+use App\PaymentRange;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,6 +12,7 @@ class PaymentsController extends Controller
     public const REGULAR = "regular";
     public const RANGED = "ranged";
     public const UNIT = "unit";
+     public const MAX = "max";
     /**
      * Display a listing of the resource.
      *
@@ -247,8 +249,68 @@ $user = Auth::user();
 }
  //end find bytype
 
+//save ranged payment
+
+    public function createRengedPayment()
+    {
+       $user = Auth::user();
+       $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
+       request()->validate([
+            'payment_id' => 'required'
+          
+       ]);
+       if ($pageAuth['is_create']){
+           
+         \DB::transaction(function ()  {
+            $range = request('range');
+           foreach ($range  as $payment_range)
+           {
+              $paymentRange = new PaymentRange(); 
+              $paymentRange->payments_id = \request('payment_id'); 
+              $paymentRange->from=$payment_range['from'];
+              $paymentRange->to =$payment_range['to'];
+              if ($payment_range['amount']==PaymentsController::MAX) {
+              $paymentRange->amount = '9999999999.99';
+              }
+              else
+              {
+                $paymentRange->amount = $payment_range['amount'];
+              }
+              
+              $paymentRange->save();
+           }
+         });
+           return array('id' => 1, 'message' => 'true');
+
+    
+   } 
+   else 
+   { 
+      abort(401); 
+  }  
+}  
+//end save ranged payment
+
+//deleteRangedPayment 
+    public function destroyRangedPayment ($id)
+    {
 
 
+ $user = Auth::user();  
+$pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));   
+ if ($pageAuth['is_delete']) {  
+ $msg =  PaymentRange::where('payments_id', '=',$id)->delete(); 
+  
+ if ($msg) {  
+ return array('id' => 1, 'message' => 'true');  
+} else {   
+ return array('id' => 0, 'message' => 'false');  
+   } 
+  } else { 
+ abort(401); 
+}
+  }  
+//end deleteRangedPayment 
 
     //
 }
