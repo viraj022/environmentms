@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Payments;
+use App\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentsController extends Controller
 {
+    public const REGULAR = "regular";
+    public const RANGED = "ranged";
+    public const UNIT = "unit";
     /**
      * Display a listing of the resource.
      *
@@ -24,8 +28,59 @@ class PaymentsController extends Controller
      */
     public function create()
     {
-        //
-    }
+       $user = Auth::user();
+       $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
+       request()->validate([
+           'payment_type_id' => 'required|numeric',
+           'name' => 'required',
+           'type' => 'required'    
+       ]);
+       if ($pageAuth['is_create']){
+
+           $payment = new Payment(); 
+           $payment->payment_type_id = \request('payment_type_id'); 
+           $payment->name = \request('name'); 
+           $payment->type = \request('type'); 
+
+        if (request('type')==PaymentsController::REGULAR) 
+        {
+                  request()->validate(['amount' => 'required|numeric']);
+            $payment->amount = \request('amount'); 
+            $msg = $payment->save();  
+        }
+        else if (request('type')==PaymentsController::UNIT)
+        {
+            request()->validate(['amount' => 'required|numeric']);
+            $payment->amount = \request('amount'); 
+            $msg = $payment->save(); 
+        }
+        else if (request('type')==PaymentsController::RANGED)
+        {
+            //noneed to add or vlidate amount when save with type ranged
+            $msg = $payment->save(); 
+        }        
+        else{
+
+            $error = array('message' => "The given data was invalid.", 'errors' => array('amount'=>'The Type must be a one of  '.PaymentsController::REGULAR.','.PaymentsController::UNIT.','.PaymentsController::RANGED)); 
+                return response($error, 422)
+                  ->header('Content-Type', 'application/JSON'); // validation
+
+}
+
+
+        if ($msg) {
+           return array('id' => 1, 'message' => 'true'); 
+       }
+       else 
+       { 
+           return array('id' => 0, 'message' => 'false'); 
+       } 
+   } 
+   else 
+   { 
+      abort(401); 
+  }  
+}  
 
     /**
      * Store a newly created resource in storage.
@@ -33,9 +88,57 @@ class PaymentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($id)
     {
-        //
+     $user = Auth::user();
+       $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
+       request()->validate([          
+           'name' => 'required'           
+       ]);
+
+       if ($pageAuth['is_update']){
+
+           $payment = Payment::findOrFail($id); 
+   $payment->name = \request('name'); 
+            if ($payment->type==PaymentsController::REGULAR) 
+            {
+              request()->validate(['amount' => 'required|numeric']);
+
+              $payment->amount = \request('amount'); 
+              $msg = $payment->save();  
+          }
+          else if ($payment->type==PaymentsController::UNIT)
+          {
+            request()->validate(['amount' => 'required|numeric']);
+            $payment->amount = \request('amount'); 
+            $msg = $payment->save(); 
+        }
+        else if ($payment->type==PaymentsController::RANGED)
+        {
+            //noneed to add or vlidate amount when save with type ranged
+            $msg = $payment->save(); 
+        }
+                else{
+
+            $error = array('message' => "The given data was invalid.", 'errors' => array('amount'=>'The Type must be a one of  '.PaymentsController::REGULAR.','.PaymentsController::UNIT.','.PaymentsController::RANGED)); 
+                return response($error, 422)
+                  ->header('Content-Type', 'application/JSON'); // validation
+
+}      if ($msg) {
+           return array('id' => 1, 'message' => 'true'); 
+       }
+       else 
+       { 
+           return array('id' => 0, 'message' => 'false'); 
+       } 
+   } 
+   else 
+   { 
+      abort(401); 
+  }
+          
+ 
+   
     }
 
     /**
@@ -44,9 +147,20 @@ class PaymentsController extends Controller
      * @param  \App\Payments  $payments
      * @return \Illuminate\Http\Response
      */
-    public function show(Payments $payments)
+    public function show()
     {
-        //
+          $user = Auth::user();
+    $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
+    if ($pageAuth['is_read']) {
+     //    PaymentType::get();
+           return \DB::table('payments')
+            ->join('payment_types', 'payments.payment_type_id', '=', 'payment_types.id')
+            ->select('payments.*', 'payment_types.name')
+            ->get();
+
+                } else {
+        abort(401);
+    }
     }
 
     /**
@@ -78,8 +192,40 @@ class PaymentsController extends Controller
      * @param  \App\Payments  $payments
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Payments $payments)
+    public function destroy($id)
     {
-        //
-    }
+//deletePayment 
+
+ $user = Auth::user();  
+$pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));   
+ if ($pageAuth['is_delete']) {  
+ $payment = Payment::findOrFail($id); 
+ $msg =  $payment->delete();  
+ if ($msg) {  
+ return array('id' => 1, 'message' => 'true');  
+} else {   
+ return array('id' => 0, 'message' => 'false');  
+   } 
+  } else { 
+ abort(401); 
+}
+  }  
+//end deletePayment 
+
+
+
+  //find by idPayment 
+public function findPayment($id) 
+{ 
+$user = Auth::user(); 
+$pageAuth = $user->authentication(config('auth.privileges.paymentDetails')); 
+ if ($pageAuth['is_read']) { 
+  return Payment::findOrFail($id); 
+ } else 
+ { 
+    abort(401); 
+} 
+}
+ //end find by idPayment
+    //
 }

@@ -287,3 +287,60 @@ Route::middleware('auth:api')->delete('/payment_type/id/{id}','PaymentTypeContro
 }
 */
 // end payment type codes
+
+
+
+//payments codes
+
+Route::middleware('auth:api')->post('/payment', 'PaymentsController@create');
+//data input example 
+/*
+{
+    "payment_type_id": "2",
+    "name":"test",
+    "type":"test",
+    "amount":"25.30"
+}*/
+
+/*
+server response
+
+{
+    "id": 1,
+    "message": "true"
+}
+*/
+Route::middleware('auth:api')->put('/payment/id/{id}','PaymentsController@store'); //update Payment type
+/*
+{
+    "name": "cash "
+}
+*/
+
+
+Route::middleware('auth:api')->get('/payment','PaymentsController@show'); //get  all payment details with payment type name
+
+
+ Route::middleware('auth:api')->delete('/payment/id/{id}', 'PaymentsController@destroy'); //deletePayment
+/*
+{
+    "id": 1,
+    "message": "true"
+}
+*/
+
+ Route::middleware('auth:api')->get('/payment/id/{id}', 'PaymentsController@findPayment'); //get a Payment by id
+
+ /*
+{
+    "id": 13,
+    "payment_type_id": 2,
+    "name": "test update 3",
+    "type": "ranged",
+    "amount": null,
+    "created_at": "2020-02-25 11:07:44",
+    "updated_at": "2020-02-25 11:37:58"
+}
+
+ */
+//end payments codes
