@@ -24,8 +24,16 @@ function updatePayments(id,data,callBack) {
 
 function Validiteupdate(data){
     var response = true;
-    if(data.name.length == 0){
+    if (data.payment_type_id.length == 0) {
+        $('#valPayCat').removeClass('d-none');
+        response = false;
+    }
+    if (data.name.length == 0) {
         $('#valName').removeClass('d-none');
+        response = false;
+    }
+    if (data.type.length == 0) {
+        $('#valPayType').removeClass('d-none');
         response = false;
     }
     return response;

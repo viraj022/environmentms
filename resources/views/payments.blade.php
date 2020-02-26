@@ -274,8 +274,13 @@
                 showUpdate();
                 $('#btnUpdate').val(result.id);
                 $('#btnDelete').val(result.id);
+                if (result.amount === null) {
+                    $('#useToHideAmount').addClass('d-none');
+                } else {
+                    $('#useToHideAmount').removeClass('d-none');
+                }
             });
-            $( "#getPaymentType" ).prop( "disabled", true );
+            $("#getPaymentType").prop("disabled", true);
             hideAllErrors();
         });
     });
@@ -305,7 +310,9 @@
     }
 //Reset all fields    
     function resetinputFields() {
+        $("#getPaymentType").prop("disabled", false);
         $('#getName').val('');
+        $('#getPaymentCat').reset('');
         $('#btnUpdate').val('');
         $('#btnDelete').val('');
     }
@@ -322,6 +329,8 @@
 //HIDE ALL ERROR MSGS   
     function hideAllErrors() {
         $('#valName').addClass('d-none');
+        $('#valPayCat').addClass('d-none');
+        $('#valPayType').addClass('d-none');
     }
 </script>
 @endsection
