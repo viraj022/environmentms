@@ -238,9 +238,7 @@ $user = Auth::user();
   $pageAuth = $user->authentication(config('auth.privileges.paymentDetails')); 
    if ($pageAuth['is_read']) { 
   
-   return \DB::table('payments')
-  ->where('type', '=', 'ranged')
-              ->get();
+   return Payment::where('type', '=', 'ranged')->get();
 
    } else 
  { 
