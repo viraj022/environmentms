@@ -68,9 +68,8 @@
                                         <h3 class="card-title">Attachments</h3>
                                     </div>
                                     <!-- /.card-header -->
-                                    <div class="card-body p-0">
-                                        <div class="card-body table-responsive p-0" style="height: 450px;">
-                                            <table class="table table-condensed assignedPrivilages" id="tblAttachments">
+                                    <div class="card-body">
+                                            <table class="table table-bordered table-striped" id="tblAttachments">
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 10px">#</th>
@@ -81,7 +80,6 @@
                                                 <tbody>
                                                 </tbody>
                                             </table>
-                                        </div>
                                     </div>
                                     <!-- /.card-body -->
                                 </div>
