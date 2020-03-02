@@ -246,15 +246,13 @@
         });
 //select button action 
         $(document).on('click', '.btnAction', function () {
-            getaPaymentRangebyId(this.id, function (result) {
-                $('#getPaymentCat').val(result.payment_type_id);
-                $('#getName').val(result.name);
-                $('#getPaymentType').val(result.type);
-                $('#getPaymentAmount').val(result.amount);
-                showUpdate();
-                $('#btnUpdate').val(result.id);
-                $('#btnDelete').val(result.id);
-            });
+            createPaymentRangeBox(this.id);
+//                result.forEach(function (e) {
+//                    alert(e.amount);
+//                });
+            showUpdate();
+            $('#btnUpdate').val(result.id);
+            $('#btnDelete').val(result.id);
             hideAllErrors();
         });
     });
@@ -303,9 +301,13 @@
             event.preventDefault();
         }
         //Remove via Del Key
-        if (keycode === 46) {
+        else if (keycode === 16) {
             alert("fk not workin????");
-            $(this).closest('.create-Now').remove();
+            if ($(".create-Now")[1]) {
+                $(document).closest('.create-Now').remove();
+            } else {
+                return false;
+            }
         }
     });
 //Create New Area
