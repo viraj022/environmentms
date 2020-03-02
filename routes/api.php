@@ -406,6 +406,25 @@ Route::middleware('auth:api')->post('/rangedpayment', 'PaymentsController@create
  Route::middleware('auth:api')->get('/findRangedPayment/payment_id/{payment_id}', 'PaymentsController@findRangedPayment'); //get a ranged Payment by payment_id
 
  /*
-
+[
+    {
+        "id": 11,
+        "payments_id": 11,
+        "from": "0.00",
+        "to": "1000.00",
+        "amount": "9999999999.99",
+        "created_at": "2020-02-26 09:53:41",
+        "updated_at": "2020-02-26 09:53:41"
+    },
+    {
+        "id": 12,
+        "payments_id": 11,
+        "from": "0.00",
+        "to": "1000.00",
+        "amount": "6500.00",
+        "created_at": "2020-02-26 09:53:41",
+        "updated_at": "2020-02-26 09:53:41"
+    }
+]
 */
 //end ranged codes
