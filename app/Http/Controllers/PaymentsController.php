@@ -24,6 +24,12 @@ class PaymentsController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
         return view('payments', ['pageAuth' => $pageAuth]);
     }
+        public function index1()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
+        return view('payment_range', ['pageAuth' => $pageAuth]);
+    }
 
     /**
      * Show the form for creating a new resource.
