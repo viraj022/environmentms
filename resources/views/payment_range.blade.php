@@ -31,7 +31,7 @@
             <div class="col-md-6">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <label id="lblTitle">Add New Payment Range</label>
+                        <label id="lblTitle">Add New Payment Range(Press Enter)</label>
                     </div>
                     <div class="card-body">
                         <div class="row" id="getFromToAmount">
@@ -40,7 +40,7 @@
                             <div class="col-4"> <label>Amount*</label></div>
                             <div class="col-2"></div>
                         </div>
-                        <div class="row form-group create-now">
+                        <div class="row form-group create-Now">
                             <div class="col-3">
                                 <input type="text" class="form-control form-control-sm" placeholder="Enter From..">
                             </div>
@@ -50,8 +50,11 @@
                             <div class="col-4">
                                 <input type="number" class="form-control form-control-sm" placeholder="Enter Amount..">
                             </div>   
-                            <div class="col-2">
-                                <button type="button" class="btn btn-block btn-outline-primary btn-xs make-new"><i class="fas fa-download"></i></button>
+                            <div class="col-1">
+                                <button type="button" class="btn btn-block btn-outline-primary btn-xs make-new"><i class="fas fas fa-plus"></i></button>
+                            </div>
+                            <div class="col-1">
+                                <button type="button" class="btn btn-block btn-outline-danger btn-xs make-remove"><i class="fas fas fa-minus"></i></button>
                             </div>
                         </div>
                     </div>
@@ -183,12 +186,12 @@
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
-                            title: 'Enviremontal MS</br>Saved'
+                            title: ' Enviremontal MS</br>Saved'
                         });
                     } else {
                         Toast.fire({
                             type: 'error',
-                            title: 'Enviremontal MS</br>Error'
+                            title: ' Enviremontal MS</br>Error'
                         });
                     }
                     loadTable($('#getPaymentInfobyCat').val());
@@ -227,12 +230,12 @@
                 if (result.id == 1) {
                     Toast.fire({
                         type: 'success',
-                        title: 'Enviremontal MS</br>Removed!'
+                        title: ' Enviremontal MS</br>Removed!'
                     });
                 } else {
                     Toast.fire({
                         type: 'error',
-                        title: 'Enviremontal MS</br>Error'
+                        title: ' Enviremontal MS</br>Error'
                     });
                 }
                 loadTable();
@@ -291,11 +294,34 @@
         $('#valPayCat').addClass('d-none');
         $('#valPayType').addClass('d-none');
     }
+//Create New Area -Press Enter
+    $(document).keypress(function (event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        //Add via Enter Key
+        if (keycode === 13) {
+            $(".create-Now:last").clone(true).insertBefore('.create-Now:last');
+            event.preventDefault();
+        }
+        //Remove via Del Key
+        if (keycode === 46) {
+            alert("fk not workin????");
+            $(this).closest('.create-Now').remove();
+        }
+    });
 //Create New Area
-    $(function () {
+    $(function genNewAmount() {
+        //Create
         $(".make-new").on('click', function () {
-            var ele = $(this).closest('.create-now').clone(true);
-            $(this).closest('.create-now').after(ele);
+            var ele = $(this).closest('.create-Now').clone(true);
+            $(this).closest('.create-Now').after(ele);
+        });
+        //Remove
+        $(".make-remove").on('click', function () {
+            if ($(".create-Now")[1]) {
+                $(this).closest('.create-Now').remove();
+            } else {
+                return false;
+            }
         });
     });
 </script>
