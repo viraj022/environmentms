@@ -324,5 +324,20 @@ $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
   }  
 //end deleteRangedPayment 
 
+  //find by ranged payment by payment_id
+public function findRangedPayment($payment_id) 
+{ 
+$user = Auth::user(); 
+  $pageAuth = $user->authentication(config('auth.privileges.paymentDetails')); 
+   if ($pageAuth['is_read']) { 
+  
+   return PaymentRange::where('payments_id', '=',$payment_id)->get();
+
+   } else 
+ { 
+    abort(401); 
+} 
+}
+ //end find bytype
     //
 }

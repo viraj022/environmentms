@@ -401,4 +401,11 @@ Route::middleware('auth:api')->post('/rangedpayment', 'PaymentsController@create
 }
 */
 
+
+
+ Route::middleware('auth:api')->get('/findRangedPayment/payment_id/{payment_id}', 'PaymentsController@findRangedPayment'); //get a ranged Payment by payment_id
+
+ /*
+
+*/
 //end ranged codes
