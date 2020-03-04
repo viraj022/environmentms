@@ -24,6 +24,7 @@ Route::get('/pradesheyasaba', 'PradesheeyasabaController@index');
 Route::get('/industry_category', 'IndustryCategoryController@index');
 Route::get('/payment_type', 'PaymentTypeController@index');
 Route::get('/payments', 'PaymentsController@index');
+Route::get('/payment_range', 'PaymentsController@index1');
 
 //ui routs
 

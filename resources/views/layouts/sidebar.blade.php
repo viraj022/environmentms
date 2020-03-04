@@ -123,6 +123,12 @@
                         <p>Payments</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ url('/payment_range') }}" class="nav-link {{ Request::is('payment_range') ? 'active' : '' }}">
+                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <p>Payment Range</p>
+                    </a>
+                </li>
                 @endif
                 @endforeach
 
