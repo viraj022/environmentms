@@ -40,34 +40,23 @@
                             <div class="col-4"> <label>Amount*</label></div>
                             <div class="col-2"></div>
                         </div>
-                        <div class="row form-group create-Now">
-                            <div class="col-3">
-                                <input type="text" class="form-control form-control-sm" placeholder="Enter From..">
-                            </div>
-                            <div class="col-3">
-                                <input type="text" class="form-control form-control-sm" placeholder="Enter To..">
-                            </div>
-                            <div class="col-4">
-                                <input type="number" class="form-control form-control-sm" placeholder="Enter Amount..">
-                            </div>   
-                            <div class="col-1">
-                                <button type="button" class="btn btn-block btn-outline-primary btn-xs make-new"><i class="fas fas fa-plus"></i></button>
-                            </div>
-                            <div class="col-1">
-                                <button type="button" class="btn btn-block btn-outline-danger btn-xs make-remove"><i class="fas fas fa-minus"></i></button>
+                        <div id="attachBoxHere">
+                            <div class="row form-group create-Now">
+                                <p><b> >Select A Payment Range.</b></p>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSave" type="submit" class="btn btn-primary">Save</button>
+                        <div class="divSave">   </div>
                         @endif
-                        @if($pageAuth['is_update']==1 || false)
-                        <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
-                        @endif
+
                         @if($pageAuth['is_delete']==1 || false)
-                        <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
-                                 data-target="#modal-danger">Delete</button>
+                        <div class="divDelete">
+                            <!--                        <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
+                                                             data-target="#modal-danger">Delete</button
+                                                    </div>-->
+                        </div>
                         @endif
                     </div>                           
                 </div>
@@ -168,6 +157,7 @@
 <!-- AdminLTE App -->
 <script>
     $(function () {
+
         const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -178,28 +168,51 @@
 //Load table & combo
         loadTable();
 //click save button
-        $('#btnSave').click(function () {
-            var data = fromValues();
-            if (Validiteinsert(data)) {
-                // if validiated
-                AddPaymentRange(data, function (result) {
-                    if (result.id == 1) {
-                        Toast.fire({
-                            type: 'success',
-                            title: ' Enviremontal MS</br>Saved'
-                        });
-                    } else {
-                        Toast.fire({
-                            type: 'error',
-                            title: ' Enviremontal MS</br>Error'
-                        });
-                    }
-                    loadTable($('#getPaymentInfobyCat').val());
-                    resetinputFields();
-                    hideAllErrors();
-                });
+        $(document).on('click', '#btnSave', function () {
+            var data = {
+                payment_id: selected,
+                range: []
             }
+            var values_container = $('.create-Now');
+            $.each(values_container, function (key, value) {
+                var range = {
+                    from: 0,
+                    to: 0,
+                    amount: 0
+                }
+                range.from = $(value).find('.txt-from').val();
+                if ($(value).find('.txt-to').val() === '') {
+                    range.to = 'max';
+                } else {
+                    range.to = $(value).find('.txt-to').val();
+                }
+                range.amount = $(value).find('.txt-amount').val();
+//                alert(range.to.length);
+                if (range.from.length > 0 && range.amount.length > 0) {
+//                    alert(range.to.length);
+                    data.range.push(range);
+                }
+//                alert(txtFrom);
+            });
+            AddPaymentRange(data, function (result) {
+                if (result.id == 1) {
+                    Toast.fire({
+                        type: 'success',
+                        title: ' Successfully Saved!'
+                    });
+                } else {
+                    Toast.fire({
+                        type: 'error',
+                        title: ' Something Went Wrong!'
+                    });
+                }
+                loadTable();
+                createPaymentRangeBox(selected);
+                hideAllErrors();
+            });
+//            alert(JSON.stringify(data));
         });
+//        
 //click update button
         $('#btnUpdate').click(function () {
             //get form data
@@ -224,9 +237,15 @@
                 });
             }
         });
+//select button action 
+        $(document).on('click', '.btnAction', function (result) {
+            selected = this.id;
+            createPaymentRangeBox(this.id);
+            hideAllErrors();
+        });
 //click delete button
         $('#btnDelete').click(function () {
-            deletePaymentRange($('#btnDelete').val(), function (result) {
+            deletePaymentRange(selected, function (result) {
                 if (result.id == 1) {
                     Toast.fire({
                         type: 'success',
@@ -240,28 +259,11 @@
                 }
                 loadTable();
                 showSave();
-                resetinputFields();
+                createPaymentRangeBox();
                 hideAllErrors();
             });
         });
-//select button action 
-        $(document).on('click', '.btnAction', function () {
-            createPaymentRangeBox(this.id);
-//                result.forEach(function (e) {
-//                    alert(e.amount);
-//                });
-            showUpdate();
-            $('#btnUpdate').val(result.id);
-            $('#btnDelete').val(result.id);
-            hideAllErrors();
-        });
     });
-//show update buttons    
-    function showUpdate() {
-        $('#btnSave').addClass('d-none');
-        $('#btnUpdate').removeClass('d-none');
-        $('#btnshowDelete').removeClass('d-none');
-    }
 //show save button    
     function showSave() {
         $('#btnSave').removeClass('d-none');
@@ -270,11 +272,9 @@
     }
 //Reset all fields    
     function resetinputFields() {
-        $("#getPaymentType").prop("disabled", false);
-        $('#getName').val('');
-        $('#getPaymentCat').reset('');
-        $('#btnUpdate').val('');
-        $('#btnDelete').val('');
+        $('.txt-from').val('');
+        $('.txt-to').val('');
+        $('.txt-amount').val('');
     }
 //get form values
     function fromValues() {
@@ -297,12 +297,12 @@
         var keycode = (event.keyCode ? event.keyCode : event.which);
         //Add via Enter Key
         if (keycode === 13) {
-            $(".create-Now:last").clone(true).insertBefore('.create-Now:last');
+            loadTextBoxes();
             event.preventDefault();
         }
         //Remove via Del Key
         else if (keycode === 16) {
-            alert("fk not workin????");
+            alert("f44k not workin????");
             if ($(".create-Now")[1]) {
                 $(document).closest('.create-Now').remove();
             } else {
@@ -313,12 +313,11 @@
 //Create New Area
     $(function genNewAmount() {
         //Create
-        $(".make-new").on('click', function () {
-            var ele = $(this).closest('.create-Now').clone(true);
-            $(this).closest('.create-Now').after(ele);
+        $(document).on('click', '.make-new', function () {
+            loadTextBoxes();
         });
         //Remove
-        $(".make-remove").on('click', function () {
+        $(document).on('click', '.make-remove', function () {
             if ($(".create-Now")[1]) {
                 $(this).closest('.create-Now').remove();
             } else {

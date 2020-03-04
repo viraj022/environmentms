@@ -1,3 +1,4 @@
+  var selected = -1;
 function AddPaymentRange(data, callBack) {
     $.ajax({
         type: "POST",

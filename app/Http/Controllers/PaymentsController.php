@@ -285,14 +285,14 @@ $user = Auth::user();
            {
               $paymentRange = new PaymentRange(); 
               $paymentRange->payments_id = \request('payment_id'); 
-              $paymentRange->from=$payment_range['from'];
-              $paymentRange->to =$payment_range['to'];
-              if ($payment_range['amount']==PaymentsController::MAX) {
-              $paymentRange->amount = '9999999999.99';
+              $paymentRange->from=$payment_range['from']; 
+              $paymentRange->amount = $payment_range['amount'];
+              if ($payment_range['to']==PaymentsController::MAX) {
+              $paymentRange->to = '9999999999.99';
               }
               else
               {
-                $paymentRange->amount = $payment_range['amount'];
+                $paymentRange->to =$payment_range['to'];
               }
               
               $paymentRange->save();
