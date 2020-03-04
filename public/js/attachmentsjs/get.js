@@ -52,6 +52,7 @@ function loadTable() {
             table += "</tr>";
         });
         $('#tblAttachments tbody').html(table);
+        $("#tblAttachments").DataTable();
     });
 }
 

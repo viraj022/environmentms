@@ -76,6 +76,7 @@ function loadTable() {
             table += "</tr>";
         });
         $('#tblPradesiyasaba tbody').html(table);
+        $("#tblPradesiyasaba").DataTable();
     });
 }
 

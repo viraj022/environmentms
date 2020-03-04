@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Attachments</h1>
+                <h1>Payments</h1>
             </div>
         </div>
     </div>
@@ -28,36 +28,47 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <label id="lblTitle">Add New Attachment</label>
+                        <label id="lblTitle">Add New Payment Range</label>
+                        <div class="addNewByEnter d-none">
+                            <p>(Press Enter To Add New Ranges)</p>
+                            <label class="currentSelName"></label>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <label>Attachment*</label>
-                        <input id="getAttachment" type="text" class="form-control form-control-sm"
-                               placeholder="Enter attachment..."
-                               value="">
-                        <div id="valAttachment" class="d-none"><p class="text-danger">Attachment is required</p></div>
-                        <div id="valUnique" class="d-none"><p class="text-danger">Name already taken!</p></div>
+                        <div class="row" id="getFromToAmount">
+                            <div class="col-3"> <label>From*</label></div>
+                            <div class="col-3"><label>To*</label></div>
+                            <div class="col-4"> <label>Amount*</label></div>
+                            <div class="col-2"></div>
+                        </div>
+                        <div id="attachBoxHere">
+                            <div class="row form-group create-Now">
+                                <!-- Create Texboxes !-->  
+                            </div>
+                        </div>
                     </div>
                     <div class="card-footer">
+                        <div id="trackUsr" class="col-12 tackMe"> <label>Please Select A Payment Range.</label></div>
                         @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSave" type="submit" class="btn btn-primary">Save</button>
+                        <div class="divSave">   </div>
                         @endif
-                        @if($pageAuth['is_update']==1 || false)
-                        <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
-                        @endif
+
                         @if($pageAuth['is_delete']==1 || false)
-                        <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
-                                 data-target="#modal-danger">Delete</button>
+                        <div class="divDelete">
+                            <!--                        <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
+                                                             data-target="#modal-danger">Delete</button
+                                                    </div>-->
+                        </div>
                         @endif
                     </div>                           
                 </div>
             </div>
 
 
-            <div class="col-md-7">
+            <div class="col-md-6">
                 <div class="card card-primary">
                     <div class="card-body">
                         <div class="row">
@@ -65,21 +76,23 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">Attachments</h3>
+                                        <h3 class="card-title">All Payment Ranges</h3>
                                     </div>
                                     <!-- /.card-header -->
-                                    <div class="card-body">
-                                            <table class="table table-bordered table-striped" id="tblAttachments">
+                                    <div class="card-body p-0">
+                                        <div class="card-body table-responsive" style="height: 450px;">
+                                            <table class="table table-condensed" id="tblPaymentRange">
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 10px">#</th>
-                                                        <th>Attachments</th>
-                                                        <th>Action</th>
+                                                        <th>Name</th>
+                                                        <th style="width: 140px">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                 </tbody>
                                             </table>
+                                        </div>
                                     </div>
                                     <!-- /.card-body -->
                                 </div>
@@ -96,13 +109,13 @@
     <div class="modal-dialog">
         <div class="modal-content bg-danger">
             <div class="modal-header">
-                <h4 class="modal-title">Delete Attachment</h4>
+                <h4 class="modal-title">Delete Selected Item</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p><b>Are you sure you want to permanently delete this Attachment ? </b></p>
+                <p><b>Are you sure you want to permanently delete this Item? </b></p>
                 <p>Once you continue, this process can not be undone. Please Procede with care.</p>
             </div>
             <div class="modal-footer justify-content-between">
@@ -141,13 +154,14 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
-<script src="../../js/attachmentsjs/submit.js"></script>
-<script src="../../js/attachmentsjs/get.js"></script>
-<script src="../../js/attachmentsjs/update.js"></script>
-<script src="../../js/attachmentsjs/delete.js"></script>
+<script src="../../js/paymentrangejs/submit.js"></script>
+<script src="../../js/paymentrangejs/get.js"></script>
+<script src="../../js/paymentrangejs/update.js"></script>
+<script src="../../js/paymentrangejs/delete.js"></script>
 <!-- AdminLTE App -->
 <script>
     $(function () {
+
         const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -155,46 +169,60 @@
             timer: 4000
 
         });
-//Load table
+//Load table & combo
         loadTable();
 //click save button
-        $('#btnSave').click(function () {
-            var data = fromValues();
-            if (Validiteinsert(data)) {
-                // if validiated
-                uniqueNamecheck(data.name, function (r) {
-//                    alert(JSON.stringify(r));
-                    if (r.message == 'unique') {
-                        AddAttachments(data, function (result) {
-                            if (result.id == 1) {
-                                Toast.fire({
-                                    type: 'success',
-                                    title: 'Enviremontal MS</br>Saved'
-                                });
-                            } else {
-                                Toast.fire({
-                                    type: 'error',
-                                    title: 'Enviremontal MS</br>Error'
-                                });
-                            }
-                            loadTable();
-                            resetinputFields();
-                        });
-                    } else
-                    {
-                        $('#valAttachment').addClass('d-none');
-                        $('#valUnique').removeClass('d-none');
-                    }
-                });
+        $(document).on('click', '#btnSave', function () {
+            var data = {
+                payment_id: selected,
+                range: []
             }
-            hideAllErrors();
+            var values_container = $('.create-Now');
+            $.each(values_container, function (key, value) {
+                var range = {
+                    from: 0,
+                    to: 0,
+                    amount: 0
+                }
+                range.from = $(value).find('.txt-from').val();
+                if ($(value).find('.txt-to').val() === '') {
+                    range.to = 'max';
+                } else {
+                    range.to = $(value).find('.txt-to').val();
+                }
+                range.amount = $(value).find('.txt-amount').val();
+//                alert(range.to.length);
+                if (range.from.length > 0 && range.amount.length > 0) {
+//                    alert(range.to.length);
+                    data.range.push(range);
+                }
+//                alert(txtFrom);
+            });
+            AddPaymentRange(data, function (result) {
+                if (result.id == 1) {
+                    Toast.fire({
+                        type: 'success',
+                        title: ' Successfully Saved!'
+                    });
+                } else {
+                    Toast.fire({
+                        type: 'error',
+                        title: ' Something Went Wrong!'
+                    });
+                }
+                loadTable();
+                createPaymentRangeBox(selected);
+                hideAllErrors();
+            });
+//            alert(JSON.stringify(data));
         });
+//        
 //click update button
         $('#btnUpdate').click(function () {
             //get form data
             var data = fromValues();
             if (Validiteupdate(data)) {
-                updateAttachment($('#btnUpdate').val(), data, function (result) {
+                updatePaymentRange($('#btnUpdate').val(), data, function (result) {
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
@@ -209,63 +237,41 @@
                     loadTable();
                     showSave();
                     resetinputFields();
+                    hideAllErrors();
                 });
             }
+        });
+//select button action 
+        $(document).on('click', '.btnAction', function (result) {
+            selected = this.id;
+            createPaymentRangeBox(this.id);
             hideAllErrors();
+            $('#trackUsr').addClass('d-none');
+            $('.addNewByEnter').removeClass('d-none');
+            $('.currentSelName').text('Name: ' + $(this).val());
+//            alert($(this).val());
         });
 //click delete button
         $('#btnDelete').click(function () {
-            deleteAttachment($('#btnDelete').val(), function (result) {
+            deletePaymentRange(selected, function (result) {
                 if (result.id == 1) {
                     Toast.fire({
                         type: 'success',
-                        title: 'Enviremontal MS</br>Removed!'
+                        title: ' Enviremontal MS</br>Removed!'
                     });
                 } else {
                     Toast.fire({
                         type: 'error',
-                        title: 'Enviremontal MS</br>Error'
+                        title: ' Enviremontal MS</br>Error'
                     });
                 }
                 loadTable();
                 showSave();
-                resetinputFields();
+                createPaymentRangeBox();
+                hideAllErrors();
             });
-            hideAllErrors();
-        });
-//select button action 
-        $(document).on('click', '.btnAction', function () {
-            getaAttachmentbyId(this.id, function (result) {
-                $('#getAttachment').val(result.name);
-                showUpdate();
-                $('#btnUpdate').val(result.id);
-                $('#btnDelete').val(result.id);
-            });
-            hideAllErrors();
         });
     });
-//Check change of name input   
-    $('#getAttachment').change(function () {
-        var data = fromValues();
-        uniqueNamecheck(data.name, function (r) {
-//            alert(JSON.stringify(r));
-            if (r.message == 'unique') {
-                $('#valAttachment').addClass('d-none');
-                $('#valUnique').addClass('d-none');
-
-            } else
-            {
-                $('#valAttachment').addClass('d-none');
-                $('#valUnique').removeClass('d-none');
-            }
-        });
-    });
-//show update buttons    
-    function showUpdate() {
-        $('#btnSave').addClass('d-none');
-        $('#btnUpdate').removeClass('d-none');
-        $('#btnshowDelete').removeClass('d-none');
-    }
 //show save button    
     function showSave() {
         $('#btnSave').removeClass('d-none');
@@ -274,22 +280,62 @@
     }
 //Reset all fields    
     function resetinputFields() {
-        $('#getAttachment').val('');
-        $('#btnUpdate').val('');
-        $('#btnDelete').val('');
-        $('#valAttachment').addClass('d-none');
-        $('#valUnique').addClass('d-none');
-    }
-//HIDE ALL ERROR MSGS   
-    function hideAllErrors() {
-        $('#valUnique').addClass('d-none');
+        $('.txt-from').val('');
+        $('.txt-to').val('');
+        $('.txt-amount').val('');
     }
 //get form values
     function fromValues() {
         var data = {
-            name: $('#getAttachment').val()
+            payment_type_id: $('#getPaymentCat').val(),
+            name: $('#getName').val(),
+            type: $('#getPaymentType').val(),
+            amount: $('#getPaymentAmount').val()
         };
         return data;
     }
+//HIDE ALL ERROR MSGS   
+    function hideAllErrors() {
+        $('#valName').addClass('d-none');
+        $('#valPayCat').addClass('d-none');
+        $('#valPayType').addClass('d-none');
+    }
+//Create New Area -Press Enter
+    $(document).keypress(function (event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        //Add via Enter Key
+        if (keycode === 13) {
+            if ($('#trackUsr').hasClass('d-none')) {
+                loadTextBoxes();
+                event.preventDefault();
+            } else {
+                alert('Please select a payment range.');
+            }
+        }
+        //Remove via Del Key
+        else if (keycode === 16) {
+            alert(" not workin????");
+            if ($(".create-Now")[1]) {
+                $(document).closest('.create-Now').remove();
+            } else {
+                return false;
+            }
+        }
+    });
+//Create New Area
+    $(function genNewAmount() {
+        //Create
+        $(document).on('click', '.make-new', function () {
+            loadTextBoxes();
+        });
+        //Remove
+        $(document).on('click', '.make-remove', function () {
+            if ($(".create-Now")[1]) {
+                $(this).closest('.create-Now').remove();
+            } else {
+                return false;
+            }
+        });
+    });
 </script>
 @endsection

@@ -236,3 +236,195 @@ Route::middleware('auth:api')->get('/pradesheeyasaba/code/{code}','Pradesheeyasa
 */
 
 //end Pradesheeyasaba api
+
+
+//payment type
+Route::middleware('auth:api')->post('/payment_type','PaymentTypeController@create'); //insert  Payment type
+/*
+{
+    "name": "card "
+}
+
+*/
+
+Route::middleware('auth:api')->put('/payment_type/id/{id}','PaymentTypeController@store'); //update Payment type
+/*
+{
+    "name": "cash "
+}
+*/
+
+
+Route::middleware('auth:api')->get('/payment_type','PaymentTypeController@show'); //get all payment type
+
+/*
+[
+    {
+        "id": 1,
+        "name": "cash",
+        "created_at": "2020-02-24 08:52:21",
+        "updated_at": "2020-02-24 08:57:28"
+    }
+]
+*/
+
+Route::middleware('auth:api')->get('/payment_type/id/{id}','PaymentTypeController@find'); //get a payment type by id
+/*
+{
+    "id": 1,
+    "name": "cash",
+    "created_at": "2020-02-24 08:52:21",
+    "updated_at": "2020-02-24 08:57:28"
+}
+*/
+
+
+Route::middleware('auth:api')->delete('/payment_type/id/{id}','PaymentTypeController@destroy'); //delete payment type
+/*
+{
+    "id": 1,
+    "message": "true"
+}
+*/
+// end payment type codes
+
+
+
+//payments codes
+
+Route::middleware('auth:api')->post('/payment', 'PaymentsController@create');
+//data input example 
+/*
+{
+    "payment_type_id": "2",
+    "name":"test",
+    "type":"test",
+    "amount":"25.30"
+}*/
+
+/*
+server response
+
+{
+    "id": 1,
+    "message": "true"
+}
+*/
+Route::middleware('auth:api')->put('/payment/id/{id}','PaymentsController@store'); //update Payment type
+/*
+{
+    "name": "cash "
+}
+*/
+
+
+Route::middleware('auth:api')->get('/payment','PaymentsController@show'); //get  all payment details with payment type name
+
+Route::middleware('auth:api')->get('/payment/payment_type/id/{id}','PaymentsController@showByPaymentType'); //get  all payment details with payment type name
+
+
+ Route::middleware('auth:api')->delete('/payment/id/{id}', 'PaymentsController@destroy'); //deletePayment
+/*
+{
+    "id": 1,
+    "message": "true"
+}
+*/
+
+ Route::middleware('auth:api')->get('/payment/id/{id}', 'PaymentsController@findPayment'); //get a Payment by id
+
+ /*
+{
+    "id": 13,
+    "payment_type_id": 2,
+    "name": "test update 3",
+    "type": "ranged",
+    "amount": null,
+    "created_at": "2020-02-25 11:07:44",
+    "updated_at": "2020-02-25 11:37:58"
+}
+
+ */
+//end payments codes
+
+
+
+//ranged codes
+
+
+ Route::middleware('auth:api')->get('/rangedpayment', 'PaymentsController@findPayment_by_type'); //get a Payment  by type
+ /*
+[
+    {
+        "id": 13,
+        "payment_type_id": 2,
+        "name": "test",
+        "type": "ranged",
+        "amount": null,
+        "created_at": "2020-02-25 11:07:44",
+        "updated_at": "2020-02-26 06:38:03"
+    },
+    {
+        "id": 16,
+        "payment_type_id": 2,
+        "name": "test",
+        "type": "ranged",
+        "amount": null,
+        "created_at": "2020-02-26 05:39:25",
+        "updated_at": "2020-02-26 05:39:25"
+    }
+]
+ */
+Route::middleware('auth:api')->post('/rangedpayment', 'PaymentsController@createRengedPayment');//save payment range
+/*
+{
+    "payment_id": "13",
+    "range": [
+        {
+            "from": "0",
+            "to": "1000",
+            "amount": "5000.00"
+        },
+         {
+            "from": "0",
+            "to": "1000",
+            "amount": "6500.00"
+        }
+    ]
+}
+*/
+ Route::middleware('auth:api')->delete('/rangedpayment/id/{id}', 'PaymentsController@destroyRangedPayment'); //deletePayment
+/*
+{
+    "id": 1,
+    "message": "true"
+}
+*/
+
+
+
+ Route::middleware('auth:api')->get('/findRangedPayment/payment_id/{payment_id}', 'PaymentsController@findRangedPayment'); //get a ranged Payment by payment_id
+
+ /*
+[
+    {
+        "id": 11,
+        "payments_id": 11,
+        "from": "0.00",
+        "to": "1000.00",
+        "amount": "9999999999.99",
+        "created_at": "2020-02-26 09:53:41",
+        "updated_at": "2020-02-26 09:53:41"
+    },
+    {
+        "id": 12,
+        "payments_id": 11,
+        "from": "0.00",
+        "to": "1000.00",
+        "amount": "6500.00",
+        "created_at": "2020-02-26 09:53:41",
+        "updated_at": "2020-02-26 09:53:41"
+    }
+]
+*/
+//end ranged codes

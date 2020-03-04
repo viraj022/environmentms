@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Pradesheyasaba</h1>
+                <h1>Payments</h1>
             </div>
         </div>
     </div>
@@ -31,25 +31,41 @@
             <div class="col-md-5">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <label id="lblTitle">Add New Pradesiyasaba</label>
+                        <label id="lblTitle">Add New Payment</label>
                     </div>
                     <div class="card-body">
-                        <label>Name*</label>
-                        <input id="getName" type="text" class="form-control form-control-sm"
-                               placeholder="Enter Name..."
-                               value="">
-                        <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
-                        <div id="valUnique" class="d-none"><p class="text-danger">Name already taken!</p></div>
-                    </div>
-                    <div class="card-body">
-                        <label>Code*</label>
-                        <input id="getCode" type="text" class="form-control form-control-sm"
-                               placeholder="Enter Code..."
-                               value="">
-                        <div id="valCode" class="d-none"><p class="text-danger">Code is required</p></div>
-                        <div id="valcodeUnique" class="d-none"><p class="text-danger">Code already taken!</p></div>
-                    </div>
+                        <div class="form-group">
+                            <label>Payment Category*</label>
+                            <select id="getPaymentCat" class="form-control form-control-sm">
+                                <option>Loading...</option>
+                            </select>
+                            <div id="valPayCat" class="d-none"><p class="text-danger">Field is required</p></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Name*</label>
+                            <input id="getName" type="text" class="form-control form-control-sm"
+                                   placeholder="Enter Name..."
+                                   value="">
+                            <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Type*</label>
+                            <select id="getPaymentType" class="form-control form-control-sm">
+                                <option value="regular">Regular</option>
+                                <option value="unit">Unit</option>
+                                <option value="ranged">Ranged</option>
+                            </select>
+                            <div id="valPayType" class="d-none"><p class="text-danger">Field is required</p></div>
+                        </div>
+                        <div class="form-group" id="useToHideAmount">
+                            <label>Amount*</label>
+                            <input id="getPaymentAmount" type="number" class="form-control form-control-sm"
+                                   placeholder="Enter Name..."
+                                   value="">
+                            <div id="valAmount" class="d-none"><p class="text-danger">Field is required</p></div>
+                        </div>
 
+                    </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
                         <button id="btnSave" type="submit" class="btn btn-primary">Save</button>
@@ -74,23 +90,32 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">Pradesiyasaba</h3>
+                                        <h3 class="card-title">Payments</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label>Payment Category*</label>
+                                            <select id="getPaymentInfobyCat" class="custom-select form-control-sm">
+                                                <option>Loading...</option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body p-0">
                                         <div class="card-body table-responsive" style="height: 450px;">
-                                        <table class="table table-condensed assignedPrivilages" id="tblPradesiyasaba">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 10px">#</th>
-                                                    <th>Name</th>
-                                                    <th>Code</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
+                                            <table class="table table-condensed" id="tblPayments">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 10px">#</th>
+                                                        <th>Name</th>
+                                                        <th>Type</th>
+                                                        <th>Amount</th>
+                                                        <th style="width: 140px">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                     <!-- /.card-body -->
@@ -108,13 +133,13 @@
     <div class="modal-dialog">
         <div class="modal-content bg-danger">
             <div class="modal-header">
-                <h4 class="modal-title">Delete  Pradesiyasaba</h4>
+                <h4 class="modal-title">Delete Selected Item</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p><b>Are you sure you want to permanently delete this  Pradesiyasaba ? </b></p>
+                <p><b>Are you sure you want to permanently delete this Item? </b></p>
                 <p>Once you continue, this process can not be undone. Please Procede with care.</p>
             </div>
             <div class="modal-footer justify-content-between">
@@ -153,10 +178,10 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
-<script src="../../js/pradeshiyasabajs/submit.js"></script>
-<script src="../../js/pradeshiyasabajs/get.js"></script>
-<script src="../../js/pradeshiyasabajs/update.js"></script>
-<script src="../../js/pradeshiyasabajs/delete.js"></script>
+<script src="../../js/paymentsjs/submit.js"></script>
+<script src="../../js/paymentsjs/get.js"></script>
+<script src="../../js/paymentsjs/update.js"></script>
+<script src="../../js/paymentsjs/delete.js"></script>
 <!-- AdminLTE App -->
 <script>
     $(function () {
@@ -167,52 +192,40 @@
             timer: 4000
 
         });
-//Load table
-        loadTable();
+//Load table & combo
+        loadPayInfoCatCombo(function () {
+            loadTable($('#getPaymentInfobyCat').val());
+        });
+        loadPayCatCombo();
 //click save button
         $('#btnSave').click(function () {
             var data = fromValues();
             if (Validiteinsert(data)) {
-                uniqueNamecheck(data.name, function (r) {
-                    uniqueCodecheck(data.code, function (re) {
-                        if (r.message == 'unique') {
-                            if (re.message == 'unique') {
-                                AddPradeshiyasaba(data, function (result) {
-                                    if (result.id == 1) {
-                                        Toast.fire({
-                                            type: 'success',
-                                            title: 'Enviremontal MS</br>Saved'
-                                        });
-                                    } else {
-                                        Toast.fire({
-                                            type: 'error',
-                                            title: 'Enviremontal MS</br>Error'
-                                        });
-                                    }
-                                    loadTable();
-                                    resetinputFields();
-                                });
-                            } else
-                            {
-                                $('#valName').addClass('d-none');
-                                $('#valcodeUnique').removeClass('d-none');
-                            }
-                        } else
-                        {
-                            $('#valName').addClass('d-none');
-                            $('#valUnique').removeClass('d-none');
-                        }
-                    });
+                // if validiated
+                AddPayments(data, function (result) {
+                    if (result.id == 1) {
+                        Toast.fire({
+                            type: 'success',
+                            title: 'Enviremontal MS</br>Saved'
+                        });
+                    } else {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Enviremontal MS</br>Error'
+                        });
+                    }
+                    loadTable($('#getPaymentInfobyCat').val());
+                    resetinputFields();
+                    hideAllErrors();
                 });
             }
-            hideAllErrors();
         });
 //click update button
         $('#btnUpdate').click(function () {
             //get form data
             var data = fromValues();
             if (Validiteupdate(data)) {
-                updatePradesheeyasaba($('#btnUpdate').val(), data, function (result) {
+                updatePayments($('#btnUpdate').val(), data, function (result) {
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
@@ -224,16 +237,16 @@
                             title: 'Enviremontal MS</br>Error'
                         });
                     }
-                    loadTable();
+                    loadTable($('#getPaymentInfobyCat').val());
                     showSave();
                     resetinputFields();
+                    hideAllErrors();
                 });
             }
-            hideAllErrors();
         });
 //click delete button
         $('#btnDelete').click(function () {
-            deletePradesheeyasaba($('#btnDelete').val(), function (result) {
+            deletePayments($('#btnDelete').val(), function (result) {
                 if (result.id == 1) {
                     Toast.fire({
                         type: 'success',
@@ -245,41 +258,43 @@
                         title: 'Enviremontal MS</br>Error'
                     });
                 }
-                loadTable();
+                loadTable($('#getPaymentInfobyCat').val());
                 showSave();
                 resetinputFields();
+                hideAllErrors();
             });
-            hideAllErrors();
         });
 //select button action 
         $(document).on('click', '.btnAction', function () {
-            getaPradesiyasababyId(this.id, function (result) {
+            getaPaymentsbyId(this.id, function (result) {
+                $('#getPaymentCat').val(result.payment_type_id);
                 $('#getName').val(result.name);
-                $('#getCode').val(result.code);
+                $('#getPaymentType').val(result.type);
+                $('#getPaymentAmount').val(result.amount);
                 showUpdate();
                 $('#btnUpdate').val(result.id);
                 $('#btnDelete').val(result.id);
+                if (result.amount === null) {
+                    $('#useToHideAmount').addClass('d-none');
+                } else {
+                    $('#useToHideAmount').removeClass('d-none');
+                }
             });
+            $("#getPaymentType").prop("disabled", true);
             hideAllErrors();
         });
     });
-//Check change of name input   
-    $('#getName').change(function () {
-        var data = fromValues();
-        uniqueNamecheck(data.name, function (r) {
-//            alert(JSON.stringify(r));
-            if (r.message == 'unique') {
-                $('#valName').addClass('d-none');
-                $('#valCode').addClass('d-none');
-                $('#valUnique').addClass('d-none');
-
-            } else
-            {
-                $('#valName').addClass('d-none');
-                $('#valCode').addClass('d-none');
-                $('#valUnique').removeClass('d-none');
-            }
-        });
+//Payment Cat Info To Loadtable
+    $("#getPaymentInfobyCat").change(function () {
+        loadTable($(this).val());
+    });
+//Show amount by payment type
+    $("#getPaymentType").change(function () {
+        if ($(this).val() === 'ranged') {
+            $('#useToHideAmount').addClass('d-none');
+        } else {
+            $('#useToHideAmount').removeClass('d-none');
+        }
     });
 //show update buttons    
     function showUpdate() {
@@ -293,25 +308,29 @@
         $('#btnUpdate').addClass('d-none');
         $('#btnshowDelete').addClass('d-none');
     }
-//HIDE ALL ERROR MSGS   
-    function hideAllErrors() {
-        $('#valcodeUnique').addClass('d-none');
-        $('#valUnique').addClass('d-none');
-    }
 //Reset all fields    
     function resetinputFields() {
+        $("#getPaymentType").prop("disabled", false);
         $('#getName').val('');
-        $('#getCode').val('');
+        $('#getPaymentCat').reset('');
         $('#btnUpdate').val('');
         $('#btnDelete').val('');
     }
 //get form values
     function fromValues() {
         var data = {
+            payment_type_id: $('#getPaymentCat').val(),
             name: $('#getName').val(),
-            code: $('#getCode').val()
+            type: $('#getPaymentType').val(),
+            amount: $('#getPaymentAmount').val()
         };
         return data;
+    }
+//HIDE ALL ERROR MSGS   
+    function hideAllErrors() {
+        $('#valName').addClass('d-none');
+        $('#valPayCat').addClass('d-none');
+        $('#valPayType').addClass('d-none');
     }
 </script>
 @endsection
