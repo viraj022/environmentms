@@ -69,6 +69,7 @@
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body">
+                                        <div class="card-body table-responsive" style="height: 450px;">
                                             <table class="table table-bordered table-striped" id="tblAttachments">
                                                 <thead>
                                                     <tr>
@@ -80,6 +81,7 @@
                                                 <tbody>
                                                 </tbody>
                                             </table>
+                                        </div>
                                     </div>
                                     <!-- /.card-body -->
                                 </div>
