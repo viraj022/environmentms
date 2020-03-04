@@ -29,8 +29,7 @@ function loadTable(id) {
             table += "<tr>";
             table += "<td>" + id++ + "</td>";
             table += "<td>" + rangevalue.name + "</td>";
-            table += "<td>" + rangevalue.type + "</td>";
-            table += "<td><button id='" + rangevalue.id + "' type='button' class='btn btn-block btn-primary btn-xs btnAction'>Select</button></td>";
+            table += "<td><button id='" + rangevalue.id + "' value='"+ rangevalue.name +"' type='button' class='btn btn-block btn-primary btn-xs btnAction'>Select</button></td>";
             table += "</tr>";
         });
         $('#tblPaymentRange tbody').html(table);

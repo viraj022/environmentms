@@ -31,7 +31,11 @@
             <div class="col-md-6">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <label id="lblTitle">Add New Payment Range<div class="addNewByEnter d-none">(Press Enter To Add New Ranges)</div></label>
+                        <label id="lblTitle">Add New Payment Range</label>
+                        <div class="addNewByEnter d-none">
+                            <p>(Press Enter To Add New Ranges)</p>
+                            <label class="currentSelName"></label>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="row" id="getFromToAmount">
@@ -82,7 +86,6 @@
                                                     <tr>
                                                         <th style="width: 10px">#</th>
                                                         <th>Name</th>
-                                                        <th>Type</th>
                                                         <th style="width: 140px">Action</th>
                                                     </tr>
                                                 </thead>
@@ -245,6 +248,8 @@
             hideAllErrors();
             $('#trackUsr').addClass('d-none');
             $('.addNewByEnter').removeClass('d-none');
+            $('.currentSelName').text('Name: ' + $(this).val());
+//            alert($(this).val());
         });
 //click delete button
         $('#btnDelete').click(function () {
