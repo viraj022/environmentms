@@ -309,7 +309,7 @@
         }
         //Remove via Del Key
         else if (keycode === 16) {
-            alert("f44k not workin????");
+            alert(" not workin????");
             if ($(".create-Now")[1]) {
                 $(document).closest('.create-Now').remove();
             } else {
