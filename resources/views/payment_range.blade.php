@@ -31,7 +31,7 @@
             <div class="col-md-6">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <label id="lblTitle">Add New Payment Range(Press Enter)</label>
+                        <label id="lblTitle">Add New Payment Range<div class="addNewByEnter d-none">(Press Enter To Add New Ranges)</div></label>
                     </div>
                     <div class="card-body">
                         <div class="row" id="getFromToAmount">
@@ -42,11 +42,12 @@
                         </div>
                         <div id="attachBoxHere">
                             <div class="row form-group create-Now">
-                                <p><b> >Select A Payment Range.</b></p>
+                                <!-- Create Texboxes !-->  
                             </div>
                         </div>
                     </div>
                     <div class="card-footer">
+                        <div id="trackUsr" class="col-12 tackMe"> <label>Please Select A Payment Range.</label></div>
                         @if($pageAuth['is_create']==1 || false)
                         <div class="divSave">   </div>
                         @endif
@@ -242,6 +243,8 @@
             selected = this.id;
             createPaymentRangeBox(this.id);
             hideAllErrors();
+            $('#trackUsr').addClass('d-none');
+            $('.addNewByEnter').removeClass('d-none');
         });
 //click delete button
         $('#btnDelete').click(function () {
@@ -297,8 +300,12 @@
         var keycode = (event.keyCode ? event.keyCode : event.which);
         //Add via Enter Key
         if (keycode === 13) {
-            loadTextBoxes();
-            event.preventDefault();
+            if ($('#trackUsr').hasClass('d-none')) {
+                loadTextBoxes();
+                event.preventDefault();
+            } else {
+                alert('Please select a payment range.');
+            }
         }
         //Remove via Del Key
         else if (keycode === 16) {
