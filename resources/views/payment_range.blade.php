@@ -82,7 +82,6 @@
                                                     <tr>
                                                         <th style="width: 10px">#</th>
                                                         <th>Name</th>
-                                                        <th>Type</th>
                                                         <th style="width: 140px">Action</th>
                                                     </tr>
                                                 </thead>
