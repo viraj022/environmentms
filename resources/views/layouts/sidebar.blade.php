@@ -108,7 +108,7 @@
                     </a>
                 </li>
                 @endif
-                             @if($pre['id']===config('auth.privileges.paymentDetails'))
+                             @if($pre['id']===config('auth.privileges.industry'))
                 <li class="nav-item">
                     <a href="{{ url('/payment_type') }}" class="nav-link {{ Request::is('payment_type') ? 'active' : '' }}">
                         <i class="fas fa-puzzle-piece nav-icon"></i>
