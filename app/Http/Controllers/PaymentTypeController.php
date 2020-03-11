@@ -85,7 +85,7 @@ class PaymentTypeController extends Controller
     public function show()
     {
            $user = Auth::user();
-    $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
+    $pageAuth = $user->authentication(config('auth.privileges.industry'));
        dd($pageAuth);
     if ($pageAuth['is_read']) {
         return PaymentType::get();
