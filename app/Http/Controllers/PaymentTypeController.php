@@ -27,24 +27,24 @@ class PaymentTypeController extends Controller
      */
     public function create()
     {
-         $user = Auth::user();           
+        $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
-           request()->validate([
-                'name' => 'required|unique:payment_types,name'          
-            ]);
+        request()->validate([
+            'name' => 'required|unique:payment_types,name'
+        ]);
 
-        if($pageAuth['is_create']){
-        $payment_type = new PaymentType();
-        $payment_type->name= \request('name');
-       $msg =  $payment_type->save();
+        if ($pageAuth['is_create']) {
+            $payment_type = new PaymentType();
+            $payment_type->name = \request('name');
+            $msg =  $payment_type->save();
 
-       if ($msg) {
-        return array('id' => 1, 'message' => 'true');
-    } else {
-        return array('id' => 0, 'message' => 'false');
-    }
-        }else{
-         abort(401);
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(401);
         }
     }
 
@@ -56,24 +56,24 @@ class PaymentTypeController extends Controller
      */
     public function store($id)
     {
-          $user = Auth::user();
-    $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
-    request()->validate([
-                  'name' => 'required|unique:payment_types,name'  
-    ]);
-    if ($pageAuth['is_update']) {
-        $payment_type =  PaymentType::findOrFail($id);
-        $payment_type->name= \request('name');
-         $msg =  $payment_type->save();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
+        request()->validate([
+            'name' => 'required|unique:payment_types,name'
+        ]);
+        if ($pageAuth['is_update']) {
+            $payment_type =  PaymentType::findOrFail($id);
+            $payment_type->name = \request('name');
+            $msg =  $payment_type->save();
 
-     if ($msg) {
-        return array('id' => 1, 'message' => 'true');
-    } else {
-        return array('id' => 0, 'message' => 'false');
-    }
-} else {
-    abort(401);
-}
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(401);
+        }
     }
 
     /**
@@ -84,28 +84,28 @@ class PaymentTypeController extends Controller
      */
     public function show()
     {
-           $user = Auth::user();
-           echo config('auth.privileges.paymentDetails');
-    $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));       
-    if ($pageAuth['is_read']) {
-        return PaymentType::get();
-    } else {
-        abort(401);
-    }
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
+        if ($pageAuth['is_read']) {
+            return PaymentType::get();
+        } else {
+            abort(401);
+        }
     }
 
 
     //find a paymentType
-public function find($id) {
+    public function find($id)
+    {
 
-    $user = Auth::user();
-    $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
-    if ($pageAuth['is_read']) {
-        return PaymentType::findOrFail($id);
-    } else {
-        abort(401);
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
+        if ($pageAuth['is_read']) {
+            return PaymentType::findOrFail($id);
+        } else {
+            abort(401);
+        }
     }
-}
     //end find a paymentType
 
     /**
@@ -139,20 +139,18 @@ public function find($id) {
      */
     public function destroy($id)
     {
-           $user = Auth::user();
-    $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
-    if ($pageAuth['is_delete']) {
-       $payment_type = PaymentType::findOrFail($id);    
-       $msg = $payment_type->delete();
-       if ($msg) {
-        return array('id' => 1, 'message' => 'true');
-    } else {
-        return array('id' => 0, 'message' => 'false');
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
+        if ($pageAuth['is_delete']) {
+            $payment_type = PaymentType::findOrFail($id);
+            $msg = $payment_type->delete();
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(401);
+        }
     }
-} else {
-    abort(401);
-}
-    }
-
-
 }
