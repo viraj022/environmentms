@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Payments</h1>
+                <h1>Zone</h1>
             </div>
         </div>
     </div>
@@ -28,47 +28,46 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <label id="lblTitle">Add New Payment Range</label>
-                        <div class="addNewByEnter d-none">
-                            <p>(Press Enter To Add New Ranges)</p>
-                            <label class="currentSelName"></label>
-                        </div>
+                        <label id="lblTitle">Add New Zone</label>
                     </div>
                     <div class="card-body">
-                        <div class="row" id="getFromToAmount">
-                            <div class="col-3"> <label>From*</label></div>
-                            <div class="col-3"><label>To*</label></div>
-                            <div class="col-4"> <label>Amount*</label></div>
-                            <div class="col-2"></div>
+                        <div class="form-group">
+                            <label>Name*</label>
+                            <input id="getName" type="text" class="form-control form-control-sm"
+                                   placeholder="Enter Zone Name..."
+                                   value="">
+                            <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                            <div id="uniName" class="d-none"><p class="text-danger">Name Already Taken!</p></div>
                         </div>
-                        <div id="attachBoxHere">
-                            <div class="row form-group create-Now">
-                                <!-- Create Texboxes !-->  
-                            </div>
+                        <div class="form-group">
+                            <label>Code*</label>
+                            <input id="getCode" type="text" class="form-control form-control-sm"
+                                   placeholder="Enter Zone Code..."
+                                   value="">
+                            <div id="valCode" class="d-none"><p class="text-danger">Code is required</p></div>
+                            <div id="uniCode" class="d-none"><p class="text-danger">Code Already Taken!</p></div>
                         </div>
                     </div>
                     <div class="card-footer">
-                        <div id="trackUsr" class="col-12 tackMe"> <label>Please Select A Payment Range.</label></div>
                         @if($pageAuth['is_create']==1 || false)
-                        <div class="divSave">   </div>
+                        <button id="btnSave" type="submit" class="btn btn-primary">Save</button>
                         @endif
-
+                        @if($pageAuth['is_update']==1 || false)
+                        <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
+                        @endif
                         @if($pageAuth['is_delete']==1 || false)
-                        <div class="divDelete">
-                            <!--                        <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
-                                                             data-target="#modal-danger">Delete</button
-                                                    </div>-->
-                        </div>
+                        <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
+                                 data-target="#modal-danger">Delete</button>
                         @endif
                     </div>                           
                 </div>
             </div>
 
 
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <div class="card card-primary">
                     <div class="card-body">
                         <div class="row">
@@ -76,16 +75,17 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">All Payment Ranges</h3>
+                                        <h3 class="card-title">All Zones</h3>
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body p-0">
                                         <div class="card-body table-responsive" style="height: 450px;">
-                                            <table class="table table-condensed" id="tblPaymentRange">
+                                            <table class="table table-condensed" id="tblZone">
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 10px">#</th>
                                                         <th>Name</th>
+                                                        <th>Code</th>
                                                         <th style="width: 140px">Action</th>
                                                     </tr>
                                                 </thead>
@@ -154,14 +154,13 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
-<script src="../../js/paymentrangejs/submit.js"></script>
-<script src="../../js/paymentrangejs/get.js"></script>
-<script src="../../js/paymentrangejs/update.js"></script>
-<script src="../../js/paymentrangejs/delete.js"></script>
+<script src="../../js/zonejs/submit.js"></script>
+<script src="../../js/zonejs/get.js"></script>
+<script src="../../js/zonejs/update.js"></script>
+<script src="../../js/zonejs/delete.js"></script>
 <!-- AdminLTE App -->
 <script>
     $(function () {
-
         const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -169,60 +168,54 @@
             timer: 4000
 
         });
-//Load table & combo
+//Load table
         loadTable();
 //click save button
-        $(document).on('click', '#btnSave', function () {
-            var data = {
-                payment_id: selected,
-                range: []
-            }
-            var values_container = $('.create-Now');
-            $.each(values_container, function (key, value) {
-                var range = {
-                    from: 0,
-                    to: 0,
-                    amount: 0
-                }
-                range.from = $(value).find('.txt-from').val();
-                if ($(value).find('.txt-to').val() === '') {
-                    range.to = 'max';
-                } else {
-                    range.to = $(value).find('.txt-to').val();
-                }
-                range.amount = $(value).find('.txt-amount').val();
-//                alert(range.to.length);
-                if (range.from.length > 0 && range.amount.length > 0) {
-//                    alert(range.to.length);
-                    data.range.push(range);
-                }
-//                alert(txtFrom);
-            });
-            AddPaymentRange(data, function (result) {
-                if (result.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: ' Successfully Saved!'
+        $('#btnSave').click(function () {
+            var data = fromValues();
+            uniqueNamecheck(data.name, function (res) {
+                if (res.message === 'unique') {
+                    uniqueCodecheck(data.code, function (rest) {
+                        if (rest.message === 'unique') {
+                            ///fkf
+                            if (Validiteinsert(data)) {
+                                // if validiated
+                                AddZone(data, function (result) {
+                                    if (result.id == 1) {
+                                        Toast.fire({
+                                            type: 'success',
+                                            title: 'Enviremontal MS</br>Saved'
+                                        });
+                                    } else {
+                                        Toast.fire({
+                                            type: 'error',
+                                            title: 'Enviremontal MS</br>Error'
+                                        });
+                                    }
+                                    loadTable();
+                                    resetinputFields();
+                                    hideAllErrors();
+                                });
+                            }
+                            ///fkf   
+                        } else {
+                            $('#uniCode').removeClass('d-none');
+                        }
                     });
+
                 } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: ' Something Went Wrong!'
-                    });
+                    $('#uniName').removeClass('d-none');
+                    //$('#uniCode').removeClass('d-none');  
                 }
-                loadTable();
-                createPaymentRangeBox(selected);
-                hideAllErrors();
+
             });
-//            alert(JSON.stringify(data));
         });
-//        
 //click update button
         $('#btnUpdate').click(function () {
             //get form data
             var data = fromValues();
             if (Validiteupdate(data)) {
-                updatePaymentRange($('#btnUpdate').val(), data, function (result) {
+                updateZone($('#btnUpdate').val(), data, function (result) {
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
@@ -241,37 +234,44 @@
                 });
             }
         });
-//select button action 
-        $(document).on('click', '.btnAction', function (result) {
-            selected = this.id;
-            createPaymentRangeBox(this.id);
-            hideAllErrors();
-            $('#trackUsr').addClass('d-none');
-            $('.addNewByEnter').removeClass('d-none');
-            $('.currentSelName').text('Name: ' + $(this).val());
-//            alert($(this).val());
-        });
 //click delete button
         $('#btnDelete').click(function () {
-            deletePaymentRange(selected, function (result) {
+            deleteZone($('#btnDelete').val(), function (result) {
                 if (result.id == 1) {
                     Toast.fire({
                         type: 'success',
-                        title: ' Enviremontal MS</br>Removed!'
+                        title: 'Enviremontal MS</br>Removed!'
                     });
                 } else {
                     Toast.fire({
                         type: 'error',
-                        title: ' Enviremontal MS</br>Error'
+                        title: 'Enviremontal MS</br>Error'
                     });
                 }
                 loadTable();
                 showSave();
-                createPaymentRangeBox();
+                resetinputFields();
                 hideAllErrors();
             });
         });
+//select button action 
+        $(document).on('click', '.btnAction', function () {
+            getaZonebyId(this.id, function (result) {
+                $('#getName').val(result.name);
+                $('#getCode').val(result.code);
+                showUpdate();
+                $('#btnUpdate').val(result.id);
+                $('#btnDelete').val(result.id);
+            });
+            hideAllErrors();
+        });
     });
+//show update buttons    
+    function showUpdate() {
+        $('#btnSave').addClass('d-none');
+        $('#btnUpdate').removeClass('d-none');
+        $('#btnshowDelete').removeClass('d-none');
+    }
 //show save button    
     function showSave() {
         $('#btnSave').removeClass('d-none');
@@ -280,66 +280,25 @@
     }
 //Reset all fields    
     function resetinputFields() {
-        $('.txt-from').val('');
-        $('.txt-to').val('');
-        $('.txt-amount').val('');
+        $('#getName').val('');
+        $('#getCode').val('');
+        $('#btnUpdate').val('');
+        $('#btnDelete').val('');
     }
 //get form values
     function fromValues() {
         var data = {
-            payment_type_id: $('#getPaymentCat').val(),
             name: $('#getName').val(),
-            type: $('#getPaymentType').val(),
-            amount: $('#getPaymentAmount').val()
+            code: $('#getCode').val()
         };
         return data;
     }
 //HIDE ALL ERROR MSGS   
     function hideAllErrors() {
         $('#valName').addClass('d-none');
-        $('#valPayCat').addClass('d-none');
-        $('#valPayType').addClass('d-none');
+        $('#valCode').addClass('d-none');
+        $('#uniName').addClass('d-none');
+        $('#uniCode').addClass('d-none');
     }
-//Create New Area -Press Enter
-    $(document).keypress(function (event) {
-        var keycode = (event.keyCode ? event.keyCode : event.which);
-        //Add via Enter Key
-        if (keycode === 13) {
-            if ($('#trackUsr').hasClass('d-none')) {
-                if ($('#btnSave').hasClass('btn-primary')) {
-                    loadTextBoxes();
-                    event.preventDefault();
-                } else {
-                    alert('Please Delete And Add New Ranges');
-                }
-            } else {
-                alert('Please select a payment range.');
-            }
-        }
-        //Remove via Del Key
-        else if (keycode === 16) {
-            alert(" not workin????");
-            if ($(".create-Now")[1]) {
-                $(document).closest('.create-Now').remove();
-            } else {
-                return false;
-            }
-        }
-    });
-//Create New Area
-    $(function genNewAmount() {
-        //Create
-        $(document).on('click', '.make-new', function () {
-            loadTextBoxes();
-        });
-        //Remove
-        $(document).on('click', '.make-remove', function () {
-            if ($(".create-Now")[1]) {
-                $(this).closest('.create-Now').remove();
-            } else {
-                return false;
-            }
-        });
-    });
 </script>
 @endsection

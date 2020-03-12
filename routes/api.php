@@ -428,3 +428,13 @@ Route::middleware('auth:api')->post('/rangedpayment', 'PaymentsController@create
 ]
 */
 //end ranged codes
+ 
+ //Zone API START
+Route::middleware('auth:api')->post('/zone','ZoneController@create'); //Create 
+Route::middleware('auth:api')->get('/zones','ZoneController@show'); //Get All Zones
+Route::middleware('auth:api')->get('/zone/id/{id}','ZoneController@find'); //Get A Zone By ID
+Route::middleware('auth:api')->put('/zone/id/{id}','ZoneController@store'); //Update Zone
+Route::middleware('auth:api')->delete('/zone/id/{id}','ZoneController@destroy'); //Delete Zone
+Route::middleware('auth:api')->get('/zone/name/{name}','ZoneController@isNameUnique'); //Check Unique Name
+Route::middleware('auth:api')->get('/zone/code/{code}','ZoneController@isCodeUnique'); //Check Unique Code
+//Zone API END
