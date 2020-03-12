@@ -6,18 +6,17 @@ use App\Pradesheeyasaba;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PradesheeyasabaController extends Controller
-{
+class PradesheeyasabaController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $user = Auth::user();           
+    public function index() {
+        $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
-        return view('pradesheyasaba', ['pageAuth' => $pageAuth]);  
+        return view('pradesheyasaba', ['pageAuth' => $pageAuth]);
     }
 
     /**
@@ -25,28 +24,26 @@ class PradesheeyasabaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        $user = Auth::user();           
+    public function create() {
+        $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
-           request()->validate([
-                'name' => 'required|unique:pradesheeyasabas,name',
-                'code' => 'required|unique:pradesheeyasabas,code',               
+        request()->validate([
+            'name' => 'required|unique:pradesheeyasabas,name',
+            'code' => 'required|unique:pradesheeyasabas,code',
+        ]);
+        if ($pageAuth['is_create']) {
+            $pradesheyasaba = new Pradesheeyasaba();
+            $pradesheyasaba->name = \request('name');
+            $pradesheyasaba->code = \request('code');
+            $msg = $pradesheyasaba->save();
 
-            ]);
-        if($pageAuth['is_create']){
-        $pradesheyasaba = new Pradesheeyasaba();
-        $pradesheyasaba->name= \request('name');
-        $pradesheyasaba->code= \request('code');
-       $msg =  $pradesheyasaba->save();
-
-       if ($msg) {
-        return array('id' => 1, 'message' => 'true');
-    } else {
-        return array('id' => 0, 'message' => 'false');
-    }
-        }else{
-         abort(401);
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(401);
         }
     }
 
@@ -56,22 +53,21 @@ class PradesheeyasabaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($id)
-    {
-    $user = Auth::user();           
+    public function store($id) {
+        $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
 //           request()->validate([
 //                'name' => 'required|unique:pradesheeyasabas,name',
 //                'code' => 'required|unique:pradesheeyasabas,code',           
 //            ]);
-        
- 
-        
-        
-        
-        if($pageAuth['is_update']){
-        $pradesheyasaba = Pradesheeyasaba::findOrFail($id);
-         if ($pradesheyasaba->name != \request('name')) {
+
+
+
+
+
+        if ($pageAuth['is_update']) {
+            $pradesheyasaba = Pradesheeyasaba::findOrFail($id);
+            if ($pradesheyasaba->name != \request('name')) {
                 request()->validate([
                     'name' => 'required|unique:pradesheeyasabas,name'
                 ]);
@@ -85,15 +81,15 @@ class PradesheeyasabaController extends Controller
             }
 //            $pradesheyasaba ->name = \request('name');
 //        $pradesheyasaba ->code = \request('code');
-       $msg =  $pradesheyasaba->save();
+            $msg = $pradesheyasaba->save();
 
-       if ($msg) {
-        return array('id' => 1, 'message' => 'true');
-    } else {
-        return array('id' => 0, 'message' => 'false');
-    }
-        }else{
-         abort(401);
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(401);
         }
     }
 
@@ -103,14 +99,13 @@ class PradesheeyasabaController extends Controller
      * @param  \App\Pradesheeyasaba  $pradesheeyasaba
      * @return \Illuminate\Http\Response
      */
-    public function show()
-    {
-       $user = Auth::user();           
+    public function show() {
+        $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
-         if($pageAuth['is_read']){
-       return Pradesheeyasaba::get();
-   }else{
-         abort(401);
+        if ($pageAuth['is_read']) {
+            return Pradesheeyasaba::get();
+        } else {
+            abort(401);
         }
     }
 
@@ -120,8 +115,7 @@ class PradesheeyasabaController extends Controller
      * @param  \App\Pradesheeyasaba  $pradesheeyasaba
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pradesheeyasaba $pradesheeyasaba)
-    {
+    public function edit(Pradesheeyasaba $pradesheeyasaba) {
         //
     }
 
@@ -132,8 +126,7 @@ class PradesheeyasabaController extends Controller
      * @param  \App\Pradesheeyasaba  $pradesheeyasaba
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pradesheeyasaba $pradesheeyasaba)
-    {
+    public function update(Request $request, Pradesheeyasaba $pradesheeyasaba) {
         //
     }
 
@@ -143,37 +136,36 @@ class PradesheeyasabaController extends Controller
      * @param  \App\Pradesheeyasaba  $pradesheeyasaba
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        $user = Auth::user();           
+    public function destroy($id) {
+        $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
-        if($pageAuth['is_delete']){
-        $pradesheyasaba = Pradesheeyasaba::findOrFail($id);;
-        //$attachment->name= \request('name');
-       $msg =  $pradesheyasaba->delete();
+        if ($pageAuth['is_delete']) {
+            $pradesheyasaba = Pradesheeyasaba::findOrFail($id);
+            ;
+            //$attachment->name= \request('name');
+            $msg = $pradesheyasaba->delete();
 
-       if ($msg) {
-        return array('id' => 1, 'message' => 'true');
-    } else {
-        return array('id' => 0, 'message' => 'false');
-    }
-        }else{
-         abort(401);
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(401);
         }
     }
 
-    public function find($id)
-    {
-        $user = Auth::user();           
+    public function find($id) {
+        $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
-         if($pageAuth['is_read']){
-       return Pradesheeyasaba::findOrFail($id);
-   }else{
-         abort(401);
+        if ($pageAuth['is_read']) {
+            return Pradesheeyasaba::findOrFail($id);
+        } else {
+            abort(401);
         }
     }
-    
-        public function isNameUnique($name) {
+
+    public function isNameUnique($name) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
 
@@ -186,9 +178,8 @@ class PradesheeyasabaController extends Controller
             }
         }
     }
-    
-    
-            public function isCodeUnique($code) {
+
+    public function isCodeUnique($code) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
 

@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Zone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class ZoneController extends Controller
-{
+class ZoneController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.zone'));
+        return view('zone', ['pageAuth' => $pageAuth]);
     }
 
     /**
@@ -22,9 +24,37 @@ class ZoneController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create() {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.zone'));
+        request()->validate([
+            'name' => 'required|unique:zones,name',
+            'code' => 'required|unique:zones,code',
+        ]);
+        if ($pageAuth['is_create']) {
+            $zone = new Zone();
+            $zone->name = \request('name');
+            $zone->code = \request('code');
+            $msg = $zone->save();
+
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(401);
+        }
+    }
+
+    public function find($id) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.zone'));
+        if ($pageAuth['is_read']) {
+            return zone::findOrFail($id);
+        } else {
+            abort(401);
+        }
     }
 
     /**
@@ -33,9 +63,33 @@ class ZoneController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store($id) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.zone'));
+        if ($pageAuth['is_update']) {
+            $zone = zone::findOrFail($id);
+            if ($zone->name != \request('name')) {
+                request()->validate([
+                    'name' => 'required|unique:zones,name'
+                ]);
+                $zone->name = \request('name');
+            }
+            if ($zone->code != \request('code')) {
+                request()->validate([
+                    'code' => 'required|unique:zones,code'
+                ]);
+                $zone->code = \request('code');
+            }
+            $msg = $zone->save();
+
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(401);
+        }
     }
 
     /**
@@ -44,9 +98,14 @@ class ZoneController extends Controller
      * @param  \App\Zone  $zone
      * @return \Illuminate\Http\Response
      */
-    public function show(Zone $zone)
-    {
-        //
+    public function show(Zone $zone) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.zone'));
+        if ($pageAuth['is_read']) {
+            return Zone::get();
+        } else {
+            abort(401);
+        }
     }
 
     /**
@@ -55,8 +114,7 @@ class ZoneController extends Controller
      * @param  \App\Zone  $zone
      * @return \Illuminate\Http\Response
      */
-    public function edit(Zone $zone)
-    {
+    public function edit(Zone $zone) {
         //
     }
 
@@ -67,8 +125,7 @@ class ZoneController extends Controller
      * @param  \App\Zone  $zone
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Zone $zone)
-    {
+    public function update(Request $request, Zone $zone) {
         //
     }
 
@@ -78,8 +135,49 @@ class ZoneController extends Controller
      * @param  \App\Zone  $zone
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Zone $zone)
-    {
-        //
+    public function destroy($id) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.zone'));
+        if ($pageAuth['is_delete']) {
+            $zone = zone::findOrFail($id);
+            ;
+            $msg = $zone->delete();
+
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(401);
+        }
     }
+
+    public function isNameUnique($name) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.zone'));
+
+        if ($pageAuth['is_create']) {
+            $raw = Zone::where('name', '=', $name)->first();
+            if ($raw === null) {
+                return array('id' => 1, 'message' => 'unique');
+            } else {
+                return array('id' => 1, 'message' => 'notunique');
+            }
+        }
+    }
+    public function isCodeUnique($code) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.zone'));
+
+        if ($pageAuth['is_create']) {
+            $raw = Zone::where('code', '=', $code)->first();
+            if ($raw === null) {
+                return array('id' => 1, 'message' => 'unique');
+            } else {
+                return array('id' => 1, 'message' => 'notunique');
+            }
+        }
+    }
+
 }
