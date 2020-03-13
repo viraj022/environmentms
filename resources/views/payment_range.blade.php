@@ -306,7 +306,7 @@
         //Add via Enter Key
         if (keycode === 13) {
             if ($('#trackUsr').hasClass('d-none')) {
-                if ($('#btnSave').hasClass('btn-primary')) {
+                if ($('#btnSave').hasClass('btn-success')) {
                     loadTextBoxes();
                     event.preventDefault();
                 } else {

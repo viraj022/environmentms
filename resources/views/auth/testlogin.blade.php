@@ -259,7 +259,7 @@
                                     <span style="width:50%; text-align:right;  display: inline-block;">
 
                                         <input  type="submit"  value="Sign In"></span>
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-success">
                                         {{ __('Login') }}
                                     </button>
                                 </div>
