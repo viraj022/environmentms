@@ -96,7 +96,7 @@
                 <li class="nav-item">
                     <a href="{{ url('/pradesheyasaba') }}" class="nav-link {{ Request::is('pradesheyasaba') ? 'active' : '' }}">
                         <i class="fas fa-city nav-icon"></i>
-                        <p>Pradesheya Saba</p>
+                        <p>Local Authority</p>
                     </a>
                 </li>
                 @endif
