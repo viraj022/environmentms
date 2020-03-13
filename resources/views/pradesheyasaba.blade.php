@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Pradesheyasaba</h1>
+                <h1>Local Authority</h1>
             </div>
         </div>
     </div>
@@ -31,7 +31,7 @@
             <div class="col-md-5">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <label id="lblTitle">Add New Pradesiyasaba</label>
+                        <label id="lblTitle">Add New Local Authority</label>
                     </div>
                     <div class="card-body">
                         <label>Name*</label>
@@ -74,7 +74,7 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">Pradesiyasaba</h3>
+                                        <h3 class="card-title">Local Authorities</h3>
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body p-0">
@@ -108,13 +108,13 @@
     <div class="modal-dialog">
         <div class="modal-content bg-danger">
             <div class="modal-header">
-                <h4 class="modal-title">Delete  Pradesiyasaba</h4>
+                <h4 class="modal-title">Delete Local Authority</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p><b>Are you sure you want to permanently delete this  Pradesiyasaba ? </b></p>
+                <p><b>Are you sure you want to permanently delete this  Local Authority ? </b></p>
                 <p>Once you continue, this process can not be undone. Please Procede with care.</p>
             </div>
             <div class="modal-footer justify-content-between">
