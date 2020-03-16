@@ -527,4 +527,33 @@ server responce
 
 */
 
+
+ Route::middleware('auth:api')->put('/assistantdirector/id/{id}', 'AssistantDirectorController@store'); //update AssistantDirector  all details
+/*
+{
+    "user_id":"1",
+    "zone_id":"1"
+}
+
+server responce
+
+{
+    "id": 1,
+    "message": "true"
+}
+
+*/
+
+ Route::middleware('auth:api')->put('/unassistantdirector/id/{id}', 'AssistantDirectorController@UnActiveAssistantDirector'); //update AssistantDirector  to unactive
+/*
+server responce
+
+{
+    "id": 1,
+    "message": "true"
+}
+
+*/
+
+
 //end AssistantDirector API

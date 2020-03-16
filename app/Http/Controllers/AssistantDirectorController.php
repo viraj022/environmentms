@@ -37,7 +37,7 @@ class AssistantDirectorController extends Controller
             $assistantDirector = new AssistantDirector();
             $assistantDirector->user_id = \request('user_id');
             $assistantDirector->zone_id = \request('zone_id');
-             $assistantDirector->active_status = '1';
+            $assistantDirector->active_status = '1';
 
             $msg = $assistantDirector->save();
 
@@ -57,11 +57,58 @@ class AssistantDirectorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($id)
     {
-        //
-    }
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
+        request()->validate([
+         'user_id' => 'required',
+         'zone_id' => 'required',
+     ]);
+        if ($pageAuth['is_update']) {
+         $assistantdirector = AssistantDirector::findOrFail($id); 
+         $assistantdirector->user_id= \request('user_id'); 
+         $assistantdirector->zone_id= \request('zone_id'); 
+         $msg = $assistantdirector->save(); 
+         if ($msg) {
+             return array('id' => 1, 'message' => 'true'); 
+         }  
+         else 
+         { 
+             return array('id' => 0, 'message' => 'false'); 
+         } 
+     } 
+     else 
+     { 
+      abort(401); 
+  }  
+}
 
+public function UnActiveAssistantDirector($id)
+{
+    $user = Auth::user();
+    $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
+       //  request()->validate([
+       //     'user_id' => 'required',
+       //     'zone_id' => 'required',
+       // ]);
+    if ($pageAuth['is_update']) {
+     $assistantdirector = AssistantDirector::findOrFail($id); 
+     $assistantdirector->active_status ='0';
+     $msg = $assistantdirector->save(); 
+     if ($msg) {
+         return array('id' => 1, 'message' => 'true'); 
+     }  
+     else 
+     { 
+         return array('id' => 0, 'message' => 'false'); 
+     } 
+ } 
+ else 
+ { 
+  abort(401); 
+}  
+}
     /**
      * Display the specified resource.
      *
@@ -112,20 +159,20 @@ class AssistantDirectorController extends Controller
     {
 
 
-$user = Auth::user(); 
-$pageAuth = $user->authentication(config('auth.privileges.assistantDirector')); 
- if ($pageAuth['is_read']) { 
-       $allAssistantDerectors = AssistantDirector::where('active_status', '1')
-       ->get();
+        $user = Auth::user(); 
+        $pageAuth = $user->authentication(config('auth.privileges.assistantDirector')); 
+        if ($pageAuth['is_read']) { 
+           $allAssistantDerectors = AssistantDirector::where('active_status', '1')
+           ->get();
 //return $allAssistantDerectors;
- return User::wherenotin('id', $allAssistantDerectors)
+           return User::wherenotin('id', $allAssistantDerectors)
            ->get();
 
   //return AssistantDirector::get(); 
- } else 
- { 
-    abort(401); 
-} 
+       } else 
+       { 
+        abort(401); 
+    } 
 }
  //end get allUser not in 
 
@@ -133,24 +180,24 @@ $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
 
 
 //get all active_AssistantDirector
-    public function getAll_active_AssistantDirector()
-    {
-$user = Auth::user(); 
-$pageAuth = $user->authentication(config('auth.privileges.assistantDirector')); 
+public function getAll_active_AssistantDirector()
+{
+    $user = Auth::user(); 
+    $pageAuth = $user->authentication(config('auth.privileges.assistantDirector')); 
     if ($pageAuth['is_read']) {
 
 
      //    PaymentType::get();
-           return AssistantDirector::join('users','assistant_directors.user_id','=','users.id' )
-           ->join('zones','assistant_directors.zone_id','=','zones.id')
-            ->where('assistant_directors.active_status','=','1')
-            ->select('assistant_directors.*')
-            ->get();
+       return AssistantDirector::join('users','assistant_directors.user_id','=','users.id' )
+       ->join('zones','assistant_directors.zone_id','=','zones.id')
+       ->where('assistant_directors.active_status','=','1')
+       ->select('assistant_directors.*')
+       ->get();
 
 
-                } else {
-        abort(401);
-    }
+   } else {
+    abort(401);
+}
 }
 
  //end get all active_AssistantDirector
@@ -159,24 +206,24 @@ $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
 
 
 //get a AssistantDirector
-    public function get_a_AssistantDirector($id)
-    {
-$user = Auth::user(); 
-$pageAuth = $user->authentication(config('auth.privileges.assistantDirector')); 
+public function get_a_AssistantDirector($id)
+{
+    $user = Auth::user(); 
+    $pageAuth = $user->authentication(config('auth.privileges.assistantDirector')); 
     if ($pageAuth['is_read']) {
 
 
      //    PaymentType::get();
-           return AssistantDirector::join('users','assistant_directors.user_id','=','users.id' )
-           ->join('zones','assistant_directors.zone_id','=','zones.id')
-            ->where('assistant_directors.id','=',$id)
-            ->select('assistant_directors.*')
-            ->get();
+       return AssistantDirector::join('users','assistant_directors.user_id','=','users.id' )
+       ->join('zones','assistant_directors.zone_id','=','zones.id')
+       ->where('assistant_directors.id','=',$id)
+       ->select('assistant_directors.*')
+       ->get();
 
 
-                } else {
-        abort(401);
-    }
+   } else {
+    abort(401);
+}
 }
 
  //end get a AssistantDirector
