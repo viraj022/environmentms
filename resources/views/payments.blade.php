@@ -60,7 +60,7 @@
                         <div class="form-group" id="useToHideAmount">
                             <label>Amount*</label>
                             <input id="getPaymentAmount" type="number" class="form-control form-control-sm"
-                                   placeholder="Enter Name..."
+                                   placeholder="Amount"
                                    value="">
                             <div id="valAmount" class="d-none"><p class="text-danger">Field is required</p></div>
                         </div>
