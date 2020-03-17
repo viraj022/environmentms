@@ -558,21 +558,21 @@ server responce
 */
 
 
- Route::middleware('auth:api')->put('/assistantdirector/id/{id}', 'AssistantDirectorController@store'); //update AssistantDirector  all details
-/*
-{
-    "user_id":"1",
-    "zone_id":"1"
-}
+//  Route::middleware('auth:api')->put('/assistantdirector/id/{id}', 'AssistantDirectorController@store'); //update AssistantDirector  all details
+// /*
+// {
+//     "user_id":"1",
+//     "zone_id":"1"
+// }
 
-server responce
+// server responce
 
-{
-    "id": 1,
-    "message": "true"
-}
+// {
+//     "id": 1,
+//     "message": "true"
+// }
 
-*/
+// */
 
  Route::middleware('auth:api')->delete('/unassistantdirector/id/{id}', 'AssistantDirectorController@destroy'); //delete AssistantDirector  
 /*
@@ -587,3 +587,103 @@ server responce
 
 
 //end AssistantDirector API
+
+// Environment Officer
+
+Route::middleware('auth:api')->get('/environment_officers/unassigned', 'EnvironmentOfficerController@show'); // get unassigned environment officers  
+/*
+
+[
+    {
+        "id": 3,
+        "user_name": "ceytech",
+        "first_name": "ceyTech",
+        "last_name": "ceyTech",
+        "address": null,
+        "contact_no": null,
+        "email": null,
+        "nic": null,
+        "roll_id": 2,
+        "api_token": "oAolH3Xf28TjtePyZ4D5RotH7NL1o6ov6PLLwrVFvmTHRU4QInvvq3Fsw24XjknEeGYoIIfvA2VIPDYU",
+        "institute_Id": null,
+        "activeStatus": "Active",
+        "created_at": "2020-02-19 15:21:11",
+        "updated_at": "2020-03-11 11:46:57",
+        "deleted_at": null
+    },
+    {
+        "id": 5,
+        "user_name": "Director_Lenaduwa",
+        "first_name": "Saman",
+        "last_name": "Lenaduwa",
+        "address": null,
+        "contact_no": "0773512435",
+        "email": "sklenaduwa@gmail.com",
+        "nic": null,
+        "roll_id": 2,
+        "api_token": "tOP3QU6ztCu8d4kSzuy6ta23SQuWJCbC4i3PSOQxpcorHZcTs3g1kNLNyvsyP69qe7CW43x70pJG2uQ8",
+        "institute_Id": null,
+        "activeStatus": "Active",
+        "created_at": "2020-02-26 11:28:56",
+        "updated_at": "2020-02-26 11:28:56",
+        "deleted_at": null
+    },
+    ]
+    */
+    Route::middleware('auth:api')->post('/environment_officer', 'EnvironmentOfficerController@create'); //insert environment officer  
+    /*
+   ! input
+   {
+	"user_id" : "5",
+	"assistantDirector_id" :  "1"
+    } 
+        
+    ! output 
+    {
+    "id": 1,
+    "message": "true"
+    }
+    */
+    Route::middleware('auth:api')->get('/environment_officer/id/{id}', 'EnvironmentOfficerController@getAEnvironmentOfficer'); //get an environment officer  
+/*
+ {
+    "first_name": "Wasantha",
+    "last_name": "Lansakara",
+    "user_name": "AD_Wasantha",
+    "user_id": 10,
+    "active_status": 1,
+    "zone_id": 1,
+    "zone_name": "zone 1",
+    "assistant_director_first_name": "National",
+    "assistant_director_last_name": "National",
+    "assistant_director_user_name": "National"
+ }
+*/
+Route::middleware('auth:api')->get('/environment_officers/assistant_director/id/{id}', 'EnvironmentOfficerController@getAEnvironmentOfficerByAssitantDirector'); //get an environment officer by assistant director id  
+/*
+[
+    {
+        "first_name": "Wasantha",
+        "last_name": "Lansakara",
+        "user_name": "AD_Wasantha",
+        "user_id": 10,
+        "active_status": 1,
+        "zone_id": 1,
+        "zone_name": "zone 1",
+        "assistant_director_first_name": "National",
+        "assistant_director_last_name": "National",
+        "assistant_director_user_name": "National"
+    }
+]
+*/
+
+Route::middleware('auth:api')->delete('/environment_officers/id/{id}', 'EnvironmentOfficerController@destroy'); // ! delete an environment officer by id
+/*
+! output
+
+{
+    "id": 1,
+    "message": "true"
+}
+
+*/

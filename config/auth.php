@@ -123,6 +123,7 @@ return [
         'paymentDetails' => 6,
         'zone' => 7,
         'assistantDirector' => 8,
+        'environmentOfficer' => 9,
         
     ],
 
