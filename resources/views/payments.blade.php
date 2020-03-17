@@ -60,7 +60,7 @@
                         <div class="form-group" id="useToHideAmount">
                             <label>Amount*</label>
                             <input id="getPaymentAmount" type="number" class="form-control form-control-sm"
-                                   placeholder="Amount"
+                                   placeholder="Enter Name..."
                                    value="">
                             <div id="valAmount" class="d-none"><p class="text-danger">Field is required</p></div>
                         </div>
@@ -68,7 +68,7 @@
                     </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSave" type="submit" class="btn btn-success">Save</button>
+                        <button id="btnSave" type="submit" class="btn btn-primary">Save</button>
                         @endif
                         @if($pageAuth['is_update']==1 || false)
                         <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>

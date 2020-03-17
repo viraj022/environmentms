@@ -51,7 +51,7 @@
 
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSave" type="submit" class="btn btn-success">Save</button>
+                        <button id="btnSave" type="submit" class="btn btn-primary">Save</button>
                         @endif
                         @if($pageAuth['is_update']==1 || false)
                         <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>

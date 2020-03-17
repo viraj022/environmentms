@@ -177,7 +177,7 @@
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                        <button type="submit" class="btn btn-success">Register</button>
+                                        <button type="submit" class="btn btn-primary">Register</button>
                                     </div>
                                 </form>
                             </div>
@@ -210,7 +210,7 @@
                                             <td>{{$user['activeStatus']}}</td>
                                             <td>
                                                 <a href="/users/id/{{$user['id']}}"
-                                                   class="btn btn-sm btn-success">Select</a>
+                                                   class="btn btn-sm btn-primary">Select</a>
                                             </td>
                                         </tr>
                                     @endforeach
