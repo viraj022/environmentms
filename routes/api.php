@@ -234,6 +234,22 @@ Route::middleware('auth:api')->get('/pradesheeyasaba/code/{code}','Pradesheeyasa
         
 }
 */
+Route::middleware('auth:api')->get('/pradesheeyasabas/zone/id/{id}','PradesheeyasabaController@getLocalAuthorityByZone'); //check for unique Code
+/*
+ value if code is  available 
+ 
+ {
+ "id":1,
+  "message":"unique"
+ }
+ 
+ value if code is not available 
+{
+    "id":1,
+    "message":"notunique"
+        
+}
+*/
 
 //end Pradesheeyasaba api
 
