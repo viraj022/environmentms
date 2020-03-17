@@ -27,12 +27,9 @@ class AssistantDirectorController extends Controller
     public function create()
     {
 
-        $user = Auth::user(); 
-        $pageAuth = $user->authentication(config('auth.privileges.assistantDirector')); 
-        // request()->validate([
-        //     'name' => 'required|unique:pradesheeyasabas,name',
-        //     'code' => 'required|unique:pradesheeyasabas,code',
-        // ]);
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
+
         if ($pageAuth['is_create']) {
             $assistantDirector = new AssistantDirector();
             $assistantDirector->user_id = \request('user_id');
@@ -62,53 +59,45 @@ class AssistantDirectorController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
         request()->validate([
-         'user_id' => 'required',
-         'zone_id' => 'required',
-     ]);
+            'user_id' => 'required',
+            'zone_id' => 'required',
+        ]);
         if ($pageAuth['is_update']) {
-         $assistantdirector = AssistantDirector::findOrFail($id); 
-         $assistantdirector->user_id= \request('user_id'); 
-         $assistantdirector->zone_id= \request('zone_id'); 
-         $msg = $assistantdirector->save(); 
-         if ($msg) {
-             return array('id' => 1, 'message' => 'true'); 
-         }  
-         else 
-         { 
-             return array('id' => 0, 'message' => 'false'); 
-         } 
-     } 
-     else 
-     { 
-      abort(401); 
-  }  
-}
+            $assistantdirector = AssistantDirector::findOrFail($id);
+            $assistantdirector->user_id = \request('user_id');
+            $assistantdirector->zone_id = \request('zone_id');
+            $msg = $assistantdirector->save();
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(401);
+        }
+    }
 
-public function UnActiveAssistantDirector($id)
-{
-    $user = Auth::user();
-    $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
-       //  request()->validate([
-       //     'user_id' => 'required',
-       //     'zone_id' => 'required',
-       // ]);
-    if ($pageAuth['is_update']) {
-     $assistantdirector = AssistantDirector::findOrFail($id); 
-     $assistantdirector->active_status ='0';
-     $msg = $assistantdirector->save(); 
-     if ($msg) {
-         return array('id' => 1, 'message' => 'true'); 
-     }  
-     else 
-     { 
-         return array('id' => 0, 'message' => 'false'); 
-     } 
- } 
- else 
- { 
-  abort(401); 
-}  
-}
+    public function UnActiveAssistantDirector($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
+        //  request()->validate([
+        //     'user_id' => 'required',
+        //     'zone_id' => 'required',
+        // ]);
+        if ($pageAuth['is_update']) {
+            $assistantdirector = AssistantDirector::findOrFail($id);
+            $assistantdirector->active_status = '0';
+            $msg = $assistantdirector->save();
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(401);
+        }
+    }
     /**
      * Display the specified resource.
      *
@@ -151,99 +140,109 @@ public function UnActiveAssistantDirector($id)
      */
     public function destroy(AssistantDirector $assistantDirector)
     {
-        //
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
+        //  request()->validate([
+        //     'user_id' => 'required',
+        //     'zone_id' => 'required',
+        // ]);
+        if ($pageAuth['is_update']) {
+            $assistantdirector = AssistantDirector::findOrFail($id);
+            $assistantdirector->active_status = '0';
+            $msg = $assistantdirector->save();
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(401);
+        }
     }
 
-//get allUser not in 
+    //get allUser not in 
     public function getAllUsersNotInAssistantDirector()
     {
 
 
-        $user = Auth::user(); 
-        $pageAuth = $user->authentication(config('auth.privileges.assistantDirector')); 
-        if ($pageAuth['is_read']) { 
-           $allAssistantDerectors = AssistantDirector::where('active_status', '1')
-           ->get();
-//return $allAssistantDerectors;
-           return User::wherenotin('id', $allAssistantDerectors)
-           ->get();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
+        if ($pageAuth['is_read']) {
+            $allAssistantDerectors = AssistantDirector::where('active_status', '1')
+                ->get();
+            //return $allAssistantDerectors;
+            return User::wherenotin('id', $allAssistantDerectors)
+                ->get();
 
-  //return AssistantDirector::get(); 
-       } else 
-       { 
-        abort(401); 
-    } 
-}
- //end get allUser not in 
-
-
-
-
-//get all active_AssistantDirector
-public function getAll_active_AssistantDirector()
-{
-    $user = Auth::user(); 
-    $pageAuth = $user->authentication(config('auth.privileges.assistantDirector')); 
-    if ($pageAuth['is_read']) {
-
-
-     //    PaymentType::get();
-       return AssistantDirector::join('users','assistant_directors.user_id','=','users.id' )
-       ->join('zones','assistant_directors.zone_id','=','zones.id')
-       ->where('assistant_directors.active_status','=','1')
-       ->select('users.first_name as first_name','users.last_name as last_name','users.user_name as user_name','users.id as user_id','zones.id as zone_id','zones.name as zone_name')
-       ->get();
-
-
-   } else {
-    abort(401);
-}
-}
-public function assistantDirectorByZone($id)
-{
-    $user = Auth::user(); 
-    $pageAuth = $user->authentication(config('auth.privileges.assistantDirector')); 
-    if ($pageAuth['is_read']) {
-
-       return AssistantDirector::join('users','assistant_directors.user_id','=','users.id' )
-       ->join('zones','assistant_directors.zone_id','=','zones.id')
-       ->where('assistant_directors.active_status','=','1')
-       ->where('zones.id','=' , $id)
-       ->select('users.first_name as first_name','users.last_name as last_name','users.user_name as user_name','users.id as user_id','zones.id as zone_id','zones.name as zone_name')
-       ->get();
-
-
-   } else {
-    abort(401);
-}
-}
-
- //end get all active_AssistantDirector
+            //return AssistantDirector::get(); 
+        } else {
+            abort(401);
+        }
+    }
+    //end get allUser not in 
 
 
 
 
-//get a AssistantDirector
-public function get_a_AssistantDirector($id)
-{
-    $user = Auth::user(); 
-    $pageAuth = $user->authentication(config('auth.privileges.assistantDirector')); 
-    if ($pageAuth['is_read']) {
+    //get all active_AssistantDirector
+    public function getAll_active_AssistantDirector()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
+        if ($pageAuth['is_read']) {
 
 
-     //    PaymentType::get();
-       return AssistantDirector::join('users','assistant_directors.user_id','=','users.id' )
-       ->join('zones','assistant_directors.zone_id','=','zones.id')
-       ->where('assistant_directors.id','=',$id)
-       ->select('users.first_name as first_name','users.last_name as last_name','users.user_name as user_name','users.id as user_id','zones.id as zone_id','zones.name as zone_name','assistant_directors.active_status as active_status')
-       ->first();
+            //    PaymentType::get();
+            return AssistantDirector::join('users', 'assistant_directors.user_id', '=', 'users.id')
+                ->join('zones', 'assistant_directors.zone_id', '=', 'zones.id')
+                ->where('assistant_directors.active_status', '=', '1')
+                ->select('users.first_name as first_name', 'users.last_name as last_name', 'users.user_name as user_name', 'users.id as user_id', 'zones.id as zone_id', 'zones.name as zone_name')
+                ->get();
+        } else {
+            abort(401);
+        }
+    }
+    public function assistantDirectorByZone($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
+        if ($pageAuth['is_read']) {
+
+            return AssistantDirector::join('users', 'assistant_directors.user_id', '=', 'users.id')
+                ->join('zones', 'assistant_directors.zone_id', '=', 'zones.id')
+                ->where('assistant_directors.active_status', '=', '1')
+                ->where('zones.id', '=', $id)
+                ->select('users.first_name as first_name', 'users.last_name as last_name', 'users.user_name as user_name', 'users.id as user_id', 'zones.id as zone_id', 'zones.name as zone_name')
+                ->get();
+        } else {
+            abort(401);
+        }
+    }
+
+    //end get all active_AssistantDirector
 
 
-   } else {
-    abort(401);
-}
-}
 
- //end get a AssistantDirector
+
+    //get a AssistantDirector
+    public function get_a_AssistantDirector($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
+        if ($pageAuth['is_read']) {
+
+
+            //    PaymentType::get();
+            return AssistantDirector::join('users', 'assistant_directors.user_id', '=', 'users.id')
+                ->join('zones', 'assistant_directors.zone_id', '=', 'zones.id')
+                ->where('assistant_directors.id', '=', $id)
+                ->select('users.first_name as first_name', 'users.last_name as last_name', 'users.user_name as user_name', 'users.id as user_id', 'zones.id as zone_id', 'zones.name as zone_name', 'assistant_directors.active_status as active_status')
+                ->first();
+        } else {
+            abort(401);
+        }
+    }
+
+    //end get a AssistantDirector
 
 }//end calss

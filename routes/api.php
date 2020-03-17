@@ -574,7 +574,7 @@ server responce
 
 */
 
- Route::middleware('auth:api')->put('/unassistantdirector/id/{id}', 'AssistantDirectorController@UnActiveAssistantDirector'); //update AssistantDirector  to unactive
+ Route::middleware('auth:api')->delete('/unassistantdirector/id/{id}', 'AssistantDirectorController@destroy'); //delete AssistantDirector  
 /*
 server responce
 
