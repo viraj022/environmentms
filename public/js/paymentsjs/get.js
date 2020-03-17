@@ -31,7 +31,7 @@ function loadTable(id) {
             table += "<td>" + payvalue.name + "</td>";
             table += "<td>" + payvalue.type + "</td>";
             table += "<td>" + payvalue.amount + "</td>";
-            table += "<td><button id='" + payvalue.id + "' type='button' class='btn btn-block btn-success btn-xs btnAction'>Select</button></td>";
+            table += "<td><button id='" + payvalue.id + "' type='button' class='btn btn-block btn-primary btn-xs btnAction'>Select</button></td>";
             table += "</tr>";
         });
         $('#tblPayments tbody').html(table);

@@ -2440,10 +2440,8 @@ fieldset:disabled a.btn {
 
 .btn-primary {
   color: #ffffff;
-  background-color: #1fab3f;
-  border-color: #1fab3f;
-/*  background-color: #007bff;
-  border-color: #007bff;*/
+  background-color: #007bff;
+  border-color: #007bff;
   box-shadow: none;
 }
 

@@ -72,7 +72,7 @@ function loadTable() {
             table += "<td>" + id++ + "</td>";
             table += "<td>" + value.name + "</td>";
             table += "<td>" + value.code + "</td>";
-            table += "<td><button id='" + value.id + "' type='button' class='btn btn-block btn-success btn-xs btnAction'>Select</button></td>";
+            table += "<td><button id='" + value.id + "' type='button' class='btn btn-block btn-primary btn-xs btnAction'>Select</button></td>";
             table += "</tr>";
         });
         $('#tblPradesiyasaba tbody').html(table);
