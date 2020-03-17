@@ -189,7 +189,7 @@
                                 </table>
                             </div>
                             <div class="card-footer">
-                                <button type="button" class="btn btn-success" id="btnReset">Reset</button>
+                                <button type="button" class="btn btn-primary" id="btnReset">Reset</button>
                                 <button type="button" class="btn btn-success" id="btnSetRollPrivilege">Default Privilege
                                 </button>
                                 @if($pageAuth['is_update']==1 || true)

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
+use App\AssistantDirector;
 use App\EnvironmentOfficer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EnvironmentOfficerController extends Controller
 {
@@ -24,7 +27,36 @@ class EnvironmentOfficerController extends Controller
      */
     public function create()
     {
-        //
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        request()->validate([
+            'user_id' => 'required',
+            'assistantDirector_id' => 'required',
+        ]);
+        if ($pageAuth['is_create']) {
+
+            if ($this->checkAssistantDirector(\request('user_id'))) {
+                if ($this->checkEnvironmentOfficer(\request('user_id'))) {
+                    $environmentOfficer = new EnvironmentOfficer();
+                    $environmentOfficer->user_id = \request('user_id');
+                    $environmentOfficer->assistant_director_id = \request('assistantDirector_id');
+                    $environmentOfficer->active_status = '1';
+                    $msg = $environmentOfficer->save();
+
+                    if ($msg) {
+                        return array('id' => 1, 'message' => 'true');
+                    } else {
+                        return array('id' => 0, 'message' => 'false');
+                    }
+                } else {
+                    return array('message' => 'Custom Validation unprocessable entry', 'errors' => array('user_id' => 'user is already already assigned as an active environment officer'));
+                }
+            } else {
+                return array('message' => 'Custom Validation unprocessable entry', 'errors' => array('user_id' => 'can not assign active assistant directer as an environment officer'));
+            }
+        } else {
+            abort(401);
+        }
     }
 
     /**
@@ -46,7 +78,71 @@ class EnvironmentOfficerController extends Controller
      */
     public function show(EnvironmentOfficer $environmentOfficer)
     {
-        //
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        if ($pageAuth['is_read']) {
+            $assistantDirectors = AssistantDirector::where('active_status', '1')->select('id')->get();
+            $environmentOfficers = EnvironmentOfficer::where('active_status', '1')->select('id')->get();
+
+            return User::wherenotin('id', $assistantDirectors)->wherenotin('id', $environmentOfficers)->get();
+        } else {
+            abort(401);
+        }
+    }
+
+    public function getAEnvironmentOfficer($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        if ($pageAuth['is_read']) {
+            return  EnvironmentOfficer::where('environment_officers.id', '=', $id)
+                ->join('assistant_directors', 'environment_officers.assistant_director_id', 'assistant_directors.id')
+                ->join('zones', 'assistant_directors.zone_id', 'zones.id')
+                ->join('users', 'environment_officers.user_id', '=', 'users.id')
+                ->join('users as assistant_director_users', 'environment_officers.assistant_director_id', '=', 'assistant_director_users.id')
+                ->select(
+                    'users.first_name as first_name',
+                    'users.last_name as last_name',
+                    'users.user_name as user_name',
+                    'users.id as user_id',
+                    'environment_officers.active_status',
+                    'zones.id as zone_id',
+                    'zones.name as zone_name',
+                    'assistant_director_users.first_name as assistant_director_first_name',
+                    'assistant_director_users.last_name as assistant_director_last_name',
+                    'assistant_director_users.user_name as assistant_director_user_name'
+                )
+                ->first();
+        } else {
+            abort(401);
+        }
+    }
+    public function getAEnvironmentOfficerByAssitantDirector($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        if ($pageAuth['is_read']) {
+            return  EnvironmentOfficer::where('environment_officers.assistant_director_id', '=', $id)
+                ->join('assistant_directors', 'environment_officers.assistant_director_id', 'assistant_directors.id')
+                ->join('zones', 'assistant_directors.zone_id', 'zones.id')
+                ->join('users', 'environment_officers.user_id', '=', 'users.id')
+                ->join('users as assistant_director_users', 'environment_officers.assistant_director_id', '=', 'assistant_director_users.id')
+                ->select(
+                    'users.first_name as first_name',
+                    'users.last_name as last_name',
+                    'users.user_name as user_name',
+                    'users.id as user_id',
+                    'environment_officers.active_status',
+                    'zones.id as zone_id',
+                    'zones.name as zone_name',
+                    'assistant_director_users.first_name as assistant_director_first_name',
+                    'assistant_director_users.last_name as assistant_director_last_name',
+                    'assistant_director_users.user_name as assistant_director_user_name'
+                )
+                ->get();
+        } else {
+            abort(401);
+        }
     }
 
     /**
@@ -78,8 +174,41 @@ class EnvironmentOfficerController extends Controller
      * @param  \App\EnvironmentOfficer  $environmentOfficer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EnvironmentOfficer $environmentOfficer)
+    public function destroy($id)
     {
-        //
+        $environmentOfficer = EnvironmentOfficer::find($id);
+        if ($environmentOfficer !== null) {
+            $environmentOfficer->active_status = 0;
+            $msg =  $environmentOfficer->save();
+
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(401);
+        }
+    }
+
+    public function checkAssistantDirector($id)
+    {
+        $assistantDirector = AssistantDirector::where('user_id', '=', $id)
+            ->where('active_status', '=', 1)->first();
+        if ($assistantDirector === null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function checkEnvironmentOfficer($id)
+    {
+        $environmentOfficer = EnvironmentOfficer::where('user_id', '=', $id)
+            ->where('active_status', '=', 1)->first();
+        if ($environmentOfficer === null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
