@@ -306,8 +306,12 @@
         //Add via Enter Key
         if (keycode === 13) {
             if ($('#trackUsr').hasClass('d-none')) {
-                loadTextBoxes();
-                event.preventDefault();
+                if ($('#btnSave').hasClass('btn-success')) {
+                    loadTextBoxes();
+                    event.preventDefault();
+                } else {
+                    alert('Please Delete And Add New Ranges');
+                }
             } else {
                 alert('Please select a payment range.');
             }

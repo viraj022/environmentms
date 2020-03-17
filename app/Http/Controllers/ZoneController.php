@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Pradesheeyasaba;
+use App\Zone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PradesheeyasabaController extends Controller {
+class ZoneController extends Controller {
 
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class PradesheeyasabaController extends Controller {
      */
     public function index() {
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
-        return view('pradesheyasaba', ['pageAuth' => $pageAuth]);
+        $pageAuth = $user->authentication(config('auth.privileges.zone'));
+        return view('zone', ['pageAuth' => $pageAuth]);
     }
 
     /**
@@ -26,22 +26,32 @@ class PradesheeyasabaController extends Controller {
      */
     public function create() {
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
+        $pageAuth = $user->authentication(config('auth.privileges.zone'));
         request()->validate([
-            'name' => 'required|unique:pradesheeyasabas,name',
-            'code' => 'required|unique:pradesheeyasabas,code',
+            'name' => 'required|unique:zones,name',
+            'code' => 'required|unique:zones,code',
         ]);
         if ($pageAuth['is_create']) {
-            $pradesheyasaba = new Pradesheeyasaba();
-            $pradesheyasaba->name = \request('name');
-            $pradesheyasaba->code = \request('code');
-            $msg = $pradesheyasaba->save();
+            $zone = new Zone();
+            $zone->name = \request('name');
+            $zone->code = \request('code');
+            $msg = $zone->save();
 
             if ($msg) {
                 return array('id' => 1, 'message' => 'true');
             } else {
                 return array('id' => 0, 'message' => 'false');
             }
+        } else {
+            abort(401);
+        }
+    }
+
+    public function find($id) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.zone'));
+        if ($pageAuth['is_read']) {
+            return zone::findOrFail($id);
         } else {
             abort(401);
         }
@@ -55,33 +65,22 @@ class PradesheeyasabaController extends Controller {
      */
     public function store($id) {
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
-//           request()->validate([
-//                'name' => 'required|unique:pradesheeyasabas,name',
-//                'code' => 'required|unique:pradesheeyasabas,code',           
-//            ]);
-
-
-
-
-
+        $pageAuth = $user->authentication(config('auth.privileges.zone'));
         if ($pageAuth['is_update']) {
-            $pradesheyasaba = Pradesheeyasaba::findOrFail($id);
-            if ($pradesheyasaba->name != \request('name')) {
+            $zone = zone::findOrFail($id);
+            if ($zone->name != \request('name')) {
                 request()->validate([
-                    'name' => 'required|unique:pradesheeyasabas,name'
+                    'name' => 'required|unique:zones,name'
                 ]);
-                $pradesheyasaba->name = \request('name');
+                $zone->name = \request('name');
             }
-            if ($pradesheyasaba->code != \request('code')) {
+            if ($zone->code != \request('code')) {
                 request()->validate([
-                    'code' => 'required|unique:pradesheeyasabas,code'
+                    'code' => 'required|unique:zones,code'
                 ]);
-                $pradesheyasaba->code = \request('code');
+                $zone->code = \request('code');
             }
-//            $pradesheyasaba ->name = \request('name');
-//        $pradesheyasaba ->code = \request('code');
-            $msg = $pradesheyasaba->save();
+            $msg = $zone->save();
 
             if ($msg) {
                 return array('id' => 1, 'message' => 'true');
@@ -96,14 +95,14 @@ class PradesheeyasabaController extends Controller {
     /**
      * Display the specified resource.
      *
-     * @param  \App\Pradesheeyasaba  $pradesheeyasaba
+     * @param  \App\Zone  $zone
      * @return \Illuminate\Http\Response
      */
-    public function show() {
+    public function show(Zone $zone) {
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
+        $pageAuth = $user->authentication(config('auth.privileges.zone'));
         if ($pageAuth['is_read']) {
-            return Pradesheeyasaba::get();
+            return Zone::get();
         } else {
             abort(401);
         }
@@ -112,10 +111,10 @@ class PradesheeyasabaController extends Controller {
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Pradesheeyasaba  $pradesheeyasaba
+     * @param  \App\Zone  $zone
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pradesheeyasaba $pradesheeyasaba) {
+    public function edit(Zone $zone) {
         //
     }
 
@@ -123,27 +122,26 @@ class PradesheeyasabaController extends Controller {
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Pradesheeyasaba  $pradesheeyasaba
+     * @param  \App\Zone  $zone
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pradesheeyasaba $pradesheeyasaba) {
+    public function update(Request $request, Zone $zone) {
         //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Pradesheeyasaba  $pradesheeyasaba
+     * @param  \App\Zone  $zone
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
+        $pageAuth = $user->authentication(config('auth.privileges.zone'));
         if ($pageAuth['is_delete']) {
-            $pradesheyasaba = Pradesheeyasaba::findOrFail($id);
+            $zone = zone::findOrFail($id);
             ;
-            //$attachment->name= \request('name');
-            $msg = $pradesheyasaba->delete();
+            $msg = $zone->delete();
 
             if ($msg) {
                 return array('id' => 1, 'message' => 'true');
@@ -155,22 +153,12 @@ class PradesheeyasabaController extends Controller {
         }
     }
 
-    public function find($id) {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
-        if ($pageAuth['is_read']) {
-            return Pradesheeyasaba::findOrFail($id);
-        } else {
-            abort(401);
-        }
-    }
-
     public function isNameUnique($name) {
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
+        $pageAuth = $user->authentication(config('auth.privileges.zone'));
 
         if ($pageAuth['is_create']) {
-            $raw = Pradesheeyasaba::where('name', '=', $name)->first();
+            $raw = Zone::where('name', '=', $name)->first();
             if ($raw === null) {
                 return array('id' => 1, 'message' => 'unique');
             } else {
@@ -178,13 +166,12 @@ class PradesheeyasabaController extends Controller {
             }
         }
     }
-
     public function isCodeUnique($code) {
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
+        $pageAuth = $user->authentication(config('auth.privileges.zone'));
 
         if ($pageAuth['is_create']) {
-            $raw = Pradesheeyasaba::where('code', '=', $code)->first();
+            $raw = Zone::where('code', '=', $code)->first();
             if ($raw === null) {
                 return array('id' => 1, 'message' => 'unique');
             } else {

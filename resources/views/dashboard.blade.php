@@ -321,7 +321,7 @@
                             <div class="input-group">
                                 <input type="text" name="message" placeholder="Type Message ..." class="form-control form-control-sm">
                                 <span class="input-group-append">
-                      <button type="button" class="btn btn-primary">Send</button>
+                      <button type="button" class="btn btn-success">Send</button>
                     </span>
                             </div>
                         </form>
@@ -475,13 +475,13 @@
                         <!-- card tools -->
                         <div class="card-tools">
                             <button type="button"
-                                    class="btn btn-primary btn-sm daterange"
+                                    class="btn btn-success btn-sm daterange"
                                     data-toggle="tooltip"
                                     title="Date range">
                                 <i class="far fa-calendar-alt"></i>
                             </button>
                             <button type="button"
-                                    class="btn btn-primary btn-sm"
+                                    class="btn btn-success btn-sm"
                                     data-card-widget="collapse"
                                     data-toggle="tooltip"
                                     title="Collapse">

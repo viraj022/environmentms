@@ -121,6 +121,8 @@ return [
         'pradesheyasaba' => 4,
         'industry' => 5,
         'paymentDetails' => 6,
+        'zone' => 7,
+        'assistantDirector' => 8,
         
     ],
 

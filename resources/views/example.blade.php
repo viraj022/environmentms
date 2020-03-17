@@ -48,7 +48,7 @@
                            
                             <div class="card-footer">
                                 @if($pageAuth['is_create']==1 || false)
-                                    <button id="btnUpdateModel" type="submit" class="btn btn-primary" data-toggle="modal"
+                                    <button id="btnUpdateModel" type="submit" class="btn btn-success" data-toggle="modal"
                                             data-target="#modal-xl">Save</button>
                                 @endif
                                 @if($pageAuth['is_update']==1 || false)

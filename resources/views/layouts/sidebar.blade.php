@@ -108,7 +108,7 @@
                     </a>
                 </li>
                 @endif
-                             @if($pre['id']===config('auth.privileges.industry'))
+                @if($pre['id']===config('auth.privileges.industry'))
                 <li class="nav-item">
                     <a href="{{ url('/payment_type') }}" class="nav-link {{ Request::is('payment_type') ? 'active' : '' }}">
                         <i class="fas fa-puzzle-piece nav-icon"></i>
@@ -125,6 +125,14 @@
                     <a href="{{ url('/payment_range') }}" class="nav-link {{ Request::is('payment_range') ? 'active' : '' }}">
                         <i class="fas fa-puzzle-piece nav-icon"></i>
                         <p>Payment Range</p>
+                    </a>
+                </li>
+                @endif
+                @if($pre['id']===config('auth.privileges.zone'))
+                <li class="nav-item">
+                    <a href="{{ url('/zone') }}" class="nav-link {{ Request::is('zone') ? 'active' : '' }}">
+                        <i class="fas fa-file-archive nav-icon"></i>
+                        <p>Zone</p>
                     </a>
                 </li>
                 @endif

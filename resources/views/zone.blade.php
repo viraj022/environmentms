@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Industry Category</h1>
+                <h1>Zone</h1>
             </div>
         </div>
     </div>
@@ -31,25 +31,26 @@
             <div class="col-md-5">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <label id="lblTitle">Add New Industry Category</label>
+                        <label id="lblTitle">Add New Zone</label>
                     </div>
                     <div class="card-body">
-                        <label>Name*</label>
-                        <input id="getIndustryName" type="text" class="form-control form-control-sm"
-                               placeholder="Enter Industry Name..."
-                               value="">
-                        <div id="valIndustryName" class="d-none"><p class="text-danger">Industry Name is required</p></div>
-                        <div id="valUnique" class="d-none"><p class="text-danger">Name already taken!</p></div>
+                        <div class="form-group">
+                            <label>Name*</label>
+                            <input id="getName" type="text" class="form-control form-control-sm"
+                                   placeholder="Enter Zone Name..."
+                                   value="">
+                            <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                            <div id="uniName" class="d-none"><p class="text-danger">Name Already Taken!</p></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Code*</label>
+                            <input id="getCode" type="text" class="form-control form-control-sm"
+                                   placeholder="Enter Zone Code..."
+                                   value="">
+                            <div id="valCode" class="d-none"><p class="text-danger">Code is required</p></div>
+                            <div id="uniCode" class="d-none"><p class="text-danger">Code Already Taken!</p></div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <label>Code*</label>
-                        <input id="getIndustryCode" type="text" class="form-control form-control-sm"
-                               placeholder="Enter Industry Code..."
-                               value="">
-                        <div id="valIndustryCode" class="d-none"><p class="text-danger">Industry Code is required</p></div>
-                        <div id="valCodeUnique" class="d-none"><p class="text-danger">Code already taken!</p></div>
-                    </div>
-
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
                         <button id="btnSave" type="submit" class="btn btn-success">Save</button>
@@ -74,23 +75,23 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">Industry Categories</h3>
+                                        <h3 class="card-title">All Zones</h3>
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body p-0">
                                         <div class="card-body table-responsive" style="height: 450px;">
-                                        <table class="table table-condensed assignedPrivilages" id="tblIndustryCat">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 10px">#</th>
-                                                    <th>Industry Name</th>
-                                                    <th>Industry Code</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
+                                            <table class="table table-condensed" id="tblZone">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 10px">#</th>
+                                                        <th>Name</th>
+                                                        <th>Code</th>
+                                                        <th style="width: 140px">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                     <!-- /.card-body -->
@@ -108,13 +109,13 @@
     <div class="modal-dialog">
         <div class="modal-content bg-danger">
             <div class="modal-header">
-                <h4 class="modal-title">Delete Industry Category</h4>
+                <h4 class="modal-title">Delete Selected Item</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p><b>Are you sure you want to permanently delete this Industry Category? </b></p>
+                <p><b>Are you sure you want to permanently delete this Item? </b></p>
                 <p>Once you continue, this process can not be undone. Please Procede with care.</p>
             </div>
             <div class="modal-footer justify-content-between">
@@ -153,10 +154,10 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
-<script src="../../js/industrycatjs/submit.js"></script>
-<script src="../../js/industrycatjs/get.js"></script>
-<script src="../../js/industrycatjs/update.js"></script>
-<script src="../../js/industrycatjs/delete.js"></script>
+<script src="../../js/zonejs/submit.js"></script>
+<script src="../../js/zonejs/get.js"></script>
+<script src="../../js/zonejs/update.js"></script>
+<script src="../../js/zonejs/delete.js"></script>
 <!-- AdminLTE App -->
 <script>
     $(function () {
@@ -172,13 +173,14 @@
 //click save button
         $('#btnSave').click(function () {
             var data = fromValues();
-            if (Validiteinsert(data)) {
-                //if validiated!
-                uniqueNamecheck(data.name, function (r) {
-                    uniqueCodecheck(data.code, function (re) {
-                        if (r.message == 'unique') {
-                            if (re.message == 'unique') {
-                                AddIndustry(data, function (result) {
+            uniqueNamecheck(data.name, function (res) {
+                if (res.message === 'unique') {
+                    uniqueCodecheck(data.code, function (rest) {
+                        if (rest.message === 'unique') {
+                            ///fkf
+                            if (Validiteinsert(data)) {
+                                // if validiated
+                                AddZone(data, function (result) {
                                     if (result.id == 1) {
                                         Toast.fire({
                                             type: 'success',
@@ -192,29 +194,28 @@
                                     }
                                     loadTable();
                                     resetinputFields();
+                                    hideAllErrors();
                                 });
-                            } else {
-                                $('#valIndustryName').addClass('d-none');
-//                            $('#valUnique').removeClass('d-none');
-                                $('#valCodeUnique').removeClass('d-none');
                             }
-                        } else
-                        {
-                            $('#valIndustryName').addClass('d-none');
-                            $('#valUnique').removeClass('d-none');
-//                            $('#valCodeUnique').removeClass('d-none');
+                            ///fkf   
+                        } else {
+                            $('#uniCode').removeClass('d-none');
                         }
                     });
-                });
-            }
-            hideAllErrors();
+
+                } else {
+                    $('#uniName').removeClass('d-none');
+                    //$('#uniCode').removeClass('d-none');  
+                }
+
+            });
         });
 //click update button
         $('#btnUpdate').click(function () {
             //get form data
             var data = fromValues();
             if (Validiteupdate(data)) {
-                updateIndustry($('#btnUpdate').val(), data, function (result) {
+                updateZone($('#btnUpdate').val(), data, function (result) {
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
@@ -235,7 +236,7 @@
         });
 //click delete button
         $('#btnDelete').click(function () {
-            deleteIndustry($('#btnDelete').val(), function (result) {
+            deleteZone($('#btnDelete').val(), function (result) {
                 if (result.id == 1) {
                     Toast.fire({
                         type: 'success',
@@ -255,9 +256,9 @@
         });
 //select button action 
         $(document).on('click', '.btnAction', function () {
-            getaIndustrybyId(this.id, function (result) {
-                $('#getIndustryName').val(result.name);
-                $('#getIndustryCode').val(result.code);
+            getaZonebyId(this.id, function (result) {
+                $('#getName').val(result.name);
+                $('#getCode').val(result.code);
                 showUpdate();
                 $('#btnUpdate').val(result.id);
                 $('#btnDelete').val(result.id);
@@ -279,23 +280,25 @@
     }
 //Reset all fields    
     function resetinputFields() {
-        $('#getIndustryName').val('');
-        $('#getIndustryCode').val('');
+        $('#getName').val('');
+        $('#getCode').val('');
         $('#btnUpdate').val('');
         $('#btnDelete').val('');
     }
-//HIDE ALL ERROR MSGS   
-    function hideAllErrors() {
-        $('#valCodeUnique').addClass('d-none');
-        $('#valUnique').addClass('d-none');
-    }    
 //get form values
     function fromValues() {
         var data = {
-            name: $('#getIndustryName').val(),
-            code: $('#getIndustryCode').val()
+            name: $('#getName').val(),
+            code: $('#getCode').val()
         };
         return data;
+    }
+//HIDE ALL ERROR MSGS   
+    function hideAllErrors() {
+        $('#valName').addClass('d-none');
+        $('#valCode').addClass('d-none');
+        $('#uniName').addClass('d-none');
+        $('#uniCode').addClass('d-none');
     }
 </script>
 @endsection

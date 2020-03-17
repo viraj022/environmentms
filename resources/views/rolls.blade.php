@@ -120,7 +120,7 @@
 
                                                     </div>
                                                     <div class="card-footer">
-                                                        <button type="submit" class="btn btn-primary" id="btnSaveRoll">
+                                                        <button type="submit" class="btn btn-success" id="btnSaveRoll">
                                                             Save
                                                         </button>
                                                     </div>
@@ -190,7 +190,7 @@
 
                                         </div>
                                         @if($pageAuth['is_update']==1 || false)
-                                            <button type="button" class="btn btn-primary" id="btnAssign">Assign</button>
+                                            <button type="button" class="btn btn-success" id="btnAssign">Assign</button>
                                         @endif
                                     </div>
                                 </div>
