@@ -7,16 +7,17 @@ use App\AssistantDirector;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AssistantDirectorController extends Controller
-{
+class AssistantDirectorController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
+        return view('assistant_director', ['pageAuth' => $pageAuth]);
     }
 
     /**
@@ -24,12 +25,14 @@ class AssistantDirectorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
 
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
-
+        request()->validate([
+            'name' => 'required|unique:pradesheeyasabas,name',
+            'code' => 'required|unique:pradesheeyasabas,code',
+        ]);
         if ($pageAuth['is_create']) {
             $assistantDirector = new AssistantDirector();
             $assistantDirector->user_id = \request('user_id');
@@ -54,8 +57,7 @@ class AssistantDirectorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($id)
-    {
+    public function store($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
         request()->validate([
@@ -104,8 +106,7 @@ class AssistantDirectorController extends Controller
      * @param  \App\AssistantDirector  $assistantDirector
      * @return \Illuminate\Http\Response
      */
-    public function show(AssistantDirector $assistantDirector)
-    {
+    public function show(AssistantDirector $assistantDirector) {
         //
     }
 
@@ -115,8 +116,7 @@ class AssistantDirectorController extends Controller
      * @param  \App\AssistantDirector  $assistantDirector
      * @return \Illuminate\Http\Response
      */
-    public function edit(AssistantDirector $assistantDirector)
-    {
+    public function edit(AssistantDirector $assistantDirector) {
         //
     }
 
@@ -127,8 +127,7 @@ class AssistantDirectorController extends Controller
      * @param  \App\AssistantDirector  $assistantDirector
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AssistantDirector $assistantDirector)
-    {
+    public function update(Request $request, AssistantDirector $assistantDirector) {
         //
     }
 
@@ -219,7 +218,6 @@ class AssistantDirectorController extends Controller
         }
     }
 
-    //end get all active_AssistantDirector
 
 
 
@@ -231,17 +229,16 @@ class AssistantDirectorController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
         if ($pageAuth['is_read']) {
 
-
             //    PaymentType::get();
             return AssistantDirector::join('users', 'assistant_directors.user_id', '=', 'users.id')
-                ->join('zones', 'assistant_directors.zone_id', '=', 'zones.id')
-                ->where('assistant_directors.id', '=', $id)
-                ->select('users.first_name as first_name', 'users.last_name as last_name', 'users.user_name as user_name', 'users.id as user_id', 'zones.id as zone_id', 'zones.name as zone_name', 'assistant_directors.active_status as active_status')
-                ->first();
+            ->join('zones', 'assistant_directors.zone_id', '=', 'zones.id')
+            ->where('assistant_directors.id', '=', $id)
+            ->select('users.first_name as first_name', 'users.last_name as last_name', 'users.user_name as user_name', 'users.id as user_id', 'zones.id as zone_id', 'zones.name as zone_name', 'assistant_directors.active_status as active_status')
+            ->first();
         } else {
             abort(401);
         }
-    }
+    }  
 
     //end get a AssistantDirector
 
