@@ -167,7 +167,7 @@ class AssistantDirectorController extends Controller {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
         if ($pageAuth['is_read']) {
-            $allAssistantDerectors = AssistantDirector::where('active_status', '1')
+            $allAssistantDerectors = AssistantDirector::where('active_status', '1')->select('id')
                 ->get();
             //return $allAssistantDerectors;
             return User::wherenotin('id', $allAssistantDerectors)
