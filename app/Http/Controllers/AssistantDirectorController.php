@@ -191,7 +191,25 @@ public function getAll_active_AssistantDirector()
        return AssistantDirector::join('users','assistant_directors.user_id','=','users.id' )
        ->join('zones','assistant_directors.zone_id','=','zones.id')
        ->where('assistant_directors.active_status','=','1')
-       ->select('assistant_directors.*')
+       ->select('users.first_name as first_name','users.last_name as last_name','users.user_name as user_name','users.id as user_id','zones.id as zone_id','zones.name as zone_name')
+       ->get();
+
+
+   } else {
+    abort(401);
+}
+}
+public function assistantDirectorByZone($id)
+{
+    $user = Auth::user(); 
+    $pageAuth = $user->authentication(config('auth.privileges.assistantDirector')); 
+    if ($pageAuth['is_read']) {
+
+       return AssistantDirector::join('users','assistant_directors.user_id','=','users.id' )
+       ->join('zones','assistant_directors.zone_id','=','zones.id')
+       ->where('assistant_directors.active_status','=','1')
+       ->where('zones.id','=' , $id)
+       ->select('users.first_name as first_name','users.last_name as last_name','users.user_name as user_name','users.id as user_id','zones.id as zone_id','zones.name as zone_name')
        ->get();
 
 
@@ -217,8 +235,8 @@ public function get_a_AssistantDirector($id)
        return AssistantDirector::join('users','assistant_directors.user_id','=','users.id' )
        ->join('zones','assistant_directors.zone_id','=','zones.id')
        ->where('assistant_directors.id','=',$id)
-       ->select('assistant_directors.*')
-       ->get();
+       ->select('users.first_name as first_name','users.last_name as last_name','users.user_name as user_name','users.id as user_id','zones.id as zone_id','zones.name as zone_name','assistant_directors.active_status as active_status')
+       ->first();
 
 
    } else {

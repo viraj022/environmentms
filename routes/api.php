@@ -486,29 +486,59 @@ Route::middleware('auth:api')->get('/AssistantDirector/unassign','AssistantDirec
 
 Route::middleware('auth:api')->get('/AssistantDirector/active','AssistantDirectorController@getAll_active_AssistantDirector'); //get  all where activestatus =1  assistant director 
 // [
-//     {
-//         "id": 1,
-//         "user_id": 1,
-//         "zone_id": 1,
-//         "active_status": 1,
-//         "created_at": null,
-//         "updated_at": null
-//     }
+    // [
+    //     {
+    //         "first_name": "National",
+    //         "last_name": "National",
+    //         "user_name": "National",
+    //         "user_id": 1,
+    //         "zone_id": 1,
+    //         "zone_name": "zone 1"
+    //     },
+    //     {
+    //         "first_name": "Environment",
+    //         "last_name": "Authority",
+    //         "user_name": "envAdmin",
+    //         "user_id": 2,
+    //         "zone_id": 2,
+    //         "zone_name": "Zone 2"
+    //     }
+    // ]
+// ]
+Route::middleware('auth:api')->get('/AssistantDirector/active/zone/id/{id}','AssistantDirectorController@assistantDirectorByZone'); //get  all where activestatus =1 by zone id 
+// [
+    // [
+    //     {
+    //         "first_name": "National",
+    //         "last_name": "National",
+    //         "user_name": "National",
+    //         "user_id": 1,
+    //         "zone_id": 1,
+    //         "zone_name": "zone 1"
+    //     },
+    //     {
+    //         "first_name": "Environment",
+    //         "last_name": "Authority",
+    //         "user_name": "envAdmin",
+    //         "user_id": 2,
+    //         "zone_id": 2,
+    //         "zone_name": "Zone 2"
+    //     }
+    // ]
 // ]
 
 
  Route::middleware('auth:api')->get('/get_a_AssistantDirector/id/{id}', 'AssistantDirectorController@get_a_AssistantDirector'); //get a  AssistantDirector
 /*
-[
-    {
-        "id": 1,
-        "user_id": 1,
-        "zone_id": 1,
-        "active_status": 1,
-        "created_at": null,
-        "updated_at": null
-    }
-]
+{
+    "first_name": "National",
+    "last_name": "National",
+    "user_name": "National",
+    "user_id": 1,
+    "zone_id": 1,
+    "zone_name": "zone 1",
+    "active_status": 1
+}
 
 */
 Route::middleware('auth:api')->post('/AssistantDirector','AssistantDirectorController@create'); //insert assistant_director
