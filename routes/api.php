@@ -236,19 +236,32 @@ Route::middleware('auth:api')->get('/pradesheeyasaba/code/{code}','Pradesheeyasa
 */
 Route::middleware('auth:api')->get('/pradesheeyasabas/zone/id/{id}','PradesheeyasabaController@getLocalAuthorityByZone'); //check for unique Code
 /*
- value if code is  available 
- 
- {
- "id":1,
-  "message":"unique"
- }
- 
- value if code is not available 
-{
-    "id":1,
-    "message":"notunique"
-        
-}
+[
+    {
+        "id": 17,
+        "name": "Polpithigama Pradeshiya Sabha",
+        "code": "PPP",
+        "created_at": "2020-02-25 12:33:03",
+        "updated_at": "2020-02-25 12:33:03",
+        "zone_id": 2
+    },
+    {
+        "id": 23,
+        "name": "Giribawa Pradeshiya Sabha",
+        "code": "PGB",
+        "created_at": "2020-02-25 12:38:02",
+        "updated_at": "2020-02-25 12:38:02",
+        "zone_id": 2
+    },
+    {
+        "id": 25,
+        "name": "Udubaddawa Pradeshiya Sabha",
+        "code": "PUB",
+        "created_at": "2020-02-25 12:38:48",
+        "updated_at": "2020-02-25 12:38:48",
+        "zone_id": 2
+    }
+]
 */
 
 //end Pradesheeyasaba api
