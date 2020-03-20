@@ -146,7 +146,7 @@ class AssistantDirectorController extends Controller
      * @param  \App\AssistantDirector  $assistantDirector
      * @return \Illuminate\Http\Response
      */
-    public function destroy(AssistantDirector $assistantDirector)
+    public function destroy($id)
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
@@ -174,7 +174,7 @@ class AssistantDirectorController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
         if ($pageAuth['is_read']) {
-            $allAssistantDerectors = AssistantDirector::where('active_status', '1')->select('id')
+           $allAssistantDerectors = AssistantDirector::where('active_status', '1')->select('user_id')
                 ->get();
             //return $allAssistantDerectors;
             return User::wherenotin('id', $allAssistantDerectors)
@@ -202,12 +202,14 @@ class AssistantDirectorController extends Controller
             return AssistantDirector::join('users', 'assistant_directors.user_id', '=', 'users.id')
                 ->join('zones', 'assistant_directors.zone_id', '=', 'zones.id')
                 ->where('assistant_directors.active_status', '=', '1')
-                ->select('users.first_name as first_name', 'users.last_name as last_name', 'users.user_name as user_name', 'users.id as user_id', 'zones.id as zone_id', 'zones.name as zone_name')
+                ->select('assistant_directors.id','users.first_name as first_name', 'users.last_name as last_name', 'users.user_name as user_name', 'users.id as user_id', 'zones.id as zone_id', 'zones.name as zone_name')
                 ->get();
         } else {
             abort(401);
         }
     }
+
+
     public function assistantDirectorByZone($id)
     {
         $user = Auth::user();
@@ -240,7 +242,7 @@ class AssistantDirectorController extends Controller
             return AssistantDirector::join('users', 'assistant_directors.user_id', '=', 'users.id')
                 ->join('zones', 'assistant_directors.zone_id', '=', 'zones.id')
                 ->where('assistant_directors.id', '=', $id)
-                ->select('users.first_name as first_name', 'users.last_name as last_name', 'users.user_name as user_name', 'users.id as user_id', 'zones.id as zone_id', 'zones.name as zone_name', 'assistant_directors.active_status as active_status')
+                ->select('assistant_directors.id','users.first_name as first_name', 'users.last_name as last_name', 'users.user_name as user_name', 'users.id as user_id', 'zones.id as zone_id', 'zones.name as zone_name', 'assistant_directors.active_status as active_status')
                 ->first();
         } else {
             abort(401);

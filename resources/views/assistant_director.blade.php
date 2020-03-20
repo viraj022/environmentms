@@ -35,72 +35,87 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <label>Users*</label>
-                            <select id="getUsers" class="form-control form-control-sm">
-                                <option>Loading...</option>
-                            </select>
-                            <div id="valUsers" class="d-none"><p class="text-danger">Field is required</p></div>
-                        </div>
-                        <div class="form-group">
                             <label>Zone*</label>
-                            <select id="getZone" class="form-control form-control-sm">
+                            <select id="getZone" class="form-control form-control-sm select2 select2-purple" data-dropdown-css-class="select2-purple"
+                                                    style="width: 100%;" name="level">
                                 <option>Loading...</option>
                             </select>
                             <div id="valZone" class="d-none"><p class="text-danger">Field is required</p></div>
                         </div>
+
+                        <div class="form-group" id="comboUserDiplay">
+                            <label>Users*</label>
+                            <select id="getUsers" class="form-control form-control-sm select2 select2-purple"                                                  data-dropdown-css-class="select2-purple"
+                                                    style="width: 100%;" name="level">
+                                <option>Loading...</option>
+                            </select>
+                            <div id="valUsers" class="d-none"><p class="text-danger">Field is required</p></div>
+                        </div>
+
+                        <div class="form-group d-none" id="lblUserDiplay">
+                            <label>Users</label>
+                            <label  id="lblUserName" class="form-control form-control-sm"></label>
+  
+
+
+                        </div>
+
+
                     </div>
                     <div class="card-footer">
-                        @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSave" type="submit" class="btn btn-success">Save</button>
-                        @endif
-                        @if($pageAuth['is_update']==1 || false)
-                        <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
-                        @endif
-                        @if($pageAuth['is_delete']==1 || false)
-                        <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
-                                 data-target="#modal-danger">Delete</button>
-                        @endif
-                    </div>                           
-                </div>
-            </div>
+                       <button id="btnReset" type="submit" class="btn btn-info d-none">Reset</button>
+                       @if($pageAuth['is_create']==1 || false)
+                       <button id="btnSave" type="submit" class="btn btn-success">Save</button>
+                       @endif
+                       @if($pageAuth['is_update']==1 || false)
+                       <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
+                       @endif
+                       @if($pageAuth['is_delete']==1 || false)
+                       <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
+                       data-target="#modal-danger">Delete</button>
+                       @endif
+                   </div>                           
+               </div>
+           </div>
 
 
-            <div class="col-md-7">
-                <div class="card card-primary">
-                    <div class="card-body">
-                        <div class="row">
+           <div class="col-md-7">
+            <div class="card card-primary">
+                <div class="card-body">
+                    <div class="row">
 
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">All Assistant Directors</h3>
-                                    </div>
-                                    <!-- /.card-header -->
-                                    <div class="card-body p-0">
-                                        <div class="card-body table-responsive" style="height: 450px;">
-                                            <table class="table table-condensed" id="tblZone">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="width: 10px">#</th>
-                                                        <th>Name</th>
-                                                        <th>Code</th>
-                                                        <th style="width: 140px">Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <!-- /.card-body -->
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">All Assistant Directors</h3>
                                 </div>
-                            </div>                                        
-                        </div>
+                                <!-- /.card-header -->
+                                <div class="card-body p-0">
+                                    <div class="card-body table-responsive" style="height: 450px;">
+                                        <table class="table table-condensed" id="tblAssistantDirectors">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 10px">#</th>
+                                                    <th>Assistant Director Name</th>
+                                                    <th>User Name</th>
+                                                    <th>Zone Name</th>
+                                                    <th style="width: 140px">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>                                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 </div>
 <div class="modal fade" id="modal-danger">
@@ -167,138 +182,119 @@
 
         });
 //Load table
+
         //loadTable();
         loadZoneCombo();
         loadUsersCombo();
+        loadTable();
 //click save button
-        $('#btnSave').click(function () {
-            var data = fromValues();
-            uniqueNamecheck(data.name, function (res) {
-                if (res.message === 'unique') {
-                    uniqueCodecheck(data.code, function (rest) {
-                        if (rest.message === 'unique') {
-                            ///fkf
-                            if (Validiteinsert(data)) {
-                                // if validiated
-                                AddAssistantDir(data, function (result) {
-                                    if (result.id == 1) {
-                                        Toast.fire({
-                                            type: 'success',
-                                            title: 'Enviremontal MS</br>Saved'
-                                        });
-                                    } else {
-                                        Toast.fire({
-                                            type: 'error',
-                                            title: 'Enviremontal MS</br>Error'
-                                        });
-                                    }
-                                    loadTable();
-                                    resetinputFields();
-                                    hideAllErrors();
-                                });
-                            }
-                            ///fkf   
-                        } else {
-                            $('#uniCode').removeClass('d-none');
-                        }
-                    });
+$('#btnSave').click(function () {
+    var data = 
+    {
+        "user_id":$('#getUsers').val(),
+        "zone_id":$('#getZone').val()
+    }
+    //alert(JSON.stringify(data));
 
-                } else {
-                    $('#uniName').removeClass('d-none');
-                    //$('#uniCode').removeClass('d-none');  
-                }
+    AddAssistantDir(data, function (result) {
+        if (result.id == 1) {
+            Toast.fire({
+                type: 'success',
+                title: 'Enviremontal MS</br>Saved'
+            });
 
+        } else {
+            Toast.fire({
+                type: 'error',
+                title: 'Enviremontal MS</br>Error'
             });
-        });
-//click update button
-        $('#btnUpdate').click(function () {
-            //get form data
-            var data = fromValues();
-            if (Validiteupdate(data)) {
-                updateAssistantDir($('#btnUpdate').val(), data, function (result) {
-                    if (result.id == 1) {
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Enviremontal MS</br>Updated'
-                        });
-                    } else {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Enviremontal MS</br>Error'
-                        });
-                    }
-                    loadTable();
-                    showSave();
-                    resetinputFields();
-                    hideAllErrors();
-                });
-            }
-        });
-//click delete button
-        $('#btnDelete').click(function () {
-            deleteAssistantDir($('#btnDelete').val(), function (result) {
-                if (result.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Enviremontal MS</br>Removed!'
-                    });
-                } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Enviremontal MS</br>Error'
-                    });
-                }
-                loadTable();
-                showSave();
-                resetinputFields();
-                hideAllErrors();
-            });
-        });
-//select button action 
-        $(document).on('click', '.btnAction', function () {
-            getaAssistantDirbyId(this.id, function (result) {
-                $('#getName').val(result.name);
-                $('#getCode').val(result.code);
-                showUpdate();
-                $('#btnUpdate').val(result.id);
-                $('#btnDelete').val(result.id);
-            });
-            hideAllErrors();
-        });
+        }
+         loadZoneCombo();
+    loadUsersCombo();
+    loadTable();
     });
+
+});
+//click update button
+$('#btnReset').click(function () {
+    showSaveBtn();
+    loadZoneCombo();
+    loadUsersCombo();
+    loadTable();
+});
+//click delete button
+$('#btnDelete').click(function () {
+    //alert('delete btn');
+    deleteAssistantDir($('#btnDelete').val(), function (result) {
+        if (result.id == 1) {
+            Toast.fire({
+                type: 'success',
+                title: 'Enviremontal MS</br>Removed!'
+            });
+            
+        } else {
+            Toast.fire({
+                type: 'error',
+                title: 'Enviremontal MS</br>Error'
+            });
+        }
+        loadZoneCombo();
+    loadUsersCombo();
+    loadTable();
+            showSaveBtn();
+
+       // resetinputFields();
+        //hideAllErrors();
+    });
+});
+//select button action 
+$(document).on('click', '.btnAction', function () {
+    getaAssistantDirbyId(this.id, function (result) {
+        //alert(result.id);
+        $('#lblUserName').text(result.first_name+' '+result.last_name);
+        $('#getZone').val(result.zone_id);
+
+        $('#btnUpdate').val(result.id);
+        $('#btnDelete').val(result.id);
+        showUpdate_DeleteBtn();
+    });
+    hideAllErrors();
+});
+});
 //show update buttons    
-    function showUpdate() {
-        $('#btnSave').addClass('d-none');
-        $('#btnUpdate').removeClass('d-none');
-        $('#btnshowDelete').removeClass('d-none');
-    }
+function showUpdate_DeleteBtn() {
+    $('#btnSave').addClass('d-none');
+    //$('#btnUpdate').removeClass('d-none');
+    $('#btnshowDelete').removeClass('d-none');
+    $('#btnReset').removeClass('d-none');
+
+    $('#comboUserDiplay').addClass('d-none');
+    $('#lblUserDiplay').removeClass('d-none');
+}
 //show save button    
-    function showSave() {
-        $('#btnSave').removeClass('d-none');
-        $('#btnUpdate').addClass('d-none');
-        $('#btnshowDelete').addClass('d-none');
-    }
+function showSaveBtn() {
+    $('#btnReset').addClass('d-none');
+    $('#btnSave').removeClass('d-none');
+    $('#btnUpdate').addClass('d-none');
+    $('#btnshowDelete').addClass('d-none');
+    $('#lblUserDiplay').addClass('d-none');
+    $('#comboUserDiplay').removeClass('d-none');
+
+}
 //Reset all fields    
-    function resetinputFields() {
-        $('#getName').val('');
-        $('#getCode').val('');
-        $('#btnUpdate').val('');
-        $('#btnDelete').val('');
-    }
-//get form values
-    function fromValues() {
-        var data = {
-            name: $('#getName').val(),
-            code: $('#getCode').val()
-        };
-        return data;
-    }
+function resetinputFields() {
+    $('#getName').val('');
+    $('#getCode').val('');
+    $('#btnUpdate').val('');
+    $('#btnDelete').val('');
+}
+
 //HIDE ALL ERROR MSGS   
-    function hideAllErrors() {
-        $('#valName').addClass('d-none');
-        $('#valCode').addClass('d-none');
-        $('#uniName').addClass('d-none');
-        $('#uniCode').addClass('d-none');
-    }
+function hideAllErrors() {
+    $('#valName').addClass('d-none');
+    $('#valCode').addClass('d-none');
+    $('#uniName').addClass('d-none');
+    $('#uniCode').addClass('d-none');
+}
 </script>
 @endsection

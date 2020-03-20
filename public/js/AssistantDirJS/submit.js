@@ -5,7 +5,7 @@ function AddAssistantDir(data, callBack) {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/zone",
+        url: "api/AssistantDirector",
         data: data,
         dataType: "json",
         cache: false,
@@ -22,15 +22,19 @@ function AddAssistantDir(data, callBack) {
     });
 }
 
-function Validiteinsert(data) {
-    var response = true;
-    if (data.name.length == 0) {
-        $('#valName').removeClass('d-none');
-        response = false;
-    }
-    if (data.code.length == 0) {
-        $('#valCode').removeClass('d-none');
-        response = false;
-    }
-    return response;
-}
+
+
+
+
+// function Validiteinsert(data) {
+//     var response = true;
+//     if (data.name.length == 0) {
+//         $('#valName').removeClass('d-none');
+//         response = false;
+//     }
+//     if (data.code.length == 0) {
+//         $('#valCode').removeClass('d-none');
+//         response = false;
+//     }
+//     return response;
+// }

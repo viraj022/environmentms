@@ -27,7 +27,7 @@ function loadUsersCombo(callBack) {
         var combo = "";
         var id = 1;
         $.each(result, function (index, value) {
-            combo += "<option value='" + value.id + "'>" + value.first_name + "</option>";
+            combo += "<option value='" + value.id + "'>" + value.first_name +' '+value.last_name+ "</option>";
         });
         $('#getUsers').html(combo);
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
@@ -68,6 +68,7 @@ function loadZoneCombo(callBack) {
             combo += "<option value='" + value.id + "'>" + value.name + "</option>";
         });
         $('#getZone').html(combo);
+          $('.select2').select2();
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(result);
         }
@@ -115,23 +116,27 @@ function uniqueCodecheck(code,callBack) {
     });
 }
 function loadTable() {
+
     GetAssistantDir(function (result) {
         var table = "";
         var id = 1;
         $.each(result, function (index, value) {
             table += "<tr>";
             table += "<td>" + id++ + "</td>";
-            table += "<td>" + value.name + "</td>";
-            table += "<td>" + value.code + "</td>";
+            table += "<td>" + value.first_name +' '+ value.last_name+ "</td>";
+            table += "<td>" + value.user_name + "</td>";
+            table += "<td>" + value.zone_name + "</td>";
             table += "<td><button id='" + value.id + "' type='button' class='btn btn-block btn-success btn-xs btnAction'>Select</button></td>";
             table += "</tr>";
         });
-        $('#tblZone tbody').html(table);
-        $("#tblZone").DataTable();
+
+
+        $('#tblAssistantDirectors tbody').html(table);
+        $("#tblAssistantDirectors").DataTable();
     });
 }
 
-function getaAssistantDirbyId(id, callBack) {
+function GetAssistantDir(callBack) {
 
     $.ajax({
         type: "GET",
@@ -139,7 +144,7 @@ function getaAssistantDirbyId(id, callBack) {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/zone/id/" + id,
+        url: "api/AssistantDirector/active",
         data: null,
         dataType: "json",
         cache: false,
@@ -147,9 +152,39 @@ function getaAssistantDirbyId(id, callBack) {
         success: function (result) {
 
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        
                 callBack(result);
             }
         }
     });
 
 }
+
+
+
+function getaAssistantDirbyId(id,callBack)
+{
+    $.ajax({
+        type: "GET",
+        headers: {
+            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            "Accept": "application/json"
+        },
+        url: "api/get_a_AssistantDirector/id/"+id,
+        data: null,
+        dataType: "json",
+        cache: false,
+        processDaate: false,
+        success: function (result) {
+
+            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        
+                callBack(result);
+            }
+        }
+    });
+
+}
+
+
+
