@@ -1,11 +1,12 @@
-function deleteAssistantDir(id,callBack) {
+function deleteAssistantDir(id,callBack){
+    //just change active status = 0
     $.ajax({
-        type: "DELETE",
+        type: "delete",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/zone/id/"+ id,
+        url: "api/unassistantdirector/id/"+id,
         data: null,
         dataType: "json",
         cache: false,
@@ -13,11 +14,11 @@ function deleteAssistantDir(id,callBack) {
         success: function (result) {
 
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        
                 callBack(result);
             }
-        },
-        error: function (xhr, textStatus, errorThrown) {
-            alert(textStatus + ':' + errorThrown);
         }
     });
+
+    
 }
