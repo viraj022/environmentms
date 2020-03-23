@@ -205,7 +205,7 @@
 //combo and Load table
 
 loadZoneCombo(function(){
-loadTable();
+loadPradeshiyaSabaTblByZone($('#getZoneForTbl').val());
 
 });
 
@@ -218,7 +218,10 @@ $('#btnSave').click(function () {
                 if (r.message == 'unique') {
                     if (re.message == 'unique') {
                         AddPradeshiyasaba(data, function (result) {
+                                 
+                                          resetinputFields();
                             if (result.id == 1) {
+
                                 Toast.fire({
                                     type: 'success',
                                     title: 'Enviremontal MS</br>Saved'
@@ -229,8 +232,14 @@ $('#btnSave').click(function () {
                                     title: 'Enviremontal MS</br>Error'
                                 });
                             }
-                            loadTable();
-                            resetinputFields();
+                          //  alert($('#getZone').val());
+
+                    $('#check_all_Zone').prop('checked', false);
+                    $('#getZoneForTbl').val($('#getZone').val()) ;
+                    //alert($('#getZoneForTbl').val());
+                            loadPradeshiyaSabaTblByZone($('#getZone').val());
+                           
+                            
                         });
                     } else
                     {
@@ -264,7 +273,8 @@ $('#btnUpdate').click(function () {
                             title: 'Enviremontal MS</br>Error'
                         });
                     }
-                    loadTable();
+                    $('#check_all_Zone').prop('checked', false);
+                   loadPradeshiyaSabaTblByZone($('#getZone').val());
                     showSave();
                     resetinputFields();
                 });
@@ -285,7 +295,8 @@ $('#btnDelete').click(function () {
                 title: 'Enviremontal MS</br>Error'
             });
         }
-        loadTable();
+                            $('#check_all_Zone').prop('checked', false);
+        loadPradeshiyaSabaTblByZone($('#getZone').val());
         showSave();
         resetinputFields();
     });
