@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PradesheeyasabaController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +18,7 @@ class PradesheeyasabaController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
-        return view('pradesheyasaba', ['pageAuth' => $pageAuth]);  
+        return view('pradesheyasaba', ['pageAuth' => $pageAuth]);
     }
 
     /**
@@ -90,13 +91,13 @@ class PradesheeyasabaController extends Controller
             $pradesheyasaba->zone_id = \request('zone_id');
             $msg = $pradesheyasaba->save();
 
-       if ($msg) {
-        return array('id' => 1, 'message' => 'true');
-    } else {
-        return array('id' => 0, 'message' => 'false');
-    }
-        }else{
-         abort(401);
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(401);
         }
     }
 
@@ -110,10 +111,10 @@ class PradesheeyasabaController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
-         if($pageAuth['is_read']){
-       return Pradesheeyasaba::get();
-   }else{
-         abort(401);
+        if ($pageAuth['is_read']) {
+            return Pradesheeyasaba::get();
+        } else {
+            abort(401);
         }
     }
     public function getLocalAuthorityByZone($id)
@@ -179,10 +180,10 @@ class PradesheeyasabaController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
-         if($pageAuth['is_read']){
-       return Pradesheeyasaba::findOrFail($id);
-   }else{
-         abort(401);
+        if ($pageAuth['is_read']) {
+            return Pradesheeyasaba::findOrFail($id);
+        } else {
+            abort(401);
         }
     }
 

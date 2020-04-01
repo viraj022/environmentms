@@ -27,7 +27,7 @@ Route::get('/payments', 'PaymentsController@index');
 Route::get('/payment_range', 'PaymentsController@index1');
 Route::get('/zone', 'ZoneController@index');
 Route::get('/assistant_director', 'AssistantDirectorController@index');
-Route::get('/environment_officer', 'EnvironmentOfficerController@index');
+
 //ui routs
 
 //dashboard

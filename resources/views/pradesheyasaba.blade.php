@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Local Authority</h1>
+                <h1>Pradesheyasaba</h1>
             </div>
         </div>
     </div>
@@ -31,7 +31,7 @@
             <div class="col-md-5">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <label id="lblTitle">Add New Local Authority</label>
+                        <label id="lblTitle">Add New Pradesiyasaba</label>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
@@ -62,7 +62,7 @@
                     </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSave" type="submit" class="btn btn-primary">Save</button>
+                        <button id="btnSave" type="submit" class="btn btn-success">Save</button>
                         @endif
                         @if($pageAuth['is_update']==1 || false)
                         <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
@@ -84,7 +84,7 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">Local Authorities</h3>
+                                        <h3 class="card-title">Pradesiyasaba</h3>
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body p-0">
@@ -143,13 +143,13 @@
     <div class="modal-dialog">
         <div class="modal-content bg-danger">
             <div class="modal-header">
-                <h4 class="modal-title">Delete Local Authority</h4>
+                <h4 class="modal-title">Delete  Pradesiyasaba</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p><b>Are you sure you want to permanently delete this  Local Authority ? </b></p>
+                <p><b>Are you sure you want to permanently delete this  Pradesiyasaba ? </b></p>
                 <p>Once you continue, this process can not be undone. Please Procede with care.</p>
             </div>
             <div class="modal-footer justify-content-between">
@@ -205,7 +205,7 @@
 //combo and Load table
 
 loadZoneCombo(function(){
-loadPradeshiyaSabaTblByZone($('#getZoneForTbl').val());
+loadTable();
 
 });
 
@@ -218,10 +218,7 @@ $('#btnSave').click(function () {
                 if (r.message == 'unique') {
                     if (re.message == 'unique') {
                         AddPradeshiyasaba(data, function (result) {
-                                 
-                                          resetinputFields();
                             if (result.id == 1) {
-
                                 Toast.fire({
                                     type: 'success',
                                     title: 'Enviremontal MS</br>Saved'
@@ -232,14 +229,8 @@ $('#btnSave').click(function () {
                                     title: 'Enviremontal MS</br>Error'
                                 });
                             }
-                          //  alert($('#getZone').val());
-
-                    $('#check_all_Zone').prop('checked', false);
-                    $('#getZoneForTbl').val($('#getZone').val()) ;
-                    //alert($('#getZoneForTbl').val());
-                            loadPradeshiyaSabaTblByZone($('#getZone').val());
-                           
-                            
+                            loadTable();
+                            resetinputFields();
                         });
                     } else
                     {
@@ -273,8 +264,7 @@ $('#btnUpdate').click(function () {
                             title: 'Enviremontal MS</br>Error'
                         });
                     }
-                    $('#check_all_Zone').prop('checked', false);
-                   loadPradeshiyaSabaTblByZone($('#getZone').val());
+                    loadTable();
                     showSave();
                     resetinputFields();
                 });
@@ -295,8 +285,7 @@ $('#btnDelete').click(function () {
                 title: 'Enviremontal MS</br>Error'
             });
         }
-                            $('#check_all_Zone').prop('checked', false);
-        loadPradeshiyaSabaTblByZone($('#getZone').val());
+        loadTable();
         showSave();
         resetinputFields();
     });

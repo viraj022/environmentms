@@ -17,9 +17,7 @@ class EnvironmentOfficerController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        return view('environment_officer', ['pageAuth' => $pageAuth]);
+        //
     }
 
     /**
@@ -98,13 +96,11 @@ class EnvironmentOfficerController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($pageAuth['is_read']) {
             return  EnvironmentOfficer::where('environment_officers.id', '=', $id)
-                ->where('environment_officers.active_status','=',1)
                 ->join('assistant_directors', 'environment_officers.assistant_director_id', 'assistant_directors.id')
                 ->join('zones', 'assistant_directors.zone_id', 'zones.id')
                 ->join('users', 'environment_officers.user_id', '=', 'users.id')
                 ->join('users as assistant_director_users', 'environment_officers.assistant_director_id', '=', 'assistant_director_users.id')
                 ->select(
-                    'environment_officers.id',
                     'users.first_name as first_name',
                     'users.last_name as last_name',
                     'users.user_name as user_name',
@@ -127,14 +123,11 @@ class EnvironmentOfficerController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($pageAuth['is_read']) {
             return  EnvironmentOfficer::where('environment_officers.assistant_director_id', '=', $id)
-            ->where('environment_officers.active_status','=',1)
                 ->join('assistant_directors', 'environment_officers.assistant_director_id', 'assistant_directors.id')
                 ->join('zones', 'assistant_directors.zone_id', 'zones.id')
                 ->join('users', 'environment_officers.user_id', '=', 'users.id')
                 ->join('users as assistant_director_users', 'environment_officers.assistant_director_id', '=', 'assistant_director_users.id')
                 ->select(
-
-                    'environment_officers.id',
                     'users.first_name as first_name',
                     'users.last_name as last_name',
                     'users.user_name as user_name',

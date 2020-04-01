@@ -1,12 +1,12 @@
-function AddAssistantDir(data, callBack) {
+function deleteZone(id,callBack) {
     $.ajax({
-        type: "POST",
+        type: "DELETE",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/environment_officer",
-        data: data,
+        url: "api/zone/id/"+ id,
+        data: null,
         dataType: "json",
         cache: false,
         processDaate: false,
@@ -21,20 +21,3 @@ function AddAssistantDir(data, callBack) {
         }
     });
 }
-
-
-
-
-
-// function Validiteinsert(data) {
-//     var response = true;
-//     if (data.name.length == 0) {
-//         $('#valName').removeClass('d-none');
-//         response = false;
-//     }
-//     if (data.code.length == 0) {
-//         $('#valCode').removeClass('d-none');
-//         response = false;
-//     }
-//     return response;
-// }

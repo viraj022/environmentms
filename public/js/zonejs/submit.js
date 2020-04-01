@@ -1,11 +1,11 @@
-function updateAssistantDir(id, data, callBack) {
+function AddZone(data, callBack) {
     $.ajax({
-        type: "PUT",
+        type: "POST",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/zone/id/" + id,
+        url: "api/zone",
         data: data,
         dataType: "json",
         cache: false,
@@ -22,7 +22,7 @@ function updateAssistantDir(id, data, callBack) {
     });
 }
 
-function Validiteupdate(data) {
+function Validiteinsert(data) {
     var response = true;
     if (data.name.length == 0) {
         $('#valName').removeClass('d-none');
