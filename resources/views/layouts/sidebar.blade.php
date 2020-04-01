@@ -128,6 +128,22 @@
                     </a>
                 </li>
                 @endif
+                @if($pre['id']===config('auth.privileges.zone'))
+                <li class="nav-item">
+                    <a href="{{ url('/zone') }}" class="nav-link {{ Request::is('zone') ? 'active' : '' }}">
+                        <i class="fas fa-file-archive nav-icon"></i>
+                        <p>Zone</p>
+                    </a>
+                </li>
+                @endif
+                @if($pre['id']===config('auth.privileges.assistantDirector'))
+                <li class="nav-item">
+                    <a href="{{ url('/assistant_director') }}" class="nav-link {{ Request::is('assistant_director') ? 'active' : '' }}">
+                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <p>Assistant Directors</p>
+                    </a>
+                </li>
+                @endif
                 @endforeach
 
             </ul>

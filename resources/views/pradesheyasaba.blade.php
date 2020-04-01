@@ -34,22 +34,32 @@
                         <label id="lblTitle">Add New Local Authority</label>
                     </div>
                     <div class="card-body">
-                        <label>Name*</label>
-                        <input id="getName" type="text" class="form-control form-control-sm"
-                               placeholder="Enter Name..."
-                               value="">
-                        <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
-                        <div id="valUnique" class="d-none"><p class="text-danger">Name already taken!</p></div>
-                    </div>
-                    <div class="card-body">
-                        <label>Code*</label>
-                        <input id="getCode" type="text" class="form-control form-control-sm"
-                               placeholder="Enter Code..."
-                               value="">
-                        <div id="valCode" class="d-none"><p class="text-danger">Code is required</p></div>
-                        <div id="valcodeUnique" class="d-none"><p class="text-danger">Code already taken!</p></div>
-                    </div>
+                        <div class="form-group">
+                            <label>Zone*</label>
+                            <select id="getZone" class="form-control form-control-sm         combo_zone">
+                                <option>Loading...</option>
+                            </select>
+                            <div id="valZone" class="d-none"><p class="text-danger">Field is required</p></div>
+                        </div>
 
+
+                        <div class="form-group">
+                            <label>Name*</label>
+                            <input id="getName" type="text" class="form-control form-control-sm"
+                            placeholder="Enter Name..."
+                            value="">
+                            <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                            <div id="valUnique" class="d-none"><p class="text-danger">Name already taken!</p></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Code*</label>
+                            <input id="getCode" type="text" class="form-control form-control-sm"
+                            placeholder="Enter Code..."
+                            value="">
+                            <div id="valCode" class="d-none"><p class="text-danger">Code is required</p></div>
+                            <div id="valcodeUnique" class="d-none"><p class="text-danger">Code already taken!</p></div>
+                        </div>
+                    </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
                         <button id="btnSave" type="submit" class="btn btn-primary">Save</button>
@@ -59,7 +69,7 @@
                         @endif
                         @if($pageAuth['is_delete']==1 || false)
                         <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
-                                 data-target="#modal-danger">Delete</button>
+                        data-target="#modal-danger">Delete</button>
                         @endif
                     </div>                           
                 </div>
@@ -78,30 +88,55 @@
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body p-0">
-                                        <div class="card-body table-responsive" style="height: 450px;">
-                                        <table class="table table-condensed assignedPrivilages" id="tblPradesiyasaba">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 10px">#</th>
-                                                    <th>Name</th>
-                                                    <th>Code</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
+
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <div class="row">
+                                                            <div class="col-md-2"><label>Zone*</label></div>
+                                                            <div class="col-md-10">
+                                                               <select id="getZoneForTbl" class="form-control form-control-sm combo_zone">
+                                                                <option>Loading...</option>
+                                                            </select>
+                                                            <div id="valZone" class="d-none"><p class="text-danger">Field is required</p></div> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                  <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="check_all_Zone">
+                                                    <label class="form-check-label" for="check_all_Zone">All</label>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <!-- /.card-body -->
+
+                                    </div> 
                                 </div>
-                            </div>                                        
+                                <div class="card-body table-responsive" style="height: 450px;">
+                                    <table class="table table-condensed assignedPrivilages" id="tblPradesiyasaba">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 10px">#</th>
+                                                <th>Name</th>
+                                                <th>Code</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
                         </div>
-                    </div>
+                    </div>                                        
                 </div>
             </div>
         </div>
     </div>
+</div>
+</div>
 </div>
 </div>
 <div class="modal fade" id="modal-danger">
@@ -167,48 +202,53 @@
             timer: 4000
 
         });
-//Load table
-        loadTable();
+//combo and Load table
+
+loadZoneCombo(function(){
+loadTable();
+
+});
+
 //click save button
-        $('#btnSave').click(function () {
-            var data = fromValues();
-            if (Validiteinsert(data)) {
-                uniqueNamecheck(data.name, function (r) {
-                    uniqueCodecheck(data.code, function (re) {
-                        if (r.message == 'unique') {
-                            if (re.message == 'unique') {
-                                AddPradeshiyasaba(data, function (result) {
-                                    if (result.id == 1) {
-                                        Toast.fire({
-                                            type: 'success',
-                                            title: 'Enviremontal MS</br>Saved'
-                                        });
-                                    } else {
-                                        Toast.fire({
-                                            type: 'error',
-                                            title: 'Enviremontal MS</br>Error'
-                                        });
-                                    }
-                                    loadTable();
-                                    resetinputFields();
+$('#btnSave').click(function () {
+    var data = fromValues();
+    if (Validiteinsert(data)) {
+        uniqueNamecheck(data.name, function (r) {
+            uniqueCodecheck(data.code, function (re) {
+                if (r.message == 'unique') {
+                    if (re.message == 'unique') {
+                        AddPradeshiyasaba(data, function (result) {
+                            if (result.id == 1) {
+                                Toast.fire({
+                                    type: 'success',
+                                    title: 'Enviremontal MS</br>Saved'
                                 });
-                            } else
-                            {
-                                $('#valName').addClass('d-none');
-                                $('#valcodeUnique').removeClass('d-none');
+                            } else {
+                                Toast.fire({
+                                    type: 'error',
+                                    title: 'Enviremontal MS</br>Error'
+                                });
                             }
-                        } else
-                        {
-                            $('#valName').addClass('d-none');
-                            $('#valUnique').removeClass('d-none');
-                        }
-                    });
-                });
-            }
-            hideAllErrors();
+                            loadTable();
+                            resetinputFields();
+                        });
+                    } else
+                    {
+                        $('#valName').addClass('d-none');
+                        $('#valcodeUnique').removeClass('d-none');
+                    }
+                } else
+                {
+                    $('#valName').addClass('d-none');
+                    $('#valUnique').removeClass('d-none');
+                }
+            });
         });
+    }
+    hideAllErrors();
+});
 //click update button
-        $('#btnUpdate').click(function () {
+$('#btnUpdate').click(function () {
             //get form data
             var data = fromValues();
             if (Validiteupdate(data)) {
@@ -232,86 +272,111 @@
             hideAllErrors();
         });
 //click delete button
-        $('#btnDelete').click(function () {
-            deletePradesheeyasaba($('#btnDelete').val(), function (result) {
-                if (result.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Enviremontal MS</br>Removed!'
-                    });
-                } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Enviremontal MS</br>Error'
-                    });
-                }
-                loadTable();
-                showSave();
-                resetinputFields();
+$('#btnDelete').click(function () {
+    deletePradesheeyasaba($('#btnDelete').val(), function (result) {
+        if (result.id == 1) {
+            Toast.fire({
+                type: 'success',
+                title: 'Enviremontal MS</br>Removed!'
             });
-            hideAllErrors();
-        });
+        } else {
+            Toast.fire({
+                type: 'error',
+                title: 'Enviremontal MS</br>Error'
+            });
+        }
+        loadTable();
+        showSave();
+        resetinputFields();
+    });
+    hideAllErrors();
+});
 //select button action 
-        $(document).on('click', '.btnAction', function () {
-            getaPradesiyasababyId(this.id, function (result) {
-                $('#getName').val(result.name);
-                $('#getCode').val(result.code);
-                showUpdate();
-                $('#btnUpdate').val(result.id);
-                $('#btnDelete').val(result.id);
-            });
-            hideAllErrors();
-        });
+$(document).on('click', '.btnAction', function () {
+    getaPradesiyasababyId(this.id, function (result) {
+        $('#getZone').val(result.zone_id);
+        $('#getName').val(result.name);
+        $('#getCode').val(result.code);
+        showUpdate();
+        $('#btnUpdate').val(result.id);
+        $('#btnDelete').val(result.id);
     });
+    hideAllErrors();
+});
+});
 //Check change of name input   
-    $('#getName').change(function () {
-        var data = fromValues();
-        uniqueNamecheck(data.name, function (r) {
+$('#getName').change(function () {
+    var data = fromValues();
+    uniqueNamecheck(data.name, function (r) {
 //            alert(JSON.stringify(r));
-            if (r.message == 'unique') {
-                $('#valName').addClass('d-none');
-                $('#valCode').addClass('d-none');
-                $('#valUnique').addClass('d-none');
+if (r.message == 'unique') {
+    $('#valName').addClass('d-none');
+    $('#valCode').addClass('d-none');
+    $('#valUnique').addClass('d-none');
 
-            } else
-            {
-                $('#valName').addClass('d-none');
-                $('#valCode').addClass('d-none');
-                $('#valUnique').removeClass('d-none');
-            }
-        });
-    });
+} else
+{
+    $('#valName').addClass('d-none');
+    $('#valCode').addClass('d-none');
+    $('#valUnique').removeClass('d-none');
+}
+});
+});
 //show update buttons    
-    function showUpdate() {
-        $('#btnSave').addClass('d-none');
-        $('#btnUpdate').removeClass('d-none');
-        $('#btnshowDelete').removeClass('d-none');
-    }
+function showUpdate() {
+    $('#btnSave').addClass('d-none');
+    $('#btnUpdate').removeClass('d-none');
+    $('#btnshowDelete').removeClass('d-none');
+}
 //show save button    
-    function showSave() {
-        $('#btnSave').removeClass('d-none');
-        $('#btnUpdate').addClass('d-none');
-        $('#btnshowDelete').addClass('d-none');
-    }
+function showSave() {
+    $('#btnSave').removeClass('d-none');
+    $('#btnUpdate').addClass('d-none');
+    $('#btnshowDelete').addClass('d-none');
+}
 //HIDE ALL ERROR MSGS   
-    function hideAllErrors() {
-        $('#valcodeUnique').addClass('d-none');
-        $('#valUnique').addClass('d-none');
-    }
+function hideAllErrors() {
+    $('#valcodeUnique').addClass('d-none');
+    $('#valUnique').addClass('d-none');
+}
 //Reset all fields    
-    function resetinputFields() {
-        $('#getName').val('');
-        $('#getCode').val('');
-        $('#btnUpdate').val('');
-        $('#btnDelete').val('');
-    }
+function resetinputFields() {
+    $('#getName').val('');
+    $('#getCode').val('');
+    $('#btnUpdate').val('');
+    $('#btnDelete').val('');
+}
 //get form values
-    function fromValues() {
-        var data = {
-            name: $('#getName').val(),
-            code: $('#getCode').val()
-        };
-        return data;
-    }
+function fromValues() {
+
+    var data = {
+        zone_id: $('#getZone').val(),
+        name: $('#getName').val(),
+        code: $('#getCode').val()
+    };
+    return data;
+}
+
+
+$('#getZoneForTbl').change(function () {
+
+    // getPradeshiyaSabaByZone($(this).val());
+    $('#check_all_Zone').prop('checked', false);
+loadPradeshiyaSabaTblByZone($(this).val());
+
+    });
+
+
+    $('#check_all_Zone').change(function() {
+        if(this.checked) {
+   
+      loadTable();
+        }
+        // else
+        // {
+        //    loadPradeshiyaSabaTblByZone('#getZoneForTbl'); 
+        // }
+      
+    });
 </script>
 @endsection
