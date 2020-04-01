@@ -716,3 +716,91 @@ Route::middleware('auth:api')->delete('/environment_officers/id/{id}', 'Environm
 }
 
 */
+
+//end env officer api
+
+
+//Client  api codes 
+
+ Route::middleware('auth:api')->post('/client', 'ClientController@create');//save Client 
+ 
+/*request Example 
+ {    
+         "first_name" : "test fname",
+         "last_name" : "test lname",
+         "address" : "test address",
+         "contact_no" : "0719546738",
+         "email": "test@email.com",
+         "nic" : "000000000V",
+         "password" : "00000",
+ }   */
+
+
+Route::middleware('auth:api')->get('/client', 'ClientController@show'); //get all Client 
+ 
+/*
+response Example 
+[
+    {
+        "id": 1,
+        "first_name": "test fname",
+        "last_name": "test lname",
+        "address": "test address",
+        "contact_no": "0719546738",
+        "email": "test@email.com",
+        "nic": "000000000V",
+        "password": "00000",
+        "api_token": null,
+        "created_at": "2020-04-01 12:45:43",
+        "updated_at": "2020-04-01 12:45:43",
+        "deleted_at": null
+    }
+]
+
+ validation response Example 
+ */ 
+ 
+ Route::middleware('auth:api')->get('/client/nic/{nic}', 'ClientController@findClient_by_nic'); //get a Client by nic  
+
+   /*response Example  
+ //validation response Example
+[
+    {
+        "id": 2,
+        "first_name": "Nadun",
+        "last_name": "test lname",
+        "address": "test address",
+        "contact_no": "0719546738",
+        "email": "test@email.com",
+        "nic": "000000000V",
+        "password": "00000",
+        "api_token": null,
+        "created_at": "2020-04-01 12:59:52",
+        "updated_at": "2020-04-01 12:59:52",
+        "deleted_at": null
+    }
+]
+  */ 
+ 
+ Route::middleware('auth:api')->put('/client/id/{id}', 'ClientController@store'); //update Client 
+ 
+/*request Example 
+{    
+         "first_name" : "Nadun",
+         "last_name" : "test lname",
+         "address" : "test address",
+         "contact_no" : "0719546738",
+         "email": "test@email.com",
+         "nic" : "000000000V",
+         "password" : "00000"
+ }     
+   response Example  
+ validation response Example */ 
+ 
+ Route::middleware('auth:api')->delete('/client/id/{id}', 'ClientController@destroy'); //deleteClient
+// {
+//     "id": 1,
+//     "message": "true"
+// }
+//end Client  api codes 
+
