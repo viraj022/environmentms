@@ -144,6 +144,16 @@
                     </a>
                 </li>
                 @endif
+
+                 @if($pre['id']===config('auth.privileges.environmentOfficer'))
+                <li class="nav-item">
+                    <a href="{{ url('/environment_officer') }}" class="nav-link {{ Request::is('environment_officer') ? 'active' : '' }}">
+                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <p>Environment Officer</p>
+                    </a>
+                </li>
+                @endif
+
                 @endforeach
 
             </ul>
