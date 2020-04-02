@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Client Space</h1>
+                <h1>Clients</h1>
             </div>
         </div>
     </div>

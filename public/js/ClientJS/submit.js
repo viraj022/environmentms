@@ -1,11 +1,11 @@
-function AddPayments(data, callBack) {
+function AddClient(data, callBack) {
     $.ajax({
         type: "POST",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/payment",
+        url: "api/client",
         data: data,
         dataType: "json",
         cache: false,
@@ -24,16 +24,12 @@ function AddPayments(data, callBack) {
 
 function Validiteinsert(data) {
     var response = true;
-    if (data.payment_type_id.length == 0) {
+    if (data.first_name.length == 0) {
         $('#valPayCat').removeClass('d-none');
         response = false;
     }
-    if (data.name.length == 0) {
+    if (data.last_name.length == 0) {
         $('#valName').removeClass('d-none');
-        response = false;
-    }
-    if (data.type.length == 0) {
-        $('#valPayType').removeClass('d-none');
         response = false;
     }
     return response;

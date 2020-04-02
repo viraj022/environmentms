@@ -28,6 +28,8 @@ Route::get('/payment_range', 'PaymentsController@index1');
 Route::get('/zone', 'ZoneController@index');
 Route::get('/assistant_director', 'AssistantDirectorController@index');
 Route::get('/environment_officer', 'EnvironmentOfficerController@index');
+Route::get('/client_space', 'ClientController@index');
+Route::get('/all_clients', 'ClientController@allClientsindex');
 //ui routs
 
 //dashboard
