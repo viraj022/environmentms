@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Attachemnt;
 use App\ApplicationType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class ApplicationTypeController extends Controller
 {
+    public function __construct() {
+        $this->middleware(['auth']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +20,11 @@ class ApplicationTypeController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.attachments'));
+        if ($pageAuth['is_read']) {
+            return view('attachements', ['pageAuth' => $pageAuth]);
+        }
     }
 
     /**
@@ -24,7 +34,17 @@ class ApplicationTypeController extends Controller
      */
     public function create()
     {
-        //
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.attachments'));
+        if ($pageAuth['is_create']) {
+        \DB::transaction(function () {
+        $applicationType = ApplicationType::find(\request('id'));
+                $attachment =  request('attachment');       
+            foreach ($attachment as $value) {
+                $applicationType->attachemnts()->attach($value['id']);
+            }
+        });
+    }
     }
 
     /**
@@ -44,9 +64,35 @@ class ApplicationTypeController extends Controller
      * @param  \App\ApplicationType  $applicationType
      * @return \Illuminate\Http\Response
      */
-    public function show(ApplicationType $applicationType)
+    public function show()
     {
-        //
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.attachments'));
+        if ($pageAuth['is_read']) {
+            return ApplicationType::with('attachemnts')->get();
+        }
+    }
+    public function find($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.attachments'));
+        if ($pageAuth['is_read']) {
+            return ApplicationType::with('attachemnts')->find($id);
+        }
+    }
+    public function availableAttachements($id)
+    {   
+           
+        $applicetion = ApplicationType::with('attachemnts')->whereHas('attachemnts', function($q) use ($id){
+            $q->where('application_type_id', $id);
+        })->first();
+          $attachments = $applicetion->attachemnts;
+          $array = array();
+          foreach($attachments as $value){
+              array_push($array,$value['id']);
+          }
+           $array;
+         return Attachemnt::wherenotin('id', $array)->get();
     }
 
     /**

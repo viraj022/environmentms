@@ -804,3 +804,90 @@ response Example
 // }
 //end Client  api codes 
 
+/// application attachment map
+Route::middleware('auth:api')->get('/applicationTypes', 'ApplicationTypeController@show'); // Get Application types with their attachemnts
+
+
+/*
+[
+    {
+        "id": 1,
+        "name": "Environment Protection Licence",
+        "created_at": "2020-04-02 11:32:10",
+        "updated_at": "2020-04-02 11:32:10",
+        "attachemnts": []
+    },
+    {
+        "id": 2,
+        "name": "Site Clearance Licence",
+        "created_at": "2020-04-02 11:32:10",
+        "updated_at": "2020-04-02 11:32:10",
+        "attachemnts": [
+            {
+                "id": 1,
+                "name": "Copy of deed, copy of the Lease agreement of the land -Legal authorization to use the land for the particular industrial activity",
+                "created_at": "2020-02-26 11:04:17",
+                "updated_at": "2020-02-26 11:04:31",
+                "deleted_at": null,
+                "pivot": {
+                    "application_type_id": 2,
+                    "attachemnt_id": 1
+                }
+            },
+ ]           
+
+*/
+
+Route::middleware('auth:api')->get('/applicationTypes/id/{id}', 'ApplicationTypeController@find'); // Get Application types by id
+
+
+/*
+{
+    "id": 2,
+    "name": "Site Clearance Licence",
+    "created_at": "2020-04-02 11:32:10",
+    "updated_at": "2020-04-02 11:32:10",
+    "attachemnts": [
+        {
+            "id": 1,
+            "name": "Copy of deed, copy of the Lease agreement of the land -Legal authorization to use the land for the particular industrial activity",
+            "created_at": "2020-02-26 11:04:17",
+            "updated_at": "2020-02-26 11:04:31",
+            "deleted_at": null,
+            "pivot": {
+                "application_type_id": 2,
+                "attachemnt_id": 1
+            }
+        },
+        {
+            "id": 1,
+            "name": "Copy of deed, copy of the Lease agreement of the land -Legal authorization to use the land for the particular industrial activity",
+            "created_at": "2020-02-26 11:04:17",
+            "updated_at": "2020-02-26 11:04:31",
+            "deleted_at": null,
+            "pivot": {
+                "application_type_id": 2,
+                "attachemnt_id": 1
+            }
+        }
+        ]
+    }
+    
+    */
+    Route::middleware('auth:api')->post('/applicationTypes', 'ApplicationTypeController@create'); // Get Application types by id
+    
+    /*
+    {
+        "id": "1",
+        "attachment": [
+        {
+            "id": 1
+        },
+        {
+            "id": 2
+        }
+        ]
+    }
+    */
+    Route::middleware('auth:api')->get('/applicationTypes/available/id/{id}', 'ApplicationTypeController@availableAttachements'); // Get Application types by id
+    /// application attachment map
