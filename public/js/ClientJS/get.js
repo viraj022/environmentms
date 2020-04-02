@@ -21,21 +21,21 @@ function GetClients(callBack) {
         }
     });
 }
-function loadTable(id) {
-    GetClients(id,function (result) {
+function loadTable() {
+    GetClients(function (result) {
         var table = "";
         var id = 1;
         $.each(result, function (index, clientData) {
             table += "<tr>";
             table += "<td>" + id++ + "</td>";
             table += "<td>" + clientData.first_name + "</td>";
-            table += "<td>" + clientData.type + "</td>";
-            table += "<td>" + clientData.amount + "</td>";
+            table += "<td>" + clientData.last_name + "</td>";
+            table += "<td>" + clientData.nic + "</td>";
             table += "<td><button id='" + clientData.id + "' type='button' class='btn btn-block btn-success btn-xs btnAction'>Select</button></td>";
             table += "</tr>";
         });
-        $('#tblPayments tbody').html(table);
-        $("#tblPayments").DataTable();
+        $('#tblAllClients tbody').html(table);
+        $("#tblAllClients").DataTable();
     });
 }
 

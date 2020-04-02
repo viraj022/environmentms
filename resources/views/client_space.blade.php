@@ -31,7 +31,7 @@
         <div class="row">
 
             <div class="col-md-12">
-                <div class="col-md-5">
+                <div class="col-md-9">
                     <div class="card card-primary">
                         <div class="card-header">
                             <label id="lblTitle">Register New Client</label>
@@ -94,30 +94,7 @@
                         </div>                           
                     </div>
                 </div>
-                <div class="col-md-7">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">All Clients</h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body p-0">
-                            <div class="card-body table-responsive" style="height: 450px;">
-                                <table class="table table-condensed" id="tblPaymentCat">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 10px">#</th>
-                                            <th>Name</th>
-                                            <th style="width: 140px">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <!-- /.card-body -->
-                    </div>
-                </div>                                          
+<!--If something about Datatable place tt here again! -->
             </div>
         </div>
     </div>

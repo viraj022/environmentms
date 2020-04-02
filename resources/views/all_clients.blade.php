@@ -27,134 +27,98 @@
 </section>
 <section class="content-header">
     <!--    Register New Client START-->
-    <div class="container-fluid reg-newClient d-none">
+    <div class="container-fluid reg-newClient">
         <div class="row">
-
-            <div class="col-md-12">
-                <div class="col-md-5">
-                    <div class="card card-primary">
-                        <div class="card-header">
-                            <label id="lblTitle">Register New Client</label>
-                        </div>
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label>First Name*</label>
-                                <input id="getfName" type="text" class="form-control form-control-sm"
-                                       placeholder="Enter Name..."
-                                       value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
-                            </div>
-                            <div class="form-group">
-                                <label>Last Name*</label>
-                                <input id="getlName" type="text" class="form-control form-control-sm"
-                                       placeholder="Enter Name..."
-                                       value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
-                            </div>
-                            <div class="form-group">
-                                <label>Address*</label>
-                                <input id="getAddress" type="text" class="form-control form-control-sm"
-                                       placeholder="Enter Name..."
-                                       value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
-                            </div>
-                            <div class="form-group">
-                                <label>Contact Number*</label>
-                                <input id="getContact" type="text" class="form-control form-control-sm"
-                                       placeholder="Enter Name..."
-                                       value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
-                            </div>
-                            <div class="form-group">
-                                <label>Email*</label>
-                                <input id="getEmail" type="text" class="form-control form-control-sm"
-                                       placeholder="Enter Name..."
-                                       value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
-                            </div>
-                            <div class="form-group">
-                                <label>NIC*</label>
-                                <input id="getNicSave" type="text" class="form-control form-control-sm"
-                                       placeholder="Enter Name..."
-                                       value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            @if($pageAuth['is_create']==1 || false)
-                            <button id="btnSave" type="submit" class="btn btn-success">Register</button>
-                            @endif
-                            @if($pageAuth['is_update']==1 || false)
-                            <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
-                            @endif
-                            @if($pageAuth['is_delete']==1 || false)
-                            <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
-                                     data-target="#modal-danger">Delete</button>
-                            @endif
-                        </div>                           
+            <div class="col-md-5">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <label id="lblTitle">Update Client</label>
                     </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>First Name*</label>
+                            <input id="getfName" type="text" class="form-control form-control-sm"
+                                   placeholder="Enter Name..."
+                                   value="">
+                            <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name*</label>
+                            <input id="getlName" type="text" class="form-control form-control-sm"
+                                   placeholder="Enter Name..."
+                                   value="">
+                            <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Address*</label>
+                            <input id="getAddress" type="text" class="form-control form-control-sm"
+                                   placeholder="Enter Name..."
+                                   value="">
+                            <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Contact Number*</label>
+                            <input id="getContact" type="text" class="form-control form-control-sm"
+                                   placeholder="Enter Name..."
+                                   value="">
+                            <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Email*</label>
+                            <input id="getEmail" type="text" class="form-control form-control-sm"
+                                   placeholder="Enter Name..."
+                                   value="">
+                            <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                        </div>
+                        <div class="form-group">
+                            <label>NIC*</label>
+                            <input id="getNicSave" type="text" class="form-control form-control-sm"
+                                   placeholder="Enter Name..."
+                                   value="">
+                            <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        @if($pageAuth['is_update']==1 || false)
+                        <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
+                        @endif
+                        @if($pageAuth['is_delete']==1 || false)
+                        <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
+                                 data-target="#modal-danger">Delete</button>
+                        @endif
+                    </div>                           
                 </div>
-                <div class="col-md-7">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">All Clients</h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body p-0">
-                            <div class="card-body table-responsive" style="height: 450px;">
-                                <table class="table table-condensed" id="tblPaymentCat">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 10px">#</th>
-                                            <th>Name</th>
-                                            <th style="width: 140px">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <!-- /.card-body -->
-                    </div>
-                </div>                                          
             </div>
+            <div class="col-md-7">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">All Clients</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body p-0">
+                        <div class="card-body table-responsive" style="height: 450px;">
+                            <table class="table table-condensed" id="tblAllClients">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>NIC</th>
+                                        <th style="width: 140px">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>                                          
         </div>
     </div>
     <!--Register New Client END-->
-
     <!---------END ALL------------>
-
-    <!--Search Client By NIC START-->
-    <div class="container-fluid search-Client">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="col-md-9">
-                    <div class="card card-primary">
-                        <div class="card-header">
-                            <label id="lblTitle">Search Client</label>
-                        </div>
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label>NIC Number*</label>
-                                <input id="getNic" type="text" class="form-control form-control-sm"
-                                       placeholder="Enter NIC Number..."
-                                       value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            @if($pageAuth['is_create']==1 || false)
-                            <button id="btnSearch" type="submit" class="btn btn-success">Search</button>
-                            @endif
-                        </div>                           
-                    </div>
-                </div>                                       
-            </div>
-        </div>
-    </div>
-    <!--Search Client By NIC END-->
-
     <div class="modal fade" id="modal-danger">
         <div class="modal-dialog">
             <div class="modal-content bg-danger">
@@ -226,29 +190,6 @@
         });
 //Load table
         loadTable();
-//Register Button
-        $('#btnSave').click(function () {
-            var data = fromValues();
-            if (Validiteinsert(data)) {
-                // if validiated
-                AddClient(data, function (result) {
-                    if (result.id == 1) {
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Enviremontal MS</br>Saved'
-                        });
-                    } else {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Enviremontal MS</br>Error'
-                        });
-                    }
-                    loadTable();
-                    resetinputFields();
-                    hideAllErrors();
-                });
-            }
-        });
 //click update button
         $('#btnUpdate').click(function () {
             //get form data
