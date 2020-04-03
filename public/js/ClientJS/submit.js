@@ -12,7 +12,7 @@ function AddClient(data, callBack) {
         processDaate: false,
         success: function (result) {
 
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
                 callBack(result);
             }
         },
@@ -24,11 +24,11 @@ function AddClient(data, callBack) {
 
 function Validiteinsert(data) {
     var response = true;
-    if (data.first_name.length == 0) {
+    if (data.first_name.length === 0) {
         $('#valPayCat').removeClass('d-none');
         response = false;
     }
-    if (data.last_name.length == 0) {
+    if (data.last_name.length === 0) {
         $('#valName').removeClass('d-none');
         response = false;
     }

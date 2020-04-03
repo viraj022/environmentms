@@ -195,7 +195,7 @@
             //get form data
             var data = fromValues();
             if (Validiteupdate(data)) {
-                updatePaymentCat($('#btnUpdate').val(), data, function (result) {
+                updateClient($('#btnUpdate').val(), data, function (result) {
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
@@ -216,7 +216,7 @@
         });
 //click delete button
         $('#btnDelete').click(function () {
-            deletePaymentCat($('#btnDelete').val(), function (result) {
+            deleteClient($('#btnDelete').val(), function (result) {
                 if (result.id == 1) {
                     Toast.fire({
                         type: 'success',
@@ -234,10 +234,15 @@
                 hideAllErrors();
             });
         });
-//select button action 
+//Select Button 
         $(document).on('click', '.btnAction', function () {
-            getaPaymentCatbyId(this.id, function (result) {
-                $('#getName').val(result.name);
+            getaClientbyId(this.id, function (result) {
+                $('#getfName').val(result.first_name);
+                $('#getlName').val(result.last_name);
+                $('#getAddress').val(result.address);
+                $('#getContact').val(result.contact_no);
+                $('#getEmail').val(result.email);
+                $('#getNicSave').val(result.nic);
                 showUpdate();
                 $('#btnUpdate').val(result.id);
                 $('#btnDelete').val(result.id);

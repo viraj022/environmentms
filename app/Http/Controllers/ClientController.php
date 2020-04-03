@@ -79,7 +79,7 @@ class ClientController extends Controller {
             'contact_no' => 'required',
             'email' => 'required',
             'nic' => 'required',
-            'password' => 'required',
+//            'password' => 'required',
         ]);
         if ($pageAuth['is_update']) {
             $client = Client::findOrFail($id);
@@ -89,7 +89,7 @@ class ClientController extends Controller {
             $client->contact_no = \request('contact_no');
             $client->email = \request('email');
             $client->nic = \request('nic');
-            $client->password = \request('password');
+//            $client->password = \request('password');
             $msg = $client->save();
             if ($msg) {
                 return array('id' => 1, 'message' => 'true');
@@ -167,7 +167,18 @@ class ClientController extends Controller {
         if ($pageAuth['is_read']) {
             //    PaymentType::get();
             return Client::where('nic', '=', $nic)
-                            ->get();
+                            ->first();
+        } else {
+            abort(401);
+        }
+    }
+    public function findClient_by_id($id) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        if ($pageAuth['is_read']) {
+            //    PaymentType::get();
+            return Client::where('id', '=', $id)
+                            ->first();
         } else {
             abort(401);
         }

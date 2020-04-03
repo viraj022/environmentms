@@ -1,11 +1,11 @@
-function deletePayments(id,callBack) {
+function deleteClient(id,callBack) {
     $.ajax({
         type: "DELETE",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/payment/id/"+ id,
+        url: "api/client/id/"+ id,
         data: null,
         dataType: "json",
         cache: false,
