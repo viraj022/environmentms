@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Auth;
 
 class ApplicationTypeController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware(['auth']);
     }
     /**
@@ -23,7 +24,9 @@ class ApplicationTypeController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_read']) {
-            return view('attachements', ['pageAuth' => $pageAuth]);
+            return view('attachementsMap', ['pageAuth' => $pageAuth]);
+        }else {
+            abort(401);
         }
     }
 
@@ -37,14 +40,18 @@ class ApplicationTypeController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_create']) {
-        \DB::transaction(function () {
-        $applicationType = ApplicationType::find(\request('id'));
-                $attachment =  request('attachment');       
-            foreach ($attachment as $value) {
-                $applicationType->attachemnts()->attach($value['id']);
-            }
-        });
-    }
+            \DB::transaction(function () {
+                $applicationType = ApplicationType::find(\request('id'));
+                $attachment =  request('attachment');
+                $applicationType->attachemnts()->detach();
+                foreach ($attachment as $value) {
+                    $applicationType->attachemnts()->attach($value['id']);
+                }
+            });
+            return array('id' => '1', 'msg' => 'true');
+        } else {
+            abort(401);
+        }
     }
 
     /**
@@ -70,6 +77,8 @@ class ApplicationTypeController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_read']) {
             return ApplicationType::with('attachemnts')->get();
+        } else {
+            abort(401);
         }
     }
     public function find($id)
@@ -78,21 +87,42 @@ class ApplicationTypeController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_read']) {
             return ApplicationType::with('attachemnts')->find($id);
+        } else {
+            abort(401);
         }
     }
     public function availableAttachements($id)
-    {   
-           
-        $applicetion = ApplicationType::with('attachemnts')->whereHas('attachemnts', function($q) use ($id){
-            $q->where('application_type_id', $id);
-        })->first();
-          $attachments = $applicetion->attachemnts;
-          $array = array();
-          foreach($attachments as $value){
-              array_push($array,$value['id']);
-          }
-           $array;
-         return Attachemnt::wherenotin('id', $array)->get();
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.attachments'));
+        if ($pageAuth['is_read']) {
+            $applicetion = ApplicationType::with('attachemnts')->whereHas('attachemnts', function ($q) use ($id) {
+                $q->where('application_type_id', $id);
+            })->first();
+            $attachments = $applicetion->attachemnts;
+            $array = array();
+            foreach ($attachments as $value) {
+                array_push($array, $value['id']);
+            }
+            $array;
+            return Attachemnt::wherenotin('id', $array)->get();
+        } else {
+            abort(401);
+        }
+    }
+
+    public function assignedAttachements($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.attachments'));
+        if ($pageAuth['is_read']) {
+            $applicetion = ApplicationType::with('attachemnts')->whereHas('attachemnts', function ($q) use ($id) {
+                $q->where('application_type_id', $id);
+            })->first();
+            return  $applicetion->attachemnts;
+        } else {
+            abort(401);
+        }
     }
 
     /**

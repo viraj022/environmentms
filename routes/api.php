@@ -874,7 +874,7 @@ Route::middleware('auth:api')->get('/applicationTypes/id/{id}', 'ApplicationType
     }
     
     */
-    Route::middleware('auth:api')->post('/applicationTypes', 'ApplicationTypeController@create'); // Get Application types by id
+    Route::middleware('auth:api')->post('/applicationType', 'ApplicationTypeController@create'); //   save attachements to a application
     
     /*
     {
@@ -889,5 +889,48 @@ Route::middleware('auth:api')->get('/applicationTypes/id/{id}', 'ApplicationType
         ]
     }
     */
-    Route::middleware('auth:api')->get('/applicationTypes/available/id/{id}', 'ApplicationTypeController@availableAttachements'); // Get Application types by id
+    Route::middleware('auth:api')->get('/applicationType/available/id/{id}', 'ApplicationTypeController@availableAttachements'); // Get available (not assigned) attachments by application id
+
+/*
+
+[
+    {
+        "id": 3,
+        "name": "Business Registration Certificate / Copy of the  National Identity Card of the  Industry Owner",
+        "created_at": "2020-02-26 11:06:12",
+        "updated_at": "2020-02-28 09:24:41",
+        "deleted_at": null
+    },
+    {
+        "id": 4,
+        "name": "Clear route map to approach the proposed site or industry",
+        "created_at": "2020-02-26 11:11:13",
+        "updated_at": "2020-02-28 09:24:59",
+        "deleted_at": null
+    },
+]
+*/
+
+Route::middleware('auth:api')->get('/applicationType/assigned/id/{id}', 'ApplicationTypeController@assignedAttachements'); // Get assigned  attachments by applicatin id
+
+/*
+
+[
+    {
+        "id": 3,
+        "name": "Business Registration Certificate / Copy of the  National Identity Card of the  Industry Owner",
+        "created_at": "2020-02-26 11:06:12",
+        "updated_at": "2020-02-28 09:24:41",
+        "deleted_at": null
+    },
+    {
+        "id": 4,
+        "name": "Clear route map to approach the proposed site or industry",
+        "created_at": "2020-02-26 11:11:13",
+        "updated_at": "2020-02-28 09:24:59",
+        "deleted_at": null
+    },
+]
+*/
+
     /// application attachment map
