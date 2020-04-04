@@ -92,6 +92,14 @@
                     </a>
                 </li>
                 @endif
+                @if($pre['id']===config('auth.privileges.attachments'))
+                <li class="nav-item">
+                    <a href="{{ url('/attachment_map') }}" class="nav-link {{ Request::is('attachment_map') ? 'active' : '' }}">
+                        <i class="fas fa-file-archive nav-icon"></i>
+                        <p>Attachements Map</p>
+                    </a>
+                </li>
+                @endif
                 @if($pre['id']===config('auth.privileges.pradesheyasaba') && auth()->user()->roll->level->value == 1)
                 <li class="nav-item">
                     <a href="{{ url('/pradesheyasaba') }}" class="nav-link {{ Request::is('pradesheyasaba') ? 'active' : '' }}">
