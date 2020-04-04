@@ -786,6 +786,7 @@ Route::middleware('auth:api')->get('/client/id/{id}', 'ClientController@findClie
  
 //end Client  api codes 
 
+ 
 /// application attachment map
 Route::middleware('auth:api')->get('/applicationTypes', 'ApplicationTypeController@show'); // Get Application types with their attachemnts
 
@@ -861,13 +862,9 @@ Route::middleware('auth:api')->get('/applicationTypes/id/{id}', 'ApplicationType
     /*
     {
         "id": "1",
-        "attachment": [
-        {
-            "id": 1
-        },
-        {
-            "id": 2
-        }
+        "attachment": [  
+     * 1,
+     * 2    
         ]
     }
     */
@@ -894,6 +891,29 @@ Route::middleware('auth:api')->get('/applicationTypes/id/{id}', 'ApplicationType
 */
 
 Route::middleware('auth:api')->get('/applicationType/assigned/id/{id}', 'ApplicationTypeController@assignedAttachements'); // Get assigned  attachments by applicatin id
+
+/*
+
+[
+    {
+        "id": 3,
+        "name": "Business Registration Certificate / Copy of the  National Identity Card of the  Industry Owner",
+        "created_at": "2020-02-26 11:06:12",
+        "updated_at": "2020-02-28 09:24:41",
+        "deleted_at": null
+    },
+    {
+        "id": 4,
+        "name": "Clear route map to approach the proposed site or industry",
+        "created_at": "2020-02-26 11:11:13",
+        "updated_at": "2020-02-28 09:24:59",
+        "deleted_at": null
+    },
+]
+*/
+
+    /// application attachment map
+Route::middleware('auth:api')->get('/applicationType/allAtachmentWithStatus/id/{id}', 'ApplicationTypeController@allAttachmentsWithStatus'); // Get all attachment and assign attachments
 
 /*
 

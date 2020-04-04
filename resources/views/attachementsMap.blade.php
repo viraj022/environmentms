@@ -16,47 +16,81 @@
 @endsection
 @section('content')
 @if($pageAuth['is_read']==1 || false)
-
-  @if($pageAuth['is_create']==1 || false)
-     <button id="btnSave" type="submit" class="btn btn-success">Save</button>
-   @endif
-
- @if($pageAuth['is_update']==1 || false)
-  <button id="btnUpdate" type="submit" class="btn btn-warning ">Update</button>
-@endif
-
-@if($pageAuth['is_delete']==1 || false)
-     <button  id="btnshowDelete" type="submit" class="btn btn-danger"  data-toggle="modal"
-                                 data-target="#modal-danger">Delete</button>
- @endif
-
-
-
-<div class="modal fade" id="modal-danger">
-    <div class="modal-dialog">
-        <div class="modal-content bg-danger">
-            <div class="modal-header">
-                <h4 class="modal-title">Delete Attachment</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><b>Are you sure you want to permanently delete this Attachment ? </b></p>
-                <p>Once you continue, this process can not be undone. Please Procede with care.</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-12 col-sm-6">
+                <h1>Application Attachment Setup</h1>
             </div>
         </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
-</div>
+</section>
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <label>Roles</label>
+                    </div>
+                    <div class="card-body">
+                        <label>Application Type</label>
+                        <select class="form-control select2 select2-purple applicationType" data-dropdown-css-class="select2-purple"style="width: 100%;"></select>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Available Attachments</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body p-0">
+                            <table class="table table-condensed " id="allAt_tbl">
+                                <thead>
+                                    <tr><td><input type="checkbox" id="chkAll"></td><td></td></tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <div class="card-footer">
+                        @if($pageAuth['is_create']==1 || false)
+                        <button id="btnSave" type="submit" class="btn btn-success">Save</button>
+                        @endif
+                        <button id="btnReset" type="submit" class="btn btn-default">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <!--            <div class="col-md-5">
+                            <div class="card card-primary">
+                                <div class="card-body">
+                                    <div class="row">
+            
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h3 class="card-title">Assigned Attachments</h3>
+                                                </div>
+                                                 /.card-header 
+                                                <div class="card-body p-0">
+                                                    <table class="table table-condensed" id="assigned_at">
+            
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                                 /.card-body 
+                                            </div>
+                                        </div>
+            
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
+        </div>
+    </div>
+</section>
 
 @endif
-
 @endsection
 
 
@@ -82,12 +116,37 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
-<script src="../../js/attachmentsjs/submit.js"></script>
-<script src="../../js/attachmentsjs/get.js"></script>
-<script src="../../js/attachmentsjs/update.js"></script>
-<script src="../../js/attachmentsjs/delete.js"></script>
+<script src="../../js/attachmentsjs/attachment_map.js"></script>
 <!-- AdminLTE App -->
 <script>
-   
+    GetApplications(function () {
+        GetAllDetails(parseInt($('.applicationType').val()));
+    });
+    $('.applicationType').change(function () {
+        GetAllDetails(parseInt($('.applicationType').val()));
+    });
+    $('#btnSave').click(function () {
+        var chk_list = [];
+        $.each($("input[name='atachCheck']:checked"), function () {
+            chk_list.push($(this).val());
+        });
+        submitData({id: $('.applicationType').val(), attachment: chk_list}, function (res) {
+            if (res.id == 1) {
+                alert('Saved Data');
+                GetAllDetails(parseInt($('.applicationType').val()));
+            }
+        });
+    });
+    $('#btnReset').click(function () {
+        GetAllDetails(parseInt($('.applicationType').val()));
+    });
+    $('#chkAll').click(function () {
+        if ($(this).is(':checked')) {
+            $('input[name=atachCheck]').attr('checked', true);
+        } else {
+            $('input[name=atachCheck]').attr('checked', false);
+        }
+
+    });
 </script>
 @endsection

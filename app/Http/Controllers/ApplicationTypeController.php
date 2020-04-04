@@ -8,24 +8,23 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-class ApplicationTypeController extends Controller
-{
-    public function __construct()
-    {
+class ApplicationTypeController extends Controller {
+
+    public function __construct() {
         $this->middleware(['auth']);
     }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_read']) {
             return view('attachementsMap', ['pageAuth' => $pageAuth]);
-        }else {
+        } else {
             abort(401);
         }
     }
@@ -35,17 +34,16 @@ class ApplicationTypeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_create']) {
             \DB::transaction(function () {
                 $applicationType = ApplicationType::find(\request('id'));
-                $attachment =  request('attachment');
+                $attachment = request('attachment');
                 $applicationType->attachemnts()->detach();
                 foreach ($attachment as $value) {
-                    $applicationType->attachemnts()->attach($value['id']);
+                    $applicationType->attachemnts()->attach($value);
                 }
             });
             return array('id' => '1', 'msg' => 'true');
@@ -60,8 +58,7 @@ class ApplicationTypeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
@@ -71,8 +68,7 @@ class ApplicationTypeController extends Controller
      * @param  \App\ApplicationType  $applicationType
      * @return \Illuminate\Http\Response
      */
-    public function show()
-    {
+    public function show() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_read']) {
@@ -81,8 +77,8 @@ class ApplicationTypeController extends Controller
             abort(401);
         }
     }
-    public function find($id)
-    {
+
+    public function find($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_read']) {
@@ -91,38 +87,51 @@ class ApplicationTypeController extends Controller
             abort(401);
         }
     }
-    public function availableAttachements($id)
-    {
+
+    public function availableAttachements($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_read']) {
             $applicetion = ApplicationType::with('attachemnts')->whereHas('attachemnts', function ($q) use ($id) {
-                $q->where('application_type_id', $id);
-            })->first();
+                        $q->where('application_type_id', $id);
+                    })->first();
             $attachments = $applicetion->attachemnts;
             $array = array();
             foreach ($attachments as $value) {
                 array_push($array, $value['id']);
             }
-            $array;
+//            $array;
             return Attachemnt::wherenotin('id', $array)->get();
         } else {
             abort(401);
         }
     }
 
-    public function assignedAttachements($id)
-    {
+    public function assignedAttachements($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_read']) {
             $applicetion = ApplicationType::with('attachemnts')->whereHas('attachemnts', function ($q) use ($id) {
-                $q->where('application_type_id', $id);
-            })->first();
-            return  $applicetion->attachemnts;
+                        $q->where('application_type_id', $id);
+                    })->first();
+            return $applicetion->attachemnts;
         } else {
             abort(401);
         }
+    }
+
+    public function allAttachmentsWithStatus($id) {
+        $av = $this->availableAttachements($id)->toArray();
+        $asigned = $this->assignedAttachements($id)->toArray();
+        $all = array();
+        foreach ($av as $a) {
+            $all[] = array('id' => $a['id'], 'name' => $a['name'], 'st' => 0);
+        }
+        foreach ($asigned as $as) {
+            $all[] = array('id' => $as['id'], 'name' => $as['name'], 'st' => 1);
+        }
+//        print_r($all);
+        return $all;
     }
 
     /**
@@ -131,8 +140,7 @@ class ApplicationTypeController extends Controller
      * @param  \App\ApplicationType  $applicationType
      * @return \Illuminate\Http\Response
      */
-    public function edit(ApplicationType $applicationType)
-    {
+    public function edit(ApplicationType $applicationType) {
         //
     }
 
@@ -143,8 +151,7 @@ class ApplicationTypeController extends Controller
      * @param  \App\ApplicationType  $applicationType
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ApplicationType $applicationType)
-    {
+    public function update(Request $request, ApplicationType $applicationType) {
         //
     }
 
@@ -154,8 +161,8 @@ class ApplicationTypeController extends Controller
      * @param  \App\ApplicationType  $applicationType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ApplicationType $applicationType)
-    {
+    public function destroy(ApplicationType $applicationType) {
         //
     }
+
 }
