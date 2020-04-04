@@ -283,7 +283,7 @@
 //Search NIC Button 
         $(document).on('click', '#btnSearch', function () {
             getClientbyNic($('#getNic').val(), function (result) {
-                if (result.length === 0) {
+                if (result.id == -1) {
                     alert("Client Not Found");
                     $('.search-Client').addClass('d-none');
                     $('.reg-newClient').removeClass('d-none');
