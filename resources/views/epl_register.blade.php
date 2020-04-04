@@ -18,19 +18,21 @@
 @if($pageAuth['is_read']==1 || false)
 
   @if($pageAuth['is_create']==1 || false)
-     <button id="btnSave" type="submit" class="btn btn-success">Save</button>
+     <button id="btnSave" type="button" class="btn btn-success">Save</button>
    @endif
 
  @if($pageAuth['is_update']==1 || false)
-  <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
+  <button id="btnUpdate" type="submit" class="btn btn-warning">Update</button>
 @endif
 
 @if($pageAuth['is_delete']==1 || false)
-     <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
+     <button  id="btnshowDelete" type="submit" class="btn btn-danger"  data-toggle="modal"
                                  data-target="#modal-danger">Delete</button>
  @endif
 
-
+<input id="inp" type='file'>
+<p id="b64"></p>
+<img id="img" height="150">
 
 <div class="modal fade" id="modal-danger">
     <div class="modal-dialog">
@@ -88,6 +90,75 @@
 <script src="../../js/attachmentsjs/delete.js"></script>
 <!-- AdminLTE App -->
 <script>
-   alert({{$id}});
+$(function(){
+       alert({{$id}});
+{{-- function readFile() {
+  
+  if (this.files && this.files[0]) {
+    
+    var FR= new FileReader();
+    
+    FR.addEventListener("load", function(e) {
+      document.getElementById("img").src       = e.target.result;
+      document.getElementById("b64").innerHTML = e.target.result;
+      AddPayments({"name": e.target.result},function(){
+          alert("Message Sent");
+      })
+    }); 
+    
+    FR.readAsDataURL( this.files[0] );
+  }
+  
+} --}}
+
+{{-- document.getElementById("inp").addEventListener("change", readFile); --}}
+$("#btnSave").click(function(){
+    alert("wada");
+  var img =  document.getElementById("inp")
+      if (img.files && img.files[0]) {
+    
+    var FR= new FileReader();
+    
+    FR.addEventListener("load", function(e) {
+      document.getElementById("img").src       = e.target.result;
+      document.getElementById("b64").innerHTML = e.target.result;
+      AddPayments({"name": e.target.result},function(){
+          alert("Message Sent");
+      })
+    }); 
+    
+    FR.readAsDataURL( img.files[0] );
+  }else{
+      alert("No Image")
+  }
+    });
+});
+
+
+function AddPayments(data, callBack) {
+    $.ajax({
+        type: "POST",
+        headers: {
+            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            "Accept": "application/json"
+        },
+        url: "/api/epl",
+        data: data,
+        dataType: "json",
+        cache: false,
+        processDaate: false,
+        success: function (result) {
+
+            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+                callBack(result);
+            }
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            alert(textStatus + ':' + errorThrown);
+        }
+    });
+
+    
+}
 </script>
 @endsection

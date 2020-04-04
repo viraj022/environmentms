@@ -934,3 +934,6 @@ Route::middleware('auth:api')->get('/applicationType/assigned/id/{id}', 'Applica
 */
 
     /// application attachment map
+
+
+    Route::middleware('auth:api')->post('/epl', 'EPLController@create'); // Get assigned  attachments by applicatin id

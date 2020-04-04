@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Auth;
 
 class EPLController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,8 +21,8 @@ class EPLController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
-        if ($pageAuth['is_read']) {        
-            return view('epl_register', ['pageAuth' => $pageAuth,'id'=>$id]);
+        if ($pageAuth['is_read']) {
+            return view('epl_register', ['pageAuth' => $pageAuth, 'id' => $id]);
         } else {
             abort(401);
         }
@@ -31,9 +35,20 @@ class EPLController extends Controller
      */
     public function create()
     {
-        
-    }
+       
 
+
+
+
+        
+        $data =  \request('name');
+        $array = explode(';',$data);
+        $array2 = explode(',',$array[1]);
+        $array3 = explode('/',$array[0]);
+        $type  =  $array3[1];       
+        $data = base64_decode($array2[1]);
+        file_put_contents("1.".$type,$data);
+    }
     /**
      * Store a newly created resource in storage.
      *
