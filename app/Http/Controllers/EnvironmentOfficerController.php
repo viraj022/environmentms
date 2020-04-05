@@ -83,9 +83,8 @@ class EnvironmentOfficerController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($pageAuth['is_read']) {
-            $assistantDirectors = AssistantDirector::where('active_status', '1')->select('id')->get();
-            $environmentOfficers = EnvironmentOfficer::where('active_status', '1')->select('id')->get();
-
+            $assistantDirectors = AssistantDirector::where('active_status', '1')->select('user_id as id')->get();
+            $environmentOfficers = EnvironmentOfficer::where('active_status', '1')->select('user_id as id')->get();     
             return User::wherenotin('id', $assistantDirectors)->wherenotin('id', $environmentOfficers)->get();
         } else {
             abort(401);
@@ -98,7 +97,7 @@ class EnvironmentOfficerController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($pageAuth['is_read']) {
             return  EnvironmentOfficer::where('environment_officers.id', '=', $id)
-                ->where('environment_officers.active_status','=',1)
+                ->where('environment_officers.active_status', '=', 1)
                 ->join('assistant_directors', 'environment_officers.assistant_director_id', 'assistant_directors.id')
                 ->join('zones', 'assistant_directors.zone_id', 'zones.id')
                 ->join('users', 'environment_officers.user_id', '=', 'users.id')
@@ -127,7 +126,7 @@ class EnvironmentOfficerController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($pageAuth['is_read']) {
             return  EnvironmentOfficer::where('environment_officers.assistant_director_id', '=', $id)
-            ->where('environment_officers.active_status','=',1)
+                ->where('environment_officers.active_status', '=', 1)
                 ->join('assistant_directors', 'environment_officers.assistant_director_id', 'assistant_directors.id')
                 ->join('zones', 'assistant_directors.zone_id', 'zones.id')
                 ->join('users', 'environment_officers.user_id', '=', 'users.id')
