@@ -31,7 +31,7 @@ class CreateEPLSTable extends Migration
             $table->double('investment', 12, 2);
             $table->dateTime('start_date');
             $table->string('registration_no', 50)->unique();
-            $table->text('remark');
+            $table->text('remark')->nullable();
             $table->string('application_path');
             $table->timestamps();
             $table->softDeletes();

@@ -119,4 +119,8 @@ class EPLController extends Controller
     {
         //
     }
+
+    public function generateCode(){
+        
+    }
 }
