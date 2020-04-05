@@ -1,11 +1,11 @@
-function GetPradesheeyasabas(callBack) {
+function GetUsers(callBack) {
     $.ajax({
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/pradesheeyasabas",
+        url: "api/environment_officers/unassigned",
         data: null,
         dataType: "json",
         cache: false,
@@ -22,6 +22,22 @@ function GetPradesheeyasabas(callBack) {
     });
 }
 
+function loadUsersCombo(callBack) {
+    GetUsers(function (result) {
+        var combo = "";
+        var id = 1;
+        $.each(result, function (index, value) {
+            combo += "<option value='" + value.id + "'>" + value.first_name +' '+value.last_name+ "</option>";
+        });
+        $('#getUsers').html(combo);
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(result);
+        }
+    });
+}
+
+
+
 function uniqueNamecheck(name,callBack) {
     $.ajax({
         type: "GET",
@@ -29,7 +45,7 @@ function uniqueNamecheck(name,callBack) {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/pradesheeyasaba/name/"+name,
+        url: "api/zone/name/"+name,
         data: null,
         dataType: "json",
         cache: false,
@@ -49,7 +65,7 @@ function uniqueCodecheck(code,callBack) {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/pradesheeyasaba/code/"+code,
+        url: "api/zone/code/"+code,
         data: null,
         dataType: "json",
         cache: false,
@@ -63,24 +79,8 @@ function uniqueCodecheck(code,callBack) {
     });
 }
 
-function loadTable() {
-    GetPradesheeyasabas(function (result) {
-        var table = "";
-        var id = 1;
-        $.each(result, function (index, value) {
-            table += "<tr>";
-            table += "<td>" + id++ + "</td>";
-            table += "<td>" + value.name + "</td>";
-            table += "<td>" + value.code + "</td>";
-            table += "<td><button id='" + value.id + "' type='button' class='btn btn-block btn-success btn-xs btnAction'>Select</button></td>";
-            table += "</tr>";
-        });
-        $('#tblPradesiyasaba tbody').html(table);
-        $("#tblPradesiyasaba").DataTable();
-    });
-}
 
-function getaPradesiyasababyId(id, callBack) {
+function GetAssistantDir(callBack) {
 
     $.ajax({
         type: "GET",
@@ -88,7 +88,7 @@ function getaPradesiyasababyId(id, callBack) {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/pradesheeyasaba/id/" + id,
+        url: "api/AssistantDirector/active",
         data: null,
         dataType: "json",
         cache: false,
@@ -96,6 +96,7 @@ function getaPradesiyasababyId(id, callBack) {
         success: function (result) {
 
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        
                 callBack(result);
             }
         }
@@ -103,77 +104,29 @@ function getaPradesiyasababyId(id, callBack) {
 
 }
 
-
-function GetAllZone(callBack) {
-    $.ajax({
-        type: "GET",
-        headers: {
-            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-            "Accept": "application/json"
-        },
-        url: "api/zones",
-        data: null,
-        dataType: "json",
-        cache: false,
-        processDaate: false,
-        success: function (result) {
-
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack(result);
-            }
-        },
-        error: function (xhr, textStatus, errorThrown) {
-            alert(textStatus + ':' + errorThrown);
-        }
-    });
-}
-
-function loadZoneCombo(callBack) {
-    GetAllZone(function (result) {
+function loadAssistantDirectorCombo(callBack) {
+    GetAssistantDir(function (result) {
         var combo = "";
         var id = 1;
         $.each(result, function (index, value) {
-            combo += "<option value='" + value.id + "'>" + value.name + "</option>";
+            combo += "<option value='" + value.id + "'>" + value.first_name +' '+value.last_name+ "</option>";
         });
-        $('.combo_zone').html(combo);
+        $('.combo_AssistantDirector').html(combo);
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(result);
         }
     });
 }
 
-function loadPradeshiyaSabaTblByZone(zoneId,callBack)
+function getEnvOfficerByAssistantDirId_table(id,callBack)
 {
-          getaPradesiyasabaByZone(zoneId,function (result) {
-        var table = "";
-        var id = 1;
-        $.each(result, function (index, value) {
-            table += "<tr>";
-            table += "<td>" + id++ + "</td>";
-            table += "<td>" + value.name + "</td>";
-            table += "<td>" + value.code + "</td>";
-            table += "<td><button id='" + value.id + "' type='button' class='btn btn-block btn-success btn-xs btnAction'>Select</button></td>";
-            table += "</tr>";
-        });
-        $('#tblPradesiyasaba tbody').html(table);
-        $("#tblPradesiyasaba").DataTable();
-    });
-
-
-        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-            callBack(result);
-        }
-}
-
-function getaPradesiyasabaByZone(zone_id, callBack) {
-
     $.ajax({
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/pradesheeyasabas/zone/id/" + zone_id,
+        url: "api/environment_officers/assistant_director/id/"+id,
         data: null,
         dataType: "json",
         cache: false,
@@ -181,9 +134,57 @@ function getaPradesiyasabaByZone(zone_id, callBack) {
         success: function (result) {
 
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        
                 callBack(result);
             }
         }
     });
 
 }
+function loadEnvOficerTable(id) {
+
+    getEnvOfficerByAssistantDirId_table(id,function (result) {
+        var table = "";
+        var id = 1;
+        $.each(result, function (index, value) {
+            table += "<tr>";
+            table += "<td>" + id++ + "</td>";
+            table += "<td>" + value.first_name +' '+ value.last_name+ "</td>";
+            table += "<td><button id='" + value.id + "' type='button' class='btn btn-block btn-success btn-xs btnAction'>Select</button></td>";
+            table += "</tr>";
+        });
+
+
+        $('#tblEnvOfficer tbody').html(table);
+        $("#tblEnvOfficer").DataTable();
+    });
+}
+
+
+
+function getEnvOfficerById(id,callBack)
+{
+    $.ajax({
+        type: "GET",
+        headers: {
+            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            "Accept": "application/json"
+        },
+        url: "api/environment_officer/id/"+id,
+        data: null,
+        dataType: "json",
+        cache: false,
+        processDaate: false,
+        success: function (result) {
+
+            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        
+                callBack(result);
+            }
+        }
+    });
+
+}
+
+
+

@@ -1,11 +1,11 @@
-function GetPradesheeyasabas(callBack) {
+function GetUsers(callBack) {
     $.ajax({
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/pradesheeyasabas",
+        url: "api/AssistantDirector/unassign",
         data: null,
         dataType: "json",
         cache: false,
@@ -22,89 +22,21 @@ function GetPradesheeyasabas(callBack) {
     });
 }
 
-function uniqueNamecheck(name,callBack) {
-    $.ajax({
-        type: "GET",
-        headers: {
-            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-            "Accept": "application/json"
-        },
-        url: "api/pradesheeyasaba/name/"+name,
-        data: null,
-        dataType: "json",
-        cache: false,
-        processDaate: false,
-        success: function (result) {
-
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack(result);
-            }
-        }
-    });
-}
-function uniqueCodecheck(code,callBack) {
-    $.ajax({
-        type: "GET",
-        headers: {
-            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-            "Accept": "application/json"
-        },
-        url: "api/pradesheeyasaba/code/"+code,
-        data: null,
-        dataType: "json",
-        cache: false,
-        processDaate: false,
-        success: function (result) {
-
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack(result);
-            }
-        }
-    });
-}
-
-function loadTable() {
-    GetPradesheeyasabas(function (result) {
-        var table = "";
+function loadUsersCombo(callBack) {
+    GetUsers(function (result) {
+        var combo = "";
         var id = 1;
         $.each(result, function (index, value) {
-            table += "<tr>";
-            table += "<td>" + id++ + "</td>";
-            table += "<td>" + value.name + "</td>";
-            table += "<td>" + value.code + "</td>";
-            table += "<td><button id='" + value.id + "' type='button' class='btn btn-block btn-success btn-xs btnAction'>Select</button></td>";
-            table += "</tr>";
+            combo += "<option value='" + value.id + "'>" + value.first_name +' '+value.last_name+ "</option>";
         });
-        $('#tblPradesiyasaba tbody').html(table);
-        $("#tblPradesiyasaba").DataTable();
-    });
-}
-
-function getaPradesiyasababyId(id, callBack) {
-
-    $.ajax({
-        type: "GET",
-        headers: {
-            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-            "Accept": "application/json"
-        },
-        url: "api/pradesheeyasaba/id/" + id,
-        data: null,
-        dataType: "json",
-        cache: false,
-        processDaate: false,
-        success: function (result) {
-
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack(result);
-            }
+        $('#getUsers').html(combo);
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(result);
         }
     });
-
 }
 
-
-function GetAllZone(callBack) {
+function GetZone(callBack) {
     $.ajax({
         type: "GET",
         headers: {
@@ -129,51 +61,28 @@ function GetAllZone(callBack) {
 }
 
 function loadZoneCombo(callBack) {
-    GetAllZone(function (result) {
+    GetZone(function (result) {
         var combo = "";
         var id = 1;
         $.each(result, function (index, value) {
             combo += "<option value='" + value.id + "'>" + value.name + "</option>";
         });
-        $('.combo_zone').html(combo);
+        $('#getZone').html(combo);
+          $('.select2').select2();
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(result);
         }
     });
 }
 
-function loadPradeshiyaSabaTblByZone(zoneId,callBack)
-{
-          getaPradesiyasabaByZone(zoneId,function (result) {
-        var table = "";
-        var id = 1;
-        $.each(result, function (index, value) {
-            table += "<tr>";
-            table += "<td>" + id++ + "</td>";
-            table += "<td>" + value.name + "</td>";
-            table += "<td>" + value.code + "</td>";
-            table += "<td><button id='" + value.id + "' type='button' class='btn btn-block btn-success btn-xs btnAction'>Select</button></td>";
-            table += "</tr>";
-        });
-        $('#tblPradesiyasaba tbody').html(table);
-        $("#tblPradesiyasaba").DataTable();
-    });
-
-
-        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-            callBack(result);
-        }
-}
-
-function getaPradesiyasabaByZone(zone_id, callBack) {
-
+function uniqueNamecheck(name,callBack) {
     $.ajax({
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/pradesheeyasabas/zone/id/" + zone_id,
+        url: "api/zone/name/"+name,
         data: null,
         dataType: "json",
         cache: false,
@@ -185,5 +94,97 @@ function getaPradesiyasabaByZone(zone_id, callBack) {
             }
         }
     });
+}
+function uniqueCodecheck(code,callBack) {
+    $.ajax({
+        type: "GET",
+        headers: {
+            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            "Accept": "application/json"
+        },
+        url: "api/zone/code/"+code,
+        data: null,
+        dataType: "json",
+        cache: false,
+        processDaate: false,
+        success: function (result) {
+
+            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+                callBack(result);
+            }
+        }
+    });
+}
+function loadTable() {
+
+    GetAssistantDir(function (result) {
+        var table = "";
+        var id = 1;
+        $.each(result, function (index, value) {
+            table += "<tr>";
+            table += "<td>" + id++ + "</td>";
+            table += "<td>" + value.first_name +' '+ value.last_name+ "</td>";
+            table += "<td>" + value.user_name + "</td>";
+            table += "<td>" + value.zone_name + "</td>";
+            table += "<td><button id='" + value.id + "' type='button' class='btn btn-block btn-success btn-xs btnAction'>Select</button></td>";
+            table += "</tr>";
+        });
+
+
+        $('#tblAssistantDirectors tbody').html(table);
+        $("#tblAssistantDirectors").DataTable();
+    });
+}
+
+function GetAssistantDir(callBack) {
+
+    $.ajax({
+        type: "GET",
+        headers: {
+            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            "Accept": "application/json"
+        },
+        url: "api/AssistantDirector/active",
+        data: null,
+        dataType: "json",
+        cache: false,
+        processDaate: false,
+        success: function (result) {
+
+            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        
+                callBack(result);
+            }
+        }
+    });
 
 }
+
+
+
+function getaAssistantDirbyId(id,callBack)
+{
+    $.ajax({
+        type: "GET",
+        headers: {
+            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            "Accept": "application/json"
+        },
+        url: "api/get_a_AssistantDirector/id/"+id,
+        data: null,
+        dataType: "json",
+        cache: false,
+        processDaate: false,
+        success: function (result) {
+
+            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        
+                callBack(result);
+            }
+        }
+    });
+
+}
+
+
+
