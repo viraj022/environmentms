@@ -35,19 +35,34 @@ class EPLController extends Controller
      */
     public function create()
     {
-       
+        $epl = new EPL();
+        $epl->name = \request('name');
+        $epl->industry_category_id = \request('industry_category_id');
+        $epl->business_scale_id = \request('business_scale_id');
+        $epl->contact_no = \request('contact_no');
+        $epl->address = \request('address');
+        $epl->email = \request('email');
+        $epl->coordinate_x = \request('coordinate_x');
+        $epl->coordinate_y = \request('coordinate_y');
+        $epl->pradesheeyasaba_id = \request('pradesheeyasaba_id');
+        $epl->is_industry = \request('is_industry');
+        $epl->investment = \request('investment');
+        $epl->start_date = \request('start_date');
+        $epl->remark = \request('remark');
+        $epl->application_path = \request('application_path');
+        $epl->code = \request('application_path');
+        // $epl->name = \request('code');
 
 
 
 
-        
-        $data =  \request('name');
-        $array = explode(';',$data);
-        $array2 = explode(',',$array[1]);
-        $array3 = explode('/',$array[0]);
-        $type  =  $array3[1];       
+        $data =  \request('file');
+        $array = explode(';', $data);
+        $array2 = explode(',', $array[1]);
+        $array3 = explode('/', $array[0]);
+        $type  =  $array3[1];
         $data = base64_decode($array2[1]);
-        file_put_contents("1.".$type,$data);
+        file_put_contents("1." . $type, $data);
     }
     /**
      * Store a newly created resource in storage.

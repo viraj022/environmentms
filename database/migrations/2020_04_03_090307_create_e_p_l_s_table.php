@@ -23,9 +23,9 @@ class CreateEPLSTable extends Migration
             $table->bigInteger('business_scale_id')->unsigned();
             $table->string('contact_no', 12);
             $table->text('address');
-            $table->text('email');
-            $table->string('coordinate_x', 100);
-            $table->string('coordinate_y', 100);
+            $table->text('email')->nullable();
+            $table->string('coordinate_x', 100)->nullable();
+            $table->string('coordinate_y', 100)->nullable();
             $table->bigInteger('pradesheeyasaba_id')->unsigned();
             $table->integer('is_industry')->default(0)->comment('0 => no 1 => yes');
             $table->double('investment', 12, 2);
