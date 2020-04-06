@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 
 class ClientController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +20,15 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('client_space', ['pageAuth' => $pageAuth]);
+    }
+    public function allClientsindex()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('all_clients', ['pageAuth' => $pageAuth]);
     }
 
     /**
@@ -70,15 +79,26 @@ class ClientController extends Controller
      */
     public function store($id)
     {
+<<<<<<< HEAD
         // ,register_no,' . $vehicle->id
+=======
+
+>>>>>>> relese/certificate
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         request()->validate([
             'first_name' => 'required',
             'last_name' => 'required',
             'address' => 'required',
+<<<<<<< HEAD
             'contact_no' => ['required', new contactNo],
             'email' => 'nullable|sometimes',                   
+=======
+            'contact_no' => 'required',
+            'email' => 'required',
+            'nic' => 'required',
+            //            'password' => 'required',
+>>>>>>> relese/certificate
         ]);
         if ($pageAuth['is_update']) {
             $client = Client::findOrFail($id);
@@ -87,6 +107,11 @@ class ClientController extends Controller
             $client->address = \request('address');
             $client->contact_no = \request('contact_no');
             $client->email = \request('email');
+<<<<<<< HEAD
+=======
+            $client->nic = \request('nic');
+            //            $client->password = \request('password');
+>>>>>>> relese/certificate
             $msg = $client->save();
             if ($msg) {
                 return array('id' => 1, 'message' => 'true');
@@ -151,7 +176,11 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         if ($pageAuth['is_delete']) {
             $client = Client::findOrFail($id);
+<<<<<<< HEAD
             $msg =  $client->delete();
+=======
+            $msg = $client->delete();
+>>>>>>> relese/certificate
             if ($msg) {
                 return array('id' => 1, 'message' => 'true');
             } else {
@@ -161,9 +190,12 @@ class ClientController extends Controller
             abort(401);
         }
     }
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> relese/certificate
 
     public function findClient_by_nic($nic)
     {
@@ -171,8 +203,31 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         if ($pageAuth['is_read']) {
             //    PaymentType::get();
+<<<<<<< HEAD
             return Client::where('nic', '=', $nic)
                 ->get();
+=======
+            $client = Client::where('nic', '=', $nic)->first();
+            if ($client !== null) {
+                return $client;
+            } else {
+                return array('id' => -1, 'message' => 'false');
+            }
+        } else {
+            abort(401);
+        }
+    }
+
+
+    public function findClient_by_id($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        if ($pageAuth['is_read']) {
+            //    PaymentType::get();
+            return Client::where('id', '=', $id)
+                ->first();
+>>>>>>> relese/certificate
         } else {
             abort(401);
         }
