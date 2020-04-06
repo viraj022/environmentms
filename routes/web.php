@@ -33,6 +33,7 @@ Route::get('/epl_register/id/{id}', 'EPLController@index');
 Route::get('/epl_profile/client/{client}/profile/{profile}', 'EPLController@profile');
 Route::get('/client_space', 'ClientController@index');
 Route::get('/all_clients', 'ClientController@allClientsindex');
+Route::get('/committee_pool', 'CommetyPoolController@index');
 //ui routs
 
 //dashboard

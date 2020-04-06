@@ -125,6 +125,8 @@ return [
         'assistantDirector' => 8,
         'environmentOfficer' => 9,
         'clientSpace' => 10,        
+        'committeePool' => 13,
+        
     ],
 
 ];
