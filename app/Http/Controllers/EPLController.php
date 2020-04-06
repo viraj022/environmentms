@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\EPL;
+use App\BusinessScale;
+use App\Pradesheeyasaba;
+use App\Rules\contactNo;
+use App\IndustryCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class EPLController extends Controller
@@ -35,34 +40,59 @@ class EPLController extends Controller
      */
     public function create()
     {
-        $epl = new EPL();
-        $epl->name = \request('name');
-        $epl->industry_category_id = \request('industry_category_id');
-        $epl->business_scale_id = \request('business_scale_id');
-        $epl->contact_no = \request('contact_no');
-        $epl->address = \request('address');
-        $epl->email = \request('email');
-        $epl->coordinate_x = \request('coordinate_x');
-        $epl->coordinate_y = \request('coordinate_y');
-        $epl->pradesheeyasaba_id = \request('pradesheeyasaba_id');
-        $epl->is_industry = \request('is_industry');
-        $epl->investment = \request('investment');
-        $epl->start_date = \request('start_date');
-        $epl->remark = \request('remark');
-        $epl->application_path = \request('application_path');
-        $epl->code = \request('application_path');
-        // $epl->name = \request('code');
+        $msg =  \DB::transaction(function () {
+            request()->validate([
+                'name' => 'required|unique:e_p_l_s,name',
+                'industry_category_id' => 'required|integer',
+                'contact_no' => ['required', new contactNo],
+                'address' => ['required'],
+                'email' => ['sometimes','nullable'],
+                'coordinate_x' => ['numeric','nullable','between:-180,180'],
+                'coordinate_y' => ['numeric','nullable','between:-90,90'],
+                'pradesheeyasaba_id' => 'required|integer',
+                'is_industry' => 'required|integer',
+                'investment' => 'required|numeric',
+                'start_date' => 'required|date',
+                'registration_no' => ['sometimes','nullable','unique:e_p_l_s,registration_no'],
+                'remark' => ['sometimes','nullable'],
+            ]);
+            $epl = new EPL();
+            $epl->name = \request('name');
+            $epl->industry_category_id = \request('industry_category_id');
+            $epl->business_scale_id = \request('business_scale_id');
+            $epl->contact_no = \request('contact_no');
+            $epl->address = \request('address');
+            $epl->email = \request('email');
+            $epl->coordinate_x = \request('coordinate_x');
+            $epl->coordinate_y = \request('coordinate_y');
+            $epl->pradesheeyasaba_id = \request('pradesheeyasaba_id');
+            $epl->is_industry = \request('is_industry');
+            $epl->investment = \request('investment');
+            $epl->start_date = \request('start_date');
+            $epl->registration_no = \request('registration_no');
+            $epl->remark = \request('remark');
+            $epl->application_path = "";
+            $epl->code = $this->generateCode($epl);
+            $msg = $epl->save();
 
-
-
-
-        $data =  \request('file');
-        $array = explode(';', $data);
-        $array2 = explode(',', $array[1]);
-        $array3 = explode('/', $array[0]);
-        $type  =  $array3[1];
-        $data = base64_decode($array2[1]);
-        file_put_contents("1." . $type, $data);
+            if ($msg) {
+                $data =  \request('file');
+                $array = explode(';', $data);
+                $array2 = explode(',', $array[1]);
+                $array3 = explode('/', $array[0]);
+                $type  =  $array3[1];
+                $data = base64_decode($array2[1]);
+                file_put_contents($this->makeApplicationPath($epl->id) . "1" . $type, $data);
+                return true;
+            } else {
+                return false;
+            }
+        });
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
     }
     /**
      * Store a newly created resource in storage.
@@ -120,7 +150,46 @@ class EPLController extends Controller
         //
     }
 
-    public function generateCode(){
-        
+    private function generateCode($epl)
+    {
+        $la = Pradesheeyasaba::find($epl->pradesheeyasaba_id);
+        // print_r($la);
+        $lsCOde = $la->code;
+
+        $industry = IndustryCategory::find($epl->industry_category_id);
+        $industryCode = $industry->code;
+
+        $scale = BusinessScale::find($epl->business_scale_id);
+        $scaleCode = $scale->code;
+
+        $e = EPL::orderBy('id', 'desc')->first();
+        if ($e === null) {
+            $serial = 1;
+        } else {
+            $serial = $e->id;
+        }
+        $serial = sprintf('%02d', $serial);
+        return "PEA/" . $lsCOde . "/EPL/" . $industryCode . "/" . $scaleCode . "/" . $serial . "/" . date("Y");
+    }
+
+    private function makeApplicationPath($id)
+    {
+        if (!is_dir("uploads")) {
+            //Create our directory if it does not exist
+            mkdir("uploads");
+        }
+        if (!is_dir("uploads/EPL")) {
+            //Create our directory if it does not exist
+            mkdir("uploads/EPL");
+        }
+        if (!is_dir("uploads/EPL/" . $id)) {
+            //Create our directory if it does not exist
+            mkdir("uploads/EPL/" . $id);
+        }
+        if (!is_dir("uploads/EPL/" . $id . "/application")) {
+            //Create our directory if it does not exist
+            mkdir("uploads/EPL/" . $id . "/application");
+        }
+        return  "uploads/EPL/" . $id . "/application/";
     }
 }
