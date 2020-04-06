@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\EPL;
 use App\BusinessScale;
+use App\Client;
 use App\Pradesheeyasaba;
 use App\Rules\contactNo;
 use App\IndustryCategory;
@@ -27,7 +28,25 @@ class EPLController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
         if ($pageAuth['is_read']) {
-            return view('epl_register', ['pageAuth' => $pageAuth, 'id' => $id]);
+            if (Client::find($id) !== null) {
+                return view('epl_register', ['pageAuth' => $pageAuth, 'id' => $id]);
+            }else{
+                abort (401);
+            }
+        } else {
+            abort(401);
+        }
+    }
+    public function profile($client, $profile)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
+        if ($pageAuth['is_read']) {
+            if (Client::find($client) !== null && EPL::find($profile)!== null) {
+            return view('epl_profile', ['pageAuth' => $pageAuth, 'client' => $client, 'profile' => $profile]);
+            }else{
+                abort(401);  
+            }
         } else {
             abort(401);
         }
@@ -43,21 +62,23 @@ class EPLController extends Controller
         $msg =  \DB::transaction(function () {
             request()->validate([
                 'name' => 'required|unique:e_p_l_s,name',
+                'client_id' => 'required|integer',
                 'industry_category_id' => 'required|integer',
                 'contact_no' => ['required', new contactNo],
                 'address' => ['required'],
-                'email' => ['sometimes','nullable'],
-                'coordinate_x' => ['numeric','nullable','between:-180,180'],
-                'coordinate_y' => ['numeric','nullable','between:-90,90'],
+                'email' => ['sometimes', 'nullable'],
+                'coordinate_x' => ['numeric', 'nullable', 'between:-180,180'],
+                'coordinate_y' => ['numeric', 'nullable', 'between:-90,90'],
                 'pradesheeyasaba_id' => 'required|integer',
                 'is_industry' => 'required|integer',
                 'investment' => 'required|numeric',
                 'start_date' => 'required|date',
-                'registration_no' => ['sometimes','nullable','unique:e_p_l_s,registration_no'],
-                'remark' => ['sometimes','nullable'],
+                'registration_no' => ['sometimes', 'nullable', 'unique:e_p_l_s,registration_no'],
+                'remark' => ['sometimes', 'nullable'],
             ]);
             $epl = new EPL();
             $epl->name = \request('name');
+            $epl->client_id = \request('client_id');
             $epl->industry_category_id = \request('industry_category_id');
             $epl->business_scale_id = \request('business_scale_id');
             $epl->contact_no = \request('contact_no');
@@ -71,8 +92,8 @@ class EPLController extends Controller
             $epl->start_date = \request('start_date');
             $epl->registration_no = \request('registration_no');
             $epl->remark = \request('remark');
-            $epl->application_path = "";
             $epl->code = $this->generateCode($epl);
+            $epl->application_path = "";
             $msg = $epl->save();
 
             if ($msg) {
@@ -83,16 +104,14 @@ class EPLController extends Controller
                 $type  =  $array3[1];
                 $data = base64_decode($array2[1]);
                 file_put_contents($this->makeApplicationPath($epl->id) . "1" . $type, $data);
-                return true;
+                $epl->application_path = $this->makeApplicationPath($epl->id) . "1" . $type;
+                $epl->save();
+                return array('id' => 1, 'message' => 'true', 'rout' => '/epl_profile/client/'.$epl->client_id.'/profile/'.$epl->id);
             } else {
-                return false;
+                return array('id' => 0, 'message' => 'false');
             }
         });
-        if ($msg) {
-            return array('id' => 1, 'message' => 'true');
-        } else {
-            return array('id' => 0, 'message' => 'false');
-        }
+        return $msg;
     }
     /**
      * Store a newly created resource in storage.

@@ -91,7 +91,7 @@
 <!-- AdminLTE App -->
 <script>
 $(function(){
-       alert({{$id}});
+       alert({{$client}});
 {{-- function readFile() {
   
   if (this.files && this.files[0]) {
@@ -122,7 +122,7 @@ $("#btnSave").click(function(){
     FR.addEventListener("load", function(e) {
       document.getElementById("img").src       = e.target.result;
       document.getElementById("b64").innerHTML = e.target.result;
-      AddPayments({"file": e.target.result},function(){
+      AddPayments({"name": e.target.result},function(){
           alert("Message Sent");
       })
     }); 

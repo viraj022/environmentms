@@ -38,6 +38,7 @@ class CreateEPLSTable extends Migration
             $table->foreign('industry_category_id')->references('id')->on('industry_categories')->onDelete('restrict')->onUpdate('cascade');
             $table->foreign('business_scale_id')->references('id')->on('business_scales')->onDelete('restrict')->onUpdate('cascade');
             $table->foreign('pradesheeyasaba_id')->references('id')->on('pradesheeyasabas')->onDelete('restrict')->onUpdate('cascade');
+           
         });
         DB::table('privileges')->insertOrIgnore([
             ['id' => 12, 'name' => 'Environment Protection License'],
