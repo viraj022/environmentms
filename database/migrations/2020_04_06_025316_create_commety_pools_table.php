@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateCommetyPoolsTable extends Migration
 {
@@ -16,14 +17,16 @@ class CreateCommetyPoolsTable extends Migration
         Schema::create('commety_pools', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('first_name', 255);
-            $table->string('last_name', 255);
-            $table->string('nic', 255);
-            $table->string('address', 255);
-            $table->string('contact_no', 12);
-            $table->string('email', 255);
-            $table->bigInteger('local_authority_id')->unsigned();
+            $table->string('last_name', 255)->nullable();
+            $table->string('nic', 255)->nullable();
+            $table->string('address', 255)->nullable();
+            $table->string('contact_no', 12)->nullable();
+            $table->string('email', 255)->nullable();          
             $table->timestamps();
         });
+        DB::table('privileges')->insertOrIgnore([
+            ['id' => 13, 'name' => 'Committee Pool'],
+        ]);
     }
 
     /**

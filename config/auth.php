@@ -124,6 +124,7 @@ return [
         'zone' => 7,
         'assistantDirector' => 8,
         'environmentOfficer' => 9,
+        'committeePool' => 13,
         
     ],
 
