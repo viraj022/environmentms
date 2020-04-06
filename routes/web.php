@@ -29,6 +29,8 @@ Route::get('/zone', 'ZoneController@index');
 Route::get('/assistant_director', 'AssistantDirectorController@index');
 Route::get('/environment_officer', 'EnvironmentOfficerController@index');
 Route::get('/attachment_map', 'ApplicationTypeController@index');
+Route::get('/epl_register/id/{id}', 'EPLController@index');
+Route::get('/epl_profile/client/{client}/profile/{profile}', 'EPLController@profile');
 Route::get('/client_space', 'ClientController@index');
 Route::get('/all_clients', 'ClientController@allClientsindex');
 //ui routs
