@@ -20,10 +20,12 @@ class CommetyPoolController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.committeePool'));
+        return view('comty_pool', ['pageAuth' => $pageAuth]);
     }
+
 
     /**
      * Show the form for creating a new resource.

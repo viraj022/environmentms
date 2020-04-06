@@ -153,6 +153,14 @@
                     </a>
                 </li>
                 @endif
+                 @if($pre['id']===config('auth.privileges.committeePool'))
+                <li class="nav-item">
+                    <a href="{{ url('/committee_pool') }}" class="nav-link {{ Request::is('committee_pool') ? 'active' : '' }}">
+                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <p>Committee Pool</p>
+                    </a>
+                </li>
+                @endif
 
                 @endforeach
 
