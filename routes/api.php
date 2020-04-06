@@ -936,3 +936,36 @@ Route::middleware('auth:api')->get('/applicationType/allAtachmentWithStatus/id/{
 */
 
     /// application attachment map
+
+    /// industry scale
+Route::middleware('auth:api')->get('/business_scale', 'BusinessScaleController@show'); // Get all attachment and assign attachments
+
+/*
+
+[
+    {
+        "id": 1,
+        "name": "Large",
+        "code": "L",
+        "created_at": null,
+        "updated_at": null
+    },
+    {
+        "id": 2,
+        "name": "Medium",
+        "code": "M",
+        "created_at": null,
+        "updated_at": null
+    },
+    {
+        "id": 3,
+        "name": "Large",
+        "code": "L",
+        "created_at": null,
+        "updated_at": null
+    },
+
+]
+*/
+
+    /// application attachment map

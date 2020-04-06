@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class BusinessScaleController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -46,7 +51,7 @@ class BusinessScaleController extends Controller
      */
     public function show(BusinessScale $businessScale)
     {
-        //
+      return  BusinessScale::get();
     }
 
     /**
