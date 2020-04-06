@@ -26,7 +26,7 @@ class EPLController extends Controller
     public function index($id)
     {
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
             if (Client::find($id) !== null) {
                 return view('epl_register', ['pageAuth' => $pageAuth, 'id' => $id]);
@@ -40,7 +40,7 @@ class EPLController extends Controller
     public function profile($client, $profile)
     {
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
             if (Client::find($client) !== null && EPL::find($profile)!== null) {
             return view('epl_profile', ['pageAuth' => $pageAuth, 'client' => $client, 'profile' => $profile]);
@@ -59,6 +59,9 @@ class EPLController extends Controller
      */
     public function create()
     {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_create']) {
         $msg =  \DB::transaction(function () {
             request()->validate([
                 'name' => 'required|unique:e_p_l_s,name',
@@ -112,6 +115,9 @@ class EPLController extends Controller
             }
         });
         return $msg;
+    }else{
+        abort(401);
+    }
     }
     /**
      * Store a newly created resource in storage.
