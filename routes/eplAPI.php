@@ -27,7 +27,7 @@ Route::middleware('auth:api')->post('/epl', 'EPLController@create'); //   save a
     "coordinate_x": "60",
     "coordinate_y": "50",
     "pradesheeyasaba_id": "10",
-    "is_industry": "1",
+    "is_industry": "1",(yes=1,no=0)
     "investment": "500000",
     "start_date": "2020-01-01",
     "registration_no": "13212721",
@@ -41,6 +41,6 @@ Route::middleware('auth:api')->post('/epl', 'EPLController@create'); //   save a
     EQWAiIgoAERERAEgIiIKABERUQCIiCgAREREASAiIgoAERFRAIiIiAJAREQUACIiogAQEREFgIiIKABEREQBICIiCgAREVEAiIiIAkBERBQAIiKiABAREQWAiI
     goAERERAEgIiIKABERUQCIiIgCQEREFAAiIqIAEBFRAIiIiAJAREQUACIiogAQEREFgIiIKABEREQBICIiCgAREVEAiIiIAkBERBQAIiKiABAREQWAiIgoAERER
  
-
+'id' => 1, 'message' => 'true', 'rout' => '/epl_profile/clien/1/profile/12
 }
     */
