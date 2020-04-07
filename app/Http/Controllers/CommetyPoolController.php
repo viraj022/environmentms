@@ -8,13 +8,12 @@ use App\Rules\nationalID;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CommetyPoolController extends Controller
-{
+class CommetyPoolController extends Controller {
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware(['auth']);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -26,14 +25,12 @@ class CommetyPoolController extends Controller
         return view('comty_pool', ['pageAuth' => $pageAuth]);
     }
 
-
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $aUser = Auth::user();
         $pageAuth = $aUser->authentication(config('auth.privileges.committeePool'));
         if ($pageAuth['is_create']) {
@@ -44,7 +41,7 @@ class CommetyPoolController extends Controller
                 'email' => 'sometimes|nullable',
                 'contact_no' => ['nullable', 'sometimes', new contactNo],
                 'nic' => ['sometimes', 'nullable', 'unique:commety_pools', new nationalID],
-                // 'password' => 'required',
+                    // 'password' => 'required',
             ]);
             $aUser = Auth::user();
             $pageAuth = $aUser->authentication(config('auth.privileges.vehicle'));
@@ -73,8 +70,7 @@ class CommetyPoolController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($id)
-    {
+    public function store($id) {
         $aUser = Auth::user();
         $pageAuth = $aUser->authentication(config('auth.privileges.committeePool'));
         $commetyPool = CommetyPool::find($id);
@@ -114,8 +110,7 @@ class CommetyPoolController extends Controller
      * @param  \App\CommetyPool  $commetyPool
      * @return \Illuminate\Http\Response
      */
-    public function show(CommetyPool $commetyPool)
-    {
+    public function show(CommetyPool $commetyPool) {
 
         $aUser = Auth::user();
         $pageAuth = $aUser->authentication(config('auth.privileges.committeePool'));
@@ -126,8 +121,7 @@ class CommetyPoolController extends Controller
         }
     }
 
-    public function find($id)
-    {
+    public function find($id) {
 
         $aUser = Auth::user();
         $pageAuth = $aUser->authentication(config('auth.privileges.committeePool'));
@@ -144,8 +138,7 @@ class CommetyPoolController extends Controller
      * @param  \App\CommetyPool  $commetyPool
      * @return \Illuminate\Http\Response
      */
-    public function edit(CommetyPool $commetyPool)
-    {
+    public function edit(CommetyPool $commetyPool) {
         //
     }
 
@@ -156,8 +149,7 @@ class CommetyPoolController extends Controller
      * @param  \App\CommetyPool  $commetyPool
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, CommetyPool $commetyPool)
-    {
+    public function update(Request $request, CommetyPool $commetyPool) {
         //
     }
 
@@ -167,20 +159,36 @@ class CommetyPoolController extends Controller
      * @param  \App\CommetyPool  $commetyPool
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {        
+    public function destroy($id) {
         $aUser = Auth::user();
         $pageAuth = $aUser->authentication(config('auth.privileges.committeePool'));
         if ($pageAuth['is_delete']) {
-        $commetyPool = CommetyPool::find($id);
-       $msg = $commetyPool->delete(); 
-        if ($msg) {
-            return array('id' => 1, 'message' => 'true');
-        } else {
-            return array('id' => 0, 'message' => 'false');
-        }
+            $commetyPool = CommetyPool::find($id);
+            $msg = $commetyPool->delete();
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
         } else {
             abort(401);
         }
     }
+//Check NIC For Commety Pool
+    public function uniqueNic($nic) {
+        $aUser = Auth::user();
+        $pageAuth = $aUser->authentication(config('auth.privileges.committeePool'));
+        if ($pageAuth['is_read']) {
+            $commetyPool = CommetyPool::where('nic', '=', $nic)
+                    ->first();
+            if ($commetyPool === null) {
+                return array('id' => 0, 'message' => 'true'); // nic not available 
+            } else {
+                return array('id' => 0, 'message' => 'false'); // nic on the data base
+            }
+        } else {
+            return abort(401);
+        }
+    }
+
 }
