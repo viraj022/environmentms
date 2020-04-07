@@ -20,7 +20,6 @@ function GetCommittee(callBack) {
 }
 
 function uniqueNICcheck(nic,callBack) {
-    alert('Name checking');
     $.ajax({
         type: "GET",
         headers: {
@@ -46,7 +45,6 @@ function loadTableUI() {
         var table = "";
         var id = 1;
         $.each(result, function (index, committee) {
-            alert(committee.first_name);
             table += "<tr>";
             table += "<td>" + id++ + "</td>";
             table += "<td>" + committee.first_name + "</td>";
