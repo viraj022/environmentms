@@ -94,3 +94,4 @@ Route::middleware('auth:api')->get('/committee/is_available/nic/{nic}', 'Commety
     "id": 1,
     "message": "true" true => if available false => is nic is already used
 }
+*/
