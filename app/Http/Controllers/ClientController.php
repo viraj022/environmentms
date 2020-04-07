@@ -183,4 +183,15 @@ class ClientController extends Controller
             abort(401);
         }
     }
+    public function findClient_by_id($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        if ($pageAuth['is_read']) {
+            //    PaymentType::get();
+            return Client::find($id);
+        } else {
+            abort(401);
+        }
+    }
 }
