@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
  */
 
 // drivers
-Route::middleware('auth:api')->get('/committee', 'CommetyPoolController@show'); // get drivers in the la
+Route::middleware('auth:api')->get('/committee', 'CommetyPoolController@show'); // get committees
 /*
 [
     {
@@ -36,7 +36,7 @@ Route::middleware('auth:api')->get('/committee', 'CommetyPoolController@show'); 
 */
 
 
-Route::middleware('auth:api')->post('/committee', 'CommetyPoolController@create'); //  insert driver
+Route::middleware('auth:api')->post('/committee', 'CommetyPoolController@create'); //  insert committee
 /*
 {
 	"first_name":"siyathu updated",
@@ -48,7 +48,7 @@ Route::middleware('auth:api')->post('/committee', 'CommetyPoolController@create'
 }
 */
 
-Route::middleware('auth:api')->put('/committee/id/{id}', 'CommetyPoolController@store'); // update driver
+Route::middleware('auth:api')->put('/committee/id/{id}', 'CommetyPoolController@store'); // update committee
 /*
 {
 	"first_name":"siyathu updated",
@@ -61,7 +61,7 @@ Route::middleware('auth:api')->put('/committee/id/{id}', 'CommetyPoolController@
 
 /// driver
 
-Route::middleware('auth:api')->get('/committee/id/{id}', 'CommetyPoolController@find'); // get A driver
+Route::middleware('auth:api')->get('/committee/id/{id}', 'CommetyPoolController@find'); // get A committee by id
 
 /*
 {
@@ -77,7 +77,7 @@ Route::middleware('auth:api')->get('/committee/id/{id}', 'CommetyPoolController@
 }
 */
 
-Route::middleware('auth:api')->delete('/committee/id/{id}', 'CommetyPoolController@destroy'); // get A driver
+Route::middleware('auth:api')->delete('/committee/id/{id}', 'CommetyPoolController@destroy'); // get A committee
 
 /*
 {
@@ -87,10 +87,4 @@ Route::middleware('auth:api')->delete('/committee/id/{id}', 'CommetyPoolControll
 
 */
 
-Route::middleware('auth:api')->get('/committee/is_available/nic/{nic}', 'CommetyPoolController@uniqueNic'); // get A driver
-
-/*
-{
-    "id": 1,
-    "message": "true" true => if available false => is nic is already used
-}
+Route::middleware('auth:api')->get('/committee/is_available/nic/{nic}', 'CommetyPoolController@uniqueNic'); //Check NIC
