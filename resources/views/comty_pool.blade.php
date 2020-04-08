@@ -86,6 +86,7 @@
                         <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
                                  data-target="#modal-danger">Delete</button>
                         @endif
+                        <button id="btnReset" type="submit" class="btn btn-secondary">Reset</button>
                     </div>                           
                 </div>
             </div>
@@ -277,7 +278,7 @@
                 $('#getLname').val(result.last_name);
                 $('#getNic').val(result.nic);
                 $('#getEmail').val(result.email),
-                $('#getAddress').val(result.address);
+                        $('#getAddress').val(result.address);
                 $('#getContact').val(result.contact_no);
                 showUpdate();
                 $('#btnUpdate').val(result.id);
@@ -301,6 +302,14 @@
             }
         });
     });
+    //Reset
+    $('#btnReset').click(function () {
+        resetinputFields();
+        hideAllErrors();
+        $('#valContact').addClass('d-none');
+        $('#valNic').addClass('d-none');
+        showSave();
+    });
 //show update buttons    
     function showUpdate() {
         $('#btnSave').addClass('d-none');
@@ -319,7 +328,7 @@
         $('#getLname').val('');
         $('#getNic').val('');
         $('#getEmail').val(''),
-        $('#getAddress').val('');
+                $('#getAddress').val('');
         $('#getContact').val('');
         $('#btnUpdate').val('');
         $('#btnDelete').val('');
@@ -336,7 +345,7 @@
             first_name: $('#getFname').val(),
             last_name: $('#getLname').val(),
             nic: $('#getNic').val(),
-            email:$('#getEmail').val(),
+            email: $('#getEmail').val(),
             address: $('#getAddress').val(),
             contact_no: $('#getContact').val()
         };

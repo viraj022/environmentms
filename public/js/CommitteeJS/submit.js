@@ -29,13 +29,23 @@ function Validiteinsert(data) {
         $('#valUnique').addClass('d-none');
         response = false;
     }
-    if (data.nic.length < 10) {
-        $('#valNic').removeClass('d-none');
-        response = false;
+    if (data.nic.length) {
+        if (data.nic.length === 0) {
+            response = true;
+        }
+        if (data.nic.length < 10) {
+            $('#valNic').removeClass('d-none');
+            response = false;
+        }
     }
-    if (data.contact_no.length < 10) {
-        $('#valContact').removeClass('d-none');
-        response = false;
+    if (data.contact_no.length) {
+        if (data.contact_no.length === 0) {
+            response = true;
+        }
+        if (data.contact_no.length < 10) {
+            $('#valContact').removeClass('d-none');
+            response = false;
+        }
     }
     return response;
 }
