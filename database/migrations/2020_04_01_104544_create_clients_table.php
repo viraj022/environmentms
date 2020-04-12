@@ -1,10 +1,12 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Privilege;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-use App\Privilege;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
 class CreateClientsTable extends Migration
 {
     /**
@@ -30,10 +32,9 @@ class CreateClientsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-        $privilage = new Privilege();
-        $privilage->id=10;
-        $privilage->name='Client Space';
-        $privilage->save();
+        DB::table('privileges')->insertOrIgnore([
+            ['id' => 10, 'name' => 'Client Space'],
+        ]);
 
     }
 

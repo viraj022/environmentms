@@ -21,11 +21,9 @@ class CreateBusinessScalesTable extends Migration
             $table->string('code',50);
             $table->timestamps();
         });
-
-        $privilege = new Privilege();
-        $privilege->id=11;
-        $privilege->name='Industry Scale';
-        $privilege->save();
+        DB::table('privileges')->insertOrIgnore([
+            ['id' => 11, 'name' => 'Industry Scale'],
+        ]);
         DB::table('business_scales')->insertOrIgnore([
             [ 'name' => 'Small –S (Industries of Category C)','code'=>'S'],
             [ 'name' => 'Medium- M(Industries of Category B)','code'=>'M'],
