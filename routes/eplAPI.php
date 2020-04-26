@@ -96,7 +96,7 @@ Route::middleware('auth:api')->post('/epl/inspectionPay', 'EPLController@addInsp
 }
 
 */
-Route::middleware('auth:api')->post('/epl/payDetails/id/{epl}', 'EPLController@getInspectionPaymentDetails'); //   add inspection fee
+Route::middleware('auth:api')->get('/epl/payDetails/id/{epl}', 'EPLController@getInspectionPaymentDetails'); //   add inspection fee
 
 
 /*
@@ -113,4 +113,21 @@ Route::middleware('auth:api')->post('/epl/payDetails/id/{epl}', 'EPLController@g
 }
 
 */
+// Route::middleware('auth:api')->post('/epl/inspectionFine/id/{epl}', 'EPLController@addInspectionFine'); //   add inspection fee
+
+
+// /*
+// {
+//     "inspection_total": 20000,
+//     "inspection_payed": 0,
+//     "inspection_balance": 20000,
+//     "inspectionFine_total": 0,
+//     "inspectionFine_payed": 0,
+//     "inspectionFine_balance": 0,
+//     "total": 20000,
+//     "total_payed": 0,
+//     "total_balance": 20000
+// }
+
+// */
 

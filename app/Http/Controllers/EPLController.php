@@ -226,72 +226,114 @@ class EPLController extends Controller
 
     public function addInspectionPayment()
     {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-        if ($pageAuth['is_create']) {
-            request()->validate([
-                'payment_id' => 'required|integer',
-                'id' => 'required|integer',
-                'amount' => 'required|numeric',
-            ]);
-            $transaction = array();
-            $transaction['payment_type_id'] = Payment::find(\request('payment_id'))->payment_type_id;
-            $transaction['payment_id'] = \request('payment_id');
-            $transaction['transaction_type'] = EPL::EPL;
-            $transaction['transaction_id'] = \request('id');
-            $transaction['amount'] = \request('amount');
-            $transaction['status'] = 0;
-            $transaction['type'] = EPL::INSPECTION;
-            $msg  =  TransactionController::create($transaction);
-            if ($msg) {
-                return array('id' => 1, 'message' => 'true');
-            } else {
-                return array('id' => 0, 'message' => 'false');
-            }
-        } else {
-            abort(401);
-        }
-    }
-    public function addInspectionFine()
-    {
-        $baseAmount = 0;
         $epl = EPL::find(\request('id'));
-        if ($epl->site_clearance_file !== null) {
-            $transaction = array();
-            if (strtotime($epl->start_date) >= strtotime(EPL::FINEDATE)) {
-                //  after
-                switch ($epl->business_scale_id) {
-                    case 1:
-                        $payment = Payment::where('name','=','INSPECTION FINE LARGE');
-                        $transaction['payment_type_id'] = $payment->payment_type_id;
-                        $transaction['payment_id'] = $payment->id;
-                        $baseAmount->$payment->amount;
-                    case 2:
-                        $payment = Payment::where('name','=','INSPECTION FINE LARGE');
-                        $transaction['payment_type_id'] = $payment->payment_type_id;
-                        $transaction['payment_id'] = $payment->id;
-                        $baseAmount->$payment->amount;
-                    case 3:
-                        $payment = Payment::where('name','=','INSPECTION FINE LARGE');
-                        $transaction['payment_type_id'] = $payment->payment_type_id;
-                        $transaction['payment_id'] = $payment->id;
-                        $baseAmount->$payment->amount;
-                        default:
-                        return abort(404);
-                }               
-               
+        if ($epl !== null) {
+            $user = Auth::user();
+            $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+            if ($pageAuth['is_create']) {
+                request()->validate([
+                    'payment_id' => 'required|integer',
+                    'id' => 'required|integer',
+                    'amount' => 'required|numeric',
+                ]);
+                $transaction = array();
+                $transaction['payment_type_id'] = Payment::find(\request('payment_id'))->payment_type_id;
+                $transaction['payment_id'] = \request('payment_id');
                 $transaction['transaction_type'] = EPL::EPL;
-                $transaction['transaction_id'] = \request('id');
+                $transaction['transaction_id'] =  $epl->id;
                 $transaction['amount'] = \request('amount');
                 $transaction['status'] = 0;
-                $transaction['type'] = EPL::INSPECTION_FINE;
+                $transaction['type'] = EPL::INSPECTION;
                 $msg  =  TransactionController::create($transaction);
+                if ($msg) {
+                    return $this->addInspectionFine($epl);
+                } else {
+                    return array('id' => 0, 'message' => 'false');
+                }
             } else {
+                abort(401);
+            }
+        } else {
+            abort(404);
+        }
+    }
+    private function addInspectionFine($epl)
+    {
+        if (is_null($epl->site_clearance_file)) {
+            $transaction = array();
+            if (strtotime($epl->start_date) >= strtotime(EPL::FINEDATE)) {
+                //  after            
+                $transaction['amount'] =  $epl->paymentDetails()['inspection_total'] * 2;
+            } else {
+                $baseAmount = 0;
+                $certificateFee = 0;
                 // before
+
+                switch ($epl->business_scale_id) {
+                    case 1:
+                        $payment = Payment::where('name', '=', 'INSPECTION FINE SMALL')->first();
+
+                        $baseAmount = $payment->amount;
+                        break;
+                    case 2:
+                        $payment = Payment::where('name', '=', 'INSPECTION FINE MEDIUM')->first();
+                        $baseAmount = $payment->amount;
+                        break;
+                    case 3:
+                        $payment = Payment::where('name', '=', 'INSPECTION FINE SMALL')->first();
+                        $baseAmount = $payment->amount;
+                        break;
+                    default:
+                        return abort(404);
+                }
+
+                switch ($epl->business_scale_id) {
+                    case 1:
+                        $payment = Payment::where('name', '=', 'Licence fee for industries category A')->first();
+                        $certificateFee = $payment->amount;
+                        break;
+                    case 2:
+                        $payment = Payment::where('name', '=', 'Licence fee for industries category B')->first();
+                        $certificateFee = $payment->amount;
+                        break;
+                    case 3:
+                        $payment = Payment::where('name', '=', 'Licence fee for industries category C')->first();
+                        $certificateFee = $payment->amount;
+                        break;
+                    default:
+                        return abort(404);
+                }
+                $date1 = $epl->start_date;
+                $date2 = date("Y-m-d");
+
+                $ts1 = strtotime($date1);
+                $ts2 = strtotime($date2);
+
+                $year1 = date('Y', $ts1);
+                $year2 = date('Y', $ts2);
+
+                $month1 = date('m', $ts1);
+                $month2 = date('m', $ts2);
+
+                $noOFMonths  = (($year2 - $year1) * 12) + ($month2 - $month1);                
+                $transaction['amount'] = $baseAmount * ($noOFMonths - 1) + $certificateFee;
             }
 
+            $pay = Payment::where('name', '=', 'EPL_INSPECTION_FINE')->first();;
+            // dd($pay);
+            $transaction['payment_type_id'] = $pay->payment_type_id;
+            $transaction['payment_id'] = $pay->id;
+            $transaction['transaction_type'] = EPL::EPL;
+            $transaction['transaction_id'] = $epl->id;
+            $transaction['status'] = 0;
+            $transaction['type'] = EPL::INSPECTION_FINE;
+            $msg  =  TransactionController::create($transaction);
 
-            return array('id' => 0, 'message' => 'no_added', 'amount' => '505');
+            if ($msg) {
+                return array('id' => 1, 'message' => 'ok', 'amount' => $transaction['amount']);
+            } else {
+                return array('id' => 0, 'message' => 'fail');
+            }
         } else {
             return array('id' => 0, 'message' => 'no_fine');
         }
@@ -299,33 +341,10 @@ class EPLController extends Controller
     public function getInspectionPaymentDetails($epl)
     {
         $epl = EPL::find($epl);
-        if ($ep !== null) {
-            $inspection = new Transaction();
-            $inspection->transaction_id =  \request('epl');
-            $inspection->type =  EPL::INSPECTION;
-            $inspection = $inspection->getPaymentDetails();
-
-            $inspectionFine = new Transaction();
-            $inspectionFine->transaction_id =  \request('epl');
-            $inspectionFine->type =  EPL::INSPECTION_FINE;
-            $inspectionFine = $inspectionFine->getPaymentDetails();
-
-            $output = array();
-            $output['inspection_total'] = $inspection['amount'];
-            $output['inspection_payed'] = $inspection['payed'];
-            $output['inspection_balance'] = $inspection['amount']  - $inspection['payed'];
-
-            $output['inspectionFine_total'] = $inspectionFine['amount'];
-            $output['inspectionFine_payed'] = $inspectionFine['payed'];
-            $output['inspectionFine_balance'] = $inspectionFine['amount']  - $inspectionFine['payed'];
-
-            $output['total'] = $output['inspection_total'] + $output['inspectionFine_total'];
-            $output['total_payed'] =  $output['inspection_payed'] +   $output['inspectionFine_payed'];
-            $output['total_balance'] =  $output['inspection_balance']  + $output['inspectionFine_balance'];
-
-            return $output;
+        if ($epl !== null) {
+            return $epl->paymentDetails();
         } else {
-            return abort(401);
+            return abort(404);
         }
     }
 }

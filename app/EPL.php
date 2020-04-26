@@ -18,4 +18,34 @@ class EPL extends Model
     {
         return $this->belongsTo(Client::class);
     }
+
+    public function paymentDetails()
+    {
+               
+            $inspection = new Transaction();
+            $inspection->transaction_id =  $this->id; 
+            $inspection->type =  EPL::INSPECTION;
+            $inspection = $inspection->getPaymentDetails();
+
+            $inspectionFine = new Transaction();
+            $inspectionFine->transaction_id =  $this->id; 
+            $inspectionFine->type =  EPL::INSPECTION_FINE;
+            $inspectionFine = $inspectionFine->getPaymentDetails();
+
+            $output = array();
+            $output['inspection_total'] = $inspection['amount'];
+            $output['inspection_payed'] = $inspection['payed'];
+            $output['inspection_balance'] = $inspection['amount']  - $inspection['payed'];
+
+            $output['inspectionFine_total'] = $inspectionFine['amount'];
+            $output['inspectionFine_payed'] = $inspectionFine['payed'];
+            $output['inspectionFine_balance'] = $inspectionFine['amount']  - $inspectionFine['payed'];
+
+            $output['total'] = $output['inspection_total'] + $output['inspectionFine_total'];
+            $output['total_payed'] =  $output['inspection_payed'] +   $output['inspectionFine_payed'];
+            $output['total_balance'] =  $output['inspection_balance']  + $output['inspectionFine_balance'];
+
+            return $output;
+        } 
+    
 }
