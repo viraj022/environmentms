@@ -17,46 +17,92 @@
 @section('content')
 @if($pageAuth['is_read']==1 || false)
 
-  @if($pageAuth['is_create']==1 || false)
-     <button id="btnSave" type="button" class="btn btn-success">Save</button>
-   @endif
+<section class="content-header">
+    <!--    Register New Client START-->
+    <div class="container-fluid reg-newClient">
+        <div class="row">
 
- @if($pageAuth['is_update']==1 || false)
-  <button id="btnUpdate" type="submit" class="btn btn-warning">Update</button>
-@endif
+            <div class="col-md-12">
+                <div class="col-md-9">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <label id="lblTitle">Register New Business</label>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Pradeshiya Sabha*</label>
+                                <select id="prsdeshiySb" class="form-control form-control-sm" style="width: 100%;"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Industry Category*</label>
+                                <select id="industryCat" class="form-control form-control-sm" style="width: 100%;"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Business Scale*</label>
+                                <select id="businesScale" class="form-control form-control-sm" style="width: 100%;"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Business Registration Number*</label>
+                                <input id="business_name" type="text" class="form-control form-control-sm" placeholder="Enter Number" value="">
+                            </div>
+                            <div class="form-group">
+                                <label>Business Name*</label>
+                                <input id="business_name" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                            </div>
 
-@if($pageAuth['is_delete']==1 || false)
-     <button  id="btnshowDelete" type="submit" class="btn btn-danger"  data-toggle="modal"
-                                 data-target="#modal-danger">Delete</button>
- @endif
+                            <div class="form-group">
+                                <label>Is this Industry</label>
+                                <select id="getZone" class="form-control form-control-sm" style="width: 100%;">
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Address*</label>
+                                <input id="" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                            </div>
+                            <div class="form-group">
+                                <label>Contact Number*</label>
+                                <input id="" type="number" class="form-control form-control-sm" placeholder="10 digits" value="">
+                            </div>
+                            <div class="form-group">
+                                <label>Start Date*</label>
+                                <input id="" type="date" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                            </div>
+                            <div class="form-group">
+                                <label>Contact No*</label>
+                                <input id="getEmail" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                            </div>
+                            <div class="form-group">
+                                <label>Email*</label>
+                                <input id="getEmail" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            @if($pageAuth['is_create']==1 || false)
+                            <button id="btnSave" type="button" class="btn btn-success">Save</button>
+                            @endif
+                            @if($pageAuth['is_update']==1 || false)
+                            <button id="btnUpdate" type="submit" class="btn btn-warning">Update</button>
+                            @endif
+                            @if($pageAuth['is_delete']==1 || false)
+                            <button  id="btnshowDelete" type="submit" class="btn btn-danger"  data-toggle="modal"
+                                     data-target="#modal-danger">Delete</button>
+                            @endif
 
-<input id="inp" type='file'>
-<p id="b64"></p>
-<img id="img" height="150">
-
-<div class="modal fade" id="modal-danger">
-    <div class="modal-dialog">
-        <div class="modal-content bg-danger">
-            <div class="modal-header">
-                <h4 class="modal-title">Delete Attachment</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><b>Are you sure you want to permanently delete this Attachment ? </b></p>
-                <p>Once you continue, this process can not be undone. Please Procede with care.</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
+                            <input id="inp" type='file'>
+                            <p id="b64"></p>
+                            <img id="img" height="150">
+                        </div>                           
+                    </div>
+                </div>
+                <!--If something about Datatable place tt here again! -->
             </div>
         </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
-</div>
+    <!--Register New Client END-->
 
+</section>
 @endif
 
 @endsection
@@ -84,81 +130,77 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
+<script src="../../js/epl/epl_register.js"></script>
 <script src="../../js/attachmentsjs/submit.js"></script>
 <script src="../../js/attachmentsjs/get.js"></script>
 <script src="../../js/attachmentsjs/update.js"></script>
 <script src="../../js/attachmentsjs/delete.js"></script>
 <!-- AdminLTE App -->
 <script>
-$(function(){
-       alert({{$id}});
-{{-- function readFile() {
-  
-  if (this.files && this.files[0]) {
-    
-    var FR= new FileReader();
-    
-    FR.addEventListener("load", function(e) {
-      document.getElementById("img").src       = e.target.result;
-      document.getElementById("b64").innerHTML = e.target.result;
-      AddPayments({"name": e.target.result},function(){
-          alert("Message Sent");
-      })
-    }); 
-    
-    FR.readAsDataURL( this.files[0] );
-  }
-  
-} --}}
+    $(function(){
+    loadPradeshiyaSabha();
+    IndustryCategoryCombo();
+    BusinessScaleCombo();
+//    alert({{$id}});
+    {{-- function readFile() {
 
-{{-- document.getElementById("inp").addEventListener("change", readFile); --}}
-$("#btnSave").click(function(){
-    alert("wada");
-  var img =  document.getElementById("inp")
-      if (img.files && img.files[0]) {
-    
-    var FR= new FileReader();
-    
+    if (this.files && this.files[0]) {
+
+    var FR = new FileReader();
     FR.addEventListener("load", function(e) {
-      document.getElementById("img").src       = e.target.result;
-      document.getElementById("b64").innerHTML = e.target.result;
-      AddPayments({"file": e.target.result},function(){
-          alert("Message Sent");
-      })
-    }); 
-    
-    FR.readAsDataURL( img.files[0] );
-  }else{
-      alert("No Image")
-  }
+    document.getElementById("img").src = e.target.result;
+    document.getElementById("b64").innerHTML = e.target.result;
+    AddPayments({"name": e.target.result}, function(){
+    alert("Message Sent");
+    })
     });
-});
+    FR.readAsDataURL(this.files[0]);
+    }
 
+    } --}}
 
-function AddPayments(data, callBack) {
+    {{-- document.getElementById("inp").addEventListener("change", readFile); --}}
+    $("#btnSave").click(function(){
+    alert("wada");
+    var img = document.getElementById("inp")
+            if (img.files && img.files[0]) {
+
+    var FR = new FileReader();
+    FR.addEventListener("load", function(e) {
+    document.getElementById("img").src = e.target.result;
+    document.getElementById("b64").innerHTML = e.target.result;
+    AddPayments({"file": e.target.result}, function(){
+    alert("Message Sent");
+    })
+    });
+    FR.readAsDataURL(img.files[0]);
+    } else{
+    alert("No Image")
+    }
+    });
+    });
+    function AddPayments(data, callBack) {
     $.ajax({
-        type: "POST",
-        headers: {
+    type: "POST",
+            headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-            "Accept": "application/json"
-        },
-        url: "/api/epl",
-        data: data,
-        dataType: "json",
-        cache: false,
-        processDaate: false,
-        success: function (result) {
+                    "Accept": "application/json"
+            },
+            url: "/api/epl",
+            data: data,
+            dataType: "json",
+            cache: false,
+            processDaate: false,
+            success: function (result) {
 
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack(result);
+            callBack(result);
             }
-        },
-        error: function (xhr, textStatus, errorThrown) {
+            },
+            error: function (xhr, textStatus, errorThrown) {
             alert(textStatus + ':' + errorThrown);
-        }
+            }
     });
-
-    
-}
+    }
 </script>
 @endsection

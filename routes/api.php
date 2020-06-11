@@ -938,7 +938,7 @@ Route::middleware('auth:api')->get('/applicationType/allAtachmentWithStatus/id/{
     /// application attachment map
 
     /// industry scale
-Route::middleware('auth:api')->get('/business_scale', 'BusinessScaleController@show'); // Get all attachment and assign attachments
+Route::middleware('auth:api')->get('/business_scale', 'BusinessScaleController@show'); // 
 
 /*
 

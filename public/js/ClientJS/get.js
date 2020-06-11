@@ -62,7 +62,9 @@ function getaClientbyId(id, callBack) {
 }
 //DEV Mode
 function getClientbyNic(nic, callBack) {
-
+    if (nic.length == 0) {
+        return false;
+    }
     $.ajax({
         type: "GET",
         headers: {

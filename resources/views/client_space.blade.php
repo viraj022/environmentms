@@ -21,6 +21,7 @@
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
                 <h1>Client Space</h1>
+
             </div>
         </div>
     </div>
@@ -94,7 +95,7 @@
                         </div>                           
                     </div>
                 </div>
-<!--If something about Datatable place tt here again! -->
+                <!--If something about Datatable place tt here again! -->
             </div>
         </div>
     </div>
@@ -124,9 +125,56 @@
                             @if($pageAuth['is_create']==1 || false)
                             <button id="btnSearch" type="submit" class="btn btn-success">Search</button>
                             @endif
+                            <button type="submit" class="btn btn-default resetAll">Reset</button>
                         </div>                           
                     </div>
                 </div>                                       
+            </div>
+        </div>
+    </div>
+    <!--Search Client By NIC END-->
+
+
+    <!--show lient details START-->
+    <div class="container-fluid view-Client d-none">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-user"></i> Client Details
+
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <dl>
+                            <dt>Name :</dt>
+                            <dd id="client_name"></dd>
+                            <dt>Address :</dt>
+                            <dd id="client_address"></dd>
+                            <dt>Contact Number :</dt>
+                            <dd id="client_cont"></dd>
+                            <dt>Contact Email :</dt>
+                            <dd id="client_amil"></dd>
+                        </dl>
+                    </div>
+                    <!-- /.card-body -->
+                </div>                                    
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-address-card"></i> Services
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <button type="button" class="btn btn-info" id="newEPL" value="">Apply New EPL</button>
+                    </div>
+                    <!-- /.card-body -->
+                </div>                                    
             </div>
         </div>
     </div>
@@ -187,6 +235,7 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
+<script src="../../js/ClientJS/client_space.js"></script>
 <script src="../../js/ClientJS/submit.js"></script>
 <script src="../../js/ClientJS/get.js"></script>
 <script src="../../js/ClientJS/update.js"></script>
@@ -282,56 +331,47 @@
         });
 //Search NIC Button 
         $(document).on('click', '#btnSearch', function () {
-            getClientbyNic($('#getNic').val(), function (result) {
-                if (result.id == -1) {
-                    alert("Client Not Found");
-                    $('.search-Client').addClass('d-none');
-                    $('.reg-newClient').removeClass('d-none');
+            getClientbyNic($('#getNic').val().trim(), function (result) {
+                if (result.length == 0 || result == undefined) {
+                    if (confirm("Client Not Found, Do you want to register New Client?")) {
+                        setSectionVisible('reg-newClient');
+                    }
                 } else {
-                    alert("Client Found Yeha!");
-                    $('.search-Client').addClass('d-none');
-                    $('.viewClientData').removeClass('d-none');
+                    console.log(result);
+                    setClientDetails(result[0]);
+                    setSectionVisible('view-Client');
                 }
 //                $('#getName').val(result.name);
             });
             hideAllErrors();
         });
+        $('#getNic').keyup(function (e) {
+            if (e.which == 13) {
+                getClientbyNic($('#getNic').val().trim(), function (result) {
+                    if (result.length == 0 || result == undefined) {
+                        if (confirm("Client Not Found, Do you want to register New Client?")) {
+                            setSectionVisible('reg-newClient');
+                        }
+                    } else {
+                        console.log(result);
+                        setClientDetails(result[0]);
+                        setSectionVisible('view-Client');
+                    }
+//                $('#getName').val(result.name);
+                });
+                hideAllErrors();
+            }
+        });
+        $('#newEPL').click(function () {
+            if (isNaN(parseInt($(this).val()))) {
+                return false;
+            }
+            window.location = "epl_register/id/" + $(this).val();
+        });
+        $('.resetAll').click(function () {
+            setSectionVisible('');
+        });
     });
-//show update buttons    
-    function showUpdate() {
-        $('#btnSave').addClass('d-none');
-        $('#btnUpdate').removeClass('d-none');
-        $('#btnshowDelete').removeClass('d-none');
-    }
-//show save button    
-    function showSave() {
-        $('#btnSave').removeClass('d-none');
-        $('#btnUpdate').addClass('d-none');
-        $('#btnshowDelete').addClass('d-none');
-    }
-//Reset all fields    
-    function resetinputFields() {
-        $('#getName').val('');
-        $('#btnUpdate').val('');
-        $('#btnDelete').val('');
-    }
-//get form values
-    function fromValues() {
-        var data = {
-            first_name: $('#getfName').val(),
-            last_name: $('#getlName').val(),
-            address: $('#getAddress').val(),
-            contact_no: $('#getContact').val(),
-            email: $('#getEmail').val(),
-            nic: $('#getNicSave').val(),
-            //password: $('#gefkfg').val(),
-            //conpassword: $('#getfffk').val()
-        };
-        return data;
-    }
-//HIDE ALL ERROR MSGS   
-    function hideAllErrors() {
-        $('#valName').addClass('d-none');
-    }
+
 </script>
 @endsection
