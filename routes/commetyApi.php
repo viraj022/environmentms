@@ -87,4 +87,11 @@ Route::middleware('auth:api')->delete('/committee/id/{id}', 'CommetyPoolControll
 
 */
 
-Route::middleware('auth:api')->get('/committee/is_available/nic/{nic}', 'CommetyPoolController@uniqueNic'); //Check NIC
+Route::middleware('auth:api')->get('/committee/is_available/nic/{nic}', 'CommetyPoolController@uniqueNic'); // get A driver
+
+/*
+{
+    "id": 1,
+    "message": "true" true => if available false => is nic is already used
+}
+*/

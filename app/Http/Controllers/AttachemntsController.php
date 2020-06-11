@@ -22,7 +22,9 @@ class AttachemntsController extends Controller {
     public function index() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
+        if ($pageAuth['is_read']) {
         return view('attachements', ['pageAuth' => $pageAuth]);
+        }
     }
 
     public function isNameUnique($name) {
