@@ -49,7 +49,7 @@
                         </div>
                         <div class="form-group">
                             <label>NIC</label>
-                            <input id="getNic" maxlength="10" type="text" class="form-control form-control-sm"
+                            <input id="getNic" maxlength="12" type="text" class="form-control form-control-sm"
                                    placeholder="Enter NIC Number..."
                                    value="">
                             <div id="valUnique" class="d-none"><p class="text-danger">NIC already taken!</p></div>
@@ -72,7 +72,8 @@
                             <input id="getContact" maxlength="10" type="text" class="form-control form-control-sm"
                                    placeholder="Enter Contact Number..."
                                    value="">
-                            <div id="valContact" class="d-none"><p class="text-danger">Invalid Contact Number!</p></div>
+                            <!--<div id="valContact" class="d-none"><p class="text-danger">Invalid Contact Number!</p></div>-->
+                            <div id="valContact" class="d-none"><p class="text-danger">Invalid Contact Number! (Example: 0714564567)</p></div>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -278,7 +279,7 @@
                 $('#getLname').val(result.last_name);
                 $('#getNic').val(result.nic);
                 $('#getEmail').val(result.email),
-                        $('#getAddress').val(result.address);
+                $('#getAddress').val(result.address);
                 $('#getContact').val(result.contact_no);
                 showUpdate();
                 $('#btnUpdate').val(result.id);
@@ -328,7 +329,7 @@
         $('#getLname').val('');
         $('#getNic').val('');
         $('#getEmail').val(''),
-                $('#getAddress').val('');
+        $('#getAddress').val('');
         $('#getContact').val('');
         $('#btnUpdate').val('');
         $('#btnDelete').val('');
@@ -351,5 +352,6 @@
         };
         return data;
     }
+
 </script>
 @endsection

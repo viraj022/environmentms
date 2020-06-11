@@ -30,12 +30,31 @@ function Validiteinsert(data) {
         response = false;
     }
     if (data.nic.length) {
-        if (data.nic.length === 0) {
-            response = true;
-        }
-        if (data.nic.length < 10) {
-            $('#valNic').removeClass('d-none');
-            response = false;
+        if (data.nic.length > 0) {
+            if (data.nic.length != 12) {
+                if (data.nic.length == 10) {
+                    var str = data.nic;
+                    var res = str.slice(0, 9);
+                    if (!isNaN(res)) {
+                        $('#valNic').removeClass('d-none');
+                        return false;
+                    }
+                    var firstVal = data.nic.charAt(9);
+//        alert(firstVal);
+                    if (firstVal != "v" && firstVal != "x") {
+                        $('#valNic').removeClass('d-none');
+                        response = false;
+                    }
+                } else {
+                    $('#valNic').removeClass('d-none');
+                    return false;
+                }
+            } else {
+                if (!$.isNumeric(data.nic)) {
+                    $('#valNic').removeClass('d-none');
+                    return false;
+                }
+            }
         }
     }
     if (data.contact_no.length) {
@@ -43,6 +62,15 @@ function Validiteinsert(data) {
             response = true;
         }
         if (data.contact_no.length < 10) {
+            $('#valContact').removeClass('d-none');
+            response = false;
+        }
+        if (!$.isNumeric(data.contact_no)) {
+            $('#valContact').removeClass('d-none');
+            response = false;
+        }
+        var firstVal = data.contact_no.charAt(0);
+        if (firstVal != 0) {
             $('#valContact').removeClass('d-none');
             response = false;
         }
