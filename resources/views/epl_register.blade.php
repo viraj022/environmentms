@@ -21,7 +21,7 @@
     <!--    Register New Client START-->
     <div class="container-fluid reg-newClient">
         <div class="row">
-
+            <h1>{{$id}}</h1>
             <div class="col-md-12">
                 <div class="col-md-9">
                     <div class="card card-primary">
@@ -59,7 +59,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Address*</label>
-                                <input id="" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                                <input id="getAddressT" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
                             </div>
                             <div class="form-group">
                                 <label>Contact Number*</label>
@@ -67,15 +67,19 @@
                             </div>
                             <div class="form-group">
                                 <label>Start Date*</label>
-                                <input id="" type="date" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                                <input id="startDate" type="date" class="form-control form-control-sm" placeholder="Enter Name..." value="">
                             </div>
                             <div class="form-group">
                                 <label>Contact No*</label>
-                                <input id="getEmail" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                                <input id="getContactn" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
                             </div>
                             <div class="form-group">
                                 <label>Email*</label>
                                 <input id="getEmail" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                            </div>
+                            <div class="form-group">
+                                <label>Map*</label>
+                                <iframe width="650" height="350" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/view?zoom=12&center=7.4818%2C80.3609&key=AIzaSyBAwqPnybWbCL3EbCT3pOF60c2d4JiYp4c" allowfullscreen></iframe>
                             </div>
                         </div>
                         <div class="card-footer">
@@ -137,70 +141,90 @@
 <script src="../../js/attachmentsjs/delete.js"></script>
 <!-- AdminLTE App -->
 <script>
-    $(function(){
-    loadPradeshiyaSabha();
-    IndustryCategoryCombo();
-    BusinessScaleCombo();
+$(function(){
+loadPradeshiyaSabha();
+IndustryCategoryCombo();
+BusinessScaleCombo();
 //    alert({{$id}});
-    {{-- function readFile() {
+{{-- function readFile() {
 
-    if (this.files && this.files[0]) {
+if (this.files && this.files[0]) {
 
-    var FR = new FileReader();
-    FR.addEventListener("load", function(e) {
-    document.getElementById("img").src = e.target.result;
-    document.getElementById("b64").innerHTML = e.target.result;
-    AddPayments({"name": e.target.result}, function(){
-    alert("Message Sent");
-    })
-    });
-    FR.readAsDataURL(this.files[0]);
-    }
+var FR = new FileReader();
+FR.addEventListener("load", function(e) {
+document.getElementById("img").src = e.target.result;
+document.getElementById("b64").innerHTML = e.target.result;
+AddPayments({"name": e.target.result}, function(){
+alert("Message Sent");
+})
+});
+FR.readAsDataURL(this.files[0]);
+}
 
-    } --}}
+} --}}
 
-    {{-- document.getElementById("inp").addEventListener("change", readFile); --}}
-    $("#btnSave").click(function(){
-    alert("wada");
-    var img = document.getElementById("inp")
-            if (img.files && img.files[0]) {
+{{-- document.getElementById("inp").addEventListener("change", readFile); --}}
+//    $("#btnSave").click(function(){
+//    alert("wada");
+//    var img = document.getElementById("inp")
+//            if (img.files && img.files[0]) {
+//
+//    var FR = new FileReader();
+//    FR.addEventListener("load", function(e) {
+//    document.getElementById("img").src = e.target.result;
+//    document.getElementById("b64").innerHTML = e.target.result;
+//    AddPayments({"file": e.target.result}, function(){
+//    alert("Message Sent");
+//    })
+//    });
+//    FR.readAsDataURL(img.files[0]);
+//    } else{
+//    alert("No Image")
+//    }
+//    });
+});
+function AddPayments(data, callBack) {
+$.ajax({
+type: "POST",
+        headers: {
+        "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+                "Accept": "application/json"
+        },
+        url: "/api/epl",
+        data: data,
+        dataType: "json",
+        cache: false,
+        processDaate: false,
+        success: function (result) {
 
-    var FR = new FileReader();
-    FR.addEventListener("load", function(e) {
-    document.getElementById("img").src = e.target.result;
-    document.getElementById("b64").innerHTML = e.target.result;
-    AddPayments({"file": e.target.result}, function(){
-    alert("Message Sent");
-    })
-    });
-    FR.readAsDataURL(img.files[0]);
-    } else{
-    alert("No Image")
-    }
-    });
-    });
-    function AddPayments(data, callBack) {
-    $.ajax({
-    type: "POST",
-            headers: {
-            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-                    "Accept": "application/json"
-            },
-            url: "/api/epl",
-            data: data,
-            dataType: "json",
-            cache: false,
-            processDaate: false,
-            success: function (result) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        callBack(result);
+        }
+        },
+        error: function (xhr, textStatus, errorThrown) {
+        alert(textStatus + ':' + errorThrown);
+        }
+});
+$("#btnSave").click(function(){
+var data = fromValues();
+if (Validiteinsert(data)) {
+// if validiated
+AddClient(data, function (result) {
+if (result.id == 1) {
+Toast.fire({
+type: 'success',
+        title: 'Enviremontal MS</br>Saved'
+});
+} else {
+Toast.fire({
+type: 'error',
+        title: 'Enviremontal MS</br>Error'
+});
+}
 
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-            callBack(result);
-            }
-            },
-            error: function (xhr, textStatus, errorThrown) {
-            alert(textStatus + ':' + errorThrown);
-            }
-    });
-    }
+});
+}
+});
+}
 </script>
 @endsection
