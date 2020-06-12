@@ -12,19 +12,6 @@ function resetinputFields() {
 }
 //get form values
 function fromValues() {
-    var img = document.getElementById("inp")
-    if (img.files && img.files[0]) {
-
-        var FR = new FileReader();
-        FR.addEventListener("load", function (e) {
-            document.getElementById("img").src = e.target.result;
-            document.getElementById("b64").innerHTML = e.target.result;
-           alert(e.target.result);
-        });
-        FR.readAsDataURL(img.files[0]);
-    } else {
-        alert("No Image")
-    }
     var data = {
         name: $('#business_name').val(),
         client_id: $('#getlName').val(),

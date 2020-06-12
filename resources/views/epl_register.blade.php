@@ -213,109 +213,44 @@
     });
     }
 
-    //main jq function
-//    $(function () {
-//        $("#btnSaveLocation").click(function () {
-//            //  alert('save location'+_Latitude+"  :  "+_Longitude);
-//            var map_data = {
-//                activity_id: $("#activity_combo").val(),
-//                location_latitude: _Latitude,
-//                location_longitude: _Longitude
-//            }
-//            
-//        });
-//
-//    });
-    //main jq function
-    alert('Get Current Location Using: ' + _Latitude + "  :  " + _Longitude);
     $("#btnSave").click(function () {
+ 
+readImage(function(img){
     var data = fromValues();
-     alert(JSON.stringify(data));
-    if (Validiteinsert(data)) {
-    // if validiated
-    AddClient(data, function (result) {
-   
-    if (result.id == 1) {
-    Toast.fire({
-    type: 'success',
-            title: 'Enviremontal MS</br>Saved'
-    });
-    } else {
-    Toast.fire({
-    type: 'error',
-            title: 'Enviremontal MS</br>Error'
-    });
-    }
+    data.file = img;
+      alert(JSON.stringify(data));
+});
 
-    });
+   
+     
+     
+     function readImage(callback){
+ var img = document.getElementById("inp")
+               if (img.files && img.files[0]) {
+    
+        var FR = new FileReader();
+        FR.addEventListener("load", function(e) {
+     //   document.getElementById("b64").innerHTML = e.target.result;
+         callback(e.target.result)
+        });
+        FR.readAsDataURL(img.files[0]);
+        } else{
+        alert("No Image")
+        }
+     }
+
     }
-    });</script>
+     
+     );</script>
 <script>
     $(function(){
     loadPradeshiyaSabha();
     IndustryCategoryCombo();
     BusinessScaleCombo();
-    //    alert({{$id}});
-    {{-- function readFile() {
 
-    if (this.files && this.files[0]) {
-
-    var FR = new FileReader();
-    FR.addEventListener("load", function(e) {
-    document.getElementById("img").src = e.target.result;
-    document.getElementById("b64").innerHTML = e.target.result;
-    AddPayments({"name": e.target.result}, function(){
-    alert("Message Sent");
-    })
-    });
-    FR.readAsDataURL(this.files[0]);
-    }
-
-    } --}}
-
-    {{-- document.getElementById("inp").addEventListener("change", readFile); --}}
-//        $("#btnSave").click(function(){
-//        alert("wada");
-//        var img = document.getElementById("inp")
-//                if (img.files && img.files[0]) {
-//    
-//        var FR = new FileReader();
-//        FR.addEventListener("load", function(e) {
-//        document.getElementById("img").src = e.target.result;
-//        document.getElementById("b64").innerHTML = e.target.result;
-//        AddPayments({"file": e.target.result}, function(){
-//        alert("Message Sent");
-//        })
-//        });
-//        FR.readAsDataURL(img.files[0]);
-//        } else{
-//        alert("No Image")
-//        }
-//        });
+      
     }
     );
-    function AddPayments(data, callBack) {
-    $.ajax({
-    type: "POST",
-            headers: {
-            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-                    "Accept": "application/json"
-            },
-            url: "/api/epl",
-            data: data,
-            dataType: "json",
-            cache: false,
-            processDaate: false,
-            success: function (result) {
-
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-            callBack(result);
-            }
-            },
-            error: function (xhr, textStatus, errorThrown) {
-            alert(textStatus + ':' + errorThrown);
-            }
-    });
-    }
+    
 </script>
 @endsection
