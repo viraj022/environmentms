@@ -14,8 +14,9 @@ function resetinputFields() {
 function fromValues() {
     var data = {
         name: $('#business_name').val(),
-        client_id: $('#getlName').val(),
+        client_id: $('#client_id').val(),
         industry_category_id: $('#industryCat').val(),
+        business_scale_id: $('#businesScale').val(),
         contact_no: $('#getContactn').val(),
         address: $('#getAddressT').val(),
         email: $('#getEmail').val(),
@@ -23,10 +24,10 @@ function fromValues() {
         coordinate_y: _Longitude,
         pradesheeyasaba_id: $('#prsdeshiySb').val(),
         is_industry: $('#getZone').val(),
-        investment: $('#getEmail').val(),
+        investment: $('#inventsment').val(),
         start_date: $('#startDate').val(),
-        registration_no: $('#getEmail').val(),
-        remark: $('#getNicSave').val()
+        registration_no: $('#business_regno').val(),
+        remark: $('#getRemark').val()
     };
     return data;
 }

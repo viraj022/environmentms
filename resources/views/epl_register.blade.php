@@ -54,11 +54,12 @@
                         </div>
                         <div class="form-group">
                             <label>Business Registration Number*</label>
-                            <input id="business_name" type="text" class="form-control form-control-sm" placeholder="Enter Number" value="">
+                            <input id="business_regno" type="text" class="form-control form-control-sm" placeholder="Enter Number" value="">
                         </div>
                         <div class="form-group">
                             <label>Business Name*</label>
                             <input id="business_name" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                            <input hidden id="client_id" type="text" class="form-control form-control-sm" placeholder="" value="{{$id}}">
                         </div>
 
                         <div class="form-group">
@@ -69,12 +70,12 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Address*</label>
-                            <input id="getAddressT" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                            <label>Investment*</label>
+                            <input id="inventsment" type="text" class="form-control form-control-sm" placeholder="Enter investment" value="">
                         </div>
                         <div class="form-group">
-                            <label>Contact Number*</label>
-                            <input id="" type="number" class="form-control form-control-sm" placeholder="10 digits" value="">
+                            <label>Address*</label>
+                            <input id="getAddressT" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
                         </div>
                         <div class="form-group">
                             <label>Start Date*</label>
@@ -89,6 +90,10 @@
                             <input id="getEmail" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
                         </div>
                         <div class="form-group">
+                            <label>Remark*</label>
+                            <input id="getRemark" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                        </div>
+                        <div class="form-group">
                             <label>Upload Applicaiton: </label>
                             <input id="inp" type='file'>
                         </div>
@@ -101,7 +106,7 @@
                         <button id="btnUpdate" type="submit" class="btn btn-warning">Update</button>
                         @endif
                         @if($pageAuth['is_delete']==1 || false)
-                        <button  id="btnshowDelete" type="submit" class="btn btn-danger"  data-toggle="modal"
+                        <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
                                  data-target="#modal-danger">Delete</button>
                         @endif
 
@@ -192,10 +197,10 @@
 <!-- AdminLTE App -->
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
 <script>
-    var _Latitude = '7.489050';
-    var _Longitude = '80.349985';
-    // Initialize and add the map
-    function initMap() {
+var _Latitude = '7.489050';
+var _Longitude = '80.349985';
+// Initialize and add the map
+function initMap() {
     // The location of CeyTech
     var defaultLocation = {lat: 7.489050, lng: 80.349985}; //default Location for load map
 
@@ -204,53 +209,66 @@
             document.getElementById('map'), {zoom: 15, center: defaultLocation});
     // The marker, positioned at Uluru
     var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: true,
-            title: "Drag me!"});
+        title: "Drag me!"});
     google.maps.event.addListener(marker, 'dragend', function (evt) {
-    _Latitude = evt.latLng.lat().toFixed(6); //change  decimal point if have problam with location accuracy
-    _Longitude = evt.latLng.lng().toFixed(6); //change  decimal point if have problam with location accuracy
+        _Latitude = evt.latLng.lat().toFixed(6); //change  decimal point if have problam with location accuracy
+        _Longitude = evt.latLng.lng().toFixed(6); //change  decimal point if have problam with location accuracy
 
-    // alert('Marker dropped: Current Lat: ' + evt.latLng.lat().toFixed(3) + ' Current Lng: ' + evt.latLng.lng().toFixed(3) );
+        // alert('Marker dropped: Current Lat: ' + evt.latLng.lat().toFixed(3) + ' Current Lng: ' + evt.latLng.lng().toFixed(3) );
     });
-    }
+}
 
-    $("#btnSave").click(function () {
- 
-readImage(function(img){
-    var data = fromValues();
-    data.file = img;
-      alert(JSON.stringify(data));
-});
+$("#btnSave").click(function () {
 
-   
-     
-     
-     function readImage(callback){
- var img = document.getElementById("inp")
-               if (img.files && img.files[0]) {
-    
-        var FR = new FileReader();
-        FR.addEventListener("load", function(e) {
-     //   document.getElementById("b64").innerHTML = e.target.result;
-         callback(e.target.result)
+    readImage(function (img) {
+        var data = fromValues();
+        data.file = img;
+        alert(JSON.stringify(data));
+        AddEpl(data, function (result) {
+            if (result.id == 1) {
+                window.location.href(result.rout + "/");
+                Toast.fire({
+                    type: 'success',
+                    title: 'Enviremontal MS</br>Saved'
+                });
+            } else {
+                Toast.fire({
+                    type: 'error',
+                    title: 'Enviremontal MS</br>Error'
+                });
+            }
         });
-        FR.readAsDataURL(img.files[0]);
-        } else{
-        alert("No Image")
+    });
+
+
+
+
+    function readImage(callback) {
+        var img = document.getElementById("inp")
+        if (img.files && img.files[0]) {
+
+            var FR = new FileReader();
+            FR.addEventListener("load", function (e) {
+                //   document.getElementById("b64").innerHTML = e.target.result;
+                callback(e.target.result)
+            });
+            FR.readAsDataURL(img.files[0]);
+        } else {
+            alert("No Image")
         }
-     }
-
     }
-     
-     );</script>
-<script>
-    $(function(){
-    loadPradeshiyaSabha();
-    IndustryCategoryCombo();
-    BusinessScaleCombo();
 
-      
+}
+
+);</script>
+<script>
+    $(function () {
+        loadPradeshiyaSabha();
+        IndustryCategoryCombo();
+        BusinessScaleCombo();
+
     }
     );
-    
+
 </script>
 @endsection

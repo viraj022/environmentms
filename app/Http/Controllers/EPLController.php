@@ -38,6 +38,7 @@ class EPLController extends Controller
             abort(401);
         }
     }
+
     public function profile($client, $profile)
     {
         $user = Auth::user();
@@ -77,6 +78,7 @@ class EPLController extends Controller
                     'is_industry' => 'required|integer',
                     'investment' => 'required|numeric',
                     'start_date' => 'required|date',
+                    'business_scale_id' => 'required|integer',
                     'registration_no' => ['sometimes', 'nullable', 'unique:e_p_l_s,registration_no'],
                     'remark' => ['sometimes', 'nullable'],
                 ]);
@@ -189,7 +191,6 @@ class EPLController extends Controller
 
         $industry = IndustryCategory::find($epl->industry_category_id);
         $industryCode = $industry->code;
-
         $scale = BusinessScale::find($epl->business_scale_id);
         $scaleCode = $scale->code;
 

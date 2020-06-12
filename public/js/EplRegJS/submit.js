@@ -1,11 +1,11 @@
-function AddClient(data, callBack) {
+function AddEpl(data, callBack) {
     $.ajax({
         type: "POST",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/client",
+        url: "/api/epl",
         data: data,
         dataType: "json",
         cache: false,
