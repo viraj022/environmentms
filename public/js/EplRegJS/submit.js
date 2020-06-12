@@ -23,14 +23,15 @@ function AddClient(data, callBack) {
 }
 
 function Validiteinsert(data) {
-    var response = true;
-    if (data.first_name.length === 0) {
-        $('#valPayCat').removeClass('d-none');
-        response = false;
-    }
-    if (data.last_name.length === 0) {
-        $('#valName').removeClass('d-none');
-        response = false;
-    }
-    return response;
+//    var response = true;
+//    if (data.first_name.length === 0) {
+//        $('#valPayCat').removeClass('d-none');
+//        response = false;
+//    }
+//    if (data.last_name.length === 0) {
+//        $('#valName').removeClass('d-none');
+//        response = false;
+//    }
+//    return response;
+return true;
 }
