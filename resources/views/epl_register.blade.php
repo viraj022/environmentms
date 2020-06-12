@@ -12,6 +12,12 @@
 <link rel="stylesheet" href="/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
 <!-- Theme style -->
 <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+<style>
+    #map {
+        height: 400px;  /* The height is 400 pixels */
+        width: 100%;  /* The width is the width of the web page */
+    }
+</style>
 <!-- Google Font: Source Sans Pro -->
 @endsection
 @section('content')
@@ -78,8 +84,10 @@
                                 <input id="getEmail" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
                             </div>
                             <div class="form-group">
-                                <label>Map*</label>
-                                <iframe width="650" height="350" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/view?zoom=12&center=7.4818%2C80.3609&key=AIzaSyBAwqPnybWbCL3EbCT3pOF60c2d4JiYp4c" allowfullscreen></iframe>
+                                <div class="col-md-12">
+                                    <div id="map"></div>
+                                </div>
+                                <!--<iframe width="650" height="350" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/view?zoom=12&center=7.4818%2C80.3609&key=AIzaSyBAwqPnybWbCL3EbCT3pOF60c2d4JiYp4c" allowfullscreen></iframe>-->
                             </div>
                         </div>
                         <div class="card-footer">
@@ -143,22 +151,22 @@
 <script>
 $(function(){
 loadPradeshiyaSabha();
-IndustryCategoryCombo();
-BusinessScaleCombo();
+        IndustryCategoryCombo();
+        BusinessScaleCombo();
 //    alert({{$id}});
 {{-- function readFile() {
 
 if (this.files && this.files[0]) {
 
 var FR = new FileReader();
-FR.addEventListener("load", function(e) {
-document.getElementById("img").src = e.target.result;
-document.getElementById("b64").innerHTML = e.target.result;
-AddPayments({"name": e.target.result}, function(){
-alert("Message Sent");
-})
-});
-FR.readAsDataURL(this.files[0]);
+        FR.addEventListener("load", function(e) {
+        document.getElementById("img").src = e.target.result;
+                document.getElementById("b64").innerHTML = e.target.result;
+                AddPayments({"name": e.target.result}, function(){
+                alert("Message Sent");
+                })
+        });
+        FR.readAsDataURL(this.files[0]);
 }
 
 } --}}
@@ -182,13 +190,14 @@ FR.readAsDataURL(this.files[0]);
 //    alert("No Image")
 //    }
 //    });
-});
+}
+);
 function AddPayments(data, callBack) {
-$.ajax({
-type: "POST",
+    $.ajax({
+        type: "POST",
         headers: {
-        "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-                "Accept": "application/json"
+            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            "Accept": "application/json"
         },
         url: "/api/epl",
         data: data,
@@ -197,34 +206,76 @@ type: "POST",
         processDaate: false,
         success: function (result) {
 
-        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-        callBack(result);
-        }
+            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+                callBack(result);
+            }
         },
         error: function (xhr, textStatus, errorThrown) {
-        alert(textStatus + ':' + errorThrown);
+            alert(textStatus + ':' + errorThrown);
         }
-});
-$("#btnSave").click(function(){
-var data = fromValues();
-if (Validiteinsert(data)) {
+    });
+    $("#btnSave").click(function () {
+        var data = fromValues();
+        if (Validiteinsert(data)) {
 // if validiated
-AddClient(data, function (result) {
-if (result.id == 1) {
-Toast.fire({
-type: 'success',
-        title: 'Enviremontal MS</br>Saved'
-});
-} else {
-Toast.fire({
-type: 'error',
-        title: 'Enviremontal MS</br>Error'
-});
-}
+            AddClient(data, function (result) {
+                if (result.id == 1) {
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Enviremontal MS</br>Saved'
+                    });
+                } else {
+                    Toast.fire({
+                        type: 'error',
+                        title: 'Enviremontal MS</br>Error'
+                    });
+                }
 
-});
+            });
+        }
+    });
 }
-});
-}
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap">
+</script>
+<script>
+    var _Latitude = '7.489050';
+    var _Longitude = '80.349985';
+
+    // Initialize and add the map
+    function initMap() {
+        // The location of CeyTech
+        var defaultLocation = {lat: 7.489050, lng: 80.349985};//default Location for load map
+
+        // The map, centered at Uluru
+        var map = new google.maps.Map(
+                document.getElementById('map'), {zoom: 15, center: defaultLocation});
+        // The marker, positioned at Uluru
+        var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: true,
+            title: "Drag me!"});
+        google.maps.event.addListener(marker, 'dragend', function (evt) {
+            _Latitude = evt.latLng.lat().toFixed(6);//change  decimal point if have problam with location accuracy
+            _Longitude = evt.latLng.lng().toFixed(6);//change  decimal point if have problam with location accuracy
+
+            // alert('Marker dropped: Current Lat: ' + evt.latLng.lat().toFixed(3) + ' Current Lng: ' + evt.latLng.lng().toFixed(3) );
+        });
+    }
+
+    //main jq function
+//    $(function () {
+//        $("#btnSaveLocation").click(function () {
+//            //  alert('save location'+_Latitude+"  :  "+_Longitude);
+//            var map_data = {
+//                activity_id: $("#activity_combo").val(),
+//                location_latitude: _Latitude,
+//                location_longitude: _Longitude
+//            }
+//            
+//        });
+//
+//    });
+    //main jq function
+
 </script>
 @endsection
