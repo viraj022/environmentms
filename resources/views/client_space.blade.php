@@ -171,7 +171,16 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <button type="button" class="btn btn-info" id="newEPL" value="">Apply New EPL</button>
+                        <button type="button" class="btn btn-info" id="newEPL" value="">New EPL</button>
+                    </div>
+                    <div class="card-body">
+                        <button type="button" class="btn btn-info" id="newSiteClearence" value="">New Site Clearance</button>
+                    </div>
+                    <div class="card-body">
+                        <button type="button" class="btn btn-info" id="teli" value="">Telecomiunication Site Clearance</button>
+                    </div>
+                    <div class="card-body">
+                        <button type="button" class="btn btn-info" id="scheduleWaste" value="">Schedule Waste</button>
                     </div>
                     <!-- /.card-body -->
                 </div>                                    
