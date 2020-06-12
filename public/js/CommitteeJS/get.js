@@ -19,25 +19,29 @@ function GetCommittee(callBack) {
     });
 }
 
-function uniqueNICcheck(nic,callBack) {
-    $.ajax({
-        type: "GET",
-        headers: {
-            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-            "Accept": "application/json"
-        },
-        url: "api/committee/is_available/nic/"+ nic,
-        data: null,
-        dataType: "json",
-        cache: false,
-        processDaate: false,
-        success: function (result) {
+function uniqueNICcheck(nic, callBack) {
+    if (nic.length == 0) {
+        callBack({'message': 'true'});
+    } else {
+        $.ajax({
+            type: "GET",
+            headers: {
+                "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+                "Accept": "application/json"
+            },
+            url: "api/committee/is_available/nic/" + nic,
+            data: null,
+            dataType: "json",
+            cache: false,
+            processDaate: false,
+            success: function (result) {
 
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack(result);
+                if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+                    callBack(result);
+                }
             }
-        }
-    });
+        });
+    }
 }
 
 function loadTableUI() {
@@ -75,9 +79,9 @@ function getaCommitteebyId(id, callBack) {
                 callBack(result);
             }
         },
-        error: function(xhr, textStatus, errorThrown){               
-                alert(textStatus+':'+errorThrown);
-            }
+        error: function (xhr, textStatus, errorThrown) {
+            alert(textStatus + ':' + errorThrown);
+        }
     });
 
 }
