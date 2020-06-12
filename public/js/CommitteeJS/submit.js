@@ -35,7 +35,9 @@ function Validiteinsert(data) {
                 if (data.nic.length == 10) {
                     var str = data.nic;
                     var res = str.slice(0, 9);
-                    if (!isNaN(res)) {
+                   
+                    if (isNaN(res)) {
+                         alert(res);
                         $('#valNic').removeClass('d-none');
                         return false;
                     }
