@@ -218,6 +218,7 @@
                             }
                             loadTableUI();
                             resetinputFields();
+                            hideAllErrors();
                         });
                     } else
                     {
@@ -226,7 +227,6 @@
                     }
                 });
             }
-            hideAllErrors();
         });
 //click update button
         $('#btnUpdate').click(function () {
@@ -248,9 +248,9 @@
                     loadTableUI();
                     showSave();
                     resetinputFields();
+                    hideAllErrors();
                 });
             }
-            hideAllErrors();
         });
 //click delete button
         $('#btnDelete').click(function () {
@@ -339,6 +339,9 @@
 //HIDE ALL ERROR MSGS   
     function hideAllErrors() {
         $('#valUnique').addClass('d-none');
+        $('#getFname').addClass('d-none');
+        $('#valNic').addClass('d-none');
+        $('#valContact').addClass('d-none');
     }
 //get form values
     function fromValues() {
