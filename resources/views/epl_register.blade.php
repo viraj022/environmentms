@@ -226,7 +226,7 @@ $("#btnSave").click(function () {
         alert(JSON.stringify(data));
         AddEpl(data, function (result) {
             if (result.id == 1) {
-                window.location.href(result.rout + "/");
+                window.location.replace(result.rout);
                 Toast.fire({
                     type: 'success',
                     title: 'Enviremontal MS</br>Saved'

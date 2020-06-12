@@ -112,7 +112,7 @@ class EPLController extends Controller
                     file_put_contents($this->makeApplicationPath($epl->id) . "1" . $type, $data);
                     $epl->application_path = $this->makeApplicationPath($epl->id) . "1." . $type;
                     $epl->save();
-                    return array('id' => 1, 'message' => 'true', 'rout' => '/epl_profile/client/' . $epl->client_id . '/profile/' . $epl->id);
+                    return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
                 } else {
                     return array('id' => 0, 'message' => 'false');
                 }
@@ -316,7 +316,7 @@ class EPLController extends Controller
                 $month1 = date('m', $ts1);
                 $month2 = date('m', $ts2);
 
-                $noOFMonths  = (($year2 - $year1) * 12) + ($month2 - $month1);                
+                $noOFMonths  = (($year2 - $year1) * 12) + ($month2 - $month1);
                 $transaction['amount'] = $baseAmount * ($noOFMonths - 1) + $certificateFee;
             }
 
