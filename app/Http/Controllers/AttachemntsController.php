@@ -170,4 +170,20 @@ class AttachemntsController extends Controller {
         }
     }
 
+
+    public function getAttachment_by_application_name($application_name){
+          $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.attachments'));
+        if ($pageAuth['is_read']) {            
+            // return Attachemnt::get();
+            return Attachemnt::join('application_type_attachemnt', 'application_type_attachemnt.attachemnt_id', '=', 'attachemnts.id')
+            ->join('application_types', 'application_type_attachemnt.application_type_id', '=', 'application_types.id')
+            ->select('attachemnts.*')            
+            ->where('application_types.name','=',$application_name)
+            ->get();
+        } else {
+            abort(401);
+        }
+    }
+
 }

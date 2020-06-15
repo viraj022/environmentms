@@ -31,7 +31,7 @@ class EPLController extends Controller
             if (Client::find($id) !== null) {
                 return view('epl_register', ['pageAuth' => $pageAuth, 'id' => $id]);
             } else {
-                abort(401);
+                abort(404);
             }
         } else {
             abort(401);
@@ -46,7 +46,21 @@ class EPLController extends Controller
             if (Client::find($client) !== null && EPL::find($profile) !== null) {
                 return view('epl_profile', ['pageAuth' => $pageAuth, 'client' => $client, 'profile' => $profile]);
             } else {
-                abort(401);
+                abort(404);
+            }
+        } else {
+            abort(401);
+        }
+    }
+    public function attachment_upload_view($epl_id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_read']) {
+            if (EPL::find($epl_id) !== null) {
+                return view('epl_attachment_upload', ['pageAuth' => $pageAuth, 'epl_id' => $epl_id]);
+            } else {
+                abort(404);
             }
         } else {
             abort(401);

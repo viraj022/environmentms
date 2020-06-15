@@ -160,3 +160,27 @@ Route::middleware('auth:api')->get('/epls/new', 'EPLController@newEpls'); //   g
 //         "environment_officer_id": null
 //     }
 // ]
+
+
+Route::middleware('auth:api')->get('/epls/attachements/application_name/{application_name}', 'AttachemntsController@getAttachment_by_application_name'); 
+
+
+/*
+[
+    {
+        "id": 2,
+        "name": "Copy of Survey Plan of the land",
+        "created_at": "2020-02-26 11:05:03",
+        "updated_at": "2020-02-26 11:05:03",
+        "deleted_at": null
+    },
+    {
+        "id": 3,
+        "name": "Business Registration Certificate / Copy of the  National Identity Card of the  Industry Owner",
+        "created_at": "2020-02-26 11:06:12",
+        "updated_at": "2020-02-28 09:24:41",
+        "deleted_at": null
+    }
+]
+
+*/
