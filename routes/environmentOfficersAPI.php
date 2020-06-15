@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 
 Route::middleware('auth:api')->post('/epl/assign/id/{id}', 'EnvironmentOfficerController@assignEnvOfficer'); //   assign a epl to a officer
 
-Route::middleware('auth:api')->post('/epl/assistance_director/{id}', 'EnvironmentOfficerController@getEplByAssistantDirector'); //   get epls by assistance director
+Route::middleware('auth:api')->get('/epl/assistance_director/{id}', 'EnvironmentOfficerController@getEplByAssistantDirector'); //   get epls by assistance director
 
 // [
 //     {

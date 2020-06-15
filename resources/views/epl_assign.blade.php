@@ -35,8 +35,8 @@
                     </div>
                     <div class="card-body">
                         <label>Assistant Director</label>
-                        <select class="form-control combo_AssistantDirector"></select>
-                        <table class="table table-condensed" id="">
+                        <select class="form-control combo_AssistantDirector" id="ass_dir_combo"></select>
+                        <table class="table table-condensed" id="pending_epl_table">
                             <thead>
                                 <tr>
                                     <th style="width: 10px">#</th>
@@ -55,57 +55,27 @@
             <div class="col-md-6">
                 <div class="card card-primary">
                     <div class="card-body">
-
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Payment Categories</h3>
+                        <label>Assistant Director</label>
+                        <select class="form-control combo_envOfficer" id="env_officer_combo"></select>
+                        <div class="card-body p-0">
+                            <div class="card-body table-responsive" style="height: 550px;">
+                                <table class="table table-condensed" id="">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 5%">#</th>
+                                            <th>EPL</th>
+                                            <th style="width: 5%">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
-                            <!-- /.card-header -->
-                            <div class="card-body p-0">
-                                <div class="card-body table-responsive" style="height: 550px;">
-                                    <table class="table table-condensed" id="tblPaymentCat">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 10px">#</th>
-                                                <th>EPL</th>
-                                                <th style="width: 5%">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-</div>
-<div class="modal fade" id="modal-danger">
-    <div class="modal-dialog">
-        <div class="modal-content bg-danger">
-            <div class="modal-header">
-                <h4 class="modal-title">Delete Selected Item</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><b>Are you sure you want to permanently delete this Item? </b></p>
-                <p>Once you continue, this process can not be undone. Please Procede with care.</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
 </section>
 @endif
 @endsection
@@ -137,7 +107,7 @@
 <!-- AdminLTE App -->
 <script>
     $(function () {
-        
+
         const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -145,9 +115,12 @@
             timer: 4000
 
         });
-        
+
 //Load table
-        loadAssistantDirectorCombo();
+        loadAssistantDirectorCombo(function () {
+            loadEnvOfficers_combo(parseInt($('#ass_dir_combo').val()));
+            pending_EPL_table(parseInt($('#ass_dir_combo').val()));
+        });
 //click save button
         $('#btnSave').click(function () {
         });
@@ -157,7 +130,9 @@
 //click delete button
         $('#btnDelete').click(function () {});
 //select button action 
-        $(document).on('click', '.btnAction', function () {});
+        $(document).on('click', '.selPendingEpl', function () {
+            assign_epl_to_officer({environment_officer_id: parseInt($("#env_officer_combo").val()), epl_id: parseInt($(this).val())});
+        });
     });
 
 </script>
