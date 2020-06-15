@@ -50,6 +50,27 @@
                     </div>
                     <!-- /.card-body -->
                 </div>                                    
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-user"></i> Links
+
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <dl>
+                            <dt>Assign Environment Officer:</dt>
+                            <dd><button type="button" onclick="location.href='/epl_assign';" class="btn btn-success" data-dismiss="modal">Assign</button></dd>
+                            <dd><a href="1" class="text-success stretched-link">Payments</a></dd>
+                            <dd><a href="2" class="text-success stretched-link">Attachments</a></dd>
+                            <dd><a href="3" class="text-success stretched-link">Remarks</a></dd>
+                            <dd><a href="4" class="text-success stretched-link">Approval</a></dd>
+                            <dd><a href="5" class="text-success stretched-link">Certificate Information</a></dd>
+                        </dl>
+                    </div>
+                    <!-- /.card-body -->
+                </div>                                    
             </div>
             <div class="col-md-6">
                 <div class="card">
@@ -73,7 +94,7 @@
                         <dt>Location :</dt>
                         <div id="map" style="width: 100%; height: 400px;"></div>
                         <dt>Download Application :</dt>
-                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Download</button>
+                        <button type="button" class="btn btn-dark navTodownload" data-dismiss="modal">Download</button>
                     </div>
                     <!-- /.card-body -->
                 </div>                                    
@@ -143,46 +164,50 @@
 <script>
 //Map Start    
 // Initialize and add the map
-    function initMap(_Latitude, _Longitude) {
-    // The location of CeyTech
-    var defaultLocation = {lat: _Latitude, lng: _Longitude}; //default Location for load map
+                            function initMap(_Latitude, _Longitude) {
+                            // The location of CeyTech
+                            var defaultLocation = {lat: _Latitude, lng: _Longitude}; //default Location for load map
 //    console.log('def lat: ' + defaultLocation.lat);
 //    alert(defaultLocation.lat);
 
-    // The map, centered at Uluru
-    var map = new google.maps.Map(document.getElementById('map'), {zoom: 15, center: defaultLocation});
-    // The marker, positioned at Uluru
-    var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: false, title: "Drag me!"});
+                            // The map, centered at Uluru
+                            var map = new google.maps.Map(document.getElementById('map'), {zoom: 15, center: defaultLocation});
+                            // The marker, positioned at Uluru
+                            var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: false, title: "Drag me!"});
 //    google.maps.event.addListener(marker, 'dragend', function (evt) {
 //    _Latitude = evt.latLng.lat().toFixed(6); //change  decimal point if have problam with location accuracy
 //    _Longitude = evt.latLng.lng().toFixed(6); //change  decimal point if have problam with location accuracy
 //    // alert('Marker dropped: Current Lat: ' + evt.latLng.lat().toFixed(3) + ' Current Lng: ' + evt.latLng.lng().toFixed(3) );
 //    });
-    }
+                            }
 //Map END
-    $(function () {
-    getaClientbyId({{$client}}, function (result) {
-    if (result.length == 0 || result == undefined) {
-    if (confirm("Client Not Found! Try Again!")) {
+                            $(function () {
+                            getaClientbyId({{$client}}, function (result) {
+                            if (result.length == 0 || result == undefined) {
+                            if (confirm("Client Not Found! Try Again!")) {
 
-    }
-    } else {
-    setClientDetails(result);
-    }
-    });
-    getDetailsbyId({{$client}}, function (result) {
-    if (result.length == 0 || result == undefined) {
-    if (confirm("Details Not Found! Try Again!")) {
+                            }
+                            } else {
+                            setClientDetails(result);
+                            }
+                            });
+                            getDetailsbyId({{$client}}, function (result) {
+                            if (result.length == 0 || result == undefined) {
+                            if (confirm("Details Not Found! Try Again!")) {
 
-    }
-    } else {
+                            }
+                            } else {
 //    console.log(result);
-    setAllDetails(result);
-    }
-    initMap(parseFloat(result.coordinate_x), parseFloat(result.coordinate_y));
+                            setAllDetails(result);
+                            $('.navTodownload').click(function(){
+                            downloadApp(result);
+                            });
+                            }
+
+                            initMap(parseFloat(result.coordinate_x), parseFloat(result.coordinate_y));
 //                $('#getName').val(result.name);
-    });
-    });
+                            });
+                            });
 
 </script>
 <!--<script>

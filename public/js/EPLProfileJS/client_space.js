@@ -17,3 +17,6 @@ function setAllDetails(obj) {
 //    _Latitude = obj.coordinate_x;
 //    _Longitude = obj.coordinate_y;
 }
+function downloadApp(obj) {
+window.location.href = "/"+obj.application_path;
+}
