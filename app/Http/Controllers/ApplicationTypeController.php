@@ -95,7 +95,17 @@ class ApplicationTypeController extends Controller {
             $applicetion = ApplicationType::with('attachemnts')->whereHas('attachemnts', function ($q) use ($id) {
                         $q->where('application_type_id', $id);
                     })->first();
-            $attachments = $applicetion->attachemnts;
+             if (!$applicetion) {
+               $attachments =  array();
+            }
+            else
+            {
+                 $attachments = $applicetion->attachemnts;
+            }
+
+            //dd($applicetion);
+           
+           
             $array = array();
             foreach ($attachments as $value) {
                 array_push($array, $value['id']);
@@ -114,7 +124,16 @@ class ApplicationTypeController extends Controller {
             $applicetion = ApplicationType::with('attachemnts')->whereHas('attachemnts', function ($q) use ($id) {
                         $q->where('application_type_id', $id);
                     })->first();
-            return $applicetion->attachemnts;
+
+
+            if (!$applicetion) {
+                      return new Attachemnt(); 
+            }
+            else
+            {
+                  return $applicetion->attachemnts;     
+            }
+     
         } else {
             abort(401);
         }
