@@ -12,32 +12,80 @@
 <link rel="stylesheet" href="/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
 <!-- Theme style -->
 <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+<style>
+    #map {
+        height: 400px;  /* The height is 400 pixels */
+        width: 100%;  /* The width is the width of the web page */
+    }
+</style>
 <!-- Google Font: Source Sans Pro -->
 @endsection
 @section('content')
 @if($pageAuth['is_read']==1 || false)
+<section class="content-header">
+    <div class="container-fluid view-Profile">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-user"></i> Client Details
 
-  @if($pageAuth['is_create']==1 || false)
-     <button id="btnSave" type="button" class="btn btn-success">Save</button>
-   @endif
-
- @if($pageAuth['is_update']==1 || false)
-  <button id="btnUpdate" type="submit" class="btn btn-warning">Update</button>
-@endif
-
-@if($pageAuth['is_delete']==1 || false)
-     <button  id="btnshowDelete" type="submit" class="btn btn-danger"  data-toggle="modal"
-                                 data-target="#modal-danger">Delete</button>
- @endif
-
-<input id="inp" type='file'>
-<p id="b64"></p>
-<img id="img" height="150">
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <dl>
+                            <dt>Name :</dt>
+                            <dd id="client_name"></dd>
+                            <dt>Address :</dt>
+                            <dd id="client_address"></dd>
+                            <dt>Contact Number :</dt>
+                            <dd id="client_cont"></dd>
+                            <dt>Contact Email :</dt>
+                            <dd id="client_amil"></dd>
+                            <dt>NIC :</dt>
+                            <dd id="client_nic"></dd>
+                        </dl>
+                    </div>
+                    <!-- /.card-body -->
+                </div>                                    
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-address-card"></i> Data
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <dt>Name :</dt>
+                        <dd id="obj_name"></dd>
+                        <dt>Registration No :</dt>
+                        <dd id="obj_regno"></dd>
+                        <dt>Code :</dt>
+                        <dd id="obj_code"></dd>
+                        <dt>Investment :</dt>
+                        <dd id="obj_invest"></dd>
+                        <dt>Remark :</dt>
+                        <dd id="obj_remark"></dd>
+                        <dt>Location :</dt>
+                        <div id="map" style="width: 100%; height: 400px;"></div>
+                        <dt>Download Application :</dt>
+                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Download</button>
+                    </div>
+                    <!-- /.card-body -->
+                </div>                                    
+            </div>
+        </div>
+    </div>
+</section>
 
 <div class="modal fade" id="modal-danger">
     <div class="modal-dialog">
         <div class="modal-content bg-danger">
-            <div class="modal-header">
+            <div class="modal-header"> 
                 <h4 class="modal-title">Delete Attachment</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -84,82 +132,98 @@
 <script src="/../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/../../dist/js/demo.js"></script>
-<script src="/../../js/attachmentsjs/submit.js"></script>
-<script src="/../../js/attachmentsjs/get.js"></script>
-<script src="/../../js/attachmentsjs/update.js"></script>
-<script src="/../../js/attachmentsjs/delete.js"></script>
-@endsection
+<script src="/../../js/EPLProfileJS/submit.js"></script>
+<script src="/../../js/EPLProfileJS/get.js"></script>
+<script src="/../../js/EPLProfileJS/client_space.js"></script>
+<script src="/../../js/EPLProfileJS/update.js"></script>
+<script src="/../../js/EPLProfileJS/delete.js"></script>
+
 <!-- AdminLTE App -->
+<script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
 <script>
-$(function(){
-       alert({{$client}});
-{{-- function readFile() {
-  
-  if (this.files && this.files[0]) {
-    
-    var FR= new FileReader();
-    
-    FR.addEventListener("load", function(e) {
-      document.getElementById("img").src       = e.target.result;
-      document.getElementById("b64").innerHTML = e.target.result;
-      AddPayments({"name": e.target.result},function(){
-          alert("Message Sent");
-      })
-    }); 
-    
-    FR.readAsDataURL( this.files[0] );
-  }
-  
-} --}}
+//Map Start    
+// Initialize and add the map
+    function initMap(_Latitude, _Longitude) {
+    // The location of CeyTech
+    var defaultLocation = {lat: _Latitude, lng: _Longitude}; //default Location for load map
+//    console.log('def lat: ' + defaultLocation.lat);
+//    alert(defaultLocation.lat);
 
-{{-- document.getElementById("inp").addEventListener("change", readFile); --}}
-$("#btnSave").click(function(){
-    alert("wada");
-  var img =  document.getElementById("inp")
-      if (img.files && img.files[0]) {
-    
-    var FR= new FileReader();
-    
-    FR.addEventListener("load", function(e) {
-      document.getElementById("img").src       = e.target.result;
-      document.getElementById("b64").innerHTML = e.target.result;
-      AddPayments({"name": e.target.result},function(){
-          alert("Message Sent");
-      })
-    }); 
-    
-    FR.readAsDataURL( img.files[0] );
-  }else{
-      alert("No Image")
-  }
+    // The map, centered at Uluru
+    var map = new google.maps.Map(document.getElementById('map'), {zoom: 15, center: defaultLocation});
+    // The marker, positioned at Uluru
+    var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: false, title: "Drag me!"});
+//    google.maps.event.addListener(marker, 'dragend', function (evt) {
+//    _Latitude = evt.latLng.lat().toFixed(6); //change  decimal point if have problam with location accuracy
+//    _Longitude = evt.latLng.lng().toFixed(6); //change  decimal point if have problam with location accuracy
+//    // alert('Marker dropped: Current Lat: ' + evt.latLng.lat().toFixed(3) + ' Current Lng: ' + evt.latLng.lng().toFixed(3) );
+//    });
+    }
+//Map END
+    $(function () {
+    getaClientbyId({{$client}}, function (result) {
+    if (result.length == 0 || result == undefined) {
+    if (confirm("Client Not Found! Try Again!")) {
+
+    }
+    } else {
+    setClientDetails(result);
+    }
     });
-});
+    getDetailsbyId({{$client}}, function (result) {
+    if (result.length == 0 || result == undefined) {
+    if (confirm("Details Not Found! Try Again!")) {
 
-
-function AddPayments(data, callBack) {
-    $.ajax({
-        type: "POST",
-        headers: {
-            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-            "Accept": "application/json"
-        },
-        url: "/api/epl",
-        data: data,
-        dataType: "json",
-        cache: false,
-        processDaate: false,
-        success: function (result) {
-
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack(result);
-            }
-        },
-        error: function (xhr, textStatus, errorThrown) {
-            alert(textStatus + ':' + errorThrown);
-        }
+    }
+    } else {
+//    console.log(result);
+    setAllDetails(result);
+    }
+    initMap(parseFloat(result.coordinate_x), parseFloat(result.coordinate_y));
+//                $('#getName').val(result.name);
+    });
     });
 
-    
-}
 </script>
+<!--<script>
+    $(function(){
+    {{-- function readFile() {
+
+    if (this.files && this.files[0]) {
+
+    var FR = new FileReader();
+    FR.addEventListener("load", function(e) {
+    document.getElementById("img").src = e.target.result;
+    document.getElementById("b64").innerHTML = e.target.result;
+    AddPayments({"name": e.target.result}, function(){
+    alert("Message Sent");
+    })
+    });
+    FR.readAsDataURL(this.files[0]);
+    }
+
+    } --}}
+
+    {{-- document.getElementById("inp").addEventListener("change", readFile); --}}
+    $("#btnSave").click(function(){
+    alert("wada");
+    var img = document.getElementById("inp")
+            if (img.files && img.files[0]) {
+
+    var FR = new FileReader();
+    FR.addEventListener("load", function(e) {
+    document.getElementById("img").src = e.target.result;
+    document.getElementById("b64").innerHTML = e.target.result;
+    AddPayments({"name": e.target.result}, function(){
+    alert("Message Sent");
+    })
+    });
+    FR.readAsDataURL(img.files[0]);
+    } else{
+    alert("No Image")
+    }
+    });
+    });
+</script>-->
+@endsection
 
