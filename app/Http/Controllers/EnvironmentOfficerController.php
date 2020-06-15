@@ -255,6 +255,27 @@ class EnvironmentOfficerController extends Controller
             return abort(401);
         }
     }
+    public function remove($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_delete']) {
+            $epl =  EPL::find($id);
+            if ($epl) {
+                $epl->environment_officer_id = null;
+                $msg = $epl->save();
+                if ($msg) {
+                    return array('id' => 1, 'message' => 'true');
+                } else {
+                    return array('id' => 0, 'message' => 'false');
+                }
+            } else {
+                abort(404);
+            }
+        } else {
+            return abort(401);
+        }
+    }
     public function getEplByAssistantDirector($id)
     {
         $user = Auth::user();
@@ -271,6 +292,17 @@ class EnvironmentOfficerController extends Controller
             }
         } else {
             abort(404);
+        }
+    }
+    public function getEplByEnvOfficer($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_read']) {
+            return EPL::where('environment_officer_id', $id)
+                ->get();
+        } else {
+            abort(401);
         }
     }
 }
