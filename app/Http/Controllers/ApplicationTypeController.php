@@ -8,9 +8,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-class ApplicationTypeController extends Controller {
+class ApplicationTypeController extends Controller
+{
+    const  EPL = 'Environment Protection Licence';
 
-    public function __construct() {
+
+    public function __construct()
+    {
         $this->middleware(['auth']);
     }
 
@@ -19,7 +23,8 @@ class ApplicationTypeController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_read']) {
@@ -34,7 +39,8 @@ class ApplicationTypeController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_create']) {
@@ -58,7 +64,8 @@ class ApplicationTypeController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         //
     }
 
@@ -68,7 +75,8 @@ class ApplicationTypeController extends Controller {
      * @param  \App\ApplicationType  $applicationType
      * @return \Illuminate\Http\Response
      */
-    public function show() {
+    public function show()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_read']) {
@@ -78,7 +86,8 @@ class ApplicationTypeController extends Controller {
         }
     }
 
-    public function find($id) {
+    public function find($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_read']) {
@@ -88,58 +97,56 @@ class ApplicationTypeController extends Controller {
         }
     }
 
-    public function availableAttachements($id) {
+    public function availableAttachements($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_read']) {
             $applicetion = ApplicationType::with('attachemnts')->whereHas('attachemnts', function ($q) use ($id) {
-                        $q->where('application_type_id', $id);
-                    })->first();
-             if (!$applicetion) {
-               $attachments =  array();
-            }
-            else
-            {
-                 $attachments = $applicetion->attachemnts;
+                $q->where('application_type_id', $id);
+            })->first();
+            if (!$applicetion) {
+                $attachments =  array();
+            } else {
+                $attachments = $applicetion->attachemnts;
             }
 
             //dd($applicetion);
-           
-           
+
+
             $array = array();
             foreach ($attachments as $value) {
                 array_push($array, $value['id']);
             }
-//            $array;
+            //            $array;
             return Attachemnt::wherenotin('id', $array)->get();
         } else {
             abort(401);
         }
     }
 
-    public function assignedAttachements($id) {
+    public function assignedAttachements($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_read']) {
             $applicetion = ApplicationType::with('attachemnts')->whereHas('attachemnts', function ($q) use ($id) {
-                        $q->where('application_type_id', $id);
-                    })->first();
+                $q->where('application_type_id', $id);
+            })->first();
 
 
             if (!$applicetion) {
-                      return new Attachemnt(); 
+                return new Attachemnt();
+            } else {
+                return $applicetion->attachemnts;
             }
-            else
-            {
-                  return $applicetion->attachemnts;     
-            }
-     
         } else {
             abort(401);
         }
     }
 
-    public function allAttachmentsWithStatus($id) {
+    public function allAttachmentsWithStatus($id)
+    {
         $av = $this->availableAttachements($id)->toArray();
         $asigned = $this->assignedAttachements($id)->toArray();
         $all = array();
@@ -149,7 +156,7 @@ class ApplicationTypeController extends Controller {
         foreach ($asigned as $as) {
             $all[] = array('id' => $as['id'], 'name' => $as['name'], 'st' => 1);
         }
-//        print_r($all);
+        //        print_r($all);
         return $all;
     }
 
@@ -159,7 +166,8 @@ class ApplicationTypeController extends Controller {
      * @param  \App\ApplicationType  $applicationType
      * @return \Illuminate\Http\Response
      */
-    public function edit(ApplicationType $applicationType) {
+    public function edit(ApplicationType $applicationType)
+    {
         //
     }
 
@@ -170,7 +178,8 @@ class ApplicationTypeController extends Controller {
      * @param  \App\ApplicationType  $applicationType
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ApplicationType $applicationType) {
+    public function update(Request $request, ApplicationType $applicationType)
+    {
         //
     }
 
@@ -180,8 +189,8 @@ class ApplicationTypeController extends Controller {
      * @param  \App\ApplicationType  $applicationType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ApplicationType $applicationType) {
+    public function destroy(ApplicationType $applicationType)
+    {
         //
     }
-
 }
