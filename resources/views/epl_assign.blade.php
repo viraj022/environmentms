@@ -59,7 +59,7 @@
                         <select class="form-control combo_envOfficer" id="env_officer_combo"></select>
                         <div class="card-body p-0">
                             <div class="card-body table-responsive" style="height: 550px;">
-                                <table class="table table-condensed" id="">
+                                <table class="table table-condensed" id="assigned_epl_table">
                                     <thead>
                                         <tr>
                                             <th style="width: 5%">#</th>

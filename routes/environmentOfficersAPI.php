@@ -15,7 +15,10 @@ use Illuminate\Http\Request;
 
 Route::middleware('auth:api')->post('/epl/assign/id/{id}', 'EnvironmentOfficerController@assignEnvOfficer'); //   assign a epl to a officer
 
-Route::middleware('auth:api')->get('/epl/assistance_director/{id}', 'EnvironmentOfficerController@getEplByAssistantDirector'); //   get epls by assistance director === === = Route::middleware('auth:api')->post('/epl/remove/id/{id}', 'EnvironmentOfficerController@remove'); //   remove a epl
+
+Route::middleware('auth:api')->get('/epl/assistance_director/{id}', 'EnvironmentOfficerController@getEplByAssistantDirector'); //   get epls by assistance director
+
+Route::middleware('auth:api')->delete('/epl/remove/id/{id}', 'EnvironmentOfficerController@remove'); //   remove a epl
 
 Route::middleware('auth:api')->post('/epl/assistance_director/{id}', 'EnvironmentOfficerController@getEplByAssistantDirector'); //   get epls by assistance director
 // [
@@ -46,7 +49,7 @@ Route::middleware('auth:api')->post('/epl/assistance_director/{id}', 'Environmen
 //         "zone_id": 1
 //     }
 // ]
-Route::middleware('auth:api')->post('/epl/env_officer/{id}', 'EnvironmentOfficerController@getEplByEnvOfficer'); //   get epls by assistance director
+Route::middleware('auth:api')->get('/epl/env_officer/{id}', 'EnvironmentOfficerController@getEplByEnvOfficer'); //   get epls by assistance director
 
 // [
 //     {

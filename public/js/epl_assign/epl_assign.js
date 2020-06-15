@@ -49,6 +49,37 @@ function loadEnvOfficers_combo(ass_dir_id, callBack) {
     });
 
 }
+function assigned_EPL_table(officer_id, callBack) {
+    if (isNaN(officer_id)) {
+        return false;
+    }
+    $.ajax({
+        type: "GET",
+        headers: {
+            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            "Accept": "application/json"
+        },
+        url: "api/epl/env_officer/" + officer_id,
+        data: null,
+        dataType: "json",
+        cache: false,
+        processDaate: false,
+        success: function (result) {
+            var tbl = "";
+            $.each(result, function (index, value) {
+                tbl += "<tr>";
+                tbl += "<td>" + ++index + "</td>";
+                tbl += "<td>" + value.code + "&nbsp&nbsp<a href='epl_profile/client/" + value.client_id + "/profile/" + value.id + "'  target='_blank'>(View)</a></td>";
+                tbl += '<td><button type="button" class="btn btn-success selPendingEpl" value="' + value.id + '">Add</button></td>';
+                tbl += "</tr>";
+            });
+            $('#assigned_epl_table tbody').html(tbl);
+            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+                callBack(result);
+            }
+        }
+    });
+}
 function pending_EPL_table(director_id, callBack) {
     if (isNaN(director_id)) {
         return false;
