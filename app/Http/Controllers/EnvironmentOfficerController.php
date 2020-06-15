@@ -229,15 +229,47 @@ class EnvironmentOfficerController extends Controller {
             return abort(401);
         }
     }
+<<<<<<< HEAD
 
     public function getEplByAssistantDirector($id) {
+=======
+    public function remove($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_delete']) {
+            $epl =  EPL::find($id);
+            if ($epl) {
+                $epl->environment_officer_id = null;
+                $msg = $epl->save();
+                if ($msg) {
+                    return array('id' => 1, 'message' => 'true');
+                } else {
+                    return array('id' => 0, 'message' => 'false');
+                }
+            } else {
+                abort(404);
+            }
+        } else {
+            return abort(401);
+        }
+    }
+    public function getEplByAssistantDirector($id)
+    {
+>>>>>>> dev
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
             $assistantDirector = AssistantDirector::find($id);
             if ($assistantDirector) {
                 return EPL::join('pradesheeyasabas', 'e_p_l_s.pradesheeyasaba_id', '=', 'pradesheeyasabas.id')
+<<<<<<< HEAD
                                 ->whereNull('environment_officer_id')->where('pradesheeyasabas.zone_id', $assistantDirector->zone_id)->get();
+=======
+                    ->whereNull('environment_officer_id')->where('pradesheeyasabas.zone_id', $assistantDirector->zone_id)
+                    ->select('e_p_l_s.*')
+                    ->get();
+>>>>>>> dev
             } else {
                 abort(404);
             }
@@ -245,5 +277,19 @@ class EnvironmentOfficerController extends Controller {
             abort(404);
         }
     }
+<<<<<<< HEAD
 
+=======
+    public function getEplByEnvOfficer($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_read']) {
+            return EPL::where('environment_officer_id', $id)
+                ->get();
+        } else {
+            abort(401);
+        }
+    }
+>>>>>>> dev
 }

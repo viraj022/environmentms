@@ -19,6 +19,30 @@ function GetAttachments(callBack) {
     });
 }
 
+
+function GetAttachmentsBy_Application(application_name,callBack) {
+   
+    $.ajax({
+        type: "GET",
+        headers: {
+            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            "Accept": "application/json"
+        },
+
+        url: "/api/epls/attachements/application_name/"+application_name,
+        data: null,
+        dataType: "json",
+        cache: false,
+        processDaate: false,
+        success: function (result) {
+
+            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+                callBack(result);
+            }
+        }
+    });
+}
+
 function uniqueNamecheck(name,callBack) {
     $.ajax({
         type: "GET",
