@@ -358,19 +358,4 @@ class EPLController extends Controller
             return abort(4010);
         }
     }
-
-    public function assignEnvOfficer($id)
-    {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-        if ($pageAuth['is_create']) {
-            request()->validate([
-                'environment_officer_id' => 'required|integer',
-            ]);
-            $epl =  EPL::find($id);
-            $epl->environment_officer_id = \request('environment_officer_id');
-        } else {
-            return abort(4010);
-        }
-    }
 }
