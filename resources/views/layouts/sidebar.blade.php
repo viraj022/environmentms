@@ -200,6 +200,14 @@
                     </a>
                 </li>
                 @endif
+                @if($pre['id']===config('auth.privileges.clientSpace'))
+                <li class="nav-item">
+                    <a href="{{ url('/epl_assign') }}" class="nav-link {{ Request::is('epl_assign') ? 'active' : '' }}">
+                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <p>EPL Assign</p>
+                    </a>
+                </li>
+                @endif
                 @endforeach
 
             </ul>
