@@ -14,8 +14,8 @@ use Illuminate\Http\Request;
  */
 
 Route::middleware('auth:api')->post('/epl', 'EPLController@create'); //   save attachements to a application
-    
-    /*
+
+/*
    {
     "name": "hcw coporatio65",
     "client_id":"1",
@@ -131,3 +131,32 @@ Route::middleware('auth:api')->get('/epl/payDetails/id/{epl}', 'EPLController@ge
 
 // */
 
+Route::middleware('auth:api')->get('/epls/new', 'EPLController@newEpls'); //   get new epl list
+
+// [
+//     {
+//         "id": 8,
+//         "name": "vxcv",
+//         "code": "PEA/PKG/EPL/AG/S/01/2020",
+//         "industry_category_id": 5,
+//         "business_scale_id": 1,
+//         "contact_no": "0710576923",
+//         "address": "vxcv",
+//         "email": "vxcvx@gmail.com",
+//         "coordinate_x": "7.489050",
+//         "coordinate_y": "80.349985",
+//         "pradesheeyasaba_id": 10,
+//         "is_industry": 0,
+//         "investment": 4656,
+//         "start_date": "2020-06-12 00:00:00",
+//         "registration_no": "xcvxc",
+//         "remark": "fsdfdsf",
+//         "application_path": "uploads/EPL/8/application/1.png",
+//         "created_at": "2020-06-12 11:52:26",
+//         "updated_at": "2020-06-12 11:52:26",
+//         "deleted_at": null,
+//         "client_id": 1,
+//         "site_clearance_file": null,
+//         "environment_officer_id": null
+//     }
+// ]

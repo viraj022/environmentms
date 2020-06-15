@@ -348,4 +348,15 @@ class EPLController extends Controller
             return abort(404);
         }
     }
+
+    public function newEpls()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_create']) {
+            return  EPL::whereNull('environment_officer_id')->get();
+        } else {
+            return abort(4010);
+        }
+    }
 }
