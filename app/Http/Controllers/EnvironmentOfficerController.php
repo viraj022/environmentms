@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\EPL;
 use App\User;
 use App\AssistantDirector;
 use App\EnvironmentOfficer;
+use App\FileHandlerLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class EnvironmentOfficerController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -84,7 +90,7 @@ class EnvironmentOfficerController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($pageAuth['is_read']) {
             $assistantDirectors = AssistantDirector::where('active_status', '1')->select('user_id as id')->get();
-            $environmentOfficers = EnvironmentOfficer::where('active_status', '1')->select('user_id as id')->get();     
+            $environmentOfficers = EnvironmentOfficer::where('active_status', '1')->select('user_id as id')->get();
             return User::wherenotin('id', $assistantDirectors)->wherenotin('id', $environmentOfficers)->get();
         } else {
             abort(401);
@@ -215,6 +221,38 @@ class EnvironmentOfficerController extends Controller
             return true;
         } else {
             return false;
+        }
+    }
+
+
+    public function assignEnvOfficer($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_create']) {
+            request()->validate([
+                'environment_officer_id' => 'required|integer',
+            ]);
+            $epl =  EPL::find($id);
+            $environmentOfficer = EnvironmentOfficer::find(\request('environment_officer_id'));
+            if ($epl && $environmentOfficer) {
+                $epl->environment_officer_id = $environmentOfficer->id;
+                $msg = $epl->save();
+                $officeLog = new FileHandlerLog();
+                $officeLog->type = ApplicationTypeController::EPL;
+                $officeLog->environment_officer_id = $environmentOfficer->id;
+                $officeLog->assistant_director_id = $environmentOfficer->assistant_director_id;
+                $msg  = $msg  &&  $officeLog->save();
+                if ($msg) {
+                    return array('id' => 1, 'message' => 'true');
+                } else {
+                    return array('id' => 0, 'message' => 'false');
+                }
+            } else {
+                abort(404);
+            }
+        } else {
+            return abort(401);
         }
     }
 }

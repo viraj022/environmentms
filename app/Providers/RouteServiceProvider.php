@@ -62,7 +62,6 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware('web')
             ->namespace($this->namespace)
             ->group(base_path('routes/la.php'));
-
     }
 
     /**
@@ -90,9 +89,13 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(base_path('routes/eplAPI.php'));
-            Route::prefix('api')
+        Route::prefix('api')
             ->middleware('api')
-            ->namespace($this->namespace)      
+            ->namespace($this->namespace)
             ->group(base_path('routes/commetyApi.php'));
+        Route::prefix('api')
+            ->middleware('api')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/environmentOfficersAPI.php'));
     }
 }
