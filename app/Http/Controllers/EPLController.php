@@ -134,7 +134,10 @@ class EPLController extends Controller
 
     public function find($id)
     {
-        return EPL::join('environment_officers', 'e_p_l_s.environment_officer_id', 'environment_officers.id')->where('id', $id)->get();
+        return EPL::leftJoin('environment_officers', 'e_p_l_s.environment_officer_id', 'environment_officers.id')
+            ->where('id', $id)
+            ->select('e_p_l_s *', 'environment_officers.name')
+            ->get();
     }
 
     /**
