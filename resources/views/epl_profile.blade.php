@@ -63,7 +63,7 @@
                             <dt id="env_firstname">Assign Environment Officer: N/A</dt>
                             <dd><button type="button" onclick="location.href = '/epl_assign';" class="btn btn-success" data-dismiss="modal">Assign...</button></dd>
                             <dd><a href="1" class="text-success stretched-link">Payments</a></dd>
-                            <dd><a href="2" class="text-success stretched-link">Attachments</a></dd>
+                            <dd><a href="epl_profile/atachments/{{$profile}}" class="text-success stretched-link">Attachments</a></dd>
                             <dd><a href="3" class="text-success stretched-link">Remarks</a></dd>
                             <dd><a href="4" class="text-success stretched-link">Approval</a></dd>
                             <dd><a href="5" class="text-success stretched-link">Certificate Information</a></dd>
