@@ -38,9 +38,13 @@ function loadEnvOfficers_combo(ass_dir_id, callBack) {
         processDaate: false,
         success: function (result) {
             var combo = "";
-            $.each(result, function (index, value) {
-                combo += "<option value='" + value.id + "'>" + value.first_name + ' ' + value.last_name + "</option>";
-            });
+            if (result.length == 0 || result == undefined) {
+                combo = "<option value=''>-No data Found-</option>";
+            } else {
+                $.each(result, function (index, value) {
+                    combo += "<option value='" + value.id + "'>" + value.first_name + ' ' + value.last_name + "</option>";
+                });
+            }
             $('.combo_envOfficer').html(combo);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
@@ -50,6 +54,7 @@ function loadEnvOfficers_combo(ass_dir_id, callBack) {
 
 }
 function assigned_EPL_table(officer_id, callBack) {
+    $('#assigned_epl_table tbody').html('');
     if (isNaN(officer_id)) {
         return false;
     }
@@ -70,7 +75,7 @@ function assigned_EPL_table(officer_id, callBack) {
                 tbl += "<tr>";
                 tbl += "<td>" + ++index + "</td>";
                 tbl += "<td>" + value.code + "&nbsp&nbsp<a href='epl_profile/client/" + value.client_id + "/profile/" + value.id + "'  target='_blank'>(View)</a></td>";
-                tbl += '<td><button type="button" class="btn btn-success selPendingEpl" value="' + value.id + '">Add</button></td>';
+                tbl += '<td><button type="button" class="btn btn-danger removePendingEpl" value="' + value.id + '">Remove</button></td>';
                 tbl += "</tr>";
             });
             $('#assigned_epl_table tbody').html(tbl);
@@ -81,6 +86,7 @@ function assigned_EPL_table(officer_id, callBack) {
     });
 }
 function pending_EPL_table(director_id, callBack) {
+    $('#pending_epl_table tbody').html('');
     if (isNaN(director_id)) {
         return false;
     }
@@ -133,6 +139,31 @@ function assign_epl_to_officer(data, callBack) {
         processDaate: false,
         success: function (result) {
 
+            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+                callBack(result);
+            }
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            alert(textStatus + ':' + errorThrown);
+        }
+    });
+}
+function remove_epl_from_officer(epl_id, callBack) {
+    if (isNaN(epl_id)) {
+        return false;
+    }
+    $.ajax({
+        type: "DELETE",
+        headers: {
+            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            "Accept": "application/json"
+        },
+        url: "/api/epl/remove/id/" + epl_id,
+        data: null,
+        dataType: "json",
+        cache: false,
+        processDaate: false,
+        success: function (result) {
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
             }

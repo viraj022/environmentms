@@ -118,9 +118,23 @@
 
 //Load table
         loadAssistantDirectorCombo(function () {
-            loadEnvOfficers_combo(parseInt($('#ass_dir_combo').val()));
+            loadEnvOfficers_combo(parseInt($('#ass_dir_combo').val()), function () {
+                assigned_EPL_table(parseInt($('#env_officer_combo').val()));
+            });
             pending_EPL_table(parseInt($('#ass_dir_combo').val()));
         });
+
+        $('#env_officer_combo').change(function () {
+            assigned_EPL_table(parseInt($('#env_officer_combo').val()));
+        });
+
+        $('#ass_dir_combo').change(function () {
+            loadEnvOfficers_combo(parseInt($('#ass_dir_combo').val()), function () {
+                assigned_EPL_table(parseInt($('#env_officer_combo').val()));
+            });
+            pending_EPL_table(parseInt($('#ass_dir_combo').val()));
+        });
+
 //click save button
         $('#btnSave').click(function () {
         });
@@ -131,7 +145,23 @@
         $('#btnDelete').click(function () {});
 //select button action 
         $(document).on('click', '.selPendingEpl', function () {
-            assign_epl_to_officer({environment_officer_id: parseInt($("#env_officer_combo").val()), epl_id: parseInt($(this).val())});
+            let obj = {environment_officer_id: parseInt($("#env_officer_combo").val()), epl_id: parseInt($(this).val())};
+            assign_epl_to_officer(obj, function (parameters) {
+                if (parameters.id == 1) {
+                    assigned_EPL_table(parseInt($('#env_officer_combo').val()));
+                    pending_EPL_table(parseInt($('#ass_dir_combo').val()));
+
+                }
+            });
+        });
+        $(document).on('click', '.removePendingEpl', function () {
+            remove_epl_from_officer(parseInt($(this).val()), function (parameters) {
+                if (parameters.id == 1) {
+                    assigned_EPL_table(parseInt($('#env_officer_combo').val()));
+                    pending_EPL_table(parseInt($('#ass_dir_combo').val()));
+
+                }
+            });
         });
     });
 
