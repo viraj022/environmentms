@@ -263,7 +263,9 @@ class EnvironmentOfficerController extends Controller
             $assistantDirector =     AssistantDirector::find($id);
             if ($assistantDirector) {
                 return EPL::join('pradesheeyasabas', 'e_p_l_s.pradesheeyasaba_id', '=', 'pradesheeyasabas.id')
-                    ->whereNull('environment_officer_id')->where('pradesheeyasabas.zone_id', $assistantDirector->zone_id)->get();
+                    ->whereNull('environment_officer_id')->where('pradesheeyasabas.zone_id', $assistantDirector->zone_id)
+                    ->select('e_p_l_s.*')
+                    ->get();
             } else {
                 abort(404);
             }
