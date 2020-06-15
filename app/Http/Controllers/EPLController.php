@@ -9,7 +9,6 @@ use App\Pradesheeyasaba;
 use App\Rules\contactNo;
 use App\IndustryCategory;
 use App\Payment;
-use App\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -346,6 +345,17 @@ class EPLController extends Controller
             return $epl->paymentDetails();
         } else {
             return abort(404);
+        }
+    }
+
+    public function newEpls()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_create']) {
+            return  EPL::whereNull('environment_officer_id')->get();
+        } else {
+            return abort(4010);
         }
     }
 }
