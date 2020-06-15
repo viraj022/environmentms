@@ -230,4 +230,20 @@ class EnvironmentOfficerController extends Controller {
         }
     }
 
+    public function getEplByAssistantDirector($id) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_read']) {
+            $assistantDirector = AssistantDirector::find($id);
+            if ($assistantDirector) {
+                return EPL::join('pradesheeyasabas', 'e_p_l_s.pradesheeyasaba_id', '=', 'pradesheeyasabas.id')
+                                ->whereNull('environment_officer_id')->where('pradesheeyasabas.zone_id', $assistantDirector->zone_id)->get();
+            } else {
+                abort(404);
+            }
+        } else {
+            abort(404);
+        }
+    }
+
 }
