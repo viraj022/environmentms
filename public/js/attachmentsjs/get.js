@@ -20,8 +20,8 @@ function GetAttachments(callBack) {
 }
 
 
-function GetAttachmentsBy_Application(application_name,callBack) {
-   
+function GetAttachmentsBy_Application(application_name, callBack) {
+
     $.ajax({
         type: "GET",
         headers: {
@@ -29,7 +29,7 @@ function GetAttachmentsBy_Application(application_name,callBack) {
             "Accept": "application/json"
         },
 
-        url: "/api/epls/attachements/application_name/"+application_name,
+        url: "/api/epls/attachements/application_name/" + application_name,
         data: null,
         dataType: "json",
         cache: false,
@@ -43,14 +43,14 @@ function GetAttachmentsBy_Application(application_name,callBack) {
     });
 }
 
-function uniqueNamecheck(name,callBack) {
+function uniqueNamecheck(name, callBack) {
     $.ajax({
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/attachements/name/"+name,
+        url: "api/attachements/name/" + name,
         data: null,
         dataType: "json",
         cache: false,
@@ -81,7 +81,6 @@ function loadTable() {
 }
 
 function getaAttachmentbyId(id, callBack) {
-
     $.ajax({
         type: "GET",
         headers: {
@@ -99,9 +98,45 @@ function getaAttachmentbyId(id, callBack) {
                 callBack(result);
             }
         },
-        error: function(xhr, textStatus, errorThrown){               
-                alert(textStatus+':'+errorThrown);
+        error: function (xhr, textStatus, errorThrown) {
+            alert(textStatus + ':' + errorThrown);
+        }
+    });
+
+}
+function all_attachmentsList(epl_id, callBack) {
+    $.ajax({
+        type: "GET",
+        headers: {
+            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            "Accept": "application/json"
+        },
+        url: "/api/epl/attachements/id/" + epl_id,
+        data: null,
+        dataType: "json",
+        cache: false,
+        processDaate: false,
+        success: function (result) {
+            var table = "";
+            $.each(result, function (index, value) {
+                table += "<tr>";
+                table += "<td>" + ++index + "</td>";
+                table += "<td>" + value.attachment_name + "</td>";
+                if (value.attachment_epl_id == null) {
+                    table += "<td><input type='file' class=\"form-control\" value='" + value.att_id + "'></td>";
+                } else {
+                    table += "<td></td>";
+                }
+                table += "</tr>";
+            });
+            $('#tblAttachments tbody').html(table);
+            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+                callBack(result);
             }
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            alert(textStatus + ':' + errorThrown);
+        }
     });
 
 }

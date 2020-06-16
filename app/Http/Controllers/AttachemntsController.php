@@ -236,14 +236,14 @@ class AttachemntsController extends Controller {
     }
 
     public function getEplAttachments($epl) {
-        return DB::select(DB::raw("SELECT b.path, b.type, b.attachment_epl_id, a.att_id FROM (SELECT
+        return \DB::select(\DB::raw("SELECT b.path, b.type, b.attachment_epl_id, a.att_id, a.attachment_name FROM (SELECT
 	application_types.`name`, 
 	attachemnts.`name` AS attachment_name,
 	attachemnts.id AS att_id
 FROM attachemnts
 	INNER JOIN application_type_attachemnt ON  attachemnts.id = application_type_attachemnt.attachemnt_id
 	INNER JOIN application_types ON application_type_attachemnt.application_type_id = application_types.id
-WHERE application_types.`name` = 'Environment Protection Licence') AS a
+WHERE application_types.`name` = '" . ApplicationTypeController::EPL . "') AS a
 	LEFT JOIN
 	(SELECT
 	attachemnt_e_p_l.path, 
@@ -251,7 +251,7 @@ WHERE application_types.`name` = 'Environment Protection Licence') AS a
 	attachemnt_e_p_l.attachemnt_id,
 	attachemnt_e_p_l.id AS attachment_epl_id
 FROM attachemnt_e_p_l
-WHERE attachemnt_e_p_l.e_p_l_id = 8) AS b
+WHERE attachemnt_e_p_l.e_p_l_id = '{$epl}') AS b
 	ON a.att_id=b.attachemnt_id"));
 //        $attachemntsAll = Attachemnt::join('application_type_attachemnt', 'application_type_attachemnt.attachemnt_id', '=', 'attachemnts.id')
 //                ->join('application_types', 'application_type_attachemnt.application_type_id', '=', 'application_types.id')
