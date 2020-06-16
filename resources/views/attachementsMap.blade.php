@@ -119,6 +119,13 @@
 <script src="../../js/attachmentsjs/attachment_map.js"></script>
 <!-- AdminLTE App -->
 <script>
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 4000
+
+    });
     GetApplications(function () {
         GetAllDetails(parseInt($('.applicationType').val()));
     });
@@ -132,8 +139,16 @@
         });
         submitData({id: $('.applicationType').val(), attachment: chk_list}, function (res) {
             if (res.id == 1) {
-                alert('Saved Data');
+                Toast.fire({
+                    type: 'success',
+                    title: 'Enviremontal MS</br>Removed!'
+                });
                 GetAllDetails(parseInt($('.applicationType').val()));
+            } else {
+                Toast.fire({
+                    type: 'error',
+                    title: 'Enviremontal MS</br>Error'
+                });
             }
         });
     });

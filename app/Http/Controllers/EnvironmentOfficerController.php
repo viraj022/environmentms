@@ -27,6 +27,12 @@ class EnvironmentOfficerController extends Controller {
         return view('environment_officer', ['pageAuth' => $pageAuth]);
     }
 
+    public function index2() {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        return view('epl_assign', ['pageAuth' => $pageAuth]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -40,7 +46,6 @@ class EnvironmentOfficerController extends Controller {
             'assistantDirector_id' => 'required',
         ]);
         if ($pageAuth['is_create']) {
-
             if ($this->checkAssistantDirector(\request('user_id'))) {
                 if ($this->checkEnvironmentOfficer(\request('user_id'))) {
                     $environmentOfficer = new EnvironmentOfficer();
@@ -48,7 +53,6 @@ class EnvironmentOfficerController extends Controller {
                     $environmentOfficer->assistant_director_id = \request('assistantDirector_id');
                     $environmentOfficer->active_status = '1';
                     $msg = $environmentOfficer->save();
-
                     if ($msg) {
                         return array('id' => 1, 'message' => 'true');
                     } else {
@@ -88,16 +92,6 @@ class EnvironmentOfficerController extends Controller {
             $assistantDirectors = AssistantDirector::where('active_status', '1')->select('user_id as id')->get();
             $environmentOfficers = EnvironmentOfficer::where('active_status', '1')->select('user_id as id')->get();
             return User::wherenotin('id', $assistantDirectors)->wherenotin('id', $environmentOfficers)->get();
-        } else {
-            abort(401);
-        }
-    }
-
-    public function All() {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        if ($pageAuth['is_read']) {
-            return EnvironmentOfficer::join('users', 'environmentOfficers_id', 'users.id')->select('users.*')->get();
         } else {
             abort(401);
         }
@@ -173,7 +167,6 @@ class EnvironmentOfficerController extends Controller {
         if ($environmentOfficer !== null) {
             $environmentOfficer->active_status = 0;
             $msg = $environmentOfficer->save();
-
             if ($msg) {
                 return array('id' => 1, 'message' => 'true');
             } else {
@@ -269,7 +262,7 @@ class EnvironmentOfficerController extends Controller {
                 abort(404);
             }
         } else {
-            abort(404);
+            return abort(401);
         }
     }
 
@@ -279,6 +272,16 @@ class EnvironmentOfficerController extends Controller {
         if ($pageAuth['is_read']) {
             return EPL::where('environment_officer_id', $id)
                             ->get();
+        } else {
+            abort(401);
+        }
+    }
+
+    public function All() {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        if ($pageAuth['is_read']) {
+            return EnvironmentOfficer::join('users', 'environmentOfficers_id', 'users.id')->select('users.*')->get();
         } else {
             abort(401);
         }

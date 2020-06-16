@@ -35,6 +35,7 @@ Route::get('/epl_profile/atachments/{epl_id}', 'EPLController@attachment_upload_
 Route::get('/client_space', 'ClientController@index');
 Route::get('/all_clients', 'ClientController@allClientsindex');
 Route::get('/committee_pool', 'CommetyPoolController@index');
+Route::get('/epl_assign', 'EnvironmentOfficerController@index2');
 //ui routs
 
 //dashboard

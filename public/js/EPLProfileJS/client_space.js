@@ -8,7 +8,6 @@ function setClientDetails(obj) {
     $('#client_nic').html(obj.nic);
 }
 function setAllDetails(obj) {
-//    $('#newEPL').val(obj.id);
     $('#obj_name').html(obj.name);
     $('#obj_regno').html(obj.registration_no);
     $('#obj_code').html(obj.code);
@@ -16,7 +15,10 @@ function setAllDetails(obj) {
     $('#obj_remark').html(obj.remark);
 //    _Latitude = obj.coordinate_x;
 //    _Longitude = obj.coordinate_y;
+    if (obj.first_name.length != 0) {
+        $('#env_firstname').html("Assign Environment Officer: " + obj.first_name + " " + obj.last_name);
+    }
 }
 function downloadApp(obj) {
-window.location.href = "/"+obj.application_path;
+    window.location.href = "/" + obj.application_path;
 }
