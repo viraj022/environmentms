@@ -61,7 +61,7 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">NNN</h3>
+                                        <h3 class="card-title">All Pending EPL</h3>
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body">
@@ -153,20 +153,16 @@
             timer: 4000
         });
         //Load table
-        loadEnvOfficers_combo(parseInt($('#ass_dir_combo').val()), function () {
-            assigned_EPL_table(parseInt($('#ass_dir_combo').val()));
+        loadEnvOfficers_combo(function () {
+            assigned_EPL_table($('#env_officer_combo').val());
         });
 
+        $('#btnSave2').click(function () {
+            alert($(this).val());
+        });
 
         $('#env_officer_combo').change(function () {
-            assigned_EPL_table(parseInt($('#env_officer_combo').val()));
-        });
-
-        $('#ass_dir_combo').change(function () {
-            loadEnvOfficers_combo(parseInt($('#ass_dir_combo').val()), function () {
-                assigned_EPL_table(parseInt($('#env_officer_combo').val()));
-            });
-            pending_EPL_table(parseInt($('#ass_dir_combo').val()));
+            assigned_EPL_table($('#env_officer_combo').val());
         });
 //click save button
         $('#btnSave').click(function () {
