@@ -339,7 +339,6 @@
 //HIDE ALL ERROR MSGS   
     function hideAllErrors() {
         $('#valUnique').addClass('d-none');
-        $('#getFname').addClass('d-none');
         $('#valNic').addClass('d-none');
         $('#valContact').addClass('d-none');
     }
