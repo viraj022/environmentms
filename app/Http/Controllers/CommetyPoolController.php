@@ -90,7 +90,7 @@ class CommetyPoolController extends Controller {
             $commetyPool->last_name = request('last_name');
             $commetyPool->nic = request('nic');
             $commetyPool->address = request('address');
-            $commetyPool->address = request('email');
+            $commetyPool->email = request('email');
             $commetyPool->contact_no = \request('contact_no');
             $msg = $commetyPool->save();
 
