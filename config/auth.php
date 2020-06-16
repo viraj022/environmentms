@@ -124,6 +124,10 @@ return [
         'zone' => 7,
         'assistantDirector' => 8,
         'environmentOfficer' => 9,
+        'clientSpace' => 10,        
+        'IndustryScale' => 11,        
+        'EnvironmentProtectionLicense' => 12,        
+        'committeePool' => 13,
         
     ],
 

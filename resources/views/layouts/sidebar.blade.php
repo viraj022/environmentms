@@ -92,6 +92,14 @@
                     </a>
                 </li>
                 @endif
+                @if($pre['id']===config('auth.privileges.attachments'))
+                <li class="nav-item">
+                    <a href="{{ url('/attachment_map') }}" class="nav-link {{ Request::is('attachment_map') ? 'active' : '' }}">
+                        <i class="fas fa-file-archive nav-icon"></i>
+                        <p>Attachements Map</p>
+                    </a>
+                </li>
+                @endif
                 @if($pre['id']===config('auth.privileges.pradesheyasaba') && auth()->user()->roll->level->value == 1)
                 <li class="nav-item">
                     <a href="{{ url('/pradesheyasaba') }}" class="nav-link {{ Request::is('pradesheyasaba') ? 'active' : '' }}">
@@ -145,7 +153,7 @@
                 </li>
                 @endif
 
-                 @if($pre['id']===config('auth.privileges.environmentOfficer'))
+                @if($pre['id']===config('auth.privileges.environmentOfficer'))
                 <li class="nav-item">
                     <a href="{{ url('/environment_officer') }}" class="nav-link {{ Request::is('environment_officer') ? 'active' : '' }}">
                         <i class="fas fa-puzzle-piece nav-icon"></i>
@@ -153,7 +161,53 @@
                     </a>
                 </li>
                 @endif
+                 @if($pre['id']===config('auth.privileges.committeePool'))
+                <li class="nav-item">
+                    <a href="{{ url('/committee_pool') }}" class="nav-link {{ Request::is('committee_pool') ? 'active' : '' }}">
+                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <p>Committee Pool</p>
+                    </a>
+                </li>
+                @endif
 
+                @endforeach
+
+            </ul>
+        </li>
+        <li class="nav-item has-treeview menu-open">
+            <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-user-shield"></i>
+                <p>
+                    Licenses
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                @foreach((auth()->user()->privileges) as $indexKey=>$pre)
+                @if($pre['id']===config('auth.privileges.clientSpace'))
+                <li class="nav-item">
+                    <a href="{{ url('/client_space') }}" class="nav-link {{ Request::is('client_space') ? 'active' : '' }}">
+                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <p>Client Space</p>
+                    </a>
+                </li>
+                @endif
+                @if($pre['id']===config('auth.privileges.clientSpace'))
+                <li class="nav-item">
+                    <a href="{{ url('/all_clients') }}" class="nav-link {{ Request::is('all_clients') ? 'active' : '' }}">
+                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <p>Clients</p>
+                    </a>
+                </li>
+                @endif
+                @if($pre['id']===config('auth.privileges.clientSpace'))
+                <li class="nav-item">
+                    <a href="{{ url('/epl_assign') }}" class="nav-link {{ Request::is('epl_assign') ? 'active' : '' }}">
+                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <p>EPL Assign</p>
+                    </a>
+                </li>
+                @endif
                 @endforeach
 
             </ul>
