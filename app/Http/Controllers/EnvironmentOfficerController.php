@@ -51,7 +51,6 @@ class EnvironmentOfficerController extends Controller
             'assistantDirector_id' => 'required',
         ]);
         if ($pageAuth['is_create']) {
-
             if ($this->checkAssistantDirector(\request('user_id'))) {
                 if ($this->checkEnvironmentOfficer(\request('user_id'))) {
                     $environmentOfficer = new EnvironmentOfficer();
@@ -59,7 +58,6 @@ class EnvironmentOfficerController extends Controller
                     $environmentOfficer->assistant_director_id = \request('assistantDirector_id');
                     $environmentOfficer->active_status = '1';
                     $msg = $environmentOfficer->save();
-
                     if ($msg) {
                         return array('id' => 1, 'message' => 'true');
                     } else {
@@ -201,7 +199,6 @@ class EnvironmentOfficerController extends Controller
         if ($environmentOfficer !== null) {
             $environmentOfficer->active_status = 0;
             $msg = $environmentOfficer->save();
-
             if ($msg) {
                 return array('id' => 1, 'message' => 'true');
             } else {
@@ -289,7 +286,6 @@ class EnvironmentOfficerController extends Controller
 
     public function getEplByAssistantDirector($id)
     {
-
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
@@ -314,6 +310,17 @@ class EnvironmentOfficerController extends Controller
         if ($pageAuth['is_read']) {
             return EPL::where('environment_officer_id', $id)
                 ->get();
+        } else {
+            abort(401);
+        }
+    }
+
+    public function All()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        if ($pageAuth['is_read']) {
+            return EnvironmentOfficer::join('users', 'environmentOfficers_id', 'users.id')->select('users.*')->get();
         } else {
             abort(401);
         }
