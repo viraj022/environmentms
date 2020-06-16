@@ -8,6 +8,7 @@ use App\Level;
 use App\Attachemnt;
 use App\ApplicationType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class AttachemntsController extends Controller
@@ -202,7 +203,27 @@ class AttachemntsController extends Controller
 
     public function attach($attachment, $epl)
     {
-        return array('id' => 1, 'message' => 'true');
+        $path = "";
+        $type = "";
+        $epl = EPL::findOrFail(request('epl'));
+
+        \DB::transaction(function ()  use ($attachment, $epl, $path, $type) {
+            $epl->privileges()->detach($attachment);
+            $status = true;
+            $msg = $epl->privileges()->attach(
+                $attachment,
+                [
+                    'path' => $path,
+                    'type' => $type
+                ]
+            );
+
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        });
     }
 
     public function revoke($officer, $epl)
