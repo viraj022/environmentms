@@ -200,7 +200,7 @@ class AttachemntsController extends Controller
 
 
 
-    public function attach($officer, $epl)
+    public function attach($attachment, $epl)
     {
         return array('id' => 1, 'message' => 'true');
     }
