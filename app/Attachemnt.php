@@ -10,4 +10,9 @@ class Attachemnt extends Model
     {
         return $this->belongsToMany(ApplicationType::class);
     }
+
+    public function epls()
+    {
+        return  $this->belongsToMany(EPL::class);
+    }
 }

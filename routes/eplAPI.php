@@ -162,7 +162,7 @@ Route::middleware('auth:api')->get('/epls/new', 'EPLController@newEpls'); //   g
 // ]
 
 
-Route::middleware('auth:api')->get('/epls/attachements/application_name/{application_name}', 'AttachemntsController@getAttachment_by_application_name'); 
+Route::middleware('auth:api')->get('/epls/attachements/application_name/{application_name}', 'AttachemntsController@getAttachment_by_application_name');
 
 
 /*
@@ -184,3 +184,4 @@ Route::middleware('auth:api')->get('/epls/attachements/application_name/{applica
 ]
 
 */
+Route::middleware('auth:api')->get('/epl/attachements/id/{id}', 'AttachemntsController@getEplAttachments');

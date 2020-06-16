@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\EPL;
 use App\User;
 use App\Level;
 use App\Attachemnt;
+use App\ApplicationType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -196,6 +198,8 @@ class AttachemntsController extends Controller
         }
     }
 
+
+
     public function attach($officer, $epl)
     {
         return array('id' => 1, 'message' => 'true');
@@ -204,5 +208,19 @@ class AttachemntsController extends Controller
     public function revoke($officer, $epl)
     {
         return array('id' => 1, 'message' => 'true');
+    }
+
+    public function getEplAttachments($epl)
+    {
+        // return "h1";
+        $attachemntsAll = Attachemnt::join('application_type_attachemnt', 'application_type_attachemnt.attachemnt_id', '=', 'attachemnts.id')
+            ->join('application_types', 'application_type_attachemnt.application_type_id', '=', 'application_types.id')
+            ->select('attachemnts.*')
+            ->where('application_types.name', '=', ApplicationTypeController::EPL)
+            ->get();
+
+        $epl = EPL::find($epl);
+
+        return  $attachemntsAssigned = $epl->attachemnts;
     }
 }
