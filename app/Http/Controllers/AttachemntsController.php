@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\EPL;
 use App\User;
 use App\Level;
+use Carbon\Carbon;
 use App\Attachemnt;
 use App\ApplicationType;
 use Illuminate\Http\Request;
@@ -203,31 +204,39 @@ class AttachemntsController extends Controller
 
     public function attach($attachment, $epl)
     {
-        $path = "";
-        $type = "";
-        $epl = EPL::findOrFail(request('epl'));
-
-        \DB::transaction(function ()  use ($attachment, $epl, $path, $type) {
-            $epl->privileges()->detach($attachment);
-            $status = true;
-            $msg = $epl->privileges()->attach(
-                $attachment,
-                [
-                    'path' => $path,
-                    'type' => $type
-                ]
-            );
-
-            if ($msg) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.attachments'));
+        if ($pageAuth['is_create']) {
+            $data = \request('file');
+            $array = explode(';', $data);
+            $array2 = explode(',', $array[1]);
+            $array3 = explode('/', $array[0]);
+            $type = $array3[1];
+            $data = base64_decode($array2[1]);
+            file_put_contents($this->makeApplicationPath($epl, $attachment) . "1" . $type, $data);
+            $path =  $this->makeApplicationPath($epl, $attachment) . "1." . $type;
+            $e = EPL::findOrFail($epl);
+            return  \DB::transaction(function ()  use ($attachment, $e, $path, $type) {
+                $e->attachemnts()->detach($attachment);
+                $e->attachemnts()->attach(
+                    $attachment,
+                    [
+                        'path' => $path,
+                        'type' => $type,
+                        'created_at' => Carbon::now()->toDateTimeString()
+                    ]
+                );
                 return array('id' => 1, 'message' => 'true');
-            } else {
-                return array('id' => 0, 'message' => 'false');
-            }
-        });
+            });
+        } else {
+            abort(401);
+        }
     }
 
-    public function revoke($officer, $epl)
+    public function revoke($attachment, $epl)
     {
+        $e = EPL::findOrFail($epl);
+        $e->attachemnts()->detach($attachment);
         return array('id' => 1, 'message' => 'true');
     }
 
@@ -243,5 +252,30 @@ class AttachemntsController extends Controller
         $epl = EPL::find($epl);
 
         return  $attachemntsAssigned = $epl->attachemnts;
+    }
+
+    private function makeApplicationPath($id, $attachemntId)
+    {
+        if (!is_dir("uploads")) {
+            //Create our directory if it does not exist
+            mkdir("uploads");
+        }
+        if (!is_dir("uploads/EPL")) {
+            //Create our directory if it does not exist
+            mkdir("uploads/EPL");
+        }
+        if (!is_dir("uploads/EPL/" . $id)) {
+            //Create our directory if it does not exist
+            mkdir("uploads/EPL/" . $id);
+        }
+        if (!is_dir("uploads/EPL/" . $id . "/attachments")) {
+            //Create our directory if it does not exist
+            mkdir("uploads/EPL/" . $id . "/attachments");
+        }
+        if (!is_dir("uploads/EPL/" . $id . "/attachments/" . $attachemntId)) {
+            //Create our directory if it does not exist
+            mkdir("uploads/EPL/" . $id . "/attachments/" . $attachemntId);
+        }
+        return "uploads/EPL/" . $id . "/attachments/" . $attachemntId . "/";
     }
 }
