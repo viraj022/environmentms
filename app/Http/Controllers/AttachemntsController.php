@@ -199,9 +199,6 @@ class AttachemntsController extends Controller
             abort(401);
         }
     }
-
-
-
     public function attach($attachment, $epl)
     {
         $user = Auth::user();
