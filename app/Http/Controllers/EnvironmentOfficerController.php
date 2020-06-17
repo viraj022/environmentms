@@ -320,7 +320,7 @@ class EnvironmentOfficerController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($pageAuth['is_read']) {
-            return EnvironmentOfficer::join('users', 'environmentOfficers_id', 'users.id')->select('users.*')->get();
+            return EnvironmentOfficer::join('users', 'environment_officers.user_id', 'users.id')->select('users.*')->get();
         } else {
             abort(401);
         }
