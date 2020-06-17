@@ -25,11 +25,7 @@ function AddComment(data,id, callBack) {
 function Validiteinsert(data) {
     var response = true;
     if (data.remark.length == 0) {
-        $('#valName').removeClass('d-none');
-        response = false;
-    }
-    if (data.code.length == 0) {
-        $('#valCode').removeClass('d-none');
+        $('.aefFGE').removeClass('d-none');
         response = false;
     }
     return response;
