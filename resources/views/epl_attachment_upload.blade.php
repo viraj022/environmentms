@@ -39,7 +39,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 10px">#</th>
-                                    <th>EPL</th>
+                                    <th>Attachments</th>
                                     <th style="">Action</th>
                                 </tr>
                             </thead>
@@ -50,11 +50,10 @@
             </div>
         </div>
     </div>
+
 </section>
 @endif
 @endsection
-
-
 
 @section('pageScripts')
 <!-- Page script -->
@@ -80,9 +79,65 @@
 <!-- AdminLTE for demo purposes -->
 
 <script>
-    $(function () {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 4000
 
-        all_attachmentsList({{$epl_id}});
     });
+//    $(function () {
+    var EPL_ID = "{{$epl_id}}";
+    all_attachmentsList(EPL_ID);
+
+    $(document).on('click', '.removeAttachment', function () {
+        if (confirm('Are you sure you want to remove this attachment?')) {
+            removeEPL_Attachment(EPL_ID, $(this).val(), function (parameters) {
+                if (parameters.id == 1) {
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Enviremontal MS</br>Attachment Succuessfully Removed !'
+                    });
+                    all_attachmentsList(EPL_ID);
+                } else {
+                    Toast.fire({
+                        type: 'error',
+                        title: 'Enviremontal MS</br>Error'
+                    });
+                }
+            });
+        }
+    });
+    $(document).on('change', '.fileInput', function () {
+        let selector = $(this);
+        readImage(selector.attr('id'), function (img) {
+            if (img) {
+//                alert(JSON.stringify(img));
+                if (confirm('Are you sure you want to upload this attachment?')) {
+                    saveEPL_Attachment(img, EPL_ID, selector.data('attachment_id'), function (parameters) {
+                        if (parameters.id == 1) {
+                            Toast.fire({
+                                type: 'success',
+                                title: 'Enviremontal MS</br>Attachment Succuessfully Uploaded !'
+                            });
+                            all_attachmentsList(EPL_ID);
+                        } else if (parameters.id == 0) {
+                            Toast.fire({
+                                type: 'error',
+                                title: 'Enviremontal MS</br>' + parameters.message
+                            });
+
+                        } else {
+                            Toast.fire({
+                                type: 'error',
+                                title: 'Enviremontal MS</br>Error'
+                            });
+                        }
+                    });
+                }
+            }
+        });
+    });
+//    });
 </script>
 @endsection

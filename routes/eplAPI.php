@@ -228,7 +228,7 @@ Route::middleware('auth:api')->post('/epl/attachement/set/attachment/{attachment
 
 
 */
-Route::middleware('auth:api')->delete('/epl/attachement/set/attachment/', 'AttachemntsController@revoke');
+Route::middleware('auth:api')->delete('/epl/attachement/unset/attachment/{attachment}/elp/{epl}', 'AttachemntsController@revoke');
 
 /*
 {

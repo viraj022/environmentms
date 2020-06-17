@@ -244,9 +244,8 @@ $("#btnSave").click(function () {
 
 
     function readImage(callback) {
-        var img = document.getElementById("inp")
+        var img = document.getElementById("inp");
         if (img.files && img.files[0]) {
-
             var FR = new FileReader();
             FR.addEventListener("load", function (e) {
                 //   document.getElementById("b64").innerHTML = e.target.result;
@@ -254,7 +253,7 @@ $("#btnSave").click(function () {
             });
             FR.readAsDataURL(img.files[0]);
         } else {
-            alert("No Image")
+            alert("No Image");
         }
     }
 
