@@ -1,11 +1,11 @@
-function AddComment(data, callBack) {
+function AddComment(data,id, callBack) {
     $.ajax({
         type: "POST",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "/api/remarks",
+        url: "/api/remarks/" + id,
         data: data,
         dataType: "json",
         cache: false,

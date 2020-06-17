@@ -30,61 +30,18 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="row">
+                <div class="row" id="showUiDb">
                     <div class="col-md-8">
                         <div class="card card-outline card-success">
                             <div class="card-header">
-                                <h3 class="card-title">2020/05/23 3.05PM</h3>
+                                <h3 class="card-title">2020/07/23 03.05PM</h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool removeComm" data-card-widget="remove"><i class="fas fa-times"></i>
                                     </button>
                                 </div>
                             </div>
                             <div class="card-body">
-                                Comment Here.....
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card card-outline card-success">
-                            <div class="card-header">
-                                <h3 class="card-title">2020/05/23 5.05PM</h3>
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                Comment Here.....
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card card-outline card-success">
-                            <div class="card-header">
-                                <h3 class="card-title">2020/05/23 7.05PM</h3>
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                Comment Here.....
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card card-outline card-success">
-                            <div class="card-header">
-                                <h3 class="card-title">2020/05/23 8.05PM</h3>
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-toggle="modal"
-                                            data-target="#modal-danger"><i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                Comment Here.....
+                                Loading...
                             </div>
                         </div>
                     </div>
@@ -192,10 +149,11 @@
             timer: 4000
 
         });
+        loadInterface({{$id}});
 //click save button
         $('#btnSave').click(function () {
             var data = fromValues();
-            AddComment(data, function (result) {
+            AddComment(data,{{$id}}, function (result) {
                 if (result.id == 1) {
                     Toast.fire({
                         type: 'success',
@@ -207,6 +165,7 @@
                         title: 'Error'
                     });
                 }
+                loadInterface({{$id}});
             });
 
         });

@@ -13,5 +13,6 @@ use Illuminate\Http\Request;
   |
  */
 
-Route::middleware('auth:api')->post('/remarks', 'RemarkController@create'); //   assign a epl to a officer
+Route::middleware('auth:api')->post('/remarks/{id}', 'RemarkController@create'); 
+Route::middleware('auth:api')->get('/remarks/{id}', 'RemarkController@show'); 
 

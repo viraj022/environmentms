@@ -1,11 +1,11 @@
-function GetZone(callBack) {
+function GetRemarks(id,callBack) {
     $.ajax({
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/zones",
+        url: "/api/remarks/"+id,
         data: null,
         dataType: "json",
         cache: false,
@@ -22,82 +22,23 @@ function GetZone(callBack) {
     });
 }
 
-function uniqueNamecheck(name,callBack) {
-    $.ajax({
-        type: "GET",
-        headers: {
-            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-            "Accept": "application/json"
-        },
-        url: "api/zone/name/"+name,
-        data: null,
-        dataType: "json",
-        cache: false,
-        processDaate: false,
-        success: function (result) {
-
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack(result);
-            }
-        }
-    });
-}
-function uniqueCodecheck(code,callBack) {
-    $.ajax({
-        type: "GET",
-        headers: {
-            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-            "Accept": "application/json"
-        },
-        url: "api/zone/code/"+code,
-        data: null,
-        dataType: "json",
-        cache: false,
-        processDaate: false,
-        success: function (result) {
-
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack(result);
-            }
-        }
-    });
-}
-function loadTable() {
-    GetZone(function (result) {
-        var table = "";
+function loadInterface(id) {
+    GetRemarks(id,function (result) {
+        var uidev = "";
         var id = 1;
         $.each(result, function (index, value) {
-            table += "<tr>";
-            table += "<td>" + id++ + "</td>";
-            table += "<td>" + value.name + "</td>";
-            table += "<td>" + value.code + "</td>";
-            table += "<td><button id='" + value.id + "' type='button' class='btn btn-block btn-success btn-xs btnAction'>Select</button></td>";
-            table += "</tr>";
+            uidev += "<div class='col-md-8'>";
+            uidev += "<div class='card card-outline card-success'>";
+            uidev += "<div class='card-header'>";
+            uidev += "<h3 class='card-title'>"+ value.created_at +"</h3>";
+            uidev += "<div class='card-tools'>";
+            uidev += "<button type='button' class='btn btn-tool removeComm' data-card-widget='remove'><i class='fas fa-times'></i></button>";
+            uidev += "</div>";
+            uidev += "</div>";
+            uidev += "<div class='card-body'>"+ value.remark +"</div>";
+            uidev += "</div>";
+            uidev += "</div>";
         });
-        $('#tblZone tbody').html(table);
-        $("#tblZone").DataTable();
+        $('#showUiDb').html(uidev);
     });
-}
-
-function getaZonebyId(id, callBack) {
-
-    $.ajax({
-        type: "GET",
-        headers: {
-            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-            "Accept": "application/json"
-        },
-        url: "api/zone/id/" + id,
-        data: null,
-        dataType: "json",
-        cache: false,
-        processDaate: false,
-        success: function (result) {
-
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack(result);
-            }
-        }
-    });
-
 }

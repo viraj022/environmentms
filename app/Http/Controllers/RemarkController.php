@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Remark;
 use App\EPL;
+use App\ApplicationType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,7 +34,7 @@ class RemarkController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         request()->validate([
@@ -42,6 +43,9 @@ class RemarkController extends Controller {
         if ($pageAuth['is_create']) {
             $remark = new Remark();
             $remark->remark = \request('remark');
+            $remark->application_type_id = ApplicationType::getByName(ApplicationTypeController::EPL)->id;
+            $remark->profile_id = $id;
+            $remark->user_id = $user->id;
             $msg = $remark->save();
 
             if ($msg) {
@@ -70,8 +74,8 @@ class RemarkController extends Controller {
      * @param  \App\Remarks  $remarks
      * @return \Illuminate\Http\Response
      */
-    public function show(Remarks $remarks) {
-        //
+    public function show($id) {
+        return Remark::where('profile_id',$id)->get();
     }
 
     /**
