@@ -117,19 +117,8 @@ class InspectionSessionController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_delete']) {
-
-
             $inspectionSession =  InspectionSession::findOrFail($sessionId);
-            $inspectionSession->application_type_id = ApplicationType::getByName(ApplicationTypeController::EPL)->id;
-            $inspectionSession->profile_id = $epl->id;
-            $inspectionSession->schedule_date = request('schedule_date');
-            $inspectionSession->remark = request('remark');
-
-            $msg = $inspectionSession->save();
-            $dLog =  new InspectionDateLog();
-            $dLog->date = request('schedule_date');
-            $dLog->inspection_session_id = $inspectionSession->id;
-            $dLog->save();
+            $msg = $inspectionSession->delete();
             if ($msg) {
                 return array('id' => 1, 'message' => 'true');
             } else {

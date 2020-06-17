@@ -20,4 +20,12 @@ Route::middleware('auth:api')->post('/epl/inspection/create/id/{id}', 'Inspectio
     "schedule_date" :"2012-01-01",
     "remark":"das"
 }
+*/
+Route::middleware('auth:api')->delete('/epl/inspection/delete/id/{id}', 'InspectionSessionController@destroyEplInspection'); //   delete a inspection session
+
+/*
+{
+      "id": 1,
+    "message": "true"
+}
 /*
