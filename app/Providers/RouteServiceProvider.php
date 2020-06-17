@@ -5,8 +5,8 @@ namespace App\Providers;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
-class RouteServiceProvider extends ServiceProvider
-{
+class RouteServiceProvider extends ServiceProvider {
+
     /**
      * This namespace is applied to your controller routes.
      *
@@ -21,8 +21,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
+    public function boot() {
         //
 
         parent::boot();
@@ -33,8 +32,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function map()
-    {
+    public function map() {
         $this->mapApiRoutes();
 
         $this->mapWebRoutes();
@@ -49,19 +47,18 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function mapWebRoutes()
-    {
+    protected function mapWebRoutes() {
         Route::middleware('web')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/web.php'));
+                ->namespace($this->namespace)
+                ->group(base_path('routes/web.php'));
 
         Route::middleware('web')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/users/auth.php'));
+                ->namespace($this->namespace)
+                ->group(base_path('routes/users/auth.php'));
 
         Route::middleware('web')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/la.php'));
+                ->namespace($this->namespace)
+                ->group(base_path('routes/la.php'));
     }
 
     /**
@@ -71,35 +68,39 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function mapApiRoutes()
-    {
+    protected function mapApiRoutes() {
         Route::prefix('api')
-            ->middleware('api')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/api.php'));
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/api.php'));
         Route::prefix('api')
-            ->middleware('api')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/surveyApi.php'));
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/surveyApi.php'));
         Route::prefix('api')
-            ->middleware('api')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/localAuthorityApi.php'));
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/localAuthorityApi.php'));
         Route::prefix('api')
-            ->middleware('api')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/eplAPI.php'));
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/eplAPI.php'));
         Route::prefix('api')
-            ->middleware('api')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/commetyApi.php'));
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/commetyApi.php'));
         Route::prefix('api')
-            ->middleware('api')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/environmentOfficersAPI.php'));
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/environmentOfficersAPI.php'));
         Route::prefix('api')
-            ->middleware('api')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/inspectionAPI.php'));
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/remarkAPI.php'));
+        Route::prefix('api')
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/inspectionAPI.php'));
     }
+
 }
