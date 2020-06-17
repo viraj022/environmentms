@@ -20,6 +20,7 @@ class CreateInspectionSessionsTable extends Migration
             $table->text('remark')->nullable();
             $table->integer('status')->unsigned()->comment('0 => pending 1=> inspection started')->default(0);
             $table->dateTime('schedule_date');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

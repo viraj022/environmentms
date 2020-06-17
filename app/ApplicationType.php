@@ -10,4 +10,9 @@ class ApplicationType extends Model
     {
         return $this->belongsToMany(Attachemnt::class);
     }
+
+    public static function getByName($name)
+    {
+        return  ApplicationType::Where('name', $name)->first();
+    }
 }
