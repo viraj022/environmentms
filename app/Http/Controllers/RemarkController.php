@@ -75,7 +75,7 @@ class RemarkController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        return Remark::where('profile_id',$id)->get();
+        return Remark::where('profile_id', $id)->get();
     }
 
     /**
@@ -105,8 +105,22 @@ class RemarkController extends Controller {
      * @param  \App\Remarks  $remarks
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Remarks $remarks) {
-        //
+    public function destroy($id) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_delete']) {
+            $remark = Remark::findOrFail($id);
+            ;
+            $msg = $remark->delete();
+
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(401);
+        }
     }
 
 }

@@ -1,11 +1,11 @@
-function deleteZone(id,callBack) {
+function deleteComment(id,callBack) {
     $.ajax({
         type: "DELETE",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/zone/id/"+ id,
+        url: "/api/remark/"+ id,
         data: null,
         dataType: "json",
         cache: false,

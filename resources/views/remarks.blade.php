@@ -63,16 +63,17 @@
                                             <input id="getComment" type="text" class="form-control form-control-sm"
                                                    placeholder="Enter Your Comment"
                                                    value="">
+                                            <a class="error invalid-feedback aefFGE d-none">Please enter your comment</a>
                                         </div>
                                     </div>
                                     <div class="card-footer">
                                         @if($pageAuth['is_create']==1 || false)
                                         <button id="btnSave" type="submit" class="btn btn-success">Save</button>
                                         @endif
-                                        @if($pageAuth['is_create']==1 || false)
+<!--                                        @if($pageAuth['is_create']==1 || false)
                                         <button id="btnDelete" type="submit" class="btn btn-danger" data-toggle="modal"
                                                 data-target="#modal-danger">Del Temp</button>
-                                        @endif
+                                        @endif-->
                                     </div> 
                                 </div>
                             </div>                                        
@@ -137,7 +138,7 @@
 <script src="../../dist/js/demo.js"></script>
 <script src="../../js/RemarksJS/submit.js"></script>
 <script src="../../js/RemarksJS/get.js"></script>
-<script src="../../js/RemarksJS/update.js"></script>
+<!--<script src="../../js/RemarksJS/update.js"></script>-->
 <script src="../../js/RemarksJS/delete.js"></script>
 <!-- AdminLTE App -->
 <script>
@@ -153,6 +154,7 @@
 //click save button
         $('#btnSave').click(function () {
             var data = fromValues();
+            if (Validiteinsert(data)) {
             AddComment(data,{{$id}}, function (result) {
                 if (result.id == 1) {
                     Toast.fire({
@@ -166,15 +168,9 @@
                     });
                 }
                 loadInterface({{$id}});
+                resetinputFields();
             });
-
-        });
-//click delete button
-        $('.removeComm').click(function () {
-            alert("Are you sure?");
-        });
-        $('#btnDelete').click(function () {
-        });
+        }
     });
 //show save button    
     function showSave() {
@@ -183,7 +179,7 @@
     }
 //Reset all fields    
     function resetinputFields() {
-        $('#getName').val('');
+        $('#getComment').val('');
         $('#btnUpdate').val('');
         $('#btnDelete').val('');
     }
@@ -196,8 +192,8 @@
     }
 //HIDE ALL ERROR MSGS   
     function hideAllErrors() {
-        $('#valName').addClass('d-none');
-        $('#valCode').addClass('d-none');
+        $('.aefFGE').addClass('d-none');
     }
+    });
 </script>
 @endsection
