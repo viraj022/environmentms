@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\InspectionRemarks;
+use App\InspectionSession;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InspectionRemarksController extends Controller
 {
@@ -12,9 +14,20 @@ class InspectionRemarksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+               $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_read']) {
+            if (InspectionSession::find($id) !== null) {
+                return view('inspection_remarks', ['pageAuth' => $pageAuth, 'id' => $id]);
+            } else {
+                abort(404);
+            }
+        } else {
+            abort(401);
+        }
+
     }
 
     /**
