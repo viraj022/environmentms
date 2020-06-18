@@ -14,4 +14,9 @@ use Illuminate\Http\Request;
  */
 
 Route::middleware('auth:api')->post('/epl/inspection/create/id/{id}', 'InspectionSessionController@createEplInspection'); //   create a new inspection session 
+
+
+Route::middleware('auth:api')->post('/inspection_remarks/{id}', 'InspectionRemarksController@create'); 
+Route::middleware('auth:api')->get('/inspection_remarks/{id}', 'InspectionRemarksController@show'); 
+Route::middleware('auth:api')->delete('/inspection_remark/{id}', 'InspectionRemarksController@destroy'); 
 // 
