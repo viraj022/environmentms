@@ -1,11 +1,11 @@
-function updateZone(id, data, callBack) {
+function updateInspection(id, data, callBack) {
     $.ajax({
         type: "PUT",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/zone/id/" + id,
+        url: "api/#/id/" + id,
         data: data,
         dataType: "json",
         cache: false,
@@ -26,10 +26,6 @@ function Validiteupdate(data) {
     var response = true;
     if (data.name.length == 0) {
         $('#valName').removeClass('d-none');
-        response = false;
-    }
-    if (data.code.length == 0) {
-        $('#valCode').removeClass('d-none');
         response = false;
     }
     return response;
