@@ -75,7 +75,7 @@ class RemarkController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        return Remark::where('profile_id', $id)->get();
+        return Remark::with('user')->where('profile_id', $id)->get();
     }
 
     /**

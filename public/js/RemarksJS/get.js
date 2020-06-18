@@ -36,6 +36,7 @@ function loadInterface(id) {
             uidev += "</div>";
             uidev += "</div>";
             uidev += "<div class='card-body'>" + value.remark + "</div>";
+            uidev += "<div class='card-footer font-weight-bold'>"+ "Added By:" + " " + value.user.first_name + " " + value.user.last_name +"</div>";
             uidev += "</div>";
             uidev += "</div>";
         });

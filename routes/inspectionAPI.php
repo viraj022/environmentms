@@ -29,3 +29,7 @@ Route::middleware('auth:api')->delete('/epl/inspection/delete/id/{id}', 'Inspect
     "message": "true"
 }
 */
+
+Route::middleware('auth:api')->get('/epl/inspections/id/{id}', 'InspectionSessionController@showEPLInspections');
+Route::middleware('auth:api')->get('/epl/inspection/id/{id}', 'InspectionSessionController@find');
+
