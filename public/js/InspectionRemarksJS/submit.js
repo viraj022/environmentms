@@ -1,12 +1,12 @@
-function deleteInspection(id,callBack) {
+function AddComment(data,id, callBack) {
     $.ajax({
-        type: "DELETE",
+        type: "POST",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "/api/epl/inspection/delete/id/"+ id,
-        data: null,
+        url: "/api/inspection_remarks/" + id,
+        data: data,
         dataType: "json",
         cache: false,
         processDaate: false,
@@ -20,4 +20,13 @@ function deleteInspection(id,callBack) {
             alert(textStatus + ':' + errorThrown);
         }
     });
+}
+
+function Validiteinsert(data) {
+    var response = true;
+    if (data.remark.length == 0) {
+        $('.aefFGE').removeClass('d-none');
+        response = false;
+    }
+    return response;
 }

@@ -89,6 +89,7 @@
                                                         <th>Schedule Date</th>
                                                         <th>Remark</th>
                                                         <th style="width: 140px">Action</th>
+                                                        <th style="width: 140px"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -196,7 +197,7 @@
                             title: 'Enviremontal MS</br>Error'
                         });
                     }
-//                    loadTable();
+                  loadTable({{$id}});
                     resetinputFields();
                     hideAllErrors();
                 });
@@ -220,7 +221,7 @@
                             title: 'Enviremontal MS</br>Error'
                         });
                     }
-                    loadTable();
+                    loadTable({{$id}});
                     showSave();
                     resetinputFields();
                     hideAllErrors();
@@ -229,7 +230,7 @@
         });
 //click delete button
         $('#btnDelete').click(function () {
-            deleteZone($('#btnDelete').val(), function (result) {
+            deleteInspection($('#btnDelete').val(), function (result) {
                 if (result.id == 1) {
                     Toast.fire({
                         type: 'success',
@@ -241,7 +242,7 @@
                         title: 'Enviremontal MS</br>Error'
                     });
                 }
-                loadTable();
+                loadTable({{$id}});
                 showSave();
                 resetinputFields();
                 hideAllErrors();
@@ -262,7 +263,7 @@
 //show update buttons    
     function showUpdate() {
         $('#btnSave').addClass('d-none');
-        $('#btnUpdate').removeClass('d-none');
+//        $('#btnUpdate').removeClass('d-none');
         $('#btnshowDelete').removeClass('d-none');
     }
 //show save button    

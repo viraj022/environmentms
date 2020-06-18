@@ -1,12 +1,12 @@
-function deleteInspection(id,callBack) {
+function updateZone(id, data, callBack) {
     $.ajax({
-        type: "DELETE",
+        type: "PUT",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "/api/epl/inspection/delete/id/"+ id,
-        data: null,
+        url: "api/zone/id/" + id,
+        data: data,
         dataType: "json",
         cache: false,
         processDaate: false,
@@ -20,4 +20,17 @@ function deleteInspection(id,callBack) {
             alert(textStatus + ':' + errorThrown);
         }
     });
+}
+
+function Validiteupdate(data) {
+    var response = true;
+    if (data.name.length == 0) {
+        $('#valName').removeClass('d-none');
+        response = false;
+    }
+    if (data.code.length == 0) {
+        $('#valCode').removeClass('d-none');
+        response = false;
+    }
+    return response;
 }

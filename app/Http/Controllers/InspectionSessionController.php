@@ -88,15 +88,14 @@ class InspectionSessionController extends Controller {
     public function showEPLInspections($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-      
-          
-            $epl = EPL::find($id);
-            if ($epl) {
-               return InspectionSession::where('profile_id',$id)->get();
-            } else {
-                abort(404);
-            }
-       
+
+
+        $epl = EPL::find($id);
+        if ($epl) {
+            return InspectionSession::where('profile_id', $id)->get();
+        } else {
+            abort(404);
+        }
     }
 
     /**
@@ -141,18 +140,12 @@ class InspectionSessionController extends Controller {
             abort(401);
         }
     }
+
     public function find($sessionId) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-      
-            $inspectionSession = InspectionSession::findOrFail($sessionId);
-            $msg = $inspectionSession->find($sessionId);
-            if ($msg) {
-                return array('id' => 1, 'message' => 'true');
-            } else {
-                return array('id' => 0, 'message' => 'false');
-            }
-       
+
+        return InspectionSession::findOrFail($sessionId);
     }
 
 }
