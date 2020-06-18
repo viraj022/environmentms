@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\InspectionSessionAttachment;
+use Carbon\Carbon;
+use App\ApplicationType;
+use App\InspectionSession;
 use Illuminate\Http\Request;
+use App\InspectionSessionAttachment;
+use Illuminate\Support\Facades\Auth;
 
 class InspectionSessionAttachmentController extends Controller
 {
@@ -22,8 +26,41 @@ class InspectionSessionAttachmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function createEPlInspection($id)
     {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_create']) {
+            $inspection =  InspectionSession::where('id', $id)->where('application_type_id', ApplicationType::getByName(ApplicationTypeController::EPL))->first();
+            if ($inspection) {
+                $data = \request('file');
+                $array = explode(';', $data);
+                $array2 = explode(',', $array[1]);
+                $array3 = explode('/', $array[0]);
+                $type = $array3[1];
+                if (!($type == 'jpeg' || $type == 'pdf')) {
+                    return array('id' => 0, 'message' => 'Only you can add image(jpeg) or PDF');
+                }
+                $data = base64_decode($array2[1]);
+                $name = Carbon::now()->timestamp;
+                file_put_contents($this->makeEPLApplicationPath($inspection->profile_id, $id) . "" . $name . "." . $type, $data);
+                $path = $this->makeEPLApplicationPath($inspection->profile_id, $id) . "" . $name . "." . $type;
+                $inspectionSessionAttachment = new InspectionSessionAttachment();
+                $inspectionSessionAttachment->inspection_session_id  = $id;
+                $inspectionSessionAttachment->path  = $path;
+                $inspectionSessionAttachment->type  = $type;
+                $msg =   $inspectionSessionAttachment->save();
+                if ($msg) {
+                    return array('id' => 1, 'message' => 'true');
+                } else {
+                    return array('id' => 0, 'message' => 'false');
+                }
+            } else {
+                abort(404);
+            }
+        } else {
+            abort(401);
+        }
     }
 
     /**
@@ -43,9 +80,15 @@ class InspectionSessionAttachmentController extends Controller
      * @param  \App\InspectionSessionAttachment  $inspectionSessionAttachment
      * @return \Illuminate\Http\Response
      */
-    public function show(InspectionSessionAttachment $inspectionSessionAttachment)
+    public function showEpl($id)
     {
-        //
+        $user = Auth::user($id);
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_delete']) {
+            return  InspectionSessionAttachment::where('inspection_session_id', $id)->get();
+        } else {
+            abort(401);
+        }
     }
 
     /**
@@ -77,12 +120,24 @@ class InspectionSessionAttachmentController extends Controller
      * @param  \App\InspectionSessionAttachment  $inspectionSessionAttachment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(InspectionSessionAttachment $inspectionSessionAttachment)
+    public function destroy($id)
     {
-        //
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_delete']) {
+            $inspectionSessionAttachment =  InspectionSessionAttachment::findOrFail($id);
+            $msg =   $inspectionSessionAttachment->delete();
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(401);
+        }
     }
 
-    private function makeApplicationPath($id, $attachemntId)
+    private function makeEPLApplicationPath($id, $attachemntId)
     {
         if (!is_dir("uploads")) {
             //Create our directory if it does not exist
