@@ -9,16 +9,25 @@ use App\InspectionSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class InspectionSessionController extends Controller
-{
+class InspectionSessionController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index($id) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_read']) {
+            if (EPL::find($id) !== null) {
+                return view('epl_inspection_session', ['pageAuth' => $pageAuth, 'id' => $id]);
+            } else {
+                abort(404);
+            }
+        } else {
+            abort(401);
+        }
     }
 
     /**
@@ -26,8 +35,7 @@ class InspectionSessionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function createEplInspection($id)
-    {
+    public function createEplInspection($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
@@ -37,14 +45,14 @@ class InspectionSessionController extends Controller
             ]);
             $epl = EPL::find($id);
             if ($epl) {
-                $inspectionSession =  new InspectionSession();
+                $inspectionSession = new InspectionSession();
                 $inspectionSession->application_type_id = ApplicationType::getByName(ApplicationTypeController::EPL)->id;
                 $inspectionSession->profile_id = $epl->id;
                 $inspectionSession->schedule_date = request('schedule_date');
                 $inspectionSession->remark = request('remark');
 
                 $msg = $inspectionSession->save();
-                $dLog =  new InspectionDateLog();
+                $dLog = new InspectionDateLog();
                 $dLog->date = request('schedule_date');
                 $dLog->inspection_session_id = $inspectionSession->id;
                 $dLog->save();
@@ -67,8 +75,7 @@ class InspectionSessionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
@@ -78,9 +85,18 @@ class InspectionSessionController extends Controller
      * @param  \App\InspectionSession  $inspectionSession
      * @return \Illuminate\Http\Response
      */
-    public function show(InspectionSession $inspectionSession)
-    {
-        //
+    public function showEPLInspections($id) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+      
+          
+            $epl = EPL::find($id);
+            if ($epl) {
+               return InspectionSession::where('profile_id',$id)->get();
+            } else {
+                abort(404);
+            }
+       
     }
 
     /**
@@ -89,8 +105,7 @@ class InspectionSessionController extends Controller
      * @param  \App\InspectionSession  $inspectionSession
      * @return \Illuminate\Http\Response
      */
-    public function edit(InspectionSession $inspectionSession)
-    {
+    public function edit(InspectionSession $inspectionSession) {
         //
     }
 
@@ -101,8 +116,7 @@ class InspectionSessionController extends Controller
      * @param  \App\InspectionSession  $inspectionSession
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, InspectionSession $inspectionSession)
-    {
+    public function update(Request $request, InspectionSession $inspectionSession) {
         //
     }
 
@@ -112,12 +126,11 @@ class InspectionSessionController extends Controller
      * @param  \App\InspectionSession  $inspectionSession
      * @return \Illuminate\Http\Response
      */
-    public function destroyEplInspection($sessionId)
-    {
+    public function destroyEplInspection($sessionId) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_delete']) {
-            $inspectionSession =  InspectionSession::findOrFail($sessionId);
+            $inspectionSession = InspectionSession::findOrFail($sessionId);
             $msg = $inspectionSession->delete();
             if ($msg) {
                 return array('id' => 1, 'message' => 'true');
@@ -128,4 +141,18 @@ class InspectionSessionController extends Controller
             abort(401);
         }
     }
+    public function find($sessionId) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+      
+            $inspectionSession = InspectionSession::findOrFail($sessionId);
+            $msg = $inspectionSession->find($sessionId);
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+       
+    }
+
 }

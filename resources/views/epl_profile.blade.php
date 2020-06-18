@@ -66,6 +66,7 @@
                             <dd><a href="/remarks/epl/{{$profile}}" class="text-success">Remarks</a></dd>
                             <dd><a href="4" class="text-success">Approval</a></dd>
                             <dd><a href="5" class="text-success ">Certificate Information</a></dd>
+                            <dd><a href="/inspection/epl/id/{{$profile}}" class="text-success ">Inspection</a></dd>
                         </dl>
                     </div>
                     <!-- /.card-body -->

@@ -38,6 +38,7 @@ Route::get('/committee_pool', 'CommetyPoolController@index');
 Route::get('/epl_assign', 'EnvironmentOfficerController@index2');
 Route::get('/env_officer', 'EnvOfficerController@index');
 Route::get('/remarks/epl/{id}', 'RemarkController@index');
+Route::get('/inspection/epl/id/{id}', 'InspectionSessionController@index');
 //ui routs
 
 //dashboard
