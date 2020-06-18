@@ -31,6 +31,7 @@ function loadTable(id) {
             table += "<td>" + value.schedule_date + "</td>";
             table += "<td>" + value.remark + "</td>";
             table += "<td><button id='" + value.id + "' type='button' class='btn btn-block btn-success btn-xs btnAction'>Select</button></td>";
+            table += "<td><button id='" + value.id + "' type='button' class='btn btn-block btn-primary btn-xs'>View</button></td>";
             table += "</tr>";
         });
         $('#tblInspection tbody').html(table);

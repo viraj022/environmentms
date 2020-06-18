@@ -1,11 +1,11 @@
-function deleteZone(id,callBack) {
+function deleteInspection(id,callBack) {
     $.ajax({
         type: "DELETE",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/zone/id/"+ id,
+        url: "/api/epl/inspection/delete/id/"+ id,
         data: null,
         dataType: "json",
         cache: false,
