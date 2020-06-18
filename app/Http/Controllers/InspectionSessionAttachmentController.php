@@ -24,7 +24,6 @@ class InspectionSessionAttachmentController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -81,5 +80,30 @@ class InspectionSessionAttachmentController extends Controller
     public function destroy(InspectionSessionAttachment $inspectionSessionAttachment)
     {
         //
+    }
+
+    private function makeApplicationPath($id, $attachemntId)
+    {
+        if (!is_dir("uploads")) {
+            //Create our directory if it does not exist
+            mkdir("uploads");
+        }
+        if (!is_dir("uploads/EPL")) {
+            //Create our directory if it does not exist
+            mkdir("uploads/EPL");
+        }
+        if (!is_dir("uploads/EPL/" . $id)) {
+            //Create our directory if it does not exist
+            mkdir("uploads/EPL/" . $id);
+        }
+        if (!is_dir("uploads/EPL/" . $id . "/inspections")) {
+            //Create our directory if it does not exist
+            mkdir("uploads/EPL/" . $id . "/inspections");
+        }
+        if (!is_dir("uploads/EPL/" . $id . "/inspections/" . $attachemntId)) {
+            //Create our directory if it does not exist
+            mkdir("uploads/EPL/" . $id . "/inspections/" . $attachemntId);
+        }
+        return "uploads/EPL/" . $id . "/inspections/" . $attachemntId . "/";
     }
 }
