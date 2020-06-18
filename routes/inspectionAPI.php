@@ -28,4 +28,4 @@ Route::middleware('auth:api')->delete('/epl/inspection/delete/id/{id}', 'Inspect
       "id": 1,
     "message": "true"
 }
-/*
+*/
