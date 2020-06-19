@@ -205,6 +205,13 @@
                                 }
 //Map END
                                 $(function () {
+                                const Toast = Swal.mixin({
+                                toast: true,
+                                        position: 'top-end',
+                                        showConfirmButton: false,
+                                        timer: 4000
+
+                                });
                                 getaClientbyId({{$client}}, function (result) {
                                 if (result.length == 0 || result == undefined) {
                                 if (confirm("Client Not Found! Try Again!")) {
@@ -214,10 +221,9 @@
                                 setClientDetails(result);
                                 }
                                 });
-                                getDetailsbyId({{$client}}, function (result) {
+                                getDetailsbyId({{$profile}}, function (result) {
                                 if (result.length == 0 || result == undefined) {
                                 if (confirm("Details Not Found! Try Again!")) {
-
                                 }
                                 } else {
                                 setClearanceData(result);
@@ -230,6 +236,58 @@
                                 initMap(parseFloat(result.coordinate_x), parseFloat(result.coordinate_y));
 //                $('#getName').val(result.name);
                                 });
+                                $('#btnSaveClear').click(function () {
+                                var data = fromValues();
+                                if (Validiteinsert(data)) {
+                                // if validiated
+                                AddClearance(data, {{$profile}}, function (result) {
+                                if (result.id == 1) {
+                                Toast.fire({
+                                type: 'success',
+                                        title: 'Enviremontal MS</br>Saved'
+                                });
+                                } else {
+                                Toast.fire({
+                                type: 'error',
+                                        title: 'Enviremontal MS</br>Error'
+                                });
+                                }
+                                resetinputFields();
+                                hideAllErrors();
+                                });
+                                }
+                                });
+                                //click update button
+                                $('#btnUpdateClear').click(function () {
+                                var data = fromValues();
+                                if (confirm('Are You Sure?')) {
+                                if (Validiteupdate(data)) {
+                                updateClearance({{$profile}}, data, function (result) {
+                                if (result.id == 1) {
+                                Toast.fire({
+                                type: 'success',
+                                        title: 'Enviremontal MS</br>Updated'
+                                });
+                                } else {
+                                Toast.fire({
+                                type: 'error',
+                                        title: 'Enviremontal MS</br>Error'
+                                });
+                                }
+                                resetinputFields();
+                                hideAllErrors();
+                                });
+                                }
+                                }
+                                });
+                                function fromValues() {
+                                var data = {
+                                site_clearance_file: $('#siteclear_get').val()
+                                };
+                                return data;
+                                }
+
+
                                 });
 
 </script>

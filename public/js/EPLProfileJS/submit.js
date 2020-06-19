@@ -1,11 +1,11 @@
-function AddClearance(data, callBack) {
+function AddClearance(data,id, callBack) {
     $.ajax({
         type: "POST",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/client",
+        url: "/api/epl/site_clearance/id/"+ id,
         data: data,
         dataType: "json",
         cache: false,
@@ -24,12 +24,8 @@ function AddClearance(data, callBack) {
 
 function Validiteinsert(data) {
     var response = true;
-    if (data.first_name.length === 0) {
+    if (data.site_clearance_file.length === 0) {
         $('#valPayCat').removeClass('d-none');
-        response = false;
-    }
-    if (data.last_name.length === 0) {
-        $('#valName').removeClass('d-none');
         response = false;
     }
     return response;
