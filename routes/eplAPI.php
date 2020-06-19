@@ -235,3 +235,12 @@ Route::middleware('auth:api')->delete('/epl/attachement/unset/attachment/{attach
   "message": "true"
 }
 */
+
+Route::middleware('auth:api')->post('/epl/site_clearance/id/{epl}', 'EPLController@addSiteClearance');
+
+/*
+{
+    "site_clearance_file":"dasd/45/das"
+}
+
+*/
