@@ -27,7 +27,7 @@ function loadInterface(id) {
         var uidev = "";
         var id = 1;
         $.each(result, function (index, value) {
-            uidev += "<div class='col-md-8'>";
+            uidev += "<div class='col-md-12'>";
             uidev += "<div class='card card-outline card-success'>";
             uidev += "<div class='card-header'>";
             uidev += "<h3 class='card-title'>" + value.created_at + "</h3>";

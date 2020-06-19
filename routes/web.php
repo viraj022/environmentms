@@ -40,6 +40,7 @@ Route::get('/env_officer', 'EnvOfficerController@index');
 Route::get('/remarks/epl/{id}', 'RemarkController@index');
 Route::get('/inspection/epl/id/{id}', 'InspectionSessionController@index');
 Route::get('/inspection/epl/remarks/id/{id}', 'InspectionRemarksController@index');
+Route::get('/inspection/personals/id/{id}', 'InspectionPersonalController@index');
 //ui routs
 
 //dashboard
