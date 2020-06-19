@@ -382,15 +382,18 @@ class EPLController extends Controller
         }
     }
 
-    public function addSiteClearence($epl, $code)
+    public function addSiteClearance($epl)
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
+            request()->validate([
+                'site_clearance_file' => 'required|string',
+            ]);
             $epl = EPL::find($epl);
             if ($epl) {
                 /// need to validate if the site clearence file number actually exiests
-                $epl->site_clearance_file = $code;
+                $epl->site_clearance_file = \request('site_clearance_file');
                 $msg = $epl->save();
                 if ($msg) {
                     return array('id' => 1, 'message' => 'true');
@@ -398,6 +401,7 @@ class EPLController extends Controller
                     return array('id' => 0, 'message' => 'false');
                 }
             } else {
+                abort(404);
             }
         } else {
             abort(401);
