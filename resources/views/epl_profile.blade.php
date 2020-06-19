@@ -53,6 +53,29 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">
+                            <i class="fas fa-user"></i> Site Clearance File
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>Site Clearance*</label>
+                            <input id="siteclear_get" type="text" class="form-control form-control-sm" placeholder="Enter.." value="">
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        @if($pageAuth['is_create']==1 || false)
+                        <button id="btnSaveClear" type="button" class="btn btn-success">Save</button>
+                        @endif
+                        @if($pageAuth['is_update']==1 || false)
+                        <button id="btnUpdateClear" type="submit" class="btn btn-warning d-none">Update</button>
+                        @endif
+                    </div> 
+                    <!-- /.card-body -->
+                </div>                                    
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
                             <i class="fas fa-user"></i> Links
                         </h3>
                     </div>
@@ -197,7 +220,7 @@
 
                                 }
                                 } else {
-//    console.log(result);
+                                setClearanceData(result);
                                 setAllDetails(result);
                                 $('.navTodownload').click(function(){
                                 downloadApp(result);

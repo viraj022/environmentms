@@ -22,3 +22,13 @@ function setAllDetails(obj) {
 function downloadApp(obj) {
     window.location.href = "/" + obj.application_path;
 }
+
+function setClearanceData(obj) {
+    if (obj.site_clearance_file.length == 0) {
+        $('#btnSaveClear').removeClass('d-none');
+    } else {
+        $('#siteclear_get').val(obj.site_clearance_file);
+        $('#btnSaveClear').addClass('d-none');
+        $('#btnUpdateClear').removeClass('d-none');
+    }
+}

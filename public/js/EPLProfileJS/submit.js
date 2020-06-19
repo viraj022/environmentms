@@ -1,4 +1,4 @@
-function AddClient(data, callBack) {
+function AddClearance(data, callBack) {
     $.ajax({
         type: "POST",
         headers: {
