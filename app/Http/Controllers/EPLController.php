@@ -387,6 +387,18 @@ class EPLController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
+            $epl = EPL::find($epl);
+            if ($epl) {
+                /// need to validate if the site clearence file number actually exiests
+                $epl->site_clearance_file = $code;
+                $msg = $epl->save();
+                if ($msg) {
+                    return array('id' => 1, 'message' => 'true');
+                } else {
+                    return array('id' => 0, 'message' => 'false');
+                }
+            } else {
+            }
         } else {
             abort(401);
         }
