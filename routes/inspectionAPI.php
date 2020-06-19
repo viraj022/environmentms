@@ -33,3 +33,14 @@ Route::middleware('auth:api')->delete('/epl/inspection/delete/id/{id}', 'Inspect
 Route::middleware('auth:api')->get('/epl/inspections/id/{id}', 'InspectionSessionController@showEPLInspections');
 Route::middleware('auth:api')->get('/epl/inspection/id/{id}', 'InspectionSessionController@find');
 
+
+
+//Inspection Personal API Open 
+
+Route::middleware('auth:api')->post('/inspection/personal/create/id/{id}', 'InspectionPersonalController@create');
+Route::middleware('auth:api')->get('/inspection/personal/id/{id}', 'InspectionPersonalController@find');
+Route::middleware('auth:api')->get('/inspections/personal/id/{id}', 'InspectionPersonalController@showInspectionsPersonal');
+Route::middleware('auth:api')->delete('/inspections/personal/remove/id/{id}', 'InspectionPersonalController@destroy');
+
+//Inspection Personal API End
+

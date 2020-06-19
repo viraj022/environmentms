@@ -29,9 +29,9 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="row" id="showUiDb">
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <div class="card card-outline card-success">
                             <div class="card-header">
                                 <h3 class="card-title">2020/07/23 03.05PM</h3>
@@ -47,7 +47,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-10">
+            <div class="col-md-4">
+                <dd><a href="#" class="text-success font-weight-bold ">Add Personals</a></dd>
+                <dd><a href="#" class="text-success font-weight-bold ">Add Attachments</a></dd>
+            </div>
+
+            <div class="col-md-8">
                 <!--Add New Comment Section-->
                 <div class="card card-primary">
                     <div class="card-body">
@@ -70,16 +75,12 @@
                                         @if($pageAuth['is_create']==1 || false)
                                         <button id="btnSave" type="submit" class="btn btn-success">Save</button>
                                         @endif
-<!--                                        @if($pageAuth['is_create']==1 || false)
-                                        <button id="btnDelete" type="submit" class="btn btn-danger" data-toggle="modal"
-                                                data-target="#modal-danger">Del Temp</button>
-                                        @endif-->
-                                    </div> 
+                                    </div>
                                 </div>
-                            </div>                                        
+                            </div> 
                         </div>
                     </div>
-                </div>
+                </div> 
                 <!--Add New Comment END-->
             </div>
         </div>
@@ -143,56 +144,56 @@
 <!-- AdminLTE App -->
 <script>
     $(function () {
-        const Toast = Swal.mixin({
-            toast: true,
+    const Toast = Swal.mixin({
+    toast: true,
             position: 'top-end',
             showConfirmButton: false,
             timer: 4000
 
-        });
-        loadInterface({{$id}});
+    });
+    loadInterface({{$id}});
 //click save button
-        $('#btnSave').click(function () {
-            var data = fromValues();
-            if (Validiteinsert(data)) {
-            AddComment(data,{{$id}}, function (result) {
-                if (result.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Saved'
-                    });
-                } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Error'
-                    });
-                }
-                loadInterface({{$id}});
-                resetinputFields();
-            });
-        }
+    $('#btnSave').click(function () {
+    var data = fromValues();
+    if (Validiteinsert(data)) {
+    AddComment(data, {{$id}}, function (result) {
+    if (result.id == 1) {
+    Toast.fire({
+    type: 'success',
+            title: 'Saved'
+    });
+    } else {
+    Toast.fire({
+    type: 'error',
+            title: 'Error'
+    });
+    }
+    loadInterface({{$id}});
+    resetinputFields();
+    });
+    }
     });
 //show save button    
     function showSave() {
-        $('#btnSave').removeClass('d-none');
-        $('#btnshowDelete').addClass('d-none');
+    $('#btnSave').removeClass('d-none');
+    $('#btnshowDelete').addClass('d-none');
     }
 //Reset all fields    
     function resetinputFields() {
-        $('#getComment').val('');
-        $('#btnUpdate').val('');
-        $('#btnDelete').val('');
+    $('#getComment').val('');
+    $('#btnUpdate').val('');
+    $('#btnDelete').val('');
     }
 //get form values
     function fromValues() {
-        var data = {
-            remark: $('#getComment').val()
-        };
-        return data;
+    var data = {
+    remark: $('#getComment').val()
+    };
+    return data;
     }
 //HIDE ALL ERROR MSGS   
     function hideAllErrors() {
-        $('.aefFGE').addClass('d-none');
+    $('.aefFGE').addClass('d-none');
     }
     });
 </script>
