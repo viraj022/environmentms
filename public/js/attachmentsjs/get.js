@@ -93,7 +93,6 @@ function getaAttachmentbyId(id, callBack) {
         cache: false,
         processDaate: false,
         success: function (result) {
-
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
             }
@@ -104,6 +103,8 @@ function getaAttachmentbyId(id, callBack) {
     });
 
 }
+
+
 function all_attachmentsList(epl_id, callBack) {
     $.ajax({
         type: "GET",
@@ -142,8 +143,10 @@ function all_attachmentsList(epl_id, callBack) {
 }
 function readImage(selected_id, callback) {
     var img = document.getElementById(selected_id);
+
     if (img.files && img.files[0]) {
         var FR = new FileReader();
+
         FR.addEventListener("load", function (e) {
             //   document.getElementById("b64").innerHTML = e.target.result;
             callback(e.target.result);

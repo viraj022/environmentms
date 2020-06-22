@@ -41,6 +41,7 @@ Route::get('/remarks/epl/{id}', 'RemarkController@index');
 Route::get('/inspection/epl/id/{id}', 'InspectionSessionController@index');
 Route::get('/inspection/epl/remarks/id/{id}', 'InspectionRemarksController@index');
 Route::get('/inspection/personals/id/{id}', 'InspectionPersonalController@index');
+Route::get('/inspection_attachment/id/{id}', 'InspectionSessionAttachmentController@index');
 //ui routs
 
 //dashboard
