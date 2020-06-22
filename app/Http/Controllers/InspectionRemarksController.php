@@ -8,15 +8,14 @@ use App\ApplicationType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class InspectionRemarksController extends Controller
-{
+class InspectionRemarksController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
-    {
+    public function index($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
@@ -28,7 +27,6 @@ class InspectionRemarksController extends Controller
         } else {
             abort(401);
         }
-
     }
 
     /**
@@ -36,8 +34,7 @@ class InspectionRemarksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
-    {
+    public function create($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         request()->validate([
@@ -67,8 +64,7 @@ class InspectionRemarksController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
-    {
+    public function store() {
         
     }
 
@@ -78,9 +74,8 @@ class InspectionRemarksController extends Controller
      * @param  \App\InspectionRemarks  $inspectionRemarks
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-       return InspectionRemarks::with('user')->where('inspection_session_id', $id)->get();
+    public function show($id) {
+        return InspectionRemarks::with('user')->where('inspection_session_id', $id)->get();
     }
 
     /**
@@ -89,8 +84,7 @@ class InspectionRemarksController extends Controller
      * @param  \App\InspectionRemarks  $inspectionRemarks
      * @return \Illuminate\Http\Response
      */
-    public function edit()
-    {
+    public function edit() {
         //
     }
 
@@ -101,8 +95,7 @@ class InspectionRemarksController extends Controller
      * @param  \App\InspectionRemarks  $inspectionRemarks
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, InspectionRemarks $inspectionRemarks)
-    {
+    public function update(Request $request, InspectionRemarks $inspectionRemarks) {
         //
     }
 
@@ -112,8 +105,8 @@ class InspectionRemarksController extends Controller
      * @param  \App\InspectionRemarks  $inspectionRemarks
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {  
-            $user = Auth::user();
+    public function destroy($id) {
+        $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_delete']) {
             $inspection_remark = InspectionRemarks::findOrFail($id);
@@ -129,4 +122,5 @@ class InspectionRemarksController extends Controller
             abort(401);
         }
     }
+
 }
