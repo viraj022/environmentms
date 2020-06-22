@@ -53,6 +53,29 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">
+                            <i class="fas fa-user"></i> Site Clearance File
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>Site Clearance*</label>
+                            <input id="siteclear_get" type="text" class="form-control form-control-sm" placeholder="Enter.." value="">
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        @if($pageAuth['is_create']==1 || false)
+                        <button id="btnSaveClear" type="button" class="btn btn-success">Save</button>
+                        @endif
+                        @if($pageAuth['is_update']==1 || false)
+                        <button id="btnUpdateClear" type="submit" class="btn btn-warning d-none">Update</button>
+                        @endif
+                    </div> 
+                    <!-- /.card-body -->
+                </div>                                    
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
                             <i class="fas fa-user"></i> Links
                         </h3>
                     </div>
@@ -182,6 +205,13 @@
                                 }
 //Map END
                                 $(function () {
+                                const Toast = Swal.mixin({
+                                toast: true,
+                                        position: 'top-end',
+                                        showConfirmButton: false,
+                                        timer: 4000
+
+                                });
                                 getaClientbyId({{$client}}, function (result) {
                                 if (result.length == 0 || result == undefined) {
                                 if (confirm("Client Not Found! Try Again!")) {
@@ -191,13 +221,12 @@
                                 setClientDetails(result);
                                 }
                                 });
-                                getDetailsbyId({{$client}}, function (result) {
+                                getDetailsbyId({{$profile}}, function (result) {
                                 if (result.length == 0 || result == undefined) {
                                 if (confirm("Details Not Found! Try Again!")) {
-
                                 }
                                 } else {
-//    console.log(result);
+                                setClearanceData(result);
                                 setAllDetails(result);
                                 $('.navTodownload').click(function(){
                                 downloadApp(result);
@@ -207,6 +236,58 @@
                                 initMap(parseFloat(result.coordinate_x), parseFloat(result.coordinate_y));
 //                $('#getName').val(result.name);
                                 });
+                                $('#btnSaveClear').click(function () {
+                                var data = fromValues();
+                                if (Validiteinsert(data)) {
+                                // if validiated
+                                AddClearance(data, {{$profile}}, function (result) {
+                                if (result.id == 1) {
+                                Toast.fire({
+                                type: 'success',
+                                        title: 'Enviremontal MS</br>Saved'
+                                });
+                                } else {
+                                Toast.fire({
+                                type: 'error',
+                                        title: 'Enviremontal MS</br>Error'
+                                });
+                                }
+                                resetinputFields();
+                                hideAllErrors();
+                                });
+                                }
+                                });
+                                //click update button
+                                $('#btnUpdateClear').click(function () {
+                                var data = fromValues();
+                                if (confirm('Are You Sure?')) {
+                                if (Validiteupdate(data)) {
+                                updateClearance({{$profile}}, data, function (result) {
+                                if (result.id == 1) {
+                                Toast.fire({
+                                type: 'success',
+                                        title: 'Enviremontal MS</br>Updated'
+                                });
+                                } else {
+                                Toast.fire({
+                                type: 'error',
+                                        title: 'Enviremontal MS</br>Error'
+                                });
+                                }
+                                resetinputFields();
+                                hideAllErrors();
+                                });
+                                }
+                                }
+                                });
+                                function fromValues() {
+                                var data = {
+                                site_clearance_file: $('#siteclear_get').val()
+                                };
+                                return data;
+                                }
+
+
                                 });
 
 </script>

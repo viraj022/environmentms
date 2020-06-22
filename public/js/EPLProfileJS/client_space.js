@@ -15,10 +15,20 @@ function setAllDetails(obj) {
     $('#obj_remark').html(obj.remark);
 //    _Latitude = obj.coordinate_x;
 //    _Longitude = obj.coordinate_y;
-    if (obj.first_name.length != 0) {
+    if (obj.first_name != null) {
         $('#env_firstname').html("Assign Environment Officer: " + obj.first_name + " " + obj.last_name);
     }
 }
 function downloadApp(obj) {
     window.location.href = "/" + obj.application_path;
+}
+
+function setClearanceData(obj) {
+    if (obj.site_clearance_file == null) {
+        $('#btnSaveClear').removeClass('d-none');
+    } else {
+        $('#siteclear_get').val(obj.site_clearance_file);
+        $('#btnSaveClear').addClass('d-none');
+        $('#btnUpdateClear').removeClass('d-none');
+    }
 }
