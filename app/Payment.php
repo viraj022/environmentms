@@ -16,4 +16,9 @@ class Payment extends Model
     {
         return $this->hasMany(PaymentRange::class);
     }
+
+    public static function getPaymentByName($name)
+    {
+        return Payment::where('name', $name)->first();
+    }
 }
