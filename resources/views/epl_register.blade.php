@@ -59,7 +59,7 @@
                         <div class="form-group">
                             <label>Business Name*</label>
                             <input id="business_name" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
-                            <input hidden id="client_id" type="text" class="form-control form-control-sm" placeholder="" value="{{$id}}">
+                            <input hidden id="client_id" type="text" class="form-control form-control-sm" placeholder="" value="{{$id ?? ''}}">
                         </div>
 
                         <div class="form-group">
