@@ -119,5 +119,9 @@ class RouteServiceProvider extends ServiceProvider
                         ->middleware('api')
                         ->namespace($this->namespace)
                         ->group(base_path('routes/eplPaymentAPI.php'));
+                Route::prefix('cashier')
+                        ->middleware('api')
+                        ->namespace($this->namespace)
+                        ->group(base_path('routes/cashierPaymentAPI.php'));
         }
 }
