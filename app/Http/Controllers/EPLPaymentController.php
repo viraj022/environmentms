@@ -20,60 +20,6 @@ class EPLPaymentController extends Controller
 
     const REG_FEE = 'EPL Application Fee';
 
-    // public function addRegistrationPayment()
-    // {
-    //     $user = Auth::user();
-    //     $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-    //     if ($pageAuth['is_create']) {
-    //         request()->validate([
-    //             'name' => 'required|string',
-    //             'nic' => ['sometimes', 'nullable', 'unique:users', new nationalID],
-    //             'address' => 'nullable|max:255',
-    //             'contact_no' => ['nullable', new contactNo],
-    //         ]);
-    //         return \DB::transaction(function () {
-    //             $client = new ApplicationCliten();
-    //             $client->name = request('name');
-    //             $client->nic = request('nic');
-    //             $client->address = request('address');
-    //             $client->contact_no = request('contact_no');
-    //             $a = $client->save();
-    //             if ($a) {
-    //                 $data =  request('items');
-    //                 foreach ($data as $item) {
-    //                     $payment = Payment::find(request('id'));
-    //                     if ($payment) {
-    //                         request()->validate([
-    //                             'id' => 'required|integer',
-    //                             'qty' => 'required|integer',
-    //                         ]);
-    //                         $transaction = new Transaction();
-    //                         $transaction->payment_type_id = $payment->payment_type_id;
-    //                         $transaction->payment_id = $payment->id;
-    //                         $transaction->transaction_type = Transaction::APPLICATION_FEE;
-    //                         $transaction->transaction_id = $client->id;
-    //                         $transaction->status = 0;
-    //                         $transaction->amount = $payment->amount;
-    //                         $transaction->qty = request('qty');
-    //                         $transaction->type = "";
-    //                         $msg = $transaction->save();
-    //                         if ($msg) {
-    //                             return array('id' => 1, 'message' => 'true', 'code' => $transaction->id);
-    //                         } else {
-    //                             return array('id' => 0, 'message' => 'false');
-    //                         }
-    //                     } else {
-    //                         abort(404);
-    //                     }
-    //                 }
-    //             } else {
-    //                 return array('id' => 0, 'message' => 'false');
-    //             }
-    //         });
-    //     } else {
-    //         abort(401);
-    //     }
-    // }
     public function addRegistrationPayment()
     {
         $user = Auth::user();
