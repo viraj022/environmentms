@@ -91,4 +91,8 @@ class EPLPaymentController extends Controller
             return array('id' => 0, 'message' => 'false');
         }
     }
+
+    public function getPaymentHistory()
+    {
+    }
 }
