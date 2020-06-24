@@ -38,10 +38,11 @@ class EPLPaymentController extends Controller
                 $client->contact_no = request('contact_no');
                 $a = $client->save();
                 if ($a) {
-                    $payment = Payment::getPaymentByName(EPLPaymentController::REG_FEE);
+                    $payment = Payment::find(request('id'));
                     if ($payment) {
                         request()->validate([
-                            'amount' => 'required|numeric',
+                            'id' => 'required|integer',
+                            'qty' => 'required|integer',
                         ]);
                         $transaction = new Transaction();
                         $transaction->payment_type_id = $payment->payment_type_id;
@@ -49,7 +50,8 @@ class EPLPaymentController extends Controller
                         $transaction->transaction_type = Transaction::APPLICATION_FEE;
                         $transaction->transaction_id = $client->id;
                         $transaction->status = 0;
-                        $transaction->amount = request('amount');
+                        $transaction->amount = $payment->amount;
+                        $transaction->qty = request('qty');
                         $transaction->type = "";
                         $msg = $transaction->save();
                         if ($msg) {
