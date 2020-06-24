@@ -45,8 +45,7 @@
 
                         <div class="form-group" id="comboUserDiplay">
                             <label>Users*</label>
-                            <select id="getUsers" class="form-control form-control-sm select2 select2-purple"                                                  data-dropdown-css-class="select2-purple"
-                                                    style="width: 100%;" name="level">
+                            <select id="getUsers" class="form-control form-control-sm select2 select2-purple" style="width: 100%;" name="level">
                                 <option>Loading...</option>
                             </select>
                             <div id="valUsers" class="d-none"><p class="text-danger">Field is required</p></div>
@@ -55,9 +54,6 @@
                         <div class="form-group d-none" id="lblUserDiplay">
                             <label>Users</label>
                             <label  id="lblUserName" class="form-control form-control-sm"></label>
-  
-
-
                         </div>
 
 

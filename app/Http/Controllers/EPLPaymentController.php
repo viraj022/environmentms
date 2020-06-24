@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Payment;
+use App\PaymentType;
 use App\Transaction;
 use App\Rules\contactNo;
 use App\Rules\nationalID;
@@ -14,7 +15,9 @@ use Illuminate\Support\Facades\Auth;
 
 class EPLPaymentController extends Controller
 {
-    public const REG_FEE = 'EPL Application Fee';
+    public
+
+    const REG_FEE = 'EPL Application Fee';
 
     public function addRegistrationPayment()
     {
@@ -25,10 +28,10 @@ class EPLPaymentController extends Controller
                 'name' => 'required|string',
                 'nic' => ['sometimes', 'nullable', 'unique:users', new nationalID],
                 'address' => 'nullable|max:255',
-                'contact_no' =>  ['nullable', new contactNo],
+                'contact_no' => ['nullable', new contactNo],
             ]);
-            return    \DB::transaction(function () {
-                $client =  new  ApplicationCliten();
+            return \DB::transaction(function () {
+                $client = new ApplicationCliten();
                 $client->name = request('name');
                 $client->nic = request('nic');
                 $client->address = request('address');
@@ -40,14 +43,14 @@ class EPLPaymentController extends Controller
                         request()->validate([
                             'amount' => 'required|numeric',
                         ]);
-                        $transaction  = new  Transaction();
+                        $transaction = new Transaction();
                         $transaction->payment_type_id = $payment->payment_type_id;
                         $transaction->payment_id = $payment->id;
                         $transaction->transaction_type = Transaction::APPLICATION_FEE;
                         $transaction->transaction_id = $client->id;
                         $transaction->status = 0;
                         $transaction->amount = request('amount');
-                        $transaction->type  = "";
+                        $transaction->type = "";
                         $msg = $transaction->save();
                         if ($msg) {
                             return array('id' => 1, 'message' => 'true', 'code' => $transaction->id);
@@ -70,7 +73,7 @@ class EPLPaymentController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-        return Transactioncounter::join('transactions', 'transactioncounters.transaction_id', 'transactions.id')
+        return Transaction::Join('transactioncounters', 'transactions.id', 'transactioncounters.transaction_id')
             ->join('application_clitens', 'transactions.transaction_id', 'application_clitens.id')
             ->where('payment_status', 0)
             ->where('transaction_type', Transaction::APPLICATION_FEE)
@@ -82,7 +85,7 @@ class EPLPaymentController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-        $transaction =  Transactioncounter::findOrFail($id);
+        $transaction = Transactioncounter::findOrFail($id);
         $transaction->payment_status = 1;
         $msg = $transaction->save();
         if ($msg) {
@@ -92,7 +95,12 @@ class EPLPaymentController extends Controller
         }
     }
 
-    public function getPaymentHistory()
+    public function getApplicationList()
     {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        $pt = PaymentType::getpaymentByTypeName(PaymentType::APPLICATIONFEE);
+
+        return Payment::where('payment_type_id', $pt->id)->get();
     }
 }

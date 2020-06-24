@@ -46,8 +46,7 @@ Route::middleware('auth:api')->get('/application/pendingPayments', 'EPLPaymentCo
     }
 ]
 */
-
-Route::middleware('auth:api')->get('/application/markPayment', 'EPLPaymentController@getPendingApplicationList'); // get pending appication list
+Route::middleware('auth:api')->get('/application/applicationList', 'EPLPaymentController@getApplicationList'); // get application List
 
 /*
 [
@@ -63,6 +62,7 @@ Route::middleware('auth:api')->get('/application/markPayment', 'EPLPaymentContro
     }
 ]
 */
+
 Route::middleware('auth:api')->patch('/application/markPayment/id/{id}', 'EPLPaymentController@markApplicationPayment'); // mark payment
 
 /*
