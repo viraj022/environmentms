@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ApplicationCliten extends Model
+class TransactionItem extends Model
 {
     // public function transaction()
     // {
-    //     return $this->belongsTo(ApplicationCliten::class, 'client_id', 'id');
+    //     return $this->belongsTo(Transaction::class);
     // }
 }

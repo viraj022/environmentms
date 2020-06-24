@@ -26,4 +26,15 @@ class Transaction extends Model
             ->sum('amount');
         return array('amount' => $transactionSum, 'payed' => $transactionCounterSum);
     }
+
+    public function transactionItems()
+    {
+        // return $this->hasMany(transactionItems::class, 'level_id');
+        return $this->hasMany(TransactionItem::class,  'transaction_id', 'id');
+    }
+
+    public function applicationClient()
+    {
+        return $this->belongsTo(ApplicationCliten::class, 'type_id', 'id');
+    }
 }

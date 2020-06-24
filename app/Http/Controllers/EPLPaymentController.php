@@ -9,6 +9,7 @@ use App\Rules\contactNo;
 use App\Rules\nationalID;
 use App\ApplicationCliten;
 use App\Transactioncounter;
+use App\TransactionItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,60 @@ class EPLPaymentController extends Controller
 
     const REG_FEE = 'EPL Application Fee';
 
+    // public function addRegistrationPayment()
+    // {
+    //     $user = Auth::user();
+    //     $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+    //     if ($pageAuth['is_create']) {
+    //         request()->validate([
+    //             'name' => 'required|string',
+    //             'nic' => ['sometimes', 'nullable', 'unique:users', new nationalID],
+    //             'address' => 'nullable|max:255',
+    //             'contact_no' => ['nullable', new contactNo],
+    //         ]);
+    //         return \DB::transaction(function () {
+    //             $client = new ApplicationCliten();
+    //             $client->name = request('name');
+    //             $client->nic = request('nic');
+    //             $client->address = request('address');
+    //             $client->contact_no = request('contact_no');
+    //             $a = $client->save();
+    //             if ($a) {
+    //                 $data =  request('items');
+    //                 foreach ($data as $item) {
+    //                     $payment = Payment::find(request('id'));
+    //                     if ($payment) {
+    //                         request()->validate([
+    //                             'id' => 'required|integer',
+    //                             'qty' => 'required|integer',
+    //                         ]);
+    //                         $transaction = new Transaction();
+    //                         $transaction->payment_type_id = $payment->payment_type_id;
+    //                         $transaction->payment_id = $payment->id;
+    //                         $transaction->transaction_type = Transaction::APPLICATION_FEE;
+    //                         $transaction->transaction_id = $client->id;
+    //                         $transaction->status = 0;
+    //                         $transaction->amount = $payment->amount;
+    //                         $transaction->qty = request('qty');
+    //                         $transaction->type = "";
+    //                         $msg = $transaction->save();
+    //                         if ($msg) {
+    //                             return array('id' => 1, 'message' => 'true', 'code' => $transaction->id);
+    //                         } else {
+    //                             return array('id' => 0, 'message' => 'false');
+    //                         }
+    //                     } else {
+    //                         abort(404);
+    //                     }
+    //                 }
+    //             } else {
+    //                 return array('id' => 0, 'message' => 'false');
+    //             }
+    //         });
+    //     } else {
+    //         abort(401);
+    //     }
+    // }
     public function addRegistrationPayment()
     {
         $user = Auth::user();
@@ -36,31 +91,34 @@ class EPLPaymentController extends Controller
                 $client->nic = request('nic');
                 $client->address = request('address');
                 $client->contact_no = request('contact_no');
-                $a = $client->save();
-                if ($a) {
-                    $payment = Payment::find(request('id'));
-                    if ($payment) {
-                        request()->validate([
-                            'id' => 'required|integer',
-                            'qty' => 'required|integer',
-                        ]);
-                        $transaction = new Transaction();
-                        $transaction->payment_type_id = $payment->payment_type_id;
-                        $transaction->payment_id = $payment->id;
-                        $transaction->transaction_type = Transaction::APPLICATION_FEE;
-                        $transaction->transaction_id = $client->id;
-                        $transaction->status = 0;
-                        $transaction->amount = $payment->amount;
-                        $transaction->qty = request('qty');
-                        $transaction->type = "";
-                        $msg = $transaction->save();
-                        if ($msg) {
-                            return array('id' => 1, 'message' => 'true', 'code' => $transaction->id);
+                $msg = $client->save();
+                $transaction = new Transaction();
+                $transaction->status = 0;
+                $transaction->type = Transaction::APPLICATION_FEE;
+                $transaction->type_id = $client->id;
+                $msg = $msg &&  $transaction->save();
+                if ($msg) {
+                    $data =  request('items');
+                    foreach ($data as $item) {
+                        $payment = Payment::find($item['id']);
+                        if ($payment) {
+                            $transactionItem = new TransactionItem();
+                            $transactionItem->transaction_id = $transaction->id;
+                            $transactionItem->payment_type_id = $payment->payment_type_id;
+                            $transactionItem->payment_id = $payment->id;
+                            $transactionItem->transaction_type = Transaction::APPLICATION_FEE;
+                            $transactionItem->client_id = $client->id;
+                            $transactionItem->amount = $payment->amount;
+                            $transactionItem->qty = $item['qty'];
+                            $msg = $msg && $transactionItem->save();
                         } else {
-                            return array('id' => 0, 'message' => 'false');
+                            abort(404);
                         }
+                    }
+                    if ($msg) {
+                        return array('id' => 1, 'message' => 'true', 'code' => $transaction->id);
                     } else {
-                        abort(404);
+                        abort(500);
                     }
                 } else {
                     return array('id' => 0, 'message' => 'false');
@@ -71,15 +129,36 @@ class EPLPaymentController extends Controller
         }
     }
 
-    public function getPendingApplicationList()
+    public function deleteApplicationPayment($id)
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-        return Transaction::Join('transactioncounters', 'transactions.id', 'transactioncounters.transaction_id')
-            ->join('application_clitens', 'transactions.transaction_id', 'application_clitens.id')
-            ->where('payment_status', 0)
-            ->where('transaction_type', Transaction::APPLICATION_FEE)
-            ->select('application_clitens.*', 'transactioncounters.id as counter_id')
+        if ($pageAuth['is_delete']) {
+            $transaction = Transaction::where('type', Transaction::APPLICATION_FEE)
+                ->where('id', $id);
+            if ($transaction) {
+                if ($transaction->delete()) {
+                    return array('id' => 1, 'message' => 'true');
+                } else {
+                    return array('id' => 0, 'message' => 'false');
+                }
+            } else {
+                abort(404);
+            }
+        } else {
+            abort(401);
+        }
+    }
+
+    public function getPendingApplicationList()
+    {
+        // return Transaction::with('transactionItems')->get();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        return  $transaction = Transaction::with('transactionItems')
+            ->with('applicationClient')
+            ->where('status', '<', 2)
+            ->where('type', Transaction::APPLICATION_FEE)
             ->get();
     }
 
