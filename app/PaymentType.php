@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentType extends Model
 {
     public const APPLICATIONFEE = 'Application Fee';
+    public const INSPECTIONFEE = 'Inspection Fee';
     public function payments()
     {
         return $this->hasMany(Payment::class);

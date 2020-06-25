@@ -12,9 +12,9 @@ class Payment extends Model
         return $this->belongsTo(PaymentType::class);
     }
 
-    public function PaymentRanges()
+    public function paymentRanges()
     {
-        return $this->hasMany(PaymentRange::class);
+        return $this->hasMany(PaymentRange::class, 'payments_id', 'id');
     }
 
     public static function getPaymentByName($name)

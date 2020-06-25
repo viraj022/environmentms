@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\EPL;
 use App\Payment;
 use App\PaymentType;
 use App\Transaction;
 use App\Rules\contactNo;
+use App\TransactionItem;
 use App\Rules\nationalID;
 use App\ApplicationCliten;
 use App\Transactioncounter;
-use App\TransactionItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -154,7 +155,36 @@ class EPLPaymentController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $pt = PaymentType::getpaymentByTypeName(PaymentType::APPLICATIONFEE);
-
         return Payment::where('payment_type_id', $pt->id)->get();
+    }
+
+    public function makeInspectionPayment($eplId)
+    {
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_create']) {
+            $epl = EPL::find($eplId);
+            if ($epl) {
+                $data = request('payments');
+                foreach ($data  as $payment) {
+                    switch($payment)
+                }
+            } else {
+                abort(404);
+            }
+        } else {
+            abort(401);
+        }
+    }
+
+    public function getInspectionPaymentList()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        $pt = PaymentType::getpaymentByTypeName(PaymentType::INSPECTIONFEE);
+        return Payment::with('paymentRanges')->where('payment_type_id', $pt->id)->get();
+    }
+
+    public function payInspectionFee()
+    {
     }
 }
