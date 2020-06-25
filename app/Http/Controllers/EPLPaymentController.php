@@ -81,7 +81,7 @@ class EPLPaymentController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_delete']) {
             $transaction = Transaction::where('type', Transaction::APPLICATION_FEE)
-                ->where('id', $id);
+                ->where('id', $id)->first();
             if ($transaction) {
                 if ($transaction->delete()) {
                     return array('id' => 1, 'message' => 'true');
@@ -119,6 +119,33 @@ class EPLPaymentController extends Controller
             return array('id' => 1, 'message' => 'true');
         } else {
             return array('id' => 0, 'message' => 'false');
+        }
+    }
+
+    public function processApplication($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_create']) {
+            $transaction = Transaction::where('type', Transaction::APPLICATION_FEE)
+                ->where('id', $id)->first();
+            // dd($id);
+            if ($transaction) {
+                if ($transaction->status == 1) {
+                    $transaction->status = 2;
+                    if ($transaction->save()) {
+                        return array('id' => 1, 'message' => 'true');
+                    } else {
+                        return array('id' => 0, 'message' => 'false');
+                    }
+                } else {
+                    return response(array('id' => 0, 'message' => 'payment not yet completed or payment already processed or bill has been cancelled'), 403);
+                }
+            } else {
+                abort(404);
+            }
+        } else {
+            abort(401);
         }
     }
 

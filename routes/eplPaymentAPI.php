@@ -228,3 +228,12 @@ Route::middleware('auth:api')->patch('/application/markPayment/id/{id}', 'EPLPay
     }
 ]
 */
+Route::middleware('auth:api')->patch('/application/process/id/{id}', 'EPLPaymentController@processApplication'); // process application
+
+/*
+
+{
+    "id": 1,
+    "message": "true"
+}
+*/
