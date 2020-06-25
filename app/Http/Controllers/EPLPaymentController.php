@@ -158,23 +158,23 @@ class EPLPaymentController extends Controller
         return Payment::where('payment_type_id', $pt->id)->get();
     }
 
-    public function makeInspectionPayment($eplId)
-    {
-        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-        if ($pageAuth['is_create']) {
-            $epl = EPL::find($eplId);
-            if ($epl) {
-                $data = request('payments');
-                foreach ($data  as $payment) {
-                    switch($payment)
-                }
-            } else {
-                abort(404);
-            }
-        } else {
-            abort(401);
-        }
-    }
+    // public function makeInspectionPayment($eplId)
+    // {
+    //     $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+    //     if ($pageAuth['is_create']) {
+    //         $epl = EPL::find($eplId);
+    //         if ($epl) {
+    //             $data = request('payments');
+    //             foreach ($data  as $payment) {
+    //                 switch($payment)
+    //             }
+    //         } else {
+    //             abort(404);
+    //         }
+    //     } else {
+    //         abort(401);
+    //     }
+    // }
 
     public function getInspectionPaymentList()
     {
