@@ -20,7 +20,7 @@ function loadApplication_types(callBack) {
     ajaxRequest('GET', "/api/application/applicationList", null, function (dataSet) {
         if (dataSet) {
             $.each(dataSet, function (index, row) {
-                cbo += '<option value="' + row.id + '" data-amt="' + row.amount + '">(' + row.amount + ') - ' + row.name + '</option>';
+                cbo += '<option value="' + row.id + '" data-amt="' + row.amount + '">' + row.name + '</option>';
             });
         } else {
             cbo = "<option value=''>No Data Found</option>";
@@ -30,6 +30,26 @@ function loadApplication_types(callBack) {
             callBack();
         }
     });
+}
+function selectedApplication_table(obj, callBack) {
+    var tbl = "";
+    if (obj.length == 0) {
+        tbl = "<tr><td colspan='5'>No Data Found</td></tr>";
+    } else {
+        $.each(obj, function (index, row) {
+            tbl += '<tr>';
+            tbl += '<td>' + ++index + '</td>';
+            tbl += '<td>' + row.name + '</td>';
+            tbl += '<td>' + row.qty + '</td>';
+            tbl += '<td>' + row.amount + '</td>';
+            tbl += '<td><button value="' + row.id + '" type="button" class="btn btn-danger app_removeBtn">Remove</button></td>';
+            tbl += '</tr>';
+        });
+    }
+    $('#tbl_applications tbody').html(tbl);
+    if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        callBack();
+    }
 }
 
 function paymentDetals_table() {
@@ -71,6 +91,11 @@ function show_mesege(resp_id) {
             title: 'Enviremontal MS</br>Error'
         });
     }
+}
+
+function set_application_amount() {
+    let apl_amt = (isNaN(parseFloat($('#application_combo :selected').data('amt')))) ? '00.00' : parseFloat($('#application_combo :selected').data('amt'));
+    $('#amt').val(apl_amt);
 }
 const Toast = Swal.mixin({
     toast: true,

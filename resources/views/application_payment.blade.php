@@ -35,16 +35,6 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <label>Application Type: </label>
-                            <select id="application_combo" class="form-control form-control-sm">
-                                <option>Loading...</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Amount *</label>
-                            <input id="amt" type="text" class="form-control form-control-sm" placeholder="" readonly="" value="">
-                        </div>
-                        <div class="form-group">
                             <label>Name *</label>
                             <input id="cus_name" type="text" class="form-control form-control-sm" placeholder="" value="">
                         </div>
@@ -60,16 +50,25 @@
                             <label>Address </label>
                             <input id="cus_address" type="text" class="form-control form-control-sm" placeholder="" value="">
                         </div>
+                        <div class="form-group">
+                            <label>Application Type: </label>
+                            <select id="application_combo" class="form-control form-control-sm">
+                                <option>Loading...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount *</label>
+                            <input id="amt" type="text" class="form-control form-control-sm" placeholder="" readonly="" value="">
+                        </div>
+                        <div class="form-group">
+                            <label>Qty *</label>
+                            <input id="app_qty" type="number" class="form-control form-control-sm" placeholder="" value="1">
+                        </div>
                     </div>
                     <div class="card-footer">
+                        <button id="btnAdd" type="submit" class="btn btn-success">Add</button>
                         @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSave" type="submit" class="btn btn-success">Save</button>
-                        @endif
-                        @if($pageAuth['is_update']==1 || false)
-                        <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
-                        @endif
-                        @if($pageAuth['is_delete']==1 || false)
-                        <button id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal" data-target="#modal-danger">Delete</button>
+                        <button id="btnSave" type="submit" class="btn btn-dark pull-right"><i class="fa fa-print"></i> &nbsp;Complete</button>
                         @endif
                     </div>                           
                 </div>
@@ -82,19 +81,21 @@
                         <div class="row">
 
                             <div class="col-md-12">
-                                <div class="card">
+                                <div class="card card-secondary">
                                     <div class="card-header">
                                         <h3 class="card-title">Pending Payment List</h3>
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body p-0">
                                         <div class="card-body table-responsive" style="height: 450px;">
-                                            <table class="table table-condensed" id="tblPaymentCat">
+                                            <table class="table table-condensed" id="tbl_applications">
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 10px">#</th>
                                                         <th>Name</th>
-                                                        <th style="width: 140px">Action</th>
+                                                        <th>Qty</th>
+                                                        <th>Amount</th>
+                                                        <th style="">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -141,6 +142,7 @@
 <!-- AdminLTE App -->
 <script>
     $(function () {
+        var ITEM_LIST = [];
         loadApplication_types(function () {
             set_application_amount();
         });
@@ -149,25 +151,24 @@
             set_application_amount();
         });
 //click save button
-        function set_application_amount() {
-            let apl_amt = (isNaN(parseFloat($('#application_combo :selected').data('amt')))) ? '00.00' : parseFloat($('#application_combo :selected').data('amt'));
-            $('#amt').val(apl_amt);
-        }
+
+
         function getFormData() {
             let data = {
                 id: parseInt($('#application_combo').val()),
-                amount: parseFloat($('#amt').val()),
                 name: $('#cus_name').val().trim(),
                 nic: $('#cus_nic').val().trim(),
                 address: $('#cus_address').val().trim(),
                 contact_no: $('#cus_tel').val().trim(),
+                items: ITEM_LIST,
             };
             if (isNaN(data.id)) {
                 alert('Please Select Application First!');
                 return false;
             }
-            if (isNaN(data.amount)) {
-                alert('Please Select Application Amount First!');
+
+            if (data.items.length == 0) {
+                alert('Please Select Payment Applications !');
                 return false;
             }
             if (data.name.length == 0) {
@@ -176,10 +177,54 @@
             }
             return data;
         }
+        $('#btnAdd').click(function () {
+            add_itemToBill();
+        });
+        function add_itemToBill() {
+            let app_id = parseInt($('#application_combo').val());
+            let app_name = $('#application_combo :selected').html();
+            let app_qty = parseInt($('#app_qty').val());
+            let amount = parseFloat($('#amt').val());
+            if (isValueExsist(app_id)) {
+                alert('"' + app_name + '" already added !');
+                return false;
+            }
+            if (isNaN(app_id)) {
+                alert("invalid Application Type!");
+                return false;
+            }
+            if (isNaN(app_qty)) {
+                alert("invalid Application Qty !");
+                return false;
+            }
+            if (isNaN(amount)) {
+                alert('Please Select Application Amount First!');
+                return false;
+            }
+            ITEM_LIST.push({id: app_id, qty: app_qty, name: app_name, amount: amount});
+            selectedApplication_table(ITEM_LIST);
+        }
+
+        function remove_itemFrom_bill(rem_val) {
+// get index of object with id:37
+            var removeIndex = ITEM_LIST.map(function (item) {
+                return item.id;
+            }).indexOf(rem_val);
+// remove object
+            ITEM_LIST.splice(removeIndex, 1);
+            selectedApplication_table(ITEM_LIST);
+        }
+
+        $(document).on('click', '.app_removeBtn', function (parameters) {
+            remove_itemFrom_bill($(this).val());
+        })
+
         $('#btnSave').click(function () {
             saveApplicationPayment(getFormData(), function (r) {
                 show_mesege(r);
                 if (r.id == 1) {
+                    ITEM_LIST = [];
+                    selectedApplication_table(ITEM_LIST);
                     $.ajax({
                         url: 'http://127.0.0.1:8081/hansana',
                         data: {code: r.code, name: r.name},
@@ -189,6 +234,15 @@
                 }
             });
         });
+        function isValueExsist(value) {
+            let ret = false;
+            $.map(ITEM_LIST, function (val) {
+                if (val.id == value) {
+                    ret = true;
+                }
+            });
+            return ret;
+        }
     });
 </script>
 @endsection
