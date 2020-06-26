@@ -104,3 +104,41 @@ const Toast = Swal.mixin({
     timer: 4000
 
 });
+
+function loadTable() {
+    ajaxRequest('GET', 'api/application/pendingPayments', null, function (data) {
+        var table = "";
+        var id = 1;
+        $.each(data, function (index, value) {
+            table += "<tr>";
+            table += "<td>" + id++ + "</td>";
+            table += "<td>" + value.application_client.name + "</td>";
+            table += "<td>" + value.application_client.nic + "</td>";
+            table += "<td>" + value.application_client.contact_no + "</td>";
+            table += "<td>" + value.application_client.created_at + "</td>";
+            if (value.status == 0) {
+                table += "<td><button value='" + value.id + "' type='button' class='btn btn-block btn-danger btn-xs btnRemove'>Delete</button></td>";
+            } else if (value.status == 1) {
+                table += "<td><button id='getIssuedId' value='" + value.id + "' type='button' class='btn btn-block btn-dark btn-xs btnIssue'>Issue Application</button></td>";
+            } else {
+                table += "<td></td>";
+            }
+            table += "</tr>";
+        });
+        $('#tbl_pendingpays tbody').html(table);
+        $("#tbl_pendingpays").DataTable();
+    });
+}
+
+function issueApplication(id) {
+    let url = 'api/application/markPayment/id/' + id;
+    ajaxRequest('PATCH', url, null, function (parameters) {
+        loadTable();
+    })
+}
+function deleteIssueApplication(id) {
+    let url = 'api/epl/regPayment/id/' + id;
+    ajaxRequest('DELETE', url, null, function (parameters) {
+        loadTable();
+    })
+}

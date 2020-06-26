@@ -26,90 +26,142 @@
     </div>
 </section>
 <section class="content-header">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-5">
-                <div class="card card-primary">
-                    <div class="card-header">
-                        <label>Application Details</label>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label>Name *</label>
-                            <input id="cus_name" type="text" class="form-control form-control-sm" placeholder="" value="">
-                        </div>
-                        <div class="form-group">
-                            <label>NIC </label>
-                            <input id="cus_nic" type="text" class="form-control form-control-sm" placeholder="" value="">
-                        </div>
-                        <div class="form-group">
-                            <label>Contact </label>
-                            <input id="cus_tel" type="text" class="form-control form-control-sm" placeholder="" value="">
-                        </div>
-                        <div class="form-group">
-                            <label>Address </label>
-                            <input id="cus_address" type="text" class="form-control form-control-sm" placeholder="" value="">
-                        </div>
-                        <div class="form-group">
-                            <label>Application Type: </label>
-                            <select id="application_combo" class="form-control form-control-sm">
-                                <option>Loading...</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Amount *</label>
-                            <input id="amt" type="text" class="form-control form-control-sm" placeholder="" readonly="" value="">
-                        </div>
-                        <div class="form-group">
-                            <label>Qty *</label>
-                            <input id="app_qty" type="number" class="form-control form-control-sm" placeholder="" value="1">
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <button id="btnAdd" type="submit" class="btn btn-success">Add</button>
-                        @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSave" type="submit" class="btn btn-dark pull-right"><i class="fa fa-print"></i> &nbsp;Complete</button>
-                        @endif
-                    </div>                           
-                </div>
+    <div class="col-md-12">
+        <div class="card card-primary card-outline card-tabs">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-home-tab" data-toggle="pill" href="#custom-tabs-two-home" role="tab" aria-controls="custom-tabs-two-home" aria-selected="true">Payment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-profile-tab" data-toggle="pill" href="#custom-tabs-two-profile" role="tab" aria-controls="custom-tabs-two-profile" aria-selected="false">Issued Applications</a>
+                    </li>
+                </ul>
             </div>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    <div class="tab-pane fade active show" id="custom-tabs-two-home" role="tabpanel" aria-labelledby="custom-tabs-two-home-tab">
 
-
-            <div class="col-md-7">
-                <div class="card card-primary">
-                    <div class="card-body">
-                        <div class="row">
-
-                            <div class="col-md-12">
-                                <div class="card card-secondary">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Pending Payment List</h3>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="card card-primary">
+                                        <div class="card-header">
+                                            <label>Application Details</label>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label>Name *</label>
+                                                <input id="cus_name" type="text" class="form-control form-control-sm" placeholder="" value="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>NIC </label>
+                                                <input id="cus_nic" type="text" class="form-control form-control-sm" placeholder="" value="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Contact </label>
+                                                <input id="cus_tel" type="text" class="form-control form-control-sm" placeholder="" value="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Address </label>
+                                                <input id="cus_address" type="text" class="form-control form-control-sm" placeholder="" value="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Application Type: </label>
+                                                <select id="application_combo" class="form-control form-control-sm">
+                                                    <option>Loading...</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Amount *</label>
+                                                <input id="amt" type="text" class="form-control form-control-sm" placeholder="" readonly="" value="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Qty *</label>
+                                                <input id="app_qty" type="number" class="form-control form-control-sm" placeholder="" value="1">
+                                            </div>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button id="btnAdd" type="submit" class="btn btn-success">Add</button>
+                                            @if($pageAuth['is_create']==1 || false)
+                                            <button id="btnSave" type="submit" class="btn btn-dark pull-right"><i class="fa fa-print"></i> &nbsp;Complete</button>
+                                            @endif
+                                        </div>                           
                                     </div>
-                                    <!-- /.card-header -->
-                                    <div class="card-body p-0">
-                                        <div class="card-body table-responsive" style="height: 450px;">
-                                            <table class="table table-condensed" id="tbl_applications">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="width: 10px">#</th>
-                                                        <th>Name</th>
-                                                        <th>Qty</th>
-                                                        <th>Amount</th>
-                                                        <th style="">Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
+                                </div>
+
+
+                                <div class="col-md-7">
+                                    <div class="card card-primary">
+                                        <div class="card-body">
+                                            <div class="row">
+
+                                                <div class="col-md-12">
+                                                    <div class="card card-secondary">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">Pending Payment List</h3>
+                                                        </div>
+                                                        <!-- /.card-header -->
+                                                        <div class="card-body p-0">
+                                                            <div class="card-body table-responsive" style="height: 450px;">
+                                                                <table class="table table-condensed" id="tbl_applications">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th style="width: 10px">#</th>
+                                                                            <th>Name</th>
+                                                                            <th>Qty</th>
+                                                                            <th>Amount</th>
+                                                                            <th style="">Action</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.card-body -->
+                                                    </div>
+                                                </div>                                        
+                                            </div>
                                         </div>
                                     </div>
-                                    <!-- /.card-body -->
                                 </div>
-                            </div>                                        
+                            </div>
                         </div>
+
+                    </div>
+                    <div class="tab-pane fade" id="custom-tabs-two-profile" role="tabpanel" aria-labelledby="custom-tabs-two-profile-tab">
+                        <div class="col-md-12">
+                            <div class="card card-secondary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Pending Payments</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body p-0">
+                                    <div class="card-body table-responsive" style="height: 450px;">
+                                        <table class="table table-condensed" id="tbl_pendingpays">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 10px">#</th>
+                                                    <th>Name</th>
+                                                    <th>NIC</th>
+                                                    <th>Contact Number</th>
+                                                    <th>Date</th>
+                                                    <th style="">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div> 
                     </div>
                 </div>
             </div>
+            <!-- /.card -->
         </div>
     </div>
 </section>
@@ -151,7 +203,7 @@
             set_application_amount();
         });
 //click save button
-
+        loadTable();
 
         function getFormData() {
             let data = {
@@ -231,9 +283,19 @@
                         success: function (result) {
                         }
                     });
+                    loadTable();
                 }
             });
         });
+        //Issue Btn
+        $(document).on('click', '.btnIssue', function (parameters) {
+            issueApplication($(this).val());
+        });
+        //Del Button
+        $(document).on('click', '.btnRemove', function (parameters) {
+            deleteIssueApplication($(this).val());
+        });
+        
         function isValueExsist(value) {
             let ret = false;
             $.map(ITEM_LIST, function (val) {
