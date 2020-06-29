@@ -113,8 +113,16 @@ function loadTable() {
             table += "<tr>";
             table += "<td>" + id++ + "</td>";
             table += "<td>" + value.application_client.name + "</td>";
-            table += "<td>" + value.application_client.nic + "</td>";
-            table += "<td>" + value.application_client.contact_no + "</td>";
+            if (value.application_client.nic == null) {
+                table += "<td>N/A</td>";
+            } else {
+                table += "<td>" + value.application_client.nic + "</td>";
+            }
+            if (value.application_client.contact_no == null) {
+                table += "<td>N/A</td>";
+            } else {
+                table += "<td>" + value.application_client.contact_no + "</td>";
+            }
             table += "<td>" + value.application_client.created_at + "</td>";
             if (value.status == 0) {
                 table += "<td><button value='" + value.id + "' type='button' class='btn btn-block btn-danger btn-xs btnRemove'>Delete</button></td>";
