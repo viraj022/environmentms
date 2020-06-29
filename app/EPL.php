@@ -13,6 +13,8 @@ class EPL extends Model
     public const INSPECTION = 'inspection';
     public const INSPECTION_FINE = 'inspection_fine';
 
+    public const INSPECTION_FEE = 'Inspection Fee';
+
 
     public function client()
     {

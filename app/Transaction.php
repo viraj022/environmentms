@@ -13,6 +13,7 @@ class Transaction extends Model
     public const LICENCE_FEE = 'licence_fee';
     public const APPLICATION_FEE = 'application_fee';
     public const TRANS_TYPE_EPL = "EPL";
+    public const TRANS_TYPE_FINE = "EPL";
 
     public function getPaymentDetails()
     {

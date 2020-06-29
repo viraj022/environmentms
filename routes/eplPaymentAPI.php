@@ -210,6 +210,43 @@ Route::middleware('auth:api')->get('/application/applicationList', 'EPLPaymentCo
     }
 ]
 */
+Route::middleware('auth:api')->get('/application/licenceList', 'EPLPaymentController@getLicenctList'); // get licence payment list
+/*
+[
+    {
+        "id": 6,
+        "payment_type_id": 5,
+        "name": "Licence fee for industries category A",
+        "type": "regular",
+        "amount": "7500.00",
+        "created_at": "2020-03-13 11:19:44",
+        "updated_at": "2020-03-13 11:19:44",
+        "payment_ranges": []
+    },
+    {
+        "id": 7,
+        "payment_type_id": 5,
+        "name": "Licence fee for industries category B",
+        "type": "regular",
+        "amount": "2000.00",
+        "created_at": "2020-03-13 11:19:58",
+        "updated_at": "2020-03-13 11:19:58",
+        "payment_ranges": []
+    },
+    {
+        "id": 8,
+        "payment_type_id": 5,
+        "name": "Licence fee for industries category C",
+        "type": "regular",
+        "amount": "1200.00",
+        "created_at": "2020-03-13 11:22:02",
+        "updated_at": "2020-03-16 20:25:04",
+        "payment_ranges": []
+    }
+]
+*/
+
+
 Route::middleware('auth:api')->get('/inspection/list', 'EPLPaymentController@getInspectionPaymentList'); // get inspection payment list
 
 /*
@@ -297,4 +334,144 @@ Route::middleware('auth:api')->patch('/application/process/id/{id}', 'EPLPayment
     "id": 1,
     "message": "true"
 }
+*/
+
+Route::middleware('auth:api')->post('/epl/pay/id/{id}', 'EPLPaymentController@payEPL'); //pay epl
+/*
+
+{
+    "items": [
+        {
+            "id": "19",
+            "amount" : "450"
+        }
+    ]
+}
+
+*/
+/*
+{
+    "id": 1,
+    "message": "true",
+    "code": 41
+}
+*/
+Route::middleware('auth:api')->get('/epl/pay/id/{id}', 'EPLPaymentController@paymentList'); // get payment list
+
+/*
+{
+    "inspection": {
+        "status": "payed",
+        "object": {
+            "id": 33,
+            "transaction_id": 46,
+            "qty": 1,
+            "amount": 450,
+            "payment_type_id": 4,
+            "payment_id": 19,
+            "created_at": "2020-06-29 15:59:44",
+            "updated_at": "2020-06-29 15:59:44",
+            "transaction_type": "EPL",
+            "client_id": 9,
+            "transaction": {
+                "id": 46,
+                "status": 0,
+                "created_at": "2020-06-29 15:59:44",
+                "updated_at": "2020-06-29 15:59:44",
+                "deleted_at": null,
+                "cashier_name": null,
+                "invoice_no": null,
+                "canceled_at": null,
+                "billed_at": null,
+                "type": "EPL",
+                "type_id": 9
+            }
+        }
+    },
+    "license_fee": {
+        "status": "payed",
+        "object": {
+            "id": 31,
+            "transaction_id": 44,
+            "qty": 1,
+            "amount": 450,
+            "payment_type_id": 5,
+            "payment_id": 6,
+            "created_at": "2020-06-29 11:03:47",
+            "updated_at": "2020-06-29 11:03:47",
+            "transaction_type": "EPL",
+            "client_id": 9,
+            "transaction": {
+                "id": 44,
+                "status": 0,
+                "created_at": "2020-06-29 11:03:47",
+                "updated_at": "2020-06-29 11:03:47",
+                "deleted_at": null,
+                "cashier_name": null,
+                "invoice_no": null,
+                "canceled_at": null,
+                "billed_at": null,
+                "type": "EPL",
+                "type_id": 9
+            }
+        }
+    },
+    "fine": {
+        "status": "payed", // not_payed // not_available
+        "object": {
+            "id": 32,
+            "transaction_id": 45,
+            "qty": 1,
+            "amount": 450,
+            "payment_type_id": 8,
+            "payment_id": 74,
+            "created_at": "2020-06-29 15:51:17",
+            "updated_at": "2020-06-29 15:51:17",
+            "transaction_type": "EPL",
+            "client_id": 9,
+            "transaction": {
+                "id": 45,
+                "status": 0,
+                "created_at": "2020-06-29 15:51:17",
+                "updated_at": "2020-06-29 15:51:17",
+                "deleted_at": null,
+                "cashier_name": null,
+                "invoice_no": null,
+                "canceled_at": null,
+                "billed_at": null,
+                "type": "EPL",
+                "type_id": 9
+            }
+        }
+    }
+}
+*/
+
+Route::middleware('auth:api')->get('/epl/inspection/fine/id/{id}', 'EPLPaymentController@getInspectionFine'); // get inspection fine amount
+
+/*
+* input
+{
+    "inspection_fee" : 700000
+}
+
+*/
+
+/*
+* output
+* case 1 // have a fine
+{
+    "id": 1,
+    "message": "fine",
+    "amount": 114500
+}
+
+*case 2 no fine
+{
+    "id": 1,
+    "message": "no_fine",
+    "amount": "0"
+}
+
+
 */
