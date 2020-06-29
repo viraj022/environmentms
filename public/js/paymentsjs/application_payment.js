@@ -20,7 +20,7 @@ function loadApplication_types(callBack) {
     ajaxRequest('GET', "/api/application/applicationList", null, function (dataSet) {
         if (dataSet) {
             $.each(dataSet, function (index, row) {
-                cbo += '<option value="' + row.id + '" data-amt="' + row.amount + '">(' + row.amount + ') - ' + row.name + '</option>';
+                cbo += '<option value="' + row.id + '" data-amt="' + row.amount + '">' + row.name + '</option>';
             });
         } else {
             cbo = "<option value=''>No Data Found</option>";
@@ -30,6 +30,26 @@ function loadApplication_types(callBack) {
             callBack();
         }
     });
+}
+function selectedApplication_table(obj, callBack) {
+    var tbl = "";
+    if (obj.length == 0) {
+        tbl = "<tr><td colspan='5'>No Data Found</td></tr>";
+    } else {
+        $.each(obj, function (index, row) {
+            tbl += '<tr>';
+            tbl += '<td>' + ++index + '</td>';
+            tbl += '<td>' + row.name + '</td>';
+            tbl += '<td>' + row.qty + '</td>';
+            tbl += '<td>' + row.amount + '</td>';
+            tbl += '<td><button value="' + row.id + '" type="button" class="btn btn-danger app_removeBtn">Remove</button></td>';
+            tbl += '</tr>';
+        });
+    }
+    $('#tbl_applications tbody').html(tbl);
+    if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        callBack();
+    }
 }
 
 function paymentDetals_table() {
@@ -72,6 +92,11 @@ function show_mesege(resp_id) {
         });
     }
 }
+
+function set_application_amount() {
+    let apl_amt = (isNaN(parseFloat($('#application_combo :selected').data('amt')))) ? '00.00' : parseFloat($('#application_combo :selected').data('amt'));
+    $('#amt').val(apl_amt);
+}
 const Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
@@ -79,3 +104,41 @@ const Toast = Swal.mixin({
     timer: 4000
 
 });
+
+function loadTable() {
+    ajaxRequest('GET', 'api/application/pendingPayments', null, function (data) {
+        var table = "";
+        var id = 1;
+        $.each(data, function (index, value) {
+            table += "<tr>";
+            table += "<td>" + id++ + "</td>";
+            table += "<td>" + value.application_client.name + "</td>";
+            table += "<td>" + value.application_client.nic + "</td>";
+            table += "<td>" + value.application_client.contact_no + "</td>";
+            table += "<td>" + value.application_client.created_at + "</td>";
+            if (value.status == 0) {
+                table += "<td><button value='" + value.id + "' type='button' class='btn btn-block btn-danger btn-xs btnRemove'>Delete</button></td>";
+            } else if (value.status == 1) {
+                table += "<td><button id='getIssuedId' value='" + value.id + "' type='button' class='btn btn-block btn-dark btn-xs btnIssue'>Issue Application</button></td>";
+            } else {
+                table += "<td></td>";
+            }
+            table += "</tr>";
+        });
+        $('#tbl_pendingpays tbody').html(table);
+        $("#tbl_pendingpays").DataTable();
+    });
+}
+
+function issueApplication(id) {
+    let url = 'api/application/markPayment/id/' + id;
+    ajaxRequest('PATCH', url, null, function (parameters) {
+        loadTable();
+    })
+}
+function deleteIssueApplication(id) {
+    let url = 'api/epl/regPayment/id/' + id;
+    ajaxRequest('DELETE', url, null, function (parameters) {
+        loadTable();
+    })
+}
