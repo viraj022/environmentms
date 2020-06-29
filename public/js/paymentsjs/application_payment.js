@@ -130,15 +130,20 @@ function loadTable() {
     });
 }
 
-function issueApplication(id) {
-    let url = 'api/application/markPayment/id/' + id;
-    ajaxRequest('PATCH', url, null, function (parameters) {
-        loadTable();
+function issueApplication(id, callBack) {
+    let url = 'api/application/process/id/' + id;
+    ajaxRequest('PATCH', url, null, function (resp) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(resp);
+        }
     })
 }
-function deleteIssueApplication(id) {
+function deleteIssueApplication(id, callBack) {
     let url = 'api/epl/regPayment/id/' + id;
-    ajaxRequest('DELETE', url, null, function (parameters) {
+    ajaxRequest('DELETE', url, null, function (resp) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(resp);
+        }
         loadTable();
     })
 }
