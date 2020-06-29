@@ -164,6 +164,28 @@
             <!-- /.card -->
         </div>
     </div>
+    <div class="modal fade" id="modal-danger">
+        <div class="modal-dialog">
+            <div class="modal-content bg-danger">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Selected Payment</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><b>Are you sure you want to permanently delete this Payment? </b></p>
+                    <p>Once you continue, this process can not be undone. Please Procede with care.</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                    <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 </section>
 @endif
 @endsection
@@ -284,18 +306,28 @@
                         }
                     });
                     loadTable();
+                    resetFormData();
                 }
             });
         });
         //Issue Btn
         $(document).on('click', '.btnIssue', function (parameters) {
-            issueApplication($(this).val());
+            issueApplication($(this).val(), function (r) {
+                show_mesege(r);
+                if (r.id == 1) {
+                    loadTable();
+                }
+            });
         });
         //Del Button
         $(document).on('click', '.btnRemove', function (parameters) {
-            deleteIssueApplication($(this).val());
+            if (confirm("Are you sure you want to delete this?")) {
+                deleteIssueApplication($(this).val());
+            } else {
+                return false;
+            }
         });
-        
+
         function isValueExsist(value) {
             let ret = false;
             $.map(ITEM_LIST, function (val) {
@@ -304,6 +336,12 @@
                 }
             });
             return ret;
+        }
+        function resetFormData() {
+            $('#cus_name').val('');
+            $('#cus_nic').val('');
+            $('#cus_address').val('');
+            $('#cus_tel').val('');
         }
     });
 </script>
