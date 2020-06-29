@@ -161,7 +161,7 @@
                     </a>
                 </li>
                 @endif
-                 @if($pre['id']===config('auth.privileges.committeePool'))
+                @if($pre['id']===config('auth.privileges.committeePool'))
                 <li class="nav-item">
                     <a href="{{ url('/committee_pool') }}" class="nav-link {{ Request::is('committee_pool') ? 'active' : '' }}">
                         <i class="fas fa-puzzle-piece nav-icon"></i>
@@ -208,8 +208,34 @@
                     </a>
                 </li>
                 @endif
+                @if($pre['id']===config('auth.privileges.clientSpace'))
+                <li class="nav-item">
+                    <a href="{{ url('/env_officer') }}" class="nav-link {{ Request::is('env_officer') ? 'active' : '' }}">
+                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <p>Pending EPL</p>
+                    </a>
+                </li>
+                @endif
                 @endforeach
 
+            </ul>
+        </li>
+        <li class="nav-item has-treeview menu-open">
+            <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-address-card"></i>
+                <p>Application <i class="right fas fa-angle-left"></i></p>
+            </a>
+            <ul class="nav nav-treeview">
+                @foreach((auth()->user()->privileges) as $indexKey=>$pre)
+                @if($pre['id']===config('auth.privileges.clientSpace'))
+                <li class="nav-item">
+                    <a href="{{ url('/application_payment') }}" class="nav-link {{ Request::is('/application_payment') ? 'active' : '' }}">
+                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <p>Issue Applications</p>
+                    </a>
+                </li>
+                @endif
+                @endforeach
             </ul>
         </li>
 

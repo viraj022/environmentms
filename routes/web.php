@@ -36,6 +36,13 @@ Route::get('/client_space', 'ClientController@index');
 Route::get('/all_clients', 'ClientController@allClientsindex');
 Route::get('/committee_pool', 'CommetyPoolController@index');
 Route::get('/epl_assign', 'EnvironmentOfficerController@index2');
+Route::get('/env_officer', 'EnvOfficerController@index');
+Route::get('/remarks/epl/{id}', 'RemarkController@index');
+Route::get('/inspection/epl/id/{id}', 'InspectionSessionController@index');
+Route::get('/inspection/epl/remarks/id/{id}', 'InspectionRemarksController@index');
+Route::get('/inspection/personals/id/{id}', 'InspectionPersonalController@index');
+Route::get('/inspection_attachment/id/{id}', 'InspectionSessionAttachmentController@index');
+Route::get('/application_payment', 'EPLController@index2');
 //ui routs
 
 //dashboard

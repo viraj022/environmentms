@@ -45,7 +45,6 @@ class RollController extends Controller
                 ->withInput()
                 ->with('error', 'Error');
         }
-
     }
     public function store($id)
     {
@@ -58,10 +57,8 @@ class RollController extends Controller
         $msg = $roll->save();
         if ($msg) {
             return array('id' => 1, 'mgs' => 'true');
-
         } else {
             return array('id' => 2, 'mgs' => 'false');
-
         }
     }
 
@@ -81,13 +78,14 @@ class RollController extends Controller
             foreach (request('pre') as $value) {
 
                 $roll->privileges()->attach(
-                    $value['id'], [
+                    $value['id'],
+                    [
                         'is_read' => $value['is_read'],
                         'is_create' => $value['is_create'],
                         'is_update' => $value['is_update'],
                         'is_delete' => $value['is_delete'],
-                    ]);
-
+                    ]
+                );
             }
         });
         return array('id' => '1', 'msg' => 'true');
@@ -101,24 +99,18 @@ class RollController extends Controller
             $msg = $roll->delete();
             if ($msg) {
                 return array('id' => 1, 'mgs' => 'true');
-
             } else {
                 return array('id' => 2, 'mgs' => 'false');
-
             }
-
         } catch (\Illuminate\Database\QueryException $e) {
 
             if ($e->errorInfo[0] == 23000) {
                 return response(array('id' => 3, 'mgs' => 'Cannot delete foreign key constraint fails'), 200)
                     ->header('Content-Type', 'application/json');
-
             } else {
                 return response(array('id' => 3, 'mgs' => 'Internal Server Error'), 500)
                     ->header('Content-Type', 'application/json');
-
             }
-
         }
     }
 }

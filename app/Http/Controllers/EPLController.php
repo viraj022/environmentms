@@ -37,6 +37,16 @@ class EPLController extends Controller {
         }
     }
 
+    public function index2() {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_read']) {
+            return view('application_payment', ['pageAuth' => $pageAuth]);
+        } else {
+            abort(401);
+        }
+    }
+
     public function profile($client, $profile) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
@@ -50,8 +60,8 @@ class EPLController extends Controller {
             abort(401);
         }
     }
-    public function attachment_upload_view($epl_id)
-    {
+
+    public function attachment_upload_view($epl_id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
@@ -147,7 +157,7 @@ class EPLController extends Controller {
         return EPL::leftJoin('environment_officers', 'e_p_l_s.environment_officer_id', 'environment_officers.id')
                         ->leftJoin('users', 'environment_officers.user_id', 'users.id')
                         ->where('e_p_l_s.id', $id)
-                        ->select('e_p_l_s.*', 'users.first_name','users.last_name')
+                        ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
                         ->first();
     }
 
@@ -363,6 +373,31 @@ class EPLController extends Controller {
             return EPL::whereNull('environment_officer_id')->get();
         } else {
             return abort(4010);
+        }
+    }
+
+    public function addSiteClearance($epl) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_create']) {
+            request()->validate([
+                'site_clearance_file' => 'required|string',
+            ]);
+            $epl = EPL::find($epl);
+            if ($epl) {
+                /// need to validate if the site clearence file number actually exiests
+                $epl->site_clearance_file = \request('site_clearance_file');
+                $msg = $epl->save();
+                if ($msg) {
+                    return array('id' => 1, 'message' => 'true');
+                } else {
+                    return array('id' => 0, 'message' => 'false');
+                }
+            } else {
+                abort(404);
+            }
+        } else {
+            abort(401);
         }
     }
 

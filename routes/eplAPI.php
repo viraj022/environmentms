@@ -162,7 +162,7 @@ Route::middleware('auth:api')->get('/epls/new', 'EPLController@newEpls'); //   g
 // ]
 
 
-Route::middleware('auth:api')->get('/epls/attachements/application_name/{application_name}', 'AttachemntsController@getAttachment_by_application_name'); 
+Route::middleware('auth:api')->get('/epls/attachements/application_name/{application_name}', 'AttachemntsController@getAttachment_by_application_name');
 
 
 /*
@@ -182,5 +182,65 @@ Route::middleware('auth:api')->get('/epls/attachements/application_name/{applica
         "deleted_at": null
     }
 ]
+
+*/
+Route::middleware('auth:api')->get('/epl/attachements/id/{id}', 'AttachemntsController@getEplAttachments');
+/*
+[
+    {
+        "id": 1,
+        "name": "Copy of deed, copy of the Lease agreement of the land -Legal authorization to use the land for the particular industrial activity",
+        "created_at": "2020-02-26 11:04:17",
+        "updated_at": "2020-02-26 11:04:31",
+        "deleted_at": null,
+        "pivot": {
+            "e_p_l_id": 8,
+            "attachemnt_id": 1,
+            "path": "",
+            "type": ""
+        }
+    },
+    {
+        "id": 2,
+        "name": "Copy of Survey Plan of the land",
+        "created_at": "2020-02-26 11:05:03",
+        "updated_at": "2020-02-26 11:05:03",
+        "deleted_at": null,
+        "pivot": {
+            "e_p_l_id": 8,
+            "attachemnt_id": 2,
+            "path": "",
+            "type": ""
+        }
+    }
+]
+
+
+
+*/
+
+
+Route::middleware('auth:api')->post('/epl/attachement/set/attachment/{attachment}/elp/{epl}', 'AttachemntsController@attach');
+/*
+{
+  "message": "true"
+}
+
+
+*/
+Route::middleware('auth:api')->delete('/epl/attachement/unset/attachment/{attachment}/elp/{epl}', 'AttachemntsController@revoke');
+
+/*
+{
+  "message": "true"
+}
+*/
+
+Route::middleware('auth:api')->post('/epl/site_clearance/id/{epl}', 'EPLController@addSiteClearance');
+
+/*
+{
+    "site_clearance_file":"dasd/45/das"
+}
 
 */

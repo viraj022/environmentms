@@ -12,6 +12,7 @@ class Transaction extends Model
     public const INSPECTION = 'inspection';
     public const LICENCE_FEE = 'licence_fee';
     public const APPLICATION_FEE = 'application_fee';
+    public const TRANS_TYPE_EPL = "EPL";
 
     public function getPaymentDetails()
     {
@@ -24,5 +25,16 @@ class Transaction extends Model
             ->where('payment_status', '=', 1)
             ->sum('amount');
         return array('amount' => $transactionSum, 'payed' => $transactionCounterSum);
+    }
+
+    public function transactionItems()
+    {
+        // return $this->hasMany(transactionItems::class, 'level_id');
+        return $this->hasMany(TransactionItem::class,  'transaction_id', 'id');
+    }
+
+    public function applicationClient()
+    {
+        return $this->belongsTo(ApplicationCliten::class, 'type_id', 'id');
     }
 }

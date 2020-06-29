@@ -1,0 +1,157 @@
+function ajaxRequest(Method, url, data, callBack) {
+    $.ajax({
+        type: Method,
+        headers: {
+            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            "Accept": "application/json"
+        },
+        url: url,
+        data: data,
+        cache: false,
+        success: function (result) {
+            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+                callBack(result);
+            }
+        }
+    });
+}
+function loadApplication_types(callBack) {
+    var cbo = "";
+    ajaxRequest('GET', "/api/application/applicationList", null, function (dataSet) {
+        if (dataSet) {
+            $.each(dataSet, function (index, row) {
+                cbo += '<option value="' + row.id + '" data-amt="' + row.amount + '">' + row.name + '</option>';
+            });
+        } else {
+            cbo = "<option value=''>No Data Found</option>";
+        }
+        $('#application_combo').html(cbo);
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack();
+        }
+    });
+}
+function selectedApplication_table(obj, callBack) {
+    var tbl = "";
+    if (obj.length == 0) {
+        tbl = "<tr><td colspan='5'>No Data Found</td></tr>";
+    } else {
+        $.each(obj, function (index, row) {
+            tbl += '<tr>';
+            tbl += '<td>' + ++index + '</td>';
+            tbl += '<td>' + row.name + '</td>';
+            tbl += '<td>' + row.qty + '</td>';
+            tbl += '<td>' + row.amount + '</td>';
+            tbl += '<td><button value="' + row.id + '" type="button" class="btn btn-danger app_removeBtn">Remove</button></td>';
+            tbl += '</tr>';
+        });
+    }
+    $('#tbl_applications tbody').html(tbl);
+    if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        callBack();
+    }
+}
+
+function paymentDetals_table() {
+    let tbl = "";
+    ajaxRequest('GET', "/api/application/pendingPayments", null, function (r) {
+        if (r.length == 0) {
+            tbl = "<tr><td>No data found</td></tr>";
+        } else {
+            $.each(r, function (index, row) {
+//                tbl += '<tr>';
+//                tbl += '<td>'+row.+'</td>';
+//                tbl += '</tr>';
+            });
+        }
+
+    });
+}
+
+function saveApplicationPayment(data, callBack) {
+    if (!data) {
+        return false;
+    }
+    ajaxRequest("POST", "/api/epl/regPayment", data, function (resp) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            resp.name = data.name
+            callBack(resp);
+        }
+    });
+}
+function show_mesege(resp_id) {
+    if (resp_id.message == "true") {
+        Toast.fire({
+            type: 'success',
+            title: 'Envirmontal MS</br>Success!'
+        });
+    } else {
+        Toast.fire({
+            type: 'error',
+            title: 'Enviremontal MS</br>Error'
+        });
+    }
+}
+
+function set_application_amount() {
+    let apl_amt = (isNaN(parseFloat($('#application_combo :selected').data('amt')))) ? '00.00' : parseFloat($('#application_combo :selected').data('amt'));
+    $('#amt').val(apl_amt);
+}
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 4000
+
+});
+
+function loadTable() {
+    ajaxRequest('GET', 'api/application/pendingPayments', null, function (data) {
+        var table = "";
+        var id = 1;
+        $.each(data, function (index, value) {
+            table += "<tr>";
+            table += "<td>" + id++ + "</td>";
+            table += "<td>" + value.application_client.name + "</td>";
+            if (value.application_client.nic == null) {
+                table += "<td>N/A</td>";
+            } else {
+                table += "<td>" + value.application_client.nic + "</td>";
+            }
+            if (value.application_client.contact_no == null) {
+                table += "<td>N/A</td>";
+            } else {
+                table += "<td>" + value.application_client.contact_no + "</td>";
+            }
+            table += "<td>" + value.application_client.created_at + "</td>";
+            if (value.status == 0) {
+                table += "<td><button value='" + value.id + "' type='button' class='btn btn-block btn-danger btn-xs btnRemove'>Delete</button></td>";
+            } else if (value.status == 1) {
+                table += "<td><button id='getIssuedId' value='" + value.id + "' type='button' class='btn btn-block btn-dark btn-xs btnIssue'>Issue Application</button></td>";
+            } else {
+                table += "<td></td>";
+            }
+            table += "</tr>";
+        });
+        $('#tbl_pendingpays tbody').html(table);
+        $("#tbl_pendingpays").DataTable();
+    });
+}
+
+function issueApplication(id, callBack) {
+    let url = 'api/application/process/id/' + id;
+    ajaxRequest('PATCH', url, null, function (resp) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(resp);
+        }
+    })
+}
+function deleteIssueApplication(id, callBack) {
+    let url = 'api/epl/regPayment/id/' + id;
+    ajaxRequest('DELETE', url, null, function (resp) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(resp);
+        }
+        loadTable();
+    })
+}

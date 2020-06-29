@@ -54,7 +54,7 @@ function loadEnvOfficers_combo(ass_dir_id, callBack) {
 
 }
 function assigned_EPL_table(officer_id, callBack) {
-    $('#assigned_epl_table tbody').html('');
+    $('#assigned_epl_table tbody').html('<td colspan="3">No Data Found</td></tr>');
     if (isNaN(officer_id)) {
         return false;
     }
@@ -71,13 +71,17 @@ function assigned_EPL_table(officer_id, callBack) {
         processDaate: false,
         success: function (result) {
             var tbl = "";
-            $.each(result, function (index, value) {
-                tbl += "<tr>";
-                tbl += "<td>" + ++index + "</td>";
-                tbl += "<td>" + value.code + "&nbsp&nbsp<a href='epl_profile/client/" + value.client_id + "/profile/" + value.id + "'  target='_blank'>(View)</a></td>";
-                tbl += '<td><button type="button" class="btn btn-danger removePendingEpl" value="' + value.id + '">Remove</button></td>';
-                tbl += "</tr>";
-            });
+            if (result.length == 0 || result == undefined) {
+                tbl += "<tr><td> No Data Found</td></tr>";
+            } else {
+                $.each(result, function (index, value) {
+                    tbl += "<tr>";
+                    tbl += "<td>" + ++index + "</td>";
+                    tbl += "<td>" + value.code + "&nbsp&nbsp<a href='epl_profile/client/" + value.client_id + "/profile/" + value.id + "'  target='_blank'>(View)</a></td>";
+                    tbl += '<td><button type="button" class="btn btn-danger removePendingEpl" value="' + value.id + '">Remove</button></td>';
+                    tbl += "</tr>";
+                });
+            }
             $('#assigned_epl_table tbody').html(tbl);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
@@ -86,7 +90,7 @@ function assigned_EPL_table(officer_id, callBack) {
     });
 }
 function pending_EPL_table(director_id, callBack) {
-    $('#pending_epl_table tbody').html('');
+    $('#pending_epl_table tbody').html('<td colspan="3">No Data Found</td></tr>');
     if (isNaN(director_id)) {
         return false;
     }
@@ -103,13 +107,17 @@ function pending_EPL_table(director_id, callBack) {
         processDaate: false,
         success: function (result) {
             var tbl = "";
-            $.each(result, function (index, value) {
-                tbl += "<tr>";
-                tbl += "<td>" + ++index + "</td>";
-                tbl += "<td>" + value.code + "&nbsp&nbsp<a href='epl_profile/client/" + value.client_id + "/profile/" + value.id + "'  target='_blank'>(View)</a></td>";
-                tbl += '<td><button type="button" class="btn btn-success selPendingEpl" value="' + value.id + '">Add</button></td>';
-                tbl += "</tr>";
-            });
+            if (result.length == 0 || result == undefined) {
+                tbl += "<tr><td> No Data Found</td></tr>";
+            } else {
+                $.each(result, function (index, value) {
+                    tbl += "<tr>";
+                    tbl += "<td>" + ++index + "</td>";
+                    tbl += "<td>" + value.code + "&nbsp&nbsp<a href='epl_profile/client/" + value.client_id + "/profile/" + value.id + "'  target='_blank'>(View)</a></td>";
+                    tbl += '<td><button type="button" class="btn btn-success selPendingEpl" value="' + value.id + '">Add</button></td>';
+                    tbl += "</tr>";
+                });
+            }
             $('#pending_epl_table tbody').html(tbl);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);

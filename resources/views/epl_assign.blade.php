@@ -55,7 +55,7 @@
             <div class="col-md-6">
                 <div class="card card-primary">
                     <div class="card-body">
-                        <label>Assistant Director</label>
+                        <label>Environment Officer</label>
                         <select class="form-control combo_envOfficer" id="env_officer_combo"></select>
                         <div class="card-body p-0">
                             <div class="card-body table-responsive" style="height: 550px;">
@@ -169,7 +169,7 @@
                     pending_EPL_table(parseInt($('#ass_dir_combo').val()));
                     Toast.fire({
                         type: 'success',
-                        title: 'Enviremontal MS</br>Removed!'
+                        title: 'Envirmontal MS</br>Removed!'
                     });
                 } else {
                     Toast.fire({
