@@ -130,7 +130,7 @@ class EPLPaymentController extends Controller
         if ($pageAuth['is_create']) {
             $transaction = Transaction::where('type', Transaction::APPLICATION_FEE)
                 ->where('id', $id)->first();
-            // dd($id);
+            dd($id);
             if ($transaction) {
                 if ($transaction->status == 1) {
                     $transaction->status = 2;
