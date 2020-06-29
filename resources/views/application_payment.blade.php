@@ -306,6 +306,7 @@
                         }
                     });
                     loadTable();
+                    resetFormData();
                 }
             });
         });
@@ -335,6 +336,12 @@
                 }
             });
             return ret;
+        }
+        function resetFormData() {
+            $('#cus_name').val('');
+            $('#cus_nic').val('');
+            $('#cus_address').val('');
+            $('#cus_tel').val('');
         }
     });
 </script>
