@@ -254,7 +254,7 @@ class ApprovalLogController extends Controller {
     public function getLog($id) {
         $epl = EPL::find($id);
         if ($epl) {
-            return ApprovalLog::where('type', ApprovalLog::Type_EPL)->where('type_id', $epl->id)->get();
+            return ApprovalLog::where('type', ApprovalLog::Type_EPL)->where('type_id', $epl->id)->orderBy('approve_date', 'DESC')->get();
         } else {
             abort(404);
         }
@@ -263,10 +263,17 @@ class ApprovalLogController extends Controller {
     public function current($id) {
         $epl = EPL::find($id);
         if ($epl) {
-            return ApprovalLog::where('type', ApprovalLog::Type_EPL)
-                            ->where('type_id', $epl->id)
-                            ->orderBy('id', 'desc')
-                            ->first();
+
+
+            $abc = ApprovalLog::where('type', ApprovalLog::Type_EPL)
+                    ->where('type_id', $epl->id)
+                    ->orderBy('id', 'desc')
+                    ->first();
+            if ($abc) {
+                return $abc;
+            } else {
+                return array("officer_type" => "new", "status" => 1);
+            }
         } else {
             abort(404);
         }

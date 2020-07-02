@@ -42,27 +42,19 @@
                                         <i class="far fa-calendar-alt"></i>
                                     </span>
                                 </div>
-                                <input type="text" class="form-control float-right" id="trackDate">
+                                <input type="text" class="form-control float-right envOfficer_section" id="trackDate">
                             </div>
                             <div id="valName" class="d-none"><p class="text-danger">Date is required</p></div>
                         </div>
                         <div class="form-group">
                             <label>Comment*</label>
-                            <textarea  id="getEnvOfficerCmt" type="text" class="form-control form-control-sm"
-                                       placeholder="Enter Comment..."
-                                       value=""></textarea>
+                            <textarea  id="getEnvOfficerCmt" type="text" class="form-control form-control-sm envOfficer_section" placeholder="Enter Comment..." value=""></textarea>
                             <div id="valCode" class="d-none"><p class="text-danger">Comment is required</p></div>
                         </div>
                     </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSave" type="submit" class="btn btn-success">Approve</button>
-                        @endif
-                        @if($pageAuth['is_update']==1 || false)
-                        <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
-                        @endif
-                        @if($pageAuth['is_delete']==1 || false)
-                        <button  id="btnshowDelete" type="submit" class="btn btn-danger " >Reject</button>
+                        <button id="btnSave" type="submit" class="btn btn-success envOfficer_section">Approve</button>
                         @endif
                     </div>                           
                 </div>
@@ -79,27 +71,22 @@
                                         <i class="far fa-calendar-alt"></i>
                                     </span>
                                 </div>
-                                <input type="text" class="form-control float-right" id="trackDateAssDir">
+                                <input type="text" class="form-control float-right astDir_section" id="trackDateAssDir">
                             </div>
                             <div id="valName" class="d-none"><p class="text-danger">Date is required</p></div>
                         </div>
                         <div class="form-group">
                             <label>Comment*</label>
-                            <input id="getAssDirCmt" type="text" class="form-control form-control-sm"
-                                   placeholder="Enter Comment..."
-                                   value="">
+                            <input id="getAssDirCmt" type="text" class="form-control form-control-sm astDir_section" placeholder="Enter Comment..." value="">
                             <div id="valCode" class="d-none"><p class="text-danger">Comment is required</p></div>
                         </div>
                     </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSave2" type="submit" class="btn btn-success">Approve</button>
-                        @endif
-                        @if($pageAuth['is_update']==1 || false)
-                        <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
+                        <button id="btnSave2" type="submit" class="btn btn-success astDir_section">Approve</button>
                         @endif
                         @if($pageAuth['is_delete']==1 || false)
-                        <button  id="btnshowDelete2" type="submit" class="btn btn-danger">Reject</button>
+                        <button  id="btnshowDelete2" type="submit" class="btn btn-danger astDir_section">Reject</button>
                         @endif
                     </div>                           
                 </div>
@@ -116,27 +103,22 @@
                                         <i class="far fa-calendar-alt"></i>
                                     </span>
                                 </div>
-                                <input type="text" class="form-control float-right" id="trackDateDir">
+                                <input type="text" class="form-control float-right director_sectiom" id="trackDateDir">
                             </div>
                             <div id="valName" class="d-none"><p class="text-danger">Date is required</p></div>
                         </div>
                         <div class="form-group">
                             <label>Comment*</label>
-                            <input id="getDirCmt" type="text" class="form-control form-control-sm"
-                                   placeholder="Enter Comment..."
-                                   value="">
+                            <input id="getDirCmt" type="text" class="form-control form-control-sm director_sectiom" placeholder="Enter Comment..." value="">
                             <div id="valCode" class="d-none"><p class="text-danger">Comment is required</p></div>
                         </div>
                     </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSave3" type="submit" class="btn btn-success">Approve</button>
-                        @endif
-                        @if($pageAuth['is_update']==1 || false)
-                        <button id="btnUpdate3" type="submit" class="btn btn-warning d-none">Update</button>
+                        <button id="btnSave3" type="submit" class="btn btn-success director_sectiom">Approve</button>
                         @endif
                         @if($pageAuth['is_delete']==1 || false)
-                        <button  id="btnshowDelete3" type="submit" class="btn btn-danger" >Reject</button>
+                        <button  id="btnshowDelete3" type="submit" class="btn btn-danger director_sectiom" >Reject</button>
                         @endif
                     </div>                           
                 </div>
@@ -232,168 +214,187 @@
 <script src="../../dist/js/demo.js"></script>
 <script src="../../js/CertificateApprovalJS/submit.js"></script>
 <script src="../../js/CertificateApprovalJS/get.js"></script>
-<script src="../../js/CertificateApprovalJS/update.js"></script>
 <script src="../../js/CertificateApprovalJS/delete.js"></script>
 <!-- AdminLTE App -->
 <script>
     $(function () {
-    const Toast = Swal.mixin({
-    toast: true,
+        const Toast = Swal.mixin({
+            toast: true,
             position: 'top-end',
             showConfirmButton: false,
             timer: 4000
 
-    });
-            var profileId = {{$id}};
+        });
+        var profileId = "{{$id}}";
 //Load table
-    loadTable(profileId);
-    $('#trackDate,#trackDateAssDir,#trackDateDir').daterangepicker({
-        singleDatePicker: true,
-        locale: {
-            format: 'MM/DD/YYYY'
+        loadTable(profileId);
+        $('#trackDate,#trackDateAssDir,#trackDateDir').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'MM/DD/YYYY'
+            }
+        });
+        get_initial_approvalStatus(profileId, function (res) {
+            showHide_Content_By_Status(res);
+        });
+        function showHide_Content_By_Status(status) {
+            let type = status.officer_type;
+            let st = status.status;
+            $('.envOfficer_section').prop('disabled', true);
+            $('.astDir_section').prop('disabled', true);
+            $('.director_sectiom').prop('disabled', true);
+            switch (type) {
+                case 'director':
+                    if (st == 0) {
+                        $('.director_sectiom').prop('disabled', false);
+                    } else {
+                        $('.astDir_section').prop('disabled', false);
+                    }
+                    break;
+
+                case 'a_director':
+                    if (st == 0) {
+                        $('.director_sectiom').prop('disabled', false);
+                    } else {
+                        $('.envOfficer_section').prop('disabled', false);
+                    }
+                    break;
+
+                case 'officer':
+                    if (st == 0) {//env officer approved
+                        $('.astDir_section').prop('disabled', false);
+                    }
+                    break;
+
+
+                case 'new':
+                    $('.envOfficer_section').prop('disabled', false);
+                    break;
+
+                default:
+                    break;
+            }
         }
-    });
 //click save button
-    $('#btnSave').click(function () {
-        var data = fromValues();
-        if (Validiteinsert(data)) {
-            // if validiated
-            AddEnvOfficer(data, profileId, function (result) {
-                if (result.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Enviremontal MS</br>Saved'
-                    });
-                } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Enviremontal MS</br>Error'
-                    });
-                }
-                loadTable(profileId);
-                resetinputFields();
-                hideAllErrors();
-            });
-        }
-    });
-    $('#btnSave2').click(function () {
-        var data = fromValues2();
-        if (Validiteinsert2(data)) {
-            // if validiated
-            AddAssDir(data, profileId, function (result) {
-                if (result.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Enviremontal MS</br>Saved'
-                    });
-                } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Enviremontal MS</br>Error'
-                    });
-                }
-                loadTable(profileId);
-                resetinputFields();
-                hideAllErrors();
-            });
-        }
-    });
-    $('#btnSave3').click(function () {
-        var data = fromValues3();
-        if (Validiteinsert3(data)) {
-            // if validiated
-            AddDir(data, profileId, function (result) {
-                if (result.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Enviremontal MS</br>Saved'
-                    });
-                } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Enviremontal MS</br>Error'
-                    });
-                }
-                loadTable(profileId);
-                resetinputFields();
-                hideAllErrors();
-            });
-        }
-    });
+        $('#btnSave').click(function () {
+            var data = fromValues();
+            if (Validiteinsert(data)) {
+                // if validiated
+                AddEnvOfficer(data, profileId, function (result) {
+                    if (result.id == 1) {
+                        Toast.fire({
+                            type: 'success',
+                            title: 'Enviremontal MS</br>Saved'
+                        });
+                    } else {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Enviremontal MS</br>Error'
+                        });
+                    }
+                    loadTable(profileId);
+                    resetinputFields();
+                    hideAllErrors();
+                });
+            }
+        });
+        $('#btnSave2').click(function () {
+            var data = fromValues2();
+            if (Validiteinsert2(data)) {
+                // if validiated
+                AddAssDir(data, profileId, function (result) {
+                    if (result.id == 1) {
+                        Toast.fire({
+                            type: 'success',
+                            title: 'Enviremontal MS</br>Saved'
+                        });
+                    } else {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Enviremontal MS</br>Error'
+                        });
+                    }
+                    loadTable(profileId);
+                    resetinputFields();
+                    hideAllErrors();
+                });
+            }
+        });
+        $('#btnSave3').click(function () {
+            var data = fromValues3();
+            if (Validiteinsert3(data)) {
+                // if validiated
+                AddDir(data, profileId, function (result) {
+                    if (result.id == 1) {
+                        Toast.fire({
+                            type: 'success',
+                            title: 'Enviremontal MS</br>Saved'
+                        });
+                    } else {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Enviremontal MS</br>Error'
+                        });
+                    }
+                    loadTable(profileId);
+                    resetinputFields();
+                    hideAllErrors();
+                });
+            }
+        });
 //click delete button
-    $('#btnshowDelete').click(function () {
-        var data = fromValues();
-        deleteEnvOfficer(data, profileId, function (result) {
-            if (result.id == 1) {
-                Toast.fire({
-                    type: 'success',
-                    title: 'Enviremontal MS</br>Removed!'
-                });
-            } else {
-                Toast.fire({
-                    type: 'error',
-                    title: 'Enviremontal MS</br>Error'
-                });
-            }
-            loadTable(profileId);
-            showSave();
-            resetinputFields();
-            hideAllErrors();
+
+        $('#btnshowDelete2').click(function () {
+            var data = fromValues2();
+            deleteAssDir(data, profileId, function (result) {
+                if (result.id == 1) {
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Enviremontal MS</br>Removed!'
+                    });
+                } else {
+                    Toast.fire({
+                        type: 'error',
+                        title: 'Enviremontal MS</br>Error'
+                    });
+                }
+                loadTable(profileId);
+                showSave();
+                resetinputFields();
+                hideAllErrors();
+            });
         });
-    });
-    $('#btnshowDelete2').click(function () {
-        var data = fromValues2();
-        deleteAssDir(data, profileId, function (result) {
-            if (result.id == 1) {
-                Toast.fire({
-                    type: 'success',
-                    title: 'Enviremontal MS</br>Removed!'
-                });
-            } else {
-                Toast.fire({
-                    type: 'error',
-                    title: 'Enviremontal MS</br>Error'
-                });
-            }
-            loadTable(profileId);
-            showSave();
-            resetinputFields();
-            hideAllErrors();
+        $('#btnshowDelete3').click(function () {
+            var data = fromValues3();
+            deleteDir(data, profileId, function (result) {
+                if (result.id == 1) {
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Enviremontal MS</br>Removed!'
+                    });
+                } else {
+                    Toast.fire({
+                        type: 'error',
+                        title: 'Enviremontal MS</br>Error'
+                    });
+                }
+                loadTable(profileId);
+                showSave();
+                resetinputFields();
+                hideAllErrors();
+            });
         });
-    });
-    $('#btnshowDelete3').click(function () {
-        var data = fromValues3();
-        deleteDir(data, profileId, function (result) {
-            if (result.id == 1) {
-                Toast.fire({
-                    type: 'success',
-                    title: 'Enviremontal MS</br>Removed!'
-                });
-            } else {
-                Toast.fire({
-                    type: 'error',
-                    title: 'Enviremontal MS</br>Error'
-                });
-            }
-            loadTable(profileId);
-            showSave();
-            resetinputFields();
-            hideAllErrors();
-        });
-    });
     }
     );
 //show update buttons    
     function showUpdate() {
         $('#btnSave').addClass('d-none');
         $('#btnUpdate').removeClass('d-none');
-        $('#btnshowDelete').removeClass('d-none');
     }
 //show save button    
     function showSave() {
         $('#btnSave').removeClass('d-none');
         $('#btnUpdate').addClass('d-none');
-//        $('#btnshowDelete').addClass('d-none');
     }
 //Reset all fields    
     function resetinputFields() {
