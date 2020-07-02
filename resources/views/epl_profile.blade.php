@@ -99,7 +99,7 @@
                             <p>Add Comments</p>
                         </div>
                         <div class="callout callout-danger">
-                            <h6><a href="4" class="text-success">Approval</a></h6>
+                            <h6><a href="/certificate_approval/id/{{$profile}}" class="text-success">Approval</a></h6>
                             <p>Approve the EPL</p>
                         </div>
                         <div class="callout callout-danger">
