@@ -185,7 +185,7 @@ class EPLController extends Controller
                 $epl->remark = \request('remark');
                 $epl->code = $this->generateCode($epl);
                 $epl->application_path = "";
-                $epl->created_date =  \request('created_date');
+                $epl->created_at =  \request('created_date');
                 $msg = $epl->save();
 
                 if ($msg) {
