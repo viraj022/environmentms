@@ -19,15 +19,15 @@
 
 @section('content')
 @if($pageAuth['is_read']==1 || false)
-<!--<section class="content-header">
+<section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Environment Protection License</h1>
+                <h1>(<a href="/inspection/epl/remarks/id/{{$id}}">{{$epl_numner}}</a>) {{$inspec_date}} Inspection Images</h1>
             </div>
         </div>
     </div>
-</section>-->
+</section>
 <section class="content-header">
     <!-- Default box -->
 
@@ -99,31 +99,60 @@
 <!-- AdminLTE for demo purposes -->
 
 <script>
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 4000
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 4000
 
-    });
+});
 //    $(function () {
-    var ID = "{{$id}}";
-    getaAttachmentbyId(ID, function (res) {
-        iterateSavedImages(res);
-    });
+var ID = "{{$id}}";
+getaAttachmentbyId(ID, function (res) {
+    iterateSavedImages(res);
+});
 
-    $(document).on('click', '.removeImage', function () {
-        if (confirm('Are you sure you want to remove this Image?')) {
-            remove_Image($(this).val(), function (parameters) {
+$(document).on('click', '.removeImage', function () {
+    if (confirm('Are you sure you want to remove this Image?')) {
+        remove_Image($(this).val(), function (parameters) {
+            if (parameters.id == 1) {
+                Toast.fire({
+                    type: 'success',
+                    title: 'Enviremontal MS</br>Attachment Succuessfully Removed !'
+                });
+                getaAttachmentbyId(ID, function (res) {
+                    iterateSavedImages(res);
+                });
+                $('.ekko-lightbox').modal('hide');
+            } else {
+                Toast.fire({
+                    type: 'error',
+                    title: 'Enviremontal MS</br>Error'
+                });
+            }
+        });
+    }
+});
+$(document).on('click', '#btnSave', function () {
+    let selector = $('#fileInput');
+    readImage(selector.attr('id'), function (img) {
+        if (img) {
+            save_Attachment(img, ID, function (parameters) {
                 if (parameters.id == 1) {
                     Toast.fire({
                         type: 'success',
-                        title: 'Enviremontal MS</br>Attachment Succuessfully Removed !'
+                        title: 'Enviremontal MS</br>Attachment Succuessfully Uploaded !'
                     });
                     getaAttachmentbyId(ID, function (res) {
                         iterateSavedImages(res);
                     });
-                    $('.ekko-lightbox').modal('hide');
+                    $('#fileInput').val('');
+                } else if (parameters.id == 0) {
+                    Toast.fire({
+                        type: 'error',
+                        title: 'Enviremontal MS</br>' + parameters.message
+                    });
+
                 } else {
                     Toast.fire({
                         type: 'error',
@@ -133,50 +162,21 @@
             });
         }
     });
-    $(document).on('click', '#btnSave', function () {
-        let selector = $('#fileInput');
-        readImage(selector.attr('id'), function (img) {
-            if (img) {
-                save_Attachment(img, ID, function (parameters) {
-                    if (parameters.id == 1) {
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Enviremontal MS</br>Attachment Succuessfully Uploaded !'
-                        });
-                        getaAttachmentbyId(ID, function (res) {
-                            iterateSavedImages(res);
-                        });
-                        $('#fileInput').val('');
-                    } else if (parameters.id == 0) {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Enviremontal MS</br>' + parameters.message
-                        });
-
-                    } else {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Enviremontal MS</br>Error'
-                        });
-                    }
-                });
-            }
+});
+//    });
+$(function () {
+    $(document).on('click', '[data-toggle="lightbox"]', function (event) {
+        event.preventDefault();
+        $(this).ekkoLightbox({
+            alwaysShowClose: true
         });
     });
-//    });
-    $(function () {
-        $(document).on('click', '[data-toggle="lightbox"]', function (event) {
-            event.preventDefault();
-            $(this).ekkoLightbox({
-                alwaysShowClose: true
-            });
-        });
 
 //        $('.filter-container').filterizr({gutterPixels: 3});
 //        $('.btn[data-filter]').on('click', function () {
 //            $('.btn[data-filter]').removeClass('active');
 //            $(this).addClass('active');
 //        });
-    })
+})
 </script>
 @endsection

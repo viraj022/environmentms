@@ -17,15 +17,15 @@
 
 @section('content')
 @if($pageAuth['is_read']==1 || false)
-<!--<section class="content-header">
+<section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Environment Protection License</h1>
+                <h1>(<a href="/epl_profile/client/{{$client}}/profile/{{$epl_id}}">{{$epl_number}}</a>) - Attachment Upload</h1>
             </div>
         </div>
     </div>
-</section>-->
+</section>
 <section class="content-header">
     <div class="container-fluid">
         <div class="row">
@@ -79,65 +79,65 @@
 <!-- AdminLTE for demo purposes -->
 
 <script>
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 4000
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 4000
 
-    });
+});
 //    $(function () {
-    var EPL_ID = "{{$epl_id}}";
-    all_attachmentsList(EPL_ID);
+var EPL_ID = "{{$epl_id}}";
+all_attachmentsList(EPL_ID);
 
-    $(document).on('click', '.removeAttachment', function () {
-        if (confirm('Are you sure you want to remove this attachment?')) {
-            removeEPL_Attachment(EPL_ID, $(this).val(), function (parameters) {
-                if (parameters.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Enviremontal MS</br>Attachment Succuessfully Removed !'
-                    });
-                    all_attachmentsList(EPL_ID);
-                } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Enviremontal MS</br>Error'
-                    });
-                }
-            });
-        }
-    });
-    $(document).on('change', '.fileInput', function () {
-        let selector = $(this);
-        readImage(selector.attr('id'), function (img) {
-            if (img) {
-//                alert(JSON.stringify(img));
-                if (confirm('Are you sure you want to upload this attachment?')) {
-                    saveEPL_Attachment(img, EPL_ID, selector.data('attachment_id'), function (parameters) {
-                        if (parameters.id == 1) {
-                            Toast.fire({
-                                type: 'success',
-                                title: 'Enviremontal MS</br>Attachment Succuessfully Uploaded !'
-                            });
-                            all_attachmentsList(EPL_ID);
-                        } else if (parameters.id == 0) {
-                            Toast.fire({
-                                type: 'error',
-                                title: 'Enviremontal MS</br>' + parameters.message
-                            });
-
-                        } else {
-                            Toast.fire({
-                                type: 'error',
-                                title: 'Enviremontal MS</br>Error'
-                            });
-                        }
-                    });
-                }
+$(document).on('click', '.removeAttachment', function () {
+    if (confirm('Are you sure you want to remove this attachment?')) {
+        removeEPL_Attachment(EPL_ID, $(this).val(), function (parameters) {
+            if (parameters.id == 1) {
+                Toast.fire({
+                    type: 'success',
+                    title: 'Enviremontal MS</br>Attachment Succuessfully Removed !'
+                });
+                all_attachmentsList(EPL_ID);
+            } else {
+                Toast.fire({
+                    type: 'error',
+                    title: 'Enviremontal MS</br>Error'
+                });
             }
         });
+    }
+});
+$(document).on('change', '.fileInput', function () {
+    let selector = $(this);
+    readImage(selector.attr('id'), function (img) {
+        if (img) {
+//                alert(JSON.stringify(img));
+            if (confirm('Are you sure you want to upload this attachment?')) {
+                saveEPL_Attachment(img, EPL_ID, selector.data('attachment_id'), function (parameters) {
+                    if (parameters.id == 1) {
+                        Toast.fire({
+                            type: 'success',
+                            title: 'Enviremontal MS</br>Attachment Succuessfully Uploaded !'
+                        });
+                        all_attachmentsList(EPL_ID);
+                    } else if (parameters.id == 0) {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Enviremontal MS</br>' + parameters.message
+                        });
+
+                    } else {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Enviremontal MS</br>Error'
+                        });
+                    }
+                });
+            }
+        }
     });
+});
 //    });
 </script>
 @endsection

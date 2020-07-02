@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\ApplicationType;
+use App\EPL;
 use App\InspectionSession;
 use Illuminate\Http\Request;
 use App\InspectionSessionAttachment;
@@ -20,8 +21,10 @@ class InspectionSessionAttachmentController extends Controller {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
-            if (InspectionSession::find($id) !== null) {
-                return view('inspection_attachment', ['pageAuth' => $pageAuth, 'id' => $id]);
+            $InspectionSession = InspectionSession::find($id);
+            if ($InspectionSession !== null) {
+                $epl = EPL::find($InspectionSession->profile_id);
+                return view('inspection_attachment', ['pageAuth' => $pageAuth, 'id' => $id, "inspec_date" => date("Y-m-d", strtotime($InspectionSession->schedule_date)), "epl_numner" => $epl->code]);
             } else {
                 abort(404);
             }

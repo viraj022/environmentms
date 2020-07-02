@@ -26,7 +26,7 @@ class EPLPaymentController extends Controller {
         if ($pageAuth['is_read']) {
             $epl = EPL::find($id);
             if ($epl) {
-                return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id]);
+                return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id, "epl_no" => $epl->code,"client"=>$epl->client_id]);
             } else {
                 abort(404);
             }
@@ -195,8 +195,8 @@ class EPLPaymentController extends Controller {
         $pt = PaymentType::getpaymentByTypeName(PaymentType::LICENCE_FEE);
         return Payment::with('paymentRanges')->where('payment_type_id', $pt->id)->get();
     }
-    public function getFineList()
-    {
+
+    public function getFineList() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $pt = PaymentType::getpaymentByTypeName(PaymentType::FINE);
@@ -378,13 +378,6 @@ class EPLPaymentController extends Controller {
         } else {
             abort(404);
         }
-    }
-
-    public function getFineList() {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-        $pt = PaymentType::getpaymentByTypeName(PaymentType::FINE);
-        return Payment::with('paymentRanges')->where('payment_type_id', $pt->id)->get();
     }
 
 }
