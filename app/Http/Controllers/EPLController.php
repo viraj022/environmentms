@@ -166,6 +166,7 @@ class EPLController extends Controller
                     'registration_no' => ['sometimes', 'nullable', 'unique:e_p_l_s,registration_no'],
                     'remark' => ['sometimes', 'nullable'],
                     'created_date' => 'required|date',
+                    'is_old' => 'required|integer',
                 ]);
                 $epl = new EPL();
                 $epl->name = \request('name');
@@ -186,6 +187,7 @@ class EPLController extends Controller
                 $epl->code = $this->generateCode($epl);
                 $epl->application_path = "";
                 $epl->created_at =  \request('created_date');
+                $epl->is_old =  \request('is_old');
                 $msg = $epl->save();
 
                 if ($msg) {

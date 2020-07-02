@@ -17,7 +17,15 @@ function AddEpl(data, callBack) {
             }
         },
         error: function (xhr, textStatus, errorThrown) {
-            alert(textStatus + ':' + errorThrown);
+//            alert(JSON.stringify(xhr.responseJSON.errors));
+            $.each(xhr.responseJSON.errors, function (index, value) {
+//                Toast.fire({
+//                type: 'error',
+//                title: '<p><h1>'+index+'<h1></p>'
+//            });
+            toastr.error(index +" "+ value)
+//alert(index +" "+ value);
+        });
         }
     });
 }
@@ -33,5 +41,5 @@ function Validiteinsert(data) {
 //        response = false;
 //    }
 //    return response;
-return true;
+    return true;
 }

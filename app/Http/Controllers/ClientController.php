@@ -66,7 +66,7 @@ class ClientController extends Controller
             $client->api_token = Str::random(80);
             $msg = $client->save();
             if ($msg) {
-                return array('id' => 1, 'message' => 'true');
+                return array('id' => 1, 'message' => 'true','nic' => $client->nic);
             } else {
                 return array('id' => 0, 'message' => 'false');
             }
