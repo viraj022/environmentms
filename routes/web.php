@@ -43,6 +43,7 @@ Route::get('/inspection/epl/remarks/id/{id}', 'InspectionRemarksController@index
 Route::get('/inspection/personals/id/{id}', 'InspectionPersonalController@index');
 Route::get('/inspection_attachment/id/{id}', 'InspectionSessionAttachmentController@index');
 Route::get('/application_payment', 'EPLController@index2');
+Route::get('/certificate_approval/id/{id}', 'ApprovalLogController@index');
 //ui routs
 
 //dashboard

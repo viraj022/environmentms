@@ -87,7 +87,7 @@
                             <dd><a href="1" class="text-success">Payments</a></dd>
                             <dd><a href="/epl_profile/atachments/{{$profile}}" class="text-success">Attachments</a></dd>
                             <dd><a href="/remarks/epl/{{$profile}}" class="text-success">Remarks</a></dd>
-                            <dd><a href="4" class="text-success">Approval</a></dd>
+                            <dd><a href="/certificate_approval/id/{{$profile}}" class="text-success">Approval</a></dd>
                             <dd><a href="5" class="text-success ">Certificate Information</a></dd>
                             <dd><a href="/inspection/epl/id/{{$profile}}" class="text-success ">Inspection</a></dd>
                         </dl>
