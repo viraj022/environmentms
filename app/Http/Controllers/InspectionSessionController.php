@@ -20,8 +20,9 @@ class InspectionSessionController extends Controller {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
-            if (EPL::find($id) !== null) {
-                return view('epl_inspection_session', ['pageAuth' => $pageAuth, 'id' => $id]);
+            $EPL = EPL::find($id);
+            if ($EPL !== null) {
+                return view('epl_inspection_session', ['pageAuth' => $pageAuth, 'id' => $id, "epl_number" => $EPL->code, "client" => $EPL->client_id, "epl_id" => $EPL->id]);
             } else {
                 abort(404);
             }

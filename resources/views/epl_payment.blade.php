@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>EPL Payment</h1>
+                <h1>(<a href="/epl_profile/client/{{$client}}/profile/{{$id}}">{{$epl_no}}</a>) EPL Payment</h1>
             </div>
         </div>
     </div>
@@ -176,112 +176,112 @@
 <script src="../../js/paymentsjs/epl_payments.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
-    $(function () {
-        var ITEM_LIST = [];
+$(function () {
+    var ITEM_LIST = [];
 
-        var EPL_ID = "{{$id}}";
-        loadEPL_details(EPL_ID, function (parameters) {
-            loadEPL_methodCombo(function () {
-                if (parameters.inspection.status == "not_payed") {
-                    calc_amount();
-                }
-            });
+    var EPL_ID = "{{$id}}";
+    loadEPL_details(EPL_ID, function (parameters) {
+        loadEPL_methodCombo(function () {
+            if (parameters.inspection.status == "not_payed") {
+                calc_amount();
+            }
         });
-        fineList_Combo(function () {
-            loadFine_amount(EPL_ID, parseFloat($('#paymnt_amount').val()));
-        });//fine combo
-        certificateList_Combo(function () {
-            certificate_amount();
-        });
+    });
+    fineList_Combo(function () {
+        loadFine_amount(EPL_ID, parseFloat($('#paymnt_amount').val()));
+    });//fine combo
+    certificateList_Combo(function () {
+        certificate_amount();
+    });
 
-        $('#paymnt_amount').blur(function () {
-            loadFine_amount(EPL_ID, parseFloat($('#paymnt_amount').val()));
-        });
-        $('#fine_amt').focus(function () {
-            loadFine_amount(EPL_ID, parseFloat($('#paymnt_amount').val()));
-        });
-        $('#certificate_list').change(function () {
-            certificate_amount();
-        });
-        $('#epl_methodCombo').change(function () {
-            calc_amount();
-        });
+    $('#paymnt_amount').blur(function () {
+        loadFine_amount(EPL_ID, parseFloat($('#paymnt_amount').val()));
+    });
+    $('#fine_amt').focus(function () {
+        loadFine_amount(EPL_ID, parseFloat($('#paymnt_amount').val()));
+    });
+    $('#certificate_list').change(function () {
+        certificate_amount();
+    });
+    $('#epl_methodCombo').change(function () {
+        calc_amount();
+    });
 
-        $('#inspection_payBtn').click(function () {// add inspection Amount
-            addItemsToArray($('#epl_methodCombo').val(), "Inspection Amount", $('#paymnt_amount').val());
-        });
-        $('#fine_payBtn').click(function () {// add fine
-            addItemsToArray($('#fine_list').val(), "Fine Amount", $('#fine_amt').val());
-        });
-        $('#certificate_payBtn').click(function () {// add certificate Amount
-            addItemsToArray($('#certificate_list').val(), "Certificate Amount", $('#cert_amt').val());
-        });
-        function addItemsToArray(id, name, amount) {
-            if (isValueExsist(id)) {
-                alert('"' + name + '" already added !');
-                return false;
-            }
-            if (isNaN(parseInt(id))) {
-                alert('Invalid Inspection Type');
-                return false;
-            }
-            if (isNaN(parseFloat(amount))) {
-                alert('Invalid Amount');
-                return false;
-            }
-            if (amount <= 0) {
-                alert('Please Add Positive value');
-                return false;
-
-            }
-            amount = parseFloat(amount).toFixed(2);
-            ITEM_LIST.push({id: id, name: name, amount: amount});
-            console.log(ITEM_LIST);
-            selectedPayments_table(ITEM_LIST);
+    $('#inspection_payBtn').click(function () {// add inspection Amount
+        addItemsToArray($('#epl_methodCombo').val(), "Inspection Amount", $('#paymnt_amount').val());
+    });
+    $('#fine_payBtn').click(function () {// add fine
+        addItemsToArray($('#fine_list').val(), "Fine Amount", $('#fine_amt').val());
+    });
+    $('#certificate_payBtn').click(function () {// add certificate Amount
+        addItemsToArray($('#certificate_list').val(), "Certificate Amount", $('#cert_amt').val());
+    });
+    function addItemsToArray(id, name, amount) {
+        if (isValueExsist(id)) {
+            alert('"' + name + '" already added !');
+            return false;
         }
-        $(document).on('click', '.app_removeBtn', function (parameters) {
-            remove_itemFrom_bill($(this).val());
-        });
-        $('#btnSave').click(function () {
-            savePayment(ITEM_LIST, EPL_ID, function (r) {
-                show_mesege(r);
-                if (r.id == 1) {
-                    ITEM_LIST = [];
-                    selectedPayments_table(ITEM_LIST);
-                    $.ajax({
-                        url: 'http://127.0.0.1:8081/hansana',
-                        data: {code: r.code, name: r.name},
-                        success: function (result) {
+        if (isNaN(parseInt(id))) {
+            alert('Invalid Inspection Type');
+            return false;
+        }
+        if (isNaN(parseFloat(amount))) {
+            alert('Invalid Amount');
+            return false;
+        }
+        if (amount <= 0) {
+            alert('Please Add Positive value');
+            return false;
+
+        }
+        amount = parseFloat(amount).toFixed(2);
+        ITEM_LIST.push({id: id, name: name, amount: amount});
+        console.log(ITEM_LIST);
+        selectedPayments_table(ITEM_LIST);
+    }
+    $(document).on('click', '.app_removeBtn', function (parameters) {
+        remove_itemFrom_bill($(this).val());
+    });
+    $('#btnSave').click(function () {
+        savePayment(ITEM_LIST, EPL_ID, function (r) {
+            show_mesege(r);
+            if (r.id == 1) {
+                ITEM_LIST = [];
+                selectedPayments_table(ITEM_LIST);
+                $.ajax({
+                    url: 'http://127.0.0.1:8081/hansana',
+                    data: {code: r.code, name: r.name},
+                    success: function (result) {
+                    }
+                });
+                loadEPL_details(EPL_ID, function (parameters) {
+                    loadEPL_methodCombo(function () {
+                        if (parameters.inspection.status == "not_payed") {
+                            calc_amount();
                         }
                     });
-                    loadEPL_details(EPL_ID, function (parameters) {
-                        loadEPL_methodCombo(function () {
-                            if (parameters.inspection.status == "not_payed") {
-                                calc_amount();
-                            }
-                        });
-                    });
-                }
-            });
+                });
+            }
         });
-        function remove_itemFrom_bill(rem_val) {
-// get index of object with id:37
-            var removeIndex = ITEM_LIST.map(function (item) {
-                return item.id;
-            }).indexOf(rem_val);
-// remove object
-            ITEM_LIST.splice(removeIndex, 1);
-            selectedPayments_table(ITEM_LIST);
-        }
-        function isValueExsist(value) {
-            let ret = false;
-            $.map(ITEM_LIST, function (val) {
-                if (val.id == value) {
-                    ret = true;
-                }
-            });
-            return ret;
-        }
     });
+    function remove_itemFrom_bill(rem_val) {
+// get index of object with id:37
+        var removeIndex = ITEM_LIST.map(function (item) {
+            return item.id;
+        }).indexOf(rem_val);
+// remove object
+        ITEM_LIST.splice(removeIndex, 1);
+        selectedPayments_table(ITEM_LIST);
+    }
+    function isValueExsist(value) {
+        let ret = false;
+        $.map(ITEM_LIST, function (val) {
+            if (val.id == value) {
+                ret = true;
+            }
+        });
+        return ret;
+    }
+});
 </script>
 @endsection

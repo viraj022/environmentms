@@ -21,7 +21,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1><a href="/epl_profile/client/{{$client}}/profile/{{$id}}">{{$epl_number}}</a> - Remarks</h1>
+                <h1>(<a href="/epl_profile/client/{{$client}}/profile/{{$epl_id}}">{{$epl_number}}</a>) - Remarks</h1>
             </div>
         </div>
     </div>
@@ -150,12 +150,12 @@ toast: true,
         timer: 4000
 
         });
-loadInterface({{$id}});
+loadInterface({{$epl_id}});
 //click save button
 $('#btnSave').click(function () {
 var data = fromValues();
 if (Validiteinsert(data)) {
-AddComment(data, {{$id}}, function (result) {
+AddComment(data, {{$epl_id}}, function (result) {
 if (result.id == 1) {
 Toast.fire({
 type: 'success',
@@ -167,7 +167,7 @@ type: 'error',
         title: 'Error'
         });
 }
-loadInterface({{$id}});
+loadInterface({{$epl_id}});
 resetinputFields();
 });
 }

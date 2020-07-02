@@ -65,9 +65,10 @@ class EPLController extends Controller {
     public function attachment_upload_view($epl_id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        $EPL = EPL::find($epl_id);
         if ($pageAuth['is_read']) {
-            if (EPL::find($epl_id) !== null) {
-                return view('epl_attachment_upload', ['pageAuth' => $pageAuth, 'epl_id' => $epl_id]);
+            if ($EPL !== null) {
+                return view('epl_attachment_upload', ['pageAuth' => $pageAuth, 'epl_id' => $epl_id, "epl_number" => $EPL->code, "client" => $EPL->client_id]);
             } else {
                 abort(404);
             }
@@ -76,8 +77,7 @@ class EPLController extends Controller {
         }
     }
 
-    public function issue_certificate($epl_id)
-    {
+    public function issue_certificate($epl_id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
@@ -87,9 +87,7 @@ class EPLController extends Controller {
                 if ($epl->issue_date == null) {
                     $payList = $epl->paymentList();
                     if (
-                        $payList['inspection']['status'] == 'payed'
-                        && $payList['license_fee']['status'] == 'payed'
-                        && ($payList['fine']['status'] == 'payed' || $payList['fine']['status'] == 'not_available')
+                            $payList['inspection']['status'] == 'payed' && $payList['license_fee']['status'] == 'payed' && ($payList['fine']['status'] == 'payed' || $payList['fine']['status'] == 'not_available')
                     ) {
 
                         request()->validate([
@@ -98,28 +96,28 @@ class EPLController extends Controller {
                             'certificate_no' => 'required|string',
                         ]);
                         return \DB::transaction(function () use ($epl, $user) {
-                            $epl->issue_date = request('issue_date');
-                            $epl->expire_date = request('expire_date');
-                            $epl->certificate_no = request('certificate_no');
-                            $msg =  $epl->save();
-                            if ($msg) {
-                                $issueLog = new IssueLog();
-                                $issueLog->certificate_type = IssueLog::CER_EPL;
-                                $issueLog->issue_type = IssueLog::CER_EPL;
-                                $issueLog->issue_id = $epl->id;
-                                $issueLog->issue_date = request('issue_date');
-                                $issueLog->expire_date = request('expire_date');
-                                $issueLog->user_id =  $user->id;
-                                $msg =  $issueLog->save();
-                                if ($msg) {
-                                    return response(array('id' => 1, 'message' => 'success'), 200);
-                                } else {
-                                    return response(array('id' => 0, 'message' => 'fail'), 200);
-                                }
-                            } else {
-                                abort(500);
-                            }
-                        });
+                                    $epl->issue_date = request('issue_date');
+                                    $epl->expire_date = request('expire_date');
+                                    $epl->certificate_no = request('certificate_no');
+                                    $msg = $epl->save();
+                                    if ($msg) {
+                                        $issueLog = new IssueLog();
+                                        $issueLog->certificate_type = IssueLog::CER_EPL;
+                                        $issueLog->issue_type = IssueLog::CER_EPL;
+                                        $issueLog->issue_id = $epl->id;
+                                        $issueLog->issue_date = request('issue_date');
+                                        $issueLog->expire_date = request('expire_date');
+                                        $issueLog->user_id = $user->id;
+                                        $msg = $issueLog->save();
+                                        if ($msg) {
+                                            return response(array('id' => 1, 'message' => 'success'), 200);
+                                        } else {
+                                            return response(array('id' => 0, 'message' => 'fail'), 200);
+                                        }
+                                    } else {
+                                        abort(500);
+                                    }
+                                });
                     } else {
                         return response(array('id' => 0, 'message' => 'Payment no completed'), 403);
                     }

@@ -21,7 +21,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1><a href="/epl_profile/client/{{$client}}/profile/{{$id}}">{{$epl_number}}</a></h1>
+                <h1>(<a href="/epl_profile/client/{{$client}}/profile/{{$epl_id}}">{{$epl_number}}</a>) - Attachment Upload</h1>
             </div>
         </div>
     </div>

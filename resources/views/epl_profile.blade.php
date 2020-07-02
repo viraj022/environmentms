@@ -80,17 +80,36 @@
                         </h3>
                     </div>
                     <!-- /.card-header -->
-                    <div class="card-body">
-                        <dl>
-                            <dt id="env_firstname">Assign Environment Officer: N/A</dt>
-                            <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-success" data-dismiss="modal">Assign...</button>
-                            <dd><a href="/epl_payments/id/{{$profile}}" class="text-success">Payments</a></dd>
-                            <dd><a href="/epl_profile/atachments/{{$profile}}" class="text-success">Attachments</a></dd>
-                            <dd><a href="/remarks/epl/{{$profile}}" class="text-success">Remarks</a></dd>
-                            <dd><a href="4" class="text-success">Approval</a></dd>
-                            <dd><a href="5" class="text-success ">Certificate Information</a></dd>
-                            <dd><a href="/inspection/epl/id/{{$profile}}" class="text-success ">Inspection</a></dd>
-                        </dl>
+                    <div class="card-body" style="height: 350px; overflow-y: scroll;">
+                        <div class="callout callout-danger">
+                            <h6 id="env_firstname">Assign Environment Officer: N/A</h6>
+                            <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change</button>
+                            <!--<p>There is a problem that we need to</p>-->
+                        </div>
+                        <div class="callout callout-danger">
+                            <h6><a href="/epl_payments/id/{{$profile}}" class="text-success">Payments</a></h6>
+                            <p>All Payment (EPL, Fine,Inspection Fee, Certificate)</p>
+                        </div>
+                        <div class="callout callout-danger">
+                            <h6><a href="/epl_profile/atachments/{{$profile}}" class="text-success">Attachments</a></h6>
+                            <p>Upload EPL Attachments</p>
+                        </div>
+                        <div class="callout callout-danger">
+                            <h6><a href="/remarks/epl/{{$profile}}" class="text-success">Remarks</a></h6>
+                            <p>Add Comments</p>
+                        </div>
+                        <div class="callout callout-danger">
+                            <h6><a href="4" class="text-success">Approval</a></h6>
+                            <p>Approve the EPL</p>
+                        </div>
+                        <div class="callout callout-danger">
+                            <h6><a href="5" class="text-success ">Certificate Information</a></h6>
+                            <p>Issue Certificate / Certificate Information</p>
+                        </div>
+                        <div class="callout callout-danger">
+                            <h6><a href="/inspection/epl/id/{{$profile}}" class="text-success ">Inspection</a></h6>
+                            <p>Manage Inspection Details</p>
+                        </div>
                     </div>
                     <!-- /.card-body -->
                 </div>                                    
@@ -99,7 +118,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">
-                            <i class="fas fa-address-card"></i> Data
+                            <i class="fas fa-address-card"></i> EPL Data
                         </h3>
                     </div>
                     <!-- /.card-header -->
