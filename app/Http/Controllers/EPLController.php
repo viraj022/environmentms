@@ -108,6 +108,7 @@ class EPLController extends Controller
                     'business_scale_id' => 'required|integer',
                     'registration_no' => ['sometimes', 'nullable', 'unique:e_p_l_s,registration_no'],
                     'remark' => ['sometimes', 'nullable'],
+                    'created_date' => 'required|date',
                 ]);
                 $epl = new EPL();
                 $epl->name = \request('name');
@@ -127,6 +128,7 @@ class EPLController extends Controller
                 $epl->remark = \request('remark');
                 $epl->code = $this->generateCode($epl);
                 $epl->application_path = "";
+                $epl->created_date =  \request('created_date');
                 $msg = $epl->save();
 
                 if ($msg) {
