@@ -21,7 +21,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Remarks</h1>
+                <h1><a href="/epl_profile/client/{{$client}}/profile/{{$id}}">{{$epl_number}}</a> - Remarks</h1>
             </div>
         </div>
     </div>
@@ -70,10 +70,10 @@
                                         @if($pageAuth['is_create']==1 || false)
                                         <button id="btnSave" type="submit" class="btn btn-success">Save</button>
                                         @endif
-<!--                                        @if($pageAuth['is_create']==1 || false)
-                                        <button id="btnDelete" type="submit" class="btn btn-danger" data-toggle="modal"
-                                                data-target="#modal-danger">Del Temp</button>
-                                        @endif-->
+                                        <!--                                        @if($pageAuth['is_create']==1 || false)
+                                                                                <button id="btnDelete" type="submit" class="btn btn-danger" data-toggle="modal"
+                                                                                        data-target="#modal-danger">Del Temp</button>
+                                                                                @endif-->
                                     </div> 
                                 </div>
                             </div>                                        
@@ -142,58 +142,58 @@
 <script src="../../js/RemarksJS/delete.js"></script>
 <!-- AdminLTE App -->
 <script>
-    $(function () {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 4000
+$(function () {
+const Toast = Swal.mixin({
+toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 4000
 
         });
-        loadInterface({{$id}});
+loadInterface({{$id}});
 //click save button
-        $('#btnSave').click(function () {
-            var data = fromValues();
-            if (Validiteinsert(data)) {
-            AddComment(data,{{$id}}, function (result) {
-                if (result.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Saved'
-                    });
-                } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Error'
-                    });
-                }
-                loadInterface({{$id}});
-                resetinputFields();
-            });
-        }
-    });
+$('#btnSave').click(function () {
+var data = fromValues();
+if (Validiteinsert(data)) {
+AddComment(data, {{$id}}, function (result) {
+if (result.id == 1) {
+Toast.fire({
+type: 'success',
+        title: 'Saved'
+        });
+} else {
+Toast.fire({
+type: 'error',
+        title: 'Error'
+        });
+}
+loadInterface({{$id}});
+resetinputFields();
+});
+}
+});
 //show save button    
-    function showSave() {
-        $('#btnSave').removeClass('d-none');
-        $('#btnshowDelete').addClass('d-none');
-    }
+function showSave() {
+$('#btnSave').removeClass('d-none');
+$('#btnshowDelete').addClass('d-none');
+}
 //Reset all fields    
-    function resetinputFields() {
-        $('#getComment').val('');
-        $('#btnUpdate').val('');
-        $('#btnDelete').val('');
-    }
+function resetinputFields() {
+$('#getComment').val('');
+$('#btnUpdate').val('');
+$('#btnDelete').val('');
+}
 //get form values
-    function fromValues() {
-        var data = {
-            remark: $('#getComment').val()
+function fromValues() {
+var data = {
+remark: $('#getComment').val()
         };
-        return data;
-    }
+return data;
+}
 //HIDE ALL ERROR MSGS   
-    function hideAllErrors() {
-        $('.aefFGE').addClass('d-none');
-    }
-    });
+function hideAllErrors() {
+$('.aefFGE').addClass('d-none');
+}
+});
 </script>
 @endsection
