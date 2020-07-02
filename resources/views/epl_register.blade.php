@@ -82,6 +82,10 @@
                             <input id="startDate" type="date" class="form-control form-control-sm" placeholder="Enter Name..." value="">
                         </div>
                         <div class="form-group">
+                            <label>Submitted Date*</label>
+                            <input id="submittedDate" type="date" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                        </div>
+                        <div class="form-group">
                             <label>Contact No*</label>
                             <input id="getContactn" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
                         </div>
@@ -103,7 +107,7 @@
                         <button id="btnSave" type="button" class="btn btn-success">Save</button>
                         @endif
                         @if($pageAuth['is_update']==1 || false)
-                        <button id="btnUpdate" type="submit" class="btn btn-warning">Update</button>
+                        <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
                         @endif
                         @if($pageAuth['is_delete']==1 || false)
                         <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
@@ -223,7 +227,7 @@ $("#btnSave").click(function () {
     readImage(function (img) {
         var data = fromValues();
         data.file = img;
-        alert(JSON.stringify(data));
+//        alert(JSON.stringify(data));
         AddEpl(data, function (result) {
             if (result.id == 1) {
                 window.location.replace(result.rout);

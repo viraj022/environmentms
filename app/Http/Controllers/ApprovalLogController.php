@@ -9,16 +9,25 @@ use App\EnvironmentOfficer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ApprovalLogController extends Controller
-{
+class ApprovalLogController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index($id) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_read']) {
+            if (EPL::find($id) !== null) {
+                return view('certificate_approval', ['pageAuth' => $pageAuth, 'id' => $id]);
+            } else {
+                abort(404);
+            }
+        } else {
+            abort(401);
+        }
     }
 
     /**
@@ -26,8 +35,7 @@ class ApprovalLogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function approveOfficer($eplId)
-    {
+    public function approveOfficer($eplId) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
@@ -37,7 +45,7 @@ class ApprovalLogController extends Controller
             ]);
             $epl = EPL::find($eplId);
             if ($epl) {
-                if ($epl->environment_officer_id  != null) {
+                if ($epl->environment_officer_id != null) {
                     $approvalLog = new ApprovalLog();
                     $approvalLog->type = ApprovalLog::Type_EPL;
                     $approvalLog->type_id = $epl->id;
@@ -62,8 +70,8 @@ class ApprovalLogController extends Controller
             abort(401);
         }
     }
-    public function rejectOfficer($eplId)
-    {
+
+    public function rejectOfficer($eplId) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
@@ -73,7 +81,7 @@ class ApprovalLogController extends Controller
             ]);
             $epl = EPL::find($eplId);
             if ($epl) {
-                if ($epl->environment_officer_id  != null) {
+                if ($epl->environment_officer_id != null) {
                     $approvalLog = new ApprovalLog();
                     $approvalLog->type = ApprovalLog::Type_EPL;
                     $approvalLog->type_id = $epl->id;
@@ -98,8 +106,8 @@ class ApprovalLogController extends Controller
             abort(401);
         }
     }
-    public function approveAssitanceDirector($eplId)
-    {
+
+    public function approveAssitanceDirector($eplId) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
@@ -109,12 +117,12 @@ class ApprovalLogController extends Controller
             ]);
             $epl = EPL::find($eplId);
             if ($epl) {
-                if ($epl->environment_officer_id  != null) {
+                if ($epl->environment_officer_id != null) {
                     $approvalLog = new ApprovalLog();
                     $approvalLog->type = ApprovalLog::Type_EPL;
                     $approvalLog->type_id = $epl->id;
                     $approvalLog->officer_type = ApprovalLog::OFF_A_DIRECTOR;
-                    $env  = EnvironmentOfficer::findOrFail($epl->environment_officer_id);
+                    $env = EnvironmentOfficer::findOrFail($epl->environment_officer_id);
                     $approvalLog->user_id = $env->assistant_director_id;
                     $approvalLog->comment = request('comment');
                     $approvalLog->status = ApprovalLog::APP_APPROVE;
@@ -135,8 +143,8 @@ class ApprovalLogController extends Controller
             abort(401);
         }
     }
-    public function rejectAssitanceDirector($eplId)
-    {
+
+    public function rejectAssitanceDirector($eplId) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
@@ -146,12 +154,12 @@ class ApprovalLogController extends Controller
             ]);
             $epl = EPL::find($eplId);
             if ($epl) {
-                if ($epl->environment_officer_id  != null) {
+                if ($epl->environment_officer_id != null) {
                     $approvalLog = new ApprovalLog();
                     $approvalLog->type = ApprovalLog::Type_EPL;
                     $approvalLog->type_id = $epl->id;
                     $approvalLog->officer_type = ApprovalLog::OFF_A_DIRECTOR;
-                    $env  = EnvironmentOfficer::findOrFail($epl->environment_officer_id);
+                    $env = EnvironmentOfficer::findOrFail($epl->environment_officer_id);
                     $approvalLog->user_id = $env->assistant_director_id;
                     $approvalLog->comment = request('comment');
                     $approvalLog->status = ApprovalLog::APP_REJECT;
@@ -173,8 +181,7 @@ class ApprovalLogController extends Controller
         }
     }
 
-    public function approveDirector($eplId)
-    {
+    public function approveDirector($eplId) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
@@ -184,7 +191,7 @@ class ApprovalLogController extends Controller
             ]);
             $epl = EPL::find($eplId);
             if ($epl) {
-                if ($epl->environment_officer_id  != null) {
+                if ($epl->environment_officer_id != null) {
                     $approvalLog = new ApprovalLog();
                     $approvalLog->type = ApprovalLog::Type_EPL;
                     $approvalLog->type_id = $epl->id;
@@ -208,8 +215,8 @@ class ApprovalLogController extends Controller
             abort(401);
         }
     }
-    public function rejectDirector($eplId)
-    {
+
+    public function rejectDirector($eplId) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
@@ -219,7 +226,7 @@ class ApprovalLogController extends Controller
             ]);
             $epl = EPL::find($eplId);
             if ($epl) {
-                if ($epl->environment_officer_id  != null) {
+                if ($epl->environment_officer_id != null) {
                     $approvalLog = new ApprovalLog();
                     $approvalLog->type = ApprovalLog::Type_EPL;
                     $approvalLog->type_id = $epl->id;
@@ -244,8 +251,7 @@ class ApprovalLogController extends Controller
         }
     }
 
-    public function getLog($id)
-    {
+    public function getLog($id) {
         $epl = EPL::find($id);
         if ($epl) {
             return ApprovalLog::where('type', ApprovalLog::Type_EPL)->where('type_id', $epl->id)->get();
@@ -253,14 +259,14 @@ class ApprovalLogController extends Controller
             abort(404);
         }
     }
-    public function current($id)
-    {
+
+    public function current($id) {
         $epl = EPL::find($id);
         if ($epl) {
             return ApprovalLog::where('type', ApprovalLog::Type_EPL)
-                ->where('type_id', $epl->id)
-                ->orderBy('id', 'desc')
-                ->first();
+                            ->where('type_id', $epl->id)
+                            ->orderBy('id', 'desc')
+                            ->first();
         } else {
             abort(404);
         }
@@ -272,8 +278,7 @@ class ApprovalLogController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
@@ -283,8 +288,7 @@ class ApprovalLogController extends Controller
      * @param  \App\ApprovalLog  $approvalLog
      * @return \Illuminate\Http\Response
      */
-    public function show(ApprovalLog $approvalLog)
-    {
+    public function show(ApprovalLog $approvalLog) {
         //
     }
 
@@ -294,8 +298,7 @@ class ApprovalLogController extends Controller
      * @param  \App\ApprovalLog  $approvalLog
      * @return \Illuminate\Http\Response
      */
-    public function edit(ApprovalLog $approvalLog)
-    {
+    public function edit(ApprovalLog $approvalLog) {
         //
     }
 
@@ -306,8 +309,7 @@ class ApprovalLogController extends Controller
      * @param  \App\ApprovalLog  $approvalLog
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ApprovalLog $approvalLog)
-    {
+    public function update(Request $request, ApprovalLog $approvalLog) {
         //
     }
 
@@ -317,8 +319,8 @@ class ApprovalLogController extends Controller
      * @param  \App\ApprovalLog  $approvalLog
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ApprovalLog $approvalLog)
-    {
+    public function destroy(ApprovalLog $approvalLog) {
         //
     }
+
 }
