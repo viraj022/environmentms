@@ -91,8 +91,6 @@ class EPLController extends Controller
             if ($epl !== null) {
                 // dd($epl->issue_date);
                 if ($epl->issue_date == null) {
-
-
                     $payList = $epl->paymentList();
                     if (
                         $payList['inspection']['status'] == 'payed'
