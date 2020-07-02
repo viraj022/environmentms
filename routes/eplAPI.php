@@ -244,3 +244,13 @@ Route::middleware('auth:api')->post('/epl/site_clearance/id/{epl}', 'EPLControll
 }
 
 */
+
+
+Route::middleware('auth:api')->post('/epl/issue/id/{epl}', 'EPLController@issue_certificate');
+
+/*
+{
+    "site_clearance_file":"dasd/45/das"
+}
+
+*/
