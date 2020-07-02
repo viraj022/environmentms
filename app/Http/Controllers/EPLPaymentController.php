@@ -190,6 +190,13 @@ class EPLPaymentController extends Controller
         $pt = PaymentType::getpaymentByTypeName(PaymentType::LICENCE_FEE);
         return Payment::with('paymentRanges')->where('payment_type_id', $pt->id)->get();
     }
+    public function getFineList()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        $pt = PaymentType::getpaymentByTypeName(PaymentType::FINE);
+        return Payment::with('paymentRanges')->where('payment_type_id', $pt->id)->get();
+    }
 
     public function payEPL($eplId)
     {
