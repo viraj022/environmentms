@@ -45,6 +45,7 @@ Route::get('/inspection_attachment/id/{id}', 'InspectionSessionAttachmentControl
 Route::get('/application_payment', 'EPLController@index2');
 Route::get('/epl_payments/id/{id}', 'EPLPaymentController@index');
 Route::get('/certificate_approval/id/{id}', 'ApprovalLogController@index');
+Route::get('/issue_certificate/id/{id}', 'EPLController@index3');
 //ui routs
 
 //dashboard
