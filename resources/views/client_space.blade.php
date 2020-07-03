@@ -50,21 +50,21 @@
                                 <input id="getlName" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                                <div id="valLName" class="d-none"><p class="text-danger">Last Name is required</p></div>
                             </div>
                             <div class="form-group">
                                 <label>Address*</label>
                                 <input id="getAddress" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                                <div id="valAddName" class="d-none"><p class="text-danger">Address is required</p></div>
                             </div>
                             <div class="form-group">
                                 <label>Contact Number*</label>
                                 <input id="getContact" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                                <div id="valConName" class="d-none"><p class="text-danger">Contact Number is required</p></div>
                             </div>
                             <div class="form-group">
                                 <label>Email*</label>
@@ -78,7 +78,7 @@
                                 <input id="getNicSave" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                                <div id="valnicName" class="d-none"><p class="text-danger">NIC is required</p></div>
                             </div>
                         </div>
                         <div class="card-footer">
