@@ -139,48 +139,74 @@
     <div class="container-fluid view-Client d-none">
         <div class="row">
             <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-user"></i> Client Details
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-user"></i> Client Details
 
-                        </h3>
+                                </h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <dl>
+                                    <dt>Name :</dt>
+                                    <dd id="client_name"></dd>
+                                    <dt>Address :</dt>
+                                    <dd id="client_address"></dd>
+                                    <dt>Contact Number :</dt>
+                                    <dd id="client_cont"></dd>
+                                    <dt>Contact Email :</dt>
+                                    <dd id="client_amil"></dd>
+                                </dl>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
                     </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <dl>
-                            <dt>Name :</dt>
-                            <dd id="client_name"></dd>
-                            <dt>Address :</dt>
-                            <dd id="client_address"></dd>
-                            <dt>Contact Number :</dt>
-                            <dd id="client_cont"></dd>
-                            <dt>Contact Email :</dt>
-                            <dd id="client_amil"></dd>
-                        </dl>
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-address-card"></i> Services
+                                </h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <button type="button" class="btn btn-info" id="newEPL" value="">New EPL</button>
+                            </div>
+                            <div class="card-body">
+                                <button disabled="" type="button" class="btn btn-info" id="newSiteClearence" value="">New Site Clearance</button>
+                            </div>
+                            <div class="card-body">
+                                <button disabled type="button" class="btn btn-info" id="teli" value="">Telecomiunication Site Clearance</button>
+                            </div>
+                            <div class="card-body">
+                                <button disabled type="button" class="btn btn-info" id="scheduleWaste" value="">Schedule Waste</button>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
                     </div>
-                    <!-- /.card-body -->
-                </div>                                    
+
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-address-card"></i> Services
-                        </h3>
+                        <h3 class="card-title"><i class="fas fa-address-card"></i> Customer EPL List</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <button type="button" class="btn btn-info" id="newEPL" value="">New EPL</button>
-                    </div>
-                    <div class="card-body">
-                        <button disabled="" type="button" class="btn btn-info" id="newSiteClearence" value="">New Site Clearance</button>
-                    </div>
-                    <div class="card-body">
-                        <button disabled type="button" class="btn btn-info" id="teli" value="">Telecomiunication Site Clearance</button>
-                    </div>
-                    <div class="card-body">
-                        <button disabled type="button" class="btn btn-info" id="scheduleWaste" value="">Schedule Waste</button>
+                        <table class="table table-active">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>EPL</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
                     <!-- /.card-body -->
                 </div>                                    
@@ -226,8 +252,6 @@
 @section('pageScripts')
 <!-- Page script -->
 
-<!-- Select2 -->
-<script src="../../plugins/select2/js/select2.full.min.js"></script>
 <!-- Bootstrap4 Duallistbox -->
 <script src="../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 <!-- InputMask -->
@@ -243,7 +267,6 @@
 <script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="../../dist/js/demo.js"></script>
 <script src="../../js/ClientJS/client_space.js"></script>
 <script src="../../js/ClientJS/submit.js"></script>
 <script src="../../js/ClientJS/get.js"></script>
@@ -350,7 +373,6 @@
                         setSectionVisible('reg-newClient');
                     }
                 } else {
-                    console.log(result);
                     setClientDetails(result[0]);
                     setSectionVisible('view-Client');
                 }
