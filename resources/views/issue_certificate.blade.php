@@ -133,14 +133,7 @@
 <script>
 $(function () {
     var EPL = "{{$id}}";
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 4000
-    });
     getEplCertificateDetails(EPL, function (parameters) {
-        console.log(parameters);
         if (parameters.status == 1) {
             $('#showUiDb').addClass('d-none');
             $('#showData').removeClass('d-none');

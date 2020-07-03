@@ -224,13 +224,6 @@
                                 }
 //Map END
                                 $(function () {
-                                const Toast = Swal.mixin({
-                                toast: true,
-                                        position: 'top-end',
-                                        showConfirmButton: false,
-                                        timer: 4000
-
-                                });
                                 getaClientbyId({{$client}}, function (result) {
                                 if (result.length == 0 || result == undefined) {
                                 if (confirm("Client Not Found! Try Again!")) {

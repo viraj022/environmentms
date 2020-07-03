@@ -229,14 +229,6 @@ function initMap() {
     });
 }
 
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 4000
-
-    });
-
 $("#btnSave").click(function () {
 
     readImage(function (img) {

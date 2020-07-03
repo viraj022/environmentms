@@ -340,205 +340,191 @@
     <script src="../../dist/js/demo.js"></script>
     <script src="../../js/userjs/submit.js"></script>
     <script>
-        $(function () {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 4000
+$(function () {
 
-            });
-
-            @if (session('success'))
-            Toast.fire({
-                type: 'success',
+@if (session('success'))
+        Toast.fire({
+        type: 'success',
                 title: 'Waste Management System</br>User Saved'
-            });
-            @endif
+        });
+@endif
 
-            @if (session('error'))
-            Toast.fire({
-                type: 'error',
+        @if (session('error'))
+        Toast.fire({
+        type: 'error',
                 title: 'Waste Management System</br>Error'
-            });
-            @endif
+    });
+@endif
 
 
-            //Initialize Select2 Elements
-            var userId = '{{$user['id']}}'
-            var rollId = '{{$user['roll_id']}}'
-            $('.select2').select2();
-            loadUserPrevilages(userId);
+    //Initialize Select2 Elements
+    var userId = '{{$user['id']}}'
+    var rollId = '{{$user['roll_id']}}'
+    $('.select2').select2();
+loadUserPrevilages(userId);
+///// end array initialize
+function loadPrevilages(id) {
+$.ajax({
+type: "GET",
+        headers: {
+        "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+                "Accept": "application/json"
+    },
+    url: "/api/rolls/rollPrivilege/" + id,
+    contentType: false,
+    dataType: "json",
+    cache: false,
+    processDaate: false,
+    success: function (result) {
+        // alert(JSON.stringify(result));
+        $('.read').prop('checked', false);
+        $('.write').prop('checked', false);
+        $('.update').prop('checked', false);
+        $('.delete').prop('checked', false);
+        if (result.length > 0) {
+        $.each(result, function (key, value) {
 
-            ///// end array initialize
-            function loadPrevilages(id) {
-                $.ajax({
-                    type: "GET",
-                    headers: {
-                        "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-                        "Accept": "application/json"
-                    },
-                    url: "/api/rolls/rollPrivilege/" + id,
-                    contentType: false,
-                    dataType: "json",
-                    cache: false,
-                    processDaate: false,
-                    success: function (result) {
-                        // alert(JSON.stringify(result));
-                        $('.read').prop('checked', false);
-                        $('.write').prop('checked', false);
-                        $('.update').prop('checked', false);
-                        $('.delete').prop('checked', false);
-                        if (result.length > 0) {
-                            $.each(result, function (key, value) {
+        if ($("#pre" + value.id).length == 1) {
 
-                                if ($("#pre" + value.id).length == 1) {
+        if (value.pivot.is_read == 1) {
 
-                                    if (value.pivot.is_read == 1) {
+        $("#pre" + value.id + " .read").prop('checked', true);
+    } else {
+        $("#pre" + value.id + " .read").prop('checked', false);
+    }
+    if (value.pivot.is_create == 1) {
 
-                                        $("#pre" + value.id + " .read").prop('checked', true);
-                                    } else {
-                                        $("#pre" + value.id + " .read").prop('checked', false);
-                                    }
-                                    if (value.pivot.is_create == 1) {
+        $("#pre" + value.id + " .write").prop('checked', true);
+    } else {
+        $("#pre" + value.id + " .write").prop('checked', false);
+    }
+    if (value.pivot.is_update == 1) {
 
-                                        $("#pre" + value.id + " .write").prop('checked', true);
-                                    } else {
-                                        $("#pre" + value.id + " .write").prop('checked', false);
-                                    }
-                                    if (value.pivot.is_update == 1) {
+        $("#pre" + value.id + " .update").prop('checked', true);
+    } else {
+        $("#pre" + value.id + " .update").prop('checked', false);
+    }
+    if (value.pivot.is_delete == 1) {
 
-                                        $("#pre" + value.id + " .update").prop('checked', true);
-                                    } else {
-                                        $("#pre" + value.id + " .update").prop('checked', false);
-                                    }
-                                    if (value.pivot.is_delete == 1) {
+        $("#pre" + value.id + " .delete").prop('checked', true);
+    } else {
+        $("#pre" + value.id + " .delete").prop('checked', false);
+    }
 
-                                        $("#pre" + value.id + " .delete").prop('checked', true);
-                                    } else {
-                                        $("#pre" + value.id + " .delete").prop('checked', false);
-                                    }
+    } else {
+        alert('Error Previlage table not found');
+    }
+    });
+    } else {
+        console.log('No Privileges');
+    }
+    // alert(JSON.stringify(result));
+    console.log(result);
+    }
+});
+}
 
-                                } else {
-                                    alert('Error Previlage table not found');
-                                }
-                            });
-                        } else {
-                            console.log('No Privileges');
-                        }
-                        // alert(JSON.stringify(result));
-                        console.log(result);
-                    }
-                });
+function loadUserPrevilages(id) {
+$(".roleCombo").val(rollId);
+$('.select2').select2();
+$.ajax({
+type: "GET",
+        headers: {
+        "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+                "Accept": "application/json"
+    },
+    url: "/api/user/Privileges/" + id,
+    contentType: false,
+    dataType: "json",
+    cache: false,
+    processDaate: false,
+    success: function (result) {
+        // alert(JSON.stringify(result));
+        $('.read').prop('checked', false);
+        $('.write').prop('checked', false);
+        $('.update').prop('checked', false);
+        $('.delete').prop('checked', false);
+        if (result.length > 0) {
+        $.each(result, function (key, value) {
 
-            }
+        if ($("#pre" + value.id).length == 1) {
 
-            function loadUserPrevilages(id) {
-                $(".roleCombo").val(rollId);
-                $('.select2').select2();
-                $.ajax({
-                    type: "GET",
-                    headers: {
-                        "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-                        "Accept": "application/json"
-                    },
-                    url: "/api/user/Privileges/" + id,
-                    contentType: false,
-                    dataType: "json",
-                    cache: false,
-                    processDaate: false,
-                    success: function (result) {
-                        // alert(JSON.stringify(result));
-                        $('.read').prop('checked', false);
-                        $('.write').prop('checked', false);
-                        $('.update').prop('checked', false);
-                        $('.delete').prop('checked', false);
-                        if (result.length > 0) {
-                            $.each(result, function (key, value) {
+        if (value.pivot.is_read == 1) {
 
-                                if ($("#pre" + value.id).length == 1) {
+        $("#pre" + value.id + " .read").prop('checked', true);
+    } else {
+        $("#pre" + value.id + " .read").prop('checked', false);
+    }
+    if (value.pivot.is_create == 1) {
 
-                                    if (value.pivot.is_read == 1) {
+        $("#pre" + value.id + " .write").prop('checked', true);
+    } else {
+        $("#pre" + value.id + " .write").prop('checked', false);
+    }
+    if (value.pivot.is_update == 1) {
 
-                                        $("#pre" + value.id + " .read").prop('checked', true);
-                                    } else {
-                                        $("#pre" + value.id + " .read").prop('checked', false);
-                                    }
-                                    if (value.pivot.is_create == 1) {
+        $("#pre" + value.id + " .update").prop('checked', true);
+    } else {
+        $("#pre" + value.id + " .update").prop('checked', false);
+    }
+    if (value.pivot.is_delete == 1) {
 
-                                        $("#pre" + value.id + " .write").prop('checked', true);
-                                    } else {
-                                        $("#pre" + value.id + " .write").prop('checked', false);
-                                    }
-                                    if (value.pivot.is_update == 1) {
+        $("#pre" + value.id + " .delete").prop('checked', true);
+    } else {
+        $("#pre" + value.id + " .delete").prop('checked', false);
+    }
 
-                                        $("#pre" + value.id + " .update").prop('checked', true);
-                                    } else {
-                                        $("#pre" + value.id + " .update").prop('checked', false);
-                                    }
-                                    if (value.pivot.is_delete == 1) {
+    } else {
+        alert('Error Previlage table not found');
+    }
+    });
+    } else {
+        console.log('No Privileges');
+    }
+    // alert(JSON.stringify(result));
+    console.log(result);
+    }
+});
+}
 
-                                        $("#pre" + value.id + " .delete").prop('checked', true);
-                                    } else {
-                                        $("#pre" + value.id + " .delete").prop('checked', false);
-                                    }
-
-                                } else {
-                                    alert('Error Previlage table not found');
-                                }
-                            });
-                        } else {
-                            console.log('No Privileges');
-                        }
-                        // alert(JSON.stringify(result));
-                        console.log(result);
-                    }
-                });
-
-            }
-
-            $('.roleCombo').change(function () {
-                // load the default assigned privileges in a user roll
-                loadPrevilages(this.value);
-            });
-
-            $('.activityCombo').change(function () {
-                // alert(this.value);
-                var data = {
-                    'status': this.value
-                }
-                changeAciveStatus(userId, data, function () {
-                    // alert('User Changes to \'' + $(".activityCombo option:selected").html() + '\' status');
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Waste Management System</br>User Changes to \'' + $(".activityCombo option:selected").html() + '\' status'
-                    });
-                });
-
-            });
-            $('#btnSetRollPrivilege').click(function () {
-                // alert(this.value);
-                loadPrevilages($('.roleCombo').val());
-            });
-            $('#btnReset').click(function () {
-                // rest un saved privileges
-                loadUserPrevilages(userId);
-                // $('.roleCombo').val(rollId);
-            });
-            $('#btnAssign').click(function () {
-                // saving privileges
-                assignPrivilegesToUser(userId, function () {
-                    rollId = $('.roleCombo').val();
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Waste Management System</br>Privilege changed successfully'
-                    });
-                    loadUserPrevilages(userId);
-                });
-            });
-
-
-        })
+$('.roleCombo').change(function () {
+// load the default assigned privileges in a user roll
+loadPrevilages(this.value);
+});
+$('.activityCombo').change(function () {
+// alert(this.value);
+var data = {
+'status': this.value
+}
+changeAciveStatus(userId, data, function () {
+// alert('User Changes to \'' + $(".activityCombo option:selected").html() + '\' status');
+Toast.fire({
+type: 'success',
+        title: 'Waste Management System</br>User Changes to \'' + $(".activityCombo option:selected").html() + '\' status'
+    });
+});
+});
+$('#btnSetRollPrivilege').click(function () {
+// alert(this.value);
+loadPrevilages($('.roleCombo').val());
+});
+$('#btnReset').click(function () {
+// rest un saved privileges
+loadUserPrevilages(userId);
+// $('.roleCombo').val(rollId);
+});
+$('#btnAssign').click(function () {
+// saving privileges
+assignPrivilegesToUser(userId, function () {
+rollId = $('.roleCombo').val();
+Toast.fire({
+type: 'success',
+        title: 'Waste Management System</br>Privilege changed successfully'
+});
+loadUserPrevilages(userId);
+});
+});
+})
     </script>
 
 @endsection

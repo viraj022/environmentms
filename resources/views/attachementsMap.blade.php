@@ -119,13 +119,6 @@
 <script src="../../js/attachmentsjs/attachment_map.js"></script>
 <!-- AdminLTE App -->
 <script>
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 4000
-
-    });
     GetApplications(function () {
         GetAllDetails(parseInt($('.applicationType').val()));
     });

@@ -11,7 +11,6 @@ function AddClient(data, callBack) {
         cache: false,
         processDaate: false,
         success: function (result) {
-
             if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
                 callBack(result);
             }
