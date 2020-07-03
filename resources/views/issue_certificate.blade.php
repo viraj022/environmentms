@@ -68,6 +68,15 @@
                                     <p class="text-muted text-center clientNic">NIC_Data</p>
                                     <ul class="list-group list-group-unbordered mb-3">
                                         <li class="list-group-item">
+                                            <b>Environment Officer</b> <a class="float-right eplName">-</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Certificate No</b> <a class="float-right eplCerNo">-</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Registration No</b> <a class="float-right eplRegNo">-</a>
+                                        </li>
+                                        <li class="list-group-item">
                                             <b>Address</b> <a class="float-right clientAddr">-</a>
                                         </li>
                                         <li class="list-group-item">
@@ -76,20 +85,31 @@
                                         <li class="list-group-item">
                                             <b>Email</b> <a class="float-right clientEmail">-</a>
                                         </li>
+                                        <li class="list-group-item">
+                                            <b>Issue Date</b> <a class="float-right" id="eplissueDate">-</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Remarks</b> <a class="float-right eplRemark" >-</a>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div class="info-box bg-light">
                                     <div class="info-box-content">
-                                        <span class="info-box-text text-center text-muted">EPL Number</span>
-                                        <span class="info-box-number text-center text-muted mb-0" id="eplNum"></span>
+                                        <span class="info-box-text text-center text-muted">Client Information</span>
+                                        <dl>
+                                            <dt>Name</dt>
+                                            <dd class="eplClientName"></dd>
+                                            <dt>NIC</dt>
+                                            <dd class="eplClientNic"></dd>
+                                            <dt>Contact No</dt>
+                                            <dd class="eplClientConNo"></dd>
+                                            <dt>Address</dt>
+                                            <dd class="eplClientAdress"></dd>
+                                            <dt>Email</dt>
+                                            <dd class="eplClientMail"></dd>
+                                        </dl>
                                     </div>
                                 </div>
-                                <dl>
-                                    <dt>Issue Date</dt>
-                                    <dd id="eplissueDate"></dd>
-                                    <dt>Address</dt>
-                                    <dd id="eplAddress"></dd>
-                                </dl>
                             </div>
                         </div>
                     </div>
@@ -144,24 +164,35 @@ $(function () {
         if (parameters.status == 1) {
             $('#showUiDb').addClass('d-none');
             $('#showData').removeClass('d-none');
-            $('#eplNum').html(parameters.code);
             $('#eplissueDate').html(parameters.created_at);
             $('.clientName').html(parameters.name);
-//            $('.clientName').html(parameters.client.first_name + ' ' + parameters.client.last_name);
-            $('.clientNic').html(parameters.client.nic);
-            $('.clientAddr').html(parameters.client.address);
-            $('.clientCont').html(parameters.client.contact_no);
-            $('.clientEmail').html(parameters.client.email);
-            $('.clientEmail').html(parameters.address);
+            $('.eplName').html(parameters.first_name + ' ' + parameters.last_name);
+            $('.clientNic').html(parameters.code);
+            $('.clientAddr').html(parameters.address);
+            $('.clientCont').html(parameters.contact_no);
+            $('.clientEmail').html(parameters.email);
+            $('.eplCerNo').html(parameters.certificate_no);
+            $('.eplRegNo').html(parameters.registration_no);
+            $('.eplRemark').html(parameters.remark);
+
+            $('.eplClientName').html(parameters.client.first_name + ' ' + parameters.client.last_name);
+            $('.eplClientAdress').html(parameters.client.address);
+            $('.eplClientMail').html(parameters.client.email);
+            $('.eplClientConNo').html(parameters.client.contact_no);
+            $('.eplClientNic').html(parameters.client.nic);
         } else {
             $('#showUiDb').removeClass('d-none');
             $('#showData').addClass('d-none');
         }
     });
     $("#issueBtn").click(function () {
-        IssueEpl(EPL, formData(), function (p) {
+        if (confirm('Are you sure you want to issue?')) {
+            IssueEpl(EPL, formData(), function (p) {
 
-        });
+            });
+        } else {
+            return false;
+        }
     });
     function formData() {
         let data = {
