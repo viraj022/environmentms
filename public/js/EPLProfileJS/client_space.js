@@ -17,6 +17,9 @@ function setAllDetails(obj) {
 //    _Longitude = obj.coordinate_y;
     if (obj.first_name != null) {
         $('#env_firstname').html("Assign Environment Officer: " + obj.first_name + " " + obj.last_name);
+    }else if(obj.first_name == null){
+        $("#disPaylink").attr("href", "javascript:disWarnPay();");      
+        $("#disInspeclink").attr("href", "javascript:disWarnPay();");      
     }
 }
 function downloadApp(obj) {

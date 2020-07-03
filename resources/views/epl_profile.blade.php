@@ -87,7 +87,7 @@
                             <!--<p>There is a problem that we need to</p>-->
                         </div>
                         <div class="callout callout-danger">
-                            <h6><a href="/epl_payments/id/{{$profile}}" class="text-success">Payments</a></h6>
+                            <h6><a id="disPaylink" href="/epl_payments/id/{{$profile}}" class="text-success">Payments</a></h6>
                             <p>All Payment (EPL, Fine,Inspection Fee, Certificate)</p>
                         </div>
                         <div class="callout callout-danger">
@@ -107,7 +107,7 @@
                             <p>Issue Certificate / Certificate Information</p>
                         </div>
                         <div class="callout callout-danger">
-                            <h6><a href="/inspection/epl/id/{{$profile}}" class="text-success ">Inspection</a></h6>
+                            <h6><a id="disInspeclink" href="/inspection/epl/id/{{$profile}}" class="text-success ">Inspection</a></h6>
                             <p>Manage Inspection Details</p>
                         </div>
                     </div>
@@ -265,6 +265,8 @@
                                 type: 'success',
                                         title: 'Enviremontal MS</br>Saved'
                                 });
+                                $('#btnSaveClear').addClass('d-none');
+                                $('#btnUpdateClear').removeClass('d-none');
                                 } else {
                                 Toast.fire({
                                 type: 'error',
@@ -305,10 +307,10 @@
                                 };
                                 return data;
                                 }
-
-
                                 });
-
+                                function disWarnPay() {
+                                toastr.error('Assign Environment Officer & Try Again!');
+                                }
 </script>
 <!--<script>
     $(function(){

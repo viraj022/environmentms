@@ -28,6 +28,7 @@ function fromValues() {
         start_date: $('#startDate').val(),
         registration_no: $('#business_regno').val(),
         created_date: $('#submittedDate').val(),
+        is_old: $('#getisOld').val(),
         remark: $('#getRemark').val()
     };
     return data;

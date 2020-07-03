@@ -50,35 +50,35 @@
                                 <input id="getlName" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                                <div id="valLName" class="d-none"><p class="text-danger">Last Name is required</p></div>
                             </div>
                             <div class="form-group">
                                 <label>Address*</label>
                                 <input id="getAddress" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                                <div id="valAddName" class="d-none"><p class="text-danger">Address is required</p></div>
                             </div>
                             <div class="form-group">
                                 <label>Contact Number*</label>
                                 <input id="getContact" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                                <div id="valConName" class="d-none"><p class="text-danger">Contact Number is required</p></div>
                             </div>
                             <div class="form-group">
                                 <label>Email*</label>
                                 <input id="getEmail" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                                <div id="valNam1e" class="d-none"><p class="text-danger">Email is required</p></div>
                             </div>
                             <div class="form-group">
                                 <label>NIC*</label>
                                 <input id="getNicSave" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                                <div id="valnicName" class="d-none"><p class="text-danger">NIC is required</p></div>
                             </div>
                         </div>
                         <div class="card-footer">
@@ -174,13 +174,13 @@
                         <button type="button" class="btn btn-info" id="newEPL" value="">New EPL</button>
                     </div>
                     <div class="card-body">
-                        <button type="button" class="btn btn-info" id="newSiteClearence" value="">New Site Clearance</button>
+                        <button disabled="" type="button" class="btn btn-info" id="newSiteClearence" value="">New Site Clearance</button>
                     </div>
                     <div class="card-body">
-                        <button type="button" class="btn btn-info" id="teli" value="">Telecomiunication Site Clearance</button>
+                        <button disabled type="button" class="btn btn-info" id="teli" value="">Telecomiunication Site Clearance</button>
                     </div>
                     <div class="card-body">
-                        <button type="button" class="btn btn-info" id="scheduleWaste" value="">Schedule Waste</button>
+                        <button disabled type="button" class="btn btn-info" id="scheduleWaste" value="">Schedule Waste</button>
                     </div>
                     <!-- /.card-body -->
                 </div>                                    
@@ -271,6 +271,10 @@
                         Toast.fire({
                             type: 'success',
                             title: 'Enviremontal MS</br>Saved'
+                        });
+                        getClientbyNic(result.nic, function (result) {
+                            setClientDetails(result[0]);
+                            setSectionVisible('view-Client');
                         });
                     } else {
                         Toast.fire({

@@ -41,6 +41,13 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group">
+                            <label>Is New*</label>
+                            <select id="getisOld" class="form-control form-control-sm" style="width: 100%;">
+                                <option value="1">New</option>
+                                <option value="0">Old</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label>Pradeshiya Sabha*</label>
                             <select id="prsdeshiySb" class="form-control form-control-sm" style="width: 100%;"></select>
                         </div>
@@ -71,7 +78,7 @@
                         </div>
                         <div class="form-group">
                             <label>Investment*</label>
-                            <input id="inventsment" type="text" class="form-control form-control-sm" placeholder="Enter investment" value="">
+                            <input id="inventsment" type="number" class="form-control form-control-sm" placeholder="Enter investment" value="">
                         </div>
                         <div class="form-group">
                             <label>Address*</label>
@@ -221,6 +228,14 @@ function initMap() {
         // alert('Marker dropped: Current Lat: ' + evt.latLng.lat().toFixed(3) + ' Current Lng: ' + evt.latLng.lng().toFixed(3) );
     });
 }
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 4000
+
+    });
 
 $("#btnSave").click(function () {
 
