@@ -103,7 +103,7 @@
                             <p>Approve the EPL</p>
                         </div>
                         <div class="callout callout-danger">
-                            <h6><a href="5" class="text-success ">Certificate Information</a></h6>
+                            <h6><a href="/issue_certificate/id/{{$profile}}" class="text-success ">Certificate Information</a></h6>
                             <p>Issue Certificate / Certificate Information</p>
                         </div>
                         <div class="callout callout-danger">
