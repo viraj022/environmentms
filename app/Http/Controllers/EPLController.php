@@ -197,7 +197,7 @@ class EPLController extends Controller
                     $array3 = explode('/', $array[0]);
                     $type = $array3[1];
                     $data = base64_decode($array2[1]);
-                    file_put_contents($this->makeApplicationPath($epl->id) . "1" . $type, $data);
+                    file_put_contents($this->makeApplicationPath($epl->id) . "1." . $type, $data);
                     $epl->application_path = $this->makeApplicationPath($epl->id) . "1." . $type;
                     $epl->save();
                     return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
