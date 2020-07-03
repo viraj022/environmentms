@@ -71,7 +71,7 @@
                                 <input id="getEmail" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                                <div id="valNam1e" class="d-none"><p class="text-danger">Email is required</p></div>
                             </div>
                             <div class="form-group">
                                 <label>NIC*</label>
