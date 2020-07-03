@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Client extends Model
 {
         use SoftDeletes;
+        public function epls()
+        {
+                return $this->hasMany(EPL::class);
+        }
 }
