@@ -241,7 +241,7 @@ class EPLController extends Controller
 
     public function find($id)
     {
-        return EPL::leftJoin('environment_officers', 'e_p_l_s.environment_officer_id', 'environment_officers.id')
+        return EPL::with('client')->leftJoin('environment_officers', 'e_p_l_s.environment_officer_id', 'environment_officers.id')
             ->leftJoin('users', 'environment_officers.user_id', 'users.id')
             ->where('e_p_l_s.id', $id)
             ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')

@@ -30,7 +30,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="row" id="showUiDb">
+                <div class="row d-none" id="showUiDb">
                     <div class="col-md-8">
                         <div class="card card-outline card-success">
                             <div class="card-header">
@@ -60,22 +60,36 @@
                     <div class="col-md-8">
                         <div class="card card-outline card-success">
                             <div class="card-header">
-                                <h3 class="card-title">Data</h3>
+                                <h3 class="card-title">EPL Issued</h3>
                             </div>
                             <div class="card-body">
-                                <div class="form-group">
-                                    <label>Issue Date *</label>
-                                    <input id="issueDate" type="date" class="form-control form-control-sm" placeholder="" value="">
+                                <div class="card-body box-profile">
+                                    <h3 class="profile-username text-center clientName">{Client_name}</h3>
+                                    <p class="text-muted text-center clientNic">NIC_Data</p>
+                                    <ul class="list-group list-group-unbordered mb-3">
+                                        <li class="list-group-item">
+                                            <b>Address</b> <a class="float-right clientAddr">-</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Contact No</b> <a class="float-right clientCont">-</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Email</b> <a class="float-right clientEmail">-</a>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="form-group">
-                                    <label>Expire Date *</label>
-                                    <input id="expireDate" type="date" class="form-control form-control-sm" placeholder="" value="">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-muted">EPL Number</span>
+                                        <span class="info-box-number text-center text-muted mb-0" id="eplNum"></span>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Certificate Number *</label>
-                                    <input id="certificateNo" type="text" class="form-control form-control-sm" placeholder="Enter Number" value="">
-                                </div>
-                                <button type="button" class="btn btn-lg btn-success" id="issueBtn"><i class="fas fa-check"></i> Issue EPL Certificate</button>
+                                <dl>
+                                    <dt>Issue Date</dt>
+                                    <dd id="eplissueDate"></dd>
+                                    <dt>Address</dt>
+                                    <dd id="eplAddress"></dd>
+                                </dl>
                             </div>
                         </div>
                     </div>
@@ -128,11 +142,20 @@ $(function () {
     getEplCertificateDetails(EPL, function (parameters) {
         console.log(parameters);
         if (parameters.status == 1) {
-            $('#showUiDb').removeClass('d-none');
-            $('#showData').addClass('d-none');
-        } else {
             $('#showUiDb').addClass('d-none');
             $('#showData').removeClass('d-none');
+            $('#eplNum').html(parameters.code);
+            $('#eplissueDate').html(parameters.created_at);
+            $('.clientName').html(parameters.name);
+//            $('.clientName').html(parameters.client.first_name + ' ' + parameters.client.last_name);
+            $('.clientNic').html(parameters.client.nic);
+            $('.clientAddr').html(parameters.client.address);
+            $('.clientCont').html(parameters.client.contact_no);
+            $('.clientEmail').html(parameters.client.email);
+            $('.clientEmail').html(parameters.address);
+        } else {
+            $('#showUiDb').removeClass('d-none');
+            $('#showData').addClass('d-none');
         }
     });
     $("#issueBtn").click(function () {
