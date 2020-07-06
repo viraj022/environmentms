@@ -104,6 +104,12 @@ Route::middleware('auth:api')->get('/get/id/{id}', 'CashierController@getDetails
 }
 */
 Route::middleware('auth:api')->post('/pay/id/{id}', 'CashierController@pay'); // pat the payment
+/*{
+
+     'cashier_name' => 'required|string',
+            'invoice_no' => ['required', 'string'],
+}*/
+
 /*
 {
     "id": 1,

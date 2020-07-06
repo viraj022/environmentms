@@ -205,6 +205,9 @@ class EPLController extends Controller
                 $epl->application_path = "";
                 $epl->created_at = \request('created_date');
                 $epl->is_old = \request('is_old');
+                $epl->site_clearance_file = \request('site_clearance_file');
+
+
                 $msg = $epl->save();
 
                 if ($msg) {
@@ -216,8 +219,49 @@ class EPLController extends Controller
                     $data = base64_decode($array2[1]);
                     file_put_contents($this->makeApplicationPath($epl->id) . "1." . $type, $data);
                     $epl->application_path = $this->makeApplicationPath($epl->id) . "1." . $type;
+                   
+              
+  //file 01
+                    $data = \request('file1');
+                    $array = explode(';', $data);
+                    $array2 = explode(',', $array[1]);
+                    $array3 = explode('/', $array[0]);
+                    $type = $array3[1];
+                    $data = base64_decode($array2[1]);
+                    file_put_contents($this->makeApplicationPath($epl->id) . "2." . $type, $data);
+                    $epl->file_01 = $this->makeApplicationPath($epl->id) . "2." . $type;
+                    
+            
+// end file 01              
+
+//file 02
+                    $data = \request('file2');
+                    $array = explode(';', $data);
+                    $array2 = explode(',', $array[1]);
+                    $array3 = explode('/', $array[0]);
+                    $type = $array3[1];
+                    $data = base64_decode($array2[1]);
+                    file_put_contents($this->makeApplicationPath($epl->id) . "3." . $type, $data);
+                    $epl->file_02 = $this->makeApplicationPath($epl->id) . "3." . $type;
+                    
+            
+// end file 02
+
+
+//file 03
+                    $data = \request('file3');
+                    $array = explode(';', $data);
+                    $array2 = explode(',', $array[1]);
+                    $array3 = explode('/', $array[0]);
+                    $type = $array3[1];
+                    $data = base64_decode($array2[1]);
+                    file_put_contents($this->makeApplicationPath($epl->id) . "4." . $type, $data);
+                    $epl->file_03 = $this->makeApplicationPath($epl->id) . "4." . $type;
                     $epl->save();
                     return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
+// end file 03
+
+
                 } else {
                     return array('id' => 0, 'message' => 'false');
                 }
