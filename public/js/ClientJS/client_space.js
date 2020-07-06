@@ -68,4 +68,20 @@ function setClientDetails(obj) {
     $('#client_cont').html(obj.contact_no);
     $('#client_address').html(obj.address);
     $('#client_name').html(obj.first_name + ' ' + obj.last_name);
+
+    let tbl = "";
+    $('#clientEplList tbody').html(tbl);
+    if (obj.epls.length == 0) {
+        tbl += '<tr><td colspan="4">-No EPL Found-</td></tr>';
+    } else {
+        $.each(obj.epls, function (index, val) {
+            tbl += '<tr>';
+            tbl += '<td>' + ++index + '</td>';
+            tbl += '<td>' + val.name + '</td>';
+            tbl += '<td>' + val.code + '</td>';
+            tbl += '<td><a href="/epl_profile/client/' + val.client_id + '/profile/' + val.id + '" class="btn btn-dark">View</a></td>';
+            tbl += '</tr>';
+        });
+    }
+    $('#clientEplList tbody').html(tbl);
 }

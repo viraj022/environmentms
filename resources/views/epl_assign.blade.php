@@ -108,14 +108,6 @@
 <script>
     $(function () {
 
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 4000
-
-        });
-
 //Load table
         loadAssistantDirectorCombo(function () {
             loadEnvOfficers_combo(parseInt($('#ass_dir_combo').val()), function () {

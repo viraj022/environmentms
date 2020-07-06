@@ -79,13 +79,7 @@
 <!-- AdminLTE for demo purposes -->
 
 <script>
-const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 4000
-
-});
+    
 //    $(function () {
 var EPL_ID = "{{$epl_id}}";
 all_attachmentsList(EPL_ID);

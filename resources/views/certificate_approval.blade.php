@@ -237,150 +237,143 @@
 <!-- AdminLTE App -->
 <script>
     $(function () {
-    const Toast = Swal.mixin({
-    toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 4000
-
-    });
-            var profileId = {{$id}};
+        var profileId = "{{$id}}";
 //Load table
-    loadTable(profileId);
-    $('#trackDate,#trackDateAssDir,#trackDateDir').daterangepicker({
-        singleDatePicker: true,
-        locale: {
-            format: 'MM/DD/YYYY'
-        }
-    });
+        loadTable(profileId);
+        $('#trackDate,#trackDateAssDir,#trackDateDir').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'MM/DD/YYYY'
+            }
+        });
 //click save button
-    $('#btnSave').click(function () {
-        var data = fromValues();
-        if (Validiteinsert(data)) {
-            // if validiated
-            AddEnvOfficer(data, profileId, function (result) {
-                if (result.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Enviremontal MS</br>Saved'
-                    });
-                } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Enviremontal MS</br>Error'
-                    });
-                }
-                loadTable(profileId);
-                resetinputFields();
-                hideAllErrors();
-            });
-        }
-    });
-    $('#btnSave2').click(function () {
-        var data = fromValues2();
-        if (Validiteinsert2(data)) {
-            // if validiated
-            AddAssDir(data, profileId, function (result) {
-                if (result.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Enviremontal MS</br>Saved'
-                    });
-                } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Enviremontal MS</br>Error'
-                    });
-                }
-                loadTable(profileId);
-                resetinputFields();
-                hideAllErrors();
-            });
-        }
-    });
-    $('#btnSave3').click(function () {
-        var data = fromValues3();
-        if (Validiteinsert3(data)) {
-            // if validiated
-            AddDir(data, profileId, function (result) {
-                if (result.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Enviremontal MS</br>Saved'
-                    });
-                } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Enviremontal MS</br>Error'
-                    });
-                }
-                loadTable(profileId);
-                resetinputFields();
-                hideAllErrors();
-            });
-        }
-    });
+        $('#btnSave').click(function () {
+            var data = fromValues();
+            if (Validiteinsert(data)) {
+                // if validiated
+                AddEnvOfficer(data, profileId, function (result) {
+                    if (result.id == 1) {
+                        Toast.fire({
+                            type: 'success',
+                            title: 'Enviremontal MS</br>Saved'
+                        });
+                    } else {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Enviremontal MS</br>Error'
+                        });
+                    }
+                    loadTable(profileId);
+                    resetinputFields();
+                    hideAllErrors();
+                });
+            }
+        });
+        $('#btnSave2').click(function () {
+            var data = fromValues2();
+            if (Validiteinsert2(data)) {
+                // if validiated
+                AddAssDir(data, profileId, function (result) {
+                    if (result.id == 1) {
+                        Toast.fire({
+                            type: 'success',
+                            title: 'Enviremontal MS</br>Saved'
+                        });
+                    } else {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Enviremontal MS</br>Error'
+                        });
+                    }
+                    loadTable(profileId);
+                    resetinputFields();
+                    hideAllErrors();
+                });
+            }
+        });
+        $('#btnSave3').click(function () {
+            var data = fromValues3();
+            if (Validiteinsert3(data)) {
+                // if validiated
+                AddDir(data, profileId, function (result) {
+                    if (result.id == 1) {
+                        Toast.fire({
+                            type: 'success',
+                            title: 'Enviremontal MS</br>Saved'
+                        });
+                    } else {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Enviremontal MS</br>Error'
+                        });
+                    }
+                    loadTable(profileId);
+                    resetinputFields();
+                    hideAllErrors();
+                });
+            }
+        });
 //click delete button
-    $('#btnshowDelete').click(function () {
-        var data = fromValues();
-        deleteEnvOfficer(data, profileId, function (result) {
-            if (result.id == 1) {
-                Toast.fire({
-                    type: 'success',
-                    title: 'Enviremontal MS</br>Removed!'
-                });
-            } else {
-                Toast.fire({
-                    type: 'error',
-                    title: 'Enviremontal MS</br>Error'
-                });
-            }
-            loadTable(profileId);
-            showSave();
-            resetinputFields();
-            hideAllErrors();
+        $('#btnshowDelete').click(function () {
+            var data = fromValues();
+            deleteEnvOfficer(data, profileId, function (result) {
+                if (result.id == 1) {
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Enviremontal MS</br>Removed!'
+                    });
+                } else {
+                    Toast.fire({
+                        type: 'error',
+                        title: 'Enviremontal MS</br>Error'
+                    });
+                }
+                loadTable(profileId);
+                showSave();
+                resetinputFields();
+                hideAllErrors();
+            });
         });
-    });
-    $('#btnshowDelete2').click(function () {
-        var data = fromValues2();
-        deleteAssDir(data, profileId, function (result) {
-            if (result.id == 1) {
-                Toast.fire({
-                    type: 'success',
-                    title: 'Enviremontal MS</br>Removed!'
-                });
-            } else {
-                Toast.fire({
-                    type: 'error',
-                    title: 'Enviremontal MS</br>Error'
-                });
-            }
-            loadTable(profileId);
-            showSave();
-            resetinputFields();
-            hideAllErrors();
+        $('#btnshowDelete2').click(function () {
+            var data = fromValues2();
+            deleteAssDir(data, profileId, function (result) {
+                if (result.id == 1) {
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Enviremontal MS</br>Removed!'
+                    });
+                } else {
+                    Toast.fire({
+                        type: 'error',
+                        title: 'Enviremontal MS</br>Error'
+                    });
+                }
+                loadTable(profileId);
+                showSave();
+                resetinputFields();
+                hideAllErrors();
+            });
         });
-    });
-    $('#btnshowDelete3').click(function () {
-        var data = fromValues3();
-        deleteDir(data, profileId, function (result) {
-            if (result.id == 1) {
-                Toast.fire({
-                    type: 'success',
-                    title: 'Enviremontal MS</br>Removed!'
-                });
-            } else {
-                Toast.fire({
-                    type: 'error',
-                    title: 'Enviremontal MS</br>Error'
-                });
-            }
-            loadTable(profileId);
-            showSave();
-            resetinputFields();
-            hideAllErrors();
+        $('#btnshowDelete3').click(function () {
+            var data = fromValues3();
+            deleteDir(data, profileId, function (result) {
+                if (result.id == 1) {
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Enviremontal MS</br>Removed!'
+                    });
+                } else {
+                    Toast.fire({
+                        type: 'error',
+                        title: 'Enviremontal MS</br>Error'
+                    });
+                }
+                loadTable(profileId);
+                showSave();
+                resetinputFields();
+                hideAllErrors();
+            });
         });
-    });
     }
     );
 //show update buttons    

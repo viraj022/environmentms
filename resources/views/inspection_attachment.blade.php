@@ -99,13 +99,6 @@
 <!-- AdminLTE for demo purposes -->
 
 <script>
-const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 4000
-
-});
 //    $(function () {
 var ID = "{{$id}}";
 getaAttachmentbyId(ID, function (res) {

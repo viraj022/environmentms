@@ -146,12 +146,6 @@
 <!-- AdminLTE App -->
 <script>
     $(function () {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 4000
-        });
         //Load table
         loadEnvOfficers_combo(function () {
             assigned_EPL_table($('#env_officer_combo').val());

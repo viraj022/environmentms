@@ -1,20 +1,3 @@
-function ajaxRequest(Method, url, data, callBack) {
-    $.ajax({
-        type: Method,
-        headers: {
-            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-            "Accept": "application/json"
-        },
-        url: url,
-        data: data,
-        cache: false,
-        success: function (result) {
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack(result);
-            }
-        }
-    });
-}
 function loadEPL_details(epl_id, callBack) {
     ajaxRequest('GET', "/api/epl/pay/id/" + epl_id, null, function (dataSet) {
         if (dataSet.fine.status == "not_payed") {
@@ -169,27 +152,6 @@ function selectedPayments_table(obj, callBack) {
     }
 }
 
-function show_mesege(resp_id) {
-    if (resp_id.message == "true") {
-        Toast.fire({
-            type: 'success',
-            title: 'Envirmontal MS</br>Success!'
-        });
-    } else {
-        Toast.fire({
-            type: 'error',
-            title: 'Enviremontal MS</br>Error'
-        });
-    }
-}
-
-const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 4000
-
-});
 function savePayment(data, epl_id, callBack) {
     if (!data || data.length == 0) {
         alert('Please Add Pyaments Before Compleate!');
