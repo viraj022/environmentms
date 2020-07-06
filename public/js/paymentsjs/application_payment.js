@@ -97,13 +97,6 @@ function set_application_amount() {
     let apl_amt = (isNaN(parseFloat($('#application_combo :selected').data('amt')))) ? '00.00' : parseFloat($('#application_combo :selected').data('amt'));
     $('#amt').val(apl_amt);
 }
-const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 4000
-
-});
 
 function loadTable() {
     ajaxRequest('GET', 'api/application/pendingPayments', null, function (data) {
