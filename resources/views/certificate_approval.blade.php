@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Certificate Approval</h1>
+                <h1>(<a href="/epl_profile/client/{{$client_id}}/profile/{{$id}}" target="_blank">{{$epl_code}}</a>) - Certificate Approval</h1>
             </div>
         </div>
     </div>
@@ -54,7 +54,7 @@
                     </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSave" type="submit" class="btn btn-success envOfficer_section">Approve</button>
+                        <button disabled id="btnSave" type="submit" class="btn btn-success envOfficer_section">Approve</button>
                         @endif
                     </div>                           
                 </div>
@@ -83,10 +83,10 @@
                     </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSave2" type="submit" class="btn btn-success astDir_section">Approve</button>
+                        <button disabled id="btnSave2" type="submit" class="btn btn-success astDir_section">Approve</button>
                         @endif
                         @if($pageAuth['is_delete']==1 || false)
-                        <button  id="btnshowDelete2" type="submit" class="btn btn-danger astDir_section">Reject</button>
+                        <button disabled  id="btnshowDelete2" type="submit" class="btn btn-danger astDir_section">Reject</button>
                         @endif
                     </div>                           
                 </div>
@@ -115,10 +115,10 @@
                     </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSave3" type="submit" class="btn btn-success director_sectiom">Approve</button>
+                        <button disabled id="btnSave3" type="submit" class="btn btn-success director_sectiom">Approve</button>
                         @endif
                         @if($pageAuth['is_delete']==1 || false)
-                        <button  id="btnshowDelete3" type="submit" class="btn btn-danger director_sectiom" >Reject</button>
+                        <button disabled  id="btnshowDelete3" type="submit" class="btn btn-danger director_sectiom" >Reject</button>
                         @endif
                     </div>                           
                 </div>
