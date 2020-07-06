@@ -208,14 +208,14 @@
                     </a>
                 </li>
                 @endif
-                @if($pre['id']===config('auth.privileges.clientSpace'))
+                {{-- @if($pre['id']===config('auth.privileges.clientSpace'))
                 <li class="nav-item">
                     <a href="{{ url('/env_officer') }}" class="nav-link {{ Request::is('env_officer') ? 'active' : '' }}">
                         <i class="fas fa-puzzle-piece nav-icon"></i>
                         <p>Pending EPL</p>
                     </a>
                 </li>
-                @endif
+                @endif --}}
                 @endforeach
 
             </ul>
