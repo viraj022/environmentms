@@ -201,10 +201,27 @@ class EPLController extends Controller
                 $epl->start_date = \request('start_date');
                 $epl->registration_no = \request('registration_no');
                 $epl->remark = \request('remark');
+                $epl->is_old = \request('is_old');
+
+                if ( $epl->is_old ==0) {
+
+                                request()->validate([
+                    'code' => 'required|string', 
+                      'certificate_no' => 'required|string',      
+                              
+                ]);
+                   $epl->code = \request('code');
+                    $epl->certificate_no = \request('certificate_no');
+                   
+               }
+               else
+               {
                 $epl->code = $this->generateCode($epl);
+            }
+
                 $epl->application_path = "";
                 $epl->created_at = \request('created_date');
-                $epl->is_old = \request('is_old');
+              
                 $epl->site_clearance_file = \request('site_clearance_file');
 
 
