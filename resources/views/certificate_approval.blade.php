@@ -55,11 +55,13 @@
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
                         <button id="btnSave" type="submit" class="btn btn-success envOfficer_section">Approve</button>
-                        @endif
+                      
+                        
+                        9@endif
                     </div>                           
                 </div>
                 <div class="card card-primary">
-                    <div class="card-header">
+                    <  div class="card-header">
                         <label id="lblTitle">Approve By Assistant Director</label>
                     </div>
                     <div class="card-body">
