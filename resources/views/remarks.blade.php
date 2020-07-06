@@ -21,7 +21,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Remarks</h1>
+                <h1>(<a href="/epl_profile/client/{{$client}}/profile/{{$epl_id}}">{{$epl_number}}</a>) - Remarks</h1>
             </div>
         </div>
     </div>
@@ -70,10 +70,10 @@
                                         @if($pageAuth['is_create']==1 || false)
                                         <button id="btnSave" type="submit" class="btn btn-success">Save</button>
                                         @endif
-<!--                                        @if($pageAuth['is_create']==1 || false)
-                                        <button id="btnDelete" type="submit" class="btn btn-danger" data-toggle="modal"
-                                                data-target="#modal-danger">Del Temp</button>
-                                        @endif-->
+                                        <!--                                        @if($pageAuth['is_create']==1 || false)
+                                                                                <button id="btnDelete" type="submit" class="btn btn-danger" data-toggle="modal"
+                                                                                        data-target="#modal-danger">Del Temp</button>
+                                                                                @endif-->
                                     </div> 
                                 </div>
                             </div>                                        
@@ -142,20 +142,14 @@
 <script src="../../js/RemarksJS/delete.js"></script>
 <!-- AdminLTE App -->
 <script>
-    $(function () {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 4000
-
-        });
-        loadInterface({{$id}});
+$(function () {
+    var EPL_ID = "{{$epl_id}}";
+    loadInterface(EPL_ID);
 //click save button
-        $('#btnSave').click(function () {
-            var data = fromValues();
-            if (Validiteinsert(data)) {
-            AddComment(data,{{$id}}, function (result) {
+    $('#btnSave').click(function () {
+        var data = fromValues();
+        if (Validiteinsert(data)) {
+            AddComment(data, EPL_ID, function (result) {
                 if (result.id == 1) {
                     Toast.fire({
                         type: 'success',
@@ -167,7 +161,7 @@
                         title: 'Error'
                     });
                 }
-                loadInterface({{$id}});
+                loadInterface(EPL_ID);
                 resetinputFields();
             });
         }
@@ -194,6 +188,6 @@
     function hideAllErrors() {
         $('.aefFGE').addClass('d-none');
     }
-    });
+});
 </script>
 @endsection

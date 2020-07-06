@@ -50,35 +50,35 @@
                                 <input id="getlName" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                                <div id="valLName" class="d-none"><p class="text-danger">Last Name is required</p></div>
                             </div>
                             <div class="form-group">
                                 <label>Address*</label>
                                 <input id="getAddress" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                                <div id="valAddName" class="d-none"><p class="text-danger">Address is required</p></div>
                             </div>
                             <div class="form-group">
                                 <label>Contact Number*</label>
                                 <input id="getContact" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                                <div id="valConName" class="d-none"><p class="text-danger">Contact Number is required</p></div>
                             </div>
                             <div class="form-group">
                                 <label>Email*</label>
                                 <input id="getEmail" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                                <div id="valNam1e" class="d-none"><p class="text-danger">Email is required</p></div>
                             </div>
                             <div class="form-group">
                                 <label>NIC*</label>
                                 <input id="getNicSave" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
-                                <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
+                                <div id="valnicName" class="d-none"><p class="text-danger">NIC is required</p></div>
                             </div>
                         </div>
                         <div class="card-footer">
@@ -136,51 +136,109 @@
 
 
     <!--show lient details START-->
-    <div class="container-fluid view-Client d-none">
+    <div class="view-Client d-none">
         <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-user"></i> Client Details
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-user"></i> Client Details
 
-                        </h3>
+                                </h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <dl>
+                                    <dt>Name :</dt>
+                                    <dd id="client_name"></dd>
+                                    <dt>Address :</dt>
+                                    <dd id="client_address"></dd>
+                                    <dt>Contact Number :</dt>
+                                    <dd id="client_cont"></dd>
+                                    <dt>Contact Email :</dt>
+                                    <dd id="client_amil"></dd>
+                                </dl>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
                     </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <dl>
-                            <dt>Name :</dt>
-                            <dd id="client_name"></dd>
-                            <dt>Address :</dt>
-                            <dd id="client_address"></dd>
-                            <dt>Contact Number :</dt>
-                            <dd id="client_cont"></dd>
-                            <dt>Contact Email :</dt>
-                            <dd id="client_amil"></dd>
-                        </dl>
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-address-card"></i> Services</h3>
+                            </div>
+                            <!-- /.card-header -->
+
+                            <div class="card-body">
+                                
+                                <div class="info-box mb-3 bg-success">
+                                    <span class="info-box-icon">
+                                        <button class="btn btn-lg btn-default" id="newEPL"><i class="fa fa-plus"></i></button></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Create new environment protection license file</span>
+                                        <span class="info-box-number">New EPL</span>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                
+                                <div class="info-box mb-3 bg-info">
+                                    <span class="info-box-icon">
+                                        <button class="btn btn-lg btn-default" id="newSiteClearence" ><i class="fa fa-plus"></i></button></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Create new site clearance file</span>
+                                        <span class="info-box-number">New Site Clearance</span>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                
+                                <div class="info-box mb-3 bg-info">
+                                    <span class="info-box-icon">
+                                        <button class="btn btn-lg btn-default" id="teli" ><i class="fa fa-plus"></i></button></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Create new telecommunication site clearance file</span>
+                                        <span class="info-box-number">Telecommunication Site Clearance</span>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                
+                                <div class="info-box mb-3 bg-info">
+                                    <span class="info-box-icon">
+                                        <button class="btn btn-lg btn-default" id="scheduleWaste"><i class="fa fa-plus"></i></button></span>
+
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Create new schedule waste management certificate</span>
+                                        <span class="info-box-number">Schedule Waste</span>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
                     </div>
-                    <!-- /.card-body -->
-                </div>                                    
+
+                </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-address-card"></i> Services
-                        </h3>
+                        <h3 class="card-title"><i class="fas fa-address-card"></i> Customer EPL List</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <button type="button" class="btn btn-info" id="newEPL" value="">New EPL</button>
-                    </div>
-                    <div class="card-body">
-                        <button type="button" class="btn btn-info" id="newSiteClearence" value="">New Site Clearance</button>
-                    </div>
-                    <div class="card-body">
-                        <button type="button" class="btn btn-info" id="teli" value="">Telecomiunication Site Clearance</button>
-                    </div>
-                    <div class="card-body">
-                        <button type="button" class="btn btn-info" id="scheduleWaste" value="">Schedule Waste</button>
+                        <table class="table table-active" id="clientEplList">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Buiseness Name</th>
+                                    <th>EPL</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
                     <!-- /.card-body -->
                 </div>                                    
@@ -226,8 +284,6 @@
 @section('pageScripts')
 <!-- Page script -->
 
-<!-- Select2 -->
-<script src="../../plugins/select2/js/select2.full.min.js"></script>
 <!-- Bootstrap4 Duallistbox -->
 <script src="../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 <!-- InputMask -->
@@ -243,7 +299,6 @@
 <script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="../../dist/js/demo.js"></script>
 <script src="../../js/ClientJS/client_space.js"></script>
 <script src="../../js/ClientJS/submit.js"></script>
 <script src="../../js/ClientJS/get.js"></script>
@@ -252,13 +307,6 @@
 <!-- AdminLTE App -->
 <script>
     $(function () {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 4000
-
-        });
 //Load table
         loadTable();
 //Register Button
@@ -271,6 +319,10 @@
                         Toast.fire({
                             type: 'success',
                             title: 'Enviremontal MS</br>Saved'
+                        });
+                        getClientbyNic(result.nic, function (result) {
+                            setClientDetails(result[0]);
+                            setSectionVisible('view-Client');
                         });
                     } else {
                         Toast.fire({
@@ -346,7 +398,6 @@
                         setSectionVisible('reg-newClient');
                     }
                 } else {
-                    console.log(result);
                     setClientDetails(result[0]);
                     setSectionVisible('view-Client');
                 }
@@ -362,7 +413,6 @@
                             setSectionVisible('reg-newClient');
                         }
                     } else {
-                        console.log(result);
                         setClientDetails(result[0]);
                         setSectionVisible('view-Client');
                     }

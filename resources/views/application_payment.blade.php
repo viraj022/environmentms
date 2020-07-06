@@ -99,6 +99,7 @@
                                                 <div class="col-md-12">
                                                     <div class="card card-secondary">
                                                         <div class="card-header">
+
                                                             <h3 class="card-title">Pending Payment List</h3>
                                                         </div>
                                                         <!-- /.card-header -->
@@ -135,6 +136,7 @@
                             <div class="card card-secondary">
                                 <div class="card-header">
                                     <h3 class="card-title">Pending Payments</h3>
+                                    <button class="btn btn-sm btn-dark" id="tblRefresh"><i class="fa fa-refresh"></i> Refresh</button>&nbsp;
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body p-0">
@@ -220,10 +222,17 @@
         loadApplication_types(function () {
             set_application_amount();
         });
+        window.setInterval(function () {
+            paymentDetals_table();
+        }, 10000);
         paymentDetals_table();
         $('#application_combo').change(function () {
             set_application_amount();
         });
+        $('#tblRefresh').click(function () {
+            paymentDetals_table();
+        });
+
 //click save button
         loadTable();
 

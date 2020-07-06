@@ -41,6 +41,13 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group">
+                            <label>Is New*</label>
+                            <select id="getisOld" class="form-control form-control-sm" style="width: 100%;">
+                                <option value="1">New</option>
+                                <option value="0">Old</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label>Pradeshiya Sabha*</label>
                             <select id="prsdeshiySb" class="form-control form-control-sm" style="width: 100%;"></select>
                         </div>
@@ -71,7 +78,7 @@
                         </div>
                         <div class="form-group">
                             <label>Investment*</label>
-                            <input id="inventsment" type="text" class="form-control form-control-sm" placeholder="Enter investment" value="">
+                            <input id="inventsment" type="number" class="form-control form-control-sm" placeholder="Enter investment" value="">
                         </div>
                         <div class="form-group">
                             <label>Address*</label>
@@ -80,6 +87,10 @@
                         <div class="form-group">
                             <label>Start Date*</label>
                             <input id="startDate" type="date" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                        </div>
+                        <div class="form-group">
+                            <label>Submitted Date*</label>
+                            <input id="submittedDate" type="date" class="form-control form-control-sm" placeholder="Enter Name..." value="">
                         </div>
                         <div class="form-group">
                             <label>Contact No*</label>
@@ -103,7 +114,7 @@
                         <button id="btnSave" type="button" class="btn btn-success">Save</button>
                         @endif
                         @if($pageAuth['is_update']==1 || false)
-                        <button id="btnUpdate" type="submit" class="btn btn-warning">Update</button>
+                        <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
                         @endif
                         @if($pageAuth['is_delete']==1 || false)
                         <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
@@ -223,7 +234,7 @@ $("#btnSave").click(function () {
     readImage(function (img) {
         var data = fromValues();
         data.file = img;
-        alert(JSON.stringify(data));
+//        alert(JSON.stringify(data));
         AddEpl(data, function (result) {
             if (result.id == 1) {
                 window.location.replace(result.rout);

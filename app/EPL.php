@@ -13,6 +13,8 @@ class EPL extends Model
     public const INSPECTION = 'inspection';
     public const INSPECTION_FINE = 'inspection_fine';
 
+    public const INSPECTION_FEE = 'Inspection Fee';
+
 
     public function client()
     {
@@ -24,32 +26,57 @@ class EPL extends Model
         return $this->belongsToMany(Attachemnt::class)->withPivot('path', 'type');
     }
 
-    public function paymentDetails()
+    public function paymentList()
     {
 
-        $inspection = new Transaction();
-        $inspection->transaction_id =  $this->id;
-        $inspection->type =  EPL::INSPECTION;
-        $inspection = $inspection->getPaymentDetails();
+        $epl = EPL::find($this->id);
+        if ($epl) {
+            $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
+            // dd($inspectionTypes);
+            $inspection = TransactionItem::with('transaction')->where('transaction_type', Transaction::TRANS_TYPE_EPL)
+                ->where('client_id', $this->id)
+                ->where('payment_type_id', $inspectionTypes->id)
+                ->first();
 
-        $inspectionFine = new Transaction();
-        $inspectionFine->transaction_id =  $this->id;
-        $inspectionFine->type =  EPL::INSPECTION_FINE;
-        $inspectionFine = $inspectionFine->getPaymentDetails();
+            $license_fee = PaymentType::getpaymentByTypeName(PaymentType::LICENCE_FEE);
+            $certificate_fee = TransactionItem::with('transaction')
+                ->where('transaction_type', Transaction::TRANS_TYPE_EPL)
+                ->where('client_id', $this->id)
+                ->where('payment_type_id', $license_fee->id)
+                ->first();
+            $fintType = PaymentType::getpaymentByTypeName(PaymentType::FINE);
+            $fine = TransactionItem::with('transaction')
+                ->where('transaction_type', Transaction::TRANS_TYPE_EPL)
+                ->where('client_id', $this->id)
+                ->where('payment_type_id', $fintType->id)
+                ->first();
+            $rtn = array();
+            if ($inspection) {
+                $rtn['inspection']['status'] = "payed";
+                $rtn['inspection']['object'] = $inspection;
+            } else {
+                $rtn['inspection']['status'] = "not_payed";
+            }
+            if ($license_fee) {
+                $rtn['license_fee']['status'] = "payed";
+                $rtn['license_fee']['object'] = $certificate_fee;
+            } else {
+                $rtn['license_fee']['status'] = "not_payed";
+            }
+            if ($epl->site_clearance_file == null) {
+                if ($fine) {
+                    $rtn['fine']['status'] = "payed";
+                    $rtn['fine']['object'] = $fine;
+                } else {
+                    $rtn['fine']['status'] = "not_payed";
+                }
+            } else {
+                $rtn['fine']['status'] = "not_available";
+            }
 
-        $output = array();
-        $output['inspection_total'] = $inspection['amount'];
-        $output['inspection_payed'] = $inspection['payed'];
-        $output['inspection_balance'] = $inspection['amount']  - $inspection['payed'];
-
-        $output['inspectionFine_total'] = $inspectionFine['amount'];
-        $output['inspectionFine_payed'] = $inspectionFine['payed'];
-        $output['inspectionFine_balance'] = $inspectionFine['amount']  - $inspectionFine['payed'];
-
-        $output['total'] = $output['inspection_total'] + $output['inspectionFine_total'];
-        $output['total_payed'] =  $output['inspection_payed'] +   $output['inspectionFine_payed'];
-        $output['total_balance'] =  $output['inspection_balance']  + $output['inspectionFine_balance'];
-
-        return $output;
+            return $rtn;
+        } else {
+            abort(404);
+        }
     }
 }

@@ -66,7 +66,7 @@ class ClientController extends Controller
             $client->api_token = Str::random(80);
             $msg = $client->save();
             if ($msg) {
-                return array('id' => 1, 'message' => 'true');
+                return array('id' => 1, 'message' => 'true', 'nic' => $client->nic);
             } else {
                 return array('id' => 0, 'message' => 'false');
             }
@@ -91,7 +91,7 @@ class ClientController extends Controller
             'last_name' => 'required',
             'address' => 'required',
             'contact_no' => ['required', new contactNo],
-            'email' => 'nullable|sometimes',                   
+            'email' => 'nullable|sometimes',
         ]);
         if ($pageAuth['is_update']) {
             $client = Client::findOrFail($id);
@@ -179,23 +179,17 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        if ($pageAuth['is_read']) {
-            //    PaymentType::get();
-            return Client::where('nic', '=', $nic)
-                ->get();
-        } else {
-            abort(401);
-        }
+
+        //    PaymentType::get();
+        return Client::with('epls')->where('nic', '=', $nic)
+            ->get();
     }
     public function findClient_by_id($id)
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        if ($pageAuth['is_read']) {
-            //    PaymentType::get();
-            return Client::find($id);
-        } else {
-            abort(401);
-        }
+
+        //    PaymentType::get();
+        return Client::with('epls')->find($id);
     }
 }

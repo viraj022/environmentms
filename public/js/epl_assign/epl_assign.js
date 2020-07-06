@@ -71,18 +71,16 @@ function assigned_EPL_table(officer_id, callBack) {
         processDaate: false,
         success: function (result) {
             var tbl = "";
-            if (result.length == 0 || result == undefined) {
-                tbl += "<tr><td> No Data Found</td></tr>";
-            } else {
-                $.each(result, function (index, value) {
-                    tbl += "<tr>";
-                    tbl += "<td>" + ++index + "</td>";
-                    tbl += "<td>" + value.code + "&nbsp&nbsp<a href='epl_profile/client/" + value.client_id + "/profile/" + value.id + "'  target='_blank'>(View)</a></td>";
-                    tbl += '<td><button type="button" class="btn btn-danger removePendingEpl" value="' + value.id + '">Remove</button></td>';
-                    tbl += "</tr>";
-                });
+            $.each(result, function (index, value) {
+                tbl += "<tr>";
+                tbl += "<td>" + ++index + "</td>";
+                tbl += "<td>" + value.code + "&nbsp&nbsp<a href='epl_profile/client/" + value.client_id + "/profile/" + value.id + "'  target='_blank'>(View)</a></td>";
+                tbl += '<td><button type="button" class="btn btn-danger removePendingEpl" value="' + value.id + '">Remove</button></td>';
+                tbl += "</tr>";
+            });
+            if (!(result.length == 0 || result == undefined)) {
+                $('#assigned_epl_table tbody').html(tbl);
             }
-            $('#assigned_epl_table tbody').html(tbl);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
             }
@@ -107,18 +105,16 @@ function pending_EPL_table(director_id, callBack) {
         processDaate: false,
         success: function (result) {
             var tbl = "";
-            if (result.length == 0 || result == undefined) {
-                tbl += "<tr><td> No Data Found</td></tr>";
-            } else {
-                $.each(result, function (index, value) {
-                    tbl += "<tr>";
-                    tbl += "<td>" + ++index + "</td>";
-                    tbl += "<td>" + value.code + "&nbsp&nbsp<a href='epl_profile/client/" + value.client_id + "/profile/" + value.id + "'  target='_blank'>(View)</a></td>";
-                    tbl += '<td><button type="button" class="btn btn-success selPendingEpl" value="' + value.id + '">Add</button></td>';
-                    tbl += "</tr>";
-                });
+            $.each(result, function (index, value) {
+                tbl += "<tr>";
+                tbl += "<td>" + ++index + "</td>";
+                tbl += "<td>" + value.code + "&nbsp&nbsp<a href='epl_profile/client/" + value.client_id + "/profile/" + value.id + "'  target='_blank'>(View)</a></td>";
+                tbl += '<td><button type="button" class="btn btn-success selPendingEpl" value="' + value.id + '">Add</button></td>';
+                tbl += "</tr>";
+            });
+            if (!(result.length == 0 || result == undefined)) {
+                $('#pending_epl_table tbody').html(tbl);
             }
-            $('#pending_epl_table tbody').html(tbl);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
             }
@@ -127,13 +123,6 @@ function pending_EPL_table(director_id, callBack) {
 }
 function assign_epl_to_officer(data, callBack) {
     if (isNaN(data.environment_officer_id)) {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 4000
-
-        });
         Toast.fire({
             type: 'error',
             title: 'Enviremontal MS</br>Invalid Envoirenmtn Officer !'

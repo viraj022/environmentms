@@ -161,24 +161,16 @@
 <!-- AdminLTE App -->
 <script>
     $(function () {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 4000
-
-        });
 //Load table
         loadTable();
 //click save button
         $('#btnSave').click(function () {
             var data = fromValues();
+            if (Validiteinsert(data)) {
             uniqueNamecheck(data.name, function (res) {
                 if (res.message === 'unique') {
                     uniqueCodecheck(data.code, function (rest) {
                         if (rest.message === 'unique') {
-                            ///fkf
-                            if (Validiteinsert(data)) {
                                 // if validiated
                                 AddZone(data, function (result) {
                                     if (result.id == 1) {
@@ -196,7 +188,7 @@
                                     resetinputFields();
                                     hideAllErrors();
                                 });
-                            }
+                            
                             ///fkf   
                         } else {
                             $('#uniCode').removeClass('d-none');
@@ -209,6 +201,7 @@
                 }
 
             });
+            }
         });
 //click update button
         $('#btnUpdate').click(function () {

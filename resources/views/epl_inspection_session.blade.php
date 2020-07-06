@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Inspection</h1>
+                <h1>(<a href="/epl_profile/client/{{$client}}/profile/{{$epl_id}}">{{$epl_number}}</a>) - Inspection</h1>
             </div>
         </div>
     </div>
@@ -163,78 +163,27 @@
 <script src="/../../js/EPLInspectionJS/delete.js"></script>
 <!-- AdminLTE App -->
 <script>
-    $(function () {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 4000
-
-        });
+$(function () {
+    var ID = "{{$id}}";
 //Load table
-    loadTable({{$id}});
+    loadTable(ID);
 //click save button
-        //Date range picker
-        $('#trackDate').daterangepicker({
-            singleDatePicker: true,
-            locale: {
-                format: 'MM/DD/YYYY'
-            }
-        });
-        $('#btnSave').click(function () {
-            var data = fromValues();
-            if (Validiteinsert(data)) {
-                // if validiated
-                AddInspection(data,{{$id}}, function (result) {
-                    if (result.id == 1) {
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Enviremontal MS</br>Saved'
-                        });
-                    } else {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Enviremontal MS</br>Error'
-                        });
-                    }
-                  loadTable({{$id}});
-                    resetinputFields();
-                    hideAllErrors();
-                });
-            }
-
-        });
-//click update button
-        $('#btnUpdate').click(function () {
-            //get form data
-            var data = fromValues();
-            if (Validiteupdate(data)) {
-                updateZone($('#btnUpdate').val(), data, function (result) {
-                    if (result.id == 1) {
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Enviremontal MS</br>Updated'
-                        });
-                    } else {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Enviremontal MS</br>Error'
-                        });
-                    }
-                    loadTable({{$id}});
-                    showSave();
-                    resetinputFields();
-                    hideAllErrors();
-                });
-            }
-        });
-//click delete button
-        $('#btnDelete').click(function () {
-            deleteInspection($('#btnDelete').val(), function (result) {
+//Date range picker
+    $('#trackDate').daterangepicker({
+        singleDatePicker: true,
+        locale: {
+            format: 'MM/DD/YYYY'
+        }
+    });
+    $('#btnSave').click(function () {
+        var data = fromValues();
+        if (Validiteinsert(data)) {
+// if validiated
+            AddInspection(data, ID, function (result) {
                 if (result.id == 1) {
                     Toast.fire({
                         type: 'success',
-                        title: 'Enviremontal MS</br>Removed!'
+                        title: 'Enviremontal MS</br>Saved'
                     });
                 } else {
                     Toast.fire({
@@ -242,54 +191,99 @@
                         title: 'Enviremontal MS</br>Error'
                     });
                 }
-                loadTable({{$id}});
+                loadTable(ID);
+                resetinputFields();
+                hideAllErrors();
+            });
+        }
+
+    });
+//click update button
+    $('#btnUpdate').click(function () {
+//get form data
+        var data = fromValues();
+        if (Validiteupdate(data)) {
+            updateZone($('#btnUpdate').val(), data, function (result) {
+                if (result.id == 1) {
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Enviremontal MS</br>Updated'
+                    });
+                } else {
+                    Toast.fire({
+                        type: 'error',
+                        title: 'Enviremontal MS</br>Error'
+                    });
+                }
+                loadTable(ID);
                 showSave();
                 resetinputFields();
                 hideAllErrors();
             });
-        });
-//select button action 
-        $(document).on('click', '.btnAction', function () {
-            getInspectionbyId(this.id, function (result) {
-                $('#trackDate').val(result.schedule_date);
-                $('#getRemarkData').val(result.remark);
-                showUpdate();
-                $('#btnUpdate').val(result.id);
-                $('#btnDelete').val(result.id);
-            });
+        }
+    });
+//click delete button
+    $('#btnDelete').click(function () {
+        deleteInspection($('#btnDelete').val(), function (result) {
+            if (result.id == 1) {
+                Toast.fire({
+                    type: 'success',
+                    title: 'Enviremontal MS</br>Removed!'
+                });
+            } else {
+                Toast.fire({
+                    type: 'error',
+                    title: 'Enviremontal MS</br>Error'
+                });
+            }
+            loadTable(ID);
+            showSave();
+            resetinputFields();
             hideAllErrors();
         });
     });
+//select button action 
+    $(document).on('click', '.btnAction', function () {
+        getInspectionbyId(this.id, function (result) {
+            $('#trackDate').val(result.schedule_date);
+            $('#getRemarkData').val(result.remark);
+            showUpdate();
+            $('#btnUpdate').val(result.id);
+            $('#btnDelete').val(result.id);
+        });
+        hideAllErrors();
+    });
+});
 //show update buttons    
-    function showUpdate() {
-        $('#btnSave').addClass('d-none');
+function showUpdate() {
+    $('#btnSave').addClass('d-none');
 //        $('#btnUpdate').removeClass('d-none');
-        $('#btnshowDelete').removeClass('d-none');
-    }
+    $('#btnshowDelete').removeClass('d-none');
+}
 //show save button    
-    function showSave() {
-        $('#btnSave').removeClass('d-none');
-        $('#btnUpdate').addClass('d-none');
-        $('#btnshowDelete').addClass('d-none');
-    }
+function showSave() {
+    $('#btnSave').removeClass('d-none');
+    $('#btnUpdate').addClass('d-none');
+    $('#btnshowDelete').addClass('d-none');
+}
 //Reset all fields    
-    function resetinputFields() {
-        $('#getRemarkData').val('');
-        $('#btnUpdate').val('');
-        $('#btnDelete').val('');
-    }
+function resetinputFields() {
+    $('#getRemarkData').val('');
+    $('#btnUpdate').val('');
+    $('#btnDelete').val('');
+}
 //get form values
-    function fromValues() {
-        var Start = $('#trackDate').data('daterangepicker').startDate.format('YYYY-MM-DD');
-        var data = {
-            schedule_date: Start,
-            remark: $('#getRemarkData').val()
-        };
-        return data;
-    }
+function fromValues() {
+    var Start = $('#trackDate').data('daterangepicker').startDate.format('YYYY-MM-DD');
+    var data = {
+        schedule_date: Start,
+        remark: $('#getRemarkData').val()
+    };
+    return data;
+}
 //HIDE ALL ERROR MSGS   
-    function hideAllErrors() {
-        $('#valName').addClass('d-none');
-    }
+function hideAllErrors() {
+    $('#valName').addClass('d-none');
+}
 </script>
 @endsection
