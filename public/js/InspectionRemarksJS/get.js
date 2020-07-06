@@ -36,18 +36,11 @@ function loadInterface(id) {
             uidev += "</div>";
             uidev += "</div>";
             uidev += "<div class='card-body'>" + value.remark + "</div>";
-            uidev += "<div class='card-footer font-weight-bold'>"+ "Added By:" + " " + value.user.first_name + " " + value.user.last_name +"</div>";
+            uidev += "<div class='card-footer font-weight-bold'>" + "Added By:" + " " + value.user.first_name + " " + value.user.last_name + "</div>";
             uidev += "</div>";
             uidev += "</div>";
         });
         $('#showUiDb').html(uidev);
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 4000
-
-        });
         $('.removeComm').click(function () {
             //alert($(this).val());
             if (confirm("Are you sure you want to delete this?")) {

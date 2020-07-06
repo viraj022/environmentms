@@ -123,13 +123,6 @@ function pending_EPL_table(director_id, callBack) {
 }
 function assign_epl_to_officer(data, callBack) {
     if (isNaN(data.environment_officer_id)) {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 4000
-
-        });
         Toast.fire({
             type: 'error',
             title: 'Enviremontal MS</br>Invalid Envoirenmtn Officer !'

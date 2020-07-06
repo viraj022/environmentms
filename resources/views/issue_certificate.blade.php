@@ -146,7 +146,6 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
 <script src="../../js/issueEPLCertificate/all_js.js"></script>
-<script src="../../js/commonFunctions/functions.js"></script>
 <!--<script src="../../js/RemarksJS/update.js"></script>-->
 <!--<script src="../../js/RemarksJS/delete.js"></script>-->
 <!-- AdminLTE App -->
