@@ -10,7 +10,9 @@ class SearchController extends Controller
 {
     function getClientByName($name)
     {
-        return Client::where('name', 'like', '%' . $name . '%')->get();
+        return Client::where('first_name', 'like', '%' . $name . '%')
+            ->orWhere('last_name', 'like', '%' . $name . '%')
+            ->get();
     }
 
     function getClientByID($id)
@@ -73,11 +75,17 @@ class SearchController extends Controller
         return EPL::where('registration_no', 'like', '%' . $name . '%')->get();
     }
 
-    public function search($type, $value)
+    public function search($type)
     {
+        request()->validate([
+            'value' => ['required', 'string'],
+        ]);
+        $value = request('value');
         switch ($type) {
             case 'name':
                 return $this->getClientByName($value);
+            case 'id':
+                return $this->getClientByID($value);
             case  'epl':
                 return $this->getClientByEPL($value);
             case 'license':

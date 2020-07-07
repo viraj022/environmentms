@@ -12,3 +12,20 @@ use Illuminate\Http\Request;
   | is assigned the "api" middleware group. Enjoy building your API!
   |
  */
+
+Route::middleware('auth:api')->get('/search/client/type/{type}', 'SearchController@search'); // 
+
+/*
+{
+    "value":"xcvxc"
+}
+types
+* name  // like function show clients (multiple)
+* id  (single)
+* epl  (single)
+* license  (single)
+* business_reg  (single)
+* business_name like function show business (multiple)
+
+
+*/

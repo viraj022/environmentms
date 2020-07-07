@@ -969,6 +969,3 @@ Route::middleware('auth:api')->get('/business_scale', 'BusinessScaleController@s
 */
 
 /// application attachment map
-
-
-Route::middleware('auth:api')->get('/search/client/{$type},{$value}', 'SearchController@search'); // 
