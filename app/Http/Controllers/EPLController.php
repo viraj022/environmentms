@@ -203,25 +203,22 @@ class EPLController extends Controller
                 $epl->remark = \request('remark');
                 $epl->is_old = \request('is_old');
 
-                if ( $epl->is_old ==0) {
+                if ($epl->is_old == 0) {
 
-                                request()->validate([
-                    'code' => 'required|string', 
-                      'certificate_no' => 'required|string',      
-                              
-                ]);
-                   $epl->code = \request('code');
+                    request()->validate([
+                        'code' => 'required|string',
+                        'certificate_no' => 'required|string',
+
+                    ]);
+                    $epl->code = \request('code');
                     $epl->certificate_no = \request('certificate_no');
-                   
-               }
-               else
-               {
-                $epl->code = $this->generateCode($epl);
-            }
+                } else {
+                    $epl->code = $this->generateCode($epl);
+                }
 
                 $epl->application_path = "";
                 $epl->created_at = \request('created_date');
-              
+
                 $epl->site_clearance_file = \request('site_clearance_file');
 
 
@@ -236,9 +233,9 @@ class EPLController extends Controller
                     $data = base64_decode($array2[1]);
                     file_put_contents($this->makeApplicationPath($epl->id) . "1." . $type, $data);
                     $epl->application_path = $this->makeApplicationPath($epl->id) . "1." . $type;
-                   
-              
-  //file 01
+
+
+                    //file 01
                     $data = \request('file1');
                     $array = explode(';', $data);
                     $array2 = explode(',', $array[1]);
@@ -247,11 +244,11 @@ class EPLController extends Controller
                     $data = base64_decode($array2[1]);
                     file_put_contents($this->makeApplicationPath($epl->id) . "2." . $type, $data);
                     $epl->file_01 = $this->makeApplicationPath($epl->id) . "2." . $type;
-                    
-            
-// end file 01              
 
-//file 02
+
+                    // end file 01              
+
+                    //file 02
                     $data = \request('file2');
                     $array = explode(';', $data);
                     $array2 = explode(',', $array[1]);
@@ -260,12 +257,12 @@ class EPLController extends Controller
                     $data = base64_decode($array2[1]);
                     file_put_contents($this->makeApplicationPath($epl->id) . "3." . $type, $data);
                     $epl->file_02 = $this->makeApplicationPath($epl->id) . "3." . $type;
-                    
-            
-// end file 02
 
 
-//file 03
+                    // end file 02
+
+
+                    //file 03
                     $data = \request('file3');
                     $array = explode(';', $data);
                     $array2 = explode(',', $array[1]);
@@ -276,7 +273,7 @@ class EPLController extends Controller
                     $epl->file_03 = $this->makeApplicationPath($epl->id) . "4." . $type;
                     $epl->save();
                     return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
-// end file 03
+                    // end file 03
 
 
                 } else {
