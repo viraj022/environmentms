@@ -57,7 +57,7 @@
                         <button id="btnSave" type="submit" class="btn btn-success envOfficer_section">Approve</button>
                         @endif
                         <button disabled id="btnSave" type="submit" class="btn btn-success envOfficer_section">Approve</button>
-                        @endif
+                      
                     </div>                           
                 </div>
                 <div class="card card-primary">
