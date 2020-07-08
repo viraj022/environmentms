@@ -27,5 +27,4 @@ types
 * business_reg  (single)
 * business_name like function show business (multiple)
 
-
 */
