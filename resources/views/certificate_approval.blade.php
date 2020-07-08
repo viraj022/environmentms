@@ -53,9 +53,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSave" type="submit" class="btn btn-success envOfficer_section">Approve</button>
-                        @endif
+                      
                         <button disabled id="btnSave" type="submit" class="btn btn-success envOfficer_section">Approve</button>
                       
                     </div>                           
@@ -258,6 +256,8 @@
                 case 'officer':
                     if (st == 0) {//env officer approved
                         $('.astDir_section').prop('disabled', false);
+                    }else{
+                          $('.envOfficer_section').prop('disabled', false);
                     }
                     break;
 
