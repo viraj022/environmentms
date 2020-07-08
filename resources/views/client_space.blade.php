@@ -114,6 +114,13 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
+                                <select id="getAssistantDirector" class="form-control form-control-sm select2 select2-purple " data-dropdown-css-class="select2-purple" style="width: 100%;" name="level">
+                                    <option value="1">Client Name</option>
+                                    <option value="1">Client NIC</option>
+                                    <option value="1">Licene Number</option>
+                                    <option value="1">Licene Number</option>
+                                    <option value="1">Business Registation Number</option>
+                                </select>
                                 <label>NIC Number*</label>
                                 <input id="getNic" type="text" class="form-control form-control-sm"
                                        placeholder="Enter NIC Number..."
@@ -172,7 +179,7 @@
                             <!-- /.card-header -->
 
                             <div class="card-body">
-                                
+
                                 <div class="info-box mb-3 bg-success">
                                     <span class="info-box-icon">
                                         <button class="btn btn-lg btn-default" id="newEPL"><i class="fa fa-plus"></i></button></span>
@@ -182,7 +189,7 @@
                                     </div>
                                     <!-- /.info-box-content -->
                                 </div>
-                                
+
                                 <div class="info-box mb-3 bg-info">
                                     <span class="info-box-icon">
                                         <button class="btn btn-lg btn-default" id="newSiteClearence" ><i class="fa fa-plus"></i></button></span>
@@ -192,7 +199,7 @@
                                     </div>
                                     <!-- /.info-box-content -->
                                 </div>
-                                
+
                                 <div class="info-box mb-3 bg-info">
                                     <span class="info-box-icon">
                                         <button class="btn btn-lg btn-default" id="teli" ><i class="fa fa-plus"></i></button></span>
@@ -202,7 +209,7 @@
                                     </div>
                                     <!-- /.info-box-content -->
                                 </div>
-                                
+
                                 <div class="info-box mb-3 bg-info">
                                     <span class="info-box-icon">
                                         <button class="btn btn-lg btn-default" id="scheduleWaste"><i class="fa fa-plus"></i></button></span>
@@ -213,7 +220,7 @@
                                     </div>
                                     <!-- /.info-box-content -->
                                 </div>
-                                
+
                             </div>
                             <!-- /.card-body -->
                         </div>
