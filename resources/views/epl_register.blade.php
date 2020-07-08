@@ -236,6 +236,11 @@
 <script>
 var _Latitude = '7.489050';
 var _Longitude = '80.349985';
+
+var file = '';
+var file_1 = '';
+var file_2 = '';
+var file_3 = '';
 // Initialize and add the map
 function initMap() {
     // The location of CeyTech
@@ -262,38 +267,62 @@ $("#getisOld").click(function () {
         $('#old_file').addClass('d-none');
     }
 });
-//$("#btnSave").click(function () {
-//    readImage("inp", function (img) {
-//        var data = fromValues();
-//        data.file = img;
-////        alert(JSON.stringify(data));
-//        AddEpl(data, function (result) {
-//            if (result.id == 1) {
-//                window.location.replace(result.rout);
-//                Toast.fire({
-//                    type: 'success',
-//                    title: 'Enviremontal MS</br>Saved'
-//                });
-//            } else {
-//                Toast.fire({
-//                    type: 'error',
-//                    title: 'Enviremontal MS</br>Error'
-//                });
-//            }
-//        });
-//    });
-//});
+$(document).on('change', '#inp', function () {
+    readImage(this.id, function (result) {
+        file = result;
+    });
+});
+$(document).on('change', '#file_1', function () {
+    readImage(this.id, function (result) {
+        file_1 = result;
+    });
+});
+$(document).on('change', '#file_2', function () {
+    readImage(this.id, function (result) {
+        file_2 = result;
+    });
+});
+$(document).on('change', '#file_3', function () {
+    readImage(this.id, function (result) {
+        file_3 = result;
+    });
+});
+$("#btnSave").click(function () {
+    var data = fromValues();
+    data.file = file;
+    data.file1 = file_1;
+    data.file2 = file_2;
+    data.file3 = file_3;
+//        alert(JSON.stringify(data));
+    AddEpl(data, function (result) {
+        if (result.id == 1) {
+            window.location.replace(result.rout);
+            Toast.fire({
+                type: 'success',
+                title: 'Enviremontal MS</br>Saved'
+            });
+        } else {
+            Toast.fire({
+                type: 'error',
+                title: 'Enviremontal MS</br>Error'
+            });
+        }
+    });
+});
 
-$.when(readImage("inp"), readImage("file_1"))
-        .then(myFunc, myFailure);
-function readImage(img_selector) {
+//$.when(readImage("inp"), readImage("file_1"));
+//        .then(myFunc, myFailure);
+function readImage(img_selector, callback) {
     var img = document.getElementById(img_selector);
     if (img.files && img.files[0]) {
         var FR = new FileReader();
         FR.addEventListener("load", function (e) {
             //   document.getElementById("b64").innerHTML = e.target.result;
-//            callback(e.target.result)
-            return e.target.result;
+            callback(e.target.result)
+//            alert(e.target.result);
+//            
+//            return e.target.result;
+//            alert(file);
         });
         FR.readAsDataURL(img.files[0]);
     } else {
