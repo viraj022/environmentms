@@ -61,8 +61,32 @@ function getaClientbyId(id, callBack) {
 
 }
 //DEV Mode
-function getClientbyNic(nic, callBack) {
-    if (nic.length == 0) {
+//function getClientbyNic(nic, callBack) {
+//    if (nic.length == 0) {
+//        return false;
+//    }
+//    $.ajax({
+//        type: "GET",
+//        headers: {
+//            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+//            "Accept": "application/json"
+//        },
+//        url: "api/client/nic/" + nic,
+//        data: null,
+//        dataType: "json",
+//        cache: false,
+//        processDaate: false,
+//        success: function (result) {
+//            if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
+//                callBack(result);
+//            }
+//        }
+//    });
+//
+//}
+
+function getClientbyNic(type, data, callBack) {
+    if (type.length == 0) {
         return false;
     }
     $.ajax({
@@ -71,16 +95,24 @@ function getClientbyNic(nic, callBack) {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/client/nic/" + nic,
-        data: null,
+        url: "api/search/client/type/" + type,
+        data: data,
         dataType: "json",
         cache: false,
         processDaate: false,
         success: function (result) {
+
             if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
                 callBack(result);
             }
         }
     });
 
+}
+
+function fromValuesCv() {
+    var data = {
+        value: $('#getNic').val()
+    };
+    return data;
 }
