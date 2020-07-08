@@ -114,12 +114,12 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <select id="getAssistantDirector" class="form-control form-control-sm select2 select2-purple " data-dropdown-css-class="select2-purple" style="width: 100%;" name="level">
-                                    <option value="1">Client Name</option>
-                                    <option value="1">Client NIC</option>
-                                    <option value="1">Licene Number</option>
-                                    <option value="1">Licene Number</option>
-                                    <option value="1">Business Registation Number</option>
+                                <select id="getDtaType" class="form-control form-control-sm select2 select2-purple col-sm-4" data-dropdown-css-class="select2-purple" style="width: 100%;" name="level">
+                                    <option value="name">Client Name</option>
+                                    <option value="id">Client NIC</option>
+                                    <option value="license">License Number</option>
+                                    <option value="epl">EPL Number</option>
+                                    <option value="business_reg">Business Registration Number</option>
                                 </select>
                                 <label>NIC Number*</label>
                                 <input id="getNic" type="text" class="form-control form-control-sm"
@@ -140,8 +140,35 @@
         </div>
     </div>
     <!--Search Client By NIC END-->
+    <div class="view-Customer ">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-user"></i> Customer Details
 
-
+                    </h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table class="table table-active" id="tblCusData">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Address</th>
+                                <th>NIC</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+    </div>
     <!--show lient details START-->
     <div class="view-Client d-none">
         <div class="row">
@@ -311,6 +338,7 @@
 <script src="../../js/ClientJS/get.js"></script>
 <script src="../../js/ClientJS/update.js"></script>
 <script src="../../js/ClientJS/delete.js"></script>
+<script src="../../js/ClientJS/viewClientData.js"></script>
 <!-- AdminLTE App -->
 <script>
     $(function () {
@@ -399,19 +427,35 @@
         });
 //Search NIC Button 
         $(document).on('click', '#btnSearch', function () {
-            getClientbyNic($('#getNic').val().trim(), function (result) {
-                if (result.length == 0 || result == undefined) {
-                    if (confirm("Client Not Found, Do you want to register New Client?")) {
-                        setSectionVisible('reg-newClient');
-                    }
-                } else {
-                    setClientDetails(result[0]);
-                    setSectionVisible('view-Client');
-                }
+            var data2 = fromValuesCv();
+            getClientbyNic($('#getDtaType').val(), data2, function (result) {
+//                if (result.length == 0 || result == undefined) {
+//                    if (confirm("Client Not Found, Do you want to register New Client?")) {
+//                        setSectionVisible('reg-newClient');
+//                    }
+//                } else {
+//                    setClientDetails(result[0]);
+//                    setSectionVisible('view-Client');
+//                }             
 //                $('#getName').val(result.name);
+                switch ($('#getDtaType').val()) {
+                    case 'name':
+                        showCustomerDetails(result);
+                        break;
+                    case 'id':
+                        break;
+                    case 'license':
+                        break;
+                    case 'epl':
+                        break;
+                    case 'business_reg':
+                        break;
+                    default:
+                }
             });
             hideAllErrors();
         });
+
         $('#getNic').keyup(function (e) {
             if (e.which == 13) {
                 getClientbyNic($('#getNic').val().trim(), function (result) {
@@ -439,5 +483,10 @@
         });
     });
 
+    //btnCustomerVa button action 
+    $(document).on('click', '.btnCustomerVa', function () {
+        setClientDetails(this.id);
+        setSectionVisible('view-Client');
+    });
 </script>
 @endsection
