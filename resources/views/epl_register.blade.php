@@ -59,6 +59,16 @@
                             <label>Business Scale*</label>
                             <select id="businesScale" class="form-control form-control-sm" style="width: 100%;"></select>
                         </div>
+                        <div id="old_file" class="d-none">
+                            <div class="form-group">
+                                <label>EPL Code*</label>
+                                <input id="epl_code" type="text" class="form-control form-control-sm" placeholder="Enter Number" value="">
+                            </div>
+                            <div class="form-group">
+                                <label>Certificate No*</label>
+                                <input id="certificate_no" type="text" class="form-control form-control-sm" placeholder="Enter Number" value="">
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label>Business Registration Number*</label>
                             <input id="business_regno" type="text" class="form-control form-control-sm" placeholder="Enter Number" value="">
@@ -104,9 +114,25 @@
                             <label>Remark*</label>
                             <input id="getRemark" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
                         </div>
+
                         <div class="form-group">
                             <label>Upload Applicaiton: </label>
                             <input id="inp" type='file'>
+                        </div>
+
+                        <div class="form-group">
+                            <label>File 1: </label>
+                            <input id="file_1" type='file'>
+                        </div>
+
+                        <div class="form-group">
+                            <label>File 2: </label>
+                            <input id="file_2" type='file'>
+                        </div>
+
+                        <div class="form-group">
+                            <label>File 3: </label>
+                            <input id="file_3" type='file'>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -229,48 +255,52 @@ function initMap() {
     });
 }
 
-$("#btnSave").click(function () {
-
-    readImage(function (img) {
-        var data = fromValues();
-        data.file = img;
-//        alert(JSON.stringify(data));
-        AddEpl(data, function (result) {
-            if (result.id == 1) {
-                window.location.replace(result.rout);
-                Toast.fire({
-                    type: 'success',
-                    title: 'Enviremontal MS</br>Saved'
-                });
-            } else {
-                Toast.fire({
-                    type: 'error',
-                    title: 'Enviremontal MS</br>Error'
-                });
-            }
-        });
-    });
-
-
-
-
-    function readImage(callback) {
-        var img = document.getElementById("inp");
-        if (img.files && img.files[0]) {
-            var FR = new FileReader();
-            FR.addEventListener("load", function (e) {
-                //   document.getElementById("b64").innerHTML = e.target.result;
-                callback(e.target.result)
-            });
-            FR.readAsDataURL(img.files[0]);
-        } else {
-            alert("No Image");
-        }
+$("#getisOld").click(function () {
+    if ($(this).val() == 0) {
+        $('#old_file').removeClass('d-none');
+    } else {
+        $('#old_file').addClass('d-none');
     }
+});
+//$("#btnSave").click(function () {
+//    readImage("inp", function (img) {
+//        var data = fromValues();
+//        data.file = img;
+////        alert(JSON.stringify(data));
+//        AddEpl(data, function (result) {
+//            if (result.id == 1) {
+//                window.location.replace(result.rout);
+//                Toast.fire({
+//                    type: 'success',
+//                    title: 'Enviremontal MS</br>Saved'
+//                });
+//            } else {
+//                Toast.fire({
+//                    type: 'error',
+//                    title: 'Enviremontal MS</br>Error'
+//                });
+//            }
+//        });
+//    });
+//});
 
+$.when(readImage("inp"), readImage("file_1"))
+        .then(myFunc, myFailure);
+function readImage(img_selector) {
+    var img = document.getElementById(img_selector);
+    if (img.files && img.files[0]) {
+        var FR = new FileReader();
+        FR.addEventListener("load", function (e) {
+            //   document.getElementById("b64").innerHTML = e.target.result;
+//            callback(e.target.result)
+            return e.target.result;
+        });
+        FR.readAsDataURL(img.files[0]);
+    } else {
+        alert("No Image");
+    }
 }
-
-);</script>
+</script>
 <script>
     $(function () {
         loadPradeshiyaSabha();
