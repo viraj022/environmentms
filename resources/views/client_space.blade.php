@@ -53,28 +53,28 @@
                                 <div id="valLName" class="d-none"><p class="text-danger">Last Name is required</p></div>
                             </div>
                             <div class="form-group">
-                                <label>Address*</label>
+                                <label>Address</label>
                                 <input id="getAddress" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
                                 <div id="valAddName" class="d-none"><p class="text-danger">Address is required</p></div>
                             </div>
                             <div class="form-group">
-                                <label>Contact Number*</label>
+                                <label>Contact Number</label>
                                 <input id="getContact" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
                                 <div id="valConName" class="d-none"><p class="text-danger">Contact Number is required</p></div>
                             </div>
                             <div class="form-group">
-                                <label>Email*</label>
+                                <label>Email</label>
                                 <input id="getEmail" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
                                 <div id="valNam1e" class="d-none"><p class="text-danger">Email is required</p></div>
                             </div>
                             <div class="form-group">
-                                <label>NIC*</label>
+                                <label>NIC</label>
                                 <input id="getNicSave" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
