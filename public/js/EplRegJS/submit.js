@@ -1,4 +1,7 @@
 function AddEpl(data, callBack) {
+    if (!data) {
+        return false;
+    }
     $.ajax({
         type: "POST",
         headers: {
@@ -23,9 +26,9 @@ function AddEpl(data, callBack) {
 //                type: 'error',
 //                title: '<p><h1>'+index+'<h1></p>'
 //            });
-            toastr.error(index +" "+ value)
+                toastr.error(index + " " + value)
 //alert(index +" "+ value);
-        });
+            });
         }
     });
 }
