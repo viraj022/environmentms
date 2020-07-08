@@ -114,6 +114,7 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
+                                <label>Enter*</label>
                                 <select id="getDtaType" class="form-control form-control-sm select2 select2-purple col-sm-4" data-dropdown-css-class="select2-purple" style="width: 100%;" name="level">
                                     <option value="name">Client Name</option>
                                     <option value="id">Client NIC</option>
@@ -121,7 +122,8 @@
                                     <option value="epl">EPL Number</option>
                                     <option value="business_reg">Business Registration Number</option>
                                 </select>
-                                <label>NIC Number*</label>
+                            </div>
+                            <div class="form-group">
                                 <input id="getNic" type="text" class="form-control form-control-sm"
                                        placeholder="Enter NIC Number..."
                                        value="">
@@ -132,7 +134,7 @@
                             @if($pageAuth['is_create']==1 || false)
                             <button id="btnSearch" type="submit" class="btn btn-success">Search</button>
                             @endif
-                            <button type="submit" class="btn btn-default resetAll">Reset</button>
+                            <!--<button type="submit" class="btn btn-default resetAll">Reset</button>-->
                         </div>                           
                     </div>
                 </div>                                       
@@ -140,7 +142,7 @@
         </div>
     </div>
     <!--Search Client By NIC END-->
-    <div class="view-Customer ">
+    <div class="view-Customer d-none">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
@@ -441,16 +443,26 @@
                 switch ($('#getDtaType').val()) {
                     case 'name':
                         showCustomerDetails(result);
+                        $('.view-Customer').removeClass('d-none');
                         break;
                     case 'id':
+                        setClientDetails(result);
+                        setSectionVisible('view-Client');
                         break;
                     case 'license':
+                        setClientDetails(result);
+                        setSectionVisible('view-Client');
                         break;
                     case 'epl':
+                        setClientDetails(result);
+                        setSectionVisible('view-Client');
                         break;
                     case 'business_reg':
+                        setClientDetails(result);
+                        setSectionVisible('view-Client');
                         break;
                     default:
+                        alert('Invalid Data');
                 }
             });
             hideAllErrors();
@@ -485,7 +497,8 @@
 
     //btnCustomerVa button action 
     $(document).on('click', '.btnCustomerVa', function () {
-        setClientDetails(this.id);
+        var row = JSON.parse(decodeURIComponent($(this).data('row')));
+        setClientDetails(row);
         setSectionVisible('view-Client');
     });
 </script>
