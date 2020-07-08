@@ -48,8 +48,8 @@ class ClientController extends Controller
         request()->validate([
             'first_name' => 'required',
             'last_name' => 'required',
-            'address' => 'required',
-            'contact_no' => ['required', new contactNo],
+            'address' => 'nullable',
+            'contact_no' => ['nullable', new contactNo],
             'email' => 'nullable|sometimes',
             'nic' => ['sometimes', 'nullable', 'unique:clients', new nationalID],
             // 'password' => 'required',
