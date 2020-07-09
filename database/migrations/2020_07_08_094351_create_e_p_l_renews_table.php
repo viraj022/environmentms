@@ -17,6 +17,8 @@ class CreateEPLRenewsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('e_p_l_id')->unsigned();
             $table->integer('count');
+            $table->integer('is_old');
+            $table->integer('is_old');
             $table->timestamps();
         });
     }
