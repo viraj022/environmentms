@@ -10,14 +10,14 @@ class SearchController extends Controller
 {
     function getClientByName($name)
     {
-        return Client::where('first_name', 'like', '%' . $name . '%')
+        return Client::with('epls')->where('first_name', 'like', '%' . $name . '%')
             ->orWhere('last_name', 'like', '%' . $name . '%')
             ->get();
     }
 
     function getClientByID($id)
     {
-        $client = Client::find($id);
+        $client = Client::with('epls')->where('nic',$id)->first();
         if ($client) {
             return $client;
         } else {
@@ -29,7 +29,7 @@ class SearchController extends Controller
     {
         $epl = EPL::where('code', $code)->first();
         if ($epl) {
-            $client = Client::find($epl->client_id);
+            $client = Client::with('epls')->find($epl->client_id);
             if ($client) {
                 return $client;
             } else {
@@ -44,7 +44,7 @@ class SearchController extends Controller
     {
         $epl = EPL::where('certificate_no', $code)->first();
         if ($epl) {
-            $client = Client::find($epl->client_id);
+            $client = Client::with('epls')->find($epl->client_id);
             if ($client) {
                 return $client;
             } else {
@@ -59,7 +59,7 @@ class SearchController extends Controller
     {
         $epl = EPL::where('registration_no', $code)->first();
         if ($epl) {
-            $client = Client::find($epl->client_id);
+            $client = Client::with('epls')->find($epl->client_id);
             if ($client) {
                 return $client;
             } else {

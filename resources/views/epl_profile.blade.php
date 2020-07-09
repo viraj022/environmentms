@@ -78,6 +78,10 @@
                         <h3 class="card-title">
                             <i class="fas fa-user"></i> Links
                         </h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i></button>
+                        </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body" style="height: 350px; overflow-y: scroll;">
@@ -136,7 +140,10 @@
                         <dt>Location :</dt>
                         <div id="map" style="width: 100%; height: 400px;"></div>
                         <dt>Download Application :</dt>
-                        <button type="button" class="btn btn-dark navTodownload" data-dismiss="modal">Download</button>
+                        <button type="button" class="btn btn-dark navTodownload" data-dismiss="modal">View Application</button>
+                        <button type="button" class="btn btn-dark navToFile1" data-dismiss="modal">View File 1</button>
+                        <button type="button" class="btn btn-dark navToFile2" data-dismiss="modal">View File 2</button>
+                        <button type="button" class="btn btn-dark navToFile3" data-dismiss="modal">View File 3</button>
                     </div>
                     <!-- /.card-body -->
                 </div>                                    
@@ -242,6 +249,15 @@
                                 setAllDetails(result);
                                 $('.navTodownload').click(function(){
                                 downloadApp(result);
+                                });
+                                $('.navToFile1').click(function(){
+                                downloadFile1(result);
+                                });
+                                $('.navToFile2').click(function(){
+                                downloadFile2(result);
+                                });
+                                $('.navToFile3').click(function(){
+                                downloadFile3(result);
                                 });
                                 }
 
