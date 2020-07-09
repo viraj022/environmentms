@@ -121,17 +121,17 @@
                         </div>
 
                         <div class="form-group">
-                            <label>File 1: </label>
+                            <label>Road Map: </label>
                             <input id="file_1" type='file'>
                         </div>
 
                         <div class="form-group">
-                            <label>File 2: </label>
+                            <label>Deed of the land: </label>
                             <input id="file_2" type='file'>
                         </div>
 
                         <div class="form-group">
-                            <label>File 3: </label>
+                            <label>Survey Plan: </label>
                             <input id="file_3" type='file'>
                         </div>
                     </div>

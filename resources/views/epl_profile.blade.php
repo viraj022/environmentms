@@ -141,9 +141,9 @@
                         <div id="map" style="width: 100%; height: 400px;"></div>
                         <dt>Download Application :</dt>
                         <button type="button" class="btn btn-dark navTodownload" data-dismiss="modal">View Application</button>
-                        <button type="button" class="btn btn-dark navToFile1" data-dismiss="modal">View File 1</button>
-                        <button type="button" class="btn btn-dark navToFile2" data-dismiss="modal">View File 2</button>
-                        <button type="button" class="btn btn-dark navToFile3" data-dismiss="modal">View File 3</button>
+                        <button type="button" class="btn btn-dark navToFile1" data-dismiss="modal">View Road Map</button>
+                        <button type="button" class="btn btn-dark navToFile2" data-dismiss="modal">View Deed of the land </button>
+                        <button type="button" class="btn btn-dark navToFile3" data-dismiss="modal">View Survey Plan</button>
                     </div>
                     <!-- /.card-body -->
                 </div>                                    
