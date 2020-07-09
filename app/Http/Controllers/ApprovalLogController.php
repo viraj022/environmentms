@@ -20,8 +20,10 @@ class ApprovalLogController extends Controller {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
-            if (EPL::find($id) !== null) {
-                return view('certificate_approval', ['pageAuth' => $pageAuth, 'id' => $id]);
+            $epl = EPL::find($id);
+//            dd($epl);
+            if ($epl!== null) {
+                return view('certificate_approval', ['pageAuth' => $pageAuth, 'id' => $id,'client_id'=>$epl->client_id,'epl_code'=>$epl->code]);
             } else {
                 abort(404);
             }

@@ -23,7 +23,16 @@ function setAllDetails(obj) {
     }
 }
 function downloadApp(obj) {
-    window.location.href = "/" + obj.application_path;
+     window.open("/" + obj.application_path, '_blank');
+}
+function downloadFile1(obj) {
+     window.open("/" + obj.file_01, '_blank');
+}
+function downloadFile2(obj) {
+     window.open("/" + obj.file_02, '_blank');
+}
+function downloadFile3(obj) {
+     window.open("/" + obj.file_03, '_blank');
 }
 
 function setClearanceData(obj) {

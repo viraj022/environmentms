@@ -53,28 +53,28 @@
                                 <div id="valLName" class="d-none"><p class="text-danger">Last Name is required</p></div>
                             </div>
                             <div class="form-group">
-                                <label>Address*</label>
+                                <label>Address</label>
                                 <input id="getAddress" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
                                 <div id="valAddName" class="d-none"><p class="text-danger">Address is required</p></div>
                             </div>
                             <div class="form-group">
-                                <label>Contact Number*</label>
+                                <label>Contact Number</label>
                                 <input id="getContact" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
                                 <div id="valConName" class="d-none"><p class="text-danger">Contact Number is required</p></div>
                             </div>
                             <div class="form-group">
-                                <label>Email*</label>
+                                <label>Email</label>
                                 <input id="getEmail" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
                                 <div id="valNam1e" class="d-none"><p class="text-danger">Email is required</p></div>
                             </div>
                             <div class="form-group">
-                                <label>NIC*</label>
+                                <label>NIC</label>
                                 <input id="getNicSave" type="text" class="form-control form-control-sm"
                                        placeholder="Enter Name..."
                                        value="">
@@ -114,7 +114,16 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <label>NIC Number*</label>
+                                <label>Enter*</label>
+                                <select id="getDtaType" class="form-control form-control-sm select2 select2-purple col-sm-4" data-dropdown-css-class="select2-purple" style="width: 100%;" name="level">
+                                    <option value="name">Client Name</option>
+                                    <option value="id">Client NIC</option>
+                                    <option value="license">License Number</option>
+                                    <option value="epl">EPL Number</option>
+                                    <option value="business_reg">Business Registration Number</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <input id="getNic" type="text" class="form-control form-control-sm"
                                        placeholder="Enter NIC Number..."
                                        value="">
@@ -125,7 +134,7 @@
                             @if($pageAuth['is_create']==1 || false)
                             <button id="btnSearch" type="submit" class="btn btn-success">Search</button>
                             @endif
-                            <button type="submit" class="btn btn-default resetAll">Reset</button>
+                            <!--<button type="submit" class="btn btn-default resetAll">Reset</button>-->
                         </div>                           
                     </div>
                 </div>                                       
@@ -133,8 +142,35 @@
         </div>
     </div>
     <!--Search Client By NIC END-->
+    <div class="view-Customer d-none">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-user"></i> Customer Details
 
-
+                    </h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table class="table table-active" id="tblCusData">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Address</th>
+                                <th>NIC</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+    </div>
     <!--show lient details START-->
     <div class="view-Client d-none">
         <div class="row">
@@ -172,7 +208,7 @@
                             <!-- /.card-header -->
 
                             <div class="card-body">
-                                
+
                                 <div class="info-box mb-3 bg-success">
                                     <span class="info-box-icon">
                                         <button class="btn btn-lg btn-default" id="newEPL"><i class="fa fa-plus"></i></button></span>
@@ -182,7 +218,7 @@
                                     </div>
                                     <!-- /.info-box-content -->
                                 </div>
-                                
+
                                 <div class="info-box mb-3 bg-info">
                                     <span class="info-box-icon">
                                         <button class="btn btn-lg btn-default" id="newSiteClearence" ><i class="fa fa-plus"></i></button></span>
@@ -192,7 +228,7 @@
                                     </div>
                                     <!-- /.info-box-content -->
                                 </div>
-                                
+
                                 <div class="info-box mb-3 bg-info">
                                     <span class="info-box-icon">
                                         <button class="btn btn-lg btn-default" id="teli" ><i class="fa fa-plus"></i></button></span>
@@ -202,7 +238,7 @@
                                     </div>
                                     <!-- /.info-box-content -->
                                 </div>
-                                
+
                                 <div class="info-box mb-3 bg-info">
                                     <span class="info-box-icon">
                                         <button class="btn btn-lg btn-default" id="scheduleWaste"><i class="fa fa-plus"></i></button></span>
@@ -213,7 +249,7 @@
                                     </div>
                                     <!-- /.info-box-content -->
                                 </div>
-                                
+
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -304,6 +340,7 @@
 <script src="../../js/ClientJS/get.js"></script>
 <script src="../../js/ClientJS/update.js"></script>
 <script src="../../js/ClientJS/delete.js"></script>
+<script src="../../js/ClientJS/viewClientData.js"></script>
 <!-- AdminLTE App -->
 <script>
     $(function () {
@@ -392,19 +429,45 @@
         });
 //Search NIC Button 
         $(document).on('click', '#btnSearch', function () {
-            getClientbyNic($('#getNic').val().trim(), function (result) {
-                if (result.length == 0 || result == undefined) {
-                    if (confirm("Client Not Found, Do you want to register New Client?")) {
-                        setSectionVisible('reg-newClient');
-                    }
-                } else {
-                    setClientDetails(result[0]);
-                    setSectionVisible('view-Client');
-                }
+            var data2 = fromValuesCv();
+            getClientbyNic($('#getDtaType').val(), data2, function (result) {
+//                if (result.length == 0 || result == undefined) {
+//                    if (confirm("Client Not Found, Do you want to register New Client?")) {
+//                        setSectionVisible('reg-newClient');
+//                    }
+//                } else {
+//                    setClientDetails(result[0]);
+//                    setSectionVisible('view-Client');
+//                }             
 //                $('#getName').val(result.name);
+                switch ($('#getDtaType').val()) {
+                    case 'name':
+                        showCustomerDetails(result);
+                        $('.view-Customer').removeClass('d-none');
+                        break;
+                    case 'id':
+                        setClientDetails(result);
+                        setSectionVisible('view-Client');
+                        break;
+                    case 'license':
+                        setClientDetails(result);
+                        setSectionVisible('view-Client');
+                        break;
+                    case 'epl':
+                        setClientDetails(result);
+                        setSectionVisible('view-Client');
+                        break;
+                    case 'business_reg':
+                        setClientDetails(result);
+                        setSectionVisible('view-Client');
+                        break;
+                    default:
+                        alert('Invalid Data');
+                }
             });
             hideAllErrors();
         });
+
         $('#getNic').keyup(function (e) {
             if (e.which == 13) {
                 getClientbyNic($('#getNic').val().trim(), function (result) {
@@ -432,5 +495,11 @@
         });
     });
 
+    //btnCustomerVa button action 
+    $(document).on('click', '.btnCustomerVa', function () {
+        var row = JSON.parse(decodeURIComponent($(this).data('row')));
+        setClientDetails(row);
+        setSectionVisible('view-Client');
+    });
 </script>
 @endsection

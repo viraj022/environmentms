@@ -31,17 +31,17 @@ function Validiteinsert(data) {
         $('#valLName').removeClass('d-none');
         response = false;
     }
-    if (data.nic.length === 0) {
-        $('#valnicName').removeClass('d-none');
-        response = false;
-    }
-    if (data.address.length === 0) {
-        $('#valAddName').removeClass('d-none');
-        response = false;
-    }
-    if (data.contact_no.length === 0) {
-        $('#valConName').removeClass('d-none');
-        response = false;
-    }
+//    if (data.nic.length === 0) {
+//        $('#valnicName').removeClass('d-none');
+//        response = false;
+//    }
+//    if (data.address.length === 0) {
+//        $('#valAddName').removeClass('d-none');
+//        response = false;
+//    }
+//    if (data.contact_no.length === 0) {
+//        $('#valConName').removeClass('d-none');
+//        response = false;
+//    }
     return response;
 }

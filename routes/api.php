@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
  */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+  return $request->user();
 });
 
 //api
@@ -783,10 +783,10 @@ Route::middleware('auth:api')->delete('/client/id/{id}', 'ClientController@destr
 // 
 
 Route::middleware('auth:api')->get('/client/id/{id}', 'ClientController@findClient_by_id'); //get a Client by ID  
- 
+
 //end Client  api codes 
 
- 
+
 /// application attachment map
 Route::middleware('auth:api')->get('/applicationTypes', 'ApplicationTypeController@show'); // Get Application types with their attachemnts
 
@@ -857,9 +857,9 @@ Route::middleware('auth:api')->get('/applicationTypes/id/{id}', 'ApplicationType
     }
     
     */
-    Route::middleware('auth:api')->post('/applicationType', 'ApplicationTypeController@create'); //   save attachements to a application
-    
-    /*
+Route::middleware('auth:api')->post('/applicationType', 'ApplicationTypeController@create'); //   save attachements to a application
+
+/*
     {
         "id": "1",
         "attachment": [  
@@ -868,7 +868,7 @@ Route::middleware('auth:api')->get('/applicationTypes/id/{id}', 'ApplicationType
         ]
     }
     */
-    Route::middleware('auth:api')->get('/applicationType/available/id/{id}', 'ApplicationTypeController@availableAttachements'); // Get available (not assigned) attachments by application id
+Route::middleware('auth:api')->get('/applicationType/available/id/{id}', 'ApplicationTypeController@availableAttachements'); // Get available (not assigned) attachments by application id
 
 /*
 
@@ -912,7 +912,7 @@ Route::middleware('auth:api')->get('/applicationType/assigned/id/{id}', 'Applica
 ]
 */
 
-    /// application attachment map
+/// application attachment map
 Route::middleware('auth:api')->get('/applicationType/allAtachmentWithStatus/id/{id}', 'ApplicationTypeController@allAttachmentsWithStatus'); // Get all attachment and assign attachments
 
 /*
@@ -935,9 +935,9 @@ Route::middleware('auth:api')->get('/applicationType/allAtachmentWithStatus/id/{
 ]
 */
 
-    /// application attachment map
+/// application attachment map
 
-    /// industry scale
+/// industry scale
 Route::middleware('auth:api')->get('/business_scale', 'BusinessScaleController@show'); // 
 
 /*
@@ -968,4 +968,4 @@ Route::middleware('auth:api')->get('/business_scale', 'BusinessScaleController@s
 ]
 */
 
-    /// application attachment map
+/// application attachment map
