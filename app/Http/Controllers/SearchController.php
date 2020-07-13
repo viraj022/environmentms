@@ -21,7 +21,7 @@ class SearchController extends Controller
         if ($client) {
             return $client;
         } else {
-            return null;
+            return array();
         }
     }
 
@@ -33,10 +33,10 @@ class SearchController extends Controller
             if ($client) {
                 return $client;
             } else {
-                return null;
+                return array();
             }
         } else {
-            return null;
+            return array();
         }
     }
 
@@ -48,10 +48,10 @@ class SearchController extends Controller
             if ($client) {
                 return $client;
             } else {
-                return null;
+                return array();
             }
         } else {
-            return null;
+            return array();
         }
     }
 
@@ -63,10 +63,10 @@ class SearchController extends Controller
             if ($client) {
                 return $client;
             } else {
-                return null;
+                return array();
             }
         } else {
-            return null;
+            return array();
         }
     }
 
