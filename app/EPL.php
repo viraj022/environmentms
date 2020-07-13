@@ -79,4 +79,14 @@ class EPL extends Model
             abort(404);
         }
     }
+
+    public  function getNextRnumber()
+    {
+        $count = EPLRenew::where('e_p_l_id', $this->id)->count();
+        return 'R' . ($count + 1);
+    }
+    public  function getRenewCount()
+    {
+        return EPLRenew::where('e_p_l_id', $this->id)->count();
+    }
 }

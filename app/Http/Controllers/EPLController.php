@@ -107,7 +107,7 @@ class EPLController extends Controller
             $epl = EPL::find($epl_id);
             if ($epl !== null) {
                 // dd($epl->issue_date);
-                if ($epl->issue_date == null) {
+                if ($epl->status == 1) {
                     $payList = $epl->paymentList();
                     if (
                         $payList['inspection']['status'] == 'payed' && $payList['license_fee']['status'] == 'payed' && ($payList['fine']['status'] == 'payed' || $payList['fine']['status'] == 'not_available')
@@ -202,7 +202,6 @@ class EPLController extends Controller
                 $epl->registration_no = \request('registration_no');
                 $epl->remark = \request('remark');
                 $epl->is_old = \request('is_old');
-
                 if ($epl->is_old == 0) {
 
                     request()->validate([
