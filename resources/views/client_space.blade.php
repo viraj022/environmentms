@@ -442,24 +442,64 @@
 //                $('#getName').val(result.name);
                 switch ($('#getDtaType').val()) {
                     case 'name':
-                        showCustomerDetails(result);
-                        $('.view-Customer').removeClass('d-none');
+                        if (result != 0) {
+                            showCustomerDetails(result);
+                            $('.view-Customer').removeClass('d-none');
+                        } else {
+                            if (confirm('Client Not Found!Do You Want Create New Client?')) {
+                                setSectionVisible('reg-newClient');
+                            } else {
+                                return false;
+                            }
+                        }
                         break;
                     case 'id':
-                        setClientDetails(result);
-                        setSectionVisible('view-Client');
+                        if (result != 0) {
+                            setClientDetails(result);
+                            setSectionVisible('view-Client');
+                        } else {
+                            if (confirm('Client Not Found!Do You Want Create New Client?')) {
+                                setSectionVisible('reg-newClient');
+                            } else {
+                                return false;
+                            }
+                        }
                         break;
                     case 'license':
-                        setClientDetails(result);
-                        setSectionVisible('view-Client');
+                        if (result != 0) {
+                            setClientDetails(result);
+                            setSectionVisible('view-Client');
+                        } else {
+                            if (confirm('Client Not Found!Do You Want Create New Client?')) {
+                                setSectionVisible('reg-newClient');
+                            } else {
+                                return false;
+                            }
+                        }
                         break;
                     case 'epl':
-                        setClientDetails(result);
-                        setSectionVisible('view-Client');
+                        if (result != 0) {
+                            setClientDetails(result);
+                            setSectionVisible('view-Client');
+                        } else {
+                            if (confirm('Client Not Found!Do You Want Create New Client?')) {
+                                setSectionVisible('reg-newClient');
+                            } else {
+                                return false;
+                            }
+                        }
                         break;
                     case 'business_reg':
-                        setClientDetails(result);
-                        setSectionVisible('view-Client');
+                        if (result != 0) {
+                            setClientDetails(result);
+                            setSectionVisible('view-Client');
+                        } else {
+                            if (confirm('Client Not Found!Do You Want Create New Client?')) {
+                                setSectionVisible('reg-newClient');
+                            } else {
+                                return false;
+                            }
+                        }
                         break;
                     default:
                         alert('Invalid Data');
