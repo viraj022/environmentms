@@ -51,6 +51,24 @@ function ulploadFile2(URL, formData, callBack) {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
+        xhr: function () {
+            var xhr = new window.XMLHttpRequest();
+
+            xhr.upload.addEventListener("progress", function (evt) {
+                if (evt.lengthComputable) {
+                    var percentComplete = evt.loaded / evt.total;
+                    percentComplete = parseInt(percentComplete * 100);
+                    console.log(percentComplete);
+
+                    if (percentComplete === 100) {
+                        alert('File Suploaded');
+                    }
+
+                }
+            }, false);
+
+            return xhr;
+        },
         url: URL,
         data: formData,
         contentType: false,
