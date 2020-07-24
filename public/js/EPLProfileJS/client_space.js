@@ -8,6 +8,35 @@ function setClientDetails(obj) {
     $('#client_nic').html(obj.nic);
 }
 function setAllDetails(obj) {
+    console.log(obj);
+    //application check 
+    if (obj.application_path == null || obj.application_path == '') {
+        $('#upld_application').removeClass('d-none');
+    } else {
+        $('.navTodownload').removeClass('d-none');
+    }
+
+    //road map
+    if (obj.file_01 == null || obj.file_01 == '') {
+        $('#upld_roadMap').removeClass('d-none');
+    } else {
+        $('.navToFile1').removeClass('d-none');
+    }
+
+    //deed
+    if (obj.file_02 == null || obj.file_02 == '') {
+        $('#upld_deed').removeClass('d-none');
+    } else {
+        $('.navToFile2').removeClass('d-none');
+    }
+
+    //survey plan
+    if (obj.file_03 == null || obj.file_03 == '') {
+        $('#upld_SurveyPlan').removeClass('d-none');
+    } else {
+        $('.navToFile3').removeClass('d-none');
+    }
+
     $('#obj_name').html(obj.name);
     $('#obj_regno').html(obj.registration_no);
     $('#obj_code').html(obj.code);
@@ -17,22 +46,22 @@ function setAllDetails(obj) {
 //    _Longitude = obj.coordinate_y;
     if (obj.first_name != null) {
         $('#env_firstname').html("Assign Environment Officer: " + obj.first_name + " " + obj.last_name);
-    }else if(obj.first_name == null){
-        $("#disPaylink").attr("href", "javascript:disWarnPay();");      
-        $("#disInspeclink").attr("href", "javascript:disWarnPay();");      
+    } else if (obj.first_name == null) {
+        $("#disPaylink").attr("href", "javascript:disWarnPay();");
+        $("#disInspeclink").attr("href", "javascript:disWarnPay();");
     }
 }
 function downloadApp(obj) {
-     window.open("/" + obj.application_path, '_blank');
+    window.open("/" + obj.application_path, '_blank');
 }
 function downloadFile1(obj) {
-     window.open("/" + obj.file_01, '_blank');
+    window.open("/" + obj.file_01, '_blank');
 }
 function downloadFile2(obj) {
-     window.open("/" + obj.file_02, '_blank');
+    window.open("/" + obj.file_02, '_blank');
 }
 function downloadFile3(obj) {
-     window.open("/" + obj.file_03, '_blank');
+    window.open("/" + obj.file_03, '_blank');
 }
 
 function setClearanceData(obj) {
