@@ -306,7 +306,7 @@
                                     //file upload click
                                     $('#fileUploadInput').change(function () {
                                         if (!confirm('Are you sure you want to save this attachment?')) {
-                                            return false;
+                                            return false;   
                                         }
                                         let uploadFileType = $(this).data('fileType');
                                         let formData = new FormData();

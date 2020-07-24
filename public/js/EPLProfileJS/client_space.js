@@ -8,7 +8,14 @@ function setClientDetails(obj) {
     $('#client_nic').html(obj.nic);
 }
 function setAllDetails(obj) {
-    console.log(obj);
+    $('#upld_application').addClass('d-none');
+    $('.navTodownload').addClass('d-none');
+    $('#upld_roadMap').addClass('d-none');
+    $('.navToFile1').addClass('d-none');
+    $('#upld_deed').addClass('d-none');
+    $('.navToFile1').addClass('d-none');
+    $('#upld_SurveyPlan').addClass('d-none');
+    $('.navToFile3').addClass('d-none');
     //application check 
     if (obj.application_path == null || obj.application_path == '') {
         $('#upld_application').removeClass('d-none');
