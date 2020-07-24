@@ -153,6 +153,11 @@
                             <hr>
                             <label id="uploadLabel">File Upload </label>
                             <input id="fileUploadInput" type="file" class="">
+                            <div class="progress">
+                                <div class="progress-bar bg-primary progress-bar-striped" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                    <!--<span class="sr-only">40% Complete (success)</span>-->
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- /.card-body -->
@@ -306,7 +311,7 @@
                                     //file upload click
                                     $('#fileUploadInput').change(function () {
                                         if (!confirm('Are you sure you want to save this attachment?')) {
-                                            return false;   
+                                            return false;
                                         }
                                         let uploadFileType = $(this).data('fileType');
                                         let formData = new FormData();
