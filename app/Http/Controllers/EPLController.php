@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\EPL;
-use App\BusinessScale;
 use App\Client;
+use App\Payment;
+use App\IssueLog;
+use Carbon\Carbon;
+use App\BusinessScale;
 use App\Pradesheeyasaba;
 use App\Rules\contactNo;
 use App\IndustryCategory;
-use App\IssueLog;
-use App\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -235,45 +236,45 @@ class EPLController extends Controller
                     $epl->application_path = $this->makeApplicationPath($epl->id) . "1." . $type;
 
 
-                    //file 01
-                    $data = \request('file1');
-                    $array = explode(';', $data);
-                    $array2 = explode(',', $array[1]);
-                    $array3 = explode('/', $array[0]);
-                    $type = $array3[1];
-                    $data = base64_decode($array2[1]);
-                    file_put_contents($this->makeApplicationPath($epl->id) . "2." . $type, $data);
-                    $epl->file_01 = $this->makeApplicationPath($epl->id) . "2." . $type;
+                    // //file 01
+                    // $data = \request('file1');
+                    // $array = explode(';', $data);
+                    // $array2 = explode(',', $array[1]);
+                    // $array3 = explode('/', $array[0]);
+                    // $type = $array3[1];
+                    // $data = base64_decode($array2[1]);
+                    // file_put_contents($this->makeApplicationPath($epl->id) . "2." . $type, $data);
+                    // $epl->file_01 = $this->makeApplicationPath($epl->id) . "2." . $type;
 
 
-                    // end file 01              
+                    // // end file 01              
 
-                    //file 02
-                    $data = \request('file2');
-                    $array = explode(';', $data);
-                    $array2 = explode(',', $array[1]);
-                    $array3 = explode('/', $array[0]);
-                    $type = $array3[1];
-                    $data = base64_decode($array2[1]);
-                    file_put_contents($this->makeApplicationPath($epl->id) . "3." . $type, $data);
-                    $epl->file_02 = $this->makeApplicationPath($epl->id) . "3." . $type;
-
-
-                    // end file 02
+                    // //file 02
+                    // $data = \request('file2');
+                    // $array = explode(';', $data);
+                    // $array2 = explode(',', $array[1]);
+                    // $array3 = explode('/', $array[0]);
+                    // $type = $array3[1];
+                    // $data = base64_decode($array2[1]);
+                    // file_put_contents($this->makeApplicationPath($epl->id) . "3." . $type, $data);
+                    // $epl->file_02 = $this->makeApplicationPath($epl->id) . "3." . $type;
 
 
-                    //file 03
-                    $data = \request('file3');
-                    $array = explode(';', $data);
-                    $array2 = explode(',', $array[1]);
-                    $array3 = explode('/', $array[0]);
-                    $type = $array3[1];
-                    $data = base64_decode($array2[1]);
-                    file_put_contents($this->makeApplicationPath($epl->id) . "4." . $type, $data);
-                    $epl->file_03 = $this->makeApplicationPath($epl->id) . "4." . $type;
+                    // // end file 02
+
+
+                    // //file 03
+                    // $data = \request('file3');
+                    // $array = explode(';', $data);
+                    // $array2 = explode(',', $array[1]);
+                    // $array3 = explode('/', $array[0]);
+                    // $type = $array3[1];
+                    // $data = base64_decode($array2[1]);
+                    // file_put_contents($this->makeApplicationPath($epl->id) . "4." . $type, $data);
+                    // $epl->file_03 = $this->makeApplicationPath($epl->id) . "4." . $type;
                     $epl->save();
                     return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
-                    // end file 03
+                    // // end file 03
 
 
                 } else {
@@ -285,6 +286,44 @@ class EPLController extends Controller
             abort(401);
         }
     }
+
+    public function saveFile($epl, $type)
+    {
+        $epl = EPL::find($epl);
+        if ($epl) {
+            $data = \request('file');
+            $array = explode(';', $data);
+            $array2 = explode(',', $array[1]);
+            $array3 = explode('/', $array[0]);
+            $type = $array3[1];
+            $data = base64_decode($array2[1]);
+            $name = $current_timestamp = Carbon::now()->timestamp;
+            file_put_contents($this->makeApplicationPath($epl->id) . $name . "." . $type, $data);
+            switch ($type) {
+                case 'file1':
+                    $epl->file_01 = $this->makeApplicationPath($epl->id) . $name . "." . $type;
+                    break;
+                case 'file2':
+                    $epl->file_02 = $this->makeApplicationPath($epl->id) . $name . "." . $type;
+                    break;
+                case 'file3':
+                    $epl->file_03 = $this->makeApplicationPath($epl->id) . $name . "." . $type;
+                    break;
+                default:
+                    abort(422);
+            }
+            $msg = $epl->save();
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(404);
+        }
+    }
+
+
 
     /**
      * Store a newly created resource in storage.
