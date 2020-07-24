@@ -232,8 +232,9 @@ class EPLController extends Controller
                     $array3 = explode('/', $array[0]);
                     $type = $array3[1];
                     $data = base64_decode($array2[1]);
-                    file_put_contents($this->makeApplicationPath($epl->id) . "1." . $type, $data);
-                    $epl->application_path = $this->makeApplicationPath($epl->id) . "1." . $type;
+                    $name = $current_timestamp = Carbon::now()->timestamp;
+                    file_put_contents($this->makeApplicationPath($epl->id) .  $name . "." . $type, $data);
+                    $epl->application_path = $this->makeApplicationPath($epl->id) .  $name . "." . $type;
 
 
                     // //file 01
