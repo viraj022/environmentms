@@ -940,6 +940,8 @@ Route::middleware('auth:api')->get('/applicationType/allAtachmentWithStatus/id/{
 /// industry scale
 Route::middleware('auth:api')->get('/business_scale', 'BusinessScaleController@show'); // 
 
+Route::middleware('auth:api')->get('/epl/certificate_information/id/{id}', 'EPLController@certificateInformation'); // 
+
 /*
 
 [

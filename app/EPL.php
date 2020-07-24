@@ -89,4 +89,50 @@ class EPL extends Model
     {
         return EPLRenew::where('e_p_l_id', $this->id)->count();
     }
+
+    public function certificateInfo()
+    {
+        $info = array();
+
+        if ($this->status == 1) {
+            $info['issue_status'] = 'issued';
+            $info['issue_details'] =  array('certificate_no' => $this->certificate_no, 'issue_date' => $this->issue_date, 'expire_date' => $this->expire_date);
+            $renew =   EPLRenew::where('e_p_l_id', $this->id)->get();
+            $info['renewals'] = array();
+            $info['last_issue_date'] = $this->issue_date;
+            $info['last_expire_date'] = $this->expire_date;
+            $info['last_certificate_no'] = $this->certificate_no;
+            $now = time();
+            $expire_date = strtotime($this->expire_date);
+            $expire_days = $now - $expire_date;
+            $info['expired_days'] = round($expire_days / (60 * 60 * 24));
+            if (count($renew) > 0) {
+                foreach ($renew as $value) {
+                    $i = array();
+                    $i['r_number'] = "R" . $value->count;
+                    if ($value['issue_status'] == 1) {
+                        $i['issue_status'] = 'issued';
+                        $i['certificate_no'] = $value->certificate_no;
+                        $i['issue_date'] = $value->renew_date;
+                        $i['expire_date'] = $value->expire_date;
+
+                        $info['last_issue_date'] = $value->renew_date;
+                        $info['last_expire_date'] = $value->expire_date;
+                        $now = time(); // or your date as well
+                        $expire_date = strtotime($value->expire_date);
+                        $expire_days = $now - $expire_date;
+                        $info['expired_days'] = round($expire_days / (60 * 60 * 24));
+                        $info['last_certificate_no'] = $value->certificate_no;
+                    } else {
+                        $i['issue_status'] = 'not_issued';
+                    }
+                    array_push($info['renewals'], $i);
+                }
+            } else {
+            }
+        } else {
+            $info['issue_status'] = 'not_issued';
+        }
+        return $info;
+    }
 }

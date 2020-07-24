@@ -477,4 +477,15 @@ class EPLController extends Controller
             abort(401);
         }
     }
+
+    public function certificateInformation($id)
+    {
+        $epl = EPL::find($id);
+        // dd($epl);
+        if ($epl) {
+            return $epl->certificateInfo();
+        } else {
+            abort(404);
+        }
+    }
 }
