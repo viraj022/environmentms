@@ -120,7 +120,7 @@
                             <input id="inp" type='file'>
                         </div>
 
-                        <div class="form-group">
+<!--                        <div class="form-group">
                             <label>Road Map: </label>
                             <input id="file_1" type='file'>
                         </div>
@@ -133,7 +133,7 @@
                         <div class="form-group">
                             <label>Survey Plan: </label>
                             <input id="file_3" type='file'>
-                        </div>
+                        </div>-->
                     </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
@@ -238,9 +238,9 @@ var _Latitude = '7.489050';
 var _Longitude = '80.349985';
 
 var file = '';
-var file_1 = '';
-var file_2 = '';
-var file_3 = '';
+//var file_1 = '';
+//var file_2 = '';
+//var file_3 = '';
 // Initialize and add the map
 function initMap() {
     // The location of CeyTech
@@ -272,27 +272,27 @@ $(document).on('change', '#inp', function () {
         file = result;
     });
 });
-$(document).on('change', '#file_1', function () {
-    readImage(this.id, function (result) {
-        file_1 = result;
-    });
-});
-$(document).on('change', '#file_2', function () {
-    readImage(this.id, function (result) {
-        file_2 = result;
-    });
-});
-$(document).on('change', '#file_3', function () {
-    readImage(this.id, function (result) {
-        file_3 = result;
-    });
-});
+//$(document).on('change', '#file_1', function () {
+//    readImage(this.id, function (result) {
+//        file_1 = result;
+//    });
+//});
+//$(document).on('change', '#file_2', function () {
+//    readImage(this.id, function (result) {
+//        file_2 = result;
+//    });
+//});
+//$(document).on('change', '#file_3', function () {
+//    readImage(this.id, function (result) {
+//        file_3 = result;
+//    });
+//});
 $("#btnSave").click(function () {
     var data = fromValues();
     data.file = file;
-    data.file1 = file_1;
-    data.file2 = file_2;
-    data.file3 = file_3;
+//    data.file1 = file_1;
+//    data.file2 = file_2;
+//    data.file3 = file_3;
 //        alert(JSON.stringify(data));
     AddEpl(data, function (result) {
         if (result.id == 1) {
