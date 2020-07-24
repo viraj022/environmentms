@@ -300,6 +300,15 @@ class EPLController extends Controller
             $name = $current_timestamp = Carbon::now()->timestamp;
             file_put_contents($this->makeApplicationPath($epl->id) . $name . "." . $type, $data);
             switch ($type) {
+                case 'file':
+                    $epl->application_path = $this->makeApplicationPath($epl->id) . $name . "." . $type;
+                    break;
+                case 'file1':
+                    $epl->file_01 = $this->makeApplicationPath($epl->id) . $name . "." . $type;
+                    break;
+                case 'file1':
+                    $epl->file_01 = $this->makeApplicationPath($epl->id) . $name . "." . $type;
+                    break;
                 case 'file1':
                     $epl->file_01 = $this->makeApplicationPath($epl->id) . $name . "." . $type;
                     break;
