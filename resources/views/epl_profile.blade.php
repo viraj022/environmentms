@@ -154,7 +154,7 @@
                             <label id="uploadLabel">File Upload </label>
                             <input id="fileUploadInput" type="file" class="">
                             <div class="progress">
-                                <div class="progress-bar bg-primary progress-bar-striped" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
                                     <!--<span class="sr-only">40% Complete (success)</span>-->
                                 </div>
                             </div>
