@@ -265,3 +265,12 @@ Route::middleware('auth:api')->post('/epl/issue/id/{epl}', 'EPLController@issue_
 }
 
 */
+Route::middleware('auth:api')->post('/epl/upload/epl/{epl}/file/{file}', 'EPLController@saveFile');
+
+/* /// file types: file, file1 , file2 ,file3
+} // responce
+   id : 1,
+  "message" : true
+}
+
+*/
