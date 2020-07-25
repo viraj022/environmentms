@@ -58,8 +58,9 @@ function ulploadFile2(URL, formData, callBack) {
                 if (evt.lengthComputable) {
                     var percentComplete = evt.loaded / evt.total;
                     percentComplete = parseInt(percentComplete * 100);
-//                    console.log(percentComplete);
-                    $('.Uploadprogress').width(percentComplete);
+                    console.log(percentComplete);
+                    let bar_width = percentComplete + '%';
+                    $('.Uploadprogress').width(bar_width);
                     if (percentComplete === 100) {
                         alert('File Suploaded');
                     }
