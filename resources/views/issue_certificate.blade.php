@@ -107,6 +107,8 @@
                                             <dd class="eplClientAdress"></dd>
                                             <dt>Email</dt>
                                             <dd class="eplClientMail"></dd>
+                                            <dt>Renewal</dt>
+                                            <button id="" type="button" class="btn btn-block btn-success btn-xs btnRenewal">Renew</button>
                                         </dl>
                                     </div>
                                 </div>
@@ -198,6 +200,9 @@ $(function () {
         }
         return data;
     }
+    $('.btnRenewal').click(function () {
+        window.open("/renewal_page/id/" + {{$id}}, '_blank');
+    });
 });
 </script>
 @endsection
