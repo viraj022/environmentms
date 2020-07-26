@@ -142,7 +142,7 @@
 <script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="../../dist/js/demo.js"></script>
+<script src="../../dist/js/demo.js"></script>z
 <script src="../../js/attachmentsjs/submit.js"></script>
 <script src="../../js/attachmentsjs/get.js"></script>
 <script src="../../js/attachmentsjs/update.js"></script>

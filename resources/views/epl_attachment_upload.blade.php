@@ -35,6 +35,11 @@
                                             <label id="lblTitle">Un-assigned EPL</label>
                                         </div>-->
                     <div class="card-body">
+                        <div class="progress d-none">
+                            <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                <!--<span class="sr-only">40% Complete (success)</span>-->
+                            </div>
+                        </div>
                         <table class="table table-condensed" id="tblAttachments">
                             <thead>
                                 <tr>
@@ -78,12 +83,13 @@
 <script src="/../../js/attachmentsjs/get.js"></script>
 <!-- AdminLTE for demo purposes -->
 
+<!--<script src="/../../js/commonFunctions/functions.js" type="text/javascript"></script>-->
+<script src="/../../js/commonFunctions/file_upload.js" type="text/javascript"></script>
 <script>
-    
+
 //    $(function () {
 var EPL_ID = "{{$epl_id}}";
 all_attachmentsList(EPL_ID);
-
 $(document).on('click', '.removeAttachment', function () {
     if (confirm('Are you sure you want to remove this attachment?')) {
         removeEPL_Attachment(EPL_ID, $(this).val(), function (parameters) {
@@ -104,33 +110,31 @@ $(document).on('click', '.removeAttachment', function () {
 });
 $(document).on('change', '.fileInput', function () {
     let selector = $(this);
-    readImage(selector.attr('id'), function (img) {
-        if (img) {
-//                alert(JSON.stringify(img));
-            if (confirm('Are you sure you want to upload this attachment?')) {
-                saveEPL_Attachment(img, EPL_ID, selector.data('attachment_id'), function (parameters) {
-                    if (parameters.id == 1) {
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Enviremontal MS</br>Attachment Succuessfully Uploaded !'
-                        });
-                        all_attachmentsList(EPL_ID);
-                    } else if (parameters.id == 0) {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Enviremontal MS</br>' + parameters.message
-                        });
+    let formData = new FormData();
+    let file = $(this)[0].files[0];// file
+    formData.append('file', file);
+    if (confirm('Are you sure you want to upload this attachment?')) {
+        saveEPL_Attachment(formData, EPL_ID, selector.data('attachment_id'), function (parameters) {
+            if (parameters.id == 1) {
+                Toast.fire({
+                    type: 'success',
+                    title: 'Enviremontal MS</br>Attachment Succuessfully Uploaded !'
+                });
+                all_attachmentsList(EPL_ID);
+            } else if (parameters.id == 0) {
+                Toast.fire({
+                    type: 'error',
+                    title: 'Enviremontal MS</br>' + parameters.message
+                });
 
-                    } else {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Enviremontal MS</br>Error'
-                        });
-                    }
+            } else {
+                Toast.fire({
+                    type: 'error',
+                    title: 'Enviremontal MS</br>Error'
                 });
             }
-        }
-    });
+        });
+    }
 });
 //    });
 </script>

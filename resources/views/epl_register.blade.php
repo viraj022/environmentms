@@ -120,20 +120,20 @@
                             <input id="inp" type='file'>
                         </div>
 
-<!--                        <div class="form-group">
-                            <label>Road Map: </label>
-                            <input id="file_1" type='file'>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Deed of the land: </label>
-                            <input id="file_2" type='file'>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Survey Plan: </label>
-                            <input id="file_3" type='file'>
-                        </div>-->
+                        <!--                        <div class="form-group">
+                                                    <label>Road Map: </label>
+                                                    <input id="file_1" type='file'>
+                                                </div>
+                        
+                                                <div class="form-group">
+                                                    <label>Deed of the land: </label>
+                                                    <input id="file_2" type='file'>
+                                                </div>
+                        
+                                                <div class="form-group">
+                                                    <label>Survey Plan: </label>
+                                                    <input id="file_3" type='file'>
+                                                </div>-->
                     </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
@@ -225,6 +225,8 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
+<script src="../../js/commonFunctions/functions.js" type="text/javascript"></script>
+<script src="../../js/commonFunctions/file_upload.js" type="text/javascript"></script>
 <script src="../../js/epl/epl_register.js"></script>
 <script src="../../js/EplRegJS/submit.js"></script>
 <script src="../../js/EplRegJS/get.js"></script>
@@ -238,9 +240,6 @@ var _Latitude = '7.489050';
 var _Longitude = '80.349985';
 
 var file = '';
-//var file_1 = '';
-//var file_2 = '';
-//var file_3 = '';
 // Initialize and add the map
 function initMap() {
     // The location of CeyTech
@@ -255,8 +254,6 @@ function initMap() {
     google.maps.event.addListener(marker, 'dragend', function (evt) {
         _Latitude = evt.latLng.lat().toFixed(6); //change  decimal point if have problam with location accuracy
         _Longitude = evt.latLng.lng().toFixed(6); //change  decimal point if have problam with location accuracy
-
-        // alert('Marker dropped: Current Lat: ' + evt.latLng.lat().toFixed(3) + ' Current Lng: ' + evt.latLng.lng().toFixed(3) );
     });
 }
 
@@ -267,33 +264,8 @@ $("#getisOld").click(function () {
         $('#old_file').addClass('d-none');
     }
 });
-$(document).on('change', '#inp', function () {
-    readImage(this.id, function (result) {
-        file = result;
-    });
-});
-//$(document).on('change', '#file_1', function () {
-//    readImage(this.id, function (result) {
-//        file_1 = result;
-//    });
-//});
-//$(document).on('change', '#file_2', function () {
-//    readImage(this.id, function (result) {
-//        file_2 = result;
-//    });
-//});
-//$(document).on('change', '#file_3', function () {
-//    readImage(this.id, function (result) {
-//        file_3 = result;
-//    });
-//});
 $("#btnSave").click(function () {
     var data = fromValues();
-    data.file = file;
-//    data.file1 = file_1;
-//    data.file2 = file_2;
-//    data.file3 = file_3;
-//        alert(JSON.stringify(data));
     AddEpl(data, function (result) {
         if (result.id == 1) {
             window.location.replace(result.rout);
@@ -310,34 +282,13 @@ $("#btnSave").click(function () {
     });
 });
 
-//$.when(readImage("inp"), readImage("file_1"));
-//        .then(myFunc, myFailure);
-function readImage(img_selector, callback) {
-    var img = document.getElementById(img_selector);
-    if (img.files && img.files[0]) {
-        var FR = new FileReader();
-        FR.addEventListener("load", function (e) {
-            //   document.getElementById("b64").innerHTML = e.target.result;
-            callback(e.target.result)
-//            alert(e.target.result);
-//            
-//            return e.target.result;
-//            alert(file);
-        });
-        FR.readAsDataURL(img.files[0]);
-    } else {
-        alert("No Image");
-    }
-}
 </script>
 <script>
     $(function () {
         loadPradeshiyaSabha();
         IndustryCategoryCombo();
         BusinessScaleCombo();
-
-    }
-    );
+    });
 
 </script>
 @endsection

@@ -152,8 +152,8 @@
                         <div class="form-group d-none" id="fileUpDiv">
                             <hr>
                             <label id="uploadLabel">File Upload </label>
-                            <input id="fileUploadInput" type="file" class="">
-                            <div class="progress">
+                            <input id="fileUploadInput" type="file" class=""  accept="image/*, .pdf">
+                            <div class="progress d-none">
                                 <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
                                     <!--<span class="sr-only">40% Complete (success)</span>-->
                                 </div>

@@ -53,20 +53,18 @@ function ulploadFile2(URL, formData, callBack) {
         },
         xhr: function () {
             var xhr = new window.XMLHttpRequest();
-
             xhr.upload.addEventListener("progress", function (evt) {
                 if (evt.lengthComputable) {
+                    $('.progress').removeClass('d-none');
                     var percentComplete = evt.loaded / evt.total;
                     percentComplete = parseInt(percentComplete * 100);
-                    console.log(percentComplete);
                     let bar_width = percentComplete + '%';
                     $('.Uploadprogress').width(bar_width);
                     if (percentComplete === 100) {
-                        alert('File Suploaded');
+                        $('.progress').addClass('d-none');
                     }
                 }
             }, false);
-
             return xhr;
         },
         url: URL,
@@ -75,11 +73,11 @@ function ulploadFile2(URL, formData, callBack) {
         processData: false
     }).done(function (response) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-            callBack();
+            callBack(response);
         }
     }).fail(function (data) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-            callBack();
+            callBack(data);
         }
     });
 }

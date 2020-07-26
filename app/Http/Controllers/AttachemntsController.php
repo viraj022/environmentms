@@ -217,8 +217,8 @@ class AttachemntsController extends Controller
             // $path = $this->makeApplicationPath($epl, $attachment) . "1." . $type;
             $type = $request->file->extension();
             $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-            $fileUrl = "uploads/EPL/" . $epl . "/attachments/" . $attachment . "/";
-            $storePath = 'public' . $fileUrl;
+            $fileUrl = "/uploads/EPL/" . $epl . "/attachments/" . $attachment;
+            $storePath = '/public' . $fileUrl;
             $path =  "storage" . $request->file('file')->storeAs($storePath, $file_name);
             $e = EPL::findOrFail($epl);
             return \DB::transaction(function () use ($attachment, $e, $path, $type) {
