@@ -196,7 +196,6 @@ class EPLController extends Controller {
                         $epl->is_old = \request('is_old');
 
                         if ($epl->is_old == 0) {
-
                             request()->validate([
                                 'code' => 'required|string',
                                 'certificate_no' => 'required|string',

@@ -119,6 +119,11 @@
                             <label>Upload Applicaiton: </label>
                             <input id="inp" type='file'>
                         </div>
+                        <div class="progress d-none">
+                            <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                <!--<span class="sr-only">40% Complete (success)</span>-->
+                            </div>
+                        </div>
 
                         <!--                        <div class="form-group">
                                                     <label>Road Map: </label>
@@ -168,7 +173,7 @@
                                     </div>
                                     <!-- /.card-body -->
                                 </div>
-                            </div>                                        
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -236,10 +241,8 @@
 <!-- AdminLTE App -->
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
 <script>
-var _Latitude = '7.489050';
-var _Longitude = '80.349985';
-
-var file = '';
+var _Latitude = 7.489050;
+var _Longitude = 80.349985;
 // Initialize and add the map
 function initMap() {
     // The location of CeyTech
