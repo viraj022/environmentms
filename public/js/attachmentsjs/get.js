@@ -141,42 +141,12 @@ function all_attachmentsList(epl_id, callBack) {
     });
 
 }
-function readImage(selected_id, callback) {
-    var img = document.getElementById(selected_id);
-
-    if (img.files && img.files[0]) {
-        var FR = new FileReader();
-
-        FR.addEventListener("load", function (e) {
-            //   document.getElementById("b64").innerHTML = e.target.result;
-            callback(e.target.result);
-        });
-        FR.readAsDataURL(img.files[0]);
-    } else {
-        return false;
-//        alert("No Image");
-    }
-}
 
 function saveEPL_Attachment(file_data, epl_id, attachment_id, callBack) {
-    $.ajax({
-        type: "POST",
-        headers: {
-            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-            "Accept": "application/json"
-        },
-        url: "/api/epl/attachement/set/attachment/" + attachment_id + "/elp/" + epl_id,
-        data: {file: file_data},
-        dataType: "json",
-        cache: false,
-        processDaate: false,
-        success: function (result) {
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack(result);
-            }
-        },
-        error: function (xhr, textStatus, errorThrown) {
-            alert(textStatus + ':' + errorThrown);
+    let url = "/api/epl/attachement/set/attachment/" + attachment_id + "/elp/" + epl_id;
+    ulploadFile2(url, file_data, function (parameters) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(parameters);
         }
     });
 }

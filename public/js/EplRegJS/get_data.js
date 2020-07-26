@@ -29,7 +29,8 @@ function fromValues() {
         registration_no: $('#business_regno').val().trim(),
         created_date: $('#submittedDate').val(),
         is_old: $('#getisOld').val(),
-        remark: $('#getRemark').val().trim()
+        remark: $('#getRemark').val().trim(),
+        file: $('#inp')[0].files[0]
     };
     if (data.is_old == 0) {
         data.code = $('#epl_code').val().trim();

@@ -1,49 +1,12 @@
-//data = new FormData();
-//data.append('file', $('#file')[0].files[0]);
-
-function ulploadFile(URL, file) {
-    $.ajax({
-        xhr: function () {
-            var xhr = new window.XMLHttpRequest();
-
-            xhr.upload.addEventListener("progress", function (evt) {
-                if (evt.lengthComputable) {
-                    var percentComplete = evt.loaded / evt.total;
-                    percentComplete = parseInt(percentComplete * 100);
-                    console.log(percentComplete);
-
-                    if (percentComplete === 100) {
-
-                    }
-
-                }
-            }, false);
-
-            return xhr;
-        },
-        url: URL,
-        type: "POST",
-        data: JSON.stringify(file),
-        contentType: "application/json",
-        dataType: "json",
-        success: function (result) {
-            console.log(result);
-        }
-    });
-}
 function ulploadFile2(URL, formData, callBack) {
-//    let formData = new FormData();
-//    // populate fields
-//    let title = $('#title').val();
-//    let serial_no = $('#serial_no').val();
-//    let image1 = $('#image1')[0].files[0];// file
-//    let image2 = $('#image2')[0].files[0];// file
-//    formData.append('title', title);
-//    formData.append('serial_no', serial_no);
-//    formData.append('image1', image1);
-//    formData.append('image2', image2);
-//    console.log(URL);
-//    return false;
+    /*
+     let formData = new FormData();
+     // populate fields
+     let image1 = $('#image1')[0].files[0];// file
+     formData.append('title', title);
+     formData.append('image1', image1);
+     return false;
+     */
     // send form data
     $.ajax({
         type: 'POST',
@@ -53,20 +16,18 @@ function ulploadFile2(URL, formData, callBack) {
         },
         xhr: function () {
             var xhr = new window.XMLHttpRequest();
-
             xhr.upload.addEventListener("progress", function (evt) {
                 if (evt.lengthComputable) {
+                    $('.progress').removeClass('d-none');
                     var percentComplete = evt.loaded / evt.total;
                     percentComplete = parseInt(percentComplete * 100);
-                    console.log(percentComplete);
                     let bar_width = percentComplete + '%';
                     $('.Uploadprogress').width(bar_width);
                     if (percentComplete === 100) {
-                        alert('File Suploaded');
+                        $('.progress').addClass('d-none');
                     }
                 }
             }, false);
-
             return xhr;
         },
         url: URL,
@@ -75,11 +36,32 @@ function ulploadFile2(URL, formData, callBack) {
         processData: false
     }).done(function (response) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-            callBack();
+            callBack(response);
         }
-    }).fail(function (data) {
+    }).fail(function (jqXHR, exception) {
+        var msg = '';
+        if (jqXHR.status === 0) {
+            msg = 'Not connect.\n Verify Network.';
+        } else if (jqXHR.status == 401) {
+            msg = 'You Dont Have Privilege To Performe This Action!';
+        } else if (jqXHR.status == 422) {
+            msg = 'Validation Error !';
+        } else if (jqXHR.status == 404) {
+            msg = 'Requested page not found. [404]';
+        } else if (jqXHR.status == 500) {
+            msg = 'Internal Server Error [500].';
+        } else if (exception === 'parsererror') {
+            msg = 'Requested JSON parse failed.';
+        } else if (exception === 'timeout') {
+            msg = 'Time out error.';
+        } else if (exception === 'abort') {
+            msg = 'Ajax request aborted.';
+        } else {
+            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+        }
+        alert(msg);
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-            callBack();
+            callBack(msg);
         }
     });
 }
