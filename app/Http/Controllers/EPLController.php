@@ -168,39 +168,16 @@ class EPLController extends Controller
         if ($pageAuth['is_create']) {
             $msg = \DB::transaction(function () use ($request) {
                 request()->validate([
-                    'name' => 'required|unique:e_p_l_s,name',
+                    
                     'client_id' => 'required|integer',
-                    'industry_category_id' => 'required|integer',
-                    'contact_no' => ['required', new contactNo],
-                    'address' => ['required'],
-                    'email' => ['sometimes', 'nullable'],
-                    'coordinate_x' => ['numeric', 'nullable', 'between:-180,180'],
-                    'coordinate_y' => ['numeric', 'nullable', 'between:-90,90'],
-                    'pradesheeyasaba_id' => 'required|integer',
-                    'is_industry' => 'required|integer',
-                    'investment' => 'required|numeric',
-                    'start_date' => 'required|date',
-                    'business_scale_id' => 'required|integer',
-                    'registration_no' => ['sometimes', 'nullable', 'unique:e_p_l_s,registration_no'],
                     'remark' => ['sometimes', 'nullable'],
                     'created_date' => 'required|date',
                     'is_old' => 'required|integer',
                 ]);
                 $epl = new EPL();
-                $epl->name = \request('name');
+
                 $epl->client_id = \request('client_id');
-                $epl->industry_category_id = \request('industry_category_id');
-                $epl->business_scale_id = \request('business_scale_id');
-                $epl->contact_no = \request('contact_no');
-                $epl->address = \request('address');
-                $epl->email = \request('email');
-                $epl->coordinate_x = \request('coordinate_x');
-                $epl->coordinate_y = \request('coordinate_y');
-                $epl->pradesheeyasaba_id = \request('pradesheeyasaba_id');
-                $epl->is_industry = \request('is_industry');
-                $epl->investment = \request('investment');
-                $epl->start_date = \request('start_date');
-                $epl->registration_no = \request('registration_no');
+                
                 $epl->remark = \request('remark');
                 $epl->is_old = \request('is_old');
 
@@ -215,7 +192,11 @@ class EPLController extends Controller
                     $epl->code = $this->generateCode($epl);
                 }
 
-                $epl->application_path = "";
+                $client = Client::find($epl->client_id);
+
+
+
+                $client->application_path = "";
                 $epl->created_at = \request('created_date');
 
                 $epl->site_clearance_file = \request('site_clearance_file');
@@ -228,8 +209,8 @@ class EPLController extends Controller
                     $fileUrl = '/uploads/EPL/' . $epl->id . '/application';
                     $storePath = 'public' . $fileUrl;
                     $path = $request->file('file')->storeAs($storePath, $file_name);
-                    $epl->application_path = "storage/" . $fileUrl . "/" . $file_name;
-                    $epl->save();
+                    $client->application_path = "storage/" . $fileUrl . "/" . $file_name;
+                    $client->save();
                     return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
                 } else {
                     return array('id' => 0, 'message' => 'false');
@@ -251,19 +232,19 @@ class EPLController extends Controller
             $path = $request->file('file')->storeAs($storePath, $file_name);
             switch ($type) {
                 case 'file':
-                    $epl->application_path = "storage" . $fileUrl . "/" . $file_name;
-                    break;
+                $epl->application_path = "storage" . $fileUrl . "/" . $file_name;
+                break;
                 case 'file1':
-                    $epl->file_01 = "storage" . $fileUrl . "/" . $file_name;
-                    break;
+                $epl->file_01 = "storage" . $fileUrl . "/" . $file_name;
+                break;
                 case 'file2':
-                    $epl->file_02 = "storage" . $fileUrl . "/" . $file_name;
-                    break;
+                $epl->file_02 = "storage" . $fileUrl . "/" . $file_name;
+                break;
                 case 'file3':
-                    $epl->file_03 = "storage" . $fileUrl . "/" . $file_name;
-                    break;
+                $epl->file_03 = "storage" . $fileUrl . "/" . $file_name;
+                break;
                 default:
-                    abort(422);
+                abort(422);
             }
             $msg = $epl->save();
             if ($msg) {
@@ -290,10 +271,10 @@ class EPLController extends Controller
     public function find($id)
     {
         return EPL::with('client')->leftJoin('environment_officers', 'e_p_l_s.environment_officer_id', 'environment_officers.id')
-            ->leftJoin('users', 'environment_officers.user_id', 'users.id')
-            ->where('e_p_l_s.id', $id)
-            ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
-            ->first();
+        ->leftJoin('users', 'environment_officers.user_id', 'users.id')
+        ->where('e_p_l_s.id', $id)
+        ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
+        ->first();
     }
 
     /**
@@ -306,10 +287,10 @@ class EPLController extends Controller
     {
 
         return EPL::leftJoin('environment_officers', 'e_p_l_s.environment_officer_id', 'environment_officers.id')
-            ->leftJoin('users', 'environment_officers.user_id', 'users.id')
-            ->where('e_p_l_s.is_old', $epl_status)
-            ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
-            ->get();
+        ->leftJoin('users', 'environment_officers.user_id', 'users.id')
+        ->where('e_p_l_s.is_old', $epl_status)
+        ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
+        ->get();
     }
 
     /**
