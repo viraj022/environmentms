@@ -12,9 +12,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-class AttachemntsController extends Controller {
+class AttachemntsController extends Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware(['auth']);
     }
 
@@ -23,7 +25,8 @@ class AttachemntsController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_read']) {
@@ -31,7 +34,8 @@ class AttachemntsController extends Controller {
         }
     }
 
-    public function isNameUnique($name) {
+    public function isNameUnique($name)
+    {
 
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
@@ -51,7 +55,8 @@ class AttachemntsController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         request()->validate([
@@ -78,7 +83,8 @@ class AttachemntsController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($id) {
+    public function store($id)
+    {
 
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
@@ -86,8 +92,7 @@ class AttachemntsController extends Controller {
             'name' => 'required|unique:attachemnts,name',
         ]);
         if ($pageAuth['is_update']) {
-            $attachment = Attachemnt::findOrFail($id);
-            ;
+            $attachment = Attachemnt::findOrFail($id);;
             $attachment->name = \request('name');
             $msg = $attachment->save();
 
@@ -107,7 +112,8 @@ class AttachemntsController extends Controller {
      * @param  \App\Attachemnts  $attachemnts
      * @return \Illuminate\Http\Response
      */
-    public function show() {
+    public function show()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_read']) {
@@ -117,7 +123,8 @@ class AttachemntsController extends Controller {
         }
     }
 
-    public function find($id) {
+    public function find($id)
+    {
 
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
@@ -134,7 +141,8 @@ class AttachemntsController extends Controller {
      * @param  \App\Attachemnts  $attachemnts
      * @return \Illuminate\Http\Response
      */
-    public function edit() {
+    public function edit()
+    {
         //
     }
 
@@ -145,7 +153,8 @@ class AttachemntsController extends Controller {
      * @param  \App\Attachemnts  $attachemnts
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Attachemnt $attachemnts) {
+    public function update(Request $request, Attachemnt $attachemnts)
+    {
         //
     }
 
@@ -155,12 +164,12 @@ class AttachemntsController extends Controller {
      * @param  \App\Attachemnts  $attachemnts
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_delete']) {
-            $attachment = Attachemnt::findOrFail($id);
-            ;
+            $attachment = Attachemnt::findOrFail($id);;
             //$attachment->name= \request('name');
             $msg = $attachment->delete();
 
@@ -174,61 +183,70 @@ class AttachemntsController extends Controller {
         }
     }
 
-    public function getAttachment_by_application_name($application_name) {
+    public function getAttachment_by_application_name($application_name)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_read']) {
             // return Attachemnt::get();
             return Attachemnt::join('application_type_attachemnt', 'application_type_attachemnt.attachemnt_id', '=', 'attachemnts.id')
-                            ->join('application_types', 'application_type_attachemnt.application_type_id', '=', 'application_types.id')
-                            ->select('attachemnts.*')
-                            ->where('application_types.name', '=', $application_name)
-                            ->get();
+                ->join('application_types', 'application_type_attachemnt.application_type_id', '=', 'application_types.id')
+                ->select('attachemnts.*')
+                ->where('application_types.name', '=', $application_name)
+                ->get();
         } else {
             abort(401);
         }
     }
 
-    public function attach($attachment, $epl) {
+    public function attach($attachment, $epl, Request $request)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_create']) {
-            $data = \request('file');
-            $array = explode(';', $data);
-            $array2 = explode(',', $array[1]);
-            $array3 = explode('/', $array[0]);
-            $type = $array3[1];
-            if (!($type == 'jpeg' || $type == 'pdf')) {
-//                dd($type);
-                return array('id' => 0, 'message' => 'Only you can add image(jpeg) or PDF');
-            }
-            $data = base64_decode($array2[1]);
-            file_put_contents($this->makeApplicationPath($epl, $attachment) . "1." . $type, $data);
-            $path = $this->makeApplicationPath($epl, $attachment) . "1." . $type;
+            // $data = \request('file');
+            // $array = explode(';', $data);
+            // $array2 = explode(',', $array[1]);
+            // $array3 = explode('/', $array[0]);
+            // $type = $array3[1];
+            // if (!($type == 'jpeg' || $type == 'pdf')) {
+            //     return array('id' => 0, 'message' => 'Only you can add image(jpeg) or PDF');
+            // }
+            // $data = base64_decode($array2[1]);
+            // file_put_contents($this->makeApplicationPath($epl, $attachment) . "1." . $type, $data);
+            // $path = $this->makeApplicationPath($epl, $attachment) . "1." . $type;
+            $type = $request->file->extension();
+            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+            $fileUrl = "/uploads/EPL/" . $epl . "/attachments/" . $attachment;
+            $storePath = '/public' . $fileUrl;
+            $path =  "storage" . $request->file('file')->storeAs($storePath, $file_name);
             $e = EPL::findOrFail($epl);
             return \DB::transaction(function () use ($attachment, $e, $path, $type) {
-                        $e->attachemnts()->detach($attachment);
-                        $e->attachemnts()->attach(
-                                $attachment, [
-                            'path' => $path,
-                            'type' => $type,
-                            'created_at' => Carbon::now()->toDateTimeString()
-                                ]
-                        );
-                        return array('id' => 1, 'message' => 'true');
-                    });
+                $e->attachemnts()->detach($attachment);
+                $e->attachemnts()->attach(
+                    $attachment,
+                    [
+                        'path' => $path,
+                        'type' => $type,
+                        'created_at' => Carbon::now()->toDateTimeString()
+                    ]
+                );
+                return array('id' => 1, 'message' => 'true');
+            });
         } else {
             abort(401);
         }
     }
 
-    public function revoke($attachment, $epl) {
+    public function revoke($attachment, $epl)
+    {
         $e = EPL::findOrFail($epl);
         $e->attachemnts()->detach($attachment);
         return array('id' => 1, 'message' => 'true');
     }
 
-    public function getEplAttachments($epl) {
+    public function getEplAttachments($epl)
+    {
         return \DB::select(\DB::raw("SELECT b.path, b.type, b.attachment_epl_id, a.att_id, a.attachment_name FROM (SELECT
 	application_types.`name`, 
 	attachemnts.`name` AS attachment_name,
@@ -257,7 +275,8 @@ WHERE attachemnt_e_p_l.e_p_l_id = '{$epl}') AS b
         //        return $attachemntsAssigned = $epl->attachemnts;
     }
 
-    private function makeApplicationPath($id, $attachemntId) {
+    private function makeApplicationPath($id, $attachemntId)
+    {
         if (!is_dir("uploads")) {
             //Create our directory if it does not exist
             mkdir("uploads");
@@ -280,5 +299,4 @@ WHERE attachemnt_e_p_l.e_p_l_id = '{$epl}') AS b
         }
         return "uploads/EPL/" . $id . "/attachments/" . $attachemntId . "/";
     }
-
 }

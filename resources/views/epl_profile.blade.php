@@ -140,10 +140,25 @@
                         <dt>Location :</dt>
                         <div id="map" style="width: 100%; height: 400px;"></div>
                         <dt>Download Application :</dt>
-                        <button type="button" class="btn btn-dark navTodownload" data-dismiss="modal">View Application</button>
-                        <button type="button" class="btn btn-dark navToFile1" data-dismiss="modal">View Road Map</button>
-                        <button type="button" class="btn btn-dark navToFile2" data-dismiss="modal">View Deed of the land </button>
-                        <button type="button" class="btn btn-dark navToFile3" data-dismiss="modal">View Survey Plan</button>
+                        <button type="button" class="btn btn-dark d-none navTodownload">View Application</button>
+                        <button type="button" class="btn btn-dark d-none navToFile1">View Road Map</button>
+                        <button type="button" class="btn btn-dark d-none navToFile2">View Deed of the land </button>
+                        <button type="button" class="btn btn-dark d-none navToFile3">View Survey Plan</button>
+
+                        <button type="button" class="btn btn-success d-none" data-upload_file="EPL" id="upld_application">Upload Application</button>
+                        <button type="button" class="btn btn-success d-none" data-upload_file="Road Map" id="upld_roadMap">Upload Road Map</button>
+                        <button type="button" class="btn btn-success d-none" data-upload_file="Deed Of The Land" id="upld_deed">Upload Deed of the land </button>
+                        <button type="button" class="btn btn-success d-none" data-upload_file="Survey Plan" id="upld_SurveyPlan">Upload Survey Plan</button>
+                        <div class="form-group d-none" id="fileUpDiv">
+                            <hr>
+                            <label id="uploadLabel">File Upload </label>
+                            <input id="fileUploadInput" type="file" class=""  accept="image/*, .pdf">
+                            <div class="progress d-none">
+                                <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                    <!--<span class="sr-only">40% Complete (success)</span>-->
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- /.card-body -->
                 </div>                                    
@@ -202,6 +217,7 @@
 <script src="/../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/../../dist/js/demo.js"></script>
+<script src="/../../js/commonFunctions/file_upload.js" type="text/javascript"></script>
 <script src="/../../js/EPLProfileJS/submit.js"></script>
 <script src="/../../js/EPLProfileJS/get.js"></script>
 <script src="/../../js/EPLProfileJS/client_space.js"></script>
@@ -214,15 +230,15 @@
 //Map Start    
 // Initialize and add the map
                                 function initMap(_Latitude, _Longitude) {
-                                // The location of CeyTech
-                                var defaultLocation = {lat: _Latitude, lng: _Longitude}; //default Location for load map
+                                    // The location of CeyTech
+                                    var defaultLocation = {lat: _Latitude, lng: _Longitude}; //default Location for load map
 //    console.log('def lat: ' + defaultLocation.lat);
 //    alert(defaultLocation.lat);
 
-                                // The map, centered at Uluru
-                                var map = new google.maps.Map(document.getElementById('map'), {zoom: 15, center: defaultLocation});
-                                // The marker, positioned at Uluru
-                                var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: false, title: "Drag me!"});
+                                    // The map, centered at Uluru
+                                    var map = new google.maps.Map(document.getElementById('map'), {zoom: 15, center: defaultLocation});
+                                    // The marker, positioned at Uluru
+                                    var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: false, title: "Drag me!"});
 //    google.maps.event.addListener(marker, 'dragend', function (evt) {
 //    _Latitude = evt.latLng.lat().toFixed(6); //change  decimal point if have problam with location accuracy
 //    _Longitude = evt.latLng.lng().toFixed(6); //change  decimal point if have problam with location accuracy
@@ -231,94 +247,154 @@
                                 }
 //Map END
                                 $(function () {
-                                getaClientbyId({{$client}}, function (result) {
-                                if (result.length == 0 || result == undefined) {
-                                if (confirm("Client Not Found! Try Again!")) {
+                                    var CLIENT = '{{$client}}';
+                                    var PROFILE = '{{$profile}}';
+                                    getaClientbyId(CLIENT, function (result) {
+                                        if (result.length == 0 || result == undefined) {
+                                            if (confirm("Client Not Found! Try Again!")) {
 
-                                }
-                                } else {
-                                setClientDetails(result);
-                                }
-                                });
-                                getDetailsbyId({{$profile}}, function (result) {
-                                if (result.length == 0 || result == undefined) {
-                                if (confirm("Details Not Found! Try Again!")) {
-                                }
-                                } else {
-                                setClearanceData(result);
-                                setAllDetails(result);
-                                $('.navTodownload').click(function(){
-                                downloadApp(result);
-                                });
-                                $('.navToFile1').click(function(){
-                                downloadFile1(result);
-                                });
-                                $('.navToFile2').click(function(){
-                                downloadFile2(result);
-                                });
-                                $('.navToFile3').click(function(){
-                                downloadFile3(result);
-                                });
-                                }
+                                            }
+                                        } else {
+                                            setClientDetails(result);
+                                        }
+                                    });
+                                    getDetailsbyId(PROFILE, function (result) {
+                                        if (result.length == 0 || result == undefined) {
+                                            if (confirm("Details Not Found! Try Again!")) {
+                                            }
+                                        } else {
+                                            setClearanceData(result);
+                                            setAllDetails(result);
+                                            $('.navTodownload').click(function () {
+                                                downloadApp(result);
+                                            });
+                                            $('.navToFile1').click(function () {
+                                                downloadFile1(result);
+                                            });
+                                            $('.navToFile2').click(function () {
+                                                downloadFile2(result);
+                                            });
+                                            $('.navToFile3').click(function () {
+                                                downloadFile3(result);
+                                            });
+                                        }
+                                        initMap(parseFloat(result.coordinate_x), parseFloat(result.coordinate_y));
+                                    });
+                                    $('#btnSaveClear').click(function () {
+                                        var data = fromValues();
+                                        if (Validiteinsert(data)) {
+                                            // if validiated
+                                            AddClearance(data, PROFILE, function (result) {
+                                                if (result.id == 1) {
+                                                    Toast.fire({
+                                                        type: 'success',
+                                                        title: 'Enviremontal MS</br>Saved'
+                                                    });
+                                                    $('#btnSaveClear').addClass('d-none');
+                                                    $('#btnUpdateClear').removeClass('d-none');
+                                                } else {
+                                                    Toast.fire({
+                                                        type: 'error',
+                                                        title: 'Enviremontal MS</br>Error'
+                                                    });
+                                                }
+                                                resetinputFields();
+                                                hideAllErrors();
+                                            });
+                                        }
+                                    });
+                                    $('#upld_application, #upld_roadMap, #upld_deed, #upld_SurveyPlan').click(function () {
+                                        $('#uploadLabel').html('Select ' + $(this).data('upload_file') + ' File To Upload');
+                                        $('#fileUploadInput').data('fileType', $(this).data('upload_file'));
+                                        $('#fileUpDiv').removeClass('d-none');
+                                    });
+                                    //file upload click
+                                    $('#fileUploadInput').change(function () {
+                                        if (!confirm('Are you sure you want to save this attachment?')) {
+                                            return false;
+                                        }
+                                        let uploadFileType = $(this).data('fileType');
+                                        let formData = new FormData();
+                                        let fileCat = '';
+                                        // populate fields
+                                        let file = $(this)[0].files[0];// file
+                                        formData.append('file', file);
+                                        switch (uploadFileType) {
+                                            case 'EPL':
+                                                fileCat = 'file';
+                                                break;
+                                            case 'Road Map':
+                                                fileCat = 'file1';
+                                                break;
+                                            case 'Deed Of The Land':
+                                                fileCat = 'file2';
+                                                break;
+                                            case 'Survey Plan':
+                                                fileCat = 'file3';
+                                                break;
 
-                                initMap(parseFloat(result.coordinate_x), parseFloat(result.coordinate_y));
-//                $('#getName').val(result.name);
-                                });
-                                $('#btnSaveClear').click(function () {
-                                var data = fromValues();
-                                if (Validiteinsert(data)) {
-                                // if validiated
-                                AddClearance(data, {{$profile}}, function (result) {
-                                if (result.id == 1) {
-                                Toast.fire({
-                                type: 'success',
-                                        title: 'Enviremontal MS</br>Saved'
-                                });
-                                $('#btnSaveClear').addClass('d-none');
-                                $('#btnUpdateClear').removeClass('d-none');
-                                } else {
-                                Toast.fire({
-                                type: 'error',
-                                        title: 'Enviremontal MS</br>Error'
-                                });
-                                }
-                                resetinputFields();
-                                hideAllErrors();
-                                });
-                                }
-                                });
-                                //click update button
-                                $('#btnUpdateClear').click(function () {
-                                var data = fromValues();
-                                if (confirm('Are You Sure?')) {
-                                if (Validiteupdate(data)) {
-                                updateClearance({{$profile}}, data, function (result) {
-                                if (result.id == 1) {
-                                Toast.fire({
-                                type: 'success',
-                                        title: 'Enviremontal MS</br>Updated'
-                                });
-                                } else {
-                                Toast.fire({
-                                type: 'error',
-                                        title: 'Enviremontal MS</br>Error'
-                                });
-                                }
-                                resetinputFields();
-                                hideAllErrors();
-                                });
-                                }
-                                }
-                                });
-                                function fromValues() {
-                                var data = {
-                                site_clearance_file: $('#siteclear_get').val()
-                                };
-                                return data;
-                                }
+                                            default:
+
+                                                break;
+                                        }
+                                        ulploadFile2('/api/epl/upload/epl/' + PROFILE + '/file/' + fileCat, formData, function (parameters) {
+                                            getDetailsbyId(PROFILE, function (result) {
+                                                if (result.length == 0 || result == undefined) {
+                                                    if (confirm("Details Not Found! Try Again!")) {
+                                                    }
+                                                } else {
+                                                    setClearanceData(result);
+                                                    setAllDetails(result);
+                                                    $('.navTodownload').click(function () {
+                                                        downloadApp(result);
+                                                    });
+                                                    $('.navToFile1').click(function () {
+                                                        downloadFile1(result);
+                                                    });
+                                                    $('.navToFile2').click(function () {
+                                                        downloadFile2(result);
+                                                    });
+                                                    $('.navToFile3').click(function () {
+                                                        downloadFile3(result);
+                                                    });
+                                                }
+                                                initMap(parseFloat(result.coordinate_x), parseFloat(result.coordinate_y));
+                                            });
+                                        });
+                                    });
+
+                                    //click update button
+                                    $('#btnUpdateClear').click(function () {
+                                        var data = fromValues();
+                                        if (confirm('Are You Sure?')) {
+                                            if (Validiteupdate(data)) {
+                                                updateClearance(PROFILE, data, function (result) {
+                                                    if (result.id == 1) {
+                                                        Toast.fire({
+                                                            type: 'success',
+                                                            title: 'Enviremontal MS</br>Updated'
+                                                        });
+                                                    } else {
+                                                        Toast.fire({
+                                                            type: 'error',
+                                                            title: 'Enviremontal MS</br>Error'
+                                                        });
+                                                    }
+                                                    resetinputFields();
+                                                    hideAllErrors();
+                                                });
+                                            }
+                                        }
+                                    });
+                                    function fromValues() {
+                                        var data = {
+                                            site_clearance_file: $('#siteclear_get').val()
+                                        };
+                                        return data;
+                                    }
                                 });
                                 function disWarnPay() {
-                                toastr.error('Assign Environment Officer & Try Again!');
+                                    toastr.error('Assign Environment Officer & Try Again!');
                                 }
 </script>
 <!--<script>
