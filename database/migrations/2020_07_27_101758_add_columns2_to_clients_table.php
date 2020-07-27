@@ -14,11 +14,11 @@ class AddColumns2ToClientsTable extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->text('application_path');
-            $table->bigInteger('environment_officer_id')->unsigned();
-            $table->text('file_01');
-            $table->text('file_02');
-            $table->text('file_03');
+            $table->text('application_path')->nullable();
+            $table->bigInteger('environment_officer_id')->unsigned()->nullable();
+            $table->text('file_01')->nullable();
+            $table->text('file_02')->nullable();
+            $table->text('file_03')->nullable();
             $table->foreign('environment_officer_id')->references('id')->on('environment_officers')->onDelete('restrict')->onUpdate('cascade');
         });
     }
