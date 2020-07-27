@@ -8,6 +8,7 @@ function setClientDetails(obj) {
     $('#client_nic').html(obj.nic);
 }
 function setAllDetails(obj) {
+    $('#fileUpDiv').addClass('d-none');
     $('#upld_application').addClass('d-none');
     $('.navTodownload').addClass('d-none');
     $('#upld_roadMap').addClass('d-none');
@@ -51,9 +52,9 @@ function setAllDetails(obj) {
     $('#obj_invest').html(obj.investment);
     $('#obj_remark').html(obj.remark);
     $('.navTodownload').attr("href", obj.application_path);
-    $('.navToFile1').attr("href", obj.file_01);
-    $('.navToFile2').attr("href", obj.file_02);
-    $('.navToFile3').attr("href", obj.file_03);
+    $('.navToFile1').attr("href", "/"+obj.file_01);
+    $('.navToFile2').attr("href", "/"+obj.file_02);
+    $('.navToFile3').attr("href", "/"+obj.file_03);
     if (obj.first_name != null) {
         $('#env_firstname').html("Assign Environment Officer: " + obj.first_name + " " + obj.last_name);
     } else if (obj.first_name == null) {
