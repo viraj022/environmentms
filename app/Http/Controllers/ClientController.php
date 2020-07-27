@@ -52,6 +52,19 @@ class ClientController extends Controller
             'contact_no' => ['nullable', new contactNo],
             'email' => 'nullable|sometimes',
             'nic' => ['sometimes', 'nullable', 'unique:clients', new nationalID],
+            'industry_name' => 'required|string',
+ 'industry_category_id' => 'required|integer',
+ 'business_scale_id' => 'required|integer',
+ 'industry_contact_no' => ['nullable', new contactNo],
+ 'industry_address' => 'required|string',
+ 'industry_email' => 'required|string',
+ 'industry_coordinate_x' => 'required|integer',
+ 'industry_coordinate_y' => 'required|integer',
+ 'pradesheeyasaba_id' => 'required|integer',
+ 'industry_is_industry' => 'required|integer',
+ 'industry_investment' => 'required|numeric',
+ 'industry_start_date' => 'required|date',
+ 'industry_registration_no' => 'required|string',
             // 'password' => 'required',
         ]);
         if ($pageAuth['is_create']) {
@@ -64,6 +77,21 @@ class ClientController extends Controller
             $client->nic = \request('nic');
             $client->password = Hash::make(request('nic'));
             $client->api_token = Str::random(80);
+
+            $client->industry_name= \request('industry_name'); 
+$client->industry_category_id= \request('industry_category_id'); 
+$client->business_scale_id= \request('business_scale_id'); 
+$client->industry_contact_no= \request('industry_contact_no'); 
+$client->industry_address= \request('industry_address'); 
+$client->industry_email= \request('industry_email'); 
+$client->industry_coordinate_x= \request('industry_coordinate_x'); 
+$client->industry_coordinate_y= \request('industry_coordinate_y'); 
+$client->pradesheeyasaba_id= \request('pradesheeyasaba_id'); 
+$client->industry_is_industry= \request('industry_is_industry'); 
+$client->industry_investment= \request('industry_investment'); 
+$client->industry_start_date= \request('industry_start_date'); 
+$client->industry_registration_no= \request('industry_registration_no'); 
+
             $msg = $client->save();
             if ($msg) {
                 return array('id' => 1, 'message' => 'true', 'nic' => $client->nic);
