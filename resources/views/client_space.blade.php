@@ -81,18 +81,6 @@
                                            value="">
                                     <div id="valnicName" class="d-none"><p class="text-danger">NIC is required</p></div>
                                 </div>
-                            </div>
-                            <div class="card-footer">
-                                @if($pageAuth['is_create']==1 || false)
-                                <button id="btnSave" type="submit" class="btn btn-success">Register</button>
-                                @endif
-                                @if($pageAuth['is_update']==1 || false)
-                                <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
-                                @endif
-                                @if($pageAuth['is_delete']==1 || false)
-                                <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
-                                         data-target="#modal-danger">Delete</button>
-                                @endif
                             </div>                           
                         </div>
                         <div class="">
@@ -174,7 +162,19 @@
                                     <label>Email*</label>
                                     <input id="getEmailI" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
                                 </div>
-                            </div>                        
+                            </div>
+                            <div class="card-footer">
+                                @if($pageAuth['is_create']==1 || false)
+                                <button id="btnSave" type="submit" class="btn btn-success">Register</button>
+                                @endif
+                                @if($pageAuth['is_update']==1 || false)
+                                <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
+                                @endif
+                                @if($pageAuth['is_delete']==1 || false)
+                                <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
+                                         data-target="#modal-danger">Delete</button>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -428,27 +428,27 @@
 <!-- AdminLTE App -->
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
 <script>
-var _Latitude = 7.489050;
-var _Longitude = 80.349985;
+    var _Latitude = 7.489050;
+    var _Longitude = 80.349985;
 // Initialize and add the map
-function initMap() {
-    // The location of CeyTech
-    var defaultLocation = {lat: 7.489050, lng: 80.349985}; //default Location for load map
+    function initMap() {
+        // The location of CeyTech
+        var defaultLocation = {lat: 7.489050, lng: 80.349985}; //default Location for load map
 
-    // The map, centered at Uluru
-    var map = new google.maps.Map(
-            document.getElementById('map'), {zoom: 15, center: defaultLocation});
-    // The marker, positioned at Uluru
-    var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: true,
-        title: "Drag me!"});
-    google.maps.event.addListener(marker, 'dragend', function (evt) {
-        _Latitude = evt.latLng.lat().toFixed(6); //change  decimal point if have problam with location accuracy
-        _Longitude = evt.latLng.lng().toFixed(6); //change  decimal point if have problam with location accuracy
-    });
-}    
-           
-    
-$(function () {
+        // The map, centered at Uluru
+        var map = new google.maps.Map(
+                document.getElementById('map'), {zoom: 15, center: defaultLocation});
+        // The marker, positioned at Uluru
+        var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: true,
+            title: "Drag me!"});
+        google.maps.event.addListener(marker, 'dragend', function (evt) {
+            _Latitude = evt.latLng.lat().toFixed(6); //change  decimal point if have problam with location accuracy
+            _Longitude = evt.latLng.lng().toFixed(6); //change  decimal point if have problam with location accuracy
+        });
+    }
+
+
+    $(function () {
 //Load table
         loadTable();
         loadPradeshiyaSabha();
