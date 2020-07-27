@@ -8,11 +8,13 @@ function setClientDetails(obj) {
     $('#client_nic').html(obj.nic);
 }
 function setAllDetails(obj) {
+    $('#fileUpDiv').addClass('d-none');
     $('#upld_application').addClass('d-none');
     $('.navTodownload').addClass('d-none');
     $('#upld_roadMap').addClass('d-none');
     $('.navToFile1').addClass('d-none');
     $('#upld_deed').addClass('d-none');
+    $('.navToFile2').addClass('d-none');
     $('.navToFile1').addClass('d-none');
     $('#upld_SurveyPlan').addClass('d-none');
     $('.navToFile3').addClass('d-none');
@@ -49,26 +51,16 @@ function setAllDetails(obj) {
     $('#obj_code').html(obj.code);
     $('#obj_invest').html(obj.investment);
     $('#obj_remark').html(obj.remark);
-//    _Latitude = obj.coordinate_x;
-//    _Longitude = obj.coordinate_y;
+    $('.navTodownload').attr("href", obj.application_path);
+    $('.navToFile1').attr("href", "/"+obj.file_01);
+    $('.navToFile2').attr("href", "/"+obj.file_02);
+    $('.navToFile3').attr("href", "/"+obj.file_03);
     if (obj.first_name != null) {
         $('#env_firstname').html("Assign Environment Officer: " + obj.first_name + " " + obj.last_name);
     } else if (obj.first_name == null) {
         $("#disPaylink").attr("href", "javascript:disWarnPay();");
         $("#disInspeclink").attr("href", "javascript:disWarnPay();");
     }
-}
-function downloadApp(obj) {
-    window.open("/" + obj.application_path, '_blank');
-}
-function downloadFile1(obj) {
-    window.open("/" + obj.file_01, '_blank');
-}
-function downloadFile2(obj) {
-    window.open("/" + obj.file_02, '_blank');
-}
-function downloadFile3(obj) {
-    window.open("/" + obj.file_03, '_blank');
 }
 
 function setClearanceData(obj) {
