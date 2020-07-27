@@ -204,22 +204,12 @@ class AttachemntsController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_create']) {
-            // $data = \request('file');
-            // $array = explode(';', $data);
-            // $array2 = explode(',', $array[1]);
-            // $array3 = explode('/', $array[0]);
-            // $type = $array3[1];
-            // if (!($type == 'jpeg' || $type == 'pdf')) {
-            //     return array('id' => 0, 'message' => 'Only you can add image(jpeg) or PDF');
-            // }
-            // $data = base64_decode($array2[1]);
-            // file_put_contents($this->makeApplicationPath($epl, $attachment) . "1." . $type, $data);
-            // $path = $this->makeApplicationPath($epl, $attachment) . "1." . $type;
             $type = $request->file->extension();
             $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
             $fileUrl = "/uploads/EPL/" . $epl . "/attachments/" . $attachment;
-            $storePath = '/public' . $fileUrl;
-            $path =  "storage" . $request->file('file')->storeAs($storePath, $file_name);
+            $storePath = 'public' . $fileUrl;
+            $path = 'storage' . $fileUrl . "/" . $file_name;
+            $request->file('file')->storeAs($storePath, $file_name);
             $e = EPL::findOrFail($epl);
             return \DB::transaction(function () use ($attachment, $e, $path, $type) {
                 $e->attachemnts()->detach($attachment);
