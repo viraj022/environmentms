@@ -19,8 +19,22 @@ function fromValues() {
         contact_no: $('#getContact').val(),
         email: $('#getEmail').val(),
         nic: $('#getNicSave').val(),
-        //password: $('#gefkfg').val(),
-        //conpassword: $('#getfffk').val()
+        industry_name: $('#business_name').val().trim(),
+        industry_category_id: $('#industryCat').val(),
+        business_scale_id: $('#businesScale').val(),
+        industry_contact_no: $('#getContactn').val().trim(),
+        industry_address: $('#getAddressT').val().trim(),
+        industry_email: $('#getEmailI').val(),
+        pradesheeyasaba_id: $('#prsdeshiySb').val(),
+        industry_is_industry: $('#getZone').val(),
+        industry_investment: $('#inventsment').val(),
+        industry_start_date: $('#startDate').val(),
+        industry_registration_no: $('#business_regno').val().trim(),
+        coordinate_x: _Latitude,
+        coordinate_y: _Longitude,
+        industry_created_date: $('#submittedDate').val()
+                //password: $('#gefkfg').val(),
+                //conpassword: $('#getfffk').val()
     };
     return data;
 }
