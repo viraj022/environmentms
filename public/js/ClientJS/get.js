@@ -40,7 +40,9 @@ function loadTable() {
 }
 
 function getaClientbyId(id, callBack) {
-
+    if (id.length == 0) {
+        return false;
+    }
     $.ajax({
         type: "GET",
         headers: {
