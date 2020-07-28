@@ -94,7 +94,7 @@ $client->industry_registration_no= \request('industry_registration_no');
 
             $msg = $client->save();
             if ($msg) {
-                return array('id' => 1, 'message' => 'true', 'nic' => $client->nic);
+                return array('id' => 1, 'message' => 'true', 'id' => $client->id);
             } else {
                 return array('id' => 0, 'message' => 'false');
             }
@@ -137,6 +137,10 @@ $client->industry_registration_no= \request('industry_registration_no');
         } else {
             abort(401);
         }
+    }
+    
+    public function getClientById($id) {
+        return Client::findOrFail($id);
     }
 
     /**
