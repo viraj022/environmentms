@@ -49,30 +49,7 @@
                         </dl>
                     </div>
                     <!-- /.card-body -->
-                </div>                                    
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-user"></i> Site Clearance File
-                        </h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label>Site Clearance*</label>
-                            <input id="siteclear_get" type="text" class="form-control form-control-sm" placeholder="Enter.." value="">
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSaveClear" type="button" class="btn btn-success">Save</button>
-                        @endif
-                        @if($pageAuth['is_update']==1 || false)
-                        <button id="btnUpdateClear" type="submit" class="btn btn-warning d-none">Update</button>
-                        @endif
-                    </div> 
-                    <!-- /.card-body -->
-                </div>                                    
+                </div>                                                                        
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">
@@ -266,117 +243,6 @@
                                             });
                                         }
                                     });
-                                    $('#btnSaveClear').click(function () {
-                                        var data = fromValues();
-                                        if (Validiteinsert(data)) {
-                                            // if validiated
-                                            AddClearance(data, PROFILE, function (result) {
-                                                if (result.id == 1) {
-                                                    Toast.fire({
-                                                        type: 'success',
-                                                        title: 'Enviremontal MS</br>Saved'
-                                                    });
-                                                    $('#btnSaveClear').addClass('d-none');
-                                                    $('#btnUpdateClear').removeClass('d-none');
-                                                } else {
-                                                    Toast.fire({
-                                                        type: 'error',
-                                                        title: 'Enviremontal MS</br>Error'
-                                                    });
-                                                }
-                                                resetinputFields();
-                                                hideAllErrors();
-                                            });
-                                        }
-                                    });
-                                    $('#upld_application, #upld_roadMap, #upld_deed, #upld_SurveyPlan').click(function () {
-                                        $('#uploadLabel').html('Select ' + $(this).data('upload_file') + ' File To Upload');
-                                        $('#fileUploadInput').data('fileType', $(this).data('upload_file'));
-                                        $('#fileUpDiv').removeClass('d-none');
-                                    });
-                                    //file upload click
-                                    $('#fileUploadInput').change(function () {
-                                        if (!confirm('Are you sure you want to save this attachment?')) {
-                                            return false;
-                                        }
-                                        let uploadFileType = $(this).data('fileType');
-                                        let formData = new FormData();
-                                        let fileCat = '';
-                                        // populate fields
-                                        let file = $(this)[0].files[0];// file
-                                        formData.append('file', file);
-                                        switch (uploadFileType) {
-                                            case 'EPL':
-                                                fileCat = 'file';
-                                                break;
-                                            case 'Road Map':
-                                                fileCat = 'file1';
-                                                break;
-                                            case 'Deed Of The Land':
-                                                fileCat = 'file2';
-                                                break;
-                                            case 'Survey Plan':
-                                                fileCat = 'file3';
-                                                break;
-
-                                            default:
-
-                                                break;
-                                        }
-                                        ulploadFile2('/api/epl/upload/epl/' + PROFILE + '/file/' + fileCat, formData, function (parameters) {
-                                            getDetailsbyId(PROFILE, function (result) {
-                                                if (result.length == 0 || result == undefined) {
-                                                    alert('Details Not Found! Try Again!');
-                                                } else {
-                                                    setClearanceData(result);
-                                                    setAllDetails(result);
-                                                    $('.navTodownload').click(function () {
-                                                        downloadApp(result);
-                                                    });
-                                                    $('.navToFile1').click(function () {
-                                                        downloadFile1(result);
-                                                    });
-                                                    $('.navToFile2').click(function () {
-                                                        downloadFile2(result);
-                                                    });
-                                                    $('.navToFile3').click(function () {
-                                                        downloadFile3(result);
-                                                    });
-                                                }
-                                                initMap(parseFloat(result.coordinate_x), parseFloat(result.coordinate_y));
-                                            });
-                                        });
-                                    });
-
-                                    //click update button
-                                    $('#btnUpdateClear').click(function () {
-                                        var data = fromValues();
-                                        if (confirm('Are You Sure?')) {
-                                            if (Validiteupdate(data)) {
-                                                updateClearance(PROFILE, data, function (result) {
-                                                    if (result.id == 1) {
-                                                        Toast.fire({
-                                                            type: 'success',
-                                                            title: 'Enviremontal MS</br>Updated'
-                                                        });
-                                                    } else {
-                                                        Toast.fire({
-                                                            type: 'error',
-                                                            title: 'Enviremontal MS</br>Error'
-                                                        });
-                                                    }
-                                                    resetinputFields();
-                                                    hideAllErrors();
-                                                });
-                                            }
-                                        }
-                                    });
-                                    function fromValues() {
-                                        var data = {
-                                            site_clearance_file: $('#siteclear_get').val()
-                                        };
-                                        return data;
-                                    }
                                 });
                                 function disWarnPay() {
                                     toastr.error('Assign Environment Officer & Try Again!');

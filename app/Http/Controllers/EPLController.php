@@ -196,7 +196,7 @@ class EPLController extends Controller {
 
                         if ($msg) {
                             $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                            $fileUrl = '/uploads/files/' . $client->id . '/application';
+                            $fileUrl = '/uploads/indurtry_files/' . $client->id . '/application';
                             $storePath = 'public' . $fileUrl;
                             $path = $request->file('file')->storeAs($storePath, $file_name);
                             $client->application_path = "storage/" . $fileUrl . "/" . $file_name;
@@ -216,7 +216,7 @@ class EPLController extends Controller {
         $client = Client::find($epl);
         if ($client) {
             $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-            $fileUrl = '/uploads/file/' . $client->id . '/application';
+            $fileUrl = '/uploads/indurtry_files/' . $client->id . '/application';
             $storePath = 'public' . $fileUrl;
             $path = $request->file('file')->storeAs($storePath, $file_name);
             switch ($type) {
@@ -235,7 +235,7 @@ class EPLController extends Controller {
                 default:
                     abort(422);
             }
-            $msg = $epl->save();
+            $msg = $client->save();
             if ($msg) {
                 return array('id' => 1, 'message' => 'true');
             } else {

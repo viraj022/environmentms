@@ -61,7 +61,6 @@ function setSectionVisible(sec_id) {
             $('.view-Client').removeClass('d-none');
             $('.reg-newClient').addClass('d-none');
             $('.view-Customer').addClass('d-none');
-
             break;
         case "reg-newClient":
             $('.search-Client').addClass('d-none');
