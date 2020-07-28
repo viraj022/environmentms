@@ -70,6 +70,7 @@ function setClearanceData(obj) {
         $('#btnSaveClear').removeClass('d-none');
     } else {
         $('#siteclear_get').val(obj.site_clearance_file);
+
         $('#btnSaveClear').addClass('d-none');
         $('#btnUpdateClear').removeClass('d-none');
     }
