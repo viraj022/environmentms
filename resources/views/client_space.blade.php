@@ -255,115 +255,7 @@
         </div>
     </div>
     <!--show lient details START-->
-    <div class="view-Client d-none">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">
-                                    <i class="fas fa-user"></i> Client Details
 
-                                </h3>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <dl>
-                                    <dt>Name :</dt>
-                                    <dd id="client_name"></dd>
-                                    <dt>Address :</dt>
-                                    <dd id="client_address"></dd>
-                                    <dt>Contact Number :</dt>
-                                    <dd id="client_cont"></dd>
-                                    <dt>Contact Email :</dt>
-                                    <dd id="client_amil"></dd>
-                                </dl>
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title"><i class="fas fa-address-card"></i> Services</h3>
-                            </div>
-                            <!-- /.card-header -->
-
-                            <div class="card-body">
-
-                                <div class="info-box mb-3 bg-success">
-                                    <span class="info-box-icon">
-                                        <button class="btn btn-lg btn-default" id="newEPL"><i class="fa fa-plus"></i></button></span>
-                                    <div class="info-box-content">
-                                        <span class="info-box-text">Create new environment protection license file</span>
-                                        <span class="info-box-number">New EPL</span>
-                                    </div>
-                                    <!-- /.info-box-content -->
-                                </div>
-
-                                <div class="info-box mb-3 bg-info">
-                                    <span class="info-box-icon">
-                                        <button class="btn btn-lg btn-default" id="newSiteClearence" ><i class="fa fa-plus"></i></button></span>
-                                    <div class="info-box-content">
-                                        <span class="info-box-text">Create new site clearance file</span>
-                                        <span class="info-box-number">New Site Clearance</span>
-                                    </div>
-                                    <!-- /.info-box-content -->
-                                </div>
-
-                                <div class="info-box mb-3 bg-info">
-                                    <span class="info-box-icon">
-                                        <button class="btn btn-lg btn-default" id="teli" ><i class="fa fa-plus"></i></button></span>
-                                    <div class="info-box-content">
-                                        <span class="info-box-text">Create new telecommunication site clearance file</span>
-                                        <span class="info-box-number">Telecommunication Site Clearance</span>
-                                    </div>
-                                    <!-- /.info-box-content -->
-                                </div>
-
-                                <div class="info-box mb-3 bg-info">
-                                    <span class="info-box-icon">
-                                        <button class="btn btn-lg btn-default" id="scheduleWaste"><i class="fa fa-plus"></i></button></span>
-
-                                    <div class="info-box-content">
-                                        <span class="info-box-text">Create new schedule waste management certificate</span>
-                                        <span class="info-box-number">Schedule Waste</span>
-                                    </div>
-                                    <!-- /.info-box-content -->
-                                </div>
-
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title"><i class="fas fa-address-card"></i> Customer EPL List</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <table class="table table-active" id="clientEplList">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Buiseness Name</th>
-                                    <th>EPL</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                    <!-- /.card-body -->
-                </div>                                    
-            </div>
-        </div>
-    </div>
     <!--Search Client By NIC END-->
 
     <div class="modal fade" id="modal-danger">
@@ -466,8 +358,7 @@
                             title: 'Enviremontal MS</br>Saved'
                         });
                         getaClientbyId(result.id, function (result) {
-                            setClientDetails(result);
-                            setSectionVisible('view-Client');
+                            window.location = "/industry_profile/id/" + result.id;
                         });
                     } else {
                         Toast.fire({
@@ -544,8 +435,6 @@
 //                        setSectionVisible('reg-newClient');
 //                    }
 //                } else {
-//                    setClientDetails(result[0]);
-//                    setSectionVisible('view-Client');
 //                }             
 //                $('#getName').val(result.name);
                 switch ($('#getDtaType').val()) {
@@ -563,8 +452,7 @@
                         break;
                     case 'id':
                         if (result != 0) {
-                            setClientDetails(result);
-                            setSectionVisible('view-Client');
+                            window.location = "/industry_profile/id/" + result.id;
                         } else {
                             if (confirm('Client Not Found!Do You Want Create New Client?')) {
                                 setSectionVisible('reg-newClient');
@@ -575,8 +463,7 @@
                         break;
                     case 'license':
                         if (result != 0) {
-                            setClientDetails(result);
-                            setSectionVisible('view-Client');
+                            window.location = "/industry_profile/id/" + result.id;
                         } else {
                             if (confirm('Client Not Found!Do You Want Create New Client?')) {
                                 setSectionVisible('reg-newClient');
@@ -587,8 +474,7 @@
                         break;
                     case 'epl':
                         if (result != 0) {
-                            setClientDetails(result);
-                            setSectionVisible('view-Client');
+                            window.location = "/industry_profile/id/" + result.id;
                         } else {
                             if (confirm('Client Not Found!Do You Want Create New Client?')) {
                                 setSectionVisible('reg-newClient');
@@ -599,8 +485,7 @@
                         break;
                     case 'business_reg':
                         if (result != 0) {
-                            setClientDetails(result);
-                            setSectionVisible('view-Client');
+                            window.location = "/industry_profile/id/" + result.id;
                         } else {
                             if (confirm('Client Not Found!Do You Want Create New Client?')) {
                                 setSectionVisible('reg-newClient');
@@ -624,8 +509,7 @@
                             setSectionVisible('reg-newClient');
                         }
                     } else {
-                        setClientDetails(result[0]);
-                        setSectionVisible('view-Client');
+                        window.location = "/industry_profile/id/" + result.id;
                     }
 //                $('#getName').val(result.name);
                 });
@@ -646,8 +530,7 @@
 //btnCustomerVa button action 
     $(document).on('click', '.btnCustomerVa', function () {
         var row = JSON.parse(decodeURIComponent($(this).data('row')));
-        setClientDetails(row);
-        setSectionVisible('view-Client');
+        window.location = "/industry_profile/id/" + row.id;
     });
 </script>
 @endsection

@@ -46,6 +46,7 @@ Route::get('/application_payment', 'EPLController@index2');
 Route::get('/epl_payments/id/{id}', 'EPLPaymentController@index');
 Route::get('/certificate_approval/id/{id}', 'ApprovalLogController@index');
 Route::get('/issue_certificate/id/{id}', 'EPLController@index3');
+Route::get('/industry_profile/id/{id}', 'ClientController@index1');
 //ui routs
 
 //dashboard

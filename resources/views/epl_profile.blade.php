@@ -289,64 +289,8 @@
                                             });
                                         }
                                     });
-                                    $('#upld_application, #upld_roadMap, #upld_deed, #upld_SurveyPlan').click(function () {
-                                        $('#uploadLabel').html('Select ' + $(this).data('upload_file') + ' File To Upload');
-                                        $('#fileUploadInput').data('fileType', $(this).data('upload_file'));
-                                        $('#fileUpDiv').removeClass('d-none');
-                                    });
-                                    //file upload click
-                                    $('#fileUploadInput').change(function () {
-                                        if (!confirm('Are you sure you want to save this attachment?')) {
-                                            return false;
-                                        }
-                                        let uploadFileType = $(this).data('fileType');
-                                        let formData = new FormData();
-                                        let fileCat = '';
-                                        // populate fields
-                                        let file = $(this)[0].files[0];// file
-                                        formData.append('file', file);
-                                        switch (uploadFileType) {
-                                            case 'EPL':
-                                                fileCat = 'file';
-                                                break;
-                                            case 'Road Map':
-                                                fileCat = 'file1';
-                                                break;
-                                            case 'Deed Of The Land':
-                                                fileCat = 'file2';
-                                                break;
-                                            case 'Survey Plan':
-                                                fileCat = 'file3';
-                                                break;
 
-                                            default:
 
-                                                break;
-                                        }
-                                        ulploadFile2('/api/epl/upload/epl/' + PROFILE + '/file/' + fileCat, formData, function (parameters) {
-                                            getDetailsbyId(PROFILE, function (result) {
-                                                if (result.length == 0 || result == undefined) {
-                                                    alert('Details Not Found! Try Again!');
-                                                } else {
-                                                    setClearanceData(result);
-                                                    setAllDetails(result);
-                                                    $('.navTodownload').click(function () {
-                                                        downloadApp(result);
-                                                    });
-                                                    $('.navToFile1').click(function () {
-                                                        downloadFile1(result);
-                                                    });
-                                                    $('.navToFile2').click(function () {
-                                                        downloadFile2(result);
-                                                    });
-                                                    $('.navToFile3').click(function () {
-                                                        downloadFile3(result);
-                                                    });
-                                                }
-                                                initMap(parseFloat(result.coordinate_x), parseFloat(result.coordinate_y));
-                                            });
-                                        });
-                                    });
 
                                     //click update button
                                     $('#btnUpdateClear').click(function () {

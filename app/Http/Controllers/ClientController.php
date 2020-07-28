@@ -34,6 +34,12 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('all_clients', ['pageAuth' => $pageAuth]);
     }
+        public function index1($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('industry_profile', ['pageAuth' => $pageAuth,'id' => $id]);
+    }
 
     /**
      * Show the form for creating a new resource.

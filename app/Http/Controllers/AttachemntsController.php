@@ -207,7 +207,7 @@ class AttachemntsController extends Controller
         if ($pageAuth['is_create']) {
             $type = $request->file->extension();
             $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-            $fileUrl = "/uploads/file/" . $client . "/attachments/" . $attachment;
+            $fileUrl = "/uploads/indurtry_files/" . $client . "/attachments/" . $attachment;
             $storePath = 'public' . $fileUrl;
             $path = 'storage' . $fileUrl . "/" . $file_name;
             $request->file('file')->storeAs($storePath, $file_name);
