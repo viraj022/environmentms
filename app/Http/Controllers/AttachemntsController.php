@@ -8,6 +8,7 @@ use App\Level;
 use Carbon\Carbon;
 use App\Attachemnt;
 use App\ApplicationType;
+use App\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -199,18 +200,18 @@ class AttachemntsController extends Controller
         }
     }
 
-    public function attach($attachment, $epl, Request $request)
+    public function attach($attachment, $client, Request $request)
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_create']) {
             $type = $request->file->extension();
             $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-            $fileUrl = "/uploads/EPL/" . $epl . "/attachments/" . $attachment;
+            $fileUrl = "/uploads/file/" . $client . "/attachments/" . $attachment;
             $storePath = 'public' . $fileUrl;
             $path = 'storage' . $fileUrl . "/" . $file_name;
             $request->file('file')->storeAs($storePath, $file_name);
-            $e = EPL::findOrFail($epl);
+            $e = Client::findOrFail($client);
             return \DB::transaction(function () use ($attachment, $e, $path, $type) {
                 $e->attachemnts()->detach($attachment);
                 $e->attachemnts()->attach(
