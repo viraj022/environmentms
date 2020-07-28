@@ -188,7 +188,7 @@
                 <li class="nav-item">
                     <a href="{{ url('/client_space') }}" class="nav-link {{ Request::is('client_space') ? 'active' : '' }}">
                         <i class="fas fa-puzzle-piece nav-icon"></i>
-                        <p>Client Space</p>
+                        <p>Industry Registration</p>
                     </a>
                 </li>
                 @endif
