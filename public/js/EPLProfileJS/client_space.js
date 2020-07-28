@@ -15,7 +15,6 @@ function setAllDetails(obj) {
     $('.navToFile1').addClass('d-none');
     $('#upld_deed').addClass('d-none');
     $('.navToFile2').addClass('d-none');
-    $('.navToFile1').addClass('d-none');
     $('#upld_SurveyPlan').addClass('d-none');
     $('.navToFile3').addClass('d-none');
     //application check 
@@ -35,6 +34,8 @@ function setAllDetails(obj) {
     //deed
     if (obj.file_02 == null || obj.file_02 == '') {
         $('#upld_deed').removeClass('d-none');
+        
+        
     } else {
         $('.navToFile2').removeClass('d-none');
     }
