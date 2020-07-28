@@ -257,6 +257,7 @@
                                         } else {
                                             setClientDetails(result);
                                         }
+                                        initMap(parseFloat(result.industry_coordinate_x), parseFloat(result.industry_coordinate_y));
                                     });
                                     getDetailsbyId(PROFILE, function (result) {
                                         if (result.length == 0 || result == undefined) {
@@ -278,7 +279,6 @@
                                                 downloadFile3(result);
                                             });
                                         }
-                                        initMap(parseFloat(result.coordinate_x), parseFloat(result.coordinate_y));
                                     });
                                     $('#btnSaveClear').click(function () {
                                         var data = fromValues();

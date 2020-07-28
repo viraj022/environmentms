@@ -6,6 +6,11 @@ function setClientDetails(obj) {
     $('#client_cont').html(obj.contact_no);
     $('#client_amil').html(obj.email);
     $('#client_nic').html(obj.nic);
+    $('#obj_name').html(obj.industry_name);
+    $('#obj_regno').html(obj.industry_registration_no);
+    $('#obj_invest').html(obj.industry_investment);
+    _Latitude = obj.industry_coordinate_x;
+    _Longitude = obj.industry_coordinate_y;
 }
 function setAllDetails(obj) {
     $('#upld_application').addClass('d-none');
@@ -43,14 +48,8 @@ function setAllDetails(obj) {
     } else {
         $('.navToFile3').removeClass('d-none');
     }
-
-    $('#obj_name').html(obj.name);
-    $('#obj_regno').html(obj.registration_no);
     $('#obj_code').html(obj.code);
-    $('#obj_invest').html(obj.investment);
     $('#obj_remark').html(obj.remark);
-//    _Latitude = obj.coordinate_x;
-//    _Longitude = obj.coordinate_y;
     if (obj.first_name != null) {
         $('#env_firstname').html("Assign Environment Officer: " + obj.first_name + " " + obj.last_name);
     } else if (obj.first_name == null) {
