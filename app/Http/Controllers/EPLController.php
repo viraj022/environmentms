@@ -14,11 +14,9 @@ use App\IndustryCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class EPLController extends Controller
-{
+class EPLController extends Controller {
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware(['auth']);
     }
 
@@ -27,8 +25,7 @@ class EPLController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
-    {
+    public function index($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
@@ -42,8 +39,7 @@ class EPLController extends Controller
         }
     }
 
-    public function index2()
-    {
+    public function index2() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
@@ -53,8 +49,7 @@ class EPLController extends Controller
         }
     }
 
-    public function index3($id)
-    {
+    public function index3($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
@@ -69,8 +64,7 @@ class EPLController extends Controller
         }
     }
 
-    public function profile($client, $profile)
-    {
+    public function profile($client, $profile) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
@@ -84,8 +78,7 @@ class EPLController extends Controller
         }
     }
 
-    public function attachment_upload_view($epl_id)
-    {
+    public function attachment_upload_view($epl_id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $EPL = EPL::find($epl_id);
@@ -100,8 +93,7 @@ class EPLController extends Controller
         }
     }
 
-    public function issue_certificate($epl_id)
-    {
+    public function issue_certificate($epl_id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
@@ -111,7 +103,7 @@ class EPLController extends Controller
                 if ($epl->issue_date == null) {
                     $payList = $epl->paymentList();
                     if (
-                        $payList['inspection']['status'] == 'payed' && $payList['license_fee']['status'] == 'payed' && ($payList['fine']['status'] == 'payed' || $payList['fine']['status'] == 'not_available')
+                            $payList['inspection']['status'] == 'payed' && $payList['license_fee']['status'] == 'payed' && ($payList['fine']['status'] == 'payed' || $payList['fine']['status'] == 'not_available')
                     ) {
                         request()->validate([
                             'issue_date' => 'required|date',
@@ -119,29 +111,29 @@ class EPLController extends Controller
                             'certificate_no' => 'required|string',
                         ]);
                         return \DB::transaction(function () use ($epl, $user) {
-                            $epl->issue_date = request('issue_date');
-                            $epl->expire_date = request('expire_date');
-                            $epl->certificate_no = request('certificate_no');
-                            $epl->status = 1;
-                            $msg = $epl->save();
-                            if ($msg) {
-                                $issueLog = new IssueLog();
-                                $issueLog->certificate_type = IssueLog::CER_EPL;
-                                $issueLog->issue_type = IssueLog::CER_EPL;
-                                $issueLog->issue_id = $epl->id;
-                                $issueLog->issue_date = request('issue_date');
-                                $issueLog->expire_date = request('expire_date');
-                                $issueLog->user_id = $user->id;
-                                $msg = $issueLog->save();
-                                if ($msg) {
-                                    return response(array('id' => 1, 'message' => 'success'), 200);
-                                } else {
-                                    return response(array('id' => 0, 'message' => 'fail'), 200);
-                                }
-                            } else {
-                                abort(500);
-                            }
-                        });
+                                    $epl->issue_date = request('issue_date');
+                                    $epl->expire_date = request('expire_date');
+                                    $epl->certificate_no = request('certificate_no');
+                                    $epl->status = 1;
+                                    $msg = $epl->save();
+                                    if ($msg) {
+                                        $issueLog = new IssueLog();
+                                        $issueLog->certificate_type = IssueLog::CER_EPL;
+                                        $issueLog->issue_type = IssueLog::CER_EPL;
+                                        $issueLog->issue_id = $epl->id;
+                                        $issueLog->issue_date = request('issue_date');
+                                        $issueLog->expire_date = request('expire_date');
+                                        $issueLog->user_id = $user->id;
+                                        $msg = $issueLog->save();
+                                        if ($msg) {
+                                            return response(array('id' => 1, 'message' => 'success'), 200);
+                                        } else {
+                                            return response(array('id' => 0, 'message' => 'fail'), 200);
+                                        }
+                                    } else {
+                                        abort(500);
+                                    }
+                                });
                     } else {
                         return response(array('id' => 0, 'message' => 'Payment no completed'), 403);
                     }
@@ -161,69 +153,66 @@ class EPLController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
-    {
+    public function create(Request $request) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
             $msg = \DB::transaction(function () use ($request) {
-                request()->validate([
+                        $client = Client::find(\request('client_id'));
+                        request()->validate([
+                            'client_id' => 'required|integer',
+                            'remark' => ['sometimes', 'nullable'],
+//                    'created_date' => 'required|date',
+                            'is_old' => 'required|integer',
+                        ]);
+                        $epl = new EPL();
 
-                    'client_id' => 'required|integer',
-                    'remark' => ['sometimes', 'nullable'],
-                    'created_date' => 'required|date',
-                    'is_old' => 'required|integer',
-                ]);
-                $epl = new EPL();
+                        $epl->client_id = \request('client_id');
 
-                $epl->client_id = \request('client_id');
+                        $epl->remark = \request('remark');
+                        $epl->is_old = \request('is_old');
 
-                $epl->remark = \request('remark');
-                $epl->is_old = \request('is_old');
-
-                if ($epl->is_old == 0) {
-                    request()->validate([
-                        'code' => 'required|string',
-                        'certificate_no' => 'required|string',
-                    ]);
-                    $epl->code = \request('code');
-                    $epl->certificate_no = \request('certificate_no');
-                } else {
-                    $epl->code = $this->generateCode($epl);
-                }
-
-                $client = Client::find($epl->client_id);
+                        if ($epl->is_old == 0) {
+                            request()->validate([
+                                'code' => 'required|string',
+                                'certificate_no' => 'required|string',
+                            ]);
+                            $epl->code = \request('code');
+                            $epl->certificate_no = \request('certificate_no');
+                        } else {
+                            $epl->code = $this->generateCode($client);
+                        }
 
 
 
-                $client->application_path = "";
-                $epl->created_at = \request('created_date');
 
-                $epl->site_clearance_file = \request('site_clearance_file');
+                        $client->application_path = "";
+                        $epl->created_at = \request('created_date');
+
+//                        $epl->site_clearance_file = \request('site_clearance_file');
 
 
-                $msg = $epl->save();
+                        $msg = $epl->save();
 
-                if ($msg) {
-                    $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                    $fileUrl = '/uploads/files/' . $client->id . '/application';
-                    $storePath = 'public' . $fileUrl;
-                    $path = $request->file('file')->storeAs($storePath, $file_name);
-                    $client->application_path = "storage/" . $fileUrl . "/" . $file_name;
-                    $client->save();
-                    return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
-                } else {
-                    return array('id' => 0, 'message' => 'false');
-                }
-            });
+                        if ($msg) {
+                            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+                            $fileUrl = '/uploads/files/' . $client->id . '/application';
+                            $storePath = 'public' . $fileUrl;
+                            $path = $request->file('file')->storeAs($storePath, $file_name);
+                            $client->application_path = "storage/" . $fileUrl . "/" . $file_name;
+                            $client->save();
+                            return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
+                        } else {
+                            return array('id' => 0, 'message' => 'false');
+                        }
+                    });
             return $msg;
         } else {
             abort(401);
         }
     }
 
-    public function saveFile($epl, $type, Request $request)
-    {
+    public function saveFile($epl, $type, Request $request) {
         $client = Client::find($epl);
         if ($client) {
             $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
@@ -263,18 +252,17 @@ class EPLController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
-    public function find($id)
-    {
-        return EPL::with('client')->leftJoin('environment_officers', 'e_p_l_s.environment_officer_id', 'environment_officers.id')
-            ->leftJoin('users', 'environment_officers.user_id', 'users.id')
-            ->where('e_p_l_s.id', $id)
-            ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
-            ->first();
+    public function find($id) {
+        return EPL::with('client')->Join('clients', 'e_p_l_s.client_id', 'clients.id')
+                ->leftJoin('environment_officers', 'clients.environment_officer_id', 'environment_officers.id')
+                        ->leftJoin('users', 'environment_officers.user_id', 'users.id')
+                        ->where('e_p_l_s.id', $id)
+                        ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
+                        ->first();
     }
 
     /**
@@ -283,14 +271,13 @@ class EPLController extends Controller
      * @param  \App\EPL  $ePL
      * @return \Illuminate\Http\Response
      */
-    public function show($epl_status)
-    {
-
-        return EPL::leftJoin('environment_officers', 'e_p_l_s.environment_officer_id', 'environment_officers.id')
-            ->leftJoin('users', 'environment_officers.user_id', 'users.id')
-            ->where('e_p_l_s.is_old', $epl_status)
-            ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
-            ->get();
+    public function show($epl_status) {
+        return EPL::Join('clients', 'e_p_l_s.client_id', 'clients.id')
+                ->leftJoin('environment_officers', 'clients.environment_officer_id', 'environment_officers.id')
+                        ->leftJoin('users', 'environment_officers.user_id', 'users.id')
+                        ->where('e_p_l_s.is_old', $epl_status)
+                        ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
+                        ->get();
     }
 
     /**
@@ -299,8 +286,7 @@ class EPLController extends Controller
      * @param  \App\EPL  $ePL
      * @return \Illuminate\Http\Response
      */
-    public function edit(EPL $ePL)
-    {
+    public function edit(EPL $ePL) {
         //
     }
 
@@ -311,8 +297,7 @@ class EPLController extends Controller
      * @param  \App\EPL  $ePL
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, EPL $ePL)
-    {
+    public function update(Request $request, EPL $ePL) {
         //
     }
 
@@ -322,20 +307,18 @@ class EPLController extends Controller
      * @param  \App\EPL  $ePL
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EPL $ePL)
-    {
+    public function destroy(EPL $ePL) {
         //
     }
 
-    private function generateCode($epl)
-    {
-        $la = Pradesheeyasaba::find($epl->pradesheeyasaba_id);
+    private function generateCode($client) {
+        $la = Pradesheeyasaba::find($client->pradesheeyasaba_id);
         // print_r($la);
         $lsCOde = $la->code;
 
-        $industry = IndustryCategory::find($epl->industry_category_id);
+        $industry = IndustryCategory::find($client->industry_category_id);
         $industryCode = $industry->code;
-        $scale = BusinessScale::find($epl->business_scale_id);
+        $scale = BusinessScale::find($client->business_scale_id);
         $scaleCode = $scale->code;
 
         $e = EPL::orderBy('id', 'desc')->first();
@@ -348,8 +331,7 @@ class EPLController extends Controller
         return "PEA/" . $lsCOde . "/EPL/" . $industryCode . "/" . $scaleCode . "/" . $serial . "/" . date("Y");
     }
 
-    private function makeApplicationPath($id)
-    {
+    private function makeApplicationPath($id) {
         if (!is_dir("uploads")) {
             //Create our directory if it does not exist
             mkdir("uploads");
@@ -369,8 +351,7 @@ class EPLController extends Controller
         return "uploads/EPL/" . $id . "/application/";
     }
 
-    public function addInspectionPayment()
-    {
+    public function addInspectionPayment() {
         $epl = EPL::find(\request('id'));
         if ($epl !== null) {
             $user = Auth::user();
@@ -403,8 +384,7 @@ class EPLController extends Controller
         }
     }
 
-    public function getInspectionPaymentDetails($epl)
-    {
+    public function getInspectionPaymentDetails($epl) {
         $epl = EPL::find($epl);
         if ($epl !== null) {
             return $epl->paymentDetails();
@@ -413,8 +393,7 @@ class EPLController extends Controller
         }
     }
 
-    public function newEpls()
-    {
+    public function newEpls() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
@@ -424,8 +403,7 @@ class EPLController extends Controller
         }
     }
 
-    public function addSiteClearance($epl)
-    {
+    public function addSiteClearance($epl) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
@@ -449,4 +427,5 @@ class EPLController extends Controller
             abort(401);
         }
     }
+
 }
