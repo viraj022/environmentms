@@ -460,13 +460,13 @@
             if (Validiteinsert(data)) {
                 // if validiated
                 AddClient(data, function (result) {
-                    if (result.id == 1) {
+                    if (result.message == 'true') {
                         Toast.fire({
                             type: 'success',
                             title: 'Enviremontal MS</br>Saved'
                         });
-                        getClientbyNic(result.nic, function (result) {
-                            setClientDetails(result[0]);
+                        getaClientbyId(result.id, function (result) {
+                            setClientDetails(result);
                             setSectionVisible('view-Client');
                         });
                     } else {

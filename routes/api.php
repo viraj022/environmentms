@@ -969,3 +969,4 @@ Route::middleware('auth:api')->get('/business_scale', 'BusinessScaleController@s
 */
 
 /// application attachment map
+
