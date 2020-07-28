@@ -140,10 +140,12 @@
                         <dt>Location :</dt>
                         <div id="map" style="width: 100%; height: 400px;"></div>
                         <dt>Download Application :</dt>
-                        <button type="button" class="btn btn-dark d-none navTodownload">View Application</button>
-                        <button type="button" class="btn btn-dark d-none navToFile1">View Road Map</button>
-                        <button type="button" class="btn btn-dark d-none navToFile2">View Deed of the land </button>
-                        <button type="button" class="btn btn-dark d-none navToFile3">View Survey Plan</button>
+
+                        <a href="" class="btn btn-dark navTodownload" target="_blank">View Application</a>
+                        <a href="" class="btn btn-dark navToFile1" target="_blank">View Road Map</a>
+                        <a href="" class="btn btn-dark navToFile2" target="_blank">View Deed of the land</a>
+                        <a href="" class="btn btn-dark navToFile3" target="_blank">View Survey Plan</a>
+
 
                         <button type="button" class="btn btn-success d-none" data-upload_file="EPL" id="upld_application">Upload Application</button>
                         <button type="button" class="btn btn-success d-none" data-upload_file="Road Map" id="upld_roadMap">Upload Road Map</button>
@@ -232,18 +234,11 @@
                                 function initMap(_Latitude, _Longitude) {
                                     // The location of CeyTech
                                     var defaultLocation = {lat: _Latitude, lng: _Longitude}; //default Location for load map
-//    console.log('def lat: ' + defaultLocation.lat);
-//    alert(defaultLocation.lat);
 
                                     // The map, centered at Uluru
                                     var map = new google.maps.Map(document.getElementById('map'), {zoom: 15, center: defaultLocation});
                                     // The marker, positioned at Uluru
                                     var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: false, title: "Drag me!"});
-//    google.maps.event.addListener(marker, 'dragend', function (evt) {
-//    _Latitude = evt.latLng.lat().toFixed(6); //change  decimal point if have problam with location accuracy
-//    _Longitude = evt.latLng.lng().toFixed(6); //change  decimal point if have problam with location accuracy
-//    // alert('Marker dropped: Current Lat: ' + evt.latLng.lat().toFixed(3) + ' Current Lng: ' + evt.latLng.lng().toFixed(3) );
-//    });
                                 }
 //Map END
                                 $(function () {
@@ -265,17 +260,8 @@
                                         } else {
                                             setClearanceData(result);
                                             setAllDetails(result);
-                                            $('.navTodownload').click(function () {
+                                            click(function () {
                                                 downloadApp(result);
-                                            });
-                                            $('.navToFile1').click(function () {
-                                                downloadFile1(result);
-                                            });
-                                            $('.navToFile2').click(function () {
-                                                downloadFile2(result);
-                                            });
-                                            $('.navToFile3').click(function () {
-                                                downloadFile3(result);
                                             });
                                         }
                                         initMap(parseFloat(result.coordinate_x), parseFloat(result.coordinate_y));
@@ -340,8 +326,7 @@
                                         ulploadFile2('/api/epl/upload/epl/' + PROFILE + '/file/' + fileCat, formData, function (parameters) {
                                             getDetailsbyId(PROFILE, function (result) {
                                                 if (result.length == 0 || result == undefined) {
-                                                    if (confirm("Details Not Found! Try Again!")) {
-                                                    }
+                                                    alert('Details Not Found! Try Again!');
                                                 } else {
                                                     setClearanceData(result);
                                                     setAllDetails(result);
