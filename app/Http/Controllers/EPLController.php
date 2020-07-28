@@ -168,7 +168,7 @@ class EPLController extends Controller
         if ($pageAuth['is_create']) {
             $msg = \DB::transaction(function () use ($request) {
                 request()->validate([
-                    
+
                     'client_id' => 'required|integer',
                     'remark' => ['sometimes', 'nullable'],
                     'created_date' => 'required|date',
@@ -177,7 +177,7 @@ class EPLController extends Controller
                 $epl = new EPL();
 
                 $epl->client_id = \request('client_id');
-                
+
                 $epl->remark = \request('remark');
                 $epl->is_old = \request('is_old');
 
@@ -206,7 +206,7 @@ class EPLController extends Controller
 
                 if ($msg) {
                     $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                    $fileUrl = '/uploads/EPL/' . $epl->id . '/application';
+                    $fileUrl = '/uploads/files/' . $client->id . '/application';
                     $storePath = 'public' . $fileUrl;
                     $path = $request->file('file')->storeAs($storePath, $file_name);
                     $client->application_path = "storage/" . $fileUrl . "/" . $file_name;
@@ -224,27 +224,27 @@ class EPLController extends Controller
 
     public function saveFile($epl, $type, Request $request)
     {
-        $epl = EPL::find($epl);
-        if ($epl) {
+        $client = Client::find($epl);
+        if ($client) {
             $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-            $fileUrl = '/uploads/EPL/' . $epl->id . '/application';
+            $fileUrl = '/uploads/file/' . $client->id . '/application';
             $storePath = 'public' . $fileUrl;
             $path = $request->file('file')->storeAs($storePath, $file_name);
             switch ($type) {
                 case 'file':
-                $epl->application_path = "storage" . $fileUrl . "/" . $file_name;
-                break;
+                    $client->application_path = "storage" . $fileUrl . "/" . $file_name;
+                    break;
                 case 'file1':
-                $epl->file_01 = "storage" . $fileUrl . "/" . $file_name;
-                break;
+                    $client->file_01 = "storage" . $fileUrl . "/" . $file_name;
+                    break;
                 case 'file2':
-                $epl->file_02 = "storage" . $fileUrl . "/" . $file_name;
-                break;
+                    $client->file_02 = "storage" . $fileUrl . "/" . $file_name;
+                    break;
                 case 'file3':
-                $epl->file_03 = "storage" . $fileUrl . "/" . $file_name;
-                break;
+                    $client->file_03 = "storage" . $fileUrl . "/" . $file_name;
+                    break;
                 default:
-                abort(422);
+                    abort(422);
             }
             $msg = $epl->save();
             if ($msg) {
@@ -271,10 +271,10 @@ class EPLController extends Controller
     public function find($id)
     {
         return EPL::with('client')->leftJoin('environment_officers', 'e_p_l_s.environment_officer_id', 'environment_officers.id')
-        ->leftJoin('users', 'environment_officers.user_id', 'users.id')
-        ->where('e_p_l_s.id', $id)
-        ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
-        ->first();
+            ->leftJoin('users', 'environment_officers.user_id', 'users.id')
+            ->where('e_p_l_s.id', $id)
+            ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
+            ->first();
     }
 
     /**
@@ -287,10 +287,10 @@ class EPLController extends Controller
     {
 
         return EPL::leftJoin('environment_officers', 'e_p_l_s.environment_officer_id', 'environment_officers.id')
-        ->leftJoin('users', 'environment_officers.user_id', 'users.id')
-        ->where('e_p_l_s.is_old', $epl_status)
-        ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
-        ->get();
+            ->leftJoin('users', 'environment_officers.user_id', 'users.id')
+            ->where('e_p_l_s.is_old', $epl_status)
+            ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
+            ->get();
     }
 
     /**
