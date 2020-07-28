@@ -228,6 +228,6 @@ $client->industry_registration_no= \request('industry_registration_no');
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
         //    PaymentType::get();
-        return Client::with('epls')->find($id);
+        return Client::with('epls')->with('environmentOfficer')->find($id);
     }
 }

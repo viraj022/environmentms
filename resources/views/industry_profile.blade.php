@@ -117,26 +117,6 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title"><i class="fas fa-address-card"></i> Customer EPL List</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <table class="table table-active" id="clientEplList">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Buiseness Name</th>
-                                    <th>EPL</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-                <div class="card">
-                    <div class="card-header">
                         <h3 class="card-title">
                             <i class="fas fa-address-card"></i> EPL Data
                         </h3>
@@ -144,7 +124,7 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <dt>Name : <a id="obj_name"></a></dt>
-                        <dt>Registration No : <a id="obj_regno"></a></dt>
+                        <dt>BR No : <a id="obj_regno"></a></dt>
                         <dt>Code : <a id="obj_code"></a></dt>
                         <dt>Investment : <a id="obj_invest"></a></dt>
                         <dt>Remark : <a id="obj_remark"></a></dt>
@@ -172,6 +152,26 @@
                     </div>
                     <!-- /.card-body -->
                 </div> 
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-address-card"></i> Customer EPL List</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table class="table table-active" id="clientEplList">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Buiseness Name</th>
+                                    <th>EPL</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
             </div>
         </div>
     </div>
@@ -234,10 +234,10 @@
             setProfileDetails(parameters);
         });
         $('#newEPL').click(function () {
-            if (isNaN(parseInt($(this).val()))) {
+            if (isNaN(parseInt(PROFILE_ID))) {
                 return false;
             }
-            window.location = "epl_register/id/" + $(this).val();
+            window.location = "/epl_register/id/" + PROFILE_ID;
         });
         //new
         $('#upld_roadMap, #upld_deed, #upld_SurveyPlan').click(function () {

@@ -49,30 +49,7 @@
                         </dl>
                     </div>
                     <!-- /.card-body -->
-                </div>                                    
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-user"></i> Site Clearance File
-                        </h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label>Site Clearance*</label>
-                            <input id="siteclear_get" type="text" class="form-control form-control-sm" placeholder="Enter.." value="">
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSaveClear" type="button" class="btn btn-success">Save</button>
-                        @endif
-                        @if($pageAuth['is_update']==1 || false)
-                        <button id="btnUpdateClear" type="submit" class="btn btn-warning d-none">Update</button>
-                        @endif
-                    </div> 
-                    <!-- /.card-body -->
-                </div>                                    
+                </div>                                                                        
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">
@@ -266,61 +243,6 @@
                                             });
                                         }
                                     });
-                                    $('#btnSaveClear').click(function () {
-                                        var data = fromValues();
-                                        if (Validiteinsert(data)) {
-                                            // if validiated
-                                            AddClearance(data, PROFILE, function (result) {
-                                                if (result.id == 1) {
-                                                    Toast.fire({
-                                                        type: 'success',
-                                                        title: 'Enviremontal MS</br>Saved'
-                                                    });
-                                                    $('#btnSaveClear').addClass('d-none');
-                                                    $('#btnUpdateClear').removeClass('d-none');
-                                                } else {
-                                                    Toast.fire({
-                                                        type: 'error',
-                                                        title: 'Enviremontal MS</br>Error'
-                                                    });
-                                                }
-                                                resetinputFields();
-                                                hideAllErrors();
-                                            });
-                                        }
-                                    });
-
-
-
-                                    //click update button
-                                    $('#btnUpdateClear').click(function () {
-                                        var data = fromValues();
-                                        if (confirm('Are You Sure?')) {
-                                            if (Validiteupdate(data)) {
-                                                updateClearance(PROFILE, data, function (result) {
-                                                    if (result.id == 1) {
-                                                        Toast.fire({
-                                                            type: 'success',
-                                                            title: 'Enviremontal MS</br>Updated'
-                                                        });
-                                                    } else {
-                                                        Toast.fire({
-                                                            type: 'error',
-                                                            title: 'Enviremontal MS</br>Error'
-                                                        });
-                                                    }
-                                                    resetinputFields();
-                                                    hideAllErrors();
-                                                });
-                                            }
-                                        }
-                                    });
-                                    function fromValues() {
-                                        var data = {
-                                            site_clearance_file: $('#siteclear_get').val()
-                                        };
-                                        return data;
-                                    }
                                 });
                                 function disWarnPay() {
                                     toastr.error('Assign Environment Officer & Try Again!');
