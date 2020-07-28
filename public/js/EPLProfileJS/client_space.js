@@ -34,6 +34,8 @@ function setAllDetails(obj) {
     //deed
     if (obj.file_02 == null || obj.file_02 == '') {
         $('#upld_deed').removeClass('d-none');
+        
+        
     } else {
         $('.navToFile2').removeClass('d-none');
     }
