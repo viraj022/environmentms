@@ -105,26 +105,26 @@
                 </div>
             </div>
 
-<!--            <div class="col-md-7">
-                <div class="card card-primary">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <label id="lblTitle">Map</label>
+            <!--            <div class="col-md-7">
+                            <div class="card card-primary">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <label id="lblTitle">Map</label>
+                                                </div>
+                                                 /.card-header 
+                                                <div class="card-body p-0">
+                                                    <div id="map" style="width: 100%; height: 600px;"></div>
+                                                </div>
+                                                 /.card-body 
+                                            </div>
+                                        </div>
                                     </div>
-                                     /.card-header 
-                                    <div class="card-body p-0">
-                                        <div id="map" style="width: 100%; height: 600px;"></div>
-                                    </div>
-                                     /.card-body 
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
+                        </div>-->
         </div>
     </div>
     <div class="modal fade" id="modal-danger">
@@ -219,16 +219,8 @@ $("#btnSave").click(function () {
     AddEpl(data, function (result) {
         if (result.id == 1) {
             window.location.replace(result.rout);
-            Toast.fire({
-                type: 'success',
-                title: 'Enviremontal MS</br>Saved'
-            });
-        } else {
-            Toast.fire({
-                type: 'error',
-                title: 'Enviremontal MS</br>Error'
-            });
         }
+        show_mesege(result.id);
     });
 });
 
