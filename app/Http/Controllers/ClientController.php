@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Level;
 use App\Client;
 use App\BusinessScale;
 use App\Pradesheeyasaba;
@@ -258,5 +259,39 @@ class ClientController extends Controller
 
         //    PaymentType::get();
         return Client::with('epls')->with('environmentOfficer')->find($id);
+    }
+
+    public function getAllFiles($id)
+    {
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        if ($user->roll->level->name == Level::DIRECTOR) {
+            $data = Client::where('environment_officer_id', $id)->get();
+        } else if ($user->roll->level->name == Level::DIRECTOR) {
+            $client =  Client::where('environment_officer_id', $id)->get();
+            if ($client->environmentOfficer->assistantDirector->id == $user->id) {
+                $data = $client;
+            } else {
+                abort(401);
+            }
+        } else if ($user->roll->level->name == Level::ENV_OFFICER) {
+            $data = Client::where('environment_officer_id', $user->id)->get();
+        } else {
+            abort(401);
+        }
+        //    Client::where()
+
+        return $data;
+    }
+
+    public function workingFiles()
+    {
+        return Client::get();
+    }
+
+    public function newlyAssigned()
+    {
+        return Client::get();
     }
 }
