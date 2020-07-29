@@ -22,12 +22,6 @@ class AssistantDirectorController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
         return view('assistant_director', ['pageAuth' => $pageAuth]);
     }
-    public function index2()
-    {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
-        return view('filter_files', ['pageAuth' => $pageAuth]);
-    }
 
     /**
      * Show the form for creating a new resource.
