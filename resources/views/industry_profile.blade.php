@@ -43,15 +43,15 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <dl>
-                                    <dt>Name :</dt>
-                                    <dd id="client_name"></dd>
-                                    <dt>Address :</dt>
-                                    <dd id="client_address"></dd>
-                                    <dt>Contact Number :</dt>
-                                    <dd id="client_cont"></dd>
-                                    <dt>Contact Email :</dt>
-                                    <dd id="client_amil"></dd>
+                                <dl class="row">
+                                    <dt class="col-sm-4">Name:</dt>
+                                    <dd class="col-sm-6" id="client_name"></dd>
+                                    <dt class="col-sm-4">Address:</dt>
+                                    <dd class="col-sm-6" id="client_address"></dd>
+                                    <dt class="col-sm-4">Contact No:</dt>
+                                    <dd class="col-sm-6" id="client_cont"></dd>
+                                    <dt class="col-sm-4">Contact Email:</dt>
+                                    <dd class="col-sm-6" id="client_amil"></dd>
                                 </dl>
                             </div>
                             <!-- /.card-body -->
@@ -65,6 +65,11 @@
                             <!-- /.card-header -->
 
                             <div class="card-body">
+                                <div class="callout callout-danger">
+
+                                    <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change Environment Officer</button>
+                                    <!--<p>There is a problem that we need to</p>-->
+                                </div>
 
                                 <div class="info-box mb-3 bg-success">
                                     <span class="info-box-icon">
@@ -118,15 +123,16 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">
-                            <i class="fas fa-address-card"></i> EPL Data
+                            <i class="fas fa-address-card"></i> EPL Details
                         </h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
+                        <h6 id="env_firstname">Environment Officer: Not Assigned</h6>
                         <dt>Name : <a id="obj_name"></a></dt>
                         <dt>BR No : <a id="obj_regno"></a></dt>
                         <dt>Code : <a id="obj_code"></a></dt>
-                        <dt>Investment : <a id="obj_invest"></a></dt>
+                        <dt>Investment : Rs <a id="obj_invest"></a>.00</dt>
                         <dt>Remark : <a id="obj_remark"></a></dt>
                         <dt>Location : <a id="obj_name"></a></dt>
                         <div id="map" style="width: 100%; height: 400px;"></div>
@@ -228,68 +234,71 @@
 <!-- AdminLTE App -->
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
 <script>
-    let PROFILE_ID = '{{$id}}';
-    $(function () {
-        getaProfilebyId(PROFILE_ID, function (parameters) {
-            setProfileDetails(parameters);
-        });
-        $('#newEPL').click(function () {
-            if (isNaN(parseInt(PROFILE_ID))) {
-                return false;
-            }
-            window.location = "/epl_register/id/" + PROFILE_ID;
-        });
-        //new
-        $('#upld_roadMap, #upld_deed, #upld_SurveyPlan').click(function () {
-            $('#uploadLabel').html('Select ' + $(this).data('upload_file') + ' File To Upload');
-            $('#fileUploadInput').data('fileType', $(this).data('upload_file'));
-            $('#fileUpDiv').removeClass('d-none');
-        });
+                                        let PROFILE_ID = '{{$id}}';
+                                        $(function () {
+                                            getaProfilebyId(PROFILE_ID, function (parameters) {
+                                                setProfileDetails(parameters);
+                                            });
+                                            $('#newEPL').click(function () {
+                                                if (isNaN(parseInt(PROFILE_ID))) {
+                                                    return false;
+                                                }
+                                                window.location = "/epl_register/id/" + PROFILE_ID;
+                                            });
+                                            //new
+                                            $('#upld_roadMap, #upld_deed, #upld_SurveyPlan').click(function () {
+                                                $('#uploadLabel').html('Select ' + $(this).data('upload_file') + ' File To Upload');
+                                                $('#fileUploadInput').data('fileType', $(this).data('upload_file'));
+                                                $('#fileUpDiv').removeClass('d-none');
+                                            });
 
-        //file upload click
-        $('#fileUploadInput').change(function () {
-            if (!confirm('Are you sure you want to save this attachment?')) {
-                return false;
-            }
-            let uploadFileType = $(this).data('fileType');
-            let formData = new FormData();
-            let fileCat = '';
-            // populate fields
-            let file = $(this)[0].files[0];// file
-            formData.append('file', file);
-            switch (uploadFileType) {
-                case 'EPL':
-                    fileCat = 'file';
-                    break;
-                case 'Road Map':
-                    fileCat = 'file1';
-                    break;
-                case 'Deed Of The Land':
-                    fileCat = 'file2';
-                    break;
-                case 'Survey Plan':
-                    fileCat = 'file3';
-                    break;
+                                            //file upload click
+                                            $('#fileUploadInput').change(function () {
+                                                if (!confirm('Are you sure you want to save this attachment?')) {
+                                                    return false;
+                                                }
+                                                let uploadFileType = $(this).data('fileType');
+                                                let formData = new FormData();
+                                                let fileCat = '';
+                                                // populate fields
+                                                let file = $(this)[0].files[0];// file
+                                                formData.append('file', file);
+                                                switch (uploadFileType) {
+                                                    case 'EPL':
+                                                        fileCat = 'file';
+                                                        break;
+                                                    case 'Road Map':
+                                                        fileCat = 'file1';
+                                                        break;
+                                                    case 'Deed Of The Land':
+                                                        fileCat = 'file2';
+                                                        break;
+                                                    case 'Survey Plan':
+                                                        fileCat = 'file3';
+                                                        break;
 
-                default:
+                                                    default:
 
-                    break;
-            }
-            ulploadFile2('/api/epl/upload/epl/' + PROFILE_ID + '/file/' + fileCat, formData, function (parameters) {
-                show_mesege(parameters);
-                getaProfilebyId(PROFILE_ID, function (result) {
-                    setProfileDetails(result);
-                });
-            });
-        });
+                                                        break;
+                                                }
+                                                ulploadFile2('/api/epl/upload/epl/' + PROFILE_ID + '/file/' + fileCat, formData, function (parameters) {
+                                                    show_mesege(parameters);
+                                                    getaProfilebyId(PROFILE_ID, function (result) {
+                                                        setProfileDetails(result);
+                                                    });
+                                                });
+                                            });
 
-    });
+                                        });
 
 //btnCustomerVa button action 
-    $(document).on('click', '.btnCustomerVa', function () {
-        var row = JSON.parse(decodeURIComponent($(this).data('row')));
-        setClientDetails(row);
-        setSectionVisible('view-Client');
-    });
+                                        $(document).on('click', '.btnCustomerVa', function () {
+                                            var row = JSON.parse(decodeURIComponent($(this).data('row')));
+                                            setClientDetails(row);
+                                            setSectionVisible('view-Client');
+                                        });
+                                        function disWarnPay() {
+                                            toastr.error('Assign Environment Officer & Try Again!');
+                                        }
 </script>
 @endsection

@@ -40,7 +40,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 10px">#</th>
-                                    <th>EPL</th>
+                                    <th>File</th>
                                     <th style="width: 5%;">Action</th>
                                 </tr>
                             </thead>
@@ -63,7 +63,7 @@
                                     <thead>
                                         <tr>
                                             <th style="width: 5%">#</th>
-                                            <th>EPL</th>
+                                            <th>File</th>
                                             <th style="width: 5%">Action</th>
                                         </tr>
                                     </thead>
