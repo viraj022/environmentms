@@ -73,10 +73,10 @@ function documentUploadDetails(obj) {
     $('.navToFile1').attr("href", "/" + obj.file_01);
     $('.navToFile2').attr("href", "/" + obj.file_02);
     $('.navToFile3').attr("href", "/" + obj.file_03);
-//    if (obj.first_name != null) {
-//        $('#env_firstname').html("Assign Environment Officer: " + obj.first_name + " " + obj.last_name);
-//    } else if (obj.first_name == null) {
-//        $("#disPaylink").attr("href", "javascript:disWarnPay();");
-//        $("#disInspeclink").attr("href", "javascript:disWarnPay();");
-//    }
+    if (obj.first_name != null) {
+        $('#env_firstname').html("Environment Officer: " + obj.first_name + " " + obj.last_name);
+    } else if (obj.first_name == null) {
+        $("#disPaylink").attr("href", "javascript:disWarnPay();");
+        $("#disInspeclink").attr("href", "javascript:disWarnPay();");
+    }
 }
