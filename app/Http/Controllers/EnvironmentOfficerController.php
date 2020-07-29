@@ -8,6 +8,7 @@ use App\AssistantDirector;
 use App\Client;
 use App\EnvironmentOfficer;
 use App\FileHandlerLog;
+use App\Level;
 use Illuminate\Cache\Console\ClearCommand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -100,7 +101,9 @@ class EnvironmentOfficerController extends Controller
         if ($pageAuth['is_read']) {
             $assistantDirectors = AssistantDirector::where('active_status', '1')->select('user_id as id')->get();
             $environmentOfficers = EnvironmentOfficer::where('active_status', '1')->select('user_id as id')->get();
-            return User::wherenotin('id', $assistantDirectors)->wherenotin('id', $environmentOfficers)->get();
+            return User::whereHas('roll.level', function ($queary) {
+                $queary->where('name', Level::ENV_OFFICER);
+            })->wherenotin('id', $assistantDirectors)->wherenotin('id', $environmentOfficers)->get();
         } else {
             abort(401);
         }
