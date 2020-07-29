@@ -62,7 +62,8 @@
                     </a>
                 </li>
                 @endif
-                @if($pre['id']===config('auth.privileges.userRole') && auth()->user()->roll->level->value == 1)
+                {{-- @if($pre['id']===config('auth.privileges.userRole') && auth()->user()->roll->level->value == 1) --}}
+                @if($pre['id']===config('auth.privileges.userRole'))
                 <li class="nav-item">
                     <a href="{{ url('/rolls') }}" class="nav-link {{ Request::is('rolls') ? 'active' : '' }}">
                         <i class="fas fa-users-cog nav-icon"></i>
