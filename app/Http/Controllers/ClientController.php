@@ -133,7 +133,7 @@ class ClientController extends Controller
             $serial = $e->id;
         }
         $serial = sprintf('%02d', $serial);
-        return "PEA/" . $lsCOde . "/EPL/" . $industryCode . "/" . $scaleCode . "/" . $serial . "/" . date("Y");
+        return "PEA/" . $lsCOde . "/" . $industryCode . "/" . $scaleCode . "/" . $serial . "/" . date("Y");
     }
 
 
