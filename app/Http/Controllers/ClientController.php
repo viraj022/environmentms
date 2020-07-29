@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\BusinessScale;
+use App\Pradesheeyasaba;
 use App\Rules\contactNo;
+use App\IndustryCategory;
 use App\Rules\nationalID;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class ClientController extends Controller
 {
@@ -34,11 +37,11 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('all_clients', ['pageAuth' => $pageAuth]);
     }
-        public function index1($id)
+    public function index1($id)
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        return view('industry_profile', ['pageAuth' => $pageAuth,'id' => $id]);
+        return view('industry_profile', ['pageAuth' => $pageAuth, 'id' => $id]);
     }
 
     /**
@@ -59,18 +62,18 @@ class ClientController extends Controller
             'email' => 'nullable|sometimes',
             'nic' => ['sometimes', 'nullable', 'unique:clients', new nationalID],
             'industry_name' => 'required|string',
- 'industry_category_id' => 'required|integer',
- 'business_scale_id' => 'required|integer',
- 'industry_contact_no' => ['nullable', new contactNo],
- 'industry_address' => 'required|string',
- 'industry_email' => 'nullable|email',
- 'industry_coordinate_x' => ['numeric', 'required', 'between:-180,180'],
- 'industry_coordinate_y' => ['numeric', 'required', 'between:-90,90'],
- 'pradesheeyasaba_id' => 'required|integer',
- 'industry_is_industry' => 'required|integer',
- 'industry_investment' => 'required|numeric',
- 'industry_start_date' => 'required|date',
- 'industry_registration_no' => 'required|string',
+            'industry_category_id' => 'required|integer',
+            'business_scale_id' => 'required|integer',
+            'industry_contact_no' => ['nullable', new contactNo],
+            'industry_address' => 'required|string',
+            'industry_email' => 'nullable|email',
+            'industry_coordinate_x' => ['numeric', 'required', 'between:-180,180'],
+            'industry_coordinate_y' => ['numeric', 'required', 'between:-90,90'],
+            'pradesheeyasaba_id' => 'required|integer',
+            'industry_is_industry' => 'required|integer',
+            'industry_investment' => 'required|numeric',
+            'industry_start_date' => 'required|date',
+            'industry_registration_no' => 'required|string',
             // 'password' => 'required',
         ]);
         if ($pageAuth['is_create']) {
@@ -84,21 +87,23 @@ class ClientController extends Controller
             $client->password = Hash::make(request('nic'));
             $client->api_token = Str::random(80);
 
-            $client->industry_name= \request('industry_name'); 
-$client->industry_category_id= \request('industry_category_id'); 
-$client->business_scale_id= \request('business_scale_id'); 
-$client->industry_contact_no= \request('industry_contact_no'); 
-$client->industry_address= \request('industry_address'); 
-$client->industry_email= \request('industry_email'); 
-$client->industry_coordinate_x= \request('industry_coordinate_x'); 
-$client->industry_coordinate_y= \request('industry_coordinate_y'); 
-$client->pradesheeyasaba_id= \request('pradesheeyasaba_id'); 
-$client->industry_is_industry= \request('industry_is_industry'); 
-$client->industry_investment= \request('industry_investment'); 
-$client->industry_start_date= \request('industry_start_date'); 
-$client->industry_registration_no= \request('industry_registration_no'); 
+            $client->industry_name = \request('industry_name');
+            $client->industry_category_id = \request('industry_category_id');
+            $client->business_scale_id = \request('business_scale_id');
+            $client->industry_contact_no = \request('industry_contact_no');
+            $client->industry_address = \request('industry_address');
+            $client->industry_email = \request('industry_email');
+            $client->industry_coordinate_x = \request('industry_coordinate_x');
+            $client->industry_coordinate_y = \request('industry_coordinate_y');
+            $client->pradesheeyasaba_id = \request('pradesheeyasaba_id');
+            $client->industry_is_industry = \request('industry_is_industry');
+            $client->industry_investment = \request('industry_investment');
+            $client->industry_start_date = \request('industry_start_date');
+            $client->industry_registration_no = \request('industry_registration_no');
 
             $msg = $client->save();
+            $client->file_no = generateCode($client);
+            $msg = $msg && $client->save();
             if ($msg) {
                 return array('id' => 1, 'message' => 'true', 'id' => $client->id);
             } else {
@@ -108,6 +113,29 @@ $client->industry_registration_no= \request('industry_registration_no');
             abort(401);
         }
     }
+
+
+    private function generateCode($client)
+    {
+        $la = Pradesheeyasaba::find($client->pradesheeyasaba_id);
+        // print_r($la);
+        $lsCOde = $la->code;
+
+        $industry = IndustryCategory::find($client->industry_category_id);
+        $industryCode = $industry->code;
+        $scale = BusinessScale::find($client->business_scale_id);
+        $scaleCode = $scale->code;
+
+        $e = Client::orderBy('id', 'desc')->first();
+        if ($e === null) {
+            $serial = 1;
+        } else {
+            $serial = $e->id;
+        }
+        $serial = sprintf('%02d', $serial);
+        return "PEA/" . $lsCOde . "/EPL/" . $industryCode . "/" . $scaleCode . "/" . $serial . "/" . date("Y");
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -144,8 +172,9 @@ $client->industry_registration_no= \request('industry_registration_no');
             abort(401);
         }
     }
-    
-    public function getClientById($id) {
+
+    public function getClientById($id)
+    {
         return Client::findOrFail($id);
     }
 
