@@ -32,7 +32,7 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        return view('all_clients', ['pageAuth' => $pageAuth]);
+        return view('industry_files', ['pageAuth' => $pageAuth]);
     }
         public function index1($id)
     {

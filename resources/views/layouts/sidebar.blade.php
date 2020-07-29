@@ -194,9 +194,9 @@
                 @endif
                 @if($pre['id']===config('auth.privileges.clientSpace'))
                 <li class="nav-item">
-                    <a href="{{ url('/all_clients') }}" class="nav-link {{ Request::is('all_clients') ? 'active' : '' }}">
+                    <a href="{{ url('/industry_files') }}" class="nav-link {{ Request::is('industry_files') ? 'active' : '' }}">
                         <i class="fas fa-puzzle-piece nav-icon"></i>
-                        <p>Clients</p>
+                        <p>Industry Files</p>
                     </a>
                 </li>
                 @endif
@@ -204,7 +204,7 @@
                 <li class="nav-item">
                     <a href="{{ url('/epl_assign') }}" class="nav-link {{ Request::is('epl_assign') ? 'active' : '' }}">
                         <i class="fas fa-puzzle-piece nav-icon"></i>
-                        <p>EPL Assign</p>
+                        <p>File Assign</p>
                     </a>
                 </li>
                 @endif
