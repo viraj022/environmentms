@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Level;
 use App\Client;
+use Carbon\Carbon;
 use App\BusinessScale;
 use App\Pradesheeyasaba;
 use App\Rules\contactNo;
@@ -41,8 +42,12 @@ class ClientController extends Controller
     public function index1($id)
     {
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        return view('industry_profile', ['pageAuth' => $pageAuth, 'id' => $id]);
+        $pageAuth = $user->authentication(config('auth.privileges.industryFile'));
+        if ($pageAuth['is_read']) {
+            return view('industry_profile', ['pageAuth' => $pageAuth, 'id' => $id]);
+        } else {
+            abort(403);
+        }
     }
 
     /**
@@ -285,13 +290,60 @@ class ClientController extends Controller
         return $data;
     }
 
-    public function workingFiles()
+    public function workingFiles($id)
     {
-        return Client::get();
+
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        if ($user->roll->level->name == Level::DIRECTOR) {
+            $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
+        } else if ($user->roll->level->name == Level::DIRECTOR) {
+            $client =  Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
+            if ($client->environmentOfficer->assistantDirector->id == $user->id) {
+                $data = $client;
+            } else {
+                abort(401);
+            }
+        } else if ($user->roll->level->name == Level::ENV_OFFICER) {
+            $data = Client::where('environment_officer_id', $user->id)->where('is_working', 1)->get();
+        } else {
+            abort(401);
+        }
+        //    Client::where()
+
+        return $data;
     }
 
-    public function newlyAssigned()
+    public function newlyAssigned($id)
     {
-        return Client::get();
+        $dateTo = Carbon::now();
+        $dateFrom = Carbon::now()->subDays(7);
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        if ($user->roll->level->name == Level::DIRECTOR) {
+            $data = Client::where('environment_officer_id', $id)
+                ->whereBetween('assign_date', [$dateFrom, $dateTo])
+                ->get();
+        } else if ($user->roll->level->name == Level::DIRECTOR) {
+            $client =  Client::where('environment_officer_id', $id)
+                ->whereBetween('assign_date', [$dateFrom, $dateTo])
+                ->get();
+            if ($client->environmentOfficer->assistantDirector->id == $user->id) {
+                $data = $client;
+            } else {
+                abort(401);
+            }
+        } else if ($user->roll->level->name == Level::ENV_OFFICER) {
+            $data = Client::where('environment_officer_id', $user->id)
+                ->whereBetween('assign_date', [$dateFrom, $dateTo])
+                ->get();
+        } else {
+            abort(401);
+        }
+        //    Client::where()
+
+        return $data;
     }
 }
