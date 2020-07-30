@@ -18,9 +18,14 @@ use Illuminate\Http\Request;
 // });
 
 //api
-Route::middleware('auth:api')->get('/files/all/officer/id/{id}', 'ClientController@getAllFiles');
+Route::middleware('auth:api')->get('/files/all/officer/id/{id}', 'ClientController@getAllFiles'); // get all files by environment officer
 
 
-Route::middleware('auth:api')->get('/files/working/officer/id/{id}', 'ClientController@workingFiles');
+Route::middleware('auth:api')->get('/files/working/officer/id/{id}', 'ClientController@workingFiles');  // get working files by environment officer
 
-Route::middleware('auth:api')->get('/files/working/officer/id/{id}', 'ClientController@newlyAssigned');
+Route::middleware('auth:api')->get('/files/new/officer/id/{id}', 'ClientController@newlyAssigned'); //  get new files by environment officer
+
+
+Route::middleware('auth:api')->get('/assistant_directors/level', 'AssistantDirectorController@getAssistanceDirectorsByLevel'); // get assistance director by logged user
+
+Route::middleware('auth:api')->get('/environment_officer/level/assistant_director_id/{id}', 'EnvironmentOfficerController@getEnvironmentOfficersByLevel'); // get environment officer by logged user
