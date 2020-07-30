@@ -38,30 +38,30 @@
                         <div class="form-group">
                             <label>Assistant Director*</label>
                             <select id="getAsDirect" class="form-control form-control-sm">
-                                <option value="0">Sample Dir</option>
+                                <option value="0">Loading..</option>
                             </select>
                             <div id="valAsDirect" class="d-none"><p class="text-danger">Field is required</p></div>
                         </div>
                         <div class="form-group">
                             <label>Environment Officer*</label>
                             <select id="getEnvOfficer" class="form-control form-control-sm">
-                                <option value="0">EnvOfficer</option>
+                                <option value="0">Loading..</option>
                             </select>
                             <div id="valEnvOfficer" class="d-none"><p class="text-danger">Field is required</p></div>
                         </div>
                         <div class="form-group">
                             <label>File Type*</label>
                             <select id="getFileType" class="form-control form-control-sm">
-                                <option value="0">New</option>
-                                <option value="1">Old</option>
-                                <option value="1">All</option>
+                                <option value="01">New</option>
+                                <option value="02">Working</option>
+                                <option value="03">All</option>
                             </select>
                             <div id="valfileType" class="d-none"><p class="text-danger">Field is required</p></div>
                         </div>
                     </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSave" type="submit" class="btn btn-success">Save</button>
+                        <button id="btnSave" type="submit" class="btn btn-success">Check</button>
                         @endif
                         @if($pageAuth['is_delete']==1 || false)
                         <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
@@ -82,9 +82,8 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 10px">#</th>
-                                        <th>Director</th>
-                                        <th>Type</th>
-                                        <th>AnyOther</th>
+                                        <th>Industry Name</th>
+                                        <th>Date</th>
                                         <th style="width: 140px">Action</th>
                                     </tr>
                                 </thead>
@@ -130,57 +129,79 @@
 <script src="../../dist/js/demo.js"></script>
 <!-- AdminLTE App -->
 <script>
+    let PROFILE_ID = '11';
     $(function () {
 //Load table
-        loadTable();
-//click save button
-        $('#btnSave').click(function () {
+        //Load AssDir Combo
+        loadAssDirCombo(function () {
+            loadEnvOfficerCombo($('#getAsDirect').val(), function (rest) {
+                loadAllFilesApi($('#getEnvOfficer').val(), function (respo) {
+                });
+            });
         });
-//click update button
-        $('#btnUpdate').click(function () {
+        $("#getAsDirect").change(function () {
+            loadEnvOfficerCombo($('#getAsDirect').val(), function (rest) {
+            });
         });
-//click delete button
-        $('#btnDelete').click(function () {
-        });
-//Select Button 
-        $(document).on('click', '.btnAction', function () {
+//show update buttons    
+        function showUpdate() {
+            $('#btnSave').addClass('d-none');
+            $('#btnUpdate').removeClass('d-none');
+            $('#btnshowDelete').removeClass('d-none');
+        }
+//show save button    
+        function showSave() {
+            $('#btnSave').removeClass('d-none');
+            $('#btnUpdate').addClass('d-none');
+            $('#btnshowDelete').addClass('d-none');
+        }
+//Reset all fields    
+        function resetinputFields() {
+            $('#getName').val('');
+            $('#btnUpdate').val('');
+            $('#btnDelete').val('');
+        }
+//get form values
+        function fromValues() {
+            var data = {
+                first_name: $('#getfName').val(),
+                last_name: $('#getlName').val(),
+                address: $('#getAddress').val(),
+                contact_no: $('#getContact').val(),
+                email: $('#getEmail').val(),
+                nic: $('#getNicSave').val(),
+                //password: $('#gefkfg').val(),
+                //conpassword: $('#getfffk').val()
+            };
+            return data;
+        }
+//HIDE ALL ERROR MSGS   
+        function hideAllErrors() {
+            $('#valName').addClass('d-none');
+        }
+    });
+
+    $(document).ready(function () {
+        $('#btnSave').on('click', function () {
+            switch ($('#getFileType option:selected').val()) {
+                case '01':
+                    loadNewFilesApi($('#getEnvOfficer').val(), function (respo) {
+                        forTypeFiles_table(respo);
+                    });
+                    break;
+                case '02':
+                    loadWorkingFilesApi($('#getEnvOfficer').val(), function (respo) {
+                        forTypeFiles_table(respo);
+                    });
+                    break;
+                case '03':
+                    loadAllFilesApi($('#getEnvOfficer').val(), function (respo) {
+                        forTypeFiles_table(respo);
+                    });
+                    break;
+            }
         });
     });
-//show update buttons    
-    function showUpdate() {
-        $('#btnSave').addClass('d-none');
-        $('#btnUpdate').removeClass('d-none');
-        $('#btnshowDelete').removeClass('d-none');
-    }
-//show save button    
-    function showSave() {
-        $('#btnSave').removeClass('d-none');
-        $('#btnUpdate').addClass('d-none');
-        $('#btnshowDelete').addClass('d-none');
-    }
-//Reset all fields    
-    function resetinputFields() {
-        $('#getName').val('');
-        $('#btnUpdate').val('');
-        $('#btnDelete').val('');
-    }
-//get form values
-    function fromValues() {
-        var data = {
-            first_name: $('#getfName').val(),
-            last_name: $('#getlName').val(),
-            address: $('#getAddress').val(),
-            contact_no: $('#getContact').val(),
-            email: $('#getEmail').val(),
-            nic: $('#getNicSave').val(),
-            //password: $('#gefkfg').val(),
-            //conpassword: $('#getfffk').val()
-        };
-        return data;
-    }
-//HIDE ALL ERROR MSGS   
-    function hideAllErrors() {
-        $('#valName').addClass('d-none');
-    }
+
 </script>
 @endsection
