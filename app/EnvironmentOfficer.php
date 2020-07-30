@@ -10,4 +10,8 @@ class EnvironmentOfficer extends Model
     {
         return $this->belongsTo(AssistantDirector::class);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
