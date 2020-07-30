@@ -338,11 +338,11 @@ class EnvironmentOfficerController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($user->roll->level->name == Level::DIRECTOR) {
-            $data = EnvironmentOfficer::where('assistant_director_id', $id)->get();
+            $data = EnvironmentOfficer::with('user')->where('assistant_director_id', $id)->get();
         } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
-            $data = EnvironmentOfficer::where('assistant_director_id', $user->id)->get();
+            $data = EnvironmentOfficer::with('user')->where('assistant_director_id', $user->id)->get();
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-            $data = EnvironmentOfficer::where('id', $user->id)->get();
+            $data = EnvironmentOfficer::with('user')->where('id', $user->id)->get();
         }
         return $data;
     }
