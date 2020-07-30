@@ -41,8 +41,12 @@ class ClientController extends Controller
     public function index1($id)
     {
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        return view('industry_profile', ['pageAuth' => $pageAuth, 'id' => $id]);
+        $pageAuth = $user->authentication(config('auth.privileges.industryFile'));
+        if ($pageAuth['is_read']) {
+            return view('industry_profile', ['pageAuth' => $pageAuth, 'id' => $id]);
+        } else {
+            abort(403);
+        }
     }
 
     /**
