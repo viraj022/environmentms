@@ -124,6 +124,9 @@ class EPLController extends Controller
                             $epl->certificate_no = request('certificate_no');
                             $epl->status = 1;
                             $msg = $epl->save();
+                            $client = Client::find($epl->client_id);
+                            $client->is_working = 0;
+                            $msg = $msg && $client->save();
                             if ($msg) {
                                 $issueLog = new IssueLog();
                                 $issueLog->certificate_type = IssueLog::CER_EPL;
@@ -209,6 +212,7 @@ class EPLController extends Controller
                     $storePath = 'public' . $fileUrl;
                     $path = $request->file('file')->storeAs($storePath, $file_name);
                     $client->application_path = "storage/" . $fileUrl . "/" . $file_name;
+                    $client->is_working(1);
                     $client->save();
                     return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
                 } else {

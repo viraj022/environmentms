@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 use App\EPL;
 use App\User;
-use App\AssistantDirector;
-use App\Client;
-use App\EnvironmentOfficer;
-use App\FileHandlerLog;
 use App\Level;
-use Illuminate\Cache\Console\ClearCommand;
+use App\Client;
+use Carbon\Carbon;
+use App\FileHandlerLog;
+use App\AssistantDirector;
+use App\EnvironmentOfficer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Cache\Console\ClearCommand;
 
 class EnvironmentOfficerController extends Controller
 {
@@ -248,6 +249,7 @@ class EnvironmentOfficerController extends Controller
             $environmentOfficer = EnvironmentOfficer::find(\request('environment_officer_id'));
             if ($client && $environmentOfficer) {
                 $client->environment_officer_id = $environmentOfficer->id;
+                $client->assign_date = Carbon::now();
                 $msg = $client->save();
                 $officeLog = new FileHandlerLog();
                 $officeLog->type = ApplicationTypeController::EPL;
