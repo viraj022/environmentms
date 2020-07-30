@@ -9,6 +9,7 @@ function ajaxRequest(Method, url, data, callBack) {
         data: data,
         cache: false,
         success: function (result) {
+
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
             }
