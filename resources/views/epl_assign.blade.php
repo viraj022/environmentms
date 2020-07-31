@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Assign EPL To Officer</h1>
+                <h1>Assign File To Officer</h1>
             </div>
         </div>
     </div>
@@ -31,7 +31,7 @@
             <div class="col-md-6">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <label id="lblTitle">Un-assigned EPL</label>
+                        <label id="lblTitle">Un-assigned File</label>
                     </div>
                     <div class="card-body">
                         <label>Assistant Director</label>
