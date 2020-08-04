@@ -15,9 +15,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class ClientController extends Controller {
+class ClientController extends Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware(['auth']);
     }
 
@@ -26,13 +28,15 @@ class ClientController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('client_space', ['pageAuth' => $pageAuth]);
     }
 
-    public function allClientsindex() {
+    public function allClientsindex()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.industryFile'));
         if ($pageAuth['is_read']) {
@@ -42,7 +46,8 @@ class ClientController extends Controller {
         }
     }
 
-    public function index1($id) {
+    public function index1($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         if ($pageAuth['is_read']) {
@@ -57,8 +62,8 @@ class ClientController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
-
+    public function create()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         request()->validate([
@@ -81,7 +86,7 @@ class ClientController extends Controller {
             'industry_investment' => 'required|numeric',
             'industry_start_date' => 'required|date',
             'industry_registration_no' => 'required|string',
-                // 'password' => 'required',
+            // 'password' => 'required',
         ]);
         if ($pageAuth['is_create']) {
             $client = new Client();
@@ -109,7 +114,8 @@ class ClientController extends Controller {
             $client->industry_registration_no = \request('industry_registration_no');
 
             $msg = $client->save();
-            $client->file_no = generateCode($client);
+            $client->file_no = $this->generateCode($client);
+            // dd($client->file_no);
             $msg = $msg && $client->save();
             if ($msg) {
                 return array('id' => 1, 'message' => 'true', 'id' => $client->id);
@@ -121,7 +127,8 @@ class ClientController extends Controller {
         }
     }
 
-    private function generateCode($client) {
+    private function generateCode($client)
+    {
         $la = Pradesheeyasaba::find($client->pradesheeyasaba_id);
         // print_r($la);
         $lsCOde = $la->code;
@@ -147,7 +154,8 @@ class ClientController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($id) {
+    public function store($id)
+    {
         // ,register_no,' . $vehicle->id
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
@@ -176,7 +184,8 @@ class ClientController extends Controller {
         }
     }
 
-    public function getClientById($id) {
+    public function getClientById($id)
+    {
         return Client::findOrFail($id);
     }
 
@@ -186,7 +195,8 @@ class ClientController extends Controller {
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function show() {
+    public function show()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         if ($pageAuth['is_read']) {
@@ -202,7 +212,8 @@ class ClientController extends Controller {
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function edit(Client $client) {
+    public function edit(Client $client)
+    {
         //
     }
 
@@ -213,7 +224,8 @@ class ClientController extends Controller {
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Client $client) {
+    public function update(Request $request, Client $client)
+    {
         //
     }
 
@@ -223,7 +235,8 @@ class ClientController extends Controller {
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
 
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
@@ -240,16 +253,18 @@ class ClientController extends Controller {
         }
     }
 
-    public function findClient_by_nic($nic) {
+    public function findClient_by_nic($nic)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
         //    PaymentType::get();
         return Client::with('epls')->where('nic', '=', $nic)
-                        ->get();
+            ->get();
     }
 
-    public function findClient_by_id($id) {
+    public function findClient_by_id($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
@@ -257,7 +272,8 @@ class ClientController extends Controller {
         return Client::with('epls')->with('environmentOfficer')->find($id);
     }
 
-    public function getAllFiles($id) {
+    public function getAllFiles($id)
+    {
         $data = array();
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
@@ -280,7 +296,8 @@ class ClientController extends Controller {
         return $data;
     }
 
-    public function workingFiles($id) {
+    public function workingFiles($id)
+    {
 
         $data = array();
         $user = Auth::user();
@@ -304,7 +321,8 @@ class ClientController extends Controller {
         return $data;
     }
 
-    public function newlyAssigned($id) {
+    public function newlyAssigned($id)
+    {
         $dateTo = Carbon::now();
         $dateFrom = Carbon::now()->subDays(7);
         $data = array();
@@ -312,12 +330,12 @@ class ClientController extends Controller {
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($user->roll->level->name == Level::DIRECTOR) {
             $data = Client::where('environment_officer_id', $id)
-                    ->whereBetween('assign_date', [$dateFrom, $dateTo])
-                    ->get();
+                ->whereBetween('assign_date', [$dateFrom, $dateTo])
+                ->get();
         } else if ($user->roll->level->name == Level::DIRECTOR) {
             $client = Client::where('environment_officer_id', $id)
-                    ->whereBetween('assign_date', [$dateFrom, $dateTo])
-                    ->get();
+                ->whereBetween('assign_date', [$dateFrom, $dateTo])
+                ->get();
             if ($client->environmentOfficer->assistantDirector->id == $user->id) {
                 $data = $client;
             } else {
@@ -325,8 +343,8 @@ class ClientController extends Controller {
             }
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
             $data = Client::where('environment_officer_id', $user->id)
-                    ->whereBetween('assign_date', [$dateFrom, $dateTo])
-                    ->get();
+                ->whereBetween('assign_date', [$dateFrom, $dateTo])
+                ->get();
         } else {
             abort(401);
         }
@@ -334,5 +352,4 @@ class ClientController extends Controller {
 
         return $data;
     }
-
 }

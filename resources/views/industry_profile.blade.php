@@ -130,10 +130,8 @@
                     <div class="card-body">
                         <h6 id="env_firstname">Environment Officer: Not Assigned</h6>
                         <dt>Name : <a id="obj_name"></a></dt>
-                        <dt>BR No : <a id="obj_regno"></a></dt>
-                        <dt>Code : <a id="obj_code"></a></dt>
+                        <dt>BR No : <a id="obj_regno"></a></dt>                       
                         <dt>Investment : Rs <a id="obj_invest"></a>.00</dt>
-                        <dt>Remark : <a id="obj_remark"></a></dt>
                         <dt>Location : <a id="obj_name"></a></dt>
                         <div id="map" style="width: 100%; height: 400px;"></div>
                         <dt>Download Application :</dt>

@@ -14,7 +14,7 @@ class AddFileNoCollumnToClientsTable extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->string('file_no', 50);
+            $table->string('file_no', 50)->nullable();
         });
     }
 
