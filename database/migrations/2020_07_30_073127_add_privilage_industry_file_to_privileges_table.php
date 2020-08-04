@@ -16,7 +16,7 @@ class AddPrivilageIndustryFileToPrivilegesTable extends Migration
         Schema::table('privileges', function (Blueprint $table) {
             //
         });
-        DB::table('levels')->insertOrIgnore([
+        DB::table('privileges')->insertOrIgnore([
             ['id' => 14, 'name' => 'Industry File']
         ]);
     }
