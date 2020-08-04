@@ -12,22 +12,10 @@ function resetinputFields() {
 }
 //get form values
 function fromValues() {
-    var data = {
-        name: $('#business_name').val().trim(),
+    var data = {       
         client_id: $('#client_id').val(),
-        industry_category_id: $('#industryCat').val(),
-        business_scale_id: $('#businesScale').val(),
-        contact_no: $('#getContactn').val().trim(),
-        address: $('#getAddressT').val().trim(),
-        email: $('#getEmail').val(),
-        coordinate_x: _Latitude,
-        coordinate_y: _Longitude,
-        pradesheeyasaba_id: $('#prsdeshiySb').val(),
-        is_industry: $('#getZone').val(),
-        investment: $('#inventsment').val(),
-        start_date: $('#startDate').val(),
-        registration_no: $('#business_regno').val().trim(),
-        created_date: $('#submittedDate').val(),
+//        coordinate_x: _Latitude,
+//        coordinate_y: _Longitude,
         is_old: $('#getisOld').val(),
         remark: $('#getRemark').val().trim(),
         file: $('#inp')[0].files[0]

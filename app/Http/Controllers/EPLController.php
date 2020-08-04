@@ -124,6 +124,9 @@ class EPLController extends Controller
                             $epl->certificate_no = request('certificate_no');
                             $epl->status = 1;
                             $msg = $epl->save();
+                            $client = Client::find($epl->client_id);
+                            $client->is_working = 0;
+                            $msg = $msg && $client->save();
                             if ($msg) {
                                 $issueLog = new IssueLog();
                                 $issueLog->certificate_type = IssueLog::CER_EPL;
@@ -167,40 +170,17 @@ class EPLController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
             $msg = \DB::transaction(function () use ($request) {
+                $client = Client::find(\request('client_id'));
                 request()->validate([
-                    'name' => 'required|unique:e_p_l_s,name',
                     'client_id' => 'required|integer',
-                    'industry_category_id' => 'required|integer',
-                    'contact_no' => ['required', new contactNo],
-                    'address' => ['required'],
-                    'email' => ['sometimes', 'nullable'],
-                    'coordinate_x' => ['numeric', 'nullable', 'between:-180,180'],
-                    'coordinate_y' => ['numeric', 'nullable', 'between:-90,90'],
-                    'pradesheeyasaba_id' => 'required|integer',
-                    'is_industry' => 'required|integer',
-                    'investment' => 'required|numeric',
-                    'start_date' => 'required|date',
-                    'business_scale_id' => 'required|integer',
-                    'registration_no' => ['sometimes', 'nullable', 'unique:e_p_l_s,registration_no'],
                     'remark' => ['sometimes', 'nullable'],
-                    'created_date' => 'required|date',
+                    //                    'created_date' => 'required|date',
                     'is_old' => 'required|integer',
                 ]);
                 $epl = new EPL();
-                $epl->name = \request('name');
+
                 $epl->client_id = \request('client_id');
-                $epl->industry_category_id = \request('industry_category_id');
-                $epl->business_scale_id = \request('business_scale_id');
-                $epl->contact_no = \request('contact_no');
-                $epl->address = \request('address');
-                $epl->email = \request('email');
-                $epl->coordinate_x = \request('coordinate_x');
-                $epl->coordinate_y = \request('coordinate_y');
-                $epl->pradesheeyasaba_id = \request('pradesheeyasaba_id');
-                $epl->is_industry = \request('is_industry');
-                $epl->investment = \request('investment');
-                $epl->start_date = \request('start_date');
-                $epl->registration_no = \request('registration_no');
+
                 $epl->remark = \request('remark');
                 $epl->is_old = \request('is_old');
 
@@ -212,24 +192,28 @@ class EPLController extends Controller
                     $epl->code = \request('code');
                     $epl->certificate_no = \request('certificate_no');
                 } else {
-                    $epl->code = $this->generateCode($epl);
+                    $epl->code = $this->generateCode($client);
                 }
 
-                $epl->application_path = "";
+
+
+
+                $client->application_path = "";
                 $epl->created_at = \request('created_date');
 
-                $epl->site_clearance_file = \request('site_clearance_file');
+                //                        $epl->site_clearance_file = \request('site_clearance_file');
 
 
                 $msg = $epl->save();
 
                 if ($msg) {
                     $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                    $fileUrl = '/uploads/EPL/' . $epl->id . '/application';
+                    $fileUrl = '/uploads/indurtry_files/' . $client->id . '/application';
                     $storePath = 'public' . $fileUrl;
                     $path = $request->file('file')->storeAs($storePath, $file_name);
-                    $epl->application_path = "storage/" . $fileUrl . "/" . $file_name;
-                    $epl->save();
+                    $client->application_path = "storage/" . $fileUrl . "/" . $file_name;
+                    $client->is_working = 1;
+                    $client->save();
                     return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
                 } else {
                     return array('id' => 0, 'message' => 'false');
@@ -243,29 +227,29 @@ class EPLController extends Controller
 
     public function saveFile($epl, $type, Request $request)
     {
-        $epl = EPL::find($epl);
-        if ($epl) {
+        $client = Client::find($epl);
+        if ($client) {
             $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-            $fileUrl = '/uploads/EPL/' . $epl->id . '/application';
+            $fileUrl = '/uploads/indurtry_files/' . $client->id . '/application';
             $storePath = 'public' . $fileUrl;
             $path = $request->file('file')->storeAs($storePath, $file_name);
             switch ($type) {
                 case 'file':
-                    $epl->application_path = "storage" . $fileUrl . "/" . $file_name;
+                    $client->application_path = "storage" . $fileUrl . "/" . $file_name;
                     break;
                 case 'file1':
-                    $epl->file_01 = "storage" . $fileUrl . "/" . $file_name;
+                    $client->file_01 = "storage" . $fileUrl . "/" . $file_name;
                     break;
                 case 'file2':
-                    $epl->file_02 = "storage" . $fileUrl . "/" . $file_name;
+                    $client->file_02 = "storage" . $fileUrl . "/" . $file_name;
                     break;
                 case 'file3':
-                    $epl->file_03 = "storage" . $fileUrl . "/" . $file_name;
+                    $client->file_03 = "storage" . $fileUrl . "/" . $file_name;
                     break;
                 default:
                     abort(422);
             }
-            $msg = $epl->save();
+            $msg = $client->save();
             if ($msg) {
                 return array('id' => 1, 'message' => 'true');
             } else {
@@ -289,7 +273,8 @@ class EPLController extends Controller
 
     public function find($id)
     {
-        return EPL::with('client')->leftJoin('environment_officers', 'e_p_l_s.environment_officer_id', 'environment_officers.id')
+        return EPL::with('client')->Join('clients', 'e_p_l_s.client_id', 'clients.id')
+            ->leftJoin('environment_officers', 'clients.environment_officer_id', 'environment_officers.id')
             ->leftJoin('users', 'environment_officers.user_id', 'users.id')
             ->where('e_p_l_s.id', $id)
             ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
@@ -304,8 +289,8 @@ class EPLController extends Controller
      */
     public function show($epl_status)
     {
-
-        return EPL::leftJoin('environment_officers', 'e_p_l_s.environment_officer_id', 'environment_officers.id')
+        return EPL::Join('clients', 'e_p_l_s.client_id', 'clients.id')
+            ->leftJoin('environment_officers', 'clients.environment_officer_id', 'environment_officers.id')
             ->leftJoin('users', 'environment_officers.user_id', 'users.id')
             ->where('e_p_l_s.is_old', $epl_status)
             ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
@@ -346,15 +331,15 @@ class EPLController extends Controller
         //
     }
 
-    private function generateCode($epl)
+    private function generateCode($client)
     {
-        $la = Pradesheeyasaba::find($epl->pradesheeyasaba_id);
+        $la = Pradesheeyasaba::find($client->pradesheeyasaba_id);
         // print_r($la);
         $lsCOde = $la->code;
 
-        $industry = IndustryCategory::find($epl->industry_category_id);
+        $industry = IndustryCategory::find($client->industry_category_id);
         $industryCode = $industry->code;
-        $scale = BusinessScale::find($epl->business_scale_id);
+        $scale = BusinessScale::find($client->business_scale_id);
         $scaleCode = $scale->code;
 
         $e = EPL::orderBy('id', 'desc')->first();

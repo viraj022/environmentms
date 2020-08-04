@@ -33,7 +33,7 @@ Route::get('/epl_register/id/{id}', 'EPLController@index');
 Route::get('/epl_profile/client/{client}/profile/{profile}', 'EPLController@profile');
 Route::get('/epl_profile/atachments/{epl_id}', 'EPLController@attachment_upload_view');
 Route::get('/client_space', 'ClientController@index');
-Route::get('/all_clients', 'ClientController@allClientsindex');
+Route::get('/industry_files', 'ClientController@allClientsindex');
 Route::get('/committee_pool', 'CommetyPoolController@index');
 Route::get('/epl_assign', 'EnvironmentOfficerController@index2');
 Route::get('/env_officer', 'EnvOfficerController@index');
@@ -46,6 +46,7 @@ Route::get('/application_payment', 'EPLController@index2');
 Route::get('/epl_payments/id/{id}', 'EPLPaymentController@index');
 Route::get('/certificate_approval/id/{id}', 'ApprovalLogController@index');
 Route::get('/issue_certificate/id/{id}', 'EPLController@index3');
+Route::get('/industry_profile/id/{id}', 'ClientController@index1');
 //ui routs
 
 //dashboard

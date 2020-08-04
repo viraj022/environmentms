@@ -141,6 +141,10 @@
                                                 <div class="card-header">
                                                     <h3 class="card-title">Assigned Privileges</h3>
                                                 </div>
+                                        <div class=" col-sm-6 form-check form-inline">
+                                            <input id="addAllPriv" class="form-check-input" type="checkbox">
+                                            <label id="txtPriv" class="form-check-label">Check All Privileges</label>
+                                        </div>
                                                 <!-- /.card-header -->
                                                 <div class="card-body p-0">
                                                     <table class="table table-condensed assignedPrivilages" id="as">
@@ -467,5 +471,29 @@ $("#btnUpdateRole").click(function(){
 });
 });
         });
+        
+$(document).ready(function () {
+//check all checkboxes in page 
+    $('#addAllPriv').click(function () {
+        if ($(this).prop("checked") === true) {
+            $('input:checkbox').not(this).prop('checked', this.checked = true)
+            $("#txtPriv").text("Uncheck All Privileges");
+        } else if ($(this).prop("checked") === false) {
+            $('input:checkbox').not(this).prop('checked', this.checked = false)
+            $("#txtPriv").text("Check All Privileges");
+        }
+    });
+//check checkboxes in a row
+    $('.selectRow').click(function () {
+        if ($(this).prop("checked") === true) {
+            var table = $(this).closest('tr');
+            $('td input:checkbox', table).prop('checked', this.checked = true);
+        } else if ($(this).prop("checked") === false) {
+            $('td input:checkbox', table).prop('checked', this.checked = false);
+        }
+    });
+
+});        
+        
     </script>
 @endsection

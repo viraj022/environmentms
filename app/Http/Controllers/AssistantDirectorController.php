@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\AssistantDirector;
 use App\EnvironmentOfficer;
+use App\Level;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -179,7 +180,9 @@ class AssistantDirectorController extends Controller
             $environmentOfficers = EnvironmentOfficer::where('active_status', '1')->select('user_id as id')->get();
 
             //return $allAssistantDerectors;
-            return User::wherenotin('id', $assistantDirectors)->wherenotin('id', $environmentOfficers)->get();
+            return User::whereHas('roll.level', function ($queary) {
+                $queary->where('name', Level::ASSI_DIRECTOR);
+            })->wherenotin('id', $assistantDirectors)->wherenotin('id', $environmentOfficers)->get();
 
             //return AssistantDirector::get(); 
         } else {
@@ -261,5 +264,20 @@ class AssistantDirectorController extends Controller
         } else {
             return false;
         }
+    }
+
+    public function getAssistanceDirectorsByLevel()
+    {
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        if ($user->roll->level->name == Level::DIRECTOR) {
+            $data = AssistantDirector::with('user')->get();
+        } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
+            $data = AssistantDirector::with('user')->where('id', $user->id)->get();
+        } else if ($user->roll->level->name == Level::ENV_OFFICER) {
+            $data = AssistantDirector::with('user')->where('id', EnvironmentOfficer::find($user->id)->assistant_director_id)->get();
+        }
+        return $data;
     }
 }//end calss
