@@ -83,6 +83,7 @@ function forTypeFiles_table(obj, callBack) {
             tbl += '</tr>';
         });
     }
+    $('.setCurrentEnvProf').html($('#getAsDirect option:selected').html() + ' - ' + $('#getEnvOfficer option:selected').html()  + ' - ' + $('#getFileType option:selected').html());
     $('#tblAllFiles tbody').html(tbl);
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
         callBack();
