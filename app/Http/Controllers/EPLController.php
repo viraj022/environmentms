@@ -212,7 +212,7 @@ class EPLController extends Controller
                     $storePath = 'public' . $fileUrl;
                     $path = $request->file('file')->storeAs($storePath, $file_name);
                     $client->application_path = "storage/" . $fileUrl . "/" . $file_name;
-                    $client->is_working(1);
+                    $client->is_working = 1;
                     $client->save();
                     return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
                 } else {
