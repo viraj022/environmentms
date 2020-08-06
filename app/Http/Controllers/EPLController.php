@@ -176,6 +176,7 @@ class EPLController extends Controller
                 request()->validate([
                     'client_id' => 'required|integer',
                     'remark' => ['sometimes', 'nullable'],
+                    'created_date' => ['required', 'date'],
                 ]);
                 $epl = new EPL();
                 $epl->client_id = \request('client_id');
@@ -183,11 +184,12 @@ class EPLController extends Controller
                 $epl->is_working = 1;
                 $epl->code = $this->generateCode($client);
                 $client->application_path = "";
-                $epl->created_at = \request('created_date');
+                $epl->submitted_date = \request('created_date');
+                $epl->count = 0;
                 $msg = $epl->save();
                 if ($msg) {
                     $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                    $fileUrl = '/uploads/indurtry_files/' . $client->id . '/application';
+                    $fileUrl = '/uploads/industry_files/' . $client->id . '/application';
                     $storePath = 'public' . $fileUrl;
                     $path = $request->file('file')->storeAs($storePath, $file_name);
                     $client->application_path = "storage/" . $fileUrl . "/" . $file_name;
