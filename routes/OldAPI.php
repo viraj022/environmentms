@@ -55,4 +55,15 @@ Route::middleware('auth:api')->get('/files/old', 'ClientController@getOldFiles')
 ]
 */
 
-Route::middleware('auth:api')->post('/epl/old', 'ClientController@getOldFiles'); //   get old files 
+Route::middleware('auth:api')->post('/epl/old/industry/{id}', 'EPLController@saveOldData'); //   save a old epl
+
+/*
+  "epl_code" : "EPL/2020/rt/ty8",
+  "remark" : "hansana",
+  "issue_date" :"2020-01-01",
+  "expire_date" : "2020-05-07",
+  "certificate_no" : "ABC/7895",
+  "count" : "0",
+  "submit_date" : "2020-01-01",
+  "file" : ""
+*/

@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\EPL;
 use App\Client;
 use App\Payment;
+use App\EPLRenew;
 use App\IssueLog;
 use Carbon\Carbon;
 use App\BusinessScale;
 use App\Pradesheeyasaba;
 use App\Rules\contactNo;
 use App\IndustryCategory;
+use App\OldFiles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -430,30 +432,54 @@ class EPLController extends Controller
             abort(401);
         }
     }
-    public function saveOldData(Request $request)
+    public function saveOldData($id, Request $request)
     {
-        $client =  Client::findOrFail(\request('client_id'));
-        $epl = new EPL();
-        $epl->client_id = $client->id;
-        $epl->remark = \request('remark');
-        $epl->is_working = 1;
-        $epl->code = \request('epl_code');
-        $msg = $epl->save();
-
-        if ($msg) {
-            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-            $fileUrl = '/uploads/indurtry_files/' . $client->id . '/old';
-            $storePath = 'public' . $fileUrl;
-            $path = $request->file('file')->storeAs($storePath, $file_name);
-            $client->application_path = "storage/" . $fileUrl . "/" . $file_name;
+        // validations 
+        request()->validate([
+            'epl_code' => 'required|string',
+            'remark' => 'nullable|string',
+            'issue_date' => 'required|date',
+            'expire_date' => 'required|date',
+            'certificate_no' => 'required|string',
+            'count' => 'required|integer',
+            'submit_date' => 'required|date',
+        ]);
+        // save epl main file      
+        return \DB::transaction(function () use ($id, $request) {
+            $client =  Client::findOrFail($id);
             $client->is_working = 1;
-            $client->save();
-            return array('id' => 0, 'message' => 'true');
-        } else {
-            return array('id' => 0, 'message' => 'false');
-        }
-
-        return $msg;
+            $msg = $client->save();
+            $epl = new EPL();
+            $epl->client_id = $client->id;
+            $epl->code = \request('epl_code');
+            $epl->remark = \request('remark');
+            $epl->issue_date = \request('issue_date');
+            $epl->expire_date = \request('expire_date');
+            $epl->certificate_no = \request('certificate_no');
+            $epl->status = 1;
+            $epl->count = \request('count');
+            $epl->submitted_date = \request('submitted_date');
+            $msg = $msg && $epl->save();
+            // save old data file
+            if ($msg) {
+                $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+                $fileUrl = '/uploads/industry_files/' . $client->id . '/old';
+                $storePath = 'public' . $fileUrl;
+                $path = $request->file('file')->storeAs($storePath, $file_name);
+                $oldFiles = new OldFiles();
+                $oldFiles->path = "storage/" . $fileUrl . "/" . $file_name;
+                $oldFiles->type = $request->file->extension();
+                $msg = $msg &&  $oldFiles->save();
+            } else {
+                abort(500);
+            }
+            // sending response
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        });
     }
     public function certificateInformation($id)
     {
