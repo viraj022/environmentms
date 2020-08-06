@@ -108,7 +108,7 @@ class EPLController extends Controller
             $epl = EPL::find($epl_id);
             if ($epl !== null) {
                 // dd($epl->issue_date);
-                if ($epl->issue_date == null) {
+                if ($epl->status == 1) {
                     $payList = $epl->paymentList();
                     if (
                         $payList['inspection']['status'] == 'payed' && $payList['license_fee']['status'] == 'payed' && ($payList['fine']['status'] == 'payed' || $payList['fine']['status'] == 'not_available')
@@ -454,5 +454,15 @@ class EPLController extends Controller
         }
 
         return $msg;
+    }
+    public function certificateInformation($id)
+    {
+        $epl = EPL::find($id);
+        // dd($epl);
+        if ($epl) {
+            return $epl->certificateInfo();
+        } else {
+            abort(404);
+        }
     }
 }
