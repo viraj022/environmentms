@@ -48,6 +48,8 @@ Route::get('/certificate_approval/id/{id}', 'ApprovalLogController@index');
 Route::get('/issue_certificate/id/{id}', 'EPLController@index3');
 Route::get('/industry_profile/id/{id}', 'ClientController@index1');
 Route::get('/renewal_page/id/{id}', 'EPLRenewController@index');
+Route::get('/old_file_list', 'ClientController@indexOldFileList');
+Route::get('/register_old_data/id/{id}', 'ClientController@indexOldDataReg');
 //ui routs
 
 //dashboard

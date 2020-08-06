@@ -34,6 +34,18 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('client_space', ['pageAuth' => $pageAuth]);
     }
+    public function indexOldFileList()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('old_file_list', ['pageAuth' => $pageAuth]);
+    }
+    public function indexOldDataReg($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('old_data_registation', ['pageAuth' => $pageAuth, 'id' => $id]);
+    }
 
     public function allClientsindex()
     {
