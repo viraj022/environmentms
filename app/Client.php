@@ -12,8 +12,13 @@ class Client extends Model
         {
                 return $this->hasMany(EPL::class);
         }
-        
-        public function environmentOfficer() {
-            return $this->belongsTo(EnvironmentOfficer::class);
+        public function oldFiles()
+        {
+                return $this->hasMany(OldFiles::class);
+        }
+
+        public function environmentOfficer()
+        {
+                return $this->belongsTo(EnvironmentOfficer::class);
         }
 }

@@ -86,6 +86,7 @@ class ClientController extends Controller
             'industry_investment' => 'required|numeric',
             'industry_start_date' => 'required|date',
             'industry_registration_no' => 'required|string',
+            'is_old' => 'required|integer',
             // 'password' => 'required',
         ]);
         if ($pageAuth['is_create']) {
@@ -112,6 +113,8 @@ class ClientController extends Controller
             $client->industry_investment = \request('industry_investment');
             $client->industry_start_date = \request('industry_start_date');
             $client->industry_registration_no = \request('industry_registration_no');
+            $client->is_old = \request('is_old');
+
 
             $msg = $client->save();
             $client->file_no = $this->generateCode($client);
@@ -259,7 +262,7 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
         //    PaymentType::get();
-        return Client::with('epls')->where('nic', '=', $nic)
+        return Client::with('epls')->with('oldFiles')->where('nic', '=', $nic)
             ->get();
     }
 
@@ -269,7 +272,7 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
         //    PaymentType::get();
-        return Client::with('epls')->with('environmentOfficer')->find($id);
+        return Client::with('epls')->with('environmentOfficer')->with('oldFiles')->find($id);
     }
 
     public function getAllFiles($id)
@@ -351,5 +354,25 @@ class ClientController extends Controller
         //    Client::where()
 
         return $data;
+    }
+    public function getOldFiles()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        return Client::where('is_old', 0)->with('epls')->get();
+    }
+
+    public function markOldFinish($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $client = Client::find($id);
+        $client->is_old = 2; // inspected state
+        $client->is_working = 0; // set working status of the client to not working
+        if ($client->save()) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
     }
 }

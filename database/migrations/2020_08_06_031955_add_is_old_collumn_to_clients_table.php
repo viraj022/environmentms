@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddFileNoCollumnToClientsTable extends Migration
+class AddIsOldCollumnToClientsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddFileNoCollumnToClientsTable extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->string('file_no', 50)->nullable();
+            $table->integer('is_old')->default(0)->comment('0 => old , 1 => new');
         });
     }
 
@@ -26,7 +26,7 @@ class AddFileNoCollumnToClientsTable extends Migration
     public function down()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->dropColumn('file_no');
+            $table->dropColumn('is_old');
         });
     }
 }
