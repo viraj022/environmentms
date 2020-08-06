@@ -193,8 +193,50 @@ class EPLController extends Controller
                     $storePath = 'public' . $fileUrl;
                     $path = $request->file('file')->storeAs($storePath, $file_name);
                     $client->application_path = "storage/" . $fileUrl . "/" . $file_name;
+                    $epl->path = "storage/" . $fileUrl . "/" . $file_name;
                     $client->is_working = 1;
                     $client->save();
+                    $epl->save();
+                    return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
+                } else {
+                    return array('id' => 0, 'message' => 'false');
+                }
+            });
+            return $msg;
+        } else {
+            abort(401);
+        }
+    }
+    public function renew(Request $request)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_create']) {
+            $msg = \DB::transaction(function () use ($request) {
+                $client = Client::find(\request('client_id'));
+                request()->validate([
+                    'client_id' => 'required|integer',
+                    'remark' => ['sometimes', 'nullable'],
+                    'created_date' => ['required', 'date'],
+                ]);
+                $epl = new EPL();
+                $epl->client_id = \request('client_id');
+                $epl->remark = \request('remark');
+                $epl->is_working = 1;
+                $epl->code = $this->generateCode($client);
+                $client->application_path = "";
+                $epl->submitted_date = \request('created_date');
+                $epl->count =  $epl->getRenewCount() + 1;
+                $msg = $epl->save();
+                if ($msg) {
+                    $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+                    $fileUrl = '/uploads/industry_files/' . $client->id . '/application';
+                    $storePath = 'public' . $fileUrl;
+                    $path = $request->file('file')->storeAs($storePath, $file_name);
+                    $epl->path = "storage/" . $fileUrl . "/" . $file_name;
+                    $client->is_working = 1;
+                    $client->save();
+                    $epl->save();
                     return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
                 } else {
                     return array('id' => 0, 'message' => 'false');

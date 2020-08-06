@@ -67,8 +67,8 @@ class ClientController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         request()->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
+            'first_name' => 'required|string',
+            'last_name' => 'nullable|string',
             'address' => 'nullable',
             'contact_no' => ['nullable', new contactNo],
             'email' => 'nullable|sometimes',
