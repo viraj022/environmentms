@@ -361,4 +361,18 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         return Client::where('is_old', 0)->with('epls')->get();
     }
+
+    public function markOldFinish($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $client = Client::find($id);
+        $client->is_old = 2; // inspected state
+        $client->is_working = 0; // set working status of the client to not working
+        if ($client->save()) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
 }

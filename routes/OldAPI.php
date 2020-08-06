@@ -67,3 +67,46 @@ Route::middleware('auth:api')->post('/epl/old/industry/{id}', 'EPLController@sav
   "submit_date" : "2020-01-01",
   "file" : ""
 */
+
+Route::middleware('auth:api')->put('/epl/old/epl/{id}', 'EPLController@updateOldData'); //   save a old epl
+
+/*
+  "epl_code" : "EPL/2020/rt/ty8",
+  "remark" : "hansana",
+  "issue_date" :"2020-01-01",
+  "expire_date" : "2020-05-07",
+  "certificate_no" : "ABC/7895",
+  "count" : "0",
+  "submit_date" : "2020-01-01",
+  "file" : ""
+*/
+
+Route::middleware('auth:api')->post('/old/attachments/{id}', 'OldFilesController@create'); //   add old attachments
+
+/*
+{
+    "id": 1,
+    "message": "true"
+}
+*/
+
+
+Route::middleware('auth:api')->delete('/old/attachments/{id}', 'OldFilesController@delete'); //   delete old attachments
+
+/*
+{
+    "id": 1,
+    "message": "true"
+}
+*/
+
+
+
+
+Route::middleware('auth:api')->patch('/old/industry/{id}', 'ClientController@markOldFinish'); //   mark old data entry finish
+/*
+{
+    "id": 1,
+    "message": "true"
+}
+*/

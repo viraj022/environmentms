@@ -434,6 +434,8 @@ class EPLController extends Controller
     }
     public function saveOldData($id, Request $request)
     {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         // validations 
         request()->validate([
             'epl_code' => 'required|string',
@@ -462,14 +464,16 @@ class EPLController extends Controller
             $msg = $msg && $epl->save();
             // save old data file
             if ($msg) {
-                $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                $fileUrl = '/uploads/industry_files/' . $client->id . '/old';
-                $storePath = 'public' . $fileUrl;
-                $path = $request->file('file')->storeAs($storePath, $file_name);
-                $oldFiles = new OldFiles();
-                $oldFiles->path = "storage/" . $fileUrl . "/" . $file_name;
-                $oldFiles->type = $request->file->extension();
-                $msg = $msg &&  $oldFiles->save();
+                if ($request->file('file') != null) {
+                    $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+                    $fileUrl = '/uploads/industry_files/' . $client->id . '/old';
+                    $storePath = 'public' . $fileUrl;
+                    $path = $request->file('file')->storeAs($storePath, $file_name);
+                    $oldFiles = new OldFiles();
+                    $oldFiles->path = "storage/" . $fileUrl . "/" . $file_name;
+                    $oldFiles->type = $request->file->extension();
+                    $msg = $msg &&  $oldFiles->save();
+                }
             } else {
                 abort(500);
             }
@@ -481,8 +485,60 @@ class EPLController extends Controller
             }
         });
     }
+    public function updateOldData($id, Request $request)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        // validations 
+        request()->validate([
+            'epl_code' => 'required|string',
+            'remark' => 'nullable|string',
+            'issue_date' => 'required|date',
+            'expire_date' => 'required|date',
+            'certificate_no' => 'required|string',
+            'count' => 'required|integer',
+            'submit_date' => 'required|date',
+        ]);
+        // save epl main file      
+        return \DB::transaction(function () use ($id, $request) {
+            $msg = true;
+            $epl =  EPL::findOrFail($id);
+            $epl->code = \request('epl_code');
+            $epl->remark = \request('remark');
+            $epl->issue_date = \request('issue_date');
+            $epl->expire_date = \request('expire_date');
+            $epl->certificate_no = \request('certificate_no');
+            $epl->count = \request('count');
+            $epl->submitted_date = \request('submitted_date');
+            $msg = $msg && $epl->save();
+            // save old data file
+            if ($msg) {
+                if ($request->file('file') != null) {
+                    $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+                    $fileUrl = '/uploads/industry_files/' . $epl->client_id . '/old';
+                    $storePath = 'public' . $fileUrl;
+                    $path = $request->file('file')->storeAs($storePath, $file_name);
+                    $oldFiles = new OldFiles();
+                    $oldFiles->path = "storage/" . $fileUrl . "/" . $file_name;
+                    $oldFiles->type = $request->file->extension();
+                    $msg = $msg &&  $oldFiles->save();
+                }
+            } else {
+                abort(500);
+            }
+            // sending response
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        });
+    }
+
     public function certificateInformation($id)
     {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $epl = EPL::find($id);
         // dd($epl);
         if ($epl) {
