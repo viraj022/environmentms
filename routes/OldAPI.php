@@ -1,0 +1,58 @@
+<?php
+
+use Illuminate\Http\Request;
+
+/*
+  |--------------------------------------------------------------------------
+  | API Routes
+  |--------------------------------------------------------------------------
+  |
+  | Here is where you can register API routes for your application. These
+  | routes are loaded by the RouteServiceProvider within a group which
+  | is assigned the "api" middleware group. Enjoy building your API!
+  |
+ */
+
+Route::middleware('auth:api')->get('/files/old', 'ClientController@getOldFiles'); //   get old files 
+/*
+[
+    {
+        "id": 6,
+        "first_name": "dialog",
+        "last_name": "Pvt Ltd",
+        "address": null,
+        "contact_no": null,
+        "email": null,
+        "nic": null,
+        "password": "$2y$10$2dF7aXZj7LkP6hCuCp.rzOXkStNdDbEydo7WvYRaKBLymUSdT5b2i",
+        "api_token": "xeDeKtOzBdxLG27HDW8uuKXa7UzQ0LhazJcyChMtplRXPu3s7nZ5oRqOhI3GadeXlIr0TGbATVM3a8Cs",
+        "created_at": "2020-08-04 08:56:19",
+        "updated_at": "2020-08-04 09:03:24",
+        "deleted_at": null,
+        "industry_name": "dialog",
+        "industry_category_id": 5,
+        "business_scale_id": 1,
+        "industry_contact_no": "0710576923",
+        "industry_address": "3000",
+        "industry_email": null,
+        "industry_coordinate_x": "7.487518",
+        "industry_coordinate_y": "80.346852",
+        "pradesheeyasaba_id": 10,
+        "industry_is_industry": 1,
+        "industry_investment": 50000,
+        "industry_start_date": "2020-08-04 00:00:00",
+        "industry_registration_no": "ABC/VR/8585",
+        "application_path": "storage//uploads/indurtry_files/6/application/1596531804.png",
+        "environment_officer_id": null,
+        "file_01": "storage/uploads/indurtry_files/6/application/1596531562.png",
+        "file_02": "storage/uploads/indurtry_files/6/application/1596531579.png",
+        "file_03": null,
+        "file_no": "PEA/PKG/AG/S/06/2020",
+        "assign_date": null,
+        "is_working": 1,
+        "is_old": 0
+    }
+]
+*/
+
+Route::middleware('auth:api')->post('/epl/old', 'ClientController@getOldFiles'); //   get old files 

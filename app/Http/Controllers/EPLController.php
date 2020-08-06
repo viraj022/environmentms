@@ -174,38 +174,15 @@ class EPLController extends Controller
                 request()->validate([
                     'client_id' => 'required|integer',
                     'remark' => ['sometimes', 'nullable'],
-                    //                    'created_date' => 'required|date',
-                    'is_old' => 'required|integer',
                 ]);
                 $epl = new EPL();
-
                 $epl->client_id = \request('client_id');
-
                 $epl->remark = \request('remark');
-                $epl->is_old = \request('is_old');
-
-                if ($epl->is_old == 0) {
-                    request()->validate([
-                        'code' => 'required|string',
-                        'certificate_no' => 'required|string',
-                    ]);
-                    $epl->code = \request('code');
-                    $epl->certificate_no = \request('certificate_no');
-                } else {
-                    $epl->code = $this->generateCode($client);
-                }
-
-
-
-
+                $epl->is_working = 1;
+                $epl->code = $this->generateCode($client);
                 $client->application_path = "";
                 $epl->created_at = \request('created_date');
-
-                //                        $epl->site_clearance_file = \request('site_clearance_file');
-
-
                 $msg = $epl->save();
-
                 if ($msg) {
                     $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
                     $fileUrl = '/uploads/indurtry_files/' . $client->id . '/application';
@@ -452,5 +429,30 @@ class EPLController extends Controller
         } else {
             abort(401);
         }
+    }
+    public function saveOldData(Request $request)
+    {
+        $client =  Client::findOrFail(\request('client_id'));
+        $epl = new EPL();
+        $epl->client_id = $client->id;
+        $epl->remark = \request('remark');
+        $epl->is_working = 1;
+        $epl->code = \request('epl_code');
+        $msg = $epl->save();
+
+        if ($msg) {
+            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+            $fileUrl = '/uploads/indurtry_files/' . $client->id . '/old';
+            $storePath = 'public' . $fileUrl;
+            $path = $request->file('file')->storeAs($storePath, $file_name);
+            $client->application_path = "storage/" . $fileUrl . "/" . $file_name;
+            $client->is_working = 1;
+            $client->save();
+            return array('id' => 0, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+
+        return $msg;
     }
 }

@@ -86,6 +86,7 @@ class ClientController extends Controller
             'industry_investment' => 'required|numeric',
             'industry_start_date' => 'required|date',
             'industry_registration_no' => 'required|string',
+            'is_old' => 'required|integer',
             // 'password' => 'required',
         ]);
         if ($pageAuth['is_create']) {
@@ -112,6 +113,8 @@ class ClientController extends Controller
             $client->industry_investment = \request('industry_investment');
             $client->industry_start_date = \request('industry_start_date');
             $client->industry_registration_no = \request('industry_registration_no');
+            $client->is_old = \request('is_old');
+
 
             $msg = $client->save();
             $client->file_no = $this->generateCode($client);
@@ -351,5 +354,11 @@ class ClientController extends Controller
         //    Client::where()
 
         return $data;
+    }
+    public function getOldFiles()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        return Client::where('is_old', 0)->get();
     }
 }
