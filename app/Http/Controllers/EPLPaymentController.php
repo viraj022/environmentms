@@ -26,7 +26,7 @@ class EPLPaymentController extends Controller {
         if ($pageAuth['is_read']) {
             $epl = EPL::find($id);
             if ($epl) {
-                return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id, "epl_no" => $epl->code,"client"=>$epl->client_id]);
+                return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id, "epl_no" => $epl->code, "client" => $epl->client_id]);
             } else {
                 abort(404);
             }
@@ -305,6 +305,7 @@ class EPLPaymentController extends Controller {
     }
 
     public function getInspectionFine($eplId) {
+        return array('id' => 1, 'message' => 'no_fine', 'amount' => '0');
         request()->validate([
             'inspection_fee' => 'required|numeric'
         ]);

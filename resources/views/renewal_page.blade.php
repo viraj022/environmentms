@@ -164,11 +164,11 @@
 <script src="../../js/RenewalJS/post_data.js"></script>
 <!-- AdminLTE App -->
 <script>
+    let PROFILE_ID = '{{$id}}'; 
     $(function () {
 //Load table
 var renew_file = '';
-//        loadTable();
-//        
+//        loadTable();   
 //             
 //click save button
         $('#btnSave').click(function () {
@@ -176,7 +176,7 @@ var renew_file = '';
             data.file = renew_file;
             if (Validiteinsert(data)) {
                 // if validiated
-                saveRenew({{$id}},data, function (result) {
+                saveRenew(PROFILE_ID,data, function (result) {
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
@@ -205,42 +205,13 @@ var renew_file = '';
             var data = fromValues();
             if (Validiteupdate(data)) {
                 updateZone($('#btnUpdate').val(), data, function (result) {
-                    if (result.id == 1) {
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Enviremontal MS</br>Updated'
-                        });
-                    } else {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Enviremontal MS</br>Error'
-                        });
-                    }
-                    loadTable();
-                    showSave();
-                    resetinputFields();
-                    hideAllErrors();
                 });
             }
         });
 //click delete button
         $('#btnDelete').click(function () {
             deleteZone($('#btnDelete').val(), function (result) {
-                if (result.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Enviremontal MS</br>Removed!'
-                    });
-                } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Enviremontal MS</br>Error'
-                    });
-                }
-                loadTable();
-                showSave();
-                resetinputFields();
-                hideAllErrors();
+
             });
         });
 //select button action 

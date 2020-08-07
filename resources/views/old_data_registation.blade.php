@@ -46,7 +46,7 @@
                             </div>
                         </div>
                         <button id="btnLoadAc" class="btn btn-primary">Load</button>
-                        <div class="epl_section"> 
+                        <div class="eplSection legitSection d-none"> 
                             <div class="form-group">
                                 <label>EPL Code*</label>
                                 <input id="getEPLCode" type="text" class="form-control form-control-sm" placeholder="Enter Data..." value="">
@@ -107,6 +107,9 @@
                                 <input id="last_certificate" type="file" accept="image/*,application/pdf">
                             </div>
                         </div>
+                        <div class="siteClearSection legitSection d-none">
+                            <p>Site Clear</p>
+                        </div>
                     </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
@@ -116,8 +119,7 @@
                         <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
                         @endif
                         @if($pageAuth['is_delete']==1 || false)
-                        <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
-                                 data-target="#modal-danger">Delete</button>
+                        <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none">Delete</button>
                         @endif
                     </div>                           
                 </div>
@@ -160,30 +162,6 @@
                         </div>-->
         </div>
     </div>
-</div>
-</div>
-<div class="modal fade" id="modal-danger">
-    <div class="modal-dialog">
-        <div class="modal-content bg-danger">
-            <div class="modal-header">
-                <h4 class="modal-title">Delete Selected Item</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><b>Are you sure you want to permanently delete this Item? </b></p>
-                <p>Once you continue, this process can not be undone. Please Procede with care.</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
 </section>
 @endif
 @endsection
@@ -211,58 +189,87 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
-<script src="../../js/zonejs/delete.js"></script>
+<script src="../../js/OldFileListJS/old_datareg_api.js"></script>
+<script src="../../js/OldFileListJS/load_button_data.js"></script>
 <!-- AdminLTE App -->
 <script>
+
     $(function () {
 //Load table
-//        loadTable();
+        let EPL_PROFILE = '{{$id}}';
 //click save button
         $('#btnSave').click(function () {
             var data = fromValues();
             if (Validiteinsert(data)) {
-                uniqueNamecheck(data.name, function (res) {
-                    if (res.message === 'unique') {
-                        uniqueCodecheck(data.code, function (rest) {
-                            if (rest.message === 'unique') {
-                                // if validiated
-                                AddZone(data, function (result) {
-                                    if (result.id == 1) {
-                                        Toast.fire({
-                                            type: 'success',
-                                            title: 'Enviremontal MS</br>Saved'
-                                        });
-                                    } else {
-                                        Toast.fire({
-                                            type: 'error',
-                                            title: 'Enviremontal MS</br>Error'
-                                        });
-                                    }
-                                    loadTable();
-                                    resetinputFields();
-                                    hideAllErrors();
-                                });
-
-                                ///fkf   
-                            } else {
-                                $('#uniCode').removeClass('d-none');
-                            }
+                // if validiated
+                saveEPLOldFiles(EPL_PROFILE, data, function (result) {
+                    if (result.id == 1) {
+                        Toast.fire({
+                            type: 'success',
+                            title: 'Enviremontal MS</br>Saved'
                         });
-
                     } else {
-                        $('#uniName').removeClass('d-none');
-                        //$('#uniCode').removeClass('d-none');  
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Enviremontal MS</br>Error'
+                        });
                     }
-
+                    resetinputFields();
+                    hideAllErrors();
                 });
             }
         });
+
+        //Load Sections Button
+        $('#btnLoadAc').click(function () {
+            var load_val = $('#getIndustryType').val();
+            if (load_val === '01') {
+                checkEPLExist(EPL_PROFILE, function (result) {
+                    if (result.length === 0) {
+                        $('.eplSection').removeClass('d-none');
+                        showSave();
+                    } else {
+                        var trackIssueDate = new Date(result.issue_date);
+                        var issueDate = trackIssueDate.toISOString().split('T')[0];
+                        var trackExpireDate = new Date(result.expire_date);
+                        var expireDate = trackExpireDate.toISOString().split('T')[0];
+                        var trackSubmitDate = new Date(result.created_at);
+                        var submitDate = trackSubmitDate.toISOString().split('T')[0];
+                        $('#getEPLCode').val(result.code);
+                        $('#getRemark').val(result.remark);
+                        $('#issue_date').val(issueDate);
+                        $('#expire_date').val(expireDate);
+                        $('#getcertifateNo').val(result.certificate_no);
+                        $('#getPreRenew').val(result.count);
+                        $('#getsubmitDate').val(submitDate);
+                        $('#btnUpdate').val(result.id);
+                        $('#btnshowDelete').val(result.id);
+                        showUpdate();
+                        $('.eplSection').removeClass('d-none');
+                    }
+                });
+
+            }
+            if (load_val === '02') {
+                alert("Section 2");
+            } else if (load_val === '03') {
+                alert("Section 3");
+            } else if (load_val === '04') {
+                alert("Section 4");
+            }
+        });
+        $('#getIndustryType').on('change', function () {
+            $('.legitSection').addClass('d-none');
+        });
+        //Load Sections Button END
+
+
 //click update button
         $('#btnUpdate').click(function () {
             //get form data
             var data = fromValues();
-            if (Validiteupdate(data)) {
-                updateZone($('#btnUpdate').val(), data, function (result) {
+            if (Validiteinsert(data)) {
+                updateEPLOldFiles($(this).val(), data, function (result) {
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
@@ -274,20 +281,19 @@
                             title: 'Enviremontal MS</br>Error'
                         });
                     }
-                    loadTable();
                     showSave();
-                    resetinputFields();
                     hideAllErrors();
+                    resetinputFields();
                 });
             }
         });
 //click delete button
-        $('#btnDelete').click(function () {
-            deleteZone($('#btnDelete').val(), function (result) {
+        $('#btnshowDelete').click(function () {
+            deleteEPLOldFiles(EPL_PROFILE, function (result) {
                 if (result.id == 1) {
                     Toast.fire({
                         type: 'success',
-                        title: 'Enviremontal MS</br>Removed!'
+                        title: 'Enviremontal MS</br>Removed'
                     });
                 } else {
                     Toast.fire({
@@ -295,57 +301,16 @@
                         title: 'Enviremontal MS</br>Error'
                     });
                 }
-                loadTable();
                 showSave();
-                resetinputFields();
                 hideAllErrors();
+                resetinputFields();
             });
         });
 //select button action 
         $(document).on('click', '.btnAction', function () {
-            getaZonebyId(this.id, function (result) {
-                $('#getName').val(result.name);
-                $('#getCode').val(result.code);
-                showUpdate();
-                $('#btnUpdate').val(result.id);
-                $('#btnDelete').val(result.id);
-            });
-            hideAllErrors();
+
         });
+
     });
-//show update buttons    
-    function showUpdate() {
-        $('#btnSave').addClass('d-none');
-        $('#btnUpdate').removeClass('d-none');
-        $('#btnshowDelete').removeClass('d-none');
-    }
-//show save button    
-    function showSave() {
-        $('#btnSave').removeClass('d-none');
-        $('#btnUpdate').addClass('d-none');
-        $('#btnshowDelete').addClass('d-none');
-    }
-//Reset all fields    
-    function resetinputFields() {
-        $('#getName').val('');
-        $('#getCode').val('');
-        $('#btnUpdate').val('');
-        $('#btnDelete').val('');
-    }
-//get form values
-    function fromValues() {
-        var data = {
-            name: $('#getName').val(),
-            code: $('#getCode').val()
-        };
-        return data;
-    }
-//HIDE ALL ERROR MSGS   
-    function hideAllErrors() {
-        $('#valName').addClass('d-none');
-        $('#valCode').addClass('d-none');
-        $('#uniName').addClass('d-none');
-        $('#uniCode').addClass('d-none');
-    }
 </script>
 @endsection

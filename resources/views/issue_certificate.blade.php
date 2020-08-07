@@ -64,7 +64,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="card-body box-profile">
-                                    <h3 class="profile-username text-center clientName">{Client_name}</h3>
+                                    <h3 class="profile-username text-center clientName">Certificate Information</h3>
                                     <p class="text-muted text-center clientNic">NIC_Data</p>
                                     <ul class="list-group list-group-unbordered mb-3">
                                         <li class="list-group-item">
@@ -89,13 +89,19 @@
                                             <b>Issue Date</b> <a class="float-right" id="eplissueDate">-</a>
                                         </li>
                                         <li class="list-group-item">
+                                            <b>Expire Date</b> <a class="float-right" id="eplExpireDate">-</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Dates To Expire</b> <a class="float-right" id="eplcalExpireDate">-</a>
+                                        </li>
+                                        <li class="list-group-item">
                                             <b>Remarks</b> <a class="float-right eplRemark" >-</a>
                                         </li>
                                     </ul>
                                 </div>
                                 <div class="info-box bg-light">
                                     <div class="info-box-content">
-                                        <span class="info-box-text text-center text-muted">Client Information</span>
+                                        <span class="info-box-text text-center text-muted">Industry Information</span>
                                         <dl>
                                             <dt>Name</dt>
                                             <dd class="eplClientName"></dd>
@@ -152,13 +158,17 @@
 <!--<script src="../../js/RemarksJS/delete.js"></script>-->
 <!-- AdminLTE App -->
 <script>
+var EPL = "{{$id}}";
 $(function () {
-    var EPL = "{{$id}}";
     getEplCertificateDetails(EPL, function (parameters) {
         if (parameters.status == 1) {
             $('#showUiDb').addClass('d-none');
             $('#showData').removeClass('d-none');
-            $('#eplissueDate').html(parameters.created_at);
+//Set Issue Date
+            $('#eplissueDate').html(parameters.issue_date);
+//Set Expire Date
+            $('#eplExpireDate').html(parameters.expire_date);
+            $('#eplcalExpireDate').html(parameters.date_different);
             $('.clientName').html(parameters.name);
             $('.eplName').html(parameters.first_name + ' ' + parameters.last_name);
             $('.clientNic').html(parameters.code);
@@ -168,7 +178,6 @@ $(function () {
             $('.eplCerNo').html(parameters.certificate_no);
             $('.eplRegNo').html(parameters.registration_no);
             $('.eplRemark').html(parameters.remark);
-
             $('.eplClientName').html(parameters.client.first_name + ' ' + parameters.client.last_name);
             $('.eplClientAdress').html(parameters.client.address);
             $('.eplClientMail').html(parameters.client.email);
@@ -201,7 +210,7 @@ $(function () {
         return data;
     }
     $('.btnRenewal').click(function () {
-        window.open("/renewal_page/id/" + {{$id}}, '_blank');
+        window.open("/renewal_page/id/" + EPL, '_blank');
     });
 });
 </script>
