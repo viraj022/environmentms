@@ -533,6 +533,25 @@ class EPLController extends Controller
             }
         });
     }
+    public function deleteOldData($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        // save epl main file      
+        $client =  Client::findOrFail($id);
+        $epls = $client->epls;
+        if (count($epls) == 0) {
+            abort(404);
+        } else if (count($epls) == 1) {
+            if ($epls[0]->delete()) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            return  response(array("id" => 2, "message" => "can't More the one record found"), 403);
+        }
+    }
     public function updateOldData($id, Request $request)
     {
         $user = Auth::user();

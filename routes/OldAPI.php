@@ -80,6 +80,14 @@ Route::middleware('auth:api')->put('/epl/old/epl/{id}', 'EPLController@updateOld
   "submit_date" : "2020-01-01",
   "file" : ""
 */
+Route::middleware('auth:api')->delete('/epl/old/epl/{id}', 'EPLController@deleteOldData'); //   delete a old epl
+
+/*
+{
+    "id": 1,
+    "message": "true"
+}
+*/
 
 Route::middleware('auth:api')->post('/old/attachments/{id}', 'OldFilesController@create'); //   add old attachments
 
