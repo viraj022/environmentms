@@ -375,4 +375,21 @@ class ClientController extends Controller
             return array('id' => 0, 'message' => 'false');
         }
     }
+
+    public function getOldFilesDetails($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $client = Client::where('is_old', 0)->first();
+        if ($client) {
+            $epls = $client->epls;
+            if (count($epls) > 0) {
+                return $client->epls[0];
+            } else {
+                return $epls;
+            }
+        } else {
+            abort(404);
+        }
+    }
 }

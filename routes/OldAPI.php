@@ -68,7 +68,7 @@ Route::middleware('auth:api')->post('/epl/old/industry/{id}', 'EPLController@sav
   "file" : ""
 */
 
-Route::middleware('auth:api')->put('/epl/old/epl/{id}', 'EPLController@updateOldData'); //   save a old epl
+Route::middleware('auth:api')->put('/epl/old/epl/{id}', 'EPLController@updateOldData'); //   update a old epl
 
 /*
   "epl_code" : "EPL/2020/rt/ty8",
@@ -104,6 +104,14 @@ Route::middleware('auth:api')->delete('/old/attachments/{id}', 'OldFilesControll
 
 
 Route::middleware('auth:api')->patch('/old/industry/{id}', 'ClientController@markOldFinish'); //   mark old data entry finish
+/*
+{
+    "id": 1,
+    "message": "true"
+}
+*/
+
+Route::middleware('auth:api')->get('/old/industry/{id}', 'ClientController@getOldFilesDetails'); //   get old file details
 /*
 {
     "id": 1,

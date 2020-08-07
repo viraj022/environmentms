@@ -493,6 +493,10 @@ class EPLController extends Controller
         // save epl main file      
         return \DB::transaction(function () use ($id, $request) {
             $client =  Client::findOrFail($id);
+            $epls = $client->epls;
+            if (count($epls) > 0) {
+                return  response(array("id" => 2, "message" => 'Record Already Exist Please Update the existing record'), 403);
+            }
             $client->is_working = 1;
             $msg = $client->save();
             $epl = new EPL();
