@@ -35,18 +35,11 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <dl>
-                            <dt>Name :</dt>
-                            <dd id="client_name"></dd>
-                            <dt>Address :</dt>
-                            <dd id="client_address"></dd>
-                            <dt>Contact Number :</dt>
-                            <dd id="client_cont"></dd>
-                            <dt>Contact Email :</dt>
-                            <dd id="client_amil"></dd>
-                            <dt>NIC :</dt>
-                            <dd id="client_nic"></dd>
-                        </dl>
+                        <dt class="">Name : <a id="client_name"></a></dt>            
+                        <dt class="">Address : <a id="client_address"></a></dt>
+                        <dt class="">Contact Number : <a id="client_cont"></a></dt>
+                        <dt class="">Contact Email : <a id="client_amil"></a></dt>
+                        <dt class="">NIC : <a id="client_nic"> </a></dt>
                     </div>
                     <!-- /.card-body -->
                 </div>                                                                        
@@ -62,11 +55,6 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body" style="height: 350px; overflow-y: scroll;">
-                        <div class="callout callout-danger">
-                            <h6 id="env_firstname">Assign Environment Officer: N/A</h6>
-                            <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change</button>
-                            <!--<p>There is a problem that we need to</p>-->
-                        </div>
                         <div class="callout callout-danger">
                             <h6><a id="disPaylink" href="/epl_payments/id/{{$profile}}" class="text-success">Payments</a></h6>
                             <p>All Payment (EPL, Fine,Inspection Fee, Certificate)</p>
@@ -104,30 +92,21 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <dt>Name :</dt>
-                        <dd id="obj_name"></dd>
-                        <dt>Registration No :</dt>
-                        <dd id="obj_regno"></dd>
-                        <dt>Code :</dt>
-                        <dd id="obj_code"></dd>
-                        <dt>Investment :</dt>
-                        <dd id="obj_invest"></dd>
-                        <dt>Remark :</dt>
-                        <dd id="obj_remark"></dd>
-                        <dt>Location :</dt>
-                        <div id="map" style="width: 100%; height: 400px;"></div>
+                        <dl class="row ">
+                            <div class="col-md-8">
+                                <dt >Name : <a id="obj_name"></a></dt>
+                                <dt >Registration No : <a id="obj_regno"></a></dt>
+                                <dt >Code : <a id="obj_code"></a></dt>
+                                <dt >Investment :  <a  id="obj_invest"></a></dt>
+                                <dt >Remark : <a  id="obj_remark"></a></dt>
+                                <dt >Location :---</dt>
+                            </div>
+                            <div id="map" style="width: 100%; height: 400px;"></div>
+                        </dl>
                         <dt>Download Application :</dt>
-
                         <a href="" class="btn btn-dark navTodownload" target="_blank">View Application</a>
-                        <a href="" class="btn btn-dark navToFile1" target="_blank">View Road Map</a>
-                        <a href="" class="btn btn-dark navToFile2" target="_blank">View Deed of the land</a>
-                        <a href="" class="btn btn-dark navToFile3" target="_blank">View Survey Plan</a>
-
 
                         <button type="button" class="btn btn-success d-none" data-upload_file="EPL" id="upld_application">Upload Application</button>
-                        <button type="button" class="btn btn-success d-none" data-upload_file="Road Map" id="upld_roadMap">Upload Road Map</button>
-                        <button type="button" class="btn btn-success d-none" data-upload_file="Deed Of The Land" id="upld_deed">Upload Deed of the land </button>
-                        <button type="button" class="btn btn-success d-none" data-upload_file="Survey Plan" id="upld_SurveyPlan">Upload Survey Plan</button>
                         <div class="form-group d-none" id="fileUpDiv">
                             <hr>
                             <label id="uploadLabel">File Upload </label>
@@ -208,45 +187,45 @@
 <script>
 //Map Start    
 // Initialize and add the map
-                                function initMap(_Latitude, _Longitude) {
-                                    // The location of CeyTech
-                                    var defaultLocation = {lat: _Latitude, lng: _Longitude}; //default Location for load map
+function initMap(_Latitude, _Longitude) {
+    // The location of CeyTech
+    var defaultLocation = {lat: _Latitude, lng: _Longitude}; //default Location for load map
 
-                                    // The map, centered at Uluru
-                                    var map = new google.maps.Map(document.getElementById('map'), {zoom: 15, center: defaultLocation});
-                                    // The marker, positioned at Uluru
-                                    var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: false, title: "Drag me!"});
-                                }
+    // The map, centered at Uluru
+    var map = new google.maps.Map(document.getElementById('map'), {zoom: 15, center: defaultLocation});
+    // The marker, positioned at Uluru
+    var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: false, title: "Drag me!"});
+}
 //Map END
-                                $(function () {
-                                    var CLIENT = '{{$client}}';
-                                    var PROFILE = '{{$profile}}';
-                                    getaClientbyId(CLIENT, function (result) {
-                                        if (result.length == 0 || result == undefined) {
-                                            if (confirm("Client Not Found! Try Again!")) {
+$(function () {
+    var CLIENT = '{{$client}}';
+    var PROFILE = '{{$profile}}';
+    getaClientbyId(CLIENT, function (result) {
+        if (result.length == 0 || result == undefined) {
+            if (confirm("Client Not Found! Try Again!")) {
 
-                                            }
-                                        } else {
-                                            setClientDetails(result);
-                                        }
-                                        initMap(parseFloat(result.industry_coordinate_x), parseFloat(result.industry_coordinate_y));
-                                    });
-                                    getDetailsbyId(PROFILE, function (result) {
-                                        if (result.length == 0 || result == undefined) {
-                                            if (confirm("Details Not Found! Try Again!")) {
-                                            }
-                                        } else {
-                                            setClearanceData(result);
-                                            setAllDetails(result);
-                                            click(function () {
-                                                downloadApp(result);
-                                            });
-                                        }
-                                    });
-                                });
-                                function disWarnPay() {
-                                    toastr.error('Assign Environment Officer & Try Again!');
-                                }
+            }
+        } else {
+            setClientDetails(result);
+        }
+        initMap(parseFloat(result.industry_coordinate_x), parseFloat(result.industry_coordinate_y));
+    });
+    getDetailsbyId(PROFILE, function (result) {
+        if (result.length == 0 || result == undefined) {
+            if (confirm("Details Not Found! Try Again!")) {
+            }
+        } else {
+            setClearanceData(result);
+            setAllDetails(result);
+            click(function () {
+                downloadApp(result);
+            });
+        }
+    });
+});
+function disWarnPay() {
+    toastr.error('Assign Environment Officer & Try Again!');
+}
 </script>
 <!--<script>
     $(function(){

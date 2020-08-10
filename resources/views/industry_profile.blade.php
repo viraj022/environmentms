@@ -71,12 +71,21 @@
                                     <!--<p>There is a problem that we need to</p>-->
                                 </div>
 
-                                <div class="info-box mb-3 bg-success">
+                                <div class="newEPL d-none info-box mb-3 bg-success">
                                     <span class="info-box-icon">
                                         <button class="btn btn-lg btn-default" id="newEPL"><i class="fa fa-plus"></i></button></span>
                                     <div class="info-box-content">
                                         <span class="info-box-text">Create new environment protection license file</span>
                                         <span class="info-box-number">New EPL</span>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                <div class="viewEPL info-box mb-3 bg-success d-none">
+                                    <span class="info-box-icon">
+                                        <a class="btn btn-lg btn-default" href="" id="setEPlLink"><i class="fa fa-plus"></i></a></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Environment protection license file</span>
+                                        <span class="info-box-number">View <a id="setEPLCode"></a></span>
                                     </div>
                                     <!-- /.info-box-content -->
                                 </div>
@@ -232,7 +241,7 @@
 <!-- AdminLTE App -->
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
 <script>
-                                        let PROFILE_ID = '{{$id}}';
+                                        PROFILE_ID = '{{$id}}';
                                         $(function () {
                                             getaProfilebyId(PROFILE_ID, function (parameters) {
                                                 setProfileDetails(parameters);

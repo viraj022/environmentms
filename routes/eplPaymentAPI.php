@@ -451,7 +451,7 @@ Route::middleware('auth:api')->get('/epl/pay/id/{id}', 'EPLPaymentController@pay
   }
  */
 
-Route::middleware('auth:api')->get('/epl/inspection/fine/id/{id}', 'EPLPaymentController@getInspectionFine'); // get inspection fine amount
+Route::middleware('auth:api')->post('/get/epl/inspection/fine/id/{id}', 'EPLPaymentController@getInspectionFine'); // get inspection fine amount
 
 /*
 * input

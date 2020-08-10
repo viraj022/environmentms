@@ -1,3 +1,4 @@
+let PROFILE_ID = '';
 function getaProfilebyId(id, callBack) {
     if (id.length == 0) {
         return false;
@@ -12,6 +13,14 @@ function getaProfilebyId(id, callBack) {
 
 function setProfileDetails(obj) {
     //    $('#newEPL').val(obj.id);
+    if (obj.epls.length == 0) {
+        $('.newEPL').removeClass('d-none');
+    } else {
+        $('.viewEPL').removeClass('d-none');
+        $('.newEPL').addClass('d-none');
+        $('#setEPLCode').html(obj.epls[obj.epls.length-1].code);
+        $("#setEPlLink").attr("href", "/epl_profile/client/"+PROFILE_ID+"/profile/"+obj.epls[obj.epls.length-1].id);
+    }
     $('#client_name').html(obj.first_name + ' ' + obj.last_name);
     $('#client_address').html(obj.address);
     $('#client_cont').html(obj.contact_no);

@@ -40,6 +40,13 @@
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
+                                    <label>Is New*</label>
+                                    <select id="getisOld" class="form-control form-control-sm" style="width: 100%;">
+                                        <option value="1">New</option>
+                                        <option value="0">Old</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label>First Name*</label>
                                     <input id="getfName" type="text" class="form-control form-control-sm"
                                            placeholder="Enter Name..."

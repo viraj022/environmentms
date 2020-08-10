@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Renewal</h1>
+                <h1>Old File List</h1>
             </div>
         </div>
     </div>
@@ -28,53 +28,7 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-5">
-                <div class="card card-primary">
-                    <div class="card-header">
-                        <label id="lblTitle">Add New Renewal</label>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label>New Or Old*</label>
-                            <select id="getNewOld" class="form-control form-control-sm">
-                                <option value="1">New</option>
-                                <option value="0">Old</option>
-                            </select>
-                            <div id="valPayType" class="d-none"><p class="text-danger">Field is required</p></div>
-                        </div>
-                        <div class="form-group">
-                            <label>Remark*</label>
-                            <input id="getRemarkVal" type="text" class="form-control form-control-sm"
-                                   placeholder="Enter Remark..."
-                                   value="">
-                            <div id="valName" class="d-none"><p class="text-danger">Remark is required</p></div>
-                        </div>
-                        <div class="form-group">
-                            <label>Date *</label>
-                            <input id="renewDate" type="date" class="form-control form-control-sm" placeholder="" value="">
-                        </div>
-                        <div class="form-group">
-                            <label>Renewal Application*</label>
-                            <input id="inp" type="file">
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSave" type="submit" class="btn btn-success">Submit Application</button>
-                        @endif
-                        @if($pageAuth['is_update']==1 || false)
-                        <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
-                        @endif
-                        @if($pageAuth['is_delete']==1 || false)
-                        <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
-                                 data-target="#modal-danger">Delete</button>
-                        @endif
-                    </div>                           
-                </div>
-            </div>
-
-
-            <div class="col-md-7">
+            <div class="col-md-12">
                 <div class="card card-primary">
                     <div class="card-body">
                         <div class="row">
@@ -82,17 +36,17 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">All Renewals</h3>
+                                        <h3 class="card-title">All Old Files</h3>
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body p-0">
                                         <div class="card-body table-responsive" style="height: 450px;">
-                                            <table class="table table-condensed" id="tblZone">
+                                            <table class="table table-condensed" id="tblOldFiles">
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 10px">#</th>
-                                                        <th>Name</th>
-                                                        <th>Code</th>
+                                                        <th>Industry Name</th>
+                                                        <th>NA</th>
                                                         <th style="width: 140px">Action</th>
                                                     </tr>
                                                 </thead>
@@ -160,27 +114,62 @@
 <script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="../../dist/js/demo.js"></script>
-<script src="../../js/RenewalJS/post_data.js"></script>
+<script src="../../js/OldFileListJS/old_file_list_api.js"></script>
 <!-- AdminLTE App -->
 <script>
-    let PROFILE_ID = '{{$id}}'; 
     $(function () {
 //Load table
-var renew_file = '';
-//        loadTable();   
-//             
+        getAllOldFilesApi();
 //click save button
         $('#btnSave').click(function () {
             var data = fromValues();
-            data.file = renew_file;
             if (Validiteinsert(data)) {
-                // if validiated
-                saveRenew(PROFILE_ID,data, function (result) {
+                uniqueNamecheck(data.name, function (res) {
+                    if (res.message === 'unique') {
+                        uniqueCodecheck(data.code, function (rest) {
+                            if (rest.message === 'unique') {
+                                // if validiated
+                                AddZone(data, function (result) {
+                                    if (result.id == 1) {
+                                        Toast.fire({
+                                            type: 'success',
+                                            title: 'Enviremontal MS</br>Saved'
+                                        });
+                                    } else {
+                                        Toast.fire({
+                                            type: 'error',
+                                            title: 'Enviremontal MS</br>Error'
+                                        });
+                                    }
+                                    loadTable();
+                                    resetinputFields();
+                                    hideAllErrors();
+                                });
+
+                                ///fkf   
+                            } else {
+                                $('#uniCode').removeClass('d-none');
+                            }
+                        });
+
+                    } else {
+                        $('#uniName').removeClass('d-none');
+                        //$('#uniCode').removeClass('d-none');  
+                    }
+
+                });
+            }
+        });
+//click update button
+        $('#btnUpdate').click(function () {
+            //get form data
+            var data = fromValues();
+            if (Validiteupdate(data)) {
+                updateZone($('#btnUpdate').val(), data, function (result) {
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
-                            title: 'Enviremontal MS</br>Saved'
+                            title: 'Enviremontal MS</br>Updated'
                         });
                     } else {
                         Toast.fire({
@@ -188,30 +177,31 @@ var renew_file = '';
                             title: 'Enviremontal MS</br>Error'
                         });
                     }
-//                    loadTable();
+                    loadTable();
+                    showSave();
                     resetinputFields();
                     hideAllErrors();
-                });
-            }
-        });
-    $(document).on('change', '#inp', function () {
-        readImage(this.id, function (result) {
-        renew_file = result;
-    });
-});   
-//click update button
-        $('#btnUpdate').click(function () {
-            //get form data
-            var data = fromValues();
-            if (Validiteupdate(data)) {
-                updateZone($('#btnUpdate').val(), data, function (result) {
                 });
             }
         });
 //click delete button
         $('#btnDelete').click(function () {
             deleteZone($('#btnDelete').val(), function (result) {
-
+                if (result.id == 1) {
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Enviremontal MS</br>Removed!'
+                    });
+                } else {
+                    Toast.fire({
+                        type: 'error',
+                        title: 'Enviremontal MS</br>Error'
+                    });
+                }
+                loadTable();
+                showSave();
+                resetinputFields();
+                hideAllErrors();
             });
         });
 //select button action 
@@ -240,18 +230,16 @@ var renew_file = '';
     }
 //Reset all fields    
     function resetinputFields() {
-        $('#getRemarkVal').val('');
-        $('#renewDate').val('');
+        $('#getName').val('');
+        $('#getCode').val('');
         $('#btnUpdate').val('');
         $('#btnDelete').val('');
     }
 //get form values
     function fromValues() {
         var data = {
-            e_p_l_id: {{$id}},
-            submit_date: $('#renewDate').val(),
-            remark: $('#getRemarkVal').val(),
-            is_old: $('#getNewOld').val()
+            name: $('#getName').val(),
+            code: $('#getCode').val()
         };
         return data;
     }
@@ -262,17 +250,5 @@ var renew_file = '';
         $('#uniName').addClass('d-none');
         $('#uniCode').addClass('d-none');
     }
-function readImage(img_selector, callback) {
-    var img = document.getElementById(img_selector);
-    if (img.files && img.files[0]) {
-        var FR = new FileReader();
-        FR.addEventListener("load", function (e) {
-            callback(e.target.result)
-        });
-        FR.readAsDataURL(img.files[0]);
-    } else {
-        alert("No Image");
-    }
-}    
 </script>
 @endsection

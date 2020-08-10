@@ -13,6 +13,7 @@ function resetinputFields() {
 //get form values
 function fromValues() {
     var data = {
+        is_old:$('#getisOld').val(),
         first_name: $('#getfName').val(),
         last_name: $('#getlName').val(),
         address: $('#getAddress').val(),

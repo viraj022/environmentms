@@ -40,22 +40,26 @@
                         <label id="lblTitle">Register New EPL</label>
                     </div>
                     <div class="card-body">
-                        <div class="form-group">
+<!--                        <div class="form-group">
                             <label>Is New*</label>
                             <select id="getisOld" class="form-control form-control-sm" style="width: 100%;">
                                 <option value="1">New</option>
-                                <option value="0">Old</option>
+                                                                <option value="0">Old</option>
                             </select>
-                        </div>
-                        <div id="old_file" class="d-none">
-                            <div class="form-group">
-                                <label>EPL Code*</label>
-                                <input id="epl_code" type="text" class="form-control form-control-sm" placeholder="Enter Number" value="">
-                            </div>
-                            <div class="form-group">
-                                <label>Certificate No*</label>
-                                <input id="certificate_no" type="text" class="form-control form-control-sm" placeholder="Enter Number" value="">
-                            </div>
+                        </div>-->
+                        <!--                        <div id="old_file" class="d-none">
+                                                    <div class="form-group">
+                                                        <label>EPL Code*</label>
+                                                        <input id="epl_code" type="text" class="form-control form-control-sm" placeholder="Enter Number" value="">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Certificate No*</label>
+                                                        <input id="certificate_no" type="text" class="form-control form-control-sm" placeholder="Enter Number" value="">
+                                                    </div>
+                                                </div>-->
+                        <div class="form-group">
+                            <label>Date*</label>
+                            <input id="startDate" type="date" class="form-control form-control-sm" placeholder="Enter Date..." value="">
                         </div>
                         <div class="form-group">
                             <label>Remark*</label>
