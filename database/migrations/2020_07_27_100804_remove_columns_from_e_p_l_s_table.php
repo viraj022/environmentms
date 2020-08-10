@@ -19,7 +19,7 @@ class RemoveColumnsFromEPLSTable extends Migration
             $table->dropForeign('e_p_l_s_pradesheeyasaba_id_foreign');
             $table->dropColumn('business_scale_id');
             $table->dropColumn('name');
-            $table->dropColumn('industry_scale_id');
+//            $table->dropColumn('industry_scale_id');
             $table->dropColumn('contact_no');
             $table->dropColumn('address');
             $table->dropColumn('email');
