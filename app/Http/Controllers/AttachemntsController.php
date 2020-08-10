@@ -200,18 +200,18 @@ class AttachemntsController extends Controller
         }
     }
 
-    public function attach($attachment, $client, Request $request)
+    public function attach($attachment, $epl, Request $request)
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_create']) {
+            $e = EPL::findOrFail($epl);
             $type = $request->file->extension();
             $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-            $fileUrl = "/uploads/indurtry_files/" . $client . "/attachments/" . $attachment;
+            $fileUrl = "/uploads/indurtry_files/" . $e->client_id  . "/attachments/" . $attachment;
             $storePath = 'public' . $fileUrl;
             $path = 'storage' . $fileUrl . "/" . $file_name;
             $request->file('file')->storeAs($storePath, $file_name);
-            $e = Client::findOrFail($client);
             return \DB::transaction(function () use ($attachment, $e, $path, $type) {
                 $e->attachemnts()->detach($attachment);
                 $e->attachemnts()->attach(
