@@ -92,7 +92,7 @@
                                             <b>Expire Date</b> <a class="float-right" id="eplExpireDate">-</a>
                                         </li>
                                         <li class="list-group-item">
-                                            <b>Dates To Expire</b> <a class="float-right" id="eplcalExpireDate">-</a>
+                                            <b id="eplexpireuiSetup">Dates To Expire</b> <a class="float-right" id="eplcalExpireDate">-</a>
                                         </li>
                                         <li class="list-group-item">
                                             <b>Remarks</b> <a class="float-right eplRemark" >-</a>
@@ -169,6 +169,13 @@ $(function () {
 //Set Expire Date
             $('#eplExpireDate').html(parameters.expire_date);
             $('#eplcalExpireDate').html(parameters.date_different);
+            var currentDate = new Date().toISOString().split('T')[0];
+            if (currentDate >= parameters.expire_date) {
+                $('#eplexpireuiSetup').html('Passed Away');
+            }else{               
+                $('#eplexpireuiSetup').html('Dates To Expire');
+            }
+//Date Filtering End            
             $('.clientName').html(parameters.name);
             $('.eplName').html(parameters.first_name + ' ' + parameters.last_name);
             $('.clientNic').html(parameters.code);

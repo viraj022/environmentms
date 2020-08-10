@@ -290,8 +290,11 @@ class EPLController extends Controller {
                         ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
                         ->first()->toArray();
         $issueDate = date_create($epl['issue_date']);
+        $todayDate = Carbon::now();
+//        $todayDate = $mytime->toDateTimeString();
+
         $expireDate = date_create($epl['expire_date']);
-        $dateDifference = date_diff($issueDate, $expireDate)->format('%y years, %m months and %d days');
+        $dateDifference = date_diff($todayDate, $expireDate)->format('%y years, %m months and %d days');
         $epl['date_different'] = $dateDifference;
         $epl['issue_date'] = date_format($issueDate, "Y-m-d");
         $epl['expire_date'] = date_format($expireDate, "Y-m-d");
