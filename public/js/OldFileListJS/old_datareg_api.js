@@ -10,12 +10,23 @@ function checkEPLExist(id, callBack) {
         }
     });
 }
+function getAsetClientData(id, callBack) {
+    if (id.length == 0) {
+        return false;
+    }
+    var url = "/api/client/id/" + id;
+    ajaxRequest('GET', url, null, function (result) {
+        if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
+            callBack(result);
+        }
+    });
+}
 
 function saveEPLOldFiles(epl_id, data, callBack) {
     if (!data || data.length == 0) {
         return false;
     }
-    ajaxRequest("POST", "/api/epl/old/industry/" + epl_id, data, function (resp) {
+    submitDataWithFile("/api/epl/old/industry/" + epl_id, data, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
         }
@@ -26,6 +37,19 @@ function updateEPLOldFiles(epl_id, data, callBack) {
         return false;
     }
     ajaxRequest("PUT", "/api/epl/old/epl/" + epl_id, data, function (resp) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(resp);
+        }
+    });
+}
+
+function uploadOldAttacments(client_id, data, callBack) {
+    if (!data || data.length == 0) {
+        return false;
+    }
+    let formData = new FormData();
+    formData.append(null,data);
+    ulploadFile2("/api/old/attachments/" + client_id, formData, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
         }
@@ -73,4 +97,14 @@ function fromValues() {
     };
     return data;
 }
-//END GET EPL FORM DATA
+
+function setProfileDetails(obj) {
+    $('#client_name').html(obj.first_name + ' ' + obj.last_name);
+    $('#client_address').html(obj.address);
+    $('#client_cont').html(obj.contact_no);
+    $('#client_amil').html(obj.email);
+    $('#client_nic').html(obj.nic);
+    $('#obj_name').html(obj.industry_name);
+    $('#obj_regno').html(obj.industry_registration_no);
+    $('#obj_invest').html(obj.industry_investment);
+}

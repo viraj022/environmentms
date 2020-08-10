@@ -27,10 +27,10 @@ function Validiteinsert(data) {
         $('#valPayCat').removeClass('d-none');
         response = false;
     }
-    if (data.last_name.length === 0) {
-        $('#valLName').removeClass('d-none');
-        response = false;
-    }
+//    if (data.last_name.length === 0) {
+//        $('#valLName').removeClass('d-none');
+//        response = false;
+//    }
 //    if (data.nic.length === 0) {
 //        $('#valnicName').removeClass('d-none');
 //        response = false;

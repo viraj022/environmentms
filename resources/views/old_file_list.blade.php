@@ -46,7 +46,7 @@
                                                     <tr>
                                                         <th style="width: 10px">#</th>
                                                         <th>Industry Name</th>
-                                                        <th>NA</th>
+                                                        <th>BR</th>
                                                         <th style="width: 140px">Action</th>
                                                     </tr>
                                                 </thead>
