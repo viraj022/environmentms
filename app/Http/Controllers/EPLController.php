@@ -43,7 +43,6 @@ class EPLController extends Controller
             abort(401);
         }
     }
-
     public function index2()
     {
         $user = Auth::user();
@@ -54,7 +53,6 @@ class EPLController extends Controller
             abort(401);
         }
     }
-
     public function index3($id)
     {
         $user = Auth::user();
@@ -70,7 +68,6 @@ class EPLController extends Controller
             abort(401);
         }
     }
-
     public function profile($client, $profile)
     {
         $user = Auth::user();
@@ -85,7 +82,6 @@ class EPLController extends Controller
             abort(401);
         }
     }
-
     public function attachment_upload_view($epl_id)
     {
         $user = Auth::user();
@@ -101,7 +97,6 @@ class EPLController extends Controller
             abort(401);
         }
     }
-
     public function issue_certificate($epl_id)
     {
         $user = Auth::user();
@@ -177,6 +172,7 @@ class EPLController extends Controller
                     'client_id' => 'required|integer',
                     'remark' => ['sometimes', 'nullable'],
                     'created_date' => ['required', 'date'],
+                    'file' => 'required|mimes:jpeg,jpg,png,pdf'
                 ]);
                 $epl = new EPL();
                 $epl->client_id = \request('client_id');
@@ -218,6 +214,7 @@ class EPLController extends Controller
                     'client_id' => 'required|integer',
                     'remark' => ['sometimes', 'nullable'],
                     'created_date' => ['required', 'date'],
+                    'file' => 'required|mimes:jpeg,jpg,png,pdf'
                 ]);
                 $epl = new EPL();
                 $epl->client_id = \request('client_id');
@@ -250,6 +247,12 @@ class EPLController extends Controller
 
     public function saveFile($epl, $type, Request $request)
     {
+        request()->validate([
+            'file' => 'sometimes|nullable|mimes:jpeg,jpg,png,pdf',
+            'file1' => 'sometimes|nullable|mimes:jpeg,jpg,png,pdf',
+            'file2' => 'sometimes|nullable|mimes:jpeg,jpg,png,pdf',
+            'file3' => 'sometimes|nullable|mimes:jpeg,jpg,png,pdf',
+        ]);
         $client = Client::find($epl);
         if ($client) {
             $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
@@ -503,6 +506,7 @@ class EPLController extends Controller
             'certificate_no' => 'required|string',
             'count' => 'required|integer',
             'submit_date' => 'required|date',
+            'file' => 'required|mimes:jpeg,jpg,png,pdf'
         ]);
         // save epl main file      
         return \DB::transaction(function () use ($id, $request) {
@@ -581,6 +585,7 @@ class EPLController extends Controller
             'certificate_no' => 'required|string',
             'count' => 'required|integer',
             'submit_date' => 'required|date',
+            'file' => 'sometimes|nullable|mimes:jpeg,jpg,png,pdf'
         ]);
         // save epl main file      
         return \DB::transaction(function () use ($id, $request) {
