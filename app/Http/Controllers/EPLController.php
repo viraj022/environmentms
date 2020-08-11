@@ -268,7 +268,6 @@ class EPLController extends Controller
                     break;
                 case 'file3':
                     $fileUrl = '/uploads/indurtry_files/' . $client->id . '/application/file3';
-
                     $client->file_03 = "storage" . $fileUrl . "/" . $file_name;
                     break;
                 default:
@@ -534,6 +533,8 @@ class EPLController extends Controller
                     $path = $request->file('file')->storeAs($storePath, $file_name);
                     $epl->path =  "storage/" . $fileUrl . "/" . $file_name;
                     $msg = $epl->save();
+                } else {
+                    return response(array('id' => 1, 'message' => 'application not found'), 422);
                 }
             } else {
                 abort(500);
@@ -597,14 +598,12 @@ class EPLController extends Controller
             if ($msg) {
                 if ($request->file('file') != null) {
                     $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                    $fileUrl = '/uploads/industry_files/' . $epl->client_id . '/old';
+                    $fileUrl = '/uploads/industry_files/' . $epl->client_id . '/application';
                     $storePath = 'public' . $fileUrl;
                     $path = $request->file('file')->storeAs($storePath, $file_name);
-                    $oldFiles = new OldFiles();
-                    $oldFiles->path = "storage/" . $fileUrl . "/" . $file_name;
-                    $oldFiles->type = $request->file->extension();
-                    $msg = $msg && $oldFiles->save();
+                    $epl->path =  "storage/" . $fileUrl . "/" . $file_name;
                 }
+                $msg = $epl->save();
             } else {
                 abort(500);
             }
