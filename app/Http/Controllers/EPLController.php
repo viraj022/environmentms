@@ -181,7 +181,6 @@ class EPLController extends Controller
                 $epl = new EPL();
                 $epl->client_id = \request('client_id');
                 $epl->remark = \request('remark');
-                $epl->is_working = 1;
                 $epl->code = $this->generateCode($client);
                 $client->application_path = "";
                 $epl->submitted_date = \request('created_date');

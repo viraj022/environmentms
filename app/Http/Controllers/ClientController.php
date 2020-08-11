@@ -392,9 +392,10 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        $client = Client::where('is_old', 0)->first();
+        $client = Client::where('is_old', 0)->where('id',$id)->first();
         if ($client) {
             $epls = $client->epls;
+//            dd($client);
             if (count($epls) > 0) {
                 return $client->epls[0];
             } else {
