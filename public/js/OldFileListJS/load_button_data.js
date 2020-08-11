@@ -34,3 +34,28 @@ function visibleUploads(usage) {
         $('.uploadEPLSection').removeClass('d-none');
     }
 }
+
+//Load Attachments
+function loadAllOldAttachments(result, callBack) {
+    var obj = '';
+    var num = 0;
+    $.each(result.old_files, function (index, row) {
+        obj += '&nbsp;<br>';
+        obj += '<a type="button" id="' + row.id + '" class="btn btn-danger text-white removeAttachs" value="0">Remove Attachment ' + ++num + '</a>   ';
+        obj += '<a href="/' + row.path + '" target="_blank">View Attachment [' + ++index + ']</a> ';
+        obj += '&nbsp;<br>';
+    });
+    $('.injectViewAttachs').html(obj);
+    if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        callBack();
+    }
+}
+
+//This function used to reload Ajax Client Data
+function regenCLientData(EPL_PROFILE) {
+    getAsetClientData(EPL_PROFILE, function (result) {
+        setProfileDetails(result);
+        loadAllOldAttachments(result, function () {
+        });
+    });
+}

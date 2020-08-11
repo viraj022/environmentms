@@ -13,6 +13,9 @@ class OldFilesController extends Controller
 
     public function create($id, Request $request)
     {
+       request()->validate([
+            'file' => 'required|mimes:jpeg,jpg,png,pdf'
+        ]);
         $client = Client::findOrFail($id);
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
@@ -23,6 +26,7 @@ class OldFilesController extends Controller
         $oldFiles = new OldFiles();
         $oldFiles->path = "storage/" . $fileUrl . "/" . $file_name;
         $oldFiles->type = $request->file->extension();
+        $oldFiles->client_id = $client->id;
         if ($oldFiles->save()) {
             return array('id' => 1, 'message' => 'true');
         } else {

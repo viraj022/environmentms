@@ -166,14 +166,51 @@
                                             <div class="form-group">
                                                 <label>Upload: </label>
                                                 <input id="otherFiles" type="file">
+                                                @if($pageAuth['is_create']==1 || false)
+                                                <button id="btnUpload" type="submit" class="btn btn-success">Upload</button>
+                                                @endif
+                                            </div>
+                                            <div class="card-body injectViewAttachs">                                
+                                                <a href="#" target="_blank">Loading Attachments...</a>                          
+                                            </div>                                    
+                                        </div>
+                                    </div>
+                                    <!--                                    <div class="card-footer">
+                                    
+                                                                        </div> -->
+                                </div>
+                            </div>                                        
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-primary">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Last Issued Certificate</h3>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="card-body" style="height: 450px;">
+                                            <div class="card card-widget">
+                                                <div class="card-header">
+                                                    <div class="card-tools">
+                                                        <button type="button" class="btn btn-tool" data-toggle="tooltip" title="Mark as read">
+                                                            <i class="far fa-circle"></i></button>
+                                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body" style="display: block;">
+                                                    <img class="img-fluid pad" id="lastCertificatePath" src="#" alt="Certificate">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card-footer">
-                                        @if($pageAuth['is_create']==1 || false)
-                                        <button id="btnUpload" type="submit" class="btn btn-success">Upload</button>
-                                        @endif
-                                    </div> 
                                 </div>
                             </div>                                        
                         </div>
@@ -226,6 +263,7 @@
                 saveEPLOldFiles(EPL_PROFILE, data, function (result) {
                     show_mesege(result);
                     visibleUploads(result);
+                    regenCLientData(EPL_PROFILE);
                     resetinputFields();
                     hideAllErrors();
                 });
@@ -257,6 +295,8 @@
                         $('#getsubmitDate').val(submitDate);
                         $('#btnUpdate').val(result.id);
                         $('#btnshowDelete').val(result.id);
+                        $('#lastCertificatePath').attr('src', '/'+ result.path);
+                        
                         showUpdate();
                         $('.eplSection').removeClass('d-none');
                     }
@@ -312,20 +352,27 @@
 
         $('#btnUpload').click(function () {
             var file = $('#otherFiles')[0].files[0];
-            uploadOldAttacments(EPL_PROFILE, {file: file}, function (result) {
+            uploadOldAttacments(EPL_PROFILE, 'file', file, function (result) {
                 show_mesege(result);
+                regenCLientData(EPL_PROFILE);
             });
         });
 
-//select button action 
-        $(document).on('click', '.btnAction', function () {
 
+//Remove Old Attachments
+        $(document).on('click', '.removeAttachs', function () {
+            var getRemoveId = $(this).attr('id');
+            deleteOldAttachments(getRemoveId, function (result) {
+                show_mesege(result);
+                regenCLientData(EPL_PROFILE);
+            });
         });
 
         getAsetClientData(EPL_PROFILE, function (result) {
             setProfileDetails(result);
+            loadAllOldAttachments(result, function () {
+            });
         });
-
 
     });
 </script>

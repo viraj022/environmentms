@@ -43,12 +43,9 @@ function updateEPLOldFiles(epl_id, data, callBack) {
     });
 }
 
-function uploadOldAttacments(client_id, data, callBack) {
-    if (!data || data.length == 0) {
-        return false;
-    }
+function uploadOldAttacments(client_id,key ,value, callBack) {
     let formData = new FormData();
-    formData.append(null,data);
+    formData.append(key,value);
     ulploadFile2("/api/old/attachments/" + client_id, formData, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
@@ -58,6 +55,15 @@ function uploadOldAttacments(client_id, data, callBack) {
 
 function deleteEPLOldFiles(id, callBack) {
     let url = '/api/epl/old/epl/' + id;
+    ajaxRequest('DELETE', url, null, function (resp) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(resp);
+        }
+    });
+}
+//----Remove Old Attachments---
+function deleteOldAttachments(id, callBack) {
+    let url = '/api/old/attachments/' + id;
     ajaxRequest('DELETE', url, null, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
@@ -93,7 +99,7 @@ function fromValues() {
         certificate_no: $('#getcertifateNo').val(),
         count: $('#getPreRenew').val(),
         submit_date: $('#getsubmitDate').val(),
-        file: $('#last_certificate').val()
+        file: $('#last_certificate')[0].files[0]
     };
     return data;
 }
