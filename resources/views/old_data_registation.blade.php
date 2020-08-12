@@ -125,7 +125,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Submit Date*</label>
+                                <label> Last Submitted Date*</label>
                                 <input id="getsubmitDate" type="date" class="form-control form-control-sm" placeholder="Enter Submit Date..." value="">
                             </div>
                             <div class="form-group">
@@ -184,7 +184,7 @@
                     </div>
                 </div>
 
-                <div class="card card-primary">
+                <div class="card card-primary d-none lastIssuedCer">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
@@ -295,8 +295,10 @@
                         $('#getsubmitDate').val(submitDate);
                         $('#btnUpdate').val(result.id);
                         $('#btnshowDelete').val(result.id);
-                        $('#lastCertificatePath').attr('src', '/'+ result.path);
-                        
+                        $('#lastCertificatePath').attr('src', '/' + result.path);
+                        if (result.path.length !== 0) {
+                            $('.lastIssuedCer').removeClass('d-none');
+                        }
                         showUpdate();
                         $('.eplSection').removeClass('d-none');
                     }
