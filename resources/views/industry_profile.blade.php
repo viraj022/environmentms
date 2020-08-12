@@ -308,6 +308,7 @@
                                                                     loadAllOldAttachments(parameters, function () {
                                                                     });
                                                                     oldFileConfirmSection(parameters.is_old);
+                                                                    checkEPLstatus(parameters.epls);
                                                                 });
                                                                 $('#newEPL').click(function () {
                                                                     if (isNaN(parseInt(PROFILE_ID))) {

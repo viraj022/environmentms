@@ -18,8 +18,8 @@ function setProfileDetails(obj) {
     } else {
         $('.viewEPL').removeClass('d-none');
         $('.newEPL').addClass('d-none');
-        $('#setEPLCode').html(obj.epls[obj.epls.length-1].code);
-        $("#setEPlLink").attr("href", "/epl_profile/client/"+PROFILE_ID+"/profile/"+obj.epls[obj.epls.length-1].id);
+        $('#setEPLCode').html(obj.epls[obj.epls.length - 1].code);
+        $("#setEPlLink").attr("href", "/epl_profile/client/" + PROFILE_ID + "/profile/" + obj.epls[obj.epls.length - 1].id);
     }
     $('#client_name').html(obj.first_name + ' ' + obj.last_name);
     $('#client_address').html(obj.address);
@@ -87,5 +87,14 @@ function documentUploadDetails(obj) {
     } else if (obj.first_name == null) {
         $("#disPaylink").attr("href", "javascript:disWarnPay();");
         $("#disInspeclink").attr("href", "javascript:disWarnPay();");
+    }
+}
+
+function checkEPLstatus(epls) {
+    if (epls.length === 0) {
+        $('.newEPL').addClass('bg-info');
+        $('.newEPL').removeClass('bg-success');
+    } else {
+        return false;
     }
 }
