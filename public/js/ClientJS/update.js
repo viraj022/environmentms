@@ -28,9 +28,9 @@ function Validiteupdate(data){
         $('#valPayCat').removeClass('d-none');
         response = false;
     }
-    if (data.last_name.length == 0) {
-        $('#valName').removeClass('d-none');
-        response = false;
-    }
+//    if (data.last_name.length == 0) {
+//        $('#valName').removeClass('d-none');
+//        response = false;
+//    }
     return response;
 }

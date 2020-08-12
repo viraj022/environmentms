@@ -209,6 +209,14 @@
                     </a>
                 </li>
                 @endif
+                @if($pre['id']===config('auth.privileges.clientSpace'))
+                <li class="nav-item">
+                    <a href="{{ url('/old_file_list') }}" class="nav-link {{ Request::is('old_file_list') ? 'active' : '' }}">
+                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <p>Old Files</p>
+                    </a>
+                </li>
+                @endif
                 {{-- @if($pre['id']===config('auth.privileges.clientSpace'))
                 <li class="nav-item">
                     <a href="{{ url('/env_officer') }}" class="nav-link {{ Request::is('env_officer') ? 'active' : '' }}">

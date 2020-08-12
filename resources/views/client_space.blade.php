@@ -49,42 +49,42 @@
                                 <div class="form-group">
                                     <label>First Name*</label>
                                     <input id="getfName" type="text" class="form-control form-control-sm"
-                                           placeholder="Enter Name..."
+                                           placeholder="Enter FirstName..."
                                            value="">
                                     <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Last Name*</label>
+                                    <label>Last Name</label>
                                     <input id="getlName" type="text" class="form-control form-control-sm"
-                                           placeholder="Enter Name..."
+                                           placeholder="Enter LastName..."
                                            value="">
                                     <div id="valLName" class="d-none"><p class="text-danger">Last Name is required</p></div>
                                 </div>
                                 <div class="form-group">
                                     <label>Address</label>
                                     <input id="getAddress" type="text" class="form-control form-control-sm"
-                                           placeholder="Enter Name..."
+                                           placeholder="Enter Address..."
                                            value="">
                                     <div id="valAddName" class="d-none"><p class="text-danger">Address is required</p></div>
                                 </div>
                                 <div class="form-group">
                                     <label>Contact Number</label>
                                     <input id="getContact" type="text" class="form-control form-control-sm"
-                                           placeholder="Enter Name..."
+                                           placeholder="Enter Contact Number..."
                                            value="">
                                     <div id="valConName" class="d-none"><p class="text-danger">Contact Number is required</p></div>
                                 </div>
                                 <div class="form-group">
                                     <label>Email</label>
                                     <input id="getEmail" type="text" class="form-control form-control-sm"
-                                           placeholder="Enter Name..."
+                                           placeholder="Enter Email..."
                                            value="">
                                     <div id="valNam1e" class="d-none"><p class="text-danger">Email is required</p></div>
                                 </div>
                                 <div class="form-group">
                                     <label>NIC</label>
                                     <input id="getNicSave" type="text" class="form-control form-control-sm"
-                                           placeholder="Enter Name..."
+                                           placeholder="Enter NIC..."
                                            value="">
                                     <div id="valnicName" class="d-none"><p class="text-danger">NIC is required</p></div>
                                 </div>
@@ -151,23 +151,23 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Address*</label>
-                                    <input id="getAddressT" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                                    <input id="getAddressT" type="text" class="form-control form-control-sm" placeholder="Enter Address..." value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Start Date*</label>
-                                    <input id="startDate" type="date" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                                    <input id="startDate" type="date" class="form-control form-control-sm" placeholder="Enter Date..." value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Submitted Date*</label>
-                                    <input id="submittedDate" type="date" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                                    <input id="submittedDate" type="date" class="form-control form-control-sm" placeholder="Enter Date..." value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Contact No*</label>
-                                    <input id="getContactn" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                                    <input id="getContactn" type="text" class="form-control form-control-sm" placeholder="Enter Contact Info..." value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Email*</label>
-                                    <input id="getEmailI" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                                    <input id="getEmailI" type="text" class="form-control form-control-sm" placeholder="Enter Email..." value="">
                                 </div>
                             </div>
                             <div class="card-footer">

@@ -41,6 +41,20 @@ function ajaxRequest(Method, url, data, callBack) {
         }
     });
 }
+
+function submitDataWithFile(url,fromData,callBack) {
+    let formData = new FormData();
+    // populate fields
+    $.each(fromData, function (k, val) {
+        formData.append(k, val);
+    });
+    ulploadFile2(url, formData, function (result) {
+        if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
+            callBack(result);
+        }
+    });
+}
+
 function show_mesege(resp_id) {
     if (resp_id.id == 1) {
         Toast.fire({
