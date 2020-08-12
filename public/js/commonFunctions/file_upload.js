@@ -1,4 +1,7 @@
-function ulploadFile2(URL, formData, callBack) {
+function ulploadFile2(URL, formData, callBack, metod = false) {
+    if (!metod) {
+        metod = 'POST';
+    }
     /*
      let formData = new FormData();
      // populate fields
@@ -9,7 +12,7 @@ function ulploadFile2(URL, formData, callBack) {
      */
     // send form data
     $.ajax({
-        type: 'POST',
+        type: metod,
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"

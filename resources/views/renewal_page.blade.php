@@ -34,14 +34,14 @@
                         <label id="lblTitle">Add New Renewal</label>
                     </div>
                     <div class="card-body">
-                        <div class="form-group">
-                            <label>New Or Old*</label>
-                            <select id="getNewOld" class="form-control form-control-sm">
-                                <option value="1">New</option>
-                                <option value="0">Old</option>
-                            </select>
-                            <div id="valPayType" class="d-none"><p class="text-danger">Field is required</p></div>
-                        </div>
+                        <!--                        <div class="form-group">
+                                                    <label>New Or Old*</label>
+                                                    <select id="getNewOld" class="form-control form-control-sm">
+                                                        <option value="1">New</option>
+                                                        <option value="0">Old</option>
+                                                    </select>
+                                                    <div id="valPayType" class="d-none"><p class="text-danger">Field is required</p></div>
+                                                </div>-->
                         <div class="form-group">
                             <label>Remark*</label>
                             <input id="getRemarkVal" type="text" class="form-control form-control-sm"
@@ -56,6 +56,11 @@
                         <div class="form-group">
                             <label>Renewal Application*</label>
                             <input id="inp" type="file">
+                        </div>
+                        <div class="progress d-none">
+                            <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                <!--<span class="sr-only">40% Complete (success)</span>-->
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -162,21 +167,20 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
 <script src="../../js/RenewalJS/post_data.js"></script>
+<script src="../../js/commonFunctions/file_upload.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
-    let PROFILE_ID = '{{$id}}'; 
+    let PROFILE_ID = '{{$id}}';
     $(function () {
 //Load table
-var renew_file = '';
 //        loadTable();   
 //             
 //click save button
         $('#btnSave').click(function () {
             var data = fromValues();
-            data.file = renew_file;
             if (Validiteinsert(data)) {
                 // if validiated
-                saveRenew(PROFILE_ID,data, function (result) {
+                saveRenew(PROFILE_ID, data, function (result) {
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
@@ -194,11 +198,11 @@ var renew_file = '';
                 });
             }
         });
-    $(document).on('change', '#inp', function () {
-        readImage(this.id, function (result) {
-        renew_file = result;
-    });
-});   
+        $(document).on('change', '#inp', function () {
+            readImage(this.id, function (result) {
+                renew_file = result;
+            });
+        });
 //click update button
         $('#btnUpdate').click(function () {
             //get form data
@@ -248,10 +252,10 @@ var renew_file = '';
 //get form values
     function fromValues() {
         var data = {
-            e_p_l_id: {{$id}},
-            submit_date: $('#renewDate').val(),
+            client_id: PROFILE_ID,
+            created_date: $('#renewDate').val(),
             remark: $('#getRemarkVal').val(),
-            is_old: $('#getNewOld').val()
+            file: $('#inp')[0].files[0]
         };
         return data;
     }
@@ -262,17 +266,17 @@ var renew_file = '';
         $('#uniName').addClass('d-none');
         $('#uniCode').addClass('d-none');
     }
-function readImage(img_selector, callback) {
-    var img = document.getElementById(img_selector);
-    if (img.files && img.files[0]) {
-        var FR = new FileReader();
-        FR.addEventListener("load", function (e) {
-            callback(e.target.result)
-        });
-        FR.readAsDataURL(img.files[0]);
-    } else {
-        alert("No Image");
+    function readImage(img_selector, callback) {
+        var img = document.getElementById(img_selector);
+        if (img.files && img.files[0]) {
+            var FR = new FileReader();
+            FR.addEventListener("load", function (e) {
+                callback(e.target.result)
+            });
+            FR.readAsDataURL(img.files[0]);
+        } else {
+            alert("No Image");
+        }
     }
-}    
 </script>
 @endsection

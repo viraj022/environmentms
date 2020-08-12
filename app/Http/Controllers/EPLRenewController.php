@@ -15,9 +15,12 @@ class EPLRenewController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index($id) {
+       
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-        return view('renewal_page', ['pageAuth' => $pageAuth,'id' => $id]);
+        $epl = EPL::findOrFail($id);
+//         dd($epl->client_id);
+        return view('renewal_page', ['pageAuth' => $pageAuth,'id' => $epl->client_id]);
     }
 
     /**
