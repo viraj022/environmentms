@@ -162,12 +162,12 @@
                                         <h3 class="card-title">Other Attachments</h3>
                                     </div>
                                     <div class="card-body p-0">
-                                        <div class="card-body" style="height: 450px;">
+                                        <div class="card-body table-responsive" style="height: 450px;">
                                             <div class="form-group">
                                                 <label>Upload: </label>
                                                 <input id="otherFiles" type="file">
                                                 @if($pageAuth['is_create']==1 || false)
-                                                <button id="btnUpload" type="submit" class="btn btn-success">Upload</button>
+                                                <button disabled id="btnUpload" type="submit" class="btn btn-success">Upload</button>
                                                 @endif
                                             </div>
                                             <div class="card-body injectViewAttachs">                                
@@ -275,7 +275,7 @@
             var load_val = $('#getIndustryType').val();
             if (load_val === '01') {
                 checkEPLExist(EPL_PROFILE, function (result) {
-                    visibleUploads(result);
+//                    visibleUploads(result);
                     if (result.length === 0) {
                         $('.eplSection').removeClass('d-none');
                         showSave();
@@ -357,6 +357,7 @@
             uploadOldAttacments(EPL_PROFILE, 'file', file, function (result) {
                 show_mesege(result);
                 regenCLientData(EPL_PROFILE);
+                resetinputFields();
             });
         });
 
@@ -377,5 +378,12 @@
         });
 
     });
+
+    $(document).ready(function () {
+        $('#otherFiles').bind('change', function () {
+            uploadButtonHandler($('#otherFiles').val());
+        });
+    });
+
 </script>
 @endsection

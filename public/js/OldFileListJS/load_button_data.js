@@ -20,6 +20,7 @@ function resetinputFields() {
     $('#getPreRenew').val();
     $('#getsubmitDate').val();
     $('#last_certificate').val();
+    $('#otherFiles').val('');
 }
 //HIDE ALL ERROR MSGS   
 function hideAllErrors() {
@@ -58,4 +59,12 @@ function regenCLientData(EPL_PROFILE) {
         loadAllOldAttachments(result, function () {
         });
     });
+}
+
+function uploadButtonHandler(value) {
+    if (value.length !== 0) {
+        $("#btnUpload").removeAttr("disabled");
+    } else {
+        $("#btnUpload").attr("disabled", "disabled");
+    }
 }

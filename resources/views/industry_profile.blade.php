@@ -238,12 +238,12 @@
                                 <h3 class="card-title">Other Attachments</h3>
                             </div>
                             <div class="card-body p-0">
-                                <div class="card-body" style="height: 450px;">
+                                <div class="card-body table-responsive" style="height: 450px;">
                                     <div class="form-group uploadAttachments">
                                         <label>Upload: </label>
                                         <input id="otherFiles" type="file">
                                         @if($pageAuth['is_create']==1 || false)
-                                        <button id="btnUpload" type="submit" class="btn btn-success">Upload</button>
+                                        <button disabled id="btnUpload" type="submit" class="btn btn-success">Upload</button>
                                         @endif
                                     </div>
                                     <div class="card-body injectViewAttachs">                                
@@ -397,6 +397,12 @@
                                                                 } else {
                                                                     return false;
                                                                 }
+                                                            });
+//Handle Upload Button
+                                                            $(document).ready(function () {
+                                                                $('#otherFiles').bind('change', function () {
+                                                                    uploadButtonHandler($('#otherFiles').val());
+                                                                });
                                                             });
 </script>
 @endsection

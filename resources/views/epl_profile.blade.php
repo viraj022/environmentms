@@ -81,6 +81,11 @@
                         </div>
                     </div>
                     <!-- /.card-body -->
+
+                    <div class="linkSectionCnf overlay dark">
+                        <a class="text-white">File Not Confirmed!</a>
+                    </div>
+
                 </div>                                    
             </div>
             <div class="col-md-6">
@@ -207,6 +212,7 @@ $(function () {
             }
         } else {
             setClientDetails(result);
+            disableLinkSection(result.is_old);
         }
         initMap(parseFloat(result.industry_coordinate_x), parseFloat(result.industry_coordinate_y));
     });
