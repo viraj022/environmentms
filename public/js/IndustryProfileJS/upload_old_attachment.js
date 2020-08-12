@@ -46,6 +46,8 @@ function oldFileConfirmSection(is_old) {
     if (is_old === 0) {
         $('.isNotConfiremd').removeClass('d-none');
         $('#setEPlLink').addClass('disabled');
+        $('#newEPL').addClass('disabled');
+        $('.serviceSectionCnf').addClass('overlay');
     } else {
         $('.isConfirmed').removeClass('d-none');
         $('.removeAttachs').addClass('d-none');
