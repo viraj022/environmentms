@@ -24,3 +24,11 @@ function setClearanceData(obj) {
         $('#btnUpdateClear').removeClass('d-none');
     }
 }
+
+function disableLinkSection(is_old) {
+    if (is_old === 0) {
+        $('.linkSectionCnf').addClass('overlay');
+    } else {
+        $('.linkSectionCnf').removeClass('overlay');
+    }
+}

@@ -43,8 +43,9 @@ function sectionProtector(is_old) {
 }
 
 function oldFileConfirmSection(is_old) {
-    if (is_old === 1) {
+    if (is_old === 0) {
         $('.isNotConfiremd').removeClass('d-none');
+        $('#setEPlLink').addClass('disabled');
     } else {
         $('.isConfirmed').removeClass('d-none');
         $('.removeAttachs').addClass('d-none');
@@ -60,4 +61,12 @@ function ConfirmUploadingAttachs(id, callBack) {
             callBack(resp);
         }
     });
+}
+
+function uploadButtonHandler(value) {
+    if (value.length !== 0) {
+        $("#btnUpload").removeAttr("disabled");
+    } else {
+        $("#btnUpload").attr("disabled", "disabled");
+    }
 }

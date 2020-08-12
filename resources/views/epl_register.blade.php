@@ -224,7 +224,7 @@ $("#btnSave").click(function () {
         if (result.id == 1) {
             window.location.replace(result.rout);
         }
-        show_mesege(result.id);
+        show_mesege(result);
     });
 });
 

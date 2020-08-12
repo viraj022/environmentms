@@ -179,11 +179,11 @@ $(function () {
             $('.clientName').html(parameters.name);
             $('.eplName').html(parameters.first_name + ' ' + parameters.last_name);
             $('.clientNic').html(parameters.code);
-            $('.clientAddr').html(parameters.address);
+            $('.clientAddr').html(parameters.client.industry_address);
             $('.clientCont').html(parameters.contact_no);
             $('.clientEmail').html(parameters.email);
             $('.eplCerNo').html(parameters.certificate_no);
-            $('.eplRegNo').html(parameters.registration_no);
+            $('.eplRegNo').html(parameters.client.industry_registration_no);
             $('.eplRemark').html(parameters.remark);
             $('.eplClientName').html(parameters.client.first_name + ' ' + parameters.client.last_name);
             $('.eplClientAdress').html(parameters.client.address);
