@@ -36,7 +36,7 @@ function updateEPLOldFiles(epl_id, data, callBack) {
     if (!data || data.length == 0) {
         return false;
     }
-    ajaxRequest("PUT", "/api/epl/old/epl/" + epl_id, data, function (resp) {
+    submitDataWithFile("/api/epl/old/epl/" + epl_id, data, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
         }

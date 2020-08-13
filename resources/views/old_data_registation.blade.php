@@ -206,7 +206,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="card-body" style="display: block;">
-                                                    <img class="img-fluid pad" id="lastCertificatePath" src="#" alt="Certificate">
+                                                    <a id="addCertificateURL" target="_blank" href=""><img class="img-fluid pad lastCertificatePath" src="#" alt="Certificate"></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -266,6 +266,7 @@
                     regenCLientData(EPL_PROFILE);
                     resetinputFields();
                     hideAllErrors();
+                    $("#btnLoadAc").click();
                 });
             }
         });
@@ -295,7 +296,8 @@
                         $('#getsubmitDate').val(submitDate);
                         $('#btnUpdate').val(result.id);
                         $('#btnshowDelete').val(result.id);
-                        $('#lastCertificatePath').attr('src', '/' + result.path);
+                        $('.lastCertificatePath').attr('src', '/' + result.path);
+                        $('#addCertificateURL').attr('href', '/' + result.path);
                         if (result.path.length !== 0) {
                             $('.lastIssuedCer').removeClass('d-none');
                         }
@@ -326,9 +328,9 @@
             if (Validiteinsert(data)) {
                 updateEPLOldFiles($(this).val(), data, function (result) {
                     show_mesege(result);
-                    showSave();
                     hideAllErrors();
                     resetinputFields();
+                    $("#btnLoadAc").click();
                 });
             }
         });
@@ -349,6 +351,7 @@
                 showSave();
                 hideAllErrors();
                 resetinputFields();
+                $("#btnLoadAc").click();
             });
         });
 

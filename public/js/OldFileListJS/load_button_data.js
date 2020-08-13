@@ -12,15 +12,16 @@ function showSave() {
 }
 //Reset all fields    
 function resetinputFields() {
-    $('#getEPLCode').val();
-    $('#getRemark').val();
-    $('#issue_date').val();
-    $('#expire_date').val();
-    $('#getcertifateNo').val();
-    $('#getPreRenew').val();
-    $('#getsubmitDate').val();
-    $('#last_certificate').val();
+    $('#getEPLCode').val('');
+    $('#getRemark').val('');
+    $('#issue_date').val('');
+    $('#expire_date').val('');
+    $('#getcertifateNo').val('');
+    $('#getPreRenew').val('');
+    $('#getsubmitDate').val('');
+    $('#last_certificate').val('');
     $('#otherFiles').val('');
+    $('.lastIssuedCer').addClass('d-none');
 }
 //HIDE ALL ERROR MSGS   
 function hideAllErrors() {

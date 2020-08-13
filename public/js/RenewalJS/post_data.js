@@ -5,7 +5,7 @@ function saveRenew(id, data, callBack) {
     if (!data) {
         return false;
     }
-    ajaxRequest("POST", url, data, function (result) {
+    submitDataWithFile(url, data, function (result) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(result);
         }
@@ -21,7 +21,7 @@ function Validiteinsert(data) {
     } else {
         $('#getRemarkVal').removeClass('is-invalid');
     }
-    if (data.submit_date.length == 0) {
+    if (data.created_date.length == 0) {
         toastr.error('Date is required')
         $('#renewDate').addClass('is-invalid');
         response = false;

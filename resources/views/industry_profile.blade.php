@@ -138,6 +138,11 @@
 
                                                 </div>
                                                 <!-- /.card-body -->
+
+                                                <div class="serviceSectionCnf dark">
+                                                    <a class="text-white">Not Allowed To Add New EPL For Old Profile!</a>
+                                                </div>
+
                                             </div>
                                         </div>
 

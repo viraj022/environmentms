@@ -42,17 +42,17 @@ function ajaxRequest(Method, url, data, callBack) {
     });
 }
 
-function submitDataWithFile(url,fromData,callBack) {
+function submitDataWithFile(url, frmDta, callBack, metod = false) {
     let formData = new FormData();
     // populate fields
-    $.each(fromData, function (k, val) {
+    $.each(frmDta, function (k, val) {
         formData.append(k, val);
     });
     ulploadFile2(url, formData, function (result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }
-    });
+    }, metod);
 }
 
 function show_mesege(resp_id) {

@@ -68,7 +68,7 @@ Route::middleware('auth:api')->post('/epl/old/industry/{id}', 'EPLController@sav
   "file" : ""
 */
 
-Route::middleware('auth:api')->put('/epl/old/epl/{id}', 'EPLController@updateOldData'); //   update a old epl
+Route::middleware('auth:api')->post('/epl/old/epl/{id}', 'EPLController@updateOldData'); //   update a old epl
 
 /*
   "epl_code" : "EPL/2020/rt/ty8",
