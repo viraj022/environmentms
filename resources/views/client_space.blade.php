@@ -41,14 +41,14 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Is New*</label>
-                                    <select id="getisOld" class="form-control form-control-sm" style="width: 100%;">
+                                    <select id="getisOld" class="form-control form-control-sm cutenzReq" style="width: 100%;">
                                         <option value="1">New</option>
                                         <option value="0">Old</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label>First Name*</label>
-                                    <input id="getfName" type="text" class="form-control form-control-sm"
+                                    <input id="getfName" type="text" class="form-control form-control-sm cutenzReq"
                                            placeholder="Enter FirstName..."
                                            value="">
                                     <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
@@ -120,23 +120,23 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Pradeshiya Sabha*</label>
-                                    <select id="prsdeshiySb" class="form-control form-control-sm" style="width: 100%;"></select>
+                                    <select id="prsdeshiySb" class="form-control form-control-sm cutenzReq" style="width: 100%;"></select>
                                 </div>
                                 <div class="form-group">
                                     <label>Industry Category*</label>
-                                    <select id="industryCat" class="form-control form-control-sm" style="width: 100%;"></select>
+                                    <select id="industryCat" class="form-control form-control-sm cutenzReq" style="width: 100%;"></select>
                                 </div>
                                 <div class="form-group">
                                     <label>Business Scale*</label>
-                                    <select id="businesScale" class="form-control form-control-sm" style="width: 100%;"></select>
+                                    <select id="businesScale" class="form-control form-control-sm cutenzReq" style="width: 100%;"></select>
                                 </div>
                                 <div class="form-group">
                                     <label>Business Registration Number*</label>
-                                    <input id="business_regno" type="text" class="form-control form-control-sm" placeholder="Enter Number" value="">
+                                    <input id="business_regno" type="text" class="form-control form-control-sm cutenzReq" placeholder="Enter Number" value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Business Name*</label>
-                                    <input id="business_name" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                                    <input id="business_name" type="text" class="form-control form-control-sm cutenzReq" placeholder="Enter Name..." value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Is this Industry</label>
@@ -147,11 +147,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Investment*</label>
-                                    <input id="inventsment" type="number" class="form-control form-control-sm" placeholder="Enter investment" value="">
+                                    <input id="inventsment" type="number" class="form-control form-control-sm cutenzReq" placeholder="Enter investment" value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Address*</label>
-                                    <input id="getAddressT" type="text" class="form-control form-control-sm" placeholder="Enter Address..." value="">
+                                    <input id="getAddressT" type="text" class="form-control form-control-sm cutenzReq" placeholder="Enter Address..." value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Start Date*</label>
@@ -159,14 +159,14 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Submitted Date*</label>
-                                    <input id="submittedDate" type="date" class="form-control form-control-sm" placeholder="Enter Date..." value="">
+                                    <input id="submittedDate" type="date" class="form-control form-control-sm cutenzReq" placeholder="Enter Date..." value="">
                                 </div>
                                 <div class="form-group">
-                                    <label>Contact No*</label>
+                                    <label>Contact No</label>
                                     <input id="getContactn" type="text" class="form-control form-control-sm" placeholder="Enter Contact Info..." value="">
                                 </div>
                                 <div class="form-group">
-                                    <label>Email*</label>
+                                    <label>Email</label>
                                     <input id="getEmailI" type="text" class="form-control form-control-sm" placeholder="Enter Email..." value="">
                                 </div>
                             </div>
@@ -357,7 +357,7 @@
 //Register Button
         $('#btnSave').click(function () {
             var data = fromValues();
-            if (Validiteinsert(data)) {
+            if (requiredFieldHandler(data,".cutenzReq")) {
                 // if validiated
                 AddClient(data, function (result) {
                     if (result.message == 'true') {
