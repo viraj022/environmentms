@@ -43,9 +43,9 @@ function updateEPLOldFiles(epl_id, data, callBack) {
     });
 }
 
-function uploadOldAttacments(client_id,key ,value, callBack) {
+function uploadOldAttacments(client_id, key, value, callBack) {
     let formData = new FormData();
-    formData.append(key,value);
+    formData.append(key, value);
     ulploadFile2("/api/old/attachments/" + client_id, formData, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
@@ -105,7 +105,11 @@ function fromValues() {
 }
 
 function setProfileDetails(obj) {
-    $('#client_name').html(obj.first_name + ' ' + obj.last_name);
+    if (obj.last_name === null) {
+        $('#client_name').html(obj.first_name);
+    } else {
+        $('#client_name').html(obj.first_name + ' ' + obj.last_name);
+    }
     $('#client_address').html(obj.address);
     $('#client_cont').html(obj.contact_no);
     $('#client_amil').html(obj.email);
