@@ -117,4 +117,7 @@ function setProfileDetails(obj) {
     $('#obj_name').html(obj.industry_name);
     $('#obj_regno').html(obj.industry_registration_no);
     $('#obj_invest').html(obj.industry_investment);
+    if (obj.environment_officer.user.first_name != null) {
+        $('.assignedOfficer').html("Current Environment Officer: " + obj.environment_officer.user.first_name + " " + obj.environment_officer.user.last_name);
+    }
 }

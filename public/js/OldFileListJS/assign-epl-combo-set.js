@@ -53,3 +53,39 @@ function loadEnvOfficers_combo(ass_dir_id, callBack) {
     });
 
 }
+
+
+function assign_epl_to_officer(data, callBack) {
+    if (isNaN(data.environment_officer_id)) {
+        Toast.fire({
+            type: 'error',
+            title: 'Enviremontal MS</br>Invalid Envoirenmtn Officer !'
+        });
+        return false;
+    }
+    if (isNaN(data.epl_id)) {
+        alert('Invalid EPL !');
+        return false;
+    }
+    $.ajax({
+        type: "POST",
+        headers: {
+            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            "Accept": "application/json"
+        },
+        url: "/api/epl/assign/id/" + data.epl_id,
+        data: data,
+        dataType: "json",
+        cache: false,
+        processDaate: false,
+        success: function (result) {
+
+            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+                callBack(result);
+            }
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            alert(textStatus + ':' + errorThrown);
+        }
+    });
+}

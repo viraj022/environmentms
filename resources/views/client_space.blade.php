@@ -357,7 +357,7 @@
 //Register Button
         $('#btnSave').click(function () {
             var data = fromValues();
-            if (requiredFieldHandler(data,".cutenzReq")) {
+            if (requiredFieldHandler(data ,".cutenzReq")) {
                 // if validiated
                 AddClient(data, function (result) {
                     if (result.message == 'true') {
