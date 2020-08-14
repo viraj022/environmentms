@@ -63,7 +63,7 @@ function regenCLientData(EPL_PROFILE) {
 }
 
 function uploadButtonHandler(value) {
-    if (value.length !== 0) {
+    if (value.length !== 0 || value !== '') {
         $("#btnUpload").removeAttr("disabled");
     } else {
         $("#btnUpload").attr("disabled", "disabled");

@@ -223,6 +223,7 @@
                         <div class="card-footer">
                             @if($pageAuth['is_create']==1 || false)
                             <button id="btnSearch" type="submit" class="btn btn-success">Search</button>
+                            <button id="btnRegister" class="btn btn-primary">Register New Client</button>
                             @endif
                             <!--<button type="submit" class="btn btn-default resetAll">Reset</button>-->
                         </div>                           
@@ -510,17 +511,7 @@
 
         $('#getNic').keyup(function (e) {
             if (e.which == 13) {
-                getClientbyNic($('#getNic').val().trim(), function (result) {
-                    if (result.length == 0 || result == undefined) {
-                        if (confirm("Client Not Found, Do you want to register New Client?")) {
-                            setSectionVisible('reg-newClient');
-                        }
-                    } else {
-                        window.location = "/industry_profile/id/" + result.id;
-                    }
-//                $('#getName').val(result.name);
-                });
-                hideAllErrors();
+                $("#btnSearch").click();
             }
         });
         $('#newEPL').click(function () {
@@ -531,6 +522,9 @@
         });
         $('.resetAll').click(function () {
             setSectionVisible('');
+        });
+        $('#btnRegister').click(function () {
+            setSectionVisible('reg-newClient');
         });
     });
 

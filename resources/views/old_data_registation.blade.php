@@ -75,7 +75,7 @@
                         <div class="eplSection legitSection d-none"> 
                             <div class="form-group">
                                 <label>EPL Code*</label>
-                                <input id="getEPLCode" type="text" class="form-control form-control-sm" placeholder="Enter Data..." value="">
+                                <input id="getEPLCode" type="text" class="form-control form-control-sm" placeholder="Enter EPL Code..." value="">
                                 <div id="valEPL" class="d-none"><p class="text-danger">EPL is required</p></div>
                             </div>
                             <div class="form-group">
@@ -90,6 +90,10 @@
                             <div class="form-group">
                                 <label>Expire Date*</label>
                                 <input id="expire_date" type="date" class="form-control form-control-sm" placeholder="Enter Expire Date..." value="">
+                            </div>
+                            <div class="form-group">
+                                <label> Last Submitted Date*</label>
+                                <input id="getsubmitDate" type="date" class="form-control form-control-sm" placeholder="Enter Submit Date..." value="">
                             </div>
                             <div class="form-group">
                                 <label>Certificate No*</label>
@@ -125,10 +129,6 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label> Last Submitted Date*</label>
-                                <input id="getsubmitDate" type="date" class="form-control form-control-sm" placeholder="Enter Submit Date..." value="">
-                            </div>
-                            <div class="form-group">
                                 <label>Last Issued Certificate: </label>
                                 <input id="last_certificate" type="file" accept="image/*,application/pdf">
                             </div>
@@ -157,6 +157,26 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
+                                <div class="card assignFileToOffier">
+                                    <div class="card-header">
+                                        <h3 class="card-title">
+                                            <i class="fas fa-file-archive"></i> Assign File To Officer
+                                        </h3>
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label>Assistant Director</label>
+                                            <select class="form-control form-control-sm combo_AssistantDirector" id="ass_dir_combo"></select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Environment Officer</label>
+                                            <select class="form-control form-control-sm combo_envOfficer" id="env_officer_combo"></select>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="card">
                                     <div class="card-header">
                                         <h3 class="card-title">Other Attachments</h3>
@@ -193,7 +213,7 @@
                                         <h3 class="card-title">Last Issued Certificate</h3>
                                     </div>
                                     <div class="card-body p-0">
-                                        <div class="card-body" style="height: 450px;">
+                                        <div class="card-body" style="height: 70%; width: 60%;">
                                             <div class="card card-widget">
                                                 <div class="card-header">
                                                     <div class="card-tools">
@@ -249,12 +269,22 @@
 <script src="../../js/OldFileListJS/old_datareg_api.js"></script>
 <script src="../../js/OldFileListJS/load_button_data.js"></script>
 <script src="../../js/commonFunctions/file_upload.js" type="text/javascript"></script>
+<script src="../../js/OldFileListJS/assign-epl-combo-set.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
-
+    let EPL_PROFILE = '{{$id}}';
     $(function () {
-//Load table
-        let EPL_PROFILE = '{{$id}}';
+//Load Combo Sets
+        loadAssistantDirectorCombo(function () {
+            loadEnvOfficers_combo(parseInt($('#ass_dir_combo').val()), function () {
+
+            });
+        });
+        $('#ass_dir_combo').change(function () {
+            loadEnvOfficers_combo(parseInt($('#ass_dir_combo').val()), function () {
+            });
+        });
+
 //click save button
         $('#btnSave').click(function () {
             var data = fromValues();
@@ -336,42 +366,26 @@
         });
 //click delete button
         $('#btnshowDelete').click(function () {
-            deleteEPLOldFiles(EPL_PROFILE, function (result) {
-                if (result.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Enviremontal MS</br>Removed'
-                    });
-                } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Enviremontal MS</br>Error'
-                    });
-                }
-                showSave();
-                hideAllErrors();
-                resetinputFields();
-                $("#btnLoadAc").click();
-            });
+            if (confirm("Are you sure you want to delete this?")) {
+                deleteEPLOldFiles(EPL_PROFILE, function (result) {
+                    show_mesege(result);
+                    showSave();
+                    hideAllErrors();
+                    resetinputFields();
+                    $("#btnLoadAc").click();
+                });
+            }
         });
-
-        $('#btnUpload').click(function () {
-            var file = $('#otherFiles')[0].files[0];
-            uploadOldAttacments(EPL_PROFILE, 'file', file, function (result) {
-                show_mesege(result);
-                regenCLientData(EPL_PROFILE);
-                resetinputFields();
-            });
-        });
-
 
 //Remove Old Attachments
         $(document).on('click', '.removeAttachs', function () {
-            var getRemoveId = $(this).attr('id');
-            deleteOldAttachments(getRemoveId, function (result) {
-                show_mesege(result);
-                regenCLientData(EPL_PROFILE);
-            });
+            if (confirm("Are you sure you want to delete this?")) {
+                var getRemoveId = $(this).attr('id');
+                deleteOldAttachments(getRemoveId, function (result) {
+                    show_mesege(result);
+                    regenCLientData(EPL_PROFILE);
+                });
+            }
         });
 
         getAsetClientData(EPL_PROFILE, function (result) {
@@ -383,6 +397,17 @@
     });
 
     $(document).ready(function () {
+
+        $('#btnUpload').click(function () {
+            var file = $('#otherFiles')[0].files[0];
+            uploadOldAttacments(EPL_PROFILE, 'file', file, function (result) {
+                show_mesege(result);
+                regenCLientData(EPL_PROFILE);
+                resetinputFields();
+                uploadButtonHandler($('#otherFiles').val());
+            });
+        });
+
         $('#otherFiles').bind('change', function () {
             uploadButtonHandler($('#otherFiles').val());
         });
