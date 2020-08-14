@@ -56,19 +56,19 @@
                     <!-- /.card-header -->
                     <div class="card-body" style="height: 350px; overflow-y: scroll;">
                         <div class="callout callout-danger">
-                            <h6><a id="disPaylink" href="/epl_payments/id/{{$profile}}" class="text-success">Payments</a></h6>
+                            <h6><a id="disPaylink" href="/epl_payments/id/{{$profile}}" class="text-success isOld2">Payments</a></h6>
                             <p>All Payment (EPL, Fine,Inspection Fee, Certificate)</p>
                         </div>
                         <div class="callout callout-danger">
-                            <h6><a href="/epl_profile/atachments/{{$profile}}" class="text-success">Attachments</a></h6>
+                            <h6><a href="/epl_profile/atachments/{{$profile}}" class="text-success isOld2">Attachments</a></h6>
                             <p>Upload EPL Attachments</p>
                         </div>
                         <div class="callout callout-danger">
-                            <h6><a href="/remarks/epl/{{$profile}}" class="text-success">Remarks</a></h6>
+                            <h6><a href="/remarks/epl/{{$profile}}" class="text-success isOld2">Remarks</a></h6>
                             <p>Add Comments</p>
                         </div>
                         <div class="callout callout-danger">
-                            <h6><a href="/certificate_approval/id/{{$profile}}" class="text-success">Approval</a></h6>
+                            <h6><a href="/certificate_approval/id/{{$profile}}" class="text-success isOld2">Approval</a></h6>
                             <p>Approve the EPL</p>
                         </div>
                         <div class="callout callout-danger">
@@ -76,7 +76,7 @@
                             <p>Issue Certificate / Certificate Information</p>
                         </div>
                         <div class="callout callout-danger">
-                            <h6><a id="disInspeclink" href="/inspection/epl/id/{{$profile}}" class="text-success ">Inspection</a></h6>
+                            <h6><a id="disInspeclink" href="/inspection/epl/id/{{$profile}}" class="text-success isOld2">Inspection</a></h6>
                             <p>Manage Inspection Details</p>
                         </div>
                     </div>
@@ -213,6 +213,7 @@ $(function () {
         } else {
             setClientDetails(result);
             disableLinkSection(result.is_old);
+            checkIsOldTwo(result.is_old);
         }
         initMap(parseFloat(result.industry_coordinate_x), parseFloat(result.industry_coordinate_y));
     });
@@ -231,6 +232,9 @@ $(function () {
 });
 function disWarnPay() {
     toastr.error('Assign Environment Officer & Try Again!');
+}
+function showNotAvailable() {
+    toastr.info('Not Available For Old Files!');
 }
 </script>
 <!--<script>
