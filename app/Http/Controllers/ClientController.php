@@ -284,7 +284,7 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
         //    PaymentType::get();
-        return Client::with('epls')->with('environmentOfficer')->with('oldFiles')->find($id);
+        return Client::with('epls')->with('environmentOfficer.user')->with('oldFiles')->find($id);
     }
 
     public function getAllFiles($id)

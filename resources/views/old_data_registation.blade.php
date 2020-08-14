@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Old Data Registation</h1>
+                <h1>Old Data Registration</h1>
             </div>
         </div>
         <div class="progress d-none">
@@ -159,7 +159,7 @@
                             <div class="col-md-12">
                                 <div class="card assignFileToOffier">
                                     <div class="card-header">
-                                        <h3 class="card-title">
+                                        <h3 class="card-title assignedOfficer">
                                             <i class="fas fa-file-archive"></i> Assign File To Officer
                                         </h3>
                                         <div class="card-tools">
@@ -174,6 +174,9 @@
                                         <div class="form-group">
                                             <label>Environment Officer</label>
                                             <select class="form-control form-control-sm combo_envOfficer" id="env_officer_combo"></select>
+                                        </div>
+                                        <div class="form-group">
+                                            <button id="btnAssignEnv" type="submit" class="btn btn-success">Assign</button>
                                         </div>
                                     </div>
                                 </div>
@@ -396,8 +399,24 @@
 
     });
 
-    $(document).ready(function () {
+    $('#btnAssignEnv').click(function () {
+        let obj = {environment_officer_id: parseInt($("#env_officer_combo").val()), epl_id: EPL_PROFILE};
+        assign_epl_to_officer(obj, function (respo) {
+            if (respo.id == 1) {
+                Toast.fire({
+                    type: 'success',
+                    title: 'Enviremontal MS</br>Saved!'
+                });
+            } else {
+                Toast.fire({
+                    type: 'error',
+                    title: 'Enviremontal MS</br>Error'
+                });
+            }
+        });
+    });
 
+    $(document).ready(function () {
         $('#btnUpload').click(function () {
             var file = $('#otherFiles')[0].files[0];
             uploadOldAttacments(EPL_PROFILE, 'file', file, function (result) {
