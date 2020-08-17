@@ -42,3 +42,10 @@ function getDetailsbyId(id, callBack) {
 
 }
 //DEV Mode
+function checkIsOldTwo(is_old) {
+    if (is_old === 2) {
+        $(".isOld2").attr("href", "javascript:showNotAvailable();");
+    } else {
+        return false;
+    }
+}

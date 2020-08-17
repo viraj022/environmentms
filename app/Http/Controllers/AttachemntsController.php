@@ -8,6 +8,7 @@ use App\Level;
 use Carbon\Carbon;
 use App\Attachemnt;
 use App\ApplicationType;
+use App\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -201,16 +202,19 @@ class AttachemntsController extends Controller
 
     public function attach($attachment, $epl, Request $request)
     {
+        request()->validate([
+            'file' => 'required|mimes:jpeg,jpg,png,pdf'
+        ]);
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_create']) {
+            $e = EPL::findOrFail($epl);
             $type = $request->file->extension();
             $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-            $fileUrl = "/uploads/EPL/" . $epl . "/attachments/" . $attachment;
+            $fileUrl = "/uploads/indurtry_files/" . $e->client_id  . "/attachments/" . $attachment;
             $storePath = 'public' . $fileUrl;
             $path = 'storage' . $fileUrl . "/" . $file_name;
             $request->file('file')->storeAs($storePath, $file_name);
-            $e = EPL::findOrFail($epl);
             return \DB::transaction(function () use ($attachment, $e, $path, $type) {
                 $e->attachemnts()->detach($attachment);
                 $e->attachemnts()->attach(
@@ -254,15 +258,6 @@ WHERE application_types.`name` = '" . ApplicationTypeController::EPL . "') AS a
 FROM attachemnt_e_p_l
 WHERE attachemnt_e_p_l.e_p_l_id = '{$epl}') AS b
 	ON a.att_id=b.attachemnt_id"));
-        //        $attachemntsAll = Attachemnt::join('application_type_attachemnt', 'application_type_attachemnt.attachemnt_id', '=', 'attachemnts.id')
-        //                ->join('application_types', 'application_type_attachemnt.application_type_id', '=', 'application_types.id')
-        //                ->select('attachemnts.*')
-        //                ->where('application_types.name', '=', ApplicationTypeController::EPL)
-        //                ->get();
-        //
-        //        $epl = EPL::find($epl);
-        //
-        //        return $attachemntsAssigned = $epl->attachemnts;
     }
 
     private function makeApplicationPath($id, $attachemntId)

@@ -42,7 +42,7 @@ function loadFine_amount(epl_id, epl_amt, callBack) {
     if (isNaN(epl_amt)) {
         epl_amt = 0;
     }
-    ajaxRequest('GET', "/api/epl/inspection/fine/id/" + epl_id, {inspection_fee: epl_amt}, function (dataSet) {
+    ajaxRequest('POST', "/api/get/epl/inspection/fine/id/" + epl_id, {inspection_fee: epl_amt}, function (dataSet) {
         $('#fine_amt').val(dataSet.amount);
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack();
