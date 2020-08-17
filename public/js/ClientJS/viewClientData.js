@@ -16,7 +16,7 @@ function showCustomerDetails(obje) {
             table += "<td>" + clientData.last_name + "</td>";
             table += "<td>" + clientData.address + "</td>";
             table += "<td>" + clientData.nic + "</td>";
-            table += "<td><button id='" + clientData.id + "'  data-row='" + encodeURIComponent(JSON.stringify(clientData)) + "' type='button' class='btn btn-block btn-success btn-xs btnCustomerVa'>Select</button></td>";
+            table += "<td><a href='/industry_profile/id/" + clientData.id + "' class='btn btn-block btn-success btn-xs btnCustomerVa'>Select</a></td>";
             table += "</tr>";
         });
         $('#tblCusData tbody').html(table);

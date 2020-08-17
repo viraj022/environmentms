@@ -62,7 +62,8 @@
                     </a>
                 </li>
                 @endif
-                @if($pre['id']===config('auth.privileges.userRole') && auth()->user()->roll->level->value == 1)
+                {{-- @if($pre['id']===config('auth.privileges.userRole') && auth()->user()->roll->level->value == 1) --}}
+                @if($pre['id']===config('auth.privileges.userRole'))
                 <li class="nav-item">
                     <a href="{{ url('/rolls') }}" class="nav-link {{ Request::is('rolls') ? 'active' : '' }}">
                         <i class="fas fa-users-cog nav-icon"></i>
@@ -188,15 +189,15 @@
                 <li class="nav-item">
                     <a href="{{ url('/client_space') }}" class="nav-link {{ Request::is('client_space') ? 'active' : '' }}">
                         <i class="fas fa-puzzle-piece nav-icon"></i>
-                        <p>Client Space</p>
+                        <p>Industry Registration</p>
                     </a>
                 </li>
                 @endif
                 @if($pre['id']===config('auth.privileges.clientSpace'))
                 <li class="nav-item">
-                    <a href="{{ url('/all_clients') }}" class="nav-link {{ Request::is('all_clients') ? 'active' : '' }}">
+                    <a href="{{ url('/industry_files') }}" class="nav-link {{ Request::is('industry_files') ? 'active' : '' }}">
                         <i class="fas fa-puzzle-piece nav-icon"></i>
-                        <p>Clients</p>
+                        <p>Industry Files</p>
                     </a>
                 </li>
                 @endif
@@ -204,7 +205,15 @@
                 <li class="nav-item">
                     <a href="{{ url('/epl_assign') }}" class="nav-link {{ Request::is('epl_assign') ? 'active' : '' }}">
                         <i class="fas fa-puzzle-piece nav-icon"></i>
-                        <p>EPL Assign</p>
+                        <p>File Assign</p>
+                    </a>
+                </li>
+                @endif
+                @if($pre['id']===config('auth.privileges.clientSpace'))
+                <li class="nav-item">
+                    <a href="{{ url('/old_file_list') }}" class="nav-link {{ Request::is('old_file_list') ? 'active' : '' }}">
+                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <p>Old Files</p>
                     </a>
                 </li>
                 @endif

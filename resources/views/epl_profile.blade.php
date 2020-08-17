@@ -35,44 +35,14 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <dl>
-                            <dt>Name :</dt>
-                            <dd id="client_name"></dd>
-                            <dt>Address :</dt>
-                            <dd id="client_address"></dd>
-                            <dt>Contact Number :</dt>
-                            <dd id="client_cont"></dd>
-                            <dt>Contact Email :</dt>
-                            <dd id="client_amil"></dd>
-                            <dt>NIC :</dt>
-                            <dd id="client_nic"></dd>
-                        </dl>
+                        <dt class="">Name : <a id="client_name"></a></dt>            
+                        <dt class="">Address : <a id="client_address"></a></dt>
+                        <dt class="">Contact Number : <a id="client_cont"></a></dt>
+                        <dt class="">Contact Email : <a id="client_amil"></a></dt>
+                        <dt class="">NIC : <a id="client_nic"> </a></dt>
                     </div>
                     <!-- /.card-body -->
-                </div>                                    
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-user"></i> Site Clearance File
-                        </h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label>Site Clearance*</label>
-                            <input id="siteclear_get" type="text" class="form-control form-control-sm" placeholder="Enter.." value="">
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSaveClear" type="button" class="btn btn-success">Save</button>
-                        @endif
-                        @if($pageAuth['is_update']==1 || false)
-                        <button id="btnUpdateClear" type="submit" class="btn btn-warning d-none">Update</button>
-                        @endif
-                    </div> 
-                    <!-- /.card-body -->
-                </div>                                    
+                </div>                                                                        
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">
@@ -86,24 +56,19 @@
                     <!-- /.card-header -->
                     <div class="card-body" style="height: 350px; overflow-y: scroll;">
                         <div class="callout callout-danger">
-                            <h6 id="env_firstname">Assign Environment Officer: N/A</h6>
-                            <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change</button>
-                            <!--<p>There is a problem that we need to</p>-->
-                        </div>
-                        <div class="callout callout-danger">
-                            <h6><a id="disPaylink" href="/epl_payments/id/{{$profile}}" class="text-success">Payments</a></h6>
+                            <h6><a id="disPaylink" href="/epl_payments/id/{{$profile}}" class="text-success isOld2">Payments</a></h6>
                             <p>All Payment (EPL, Fine,Inspection Fee, Certificate)</p>
                         </div>
                         <div class="callout callout-danger">
-                            <h6><a href="/epl_profile/atachments/{{$profile}}" class="text-success">Attachments</a></h6>
+                            <h6><a href="/epl_profile/atachments/{{$profile}}" class="text-success isOld2">Attachments</a></h6>
                             <p>Upload EPL Attachments</p>
                         </div>
                         <div class="callout callout-danger">
-                            <h6><a href="/remarks/epl/{{$profile}}" class="text-success">Remarks</a></h6>
+                            <h6><a href="/remarks/epl/{{$profile}}" class="text-success isOld2">Remarks</a></h6>
                             <p>Add Comments</p>
                         </div>
                         <div class="callout callout-danger">
-                            <h6><a href="/certificate_approval/id/{{$profile}}" class="text-success">Approval</a></h6>
+                            <h6><a href="/certificate_approval/id/{{$profile}}" class="text-success isOld2">Approval</a></h6>
                             <p>Approve the EPL</p>
                         </div>
                         <div class="callout callout-danger">
@@ -111,11 +76,16 @@
                             <p>Issue Certificate / Certificate Information</p>
                         </div>
                         <div class="callout callout-danger">
-                            <h6><a id="disInspeclink" href="/inspection/epl/id/{{$profile}}" class="text-success ">Inspection</a></h6>
+                            <h6><a id="disInspeclink" href="/inspection/epl/id/{{$profile}}" class="text-success isOld2">Inspection</a></h6>
                             <p>Manage Inspection Details</p>
                         </div>
                     </div>
                     <!-- /.card-body -->
+
+                    <div class="linkSectionCnf overlay dark">
+                        <a class="text-white">File Not Confirmed!</a>
+                    </div>
+
                 </div>                                    
             </div>
             <div class="col-md-6">
@@ -127,30 +97,21 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <dt>Name :</dt>
-                        <dd id="obj_name"></dd>
-                        <dt>Registration No :</dt>
-                        <dd id="obj_regno"></dd>
-                        <dt>Code :</dt>
-                        <dd id="obj_code"></dd>
-                        <dt>Investment :</dt>
-                        <dd id="obj_invest"></dd>
-                        <dt>Remark :</dt>
-                        <dd id="obj_remark"></dd>
-                        <dt>Location :</dt>
-                        <div id="map" style="width: 100%; height: 400px;"></div>
+                        <dl class="row ">
+                            <div class="col-md-8">
+                                <dt >Name : <a id="obj_name"></a></dt>
+                                <dt >Registration No : <a id="obj_regno"></a></dt>
+                                <dt >Code : <a id="obj_code"></a></dt>
+                                <dt >Investment :  <a  id="obj_invest"></a></dt>
+                                <dt >Remark : <a  id="obj_remark"></a></dt>
+                                <dt >Location :---</dt>
+                            </div>
+                            <div id="map" style="width: 100%; height: 400px;"></div>
+                        </dl>
                         <dt>Download Application :</dt>
-
                         <a href="" class="btn btn-dark navTodownload" target="_blank">View Application</a>
-                        <a href="" class="btn btn-dark navToFile1" target="_blank">View Road Map</a>
-                        <a href="" class="btn btn-dark navToFile2" target="_blank">View Deed of the land</a>
-                        <a href="" class="btn btn-dark navToFile3" target="_blank">View Survey Plan</a>
-
 
                         <button type="button" class="btn btn-success d-none" data-upload_file="EPL" id="upld_application">Upload Application</button>
-                        <button type="button" class="btn btn-success d-none" data-upload_file="Road Map" id="upld_roadMap">Upload Road Map</button>
-                        <button type="button" class="btn btn-success d-none" data-upload_file="Deed Of The Land" id="upld_deed">Upload Deed of the land </button>
-                        <button type="button" class="btn btn-success d-none" data-upload_file="Survey Plan" id="upld_SurveyPlan">Upload Survey Plan</button>
                         <div class="form-group d-none" id="fileUpDiv">
                             <hr>
                             <label id="uploadLabel">File Upload </label>
@@ -231,156 +192,50 @@
 <script>
 //Map Start    
 // Initialize and add the map
-                                function initMap(_Latitude, _Longitude) {
-                                    // The location of CeyTech
-                                    var defaultLocation = {lat: _Latitude, lng: _Longitude}; //default Location for load map
+function initMap(_Latitude, _Longitude) {
+    // The location of CeyTech
+    var defaultLocation = {lat: _Latitude, lng: _Longitude}; //default Location for load map
 
-                                    // The map, centered at Uluru
-                                    var map = new google.maps.Map(document.getElementById('map'), {zoom: 15, center: defaultLocation});
-                                    // The marker, positioned at Uluru
-                                    var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: false, title: "Drag me!"});
-                                }
+    // The map, centered at Uluru
+    var map = new google.maps.Map(document.getElementById('map'), {zoom: 15, center: defaultLocation});
+    // The marker, positioned at Uluru
+    var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: false, title: "Drag me!"});
+}
 //Map END
-                                $(function () {
-                                    var CLIENT = '{{$client}}';
-                                    var PROFILE = '{{$profile}}';
-                                    getaClientbyId(CLIENT, function (result) {
-                                        if (result.length == 0 || result == undefined) {
-                                            if (confirm("Client Not Found! Try Again!")) {
+$(function () {
+    var CLIENT = '{{$client}}';
+    var PROFILE = '{{$profile}}';
+    getaClientbyId(CLIENT, function (result) {
+        if (result.length == 0 || result == undefined) {
+            if (confirm("Client Not Found! Try Again!")) {
 
-                                            }
-                                        } else {
-                                            setClientDetails(result);
-                                        }
-                                    });
-                                    getDetailsbyId(PROFILE, function (result) {
-                                        if (result.length == 0 || result == undefined) {
-                                            if (confirm("Details Not Found! Try Again!")) {
-                                            }
-                                        } else {
-                                            setClearanceData(result);
-                                            setAllDetails(result);
-                                            click(function () {
-                                                downloadApp(result);
-                                            });
-                                        }
-                                        initMap(parseFloat(result.coordinate_x), parseFloat(result.coordinate_y));
-                                    });
-                                    $('#btnSaveClear').click(function () {
-                                        var data = fromValues();
-                                        if (Validiteinsert(data)) {
-                                            // if validiated
-                                            AddClearance(data, PROFILE, function (result) {
-                                                if (result.id == 1) {
-                                                    Toast.fire({
-                                                        type: 'success',
-                                                        title: 'Enviremontal MS</br>Saved'
-                                                    });
-                                                    $('#btnSaveClear').addClass('d-none');
-                                                    $('#btnUpdateClear').removeClass('d-none');
-                                                } else {
-                                                    Toast.fire({
-                                                        type: 'error',
-                                                        title: 'Enviremontal MS</br>Error'
-                                                    });
-                                                }
-                                                resetinputFields();
-                                                hideAllErrors();
-                                            });
-                                        }
-                                    });
-                                    $('#upld_application, #upld_roadMap, #upld_deed, #upld_SurveyPlan').click(function () {
-                                        $('#uploadLabel').html('Select ' + $(this).data('upload_file') + ' File To Upload');
-                                        $('#fileUploadInput').data('fileType', $(this).data('upload_file'));
-                                        $('#fileUpDiv').removeClass('d-none');
-                                    });
-                                    //file upload click
-                                    $('#fileUploadInput').change(function () {
-                                        if (!confirm('Are you sure you want to save this attachment?')) {
-                                            return false;
-                                        }
-                                        let uploadFileType = $(this).data('fileType');
-                                        let formData = new FormData();
-                                        let fileCat = '';
-                                        // populate fields
-                                        let file = $(this)[0].files[0];// file
-                                        formData.append('file', file);
-                                        switch (uploadFileType) {
-                                            case 'EPL':
-                                                fileCat = 'file';
-                                                break;
-                                            case 'Road Map':
-                                                fileCat = 'file1';
-                                                break;
-                                            case 'Deed Of The Land':
-                                                fileCat = 'file2';
-                                                break;
-                                            case 'Survey Plan':
-                                                fileCat = 'file3';
-                                                break;
-
-                                            default:
-
-                                                break;
-                                        }
-                                        ulploadFile2('/api/epl/upload/epl/' + PROFILE + '/file/' + fileCat, formData, function (parameters) {
-                                            getDetailsbyId(PROFILE, function (result) {
-                                                if (result.length == 0 || result == undefined) {
-                                                    alert('Details Not Found! Try Again!');
-                                                } else {
-                                                    setClearanceData(result);
-                                                    setAllDetails(result);
-                                                    $('.navTodownload').click(function () {
-                                                        downloadApp(result);
-                                                    });
-                                                    $('.navToFile1').click(function () {
-                                                        downloadFile1(result);
-                                                    });
-                                                    $('.navToFile2').click(function () {
-                                                        downloadFile2(result);
-                                                    });
-                                                    $('.navToFile3').click(function () {
-                                                        downloadFile3(result);
-                                                    });
-                                                }
-                                                initMap(parseFloat(result.coordinate_x), parseFloat(result.coordinate_y));
-                                            });
-                                        });
-                                    });
-
-                                    //click update button
-                                    $('#btnUpdateClear').click(function () {
-                                        var data = fromValues();
-                                        if (confirm('Are You Sure?')) {
-                                            if (Validiteupdate(data)) {
-                                                updateClearance(PROFILE, data, function (result) {
-                                                    if (result.id == 1) {
-                                                        Toast.fire({
-                                                            type: 'success',
-                                                            title: 'Enviremontal MS</br>Updated'
-                                                        });
-                                                    } else {
-                                                        Toast.fire({
-                                                            type: 'error',
-                                                            title: 'Enviremontal MS</br>Error'
-                                                        });
-                                                    }
-                                                    resetinputFields();
-                                                    hideAllErrors();
-                                                });
-                                            }
-                                        }
-                                    });
-                                    function fromValues() {
-                                        var data = {
-                                            site_clearance_file: $('#siteclear_get').val()
-                                        };
-                                        return data;
-                                    }
-                                });
-                                function disWarnPay() {
-                                    toastr.error('Assign Environment Officer & Try Again!');
-                                }
+            }
+        } else {
+            setClientDetails(result);
+            disableLinkSection(result.is_old);
+            checkIsOldTwo(result.is_old);
+        }
+        initMap(parseFloat(result.industry_coordinate_x), parseFloat(result.industry_coordinate_y));
+    });
+    getDetailsbyId(PROFILE, function (result) {
+        if (result.length == 0 || result == undefined) {
+            if (confirm("Details Not Found! Try Again!")) {
+            }
+        } else {
+            setClearanceData(result);
+            setAllDetails(result);
+            click(function () {
+                downloadApp(result);
+            });
+        }
+    });
+});
+function disWarnPay() {
+    toastr.error('Assign Environment Officer & Try Again!');
+}
+function showNotAvailable() {
+    toastr.info('Not Available For Old Files!');
+}
 </script>
 <!--<script>
     $(function(){

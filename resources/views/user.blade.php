@@ -272,9 +272,7 @@
                         // loading roll combo at page start
                         loadRolls($('.levelCombo').val(), 'rollCombo');
                 // loading institute combo at page start
-                loadInstituesById($('.levelCombo').val(), 'instituteCombo', function () {
 
-                })
                 //Initialize Select2 Elements
                 $('.select2').select2();
                 $("#tblUsers").DataTable();
@@ -283,9 +281,6 @@
 
                 $('.levelCombo').change(function () {
                     loadRolls(this.value, 'rollCombo');
-                    loadInstituesById(this.value, 'instituteCombo', function () {
-
-                    })
                 });
 
 
