@@ -14,7 +14,7 @@ function loadAssistantDirectorCombo(callBack) {
         success: function (result) {
             var combo = "";
             $.each(result, function (index, value) {
-                combo += "<option value='" + value.id + "'>" + value.first_name + ' ' + value.last_name + "</option>";
+                combo += "<option value='" + value.id + "'>" + value.user.first_name + ' ' + value.user.last_name + "</option>";
             });
             $('.combo_AssistantDirector').html(combo);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
