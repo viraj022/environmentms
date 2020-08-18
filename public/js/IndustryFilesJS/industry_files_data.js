@@ -4,7 +4,7 @@ function loadAssDirCombo(callBack) {
     ajaxRequest('GET', url, null, function (dataSet) {
         if (dataSet) {
             $.each(dataSet, function (index, row) {
-                cbo += '<option value="' + row.user_id + '">' + row.user.first_name + " " + row.user.last_name + '</option>';
+                cbo += '<option value="' + row.id + '">' + row.user.first_name + " " + row.user.last_name + '</option>';
             });
         } else {
             cbo = "<option value=''>No Data Found</option>";
@@ -21,7 +21,7 @@ function loadEnvOfficerCombo(uid, callBack) {
     ajaxRequest('GET', url, null, function (dataSet) {
         if (dataSet) {
             $.each(dataSet, function (index, row) {
-                cbo += '<option value="' + row.user_id + '">' + row.user.first_name + " " + row.user.last_name + '</option>';
+                cbo += '<option value="' + row.id + '">' + row.user.first_name + " " + row.user.last_name + '</option>';
             });
         } else {
             cbo = "<option value=''>No Data Found</option>";

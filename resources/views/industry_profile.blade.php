@@ -561,6 +561,7 @@ AA
                                                             });
 //Handle Upload Button
                                                             $(document).ready(function () {
+                                                                alert(1);
                                                                 $('#otherFiles').bind('change', function () {
                                                                     uploadButtonHandler($('#otherFiles').val());
                                                                 });
