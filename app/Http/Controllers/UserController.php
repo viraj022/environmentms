@@ -32,14 +32,14 @@ class UserController extends Controller
 
     public function create(Request $request)
     {
-//       dd(request()->all());
+        //       dd(request()->all());
 
         \DB::transaction(function () {
             $msg = false;
             request()->validate([
-                'firstName' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
-                'lastName' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
-                'userName' => 'required|max:50|alpha_dash|unique:users,user_name',
+                'firstName' => 'required|max:50|string',
+                'lastName' => 'required|max:50|string',
+                'userName' => 'required|max:50|string|unique:users,user_name',
                 'address' => 'sometimes|max:100',
                 'contactNo' => ['nullable', new contactNo],
                 'email' => 'sometimes|nullable|email',
@@ -67,10 +67,10 @@ class UserController extends Controller
             // }
 
             $msg = $user->save();
-//         ($user);
+            //         ($user);
             UserController::PrevilagesAdd($user);
 
-//            if ($msg) {
+            //            if ($msg) {
             //                return redirect()
             //                    ->back()
             //                    ->with('success', 'Ok');
@@ -85,7 +85,6 @@ class UserController extends Controller
         return redirect()
             ->back()
             ->with('success', 'Ok');
-
     }
 
     public function edit(Request $request, $id)
@@ -110,23 +109,25 @@ class UserController extends Controller
     public function PrevilagesAdd($user)
     {
         $privileges = $user->roll->privileges;
-//        dd($privileges);
+        //        dd($privileges);
         foreach ($privileges as $value) {
-//           echo $value['id'] . request('roll_id') . "</br>";
+            //           echo $value['id'] . request('roll_id') . "</br>";
             $user->privileges()->attach(
-                $value['id'], [
+                $value['id'],
+                [
                     'is_read' => $value['pivot']['is_read'],
                     'is_create' => $value['pivot']['is_create'],
                     'is_update' => $value['pivot']['is_update'],
                     'is_delete' => $value['pivot']['is_delete'],
-                ]);
+                ]
+            );
         }
     }
 
     public function PrevilagesAddById(Request $request, $id)
     {
         $privileges = $request->all()['pre'];
-//        dd($privileges);
+        //        dd($privileges);
         $user = User::findOrFail($id);
         request()->validate([
             'role' => 'integer|required',
@@ -136,12 +137,14 @@ class UserController extends Controller
         $user->privileges()->detach();
         foreach ($privileges as $value) {
             $user->privileges()->attach(
-                $value['id'], [
+                $value['id'],
+                [
                     'is_read' => $value['is_read'],
                     'is_create' => $value['is_create'],
                     'is_update' => $value['is_update'],
                     'is_delete' => $value['is_delete'],
-                ]);
+                ]
+            );
         }
         return array('id' => '1', 'msg' => 'ok');
     }
@@ -149,7 +152,7 @@ class UserController extends Controller
     public function store(Request $request, $id)
     {
         $user = User::findOrFail($id);
-//        request()->validate([
+        //        request()->validate([
         //            'firstName' => 'required|max:50|alpha',
         //            'lastName' => 'required|max:50|alpha',
         //            'userName' => 'required|max:50|alpha_dash|unique:users,user_name',
@@ -159,7 +162,7 @@ class UserController extends Controller
         //            'nic' => 'max:12|unique:users,3'
         //        ]);
 
-//        dd($user);
+        //        dd($user);
         $user->user_name = request('userName');
         $user->first_name = request('firstName');
         $user->last_name = request('lastName');
@@ -178,7 +181,7 @@ class UserController extends Controller
                 ->withInput()
                 ->with('error', 'Error');
         }
-//        return redirect('/users/id/' . $id);
+        //        return redirect('/users/id/' . $id);
     }
 
     public function storePassword(Request $request, $id)
@@ -204,7 +207,7 @@ class UserController extends Controller
     public function activeStatus(Request $request, $id)
     {
         $user = User::findOrFail($id);
-//        return $request;
+        //        return $request;
         //        request()->validate([
         //            'password' => 'required|confirmed|min:6'
         //        ]);
@@ -250,7 +253,7 @@ class UserController extends Controller
     {
         Auth::logout();
         return view('auth.login');
-//        $this->middleware('auth');
+        //        $this->middleware('auth');
     }
     public function myProfile()
     {
@@ -277,5 +280,4 @@ class UserController extends Controller
                 ->with('error', 'Error');
         }
     }
-
 }
