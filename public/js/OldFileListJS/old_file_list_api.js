@@ -7,9 +7,11 @@ function getAllOldFilesApi(callBack) {
             $.each(dataSet, function (index, row) {
                 tbl += '<tr>';
                 tbl += '<td>' + ++index + '</td>';
-                tbl += '<td>' + row.industry_name + '</td>';
                 tbl += '<td>' + row.industry_registration_no + '</td>';
-                tbl += '<td><a href="/register_old_data/id/' + row.id + '" type="button" class="btn btn-success">Select File</a></td>';
+                tbl += '<td>' + row.industry_name + '</td>';
+                (row.epls.length == 0) ? tbl += '<td>-</td>' : tbl += '<td><i class="fa fa-check"></i></td>';
+                (row.old_files.length == 0) ? tbl += '<td>-</td>' : tbl += '<td><i class="fa fa-check"></i></td>';
+                tbl += '<td><a href="/industry_profile/id/' + row.id + '" type="button" class="btn btn-sm btn-dark">View Profile</a>&nbsp<a href="/register_old_data/id/' + row.id + '" type="button" class="btn btn-sm btn-success">Add Data</a></td>';
                 tbl += '</tr>';
             });
         }

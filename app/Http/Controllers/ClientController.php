@@ -97,7 +97,7 @@ class ClientController extends Controller
             'industry_is_industry' => 'required|integer',
             'industry_investment' => 'required|numeric',
             'industry_start_date' => 'required|date',
-            'industry_registration_no' => 'required|string',
+            'industry_registration_no' => 'nullable|string',
             'is_old' => 'required|integer',
             // 'password' => 'required',
         ]);
@@ -354,7 +354,7 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        return Client::where('is_old', 0)->with('epls')->get();
+        return Client::where('is_old', 0)->with('epls')->with('oldFiles')->get();
     }
 
     public function markOldFinish($id)
