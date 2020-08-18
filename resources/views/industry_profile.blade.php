@@ -172,7 +172,7 @@
                                             <dt>Investment : Rs <a id="obj_invest"></a>.00</dt>
                                             <dt>Location : <a id="obj_name"></a></dt>
                                             <div id="map" style="width: 100%; height: 400px;"></div>
-                                            <dt>Download Application :</dt>
+                                            <dt>Download & Upload Application :</dt>
 
                                             <a href="" class="btn btn-dark navToFile1" target="_blank">View Road Map</a>
                                             <a href="" class="btn btn-dark navToFile2" target="_blank">View Deed of the land</a>
