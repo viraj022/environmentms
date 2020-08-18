@@ -274,10 +274,17 @@ class AssistantDirectorController extends Controller
         if ($user->roll->level->name == Level::DIRECTOR) {
             $data = AssistantDirector::with('user')->get();
         } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
-            $data = AssistantDirector::with('user')->where('id', $user->id)->get();
+            $data = AssistantDirector::with('user')->where('user_id', $user->id)->where('active_status', 1)->get();
+            // dd($data);
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
             $data = AssistantDirector::with('user')->where('id', EnvironmentOfficer::find($user->id)->assistant_director_id)->get();
         }
         return $data;
+    }
+
+    public function getAssistanceDirectorFile()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
     }
 }//end calss
