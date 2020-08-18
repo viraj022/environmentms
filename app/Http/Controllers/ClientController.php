@@ -294,20 +294,13 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($user->roll->level->name == Level::DIRECTOR) {
             $data = Client::where('environment_officer_id', $id)->get();
-        } else if ($user->roll->level->name == Level::DIRECTOR) {
+        } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
             $client = Client::where('environment_officer_id', $id)->get();
-            if ($client->environmentOfficer->assistantDirector->id == $user->id) {
-                $data = $client;
-            } else {
-                abort(401);
-            }
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
             $data = Client::where('environment_officer_id', $user->id)->get();
         } else {
             abort(401);
         }
-        //    Client::where()
-
         return $data;
     }
 
@@ -319,13 +312,8 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($user->roll->level->name == Level::DIRECTOR) {
             $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
-        } else if ($user->roll->level->name == Level::DIRECTOR) {
+        } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
             $client = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
-            if ($client->environmentOfficer->assistantDirector->id == $user->id) {
-                $data = $client;
-            } else {
-                abort(401);
-            }
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
             $data = Client::where('environment_officer_id', $user->id)->where('is_working', 1)->get();
         } else {
@@ -347,15 +335,10 @@ class ClientController extends Controller
             $data = Client::where('environment_officer_id', $id)
                 ->whereBetween('assign_date', [$dateFrom, $dateTo])
                 ->get();
-        } else if ($user->roll->level->name == Level::DIRECTOR) {
+        } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
             $client = Client::where('environment_officer_id', $id)
                 ->whereBetween('assign_date', [$dateFrom, $dateTo])
                 ->get();
-            if ($client->environmentOfficer->assistantDirector->id == $user->id) {
-                $data = $client;
-            } else {
-                abort(401);
-            }
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
             $data = Client::where('environment_officer_id', $user->id)
                 ->whereBetween('assign_date', [$dateFrom, $dateTo])
@@ -392,10 +375,10 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        $client = Client::where('is_old', 0)->where('id',$id)->first();
+        $client = Client::where('is_old', 0)->where('id', $id)->first();
         if ($client) {
             $epls = $client->epls;
-//            dd($client);
+            //            dd($client);
             if (count($epls) > 0) {
                 return $client->epls[0];
             } else {
