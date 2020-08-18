@@ -338,20 +338,19 @@ class EnvironmentOfficerController extends Controller
     {
         $data = array();
         $user = Auth::user();
-        $assistantDirector = AssistantDirector::where('user_id', $user->id)->where('active_status', 1)->first();
-
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        if ($assistantDirector) {
-            if ($user->roll->level->name == Level::DIRECTOR) {
-                $data = EnvironmentOfficer::with('user')->where('assistant_director_id', $id)->where('active_status', 1)->get();
-            } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
+        if ($user->roll->level->name == Level::DIRECTOR) {
+            $data = EnvironmentOfficer::with('user')->where('assistant_director_id', $id)->where('active_status', 1)->get();
+        } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
+            $assistantDirector = AssistantDirector::where('user_id', $user->id)->where('active_status', 1)->first();
+            if ($assistantDirector) {
                 $data = EnvironmentOfficer::with('user')->where('assistant_director_id', $assistantDirector->id)->where('active_status', 1)->get();
-            } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-                $data = EnvironmentOfficer::with('user')->where('user_id', $user->id)->where('active_status', 1)->get();
+            } else {
+                abort(404);
             }
-            return $data;
-        } else {
-            abort(404);
+        } else if ($user->roll->level->name == Level::ENV_OFFICER) {
+            $data = EnvironmentOfficer::with('user')->where('user_id', $user->id)->where('active_status', 1)->get();
         }
+        return $data;
     }
 }
