@@ -6,7 +6,7 @@ function loadAssistantDirectorCombo(callBack) {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        url: "api/AssistantDirector/active",
+        url: "/api/assistant_directors/level",
         data: null,
         dataType: "json",
         cache: false,
