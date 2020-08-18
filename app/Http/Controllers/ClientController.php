@@ -34,12 +34,14 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('client_space', ['pageAuth' => $pageAuth]);
     }
+
     public function indexOldFileList()
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('old_file_list', ['pageAuth' => $pageAuth]);
     }
+
     public function indexOldDataReg($id)
     {
         $user = Auth::user();
@@ -284,7 +286,7 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
         //    PaymentType::get();
-        return Client::with('epls')->with('environmentOfficer.user')->with('oldFiles')->find($id);
+        return Client::with('epls')->with('environmentOfficer.user')->with('oldFiles')->with('industryCategory')->with('businessScale')->with('pradesheeyasaba')->find($id);
     }
 
     public function getAllFiles($id)
@@ -350,6 +352,7 @@ class ClientController extends Controller
 
         return $data;
     }
+
     public function getOldFiles()
     {
         $user = Auth::user();

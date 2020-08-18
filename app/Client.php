@@ -21,4 +21,16 @@ class Client extends Model
         {
                 return $this->belongsTo(EnvironmentOfficer::class);
         }
+        public function industryCategory()
+        {
+                return $this->belongsTo(IndustryCategory::class);
+        }
+        public function businessScale()
+        {
+                return $this->belongsTo(BusinessScale::class);
+        }
+        public function pradesheeyasaba()
+        {
+                return $this->belongsTo(Pradesheeyasaba::class);
+        }
 }

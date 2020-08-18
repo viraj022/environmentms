@@ -82,7 +82,8 @@ function documentUploadDetails(obj) {
     $('.navToFile1').attr("href", "/" + obj.file_01);
     $('.navToFile2').attr("href", "/" + obj.file_02);
     $('.navToFile3').attr("href", "/" + obj.file_03);
-    if (obj.environment_officer.user.first_name != null) {
+
+    if (obj.environment_officer != null) {
         $('#env_firstname').html("Environment Officer: " + obj.environment_officer.user.first_name + " " + obj.environment_officer.user.last_name);
     } else if (obj.first_name == null) {
         $("#disPaylink").attr("href", "javascript:disWarnPay();");
@@ -96,5 +97,53 @@ function checkEPLstatus(epls) {
         $('.newEPL').removeClass('bg-success');
     } else {
         return false;
+    }
+}
+
+function setIndustryAndClientDb(get) {
+    //Client
+    $('.firstL_name').html(get.first_name + ' ' + get.last_name);
+    $('.file_no').html(get.file_no);
+    $('.assign_date').html(get.assign_date);
+    $('.cl_address').html(get.address);
+    $('.cl_email').html(get.email);
+    $('.cl_contact_no').html(get.contact_no);
+    $('.cl_nic').html(get.nic);
+    //Industry
+    $('.tabf_industry_name').html(get.industry_name);
+    $('.tabf_industry_cat_name').html(get.industry_category.name);
+    $('.tabf_business_scale').html(get.business_scale.name);
+    $('.tabf_pradesheeyasaba').html(get.pradesheeyasaba.name);
+    $('.tabf_industry_registration_no').html(get.industry_registration_no);
+    $('.tabf_industry_start_date').html(get.industry_start_date);
+    $('.tabf_industry_investment').html(get.industry_investment);
+    $('.tabf_industry_address').html(get.industry_address);
+    $('.tabf_industry_contact_no').html(get.industry_contact_no);
+    $('.tabf_industry_email').html(get.industry_email);
+    let env_officer = 'Not Assinged';
+    if (!(get.environment_officer == null)) {
+        env_officer = get.environment_officer.user.first_name + ' ' + get.environment_officer.user.last_name;
+    }
+    $('.tabf_environment_officer').html(env_officer);
+}
+
+function loadAllEPLTable(dataSet, callBack) {
+    var tbl = "";
+    if (dataSet.length == 0) {
+        tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
+    } else {
+        $.each(dataSet, function (index, row) {
+            tbl += '<tr>';
+            tbl += '<td>' + ++index + '</td>';
+            tbl += '<td>' + row.code + '</td>';
+            tbl += '<td>' + row.certificate_no + '</td>';
+            tbl += '<td>' + row.issue_date + '</td>';
+            tbl += '<td>' + row.expire_date + '</td>';
+            tbl += '</tr>';
+        });
+    }
+    $('#clientEplList tbody').html(tbl);
+    if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        callBack(dataSet);
     }
 }

@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Industry Profile</h1>
+                <h1>Industry Profile - <span class="right badge badge-primary is_oldProf">-</span></h1>
             </div>
         </div>
     </div>
@@ -35,6 +35,15 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link oldAttachTab disabled" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false">Old Attachments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link profileListTab" id="custom-tabs-three-profileListTab-tab" data-toggle="pill" href="#custom-tabs-three-profileListTab" role="tab" aria-controls="custom-tabs-three-profileListTab" aria-selected="false">Issued List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link userDataTab" id="custom-tabs-three-userDataTab-tab" data-toggle="pill" href="#custom-tabs-three-userDataTab" role="tab" aria-controls="custom-tabs-three-userDataTab" aria-selected="false">Profile Details</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link profileSettingsTab" id="custom-tabs-three-profileSettingsTab-tab" data-toggle="pill" href="#custom-tabs-three-profileSettingsTab" role="tab" aria-controls="custom-tabs-three-userDataTab" aria-selected="false">Profile Details</a>
                 </li>
             </ul>
         </div>
@@ -157,7 +166,7 @@
                                         </div>
                                         <!-- /.card-header -->
                                         <div class="card-body">
-                                            <h6 id="env_firstname">Environment Officer: Not Assigned</h6>
+                                            <h6 id="env_firstname">Environment Officer: <a class="text-danger">Not Assigned</a></h6>
                                             <dt>Name : <a id="obj_name"></a></dt>
                                             <dt>BR No : <a id="obj_regno"></a></dt>                       
                                             <dt>Investment : Rs <a id="obj_invest"></a>.00</dt>
@@ -185,26 +194,6 @@
                                         </div>
                                         <!-- /.card-body -->
                                     </div> 
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3 class="card-title"><i class="fas fa-address-card"></i> Customer EPL List</h3>
-                                        </div>
-                                        <!-- /.card-header -->
-                                        <div class="card-body">
-                                            <table class="table table-active" id="clientEplList">
-<!--                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Buiseness Name</th>
-                                                        <th>EPL</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>-->
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                        <!-- /.card-body -->
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -252,7 +241,7 @@
                                         @endif
                                     </div>
                                     <div class="card-body injectViewAttachs">                                
-                                        <a href="#" target="_blank">Loading Attachments...</a>                          
+                                        <a href="#" target="_blank">Loading Attachments...</a>    
                                     </div>                                    
                                 </div>
                             </div>
@@ -271,6 +260,171 @@
                     </div>
                     <!--//Old Attachments END//-->
                 </div>
+                <!--//All Profile Open//-->
+                <div class="tab-pane fade" id="custom-tabs-three-profileListTab" role="tabpanel" aria-labelledby="custom-tabs-three-profileListTab-tab">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card btn-success">
+                                    <div class="card-header">
+                                        <h3 class="card-title">EPL</h3>
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body" style="display: block;">
+                                        <table class="table table-active" id="clientEplList">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>EPL Code</th>
+                                                    <th>Certificate Number</th>
+                                                    <th>Issue Date</th>
+                                                    <th>Expire Date</th>
+                                                    <!--<th>Action</th>-->
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card btn-success">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Site Clearance</h3>
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body" style="display: block;">
+                                        The body of the card
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card btn-success">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Telecommunication Site Clearance</h3>
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body" style="display: block;">
+                                        The body of the card
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card btn-success">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Schedule Waste</h3>
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body" style="display: block;">
+                                        The body of the card
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                   
+                </div>
+                <!--//All Profile END//-->
+                <!--//All User Data Open//-->
+                <div class="tab-pane fade" id="custom-tabs-three-userDataTab" role="tabpanel" aria-labelledby="custom-tabs-three-userDataTab-tab">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card card-primary card-outline">
+                                    <div class="card-body box-profile">
+                                        <h3 class="profile-username text-center">Client Details</h3>
+
+                                        <p class="text-muted text-center firstL_name">{Client Name}</p>
+
+                                        <ul class="list-group list-group-unbordered mb-3">
+                                            <li class="list-group-item">
+                                                <b>File No</b> <a class="float-right file_no"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Assign Date</b> <a class="float-right assign_date"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Address</b> <a class="float-right cl_address"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Email</b> <a class="float-right cl_email"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Contact No</b> <a class="float-right cl_contact_no"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>NIC</b> <a class="float-right cl_nic"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card card-primary card-outline">
+                                    <div class="card-body box-profile">
+                                        <h3 class="profile-username text-center">Industry Details</h3>
+
+                                        <p class="text-muted text-center tabf_industry_name">{industry name}</p>
+
+                                        <ul class="list-group list-group-unbordered mb-3">
+                                            <li class="list-group-item">
+                                                <b>Registration No</b> <a class="float-right tabf_industry_registration_no"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Industry Category</b> <a class="float-right tabf_industry_cat_name"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Business Scale</b> <a class="float-right tabf_business_scale"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>PradesheeyaSaba</b> <a class="float-right tabf_pradesheeyasaba"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Start Date</b> <a class="float-right tabf_industry_start_date"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Investment</b> <a class="float-right tabf_industry_investment"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Address</b> <a class="float-right tabf_industry_address"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Contact No</b> <a class="float-right tabf_industry_contact_no"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Email</b> <a class="float-right tabf_industry_email"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Environment Officer</b> <a class="float-right tabf_environment_officer"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                   
+                </div>
+                <!--//All User Data END//-->
+                <!--//All User Profile Settings Open//-->
+                <div class="tab-pane fade" id="custom-tabs-three-profileSettingsTab" role="tabpanel" aria-labelledby="custom-tabs-three-profileSettingsTab-tab">
+                    <div class="col-md-12">
+                        <div class="row">
+AA
+                        </div>
+                    </div>                   
+                </div>
+                <!--//All Profile Settings END//-->
             </div>
         </div>
     </div>  
@@ -309,11 +463,13 @@
                                                             $(function () {
                                                                 getaProfilebyId(PROFILE_ID, function (parameters) {
                                                                     setProfileDetails(parameters);
+                                                                    setIndustryAndClientDb(parameters);
                                                                     sectionProtector(parameters.is_old);
                                                                     loadAllOldAttachments(parameters, function () {
                                                                     });
                                                                     oldFileConfirmSection(parameters.is_old);
                                                                     checkEPLstatus(parameters.epls);
+                                                                    loadAllEPLTable(parameters.epls);
                                                                 });
                                                                 $('#newEPL').click(function () {
                                                                     if (isNaN(parseInt(PROFILE_ID))) {
