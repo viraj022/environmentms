@@ -31,10 +31,6 @@ function requiredFieldHandler(frm_data,required_class) {
         toastr.error('First Name Required!');
         response = false;
     }
-    if (frm_data.industry_registration_no.length == 0) {
-        toastr.error('Business Registation Number Required!');
-        response = false;
-    }
     if (frm_data.industry_name.length == 0) {
         toastr.error('Business Name Required!');
         response = false;
