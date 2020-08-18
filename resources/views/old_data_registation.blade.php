@@ -194,7 +194,7 @@
                                                 @endif
                                             </div>
                                             <div class="card-body injectViewAttachs">                                
-                                                <a href="#" target="_blank">Loading Attachments...</a>                          
+                                                <a href="#" target="_blank">Loading Attachments...</a>
                                             </div>                                    
                                         </div>
                                     </div>
