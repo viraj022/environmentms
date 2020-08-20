@@ -193,7 +193,7 @@
                     </a>
                 </li>
                 @endif
-                @if($pre['id']===config('auth.privileges.clientSpace'))
+                @if($pre['id']===config('auth.privileges.industryFile') &&  auth()->user()->roll->level->value < 4)
                 <li class="nav-item">
                     <a href="{{ url('/industry_files') }}" class="nav-link {{ Request::is('industry_files') ? 'active' : '' }}">
                         <i class="fas fa-puzzle-piece nav-icon"></i>

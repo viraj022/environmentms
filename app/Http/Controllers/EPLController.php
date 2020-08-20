@@ -5,16 +5,14 @@ namespace App\Http\Controllers;
 use App\EPL;
 use App\Client;
 use App\Payment;
-use App\EPLRenew;
 use App\IssueLog;
 use Carbon\Carbon;
 use App\BusinessScale;
 use App\Pradesheeyasaba;
-use App\Rules\contactNo;
-use App\IndustryCategory;
-use App\OldFiles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class EPLController extends Controller
 {
@@ -258,19 +256,19 @@ class EPLController extends Controller
             $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
             switch ($type) {
                 case 'file':
-                    $fileUrl = '/uploads/indurtry_files/' . $client->id . '/application';
+                    $fileUrl = '/uploads/industry_files/' . $client->id . '/application';
                     $client->application_path = "storage" . $fileUrl . "/" . $file_name;
                     break;
                 case 'file1':
-                    $fileUrl = '/uploads/indurtry_files/' . $client->id . '/application/file1';
+                    $fileUrl = '/uploads/industry_files/' . $client->id . '/application/file1';
                     $client->file_01 = "storage" . $fileUrl . "/" . $file_name;
                     break;
                 case 'file2':
-                    $fileUrl = '/uploads/indurtry_files/' . $client->id . '/application/file2';
+                    $fileUrl = '/uploads/industry_files/' . $client->id . '/application/file2'; // dead
                     $client->file_02 = "storage" . $fileUrl . "/" . $file_name;
                     break;
                 case 'file3':
-                    $fileUrl = '/uploads/indurtry_files/' . $client->id . '/application/file3';
+                    $fileUrl = '/uploads/industry_files/' . $client->id . '/application/file3';
                     $client->file_03 = "storage" . $fileUrl . "/" . $file_name;
                     break;
                 default:
@@ -287,6 +285,16 @@ class EPLController extends Controller
         } else {
             abort(404);
         }
+    }
+
+    public function getDeadList($id)
+    {
+        $files = Storage::files("public/uploads/industry_files/5/application/file2");
+        $links = array();
+        foreach ($files as $file) {
+            array_push($links, str_replace("public", "", $file));
+        }
+        return $links;
     }
 
     /**

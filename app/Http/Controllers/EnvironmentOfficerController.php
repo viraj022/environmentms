@@ -240,7 +240,7 @@ class EnvironmentOfficerController extends Controller
     public function assignEnvOfficer($id)
     {
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        $pageAuth = $user->authentication(config('auth.privileges.fileAssign'));
         if ($pageAuth['is_create']) {
             request()->validate([
                 'environment_officer_id' => 'required|integer',
@@ -295,19 +295,15 @@ class EnvironmentOfficerController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-        if ($pageAuth['is_read']) {
-            $assistantDirector = AssistantDirector::find($id);
-            if ($assistantDirector) {
-                return Client::join('pradesheeyasabas', 'clients.pradesheeyasaba_id', '=', 'pradesheeyasabas.id')
-                    ->whereNull('environment_officer_id')
-                    ->where('pradesheeyasabas.zone_id', $assistantDirector->zone_id)
-                    ->select('clients.*')
-                    ->get();
-            } else {
-                abort(404);
-            }
+        $assistantDirector = AssistantDirector::find($id);
+        if ($assistantDirector) {
+            return Client::join('pradesheeyasabas', 'clients.pradesheeyasaba_id', '=', 'pradesheeyasabas.id')
+                ->whereNull('environment_officer_id')
+                ->where('pradesheeyasabas.zone_id', $assistantDirector->zone_id)
+                ->select('clients.*')
+                ->get();
         } else {
-            return abort(401);
+            abort(404);
         }
     }
 
@@ -315,12 +311,8 @@ class EnvironmentOfficerController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-        if ($pageAuth['is_read']) {
-            return Client::where('environment_officer_id', $id)
-                ->get();
-        } else {
-            abort(401);
-        }
+        return Client::where('environment_officer_id', $id)
+            ->get();
     }
 
     public function All()

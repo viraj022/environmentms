@@ -10,6 +10,7 @@ use App\Pradesheeyasaba;
 use App\Rules\contactNo;
 use App\IndustryCategory;
 use App\Rules\nationalID;
+use App\EnvironmentOfficer;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -297,9 +298,14 @@ class ClientController extends Controller
         if ($user->roll->level->name == Level::DIRECTOR) {
             $data = Client::where('environment_officer_id', $id)->get();
         } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
-            $client = Client::where('environment_officer_id', $id)->get();
+            $data = Client::where('environment_officer_id', $id)->get();
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-            $data = Client::where('environment_officer_id', $user->id)->get();
+            $envOfficer =   EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
+            if ($envOfficer) {
+                $data = Client::where('environment_officer_id', $envOfficer->id)->get();
+            } else {
+                abort(404);
+            }
         } else {
             abort(401);
         }
@@ -315,9 +321,14 @@ class ClientController extends Controller
         if ($user->roll->level->name == Level::DIRECTOR) {
             $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
         } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
-            $client = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
+            $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-            $data = Client::where('environment_officer_id', $user->id)->where('is_working', 1)->get();
+            $envOfficer =   EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
+            if ($envOfficer) {
+                $data = Client::where('environment_officer_id', $user->id)->where('is_working', 1)->get();
+            } else {
+                abort(404);
+            }
         } else {
             abort(401);
         }
@@ -338,13 +349,16 @@ class ClientController extends Controller
                 ->whereBetween('assign_date', [$dateFrom, $dateTo])
                 ->get();
         } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
-            $client = Client::where('environment_officer_id', $id)
+            $data = Client::where('environment_officer_id', $id)
                 ->whereBetween('assign_date', [$dateFrom, $dateTo])
                 ->get();
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-            $data = Client::where('environment_officer_id', $user->id)
-                ->whereBetween('assign_date', [$dateFrom, $dateTo])
-                ->get();
+            $envOfficer =   EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
+            if ($envOfficer) {
+                $data = Client::where('environment_officer_id', $envOfficer->id)
+                    ->whereBetween('assign_date', [$dateFrom, $dateTo])
+                    ->get();
+            }
         } else {
             abort(401);
         }
