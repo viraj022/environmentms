@@ -21,7 +21,7 @@ function setProfileDetails(obj) {
         $('#setEPLCode').html(obj.epls[obj.epls.length - 1].code);
         $("#setEPlLink").attr("href", "/epl_profile/client/" + PROFILE_ID + "/profile/" + obj.epls[obj.epls.length - 1].id);
     }
-    $('#client_name').html(obj.first_name + ' ' + obj.last_name);
+    (obj.last_name == null) ? $('#client_name').html(obj.first_name) : $('#client_name').html(obj.first_name + ' ' + obj.last_name);
     $('#client_address').html(obj.address);
     $('#client_cont').html(obj.contact_no);
     $('#client_amil').html(obj.email);
@@ -135,7 +135,7 @@ function loadAllEPLTable(dataSet, callBack) {
         $.each(dataSet, function (index, row) {
             tbl += '<tr>';
             tbl += '<td>' + ++index + '</td>';
-            tbl += '<td>' + row.code + '</td>';
+            tbl += '<td><a type="button" href="/epl_profile/client/'+ PROFILE_ID +'/profile/'+  row.epls.id +'" class="btn btn-primary">' + row.code + '</a></td>';
             tbl += '<td>' + row.certificate_no + '</td>';
             tbl += '<td>' + row.issue_date + '</td>';
             tbl += '<td>' + row.expire_date + '</td>';
