@@ -43,7 +43,7 @@
                     <a class="nav-link userDataTab" id="custom-tabs-three-userDataTab-tab" data-toggle="pill" href="#custom-tabs-three-userDataTab" role="tab" aria-controls="custom-tabs-three-userDataTab" aria-selected="false">Profile Details</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link profileSettingsTab" id="custom-tabs-three-profileSettingsTab-tab" data-toggle="pill" href="#custom-tabs-three-profileSettingsTab" role="tab" aria-controls="custom-tabs-three-userDataTab" aria-selected="false">Profile Details</a>
+                    <a class="nav-link profileSettingsTab" id="custom-tabs-three-profileSettingsTab-tab" data-toggle="pill" href="#custom-tabs-three-profileSettingsTab" role="tab" aria-controls="custom-tabs-three-userDataTab" aria-selected="false">Profile Settings</a>
                 </li>
             </ul>
         </div>
@@ -172,7 +172,7 @@
                                             <dt>Investment : Rs <a id="obj_invest"></a>.00</dt>
                                             <dt>Location : <a id="obj_name"></a></dt>
                                             <div id="map" style="width: 100%; height: 400px;"></div>
-                                            <dt>Download Application :</dt>
+                                            <dt>Download & Upload Application :</dt>
 
                                             <a href="" class="btn btn-dark navToFile1" target="_blank">View Road Map</a>
                                             <a href="" class="btn btn-dark navToFile2" target="_blank">View Deed of the land</a>
@@ -420,14 +420,33 @@
                 <div class="tab-pane fade" id="custom-tabs-three-profileSettingsTab" role="tabpanel" aria-labelledby="custom-tabs-three-profileSettingsTab-tab">
                     <div class="col-md-12">
                         <div class="row">
-AA
-                        </div>
-                    </div>                   
+                            <div class="card-body">
+                                <div class="callout callout-danger">
+                                    <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change Environment Officer</button>
+                                    <!--<p>There is a problem that we need to</p>-->
+                                </div>
+                                <div class="callout callout-info">
+                                    <dt>Upload Application :</dt>
+                                    <button type="button" class="btn btn-success upld_roadMap" data-upload_file="Road Map">Upload Road Map</button>
+                                    <button type="button" class="btn btn-success upld_deed" data-upload_file="Deed Of The Land">Upload Deed of the land </button>
+                                    <button type="button" class="btn btn-success upld_SurveyPlan" data-upload_file="Survey Plan">Upload Survey Plan</button>
+                                    <div class="form-group fileUpDiv d-none">
+                                        <hr>
+                                        <label class="uploadLabel">File Upload </label>
+                                        <input type="file" class="fileUploadInput"  accept="image/*, .pdf">
+                                        <div class="progress d-none">
+                                            <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                   
+                    </div>
+                    <!--//All Profile Settings END//-->
                 </div>
-                <!--//All Profile Settings END//-->
             </div>
-        </div>
-    </div>  
+        </div>  
 </section>
 <!--//Tab Section END//-->  
 <section>
@@ -459,106 +478,112 @@ AA
 <!-- AdminLTE App -->
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
 <script>
-                                                            PROFILE_ID = '{{$id}}';
-                                                            $(function () {
-                                                                getaProfilebyId(PROFILE_ID, function (parameters) {
-                                                                    setProfileDetails(parameters);
-                                                                    setIndustryAndClientDb(parameters);
-                                                                    sectionProtector(parameters.is_old);
-                                                                    loadAllOldAttachments(parameters, function () {
-                                                                    });
-                                                                    oldFileConfirmSection(parameters.is_old);
-                                                                    checkEPLstatus(parameters.epls);
-                                                                    loadAllEPLTable(parameters.epls);
-                                                                });
-                                                                $('#newEPL').click(function () {
-                                                                    if (isNaN(parseInt(PROFILE_ID))) {
-                                                                        return false;
-                                                                    }
-                                                                    window.location = "/epl_register/id/" + PROFILE_ID;
-                                                                });
-                                                                //new
-                                                                $('#upld_roadMap, #upld_deed, #upld_SurveyPlan').click(function () {
-                                                                    $('#uploadLabel').html('Select ' + $(this).data('upload_file') + ' File To Upload');
-                                                                    $('#fileUploadInput').data('fileType', $(this).data('upload_file'));
-                                                                    $('#fileUpDiv').removeClass('d-none');
-                                                                });
+                                        PROFILE_ID = '{{$id}}';
+                                        $(function () {
+                                            getaProfilebyId(PROFILE_ID, function (parameters) {
+                                                setProfileDetails(parameters);
+                                                setIndustryAndClientDb(parameters);
+                                                sectionProtector(parameters.is_old);
+                                                loadAllOldAttachments(parameters, function () {
+                                                });
+                                                oldFileConfirmSection(parameters.is_old);
+                                                checkEPLstatus(parameters.epls);
+                                                loadAllEPLTable(parameters.epls);
+                                            });
+                                            $('#newEPL').click(function () {
+                                                if (isNaN(parseInt(PROFILE_ID))) {
+                                                    return false;
+                                                }
+                                                window.location = "/epl_register/id/" + PROFILE_ID;
+                                            });
+                                            //new
+                                            $('#upld_roadMap, #upld_deed, #upld_SurveyPlan').click(function () {
+                                                $('#uploadLabel').html('Select ' + $(this).data('upload_file') + ' File To Upload');
+                                                $('#fileUploadInput').data('fileType', $(this).data('upload_file'));
+                                                $('#fileUpDiv').removeClass('d-none');
+                                            });
 
-                                                                //file upload click
-                                                                $('#fileUploadInput').change(function () {
-                                                                    if (!confirm('Are you sure you want to save this attachment?')) {
-                                                                        return false;
-                                                                    }
-                                                                    let uploadFileType = $(this).data('fileType');
-                                                                    let formData = new FormData();
-                                                                    let fileCat = '';
-                                                                    // populate fields
-                                                                    let file = $(this)[0].files[0];// file
-                                                                    formData.append('file', file);
-                                                                    switch (uploadFileType) {
-                                                                        case 'EPL':
-                                                                            fileCat = 'file';
-                                                                            break;
-                                                                        case 'Road Map':
-                                                                            fileCat = 'file1';
-                                                                            break;
-                                                                        case 'Deed Of The Land':
-                                                                            fileCat = 'file2';
-                                                                            break;
-                                                                        case 'Survey Plan':
-                                                                            fileCat = 'file3';
-                                                                            break;
+                                            $('.upld_roadMap, .upld_deed, .upld_SurveyPlan').click(function () {
+                                                $('.uploadLabel').html('Select ' + $(this).data('upload_file') + ' File To Upload');
+                                                $('.fileUploadInput').data('fileType', $(this).data('upload_file'));
+                                                $('.fileUpDiv').removeClass('d-none');
+                                            });
 
-                                                                        default:
+                                            //file upload click
+                                            $('#fileUploadInput , .fileUploadInput').change(function () {
+                                                if (!confirm('Are you sure you want to save this attachment?')) {
+                                                    return false;
+                                                }
+                                                let uploadFileType = $(this).data('fileType');
+                                                let formData = new FormData();
+                                                let fileCat = '';
+                                                // populate fields
+                                                let file = $(this)[0].files[0];// file
+                                                formData.append('file', file);
+                                                switch (uploadFileType) {
+                                                    case 'EPL':
+                                                        fileCat = 'file';
+                                                        break;
+                                                    case 'Road Map':
+                                                        fileCat = 'file1';
+                                                        break;
+                                                    case 'Deed Of The Land':
+                                                        fileCat = 'file2';
+                                                        break;
+                                                    case 'Survey Plan':
+                                                        fileCat = 'file3';
+                                                        break;
 
-                                                                            break;
-                                                                    }
-                                                                    ulploadFile2('/api/epl/upload/epl/' + PROFILE_ID + '/file/' + fileCat, formData, function (parameters) {
-                                                                        show_mesege(parameters);
-                                                                        getaProfilebyId(PROFILE_ID, function (result) {
-                                                                            setProfileDetails(result);
-                                                                        });
-                                                                    });
-                                                                });
+                                                    default:
 
-                                                            });
+                                                        break;
+                                                }
+                                                ulploadFile2('/api/epl/upload/epl/' + PROFILE_ID + '/file/' + fileCat, formData, function (parameters) {
+                                                    show_mesege(parameters);
+                                                    getaProfilebyId(PROFILE_ID, function (result) {
+                                                        setProfileDetails(result);
+                                                    });
+                                                });
+                                            });
+
+                                        });
 
 //btnCustomerVa button action 
-                                                            $(document).on('click', '.btnCustomerVa', function () {
-                                                                var row = JSON.parse(decodeURIComponent($(this).data('row')));
-                                                                setClientDetails(row);
-                                                                setSectionVisible('view-Client');
-                                                            });
-                                                            function disWarnPay() {
-                                                                toastr.error('Assign Environment Officer & Try Again!');
-                                                            }
-                                                            //Upload Old Attachments
-                                                            $('#btnUpload').click(function () {
-                                                                var file = $('#otherFiles')[0].files[0];
-                                                                uploadOldAttacments(PROFILE_ID, 'file', file, function (result) {
-                                                                    show_mesege(result);
+                                        $(document).on('click', '.btnCustomerVa', function () {
+                                            var row = JSON.parse(decodeURIComponent($(this).data('row')));
+                                            setClientDetails(row);
+                                            setSectionVisible('view-Client');
+                                        });
+                                        function disWarnPay() {
+                                            toastr.error('Assign Environment Officer & Try Again!');
+                                        }
+                                        //Upload Old Attachments
+                                        $('#btnUpload').click(function () {
+                                            var file = $('#otherFiles')[0].files[0];
+                                            uploadOldAttacments(PROFILE_ID, 'file', file, function (result) {
+                                                show_mesege(result);
 //                                                                    regenCLientData(PROFILE_ID);
-                                                                });
-                                                            });
-                                                            //Remove Old Attachments
-                                                            $(document).on('click', '.removeAttachs', function () {
-                                                                var getRemoveId = $(this).attr('id');
-                                                                deleteOldAttachments(getRemoveId, function (result) {
-                                                                    show_mesege(result);
+                                            });
+                                        });
+                                        //Remove Old Attachments
+                                        $(document).on('click', '.removeAttachs', function () {
+                                            var getRemoveId = $(this).attr('id');
+                                            deleteOldAttachments(getRemoveId, function (result) {
+                                                show_mesege(result);
 //                                                                    regenCLientData(PROFILE_ID);
-                                                                });
-                                                            });
-                                                            //Confirm Button
-                                                            $('#btnConfirm').click(function () {
-                                                                if (confirm("Not able to be reversed! Are you sure?")) {
-                                                                    ConfirmUploadingAttachs(PROFILE_ID, function (respo) {
-                                                                        show_mesege(respo);
-                                                                        location.reload();
-                                                                    });
-                                                                } else {
-                                                                    return false;
-                                                                }
-                                                            });
+                                            });
+                                        });
+                                        //Confirm Button
+                                        $('#btnConfirm').click(function () {
+                                            if (confirm("Not able to be reversed! Are you sure?")) {
+                                                ConfirmUploadingAttachs(PROFILE_ID, function (respo) {
+                                                    show_mesege(respo);
+                                                    location.reload();
+                                                });
+                                            } else {
+                                                return false;
+                                            }
+                                        });
 //Handle Upload Button
                                                             $(document).ready(function () {
                                                                 alert(1);
@@ -566,5 +591,10 @@ AA
                                                                     uploadButtonHandler($('#otherFiles').val());
                                                                 });
                                                             });
+                                        $(document).ready(function () {
+                                            $('#otherFiles').bind('change', function () {
+                                                uploadButtonHandler($('#otherFiles').val());
+                                            });
+                                        });
 </script>
 @endsection
