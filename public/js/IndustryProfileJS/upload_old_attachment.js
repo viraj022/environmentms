@@ -48,7 +48,7 @@ function sectionProtector(is_old) {
 }
 
 function oldFileConfirmSection(is_old) {
-    if (is_old === 0) {
+    if (is_old === 0 || is_old === 2) {
         $('.isNotConfiremd').removeClass('d-none');
         $('#setEPlLink').addClass('disabled');
         $('#newEPL').addClass('disabled');

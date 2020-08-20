@@ -23,6 +23,15 @@
 @section('content')
 @if($pageAuth['is_read']==1 || false)
 <section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-12 col-sm-6">
+                <h1>Profile - <span class="right badge badge-primary">{{$profile}}</span></h1>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content-header">
     <div class="container-fluid view-Profile">
         <div class="row">
             <div class="col-md-6">

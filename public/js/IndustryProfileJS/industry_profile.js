@@ -128,14 +128,16 @@ function setIndustryAndClientDb(get) {
 }
 
 function loadAllEPLTable(dataSet, callBack) {
+    //EPLS as dataSet
     var tbl = "";
+    var i = 0;
     if (dataSet.length == 0) {
         tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
     } else {
         $.each(dataSet, function (index, row) {
             tbl += '<tr>';
             tbl += '<td>' + ++index + '</td>';
-            tbl += '<td><a type="button" href="/epl_profile/client/'+ PROFILE_ID +'/profile/'+  row.epls.id +'" class="btn btn-primary">' + row.code + '</a></td>';
+            tbl += '<td><a type="button" href="/epl_profile/client/' + PROFILE_ID + '/profile/' + row.id + '" class="btn btn-primary">' + row.code + '</a></td>';
             tbl += '<td>' + row.certificate_no + '</td>';
             tbl += '<td>' + row.issue_date + '</td>';
             tbl += '<td>' + row.expire_date + '</td>';

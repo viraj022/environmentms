@@ -265,7 +265,7 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="card btn-success">
+                                <div class="card card-success">
                                     <div class="card-header">
                                         <h3 class="card-title">EPL</h3>
                                         <div class="card-tools">
@@ -291,7 +291,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card btn-success">
+                                <div class="card card-success">
                                     <div class="card-header">
                                         <h3 class="card-title">Site Clearance</h3>
                                         <div class="card-tools">
@@ -305,7 +305,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card btn-success">
+                                <div class="card card-success">
                                     <div class="card-header">
                                         <h3 class="card-title">Telecommunication Site Clearance</h3>
                                         <div class="card-tools">
@@ -319,7 +319,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card btn-success">
+                                <div class="card card-success">
                                     <div class="card-header">
                                         <h3 class="card-title">Schedule Waste</h3>
                                         <div class="card-tools">
@@ -585,12 +585,11 @@
                                             }
                                         });
 //Handle Upload Button
-                                                            $(document).ready(function () {
-                                                                alert(1);
-                                                                $('#otherFiles').bind('change', function () {
-                                                                    uploadButtonHandler($('#otherFiles').val());
-                                                                });
-                                                            });
+                                        $(document).ready(function () {
+                                            $('#otherFiles').bind('change', function () {
+                                                uploadButtonHandler($('#otherFiles').val());
+                                            });
+                                        });
                                         $(document).ready(function () {
                                             $('#otherFiles').bind('change', function () {
                                                 uploadButtonHandler($('#otherFiles').val());
