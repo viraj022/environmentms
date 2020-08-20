@@ -2,16 +2,28 @@
 function loadAllOldAttachments(result, callBack) {
     var obj = '';
     var num = 0;
-    $.each(result.old_files, function (index, row) {
-        obj += '&nbsp;<br>';
-        obj += '<a type="button" id="' + row.id + '" class="btn btn-danger text-white removeAttachs" value="0">Remove Attachment ' + ++num + '</a>   ';
-        obj += '<a href="/' + row.path + '" target="_blank">View Attachment [' + ++index + ']</a> ';
+    $.each(result, function (index, row) {
+        obj += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;">';
         if (row.type === 'pdf') {
-            obj += '<img class="rounded" alt="PDF" style="width: 80px; height: 80px;" src="/dist/img/pdf-view.png" href="/' + row.path + '" data-holder-rendered="true">';
+            obj += '<a href="/' + row.path + '" target="_blank"><img class="rounded" alt="PDF" style="width: 100%; height: 80%;" src="/dist/img/pdf-view.png" data-holder-rendered="true"></a>';
         } else {
-            obj += '<img class="rounded" alt="Attachment" style="width: 80px; height: 80px;" src="/' + row.path + '" data-holder-rendered="true">';
+            obj += '<a href="/' + row.path + '" target="_blank"><img class="rounded" alt="Attachment" style="width: 100%; height: 80%;" src="/' + row.path + '" data-holder-rendered="true"></a>';
         }
-        obj += '&nbsp;<br>';
+        obj += '<center><a type="button" id="' + row.id + '" class="btn btn-danger text-white removeAttachs" value="0">Remove Attachment</a></center>';
+        obj += '</div>';
+    });
+    $('.injectViewAttachs').html(obj);
+    if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        callBack();
+    }
+}
+function deedList(profile_id, callBack) {
+    var obj = '';
+    ajaxRequest('GET', '/api/files/client/id/' + profile_id, null, function (respo) {
+        $.each(profile_id, function (index, row) {
+            obj += '<li><a href="#"></a></li>';
+            obj += '</div>';
+        });
     });
     $('.injectViewAttachs').html(obj);
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
@@ -48,18 +60,29 @@ function sectionProtector(is_old) {
 }
 
 function oldFileConfirmSection(is_old) {
-    if (is_old === 0 || is_old === 2) {
-        $('.isNotConfiremd').removeClass('d-none');
+    if (is_old === 0) {
+
         $('#setEPlLink').addClass('disabled');
         $('#newEPL').addClass('disabled');
         $('.serviceSectionCnf').addClass('overlay');
         $('.is_oldProf').html('OLD');
         $('.is_oldProf').removeClass('badge-primary');
         $('.is_oldProf').addClass('badge-dark');
-    } else {
-        $('.isConfirmed').removeClass('d-none');
+        $('.isNotConfiremd').removeClass('d-none');
+        $('.isConfirmed').addClass('d-none');
+    } else if (is_old === 1) {
         $('.removeAttachs').addClass('d-none');
         $('.uploadAttachments').addClass('d-none');
+        $('.is_oldProf').html('NEW');
+    } else if (is_old === 2) {
+        $('.isNotConfiremd').addClass('d-none');
+        $('.isConfirmed').removeClass('d-none');
+        $('.is_oldProf').html('OLD');
+        $('.is_oldProf').removeClass('badge-primary');
+        $('.is_oldProf').addClass('badge-dark');
+        $('.removeAttachs').addClass('d-none');
+    } else {
+        alert("Invalid Old Code!");
     }
 }
 

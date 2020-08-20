@@ -231,8 +231,8 @@
                             <div class="card-header">
                                 <h3 class="card-title">Other Attachments</h3>
                             </div>
-                            <div class="card-body p-0">
-                                <div class="card-body table-responsive" style="height: 450px;">
+                            <div class="card-body">
+                                <div class="row">
                                     <div class="form-group uploadAttachments">
                                         <label>Upload: </label>
                                         <input id="otherFiles" type="file">
@@ -240,9 +240,9 @@
                                         <button disabled id="btnUpload" type="submit" class="btn btn-success">Upload</button>
                                         @endif
                                     </div>
-                                    <div class="card-body injectViewAttachs">                                
-                                        <a href="#" target="_blank">Loading Attachments...</a>    
-                                    </div>                                    
+                                </div>
+                                <div class="row injectViewAttachs" style="height: 450px; overflow-y: auto;">
+
                                 </div>
                             </div>
                         </div>
@@ -253,7 +253,7 @@
                                     <button id="btnConfirm" class="btn btn-dark">Confirm</button>
                                 </div>
                                 <div class="card-body d-none isConfirmed">
-                                    <h4>File Checked And Confirmed</h4>
+                                    <h4 class="text-success">File Checked And Confirmed <i class="fa fa-check-circle"></i></h4>
                                 </div>
                             </div>
                         </div>
@@ -440,6 +440,13 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="callout callout-info">
+                                    <dt>Deed List :</dt>
+                                    <li><a href="#">Sample View 1</a></li>
+                                    <li><a href="#">Sample View 1</a></li>
+                                    <li><a href="#">Sample View 1</a></li>
+                                    <li><a href="#">Sample View 1</a></li>
+                                </div>
                             </div>
                         </div>                   
                     </div>
@@ -484,7 +491,7 @@
                                                 setProfileDetails(parameters);
                                                 setIndustryAndClientDb(parameters);
                                                 sectionProtector(parameters.is_old);
-                                                loadAllOldAttachments(parameters, function () {
+                                                loadAllOldAttachments(parameters.old_files, function () {
                                                 });
                                                 oldFileConfirmSection(parameters.is_old);
                                                 checkEPLstatus(parameters.epls);
@@ -562,7 +569,10 @@
                                             var file = $('#otherFiles')[0].files[0];
                                             uploadOldAttacments(PROFILE_ID, 'file', file, function (result) {
                                                 show_mesege(result);
-//                                                                    regenCLientData(PROFILE_ID);
+                                                getaProfilebyId(PROFILE_ID, function (parameters) {
+                                                    loadAllOldAttachments(parameters.old_files, function () {
+                                                    });
+                                                });
                                             });
                                         });
                                         //Remove Old Attachments
@@ -570,7 +580,10 @@
                                             var getRemoveId = $(this).attr('id');
                                             deleteOldAttachments(getRemoveId, function (result) {
                                                 show_mesege(result);
-//                                                                    regenCLientData(PROFILE_ID);
+                                                getaProfilebyId(PROFILE_ID, function (parameters) {
+                                                    loadAllOldAttachments(parameters.old_files, function () {
+                                                    });
+                                                });
                                             });
                                         });
                                         //Confirm Button
