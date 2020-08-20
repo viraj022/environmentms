@@ -129,6 +129,7 @@ return [
         'EnvironmentProtectionLicense' => 12,
         'committeePool' => 13,
         'industryFile' => 14,
+        'fileAssign' => 15,
 
     ],
 
