@@ -45,6 +45,9 @@
                 <li class="nav-item">
                     <a class="nav-link profileSettingsTab" id="custom-tabs-three-profileSettingsTab-tab" data-toggle="pill" href="#custom-tabs-three-profileSettingsTab" role="tab" aria-controls="custom-tabs-three-userDataTab" aria-selected="false">Profile Settings</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link siteInspectionTab" id="custom-tabs-three-siteInspectionTab-tab" data-toggle="pill" href="#custom-tabs-three-siteInspectionTab" role="tab" aria-controls="custom-tabs-three-siteInspectionTab" aria-selected="false">Site Inspection</a>
+                </li>
             </ul>
         </div>
         <div class="card-body">
@@ -427,13 +430,13 @@
                                 </div>
                                 <div class="callout callout-info">
                                     <dt>Upload Application :</dt>
-                                    <button type="button" class="btn btn-success upld_roadMap" data-upload_file="Road Map">Upload Road Map</button>
-                                    <button type="button" class="btn btn-success upld_deed" data-upload_file="Deed Of The Land">Upload Deed of the land </button>
-                                    <button type="button" class="btn btn-success upld_SurveyPlan" data-upload_file="Survey Plan">Upload Survey Plan</button>
+                                    <button type="button" class="btn btn-success upld_roadMap" data-upload_file="Road Map">Update Road Map</button>
+                                    <button type="button" class="btn btn-success upld_deed" data-upload_file="Deed Of The Land">Update Deed of the land </button>
+                                    <button type="button" class="btn btn-success upld_SurveyPlan" data-upload_file="Survey Plan">Update Survey Plan</button>
                                     <div class="form-group fileUpDiv d-none">
                                         <hr>
                                         <label class="uploadLabel">File Upload </label>
-                                        <input type="file" class="fileUploadInput"  accept="image/*, .pdf">
+                                        <input type="file" class="fileUploadInput"  accept=".png,.jpg,.jpeg, .pdf">
                                         <div class="progress d-none">
                                             <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
                                             </div>
@@ -442,16 +445,25 @@
                                 </div>
                                 <div class="callout callout-info">
                                     <dt>Deed List :</dt>
-                                    <li><a href="#">Sample View 1</a></li>
-                                    <li><a href="#">Sample View 1</a></li>
-                                    <li><a href="#">Sample View 1</a></li>
-                                    <li><a href="#">Sample View 1</a></li>
+                                    <div class="deedListUsr">
+                                    </div>
                                 </div>
                             </div>
                         </div>                   
                     </div>
                     <!--//All Profile Settings END//-->
                 </div>
+                <!--//All User Site Inspection Open//-->
+                <div class="tab-pane fade" id="custom-tabs-three-siteInspectionTab" role="tabpanel" aria-labelledby="custom-tabs-three-siteInspectionTab-tab">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="card-body">
+                                AAAA
+                            </div>
+                        </div>
+                    </div>                   
+                </div>
+                <!--//All Site Inspection END//-->
             </div>
         </div>  
 </section>
@@ -487,10 +499,14 @@
 <script>
                                         PROFILE_ID = '{{$id}}';
                                         $(function () {
+                                            deedList(PROFILE_ID, function () {
+
+                                            });
                                             getaProfilebyId(PROFILE_ID, function (parameters) {
                                                 setProfileDetails(parameters);
                                                 setIndustryAndClientDb(parameters);
                                                 sectionProtector(parameters.is_old);
+                                                updateAttachmentData(parameters);
                                                 loadAllOldAttachments(parameters.old_files, function () {
                                                 });
                                                 oldFileConfirmSection(parameters.is_old);
@@ -549,6 +565,9 @@
                                                     show_mesege(parameters);
                                                     getaProfilebyId(PROFILE_ID, function (result) {
                                                         setProfileDetails(result);
+                                                    });
+                                                    deedList(PROFILE_ID, function () {
+                                                        $('.fileUploadInput').val('');
                                                     });
                                                 });
                                             });

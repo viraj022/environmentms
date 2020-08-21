@@ -289,10 +289,10 @@ class EPLController extends Controller
 
     public function getDeadList($id)
     {
-        $files = Storage::files("public/uploads/industry_files/5/application/file2");
+        $files = Storage::files("public/uploads/industry_files/{$id}/application/file2");
         $links = array();
         foreach ($files as $file) {
-            array_push($links, str_replace("public", "", $file));
+            array_push($links, str_replace("public", "storage", $file));
         }
         return $links;
     }

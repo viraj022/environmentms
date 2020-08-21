@@ -20,12 +20,15 @@ function loadAllOldAttachments(result, callBack) {
 function deedList(profile_id, callBack) {
     var obj = '';
     ajaxRequest('GET', '/api/files/client/id/' + profile_id, null, function (respo) {
-        $.each(profile_id, function (index, row) {
-            obj += '<li><a href="#"></a></li>';
-            obj += '</div>';
-        });
+        if (respo.length == 0) {
+            obj += '<li><a>No Result Found</a></li>';
+        } else {
+            $.each(respo, function (index, row) {
+                obj += '<li><a target="_blank" href="/' + row + '">File ' + ++index + '</a></li>';
+            });
+        }
+        $('.deedListUsr').html(obj);
     });
-    $('.injectViewAttachs').html(obj);
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
         callBack();
     }
@@ -102,4 +105,10 @@ function uploadButtonHandler(value) {
     } else {
         $("#btnUpload").attr("disabled", "disabled");
     }
+}
+
+function updateAttachmentData(status_of) {
+    (status_of.file_01 == null) ? $('.upld_roadMap').addClass('d-none') : $('.upld_roadMap').removeClass('d-none');
+    (status_of.file_02 == null) ? $('.upld_deed').addClass('d-none') : $('.upld_deed').removeClass('d-none');
+    (status_of.file_03 == null) ? $('.upld_SurveyPlan').addClass('d-none') : $('.upld_SurveyPlan').removeClass('d-none');
 }
