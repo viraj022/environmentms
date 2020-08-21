@@ -4,7 +4,7 @@
 @extends('layouts.navbar')
 @extends('layouts.sidebar')
 @extends('layouts.footer')
-@section('pageStyles')
+@section('pageStyles')<!-- This section didnt work for me -jake -->
   <!-- fullCalendar -->
   <link rel="stylesheet" href="../plugins/fullcalendar/main.min.css">
   <link rel="stylesheet" href="../plugins/fullcalendar-daygrid/main.min.css">
