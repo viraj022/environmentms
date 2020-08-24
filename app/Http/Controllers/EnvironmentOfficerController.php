@@ -40,6 +40,12 @@ class EnvironmentOfficerController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         return view('epl_assign', ['pageAuth' => $pageAuth]);
     }
+    public function index3()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        return view('schedule', ['pageAuth' => $pageAuth]);
+    }
 
     /**
      * Show the form for creating a new resource.

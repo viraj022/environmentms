@@ -45,6 +45,9 @@
                 <li class="nav-item">
                     <a class="nav-link profileSettingsTab" id="custom-tabs-three-profileSettingsTab-tab" data-toggle="pill" href="#custom-tabs-three-profileSettingsTab" role="tab" aria-controls="custom-tabs-three-userDataTab" aria-selected="false">Profile Settings</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link siteInspectionTab" id="custom-tabs-three-siteInspectionTab-tab" data-toggle="pill" href="#custom-tabs-three-siteInspectionTab" role="tab" aria-controls="custom-tabs-three-siteInspectionTab" aria-selected="false">Site Inspection</a>
+                </li>
             </ul>
         </div>
         <div class="card-body">
@@ -231,8 +234,8 @@
                             <div class="card-header">
                                 <h3 class="card-title">Other Attachments</h3>
                             </div>
-                            <div class="card-body p-0">
-                                <div class="card-body table-responsive" style="height: 450px;">
+                            <div class="card-body">
+                                <div class="row">
                                     <div class="form-group uploadAttachments">
                                         <label>Upload: </label>
                                         <input id="otherFiles" type="file">
@@ -240,9 +243,9 @@
                                         <button disabled id="btnUpload" type="submit" class="btn btn-success">Upload</button>
                                         @endif
                                     </div>
-                                    <div class="card-body injectViewAttachs">                                
-                                        <a href="#" target="_blank">Loading Attachments...</a>    
-                                    </div>                                    
+                                </div>
+                                <div class="row injectViewAttachs" style="height: 450px; overflow-y: auto;">
+
                                 </div>
                             </div>
                         </div>
@@ -253,7 +256,7 @@
                                     <button id="btnConfirm" class="btn btn-dark">Confirm</button>
                                 </div>
                                 <div class="card-body d-none isConfirmed">
-                                    <h4>File Checked And Confirmed</h4>
+                                    <h4 class="text-success">File Checked And Confirmed <i class="fa fa-check-circle"></i></h4>
                                 </div>
                             </div>
                         </div>
@@ -265,7 +268,7 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="card btn-success">
+                                <div class="card card-success">
                                     <div class="card-header">
                                         <h3 class="card-title">EPL</h3>
                                         <div class="card-tools">
@@ -291,7 +294,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card btn-success">
+                                <div class="card card-success">
                                     <div class="card-header">
                                         <h3 class="card-title">Site Clearance</h3>
                                         <div class="card-tools">
@@ -305,7 +308,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card btn-success">
+                                <div class="card card-success">
                                     <div class="card-header">
                                         <h3 class="card-title">Telecommunication Site Clearance</h3>
                                         <div class="card-tools">
@@ -319,7 +322,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card btn-success">
+                                <div class="card card-success">
                                     <div class="card-header">
                                         <h3 class="card-title">Schedule Waste</h3>
                                         <div class="card-tools">
@@ -427,17 +430,22 @@
                                 </div>
                                 <div class="callout callout-info">
                                     <dt>Upload Application :</dt>
-                                    <button type="button" class="btn btn-success upld_roadMap" data-upload_file="Road Map">Upload Road Map</button>
-                                    <button type="button" class="btn btn-success upld_deed" data-upload_file="Deed Of The Land">Upload Deed of the land </button>
-                                    <button type="button" class="btn btn-success upld_SurveyPlan" data-upload_file="Survey Plan">Upload Survey Plan</button>
+                                    <button type="button" class="btn btn-success upld_roadMap" data-upload_file="Road Map">Update Road Map</button>
+                                    <button type="button" class="btn btn-success upld_deed" data-upload_file="Deed Of The Land">Update Deed of the land </button>
+                                    <button type="button" class="btn btn-success upld_SurveyPlan" data-upload_file="Survey Plan">Update Survey Plan</button>
                                     <div class="form-group fileUpDiv d-none">
                                         <hr>
                                         <label class="uploadLabel">File Upload </label>
-                                        <input type="file" class="fileUploadInput"  accept="image/*, .pdf">
+                                        <input type="file" class="fileUploadInput"  accept=".png,.jpg,.jpeg, .pdf">
                                         <div class="progress d-none">
                                             <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="callout callout-info">
+                                    <dt>Deed List :</dt>
+                                    <div class="deedListUsr">
                                     </div>
                                 </div>
                             </div>
@@ -445,6 +453,17 @@
                     </div>
                     <!--//All Profile Settings END//-->
                 </div>
+                <!--//All User Site Inspection Open//-->
+                <div class="tab-pane fade" id="custom-tabs-three-siteInspectionTab" role="tabpanel" aria-labelledby="custom-tabs-three-siteInspectionTab-tab">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="card-body">
+                                AAAA
+                            </div>
+                        </div>
+                    </div>                   
+                </div>
+                <!--//All Site Inspection END//-->
             </div>
         </div>  
 </section>
@@ -480,11 +499,15 @@
 <script>
                                         PROFILE_ID = '{{$id}}';
                                         $(function () {
+                                            deedList(PROFILE_ID, function () {
+
+                                            });
                                             getaProfilebyId(PROFILE_ID, function (parameters) {
                                                 setProfileDetails(parameters);
                                                 setIndustryAndClientDb(parameters);
                                                 sectionProtector(parameters.is_old);
-                                                loadAllOldAttachments(parameters, function () {
+                                                updateAttachmentData(parameters);
+                                                loadAllOldAttachments(parameters.old_files, function () {
                                                 });
                                                 oldFileConfirmSection(parameters.is_old);
                                                 checkEPLstatus(parameters.epls);
@@ -543,6 +566,9 @@
                                                     getaProfilebyId(PROFILE_ID, function (result) {
                                                         setProfileDetails(result);
                                                     });
+                                                    deedList(PROFILE_ID, function () {
+                                                        $('.fileUploadInput').val('');
+                                                    });
                                                 });
                                             });
 
@@ -562,7 +588,10 @@
                                             var file = $('#otherFiles')[0].files[0];
                                             uploadOldAttacments(PROFILE_ID, 'file', file, function (result) {
                                                 show_mesege(result);
-//                                                                    regenCLientData(PROFILE_ID);
+                                                getaProfilebyId(PROFILE_ID, function (parameters) {
+                                                    loadAllOldAttachments(parameters.old_files, function () {
+                                                    });
+                                                });
                                             });
                                         });
                                         //Remove Old Attachments
@@ -570,7 +599,10 @@
                                             var getRemoveId = $(this).attr('id');
                                             deleteOldAttachments(getRemoveId, function (result) {
                                                 show_mesege(result);
-//                                                                    regenCLientData(PROFILE_ID);
+                                                getaProfilebyId(PROFILE_ID, function (parameters) {
+                                                    loadAllOldAttachments(parameters.old_files, function () {
+                                                    });
+                                                });
                                             });
                                         });
                                         //Confirm Button
@@ -585,12 +617,11 @@
                                             }
                                         });
 //Handle Upload Button
-                                                            $(document).ready(function () {
-                                                                alert(1);
-                                                                $('#otherFiles').bind('change', function () {
-                                                                    uploadButtonHandler($('#otherFiles').val());
-                                                                });
-                                                            });
+                                        $(document).ready(function () {
+                                            $('#otherFiles').bind('change', function () {
+                                                uploadButtonHandler($('#otherFiles').val());
+                                            });
+                                        });
                                         $(document).ready(function () {
                                             $('#otherFiles').bind('change', function () {
                                                 uploadButtonHandler($('#otherFiles').val());

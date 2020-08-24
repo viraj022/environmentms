@@ -50,6 +50,7 @@ Route::get('/industry_profile/id/{id}', 'ClientController@index1');
 Route::get('/renewal_page/id/{id}', 'EPLRenewController@index');
 Route::get('/old_file_list', 'ClientController@indexOldFileList');
 Route::get('/register_old_data/id/{id}', 'ClientController@indexOldDataReg');
+Route::get('/schedule', 'EnvironmentOfficerController@index3');
 //ui routs
 
 //dashboard

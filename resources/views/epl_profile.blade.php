@@ -23,6 +23,15 @@
 @section('content')
 @if($pageAuth['is_read']==1 || false)
 <section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-12">
+                <h1>File No: (<a href="#" class="setFileNoTitile">Loading..</a>) - EPL Number: <span class="right badge eplCodeAfileNo badge-primary">Loading..</span></h1>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content-header">
     <div class="container-fluid view-Profile">
         <div class="row">
             <div class="col-md-6">
@@ -214,6 +223,8 @@ $(function () {
             setClientDetails(result);
             disableLinkSection(result.is_old);
             checkIsOldTwo(result.is_old);
+            $('.setFileNoTitile').html(result.file_no);
+            $(".setFileNoTitile").attr("href", "/industry_profile/id/" + PROFILE);
         }
         initMap(parseFloat(result.industry_coordinate_x), parseFloat(result.industry_coordinate_y));
     });
@@ -223,10 +234,11 @@ $(function () {
             }
         } else {
             setClearanceData(result);
-            setAllDetails(result);
-            click(function () {
-                downloadApp(result);
-            });
+            $('.eplCodeAfileNo').html(result.epl_instantNumber);
+//            setAllDetails(result);
+//            click(function () {
+//                downloadApp(result);
+//            });
         }
     });
 });
