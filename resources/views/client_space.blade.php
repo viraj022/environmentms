@@ -215,7 +215,7 @@
                             </div>
                             <div class="form-group">
                                 <input id="getNic" type="text" class="form-control form-control-sm"
-                                       placeholder="Enter NIC Number..."
+                                       placeholder="Enter Here..."
                                        value="">
                                 <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
                             </div>
