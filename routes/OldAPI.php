@@ -181,11 +181,8 @@ Route::middleware('auth:api')->delete('/site_clearance/old/site_clearance_sessio
 
 
 /*
-  "code" : "EPL/2020/rt/ty90",
-  "remark" : "hansana",
-  "issue_date" :"2020-01-01",
-  "expire_date" : "2020-05-07",
-  "count" : "0",
-  "submit_date" : "2020-01-01",
-  "file" : "",
+ {
+    "id": 1,
+    "message": "true"
+}
 */
