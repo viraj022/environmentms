@@ -9,6 +9,7 @@ use App\IssueLog;
 use Carbon\Carbon;
 use App\BusinessScale;
 use App\Pradesheeyasaba;
+use App\IndustryCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;

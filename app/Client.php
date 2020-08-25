@@ -12,6 +12,10 @@ class Client extends Model
         {
                 return $this->hasMany(EPL::class);
         }
+        public function siteClearenceSessions()
+        {
+                return $this->hasMany(SiteClearenceSession::class);
+        }
         public function oldFiles()
         {
                 return $this->hasMany(OldFiles::class);

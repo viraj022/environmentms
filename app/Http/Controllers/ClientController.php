@@ -13,6 +13,7 @@ use App\Rules\nationalID;
 use App\EnvironmentOfficer;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\SiteClearenceSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -400,6 +401,24 @@ class ClientController extends Controller
                 return $client->epls[0];
             } else {
                 return $epls;
+            }
+        } else {
+            abort(404);
+        }
+    }
+    public function getOldSiteClearanceData($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $client = Client::where('is_old', 0)->where('id', $id)->first();
+        if ($client) {
+            $siteClearance = $client->siteClearenceSessions;
+            if (count($siteClearance) > 0) {
+                $siteClearanceSession = $client->siteClearenceSessions[0];
+                $siteClearanceSession->site_clearances = $siteClearanceSession->siteClearances[0];
+                return $siteClearanceSession;
+            } else {
+                return $siteClearance;
             }
         } else {
             abort(404);
