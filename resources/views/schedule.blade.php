@@ -4,7 +4,7 @@
 @extends('layouts.navbar')
 @extends('layouts.sidebar')
 @extends('layouts.footer')
-@section('pageStyles')<!-- This section didnt work for me -jake -->
+@section('pageStyles')<!-- This section didnt work for me -->
   <!-- fullCalendar -->
   <link rel="stylesheet" href="../plugins/fullcalendar/main.min.css">
   <link rel="stylesheet" href="../plugins/fullcalendar-daygrid/main.min.css">
@@ -15,6 +15,7 @@
 @section('content')
 @if($pageAuth['is_read']==1 || false)
 <section class="content-header">
+    
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
