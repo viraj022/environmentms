@@ -129,13 +129,25 @@ class InspectionSessionController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-  
+
         return InspectionSession::with('inspectionRemarks')
-        ->with('inspectionSessionAttachments')
-        ->with('inspectionPersonals')
-        ->with('client')
-        ->where('schedule_date', $date)
-        ->get();
+            ->with('inspectionSessionAttachments')
+            ->with('inspectionPersonals')
+            ->with('client')
+            ->where('schedule_date', $date)
+            ->get();
+    }
+    public function getA($date)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+
+        return InspectionSession::with('inspectionRemarks')
+            ->with('inspectionSessionAttachments')
+            ->with('inspectionPersonals')
+            ->with('client')
+            ->where('schedule_date', $date)
+            ->get();
     }
 
 
