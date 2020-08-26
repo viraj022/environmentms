@@ -59,7 +59,60 @@ Route::middleware('auth:api')->get('/inspections/file/id/{id}', 'InspectionSessi
 
 Route::middleware('auth:api')->get('/inspections/file/date/{date}', 'InspectionSessionController@showInspectionsByDate');   // show all inspections by schedule_date
 /*
-
+[
+    {
+        "id": 2,
+        "profile_id": 4,
+        "remark": "j",
+        "status": 0,
+        "schedule_date": "2020-08-24 00:00:00",
+        "deleted_at": null,
+        "created_at": "2020-08-17 07:13:26",
+        "updated_at": "2020-08-17 07:13:26",
+        "application_type": "",
+        "client_id": 7,
+        "inspection_remarks": [],
+        "inspection_session_attachments": [],
+        "inspection_personals": [],
+        "client": {
+            "id": 7,
+            "first_name": "tyu",
+            "last_name": null,
+            "address": null,
+            "contact_no": null,
+            "email": null,
+            "nic": null,
+            "password": "$2y$10$rgH7jKSmJYG8ahT/wFhU7e6DjwVfAoYR3arL3lhgEFfZXzomc1JrO",
+            "api_token": "whTYcFOm6LC1DagUoMrOUKKSMRiTpycysWnRntpo6kJ0RegHcyQA1kg9utoUMd8h9Rd2ZGTX5dmrk7Ue",
+            "created_at": "2020-08-24 10:11:27",
+            "updated_at": "2020-08-26 01:09:49",
+            "deleted_at": null,
+            "industry_name": "tyu",
+            "industry_category_id": 23,
+            "business_scale_id": 2,
+            "industry_contact_no": "0710576923",
+            "industry_address": "dasdsad",
+            "industry_email": null,
+            "industry_coordinate_x": "7.48905",
+            "industry_coordinate_y": "80.349985",
+            "pradesheeyasaba_id": 46,
+            "industry_is_industry": 1,
+            "industry_investment": 5661321,
+            "industry_start_date": "2020-08-01 00:00:00",
+            "industry_registration_no": "asdsadsadad",
+            "application_path": "storage//uploads/industry_files/7/application/1598265083.jpeg",
+            "environment_officer_id": 20,
+            "file_01": "storage/uploads/industry_files/7/application/file1/1598264709.jpeg",
+            "file_02": "storage/uploads/industry_files/7/application/file2/1598264714.jpeg",
+            "file_03": "storage/uploads/industry_files/7/application/file3/1598264720.jpeg",
+            "file_no": "PEA/testps/CR/M/07/2020",
+            "assign_date": "2020-08-24 10:33:25",
+            "is_working": 1,
+            "is_old": 0,
+            "need_inspection": "Inspection Needed"
+        }
+    }
+]
 
 */
 Route::middleware('auth:api')->get('/inspections/pending/file/id/{id}', 'InspectionSessionController@showInspectionsPending');   // show all pending inspections by file
