@@ -149,3 +149,25 @@ function loadAllEPLTable(dataSet, callBack) {
         callBack(dataSet);
     }
 }
+
+function setupInspectionUI(need_inspection_status) {
+    if (need_inspection_status === null || need_inspection_status === 'Completed') {
+        $('.setupInspectStatus').html('NEW');
+        $('.setInspectUI').removeClass('d-none');
+        $('.noNeedInspect').removeClass('d-none');
+
+    } else if (need_inspection_status === 'Inspection Needed') {
+
+        $('.setupInspectStatus').html('Inspection Needed');
+
+    } else if (need_inspection_status === 'Inspection Not Needed') {
+
+        $('.setupInspectStatus').html('Inspection Not Needed');
+
+    } else if (need_inspection_status === 'Completed') {
+
+        $('.setupInspectStatus').html('Completed');
+        $('.setInspectUI').removeClass('d-none');
+
+    }
+}

@@ -428,6 +428,12 @@
                                     <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change Environment Officer</button>
                                     <!--<p>There is a problem that we need to</p>-->
                                 </div>
+                                <div class="callout callout-danger">
+                                    <h4>Status: <a class="setupInspectStatus text-success"></a></h4>
+                                    <button type="button" onclick="location.href = '';" class="btn btn-dark addToSiteIns d-none" data-dismiss="modal"><i class="fa fa-plus"></i>&nbsp Add To Site Inspection</button>
+                                    <button type="button" onclick="location.href = '';" class="btn btn-info setInspectUI d-none" data-dismiss="modal"><i class="fa fa-plus"></i>&nbsp Set Inspection</button>
+                                    <button type="button" onclick="location.href = '';" class="btn btn-warning noNeedInspect d-none" data-dismiss="modal"><i class="fa fa-exclamation"></i>&nbsp No Need Inspection</button>
+                                </div>
                                 <div class="callout callout-info">
                                     <dt>Upload Application :</dt>
                                     <button type="button" class="btn btn-success upld_roadMap" data-upload_file="Road Map">Update Road Map</button>
@@ -512,6 +518,7 @@
                                                 oldFileConfirmSection(parameters.is_old);
                                                 checkEPLstatus(parameters.epls);
                                                 loadAllEPLTable(parameters.epls);
+                                                setupInspectionUI(parameters.need_inspection);
                                             });
                                             $('#newEPL').click(function () {
                                                 if (isNaN(parseInt(PROFILE_ID))) {

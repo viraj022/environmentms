@@ -138,7 +138,7 @@ Route::middleware('auth:api')->get('/inspections/pending/file/id/{id}', 'Inspect
 ]
 
  */
-Route::middleware('auth:api')->get('/inspections/completed/file/id/{id}', 'InspectionSessionController@showInspectionsCompleted');   // show all pending inspections by file
+Route::middleware('auth:api')->get('/inspections/completed/file/id/{id}', 'InspectionSessionController@showInspectionsCompleted');   // show all compleate inspections by file
 
 /**
  * 

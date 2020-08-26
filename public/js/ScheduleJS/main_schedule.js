@@ -56,3 +56,53 @@ function inspectionsByDateAPI(schedule_date, id, callBack) {
         }
     });
 }
+//Set Inspection Needed Files
+function setInspectionNeededApi(id, callBack) {
+    ajaxRequest('GET', "/api/files/need_inspection/officer/id/" + id, null, function (dataSet) {
+        var ui = "";
+        if (dataSet.length == 0) {
+            ui = "<div class='external-event bg-danger'>No Data Found</div>";
+        } else {
+            $.each(dataSet, function (index, row) {
+                ui += '<div class="external-event bg-info" data-id="' + row.id + '">' + row.industry_registration_no + '</div>';
+            });
+        }
+        $('#external-events').html(ui);
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(dataSet);
+        }
+    });
+}
+
+//Save When Drag Into Calender
+function PersonalInspectionCreateApi(id, data, callBack) {
+    if (!data) {
+        return false;
+    }
+    let url = "/api/automatic_inspection/create/id/" + id;
+    ajaxRequest("POST", url, data, function (parameters) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(parameters);
+        }
+    });
+}
+//Load Calender
+function loadCalenderApi(id, callBack) {
+    let eventList = [];
+    let url = "/api/files/need_inspection/pending/officer/id/" + id;
+    ajaxRequest("GET", url, null, function (parameters) {
+        $.each(parameters, function (index, row) {
+            eventList.push({
+                title: row.file_no,
+//                start: new Date(y, m, 1),
+                start: row.assign_date,
+                backgroundColor: '#f56954', //red
+                borderColor: '#f56954', //red
+                allDay: false
+            });
+        });
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(parameters);
+        }
+    });
+}
