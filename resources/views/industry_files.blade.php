@@ -143,43 +143,11 @@
             loadEnvOfficerCombo($('#getAsDirect').val(), function (rest) {
             });
         });
-//show update buttons    
-        function showUpdate() {
-            $('#btnSave').addClass('d-none');
-            $('#btnUpdate').removeClass('d-none');
-            $('#btnshowDelete').removeClass('d-none');
-        }
-//show save button    
-        function showSave() {
-            $('#btnSave').removeClass('d-none');
-            $('#btnUpdate').addClass('d-none');
-            $('#btnshowDelete').addClass('d-none');
-        }
-//Reset all fields    
-        function resetinputFields() {
-            $('#getName').val('');
-            $('#btnUpdate').val('');
-            $('#btnDelete').val('');
-        }
-//get form values
-        function fromValues() {
-            var data = {
-                first_name: $('#getfName').val(),
-                last_name: $('#getlName').val(),
-                address: $('#getAddress').val(),
-                contact_no: $('#getContact').val(),
-                email: $('#getEmail').val(),
-                nic: $('#getNicSave').val(),
-                //password: $('#gefkfg').val(),
-                //conpassword: $('#getfffk').val()
-            };
-            return data;
-        }
-//HIDE ALL ERROR MSGS   
-        function hideAllErrors() {
-            $('#valName').addClass('d-none');
-        }
+        $("#getEnvOfficer").change(function () {
+
+        });
     });
+
 
     $(document).ready(function () {
         $('#btnSave').on('click', function () {
@@ -202,6 +170,26 @@
             }
         });
     });
+
+    function checkFileType() {
+        switch ($('#getFileType option:selected').val()) {
+            case '01':
+                loadNewFilesApi($('#getEnvOfficer').val(), function (respo) {
+                    forTypeFiles_table(respo);
+                });
+                break;
+            case '02':
+                loadWorkingFilesApi($('#getEnvOfficer').val(), function (respo) {
+                    forTypeFiles_table(respo);
+                });
+                break;
+            case '03':
+                loadAllFilesApi($('#getEnvOfficer').val(), function (respo) {
+                    forTypeFiles_table(respo);
+                });
+                break;
+        }
+    }
 
 </script>
 @endsection

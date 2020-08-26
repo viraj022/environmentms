@@ -10,16 +10,14 @@ use App\InspectionSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class InspectionSessionController extends Controller
-{
+class InspectionSessionController extends Controller {
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
-    {
+    public function index($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
@@ -39,8 +37,7 @@ class InspectionSessionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function createInspection($id)
-    {
+    public function createInspection($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
@@ -51,7 +48,7 @@ class InspectionSessionController extends Controller
             $file = Client::find($id);
             if ($file) {
                 $inspectionSession = new InspectionSession();
-                $autoData =    $this->getAutomaticInspectionPlacementData($id);
+                $autoData = $this->getAutomaticInspectionPlacementData($id);
                 $inspectionSession->application_type = $autoData['type'];
                 $inspectionSession->profile_id = $autoData['id'];
                 $inspectionSession->client_id = $file->id;
@@ -76,8 +73,7 @@ class InspectionSessionController extends Controller
         }
     }
 
-    private function getAutomaticInspectionPlacementData($id)
-    {
+    private function getAutomaticInspectionPlacementData($id) {
         $client = Client::findOrfail($id);
         $epls = $client->epls;
         $siteClearance = $client->siteClearenceSessions;
@@ -104,8 +100,7 @@ class InspectionSessionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
@@ -115,57 +110,52 @@ class InspectionSessionController extends Controller
      * @param  \App\InspectionSession  $inspectionSession
      * @return \Illuminate\Http\Response
      */
-    public function showInspections($id)
-    {
+    public function showInspections($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $client = Client::findOrFail($id);
         return InspectionSession::with('inspectionRemarks')->with('inspectionSessionAttachments')->with('inspectionPersonals')->where('client_id', $client->id)->get();
     }
 
-
-
-    public function showInspectionsByDate($date)
-    {
+    public function showInspectionsByDate($date, $id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-  
+
         return InspectionSession::with('inspectionRemarks')
-        ->with('inspectionSessionAttachments')
-        ->with('inspectionPersonals')
-        ->with('client')
-        ->where('schedule_date', $date)
-        ->get();
+                        ->with('inspectionSessionAttachments')
+                        ->with('inspectionPersonals')
+                        ->with('client')
+                        ->where('schedule_date', $date)
+                        ->whereHas('client', function ($sql)use($id) {
+                            return $sql->where('clients.environment_officer_id', '=', $id);
+                        })
+                        ->where('status', 0)
+                        ->get();
     }
 
-
-
-    public function showInspectionsPending($id)
-    {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-        $client = Client::findOrFail($id);
-        return InspectionSession::with('inspectionRemarks')
-            ->with('inspectionSessionAttachments')
-            ->with('inspectionPersonals')
-            ->where('client_id', $client->id)
-            ->where('status', 0)
-            ->get();
-    }
-    public function showInspectionsCompleted($id)
-    {
+    public function showInspectionsPending($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $client = Client::findOrFail($id);
         return InspectionSession::with('inspectionRemarks')
-            ->with('inspectionSessionAttachments')
-            ->with('inspectionPersonals')
-            ->where('client_id', $client->id)
-            ->where('status', 1)
-            ->get();
+                        ->with('inspectionSessionAttachments')
+                        ->with('inspectionPersonals')
+                        ->where('client_id', $client->id)
+                        ->where('status', 0)
+                        ->get();
     }
 
-
+    public function showInspectionsCompleted($id) {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        $client = Client::findOrFail($id);
+        return InspectionSession::with('inspectionRemarks')
+                        ->with('inspectionSessionAttachments')
+                        ->with('inspectionPersonals')
+                        ->where('client_id', $client->id)
+                        ->where('status', 1)
+                        ->get();
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -173,8 +163,7 @@ class InspectionSessionController extends Controller
      * @param  \App\InspectionSession  $inspectionSession
      * @return \Illuminate\Http\Response
      */
-    public function edit(InspectionSession $inspectionSession)
-    {
+    public function edit(InspectionSession $inspectionSession) {
         //
     }
 
@@ -185,8 +174,7 @@ class InspectionSessionController extends Controller
      * @param  \App\InspectionSession  $inspectionSession
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, InspectionSession $inspectionSession)
-    {
+    public function update(Request $request, InspectionSession $inspectionSession) {
         //
     }
 
@@ -196,8 +184,7 @@ class InspectionSessionController extends Controller
      * @param  \App\InspectionSession  $inspectionSession
      * @return \Illuminate\Http\Response
      */
-    public function destroyInspection($sessionId)
-    {
+    public function destroyInspection($sessionId) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_delete']) {
@@ -213,18 +200,17 @@ class InspectionSessionController extends Controller
         }
     }
 
-    public function find($sessionId)
-    {
+    public function find($sessionId) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
 
         return InspectionSession::with('inspectionRemarks')
-            ->with('inspectionSessionAttachments')
-            ->with('inspectionPersonals')
-            ->findOrFail($sessionId);
+                        ->with('inspectionSessionAttachments')
+                        ->with('inspectionPersonals')
+                        ->findOrFail($sessionId);
     }
-    public function markComplete($sessionId)
-    {
+
+    public function markComplete($sessionId) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
 
@@ -238,8 +224,8 @@ class InspectionSessionController extends Controller
             return array('id' => 0, 'message' => 'false');
         }
     }
-    public function markPending($sessionId)
-    {
+
+    public function markPending($sessionId) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
 
@@ -253,4 +239,5 @@ class InspectionSessionController extends Controller
             return array('id' => 0, 'message' => 'false');
         }
     }
+
 }
