@@ -24,4 +24,11 @@ class InspectionSession extends Model
     {
         return $this->hasMany(InspectionPersonal::class);
     }
+
+    
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
+
 }
