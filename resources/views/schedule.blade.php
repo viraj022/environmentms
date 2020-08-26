@@ -31,6 +31,25 @@
             <div class="col-md-3">
                 <div class="sticky-top mb-3">
                     <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Assistant Director*</label>
+                                <select id="getAsDirect" class="form-control form-control-sm">
+                                    <option value="0">Loading..</option>
+                                </select>
+                                <div id="valAsDirect" class="d-none"><p class="text-danger">Field is required</p></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Environment Officer*</label>
+                                <select id="getEnvOfficer" class="form-control form-control-sm">
+                                    <option value="0">Loading..</option>
+                                </select>
+                                <div id="valEnvOfficer" class="d-none"><p class="text-danger">Field is required</p></div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Events</h4>
                         </div>
@@ -170,9 +189,23 @@
 <script src="../../js/zonejs/get.js"></script>
 <script src="../../js/zonejs/update.js"></script>
 <script src="../../js/zonejs/delete.js"></script>
+<script src="../../js/ScheduleJS/main_schedule.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
     $(function () {
+
+        //Load AssDir Combo
+        loadAssDirCombo(function () {
+            loadEnvOfficerCombo($('#getAsDirect').val(), function (rest) {
+                loadAllFilesApi($('#getEnvOfficer').val(), function (respo) {
+                });
+            });
+        });
+        $("#getAsDirect").change(function () {
+            loadEnvOfficerCombo($('#getAsDirect').val(), function (rest) {
+            });
+        });
+
         /*
          // initialize the external events
          function ini_events(ele) {
@@ -285,13 +318,20 @@
                     borderColor: '#3c8dbc' //Primary (light-blue)
                 }
             ],
-            editable: false,
+            editable: true,
             eventResizableFromStart: false,
             droppable: false, // this allows things to be dropped onto the calendar !!!
             drop: function (info) {
                 // is the "remove after drop" checkbox checked?
                 info.draggedEl.parentNode.removeChild(info.draggedEl);
+            },
+            eventReceive: function (info) {
+                alert(info.event.title + " Was Tracked On " + info.event.start.toISOString());
+                if (!confirm("Are you sure about this?")) {
+                    //If click False
+                }
             }
+
         });
 
         calendar.render();
@@ -336,11 +376,17 @@
          $('#new-event').val('')
          })
          */
+
+        //Show Modal By Clicking Dates On Calender
         $('.fc-past,.fc-future,.fc-today').click(function () {
+            inspectionsByDateAPI($(this).data('date'), $('#getEnvOfficer').val(), function () {
+            });
             $('#modal-xl').modal('show');
             $('#modalTitle').html('Appoinment - ' + $(this).data('date'));
         });
 
-    })
+
+
+    });
 </script>
 @endsection
