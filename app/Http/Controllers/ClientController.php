@@ -388,7 +388,6 @@ class ClientController extends Controller
         } else {
             abort(401);
         }
-
         return $data;
     }
 

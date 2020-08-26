@@ -9,6 +9,8 @@ class Client extends Model
 {
         public const STATUS_INSPECTION_NEEDED = 'Inspection Needed';
         public const STATUS_INSPECTION_NOT_NEEDED = 'Inspection Not Needed';
+        public const STATUS_PENDING = 'Pending';
+        public const STATUS_COMPLETED = 'Completed';
         public const STATUS_NEW = 'New';
 
         public const IS_WORKING_NEW = 0;

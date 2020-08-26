@@ -51,7 +51,7 @@ class InspectionSessionController extends Controller
             $file = Client::find($id);
             if ($file) {
                 $inspectionSession = new InspectionSession();
-                $autoData =    $this->getAutomaticInspectionPlacementData($id);
+                $autoData = $this->getAutomaticInspectionPlacementData($id);
                 $inspectionSession->application_type = $autoData['type'];
                 $inspectionSession->profile_id = $autoData['id'];
                 $inspectionSession->client_id = $file->id;
@@ -62,7 +62,11 @@ class InspectionSessionController extends Controller
                 $dLog = new InspectionDateLog();
                 $dLog->date = request('schedule_date');
                 $dLog->inspection_session_id = $inspectionSession->id;
-                $dLog->save();
+                $msg = $msg &&  $dLog->save();
+
+                $file->need_inspection = Client::STATUS_PENDING;
+                $file->is_working = Client::IS_WORKING_WORKING;
+                $msg = $msg && $file->save();
                 if ($msg) {
                     return array('id' => 1, 'message' => 'true');
                 } else {
@@ -123,9 +127,7 @@ class InspectionSessionController extends Controller
         return InspectionSession::with('inspectionRemarks')->with('inspectionSessionAttachments')->with('inspectionPersonals')->where('client_id', $client->id)->get();
     }
 
-
-
-    public function showInspectionsByDate($date)
+    public function showInspectionsByDate($date, $id)
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
@@ -135,22 +137,12 @@ class InspectionSessionController extends Controller
             ->with('inspectionPersonals')
             ->with('client')
             ->where('schedule_date', $date)
+            ->whereHas('client', function ($sql) use ($id) {
+                return $sql->where('clients.environment_officer_id', '=', $id);
+            })
+            ->where('status', 0)
             ->get();
     }
-    public function getA($date)
-    {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-
-        return InspectionSession::with('inspectionRemarks')
-            ->with('inspectionSessionAttachments')
-            ->with('inspectionPersonals')
-            ->with('client')
-            ->where('schedule_date', $date)
-            ->get();
-    }
-
-
 
     public function showInspectionsPending($id)
     {
@@ -164,6 +156,7 @@ class InspectionSessionController extends Controller
             ->where('status', 0)
             ->get();
     }
+
     public function showInspectionsCompleted($id)
     {
         $user = Auth::user();
@@ -176,8 +169,6 @@ class InspectionSessionController extends Controller
             ->where('status', 1)
             ->get();
     }
-
-
 
     /**
      * Show the form for editing the specified resource.
@@ -214,7 +205,11 @@ class InspectionSessionController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_delete']) {
             $inspectionSession = InspectionSession::findOrFail($sessionId);
+            $file = $inspectionSession->client;
             $msg = $inspectionSession->delete();
+            $file->need_inspection = Client::STATUS_INSPECTION_NEEDED;
+            $file->is_working = Client::IS_WORKING_WORKING;
+            $msg = $msg && $file->save();
             if ($msg) {
                 return array('id' => 1, 'message' => 'true');
             } else {
@@ -235,6 +230,7 @@ class InspectionSessionController extends Controller
             ->with('inspectionPersonals')
             ->findOrFail($sessionId);
     }
+
     public function markComplete($sessionId)
     {
         $user = Auth::user();
@@ -242,14 +238,17 @@ class InspectionSessionController extends Controller
 
         $inspectionSession = InspectionSession::findOrFail($sessionId);
         $inspectionSession->status = 1;
-
         $msg = $inspectionSession->save();
+        $file = $inspectionSession->client;
+        $file->need_inspection = Client::STATUS_COMPLETED;
+        $msg = $msg && $file->save();
         if ($msg) {
             return array('id' => 1, 'message' => 'true');
         } else {
             return array('id' => 0, 'message' => 'false');
         }
     }
+
     public function markPending($sessionId)
     {
         $user = Auth::user();
@@ -257,8 +256,10 @@ class InspectionSessionController extends Controller
 
         $inspectionSession = InspectionSession::findOrFail($sessionId);
         $inspectionSession->status = 0;
-
         $msg = $inspectionSession->save();
+        $file = $inspectionSession->client;
+        $file->need_inspection = Client::STATUS_COMPLETED;
+        $msg = $msg && $file->save();
         if ($msg) {
             return array('id' => 1, 'message' => 'true');
         } else {

@@ -5,17 +5,17 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('pageStyles')<!-- This section didnt work for me -->
-  <!-- fullCalendar -->
-  <link rel="stylesheet" href="../plugins/fullcalendar/main.min.css">
-  <link rel="stylesheet" href="../plugins/fullcalendar-daygrid/main.min.css">
-  <link rel="stylesheet" href="../plugins/fullcalendar-timegrid/main.min.css">
-  <link rel="stylesheet" href="../plugins/fullcalendar-bootstrap/main.min.css">
+<!-- fullCalendar -->
+<link rel="stylesheet" href="../plugins/fullcalendar/main.min.css">
+<link rel="stylesheet" href="../plugins/fullcalendar-daygrid/main.min.css">
+<link rel="stylesheet" href="../plugins/fullcalendar-timegrid/main.min.css">
+<link rel="stylesheet" href="../plugins/fullcalendar-bootstrap/main.min.css">
 @endsection
 
 @section('content')
 @if($pageAuth['is_read']==1 || false)
 <section class="content-header">
-    
+
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
@@ -31,29 +31,48 @@
             <div class="col-md-3">
                 <div class="sticky-top mb-3">
                     <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Assistant Director*</label>
+                                <select id="getAsDirect" class="form-control form-control-sm">
+                                    <option value="0">Loading..</option>
+                                </select>
+                                <div id="valAsDirect" class="d-none"><p class="text-danger">Field is required</p></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Environment Officer*</label>
+                                <select id="getEnvOfficer" class="form-control form-control-sm">
+                                    <option value="0">Loading..</option>
+                                </select>
+                                <div id="valEnvOfficer" class="d-none"><p class="text-danger">Field is required</p></div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Draggable Events</h4>
+                            <h4 class="card-title">Events</h4>
                         </div>
                         <div class="card-body">
                             <!-- the events -->
                             <div id="external-events">
-                                <div class="external-event bg-success">Lunch</div>
-                                <div class="external-event bg-warning">Go home</div>
-                                <div class="external-event bg-info">Do homework</div>
-                                <div class="external-event bg-primary">Work on UI design</div>
-                                <div class="external-event bg-danger">Sleep tight</div>
-                                <div class="checkbox">
-                                    <label for="drop-remove">
-                                        <input type="checkbox" id="drop-remove">
-                                        remove after drop
-                                    </label>
-                                </div>
+                                <div class="external-event bg-success">EPL</div>
+                                <div class="external-event bg-warning">Telecommunication</div>
+                                <div class="external-event bg-info">Another [1]</div>
+                                <div class="external-event bg-primary">Another [2]</div>
+                                <div class="external-event bg-danger">Another [3]</div>
+                                <!--                                <div class="checkbox">
+                                                                    <label for="drop-remove">
+                                                                        <input type="checkbox" id="drop-remove">
+                                                                        remove after drop
+                                                                    </label>
+                                                                </div>-->
                             </div>
                         </div>
                         <!-- /.card-body -->
                     </div>
                     <!-- /.card -->
-                    <div class="card">
+                    <div class="card d-none">
                         <div class="card-header">
                             <h3 class="card-title">Create Event</h3>
                         </div>
@@ -97,6 +116,41 @@
         </div>
         <!-- /.row -->
     </div><!-- /.container-fluid -->
+
+    <div class="modal fade" id="modal-xl">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modalTitle">Modal</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body table-responsive" style="height: 450px;">
+                        <table class="table table-condensed" id="tblSchedules">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>Name</th>
+                                    <th style="width: 140px">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
 </section>
 @endif
 @endsection
@@ -135,35 +189,47 @@
 <script src="../../js/zonejs/get.js"></script>
 <script src="../../js/zonejs/update.js"></script>
 <script src="../../js/zonejs/delete.js"></script>
+<script src="../../js/ScheduleJS/main_schedule.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
     $(function () {
 
-        /* initialize the external events
-         -----------------------------------------------------------------*/
-        function ini_events(ele) {
-            ele.each(function () {
-                var eventObject = {
-                    title: $.trim($(this).text()) // use the element's text as the event title
-                }
+        //Load AssDir Combo
+        loadAssDirCombo(function () {
+            loadEnvOfficerCombo($('#getAsDirect').val(), function (rest) {
+                loadAllFilesApi($('#getEnvOfficer').val(), function (respo) {
+                });
+            });
+        });
+        $("#getAsDirect").change(function () {
+            loadEnvOfficerCombo($('#getAsDirect').val(), function (rest) {
+            });
+        });
 
-                // store the Event Object in the DOM element so we can get to it later
-                $(this).data('eventObject', eventObject)
-
-                // make the event draggable using jQuery UI
-                $(this).draggable({
-                    zIndex: 1070,
-                    revert: true, // will cause the event to go back to its
-                    revertDuration: 0  //  original position after the drag
-                })
-
-            })
-        }
-
-        ini_events($('#external-events div.external-event'))
-
-        /* initialize the calendar
-         -----------------------------------------------------------------*/
+        /*
+         // initialize the external events
+         function ini_events(ele) {
+         ele.each(function () {
+         var eventObject = {
+         title: $.trim($(this).text()) // use the element's text as the event title
+         }
+         
+         // store the Event Object in the DOM element so we can get to it later
+         $(this).data('eventObject', eventObject)
+         
+         // make the event draggable using jQuery UI
+         $(this).draggable({
+         zIndex: 1070,
+         revert: true, // will cause the event to go back to its
+         revertDuration: 0  //  original position after the drag
+         })
+         
+         })
+         }
+         
+         ini_events($('#external-events div.external-event'))
+         */
+        // initialize the calendar--
         //Date for the calendar events (dummy data)
         var date = new Date()
         var d = date.getDate(),
@@ -189,6 +255,10 @@
                     backgroundColor: window.getComputedStyle(eventEl, null).getPropertyValue('background-color'),
                     borderColor: window.getComputedStyle(eventEl, null).getPropertyValue('background-color'),
                     textColor: window.getComputedStyle(eventEl, null).getPropertyValue('color'),
+//                    url: 'https://ceytechsystemsolutions.com/',
+                    allDay: false,
+                    eventResizableFromStart: false,
+                    eventDurationEditable: false
                 };
             }
         });
@@ -207,7 +277,7 @@
                     start: new Date(y, m, 1),
                     backgroundColor: '#f56954', //red
                     borderColor: '#f56954', //red
-                    allDay: true
+                    allDay: false
                 },
                 {
                     title: 'Long Event',
@@ -249,57 +319,74 @@
                 }
             ],
             editable: true,
-            droppable: true, // this allows things to be dropped onto the calendar !!!
+            eventResizableFromStart: false,
+            droppable: false, // this allows things to be dropped onto the calendar !!!
             drop: function (info) {
                 // is the "remove after drop" checkbox checked?
-                if (checkbox.checked) {
-                    // if so, remove the element from the "Draggable Events" list
-                    info.draggedEl.parentNode.removeChild(info.draggedEl);
+                info.draggedEl.parentNode.removeChild(info.draggedEl);
+            },
+            eventReceive: function (info) {
+                alert(info.event.title + " Was Tracked On " + info.event.start.toISOString());
+                if (!confirm("Are you sure about this?")) {
+                    //If click False
                 }
             }
+
         });
 
         calendar.render();
         // $('#calendar').fullCalendar()
 
-        /* ADDING EVENTS */
-        var currColor = '#3c8dbc' //Red by default
-        //Color chooser button
-        var colorChooser = $('#color-chooser-btn')
-        $('#color-chooser > li > a').click(function (e) {
-            e.preventDefault()
-            //Save color
-            currColor = $(this).css('color')
-            //Add color effect to button
-            $('#add-new-event').css({
-                'background-color': currColor,
-                'border-color': currColor
-            })
-        })
-        $('#add-new-event').click(function (e) {
-            e.preventDefault()
-            //Get value and make sure it is not null
-            var val = $('#new-event').val()
-            if (val.length == 0) {
-                return
-            }
+        /*    // ADDING EVENTS /
+         var currColor = '#3c8dbc' //Red by default
+         //Color chooser button
+         var colorChooser = $('#color-chooser-btn')
+         $('#color-chooser > li > a').click(function (e) {
+         e.preventDefault()
+         //Save color
+         currColor = $(this).css('color')
+         //Add color effect to button
+         $('#add-new-event').css({
+         'background-color': currColor,
+         'border-color': currColor
+         })
+         })
+         $('#add-new-event').click(function (e) {
+         e.preventDefault()
+         //Get value and make sure it is not null
+         var val = $('#new-event').val()
+         if (val.length == 0) {
+         return
+         }
+         
+         //Create events
+         var event = $('<div />')
+         event.css({
+         'background-color': currColor,
+         'border-color': currColor,
+         'color': '#fff'
+         }).addClass('external-event')
+         event.html(val)
+         $('#external-events').prepend(event)
+         
+         //Add draggable funtionality
+         ini_events(event)
+         
+         //Remove event from text input
+         $('#new-event').val('')
+         })
+         */
 
-            //Create events
-            var event = $('<div />')
-            event.css({
-                'background-color': currColor,
-                'border-color': currColor,
-                'color': '#fff'
-            }).addClass('external-event')
-            event.html(val)
-            $('#external-events').prepend(event)
+        //Show Modal By Clicking Dates On Calender
+        $('.fc-past,.fc-future,.fc-today').click(function () {
+            inspectionsByDateAPI($(this).data('date'), $('#getEnvOfficer').val(), function () {
+            });
+            $('#modal-xl').modal('show');
+            $('#modalTitle').html('Appoinment - ' + $(this).data('date'));
+        });
 
-            //Add draggable funtionality
-            ini_events(event)
 
-            //Remove event from text input
-            $('#new-event').val('')
-        })
-    })
+
+    });
 </script>
 @endsection

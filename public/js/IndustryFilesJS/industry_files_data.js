@@ -2,12 +2,12 @@ function loadAssDirCombo(callBack) {
     var url = '/api/assistant_directors/level';
     let cbo = '';
     ajaxRequest('GET', url, null, function (dataSet) {
-        if (dataSet) {
+        if (dataSet.length == 0) {
+            cbo = "<option value=''>No Data Found</option>";
+        } else {
             $.each(dataSet, function (index, row) {
                 cbo += '<option value="' + row.id + '">' + row.user.first_name + " " + row.user.last_name + '</option>';
             });
-        } else {
-            cbo = "<option value=''>No Data Found</option>";
         }
         $('#getAsDirect').html(cbo);
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
@@ -19,12 +19,12 @@ function loadEnvOfficerCombo(uid, callBack) {
     var url = '/api/environment_officer/level/assistant_director_id/' + uid;
     let cbo = '';
     ajaxRequest('GET', url, null, function (dataSet) {
-        if (dataSet) {
+        if (dataSet.length == 0) {
+            cbo = "<option value=''>No Data Found</option>";
+        } else {
             $.each(dataSet, function (index, row) {
                 cbo += '<option value="' + row.id + '">' + row.user.first_name + " " + row.user.last_name + '</option>';
             });
-        } else {
-            cbo = "<option value=''>No Data Found</option>";
         }
         $('#getEnvOfficer').html(cbo);
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
@@ -83,7 +83,7 @@ function forTypeFiles_table(obj, callBack) {
             tbl += '</tr>';
         });
     }
-    $('.setCurrentEnvProf').html($('#getAsDirect option:selected').html() + ' - ' + $('#getEnvOfficer option:selected').html()  + ' - ' + $('#getFileType option:selected').html());
+    $('.setCurrentEnvProf').html($('#getAsDirect option:selected').html() + ' - ' + $('#getEnvOfficer option:selected').html() + ' - ' + $('#getFileType option:selected').html());
     $('#tblAllFiles tbody').html(tbl);
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
         callBack();
