@@ -122,6 +122,24 @@ class InspectionSessionController extends Controller
         $client = Client::findOrFail($id);
         return InspectionSession::with('inspectionRemarks')->with('inspectionSessionAttachments')->with('inspectionPersonals')->where('client_id', $client->id)->get();
     }
+
+
+
+    public function showInspectionsByDate($date)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+  
+        return InspectionSession::with('inspectionRemarks')
+        ->with('inspectionSessionAttachments')
+        ->with('inspectionPersonals')
+        ->with('client')
+        ->where('schedule_date', $date)
+        ->get();
+    }
+
+
+
     public function showInspectionsPending($id)
     {
         $user = Auth::user();

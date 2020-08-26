@@ -55,6 +55,13 @@ Route::middleware('auth:api')->get('/inspections/file/id/{id}', 'InspectionSessi
 ]
 
  */
+
+
+Route::middleware('auth:api')->get('/inspections/file/date/{date}', 'InspectionSessionController@showInspectionsByDate');   // show all inspections by schedule_date
+/*
+
+
+*/
 Route::middleware('auth:api')->get('/inspections/pending/file/id/{id}', 'InspectionSessionController@showInspectionsPending');   // show all pending inspections by file
 
 /**
