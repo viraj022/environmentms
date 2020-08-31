@@ -29,3 +29,21 @@ Route::middleware('auth:api')->get('/files/new/officer/id/{id}', 'ClientControll
 Route::middleware('auth:api')->get('/assistant_directors/level', 'AssistantDirectorController@getAssistanceDirectorsByLevel'); // get assistance director by logged user
 
 Route::middleware('auth:api')->get('/environment_officer/level/assistant_director_id/{id}', 'EnvironmentOfficerController@getEnvironmentOfficersByLevel'); // get environment officer by logged user
+
+Route::middleware('auth:api')->patch('/inspection/{inspectionNeed}/file/{id}', 'ClientController@markInspection'); // mark inspection need or not need
+
+/*
+values for inspectionNeed parameter
+* needed
+* no_needed
+*/
+/*
+
+{
+  "id": 1,
+  "message": "true"
+}
+
+*/
+Route::middleware('auth:api')->get('/files/need_inspection/officer/id/{id}', 'ClientController@inspection_needed_files'); //  get inspection needed files
+Route::middleware('auth:api')->get('/files/need_inspection/pending/officer/id/{id}', 'ClientController@inspection_pending_needed_files'); //  get inspection needed files

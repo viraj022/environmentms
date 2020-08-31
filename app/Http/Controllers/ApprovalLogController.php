@@ -56,8 +56,11 @@ class ApprovalLogController extends Controller
                         ->where('type_id', $epl->id)
                         ->orderBy('id', 'desc')
                         ->first();
-                    if ($abc->officer_type == ApprovalLog::OFF_OFFICER && $abc->status == ApprovalLog::APP_APPROVE) {
-                        return response(array('id' => 0, 'message' => 'Already Rejected'), 422);
+                    if ($abc) {
+
+                        if ($abc->officer_type == ApprovalLog::OFF_OFFICER && $abc->status == ApprovalLog::APP_APPROVE) {
+                            return response(array('id' => 0, 'message' => 'Already Rejected'), 422);
+                        }
                     }
                     $approvalLog = new ApprovalLog();
                     $approvalLog->type = ApprovalLog::Type_EPL;

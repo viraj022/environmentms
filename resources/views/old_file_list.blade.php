@@ -45,9 +45,11 @@
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 10px">#</th>
-                                                        <th>Industry Name</th>
                                                         <th>BR</th>
-                                                        <th style="width: 140px">Action</th>
+                                                        <th>Industry Name</th>
+                                                        <th >EPL</th>
+                                                        <th >Old Files</th>
+                                                        <th >Action</th>                                                        
                                                     </tr>
                                                 </thead>
                                                 <tbody>

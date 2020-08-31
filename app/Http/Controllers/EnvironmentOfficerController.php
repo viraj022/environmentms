@@ -40,6 +40,12 @@ class EnvironmentOfficerController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         return view('epl_assign', ['pageAuth' => $pageAuth]);
     }
+    public function index3()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        return view('schedule', ['pageAuth' => $pageAuth]);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -240,7 +246,7 @@ class EnvironmentOfficerController extends Controller
     public function assignEnvOfficer($id)
     {
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        $pageAuth = $user->authentication(config('auth.privileges.fileAssign'));
         if ($pageAuth['is_create']) {
             request()->validate([
                 'environment_officer_id' => 'required|integer',
@@ -295,19 +301,15 @@ class EnvironmentOfficerController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-        if ($pageAuth['is_read']) {
-            $assistantDirector = AssistantDirector::find($id);
-            if ($assistantDirector) {
-                return Client::join('pradesheeyasabas', 'clients.pradesheeyasaba_id', '=', 'pradesheeyasabas.id')
-                    ->whereNull('environment_officer_id')
-                    ->where('pradesheeyasabas.zone_id', $assistantDirector->zone_id)
-                    ->select('clients.*')
-                    ->get();
-            } else {
-                abort(404);
-            }
+        $assistantDirector = AssistantDirector::find($id);
+        if ($assistantDirector) {
+            return Client::join('pradesheeyasabas', 'clients.pradesheeyasaba_id', '=', 'pradesheeyasabas.id')
+                ->whereNull('environment_officer_id')
+                ->where('pradesheeyasabas.zone_id', $assistantDirector->zone_id)
+                ->select('clients.*')
+                ->get();
         } else {
-            return abort(401);
+            abort(404);
         }
     }
 
@@ -315,12 +317,8 @@ class EnvironmentOfficerController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-        if ($pageAuth['is_read']) {
-            return Client::where('environment_officer_id', $id)
-                ->get();
-        } else {
-            abort(401);
-        }
+        return Client::where('environment_officer_id', $id)
+            ->get();
     }
 
     public function All()
@@ -340,11 +338,16 @@ class EnvironmentOfficerController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($user->roll->level->name == Level::DIRECTOR) {
-            $data = EnvironmentOfficer::with('user')->where('assistant_director_id', $id)->get();
+            $data = EnvironmentOfficer::with('user')->where('assistant_director_id', $id)->where('active_status', 1)->get();
         } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
-            $data = EnvironmentOfficer::with('user')->where('assistant_director_id', $user->id)->get();
+            $assistantDirector = AssistantDirector::where('user_id', $user->id)->where('active_status', 1)->first();
+            if ($assistantDirector) {
+                $data = EnvironmentOfficer::with('user')->where('assistant_director_id', $assistantDirector->id)->where('active_status', 1)->get();
+            } else {
+                abort(404);
+            }
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-            $data = EnvironmentOfficer::with('user')->where('id', $user->id)->get();
+            $data = EnvironmentOfficer::with('user')->where('user_id', $user->id)->where('active_status', 1)->get();
         }
         return $data;
     }

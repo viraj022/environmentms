@@ -8,6 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Environemnt Authority | North Western Province</title>
         @yield('styles')
+        @yield('pageStyles')
+    </head>
     <body class="hold-transition sidebar-mini layout-fixed text-sm">
         <div class="wrapper">
 

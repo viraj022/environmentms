@@ -206,7 +206,7 @@ class AttachemntsController extends Controller
             'file' => 'required|mimes:jpeg,jpg,png,pdf'
         ]);
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.attachments'));
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
             $e = EPL::findOrFail($epl);
             $type = $request->file->extension();

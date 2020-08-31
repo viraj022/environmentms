@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Industry Profile</h1>
+                <h1>Industry Profile - <span class="right badge badge-primary is_oldProf">-</span></h1>
             </div>
         </div>
     </div>
@@ -35,6 +35,18 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link oldAttachTab disabled" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false">Old Attachments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link profileListTab" id="custom-tabs-three-profileListTab-tab" data-toggle="pill" href="#custom-tabs-three-profileListTab" role="tab" aria-controls="custom-tabs-three-profileListTab" aria-selected="false">Issued List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link userDataTab" id="custom-tabs-three-userDataTab-tab" data-toggle="pill" href="#custom-tabs-three-userDataTab" role="tab" aria-controls="custom-tabs-three-userDataTab" aria-selected="false">Profile Details</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link profileSettingsTab" id="custom-tabs-three-profileSettingsTab-tab" data-toggle="pill" href="#custom-tabs-three-profileSettingsTab" role="tab" aria-controls="custom-tabs-three-userDataTab" aria-selected="false">Profile Settings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link siteInspectionTab" id="custom-tabs-three-siteInspectionTab-tab" data-toggle="pill" href="#custom-tabs-three-siteInspectionTab" role="tab" aria-controls="custom-tabs-three-siteInspectionTab" aria-selected="false">Site Inspection</a>
                 </li>
             </ul>
         </div>
@@ -157,13 +169,13 @@
                                         </div>
                                         <!-- /.card-header -->
                                         <div class="card-body">
-                                            <h6 id="env_firstname">Environment Officer: Not Assigned</h6>
+                                            <h6 id="env_firstname">Environment Officer: <a class="text-danger">Not Assigned</a></h6>
                                             <dt>Name : <a id="obj_name"></a></dt>
                                             <dt>BR No : <a id="obj_regno"></a></dt>                       
                                             <dt>Investment : Rs <a id="obj_invest"></a>.00</dt>
                                             <dt>Location : <a id="obj_name"></a></dt>
                                             <div id="map" style="width: 100%; height: 400px;"></div>
-                                            <dt>Download Application :</dt>
+                                            <dt>Download & Upload Application :</dt>
 
                                             <a href="" class="btn btn-dark navToFile1" target="_blank">View Road Map</a>
                                             <a href="" class="btn btn-dark navToFile2" target="_blank">View Deed of the land</a>
@@ -185,26 +197,6 @@
                                         </div>
                                         <!-- /.card-body -->
                                     </div> 
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3 class="card-title"><i class="fas fa-address-card"></i> Customer EPL List</h3>
-                                        </div>
-                                        <!-- /.card-header -->
-                                        <div class="card-body">
-                                            <table class="table table-active" id="clientEplList">
-<!--                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Buiseness Name</th>
-                                                        <th>EPL</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>-->
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                        <!-- /.card-body -->
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -242,8 +234,8 @@
                             <div class="card-header">
                                 <h3 class="card-title">Other Attachments</h3>
                             </div>
-                            <div class="card-body p-0">
-                                <div class="card-body table-responsive" style="height: 450px;">
+                            <div class="card-body">
+                                <div class="row">
                                     <div class="form-group uploadAttachments">
                                         <label>Upload: </label>
                                         <input id="otherFiles" type="file">
@@ -251,9 +243,9 @@
                                         <button disabled id="btnUpload" type="submit" class="btn btn-success">Upload</button>
                                         @endif
                                     </div>
-                                    <div class="card-body injectViewAttachs">                                
-                                        <a href="#" target="_blank">Loading Attachments...</a>                          
-                                    </div>                                    
+                                </div>
+                                <div class="row injectViewAttachs" style="height: 450px; overflow-y: auto;">
+
                                 </div>
                             </div>
                         </div>
@@ -264,16 +256,222 @@
                                     <button id="btnConfirm" class="btn btn-dark">Confirm</button>
                                 </div>
                                 <div class="card-body d-none isConfirmed">
-                                    <h4>File Checked And Confirmed</h4>
+                                    <h4 class="text-success">File Checked And Confirmed <i class="fa fa-check-circle"></i></h4>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!--//Old Attachments END//-->
                 </div>
+                <!--//All Profile Open//-->
+                <div class="tab-pane fade" id="custom-tabs-three-profileListTab" role="tabpanel" aria-labelledby="custom-tabs-three-profileListTab-tab">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card card-success">
+                                    <div class="card-header">
+                                        <h3 class="card-title">EPL</h3>
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body" style="display: block;">
+                                        <table class="table table-active" id="clientEplList">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>EPL Code</th>
+                                                    <th>Certificate Number</th>
+                                                    <th>Issue Date</th>
+                                                    <th>Expire Date</th>
+                                                    <!--<th>Action</th>-->
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card card-success">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Site Clearance</h3>
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body" style="display: block;">
+                                        The body of the card
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card card-success">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Telecommunication Site Clearance</h3>
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body" style="display: block;">
+                                        The body of the card
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card card-success">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Schedule Waste</h3>
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body" style="display: block;">
+                                        The body of the card
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                   
+                </div>
+                <!--//All Profile END//-->
+                <!--//All User Data Open//-->
+                <div class="tab-pane fade" id="custom-tabs-three-userDataTab" role="tabpanel" aria-labelledby="custom-tabs-three-userDataTab-tab">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card card-primary card-outline">
+                                    <div class="card-body box-profile">
+                                        <h3 class="profile-username text-center">Client Details</h3>
+
+                                        <p class="text-muted text-center firstL_name">{Client Name}</p>
+
+                                        <ul class="list-group list-group-unbordered mb-3">
+                                            <li class="list-group-item">
+                                                <b>File No</b> <a class="float-right file_no"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Assign Date</b> <a class="float-right assign_date"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Address</b> <a class="float-right cl_address"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Email</b> <a class="float-right cl_email"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Contact No</b> <a class="float-right cl_contact_no"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>NIC</b> <a class="float-right cl_nic"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card card-primary card-outline">
+                                    <div class="card-body box-profile">
+                                        <h3 class="profile-username text-center">Industry Details</h3>
+
+                                        <p class="text-muted text-center tabf_industry_name">{industry name}</p>
+
+                                        <ul class="list-group list-group-unbordered mb-3">
+                                            <li class="list-group-item">
+                                                <b>Registration No</b> <a class="float-right tabf_industry_registration_no"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Industry Category</b> <a class="float-right tabf_industry_cat_name"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Business Scale</b> <a class="float-right tabf_business_scale"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>PradesheeyaSaba</b> <a class="float-right tabf_pradesheeyasaba"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Start Date</b> <a class="float-right tabf_industry_start_date"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Investment</b> <a class="float-right tabf_industry_investment"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Address</b> <a class="float-right tabf_industry_address"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Contact No</b> <a class="float-right tabf_industry_contact_no"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Email</b> <a class="float-right tabf_industry_email"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Environment Officer</b> <a class="float-right tabf_environment_officer"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                   
+                </div>
+                <!--//All User Data END//-->
+                <!--//All User Profile Settings Open//-->
+                <div class="tab-pane fade" id="custom-tabs-three-profileSettingsTab" role="tabpanel" aria-labelledby="custom-tabs-three-profileSettingsTab-tab">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="card-body">
+                                <div class="callout callout-danger">
+                                    <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change Environment Officer</button>
+                                    <!--<p>There is a problem that we need to</p>-->
+                                </div>
+                                <div class="callout callout-danger">
+                                    <h4>Status: <a class="setupInspectStatus text-success"></a></h4>
+                                    <button type="button" onclick="location.href = '';" class="btn btn-dark addToSiteIns d-none" data-dismiss="modal"><i class="fa fa-plus"></i>&nbsp Add To Site Inspection</button>
+                                    <button type="button" onclick="location.href = '';" class="btn btn-info setInspectUI d-none" data-dismiss="modal"><i class="fa fa-plus"></i>&nbsp Set Inspection</button>
+                                    <button type="button" onclick="location.href = '';" class="btn btn-warning noNeedInspect d-none" data-dismiss="modal"><i class="fa fa-exclamation"></i>&nbsp No Need Inspection</button>
+                                </div>
+                                <div class="callout callout-info">
+                                    <dt>Upload Application :</dt>
+                                    <button type="button" class="btn btn-success upld_roadMap" data-upload_file="Road Map">Update Road Map</button>
+                                    <button type="button" class="btn btn-success upld_deed" data-upload_file="Deed Of The Land">Update Deed of the land </button>
+                                    <button type="button" class="btn btn-success upld_SurveyPlan" data-upload_file="Survey Plan">Update Survey Plan</button>
+                                    <div class="form-group fileUpDiv d-none">
+                                        <hr>
+                                        <label class="uploadLabel">File Upload </label>
+                                        <input type="file" class="fileUploadInput"  accept=".png,.jpg,.jpeg, .pdf">
+                                        <div class="progress d-none">
+                                            <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="callout callout-info">
+                                    <dt>Deed List :</dt>
+                                    <div class="deedListUsr">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                   
+                    </div>
+                    <!--//All Profile Settings END//-->
+                </div>
+                <!--//All User Site Inspection Open//-->
+                <div class="tab-pane fade" id="custom-tabs-three-siteInspectionTab" role="tabpanel" aria-labelledby="custom-tabs-three-siteInspectionTab-tab">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="card-body">
+                                AAAA
+                            </div>
+                        </div>
+                    </div>                   
+                </div>
+                <!--//All Site Inspection END//-->
             </div>
-        </div>
-    </div>  
+        </div>  
 </section>
 <!--//Tab Section END//-->  
 <section>
@@ -305,109 +503,136 @@
 <!-- AdminLTE App -->
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
 <script>
-                                                            PROFILE_ID = '{{$id}}';
-                                                            $(function () {
-                                                                getaProfilebyId(PROFILE_ID, function (parameters) {
-                                                                    setProfileDetails(parameters);
-                                                                    sectionProtector(parameters.is_old);
-                                                                    loadAllOldAttachments(parameters, function () {
-                                                                    });
-                                                                    oldFileConfirmSection(parameters.is_old);
-                                                                    checkEPLstatus(parameters.epls);
-                                                                });
-                                                                $('#newEPL').click(function () {
-                                                                    if (isNaN(parseInt(PROFILE_ID))) {
-                                                                        return false;
-                                                                    }
-                                                                    window.location = "/epl_register/id/" + PROFILE_ID;
-                                                                });
-                                                                //new
-                                                                $('#upld_roadMap, #upld_deed, #upld_SurveyPlan').click(function () {
-                                                                    $('#uploadLabel').html('Select ' + $(this).data('upload_file') + ' File To Upload');
-                                                                    $('#fileUploadInput').data('fileType', $(this).data('upload_file'));
-                                                                    $('#fileUpDiv').removeClass('d-none');
-                                                                });
+                                        PROFILE_ID = '{{$id}}';
+                                        $(function () {
+                                            deedList(PROFILE_ID, function () {
 
-                                                                //file upload click
-                                                                $('#fileUploadInput').change(function () {
-                                                                    if (!confirm('Are you sure you want to save this attachment?')) {
-                                                                        return false;
-                                                                    }
-                                                                    let uploadFileType = $(this).data('fileType');
-                                                                    let formData = new FormData();
-                                                                    let fileCat = '';
-                                                                    // populate fields
-                                                                    let file = $(this)[0].files[0];// file
-                                                                    formData.append('file', file);
-                                                                    switch (uploadFileType) {
-                                                                        case 'EPL':
-                                                                            fileCat = 'file';
-                                                                            break;
-                                                                        case 'Road Map':
-                                                                            fileCat = 'file1';
-                                                                            break;
-                                                                        case 'Deed Of The Land':
-                                                                            fileCat = 'file2';
-                                                                            break;
-                                                                        case 'Survey Plan':
-                                                                            fileCat = 'file3';
-                                                                            break;
+                                            });
+                                            getaProfilebyId(PROFILE_ID, function (parameters) {
+                                                setProfileDetails(parameters);
+                                                setIndustryAndClientDb(parameters);
+                                                sectionProtector(parameters.is_old);
+                                                updateAttachmentData(parameters);
+                                                loadAllOldAttachments(parameters.old_files, function () {
+                                                });
+                                                oldFileConfirmSection(parameters.is_old);
+                                                checkEPLstatus(parameters.epls);
+                                                loadAllEPLTable(parameters.epls);
+                                                setupInspectionUI(parameters.need_inspection);
+                                            });
+                                            $('#newEPL').click(function () {
+                                                if (isNaN(parseInt(PROFILE_ID))) {
+                                                    return false;
+                                                }
+                                                window.location = "/epl_register/id/" + PROFILE_ID;
+                                            });
+                                            //new
+                                            $('#upld_roadMap, #upld_deed, #upld_SurveyPlan').click(function () {
+                                                $('#uploadLabel').html('Select ' + $(this).data('upload_file') + ' File To Upload');
+                                                $('#fileUploadInput').data('fileType', $(this).data('upload_file'));
+                                                $('#fileUpDiv').removeClass('d-none');
+                                            });
 
-                                                                        default:
+                                            $('.upld_roadMap, .upld_deed, .upld_SurveyPlan').click(function () {
+                                                $('.uploadLabel').html('Select ' + $(this).data('upload_file') + ' File To Upload');
+                                                $('.fileUploadInput').data('fileType', $(this).data('upload_file'));
+                                                $('.fileUpDiv').removeClass('d-none');
+                                            });
 
-                                                                            break;
-                                                                    }
-                                                                    ulploadFile2('/api/epl/upload/epl/' + PROFILE_ID + '/file/' + fileCat, formData, function (parameters) {
-                                                                        show_mesege(parameters);
-                                                                        getaProfilebyId(PROFILE_ID, function (result) {
-                                                                            setProfileDetails(result);
-                                                                        });
-                                                                    });
-                                                                });
+                                            //file upload click
+                                            $('#fileUploadInput , .fileUploadInput').change(function () {
+                                                if (!confirm('Are you sure you want to save this attachment?')) {
+                                                    return false;
+                                                }
+                                                let uploadFileType = $(this).data('fileType');
+                                                let formData = new FormData();
+                                                let fileCat = '';
+                                                // populate fields
+                                                let file = $(this)[0].files[0];// file
+                                                formData.append('file', file);
+                                                switch (uploadFileType) {
+                                                    case 'EPL':
+                                                        fileCat = 'file';
+                                                        break;
+                                                    case 'Road Map':
+                                                        fileCat = 'file1';
+                                                        break;
+                                                    case 'Deed Of The Land':
+                                                        fileCat = 'file2';
+                                                        break;
+                                                    case 'Survey Plan':
+                                                        fileCat = 'file3';
+                                                        break;
 
-                                                            });
+                                                    default:
+
+                                                        break;
+                                                }
+                                                ulploadFile2('/api/epl/upload/epl/' + PROFILE_ID + '/file/' + fileCat, formData, function (parameters) {
+                                                    show_mesege(parameters);
+                                                    getaProfilebyId(PROFILE_ID, function (result) {
+                                                        setProfileDetails(result);
+                                                    });
+                                                    deedList(PROFILE_ID, function () {
+                                                        $('.fileUploadInput').val('');
+                                                    });
+                                                });
+                                            });
+
+                                        });
 
 //btnCustomerVa button action 
-                                                            $(document).on('click', '.btnCustomerVa', function () {
-                                                                var row = JSON.parse(decodeURIComponent($(this).data('row')));
-                                                                setClientDetails(row);
-                                                                setSectionVisible('view-Client');
-                                                            });
-                                                            function disWarnPay() {
-                                                                toastr.error('Assign Environment Officer & Try Again!');
-                                                            }
-                                                            //Upload Old Attachments
-                                                            $('#btnUpload').click(function () {
-                                                                var file = $('#otherFiles')[0].files[0];
-                                                                uploadOldAttacments(PROFILE_ID, 'file', file, function (result) {
-                                                                    show_mesege(result);
-//                                                                    regenCLientData(PROFILE_ID);
-                                                                });
-                                                            });
-                                                            //Remove Old Attachments
-                                                            $(document).on('click', '.removeAttachs', function () {
-                                                                var getRemoveId = $(this).attr('id');
-                                                                deleteOldAttachments(getRemoveId, function (result) {
-                                                                    show_mesege(result);
-//                                                                    regenCLientData(PROFILE_ID);
-                                                                });
-                                                            });
-                                                            //Confirm Button
-                                                            $('#btnConfirm').click(function () {
-                                                                if (confirm("Not able to be reversed! Are you sure?")) {
-                                                                    ConfirmUploadingAttachs(PROFILE_ID, function (respo) {
-                                                                        show_mesege(respo);
-                                                                        location.reload();
-                                                                    });
-                                                                } else {
-                                                                    return false;
-                                                                }
-                                                            });
+                                        $(document).on('click', '.btnCustomerVa', function () {
+                                            var row = JSON.parse(decodeURIComponent($(this).data('row')));
+                                            setClientDetails(row);
+                                            setSectionVisible('view-Client');
+                                        });
+                                        function disWarnPay() {
+                                            toastr.error('Assign Environment Officer & Try Again!');
+                                        }
+                                        //Upload Old Attachments
+                                        $('#btnUpload').click(function () {
+                                            var file = $('#otherFiles')[0].files[0];
+                                            uploadOldAttacments(PROFILE_ID, 'file', file, function (result) {
+                                                show_mesege(result);
+                                                getaProfilebyId(PROFILE_ID, function (parameters) {
+                                                    loadAllOldAttachments(parameters.old_files, function () {
+                                                    });
+                                                });
+                                            });
+                                        });
+                                        //Remove Old Attachments
+                                        $(document).on('click', '.removeAttachs', function () {
+                                            var getRemoveId = $(this).attr('id');
+                                            deleteOldAttachments(getRemoveId, function (result) {
+                                                show_mesege(result);
+                                                getaProfilebyId(PROFILE_ID, function (parameters) {
+                                                    loadAllOldAttachments(parameters.old_files, function () {
+                                                    });
+                                                });
+                                            });
+                                        });
+                                        //Confirm Button
+                                        $('#btnConfirm').click(function () {
+                                            if (confirm("Not able to be reversed! Are you sure?")) {
+                                                ConfirmUploadingAttachs(PROFILE_ID, function (respo) {
+                                                    show_mesege(respo);
+                                                    location.reload();
+                                                });
+                                            } else {
+                                                return false;
+                                            }
+                                        });
 //Handle Upload Button
-                                                            $(document).ready(function () {
-                                                                $('#otherFiles').bind('change', function () {
-                                                                    uploadButtonHandler($('#otherFiles').val());
-                                                                });
-                                                            });
+                                        $(document).ready(function () {
+                                            $('#otherFiles').bind('change', function () {
+                                                uploadButtonHandler($('#otherFiles').val());
+                                            });
+                                        });
+                                        $(document).ready(function () {
+                                            $('#otherFiles').bind('change', function () {
+                                                uploadButtonHandler($('#otherFiles').val());
+                                            });
+                                        });
 </script>
 @endsection
