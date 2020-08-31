@@ -390,6 +390,31 @@ class ClientController extends Controller
         }
         return $data;
     }
+    public function inspection_pending_needed_files($id)
+    {
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        if ($user->roll->level->name == Level::DIRECTOR) {
+            $data = Client::where('environment_officer_id', $id)
+                ->where('need_inspection', Client::STATUS_PENDING)
+                ->get();
+        } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
+            $data = Client::where('environment_officer_id', $id)
+                ->where('need_inspection', Client::STATUS_PENDING)
+                ->get();
+        } else if ($user->roll->level->name == Level::ENV_OFFICER) {
+            $envOfficer =   EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
+            if ($envOfficer) {
+                $data = Client::where('environment_officer_id', $envOfficer->id)
+                    ->where('need_inspection', Client::STATUS_PENDING)
+                    ->get();
+            }
+        } else {
+            abort(401);
+        }
+        return $data;
+    }
 
     public function getOldFiles()
     {

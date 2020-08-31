@@ -46,3 +46,4 @@ values for inspectionNeed parameter
 
 */
 Route::middleware('auth:api')->get('/files/need_inspection/officer/id/{id}', 'ClientController@inspection_needed_files'); //  get inspection needed files
+Route::middleware('auth:api')->get('/files/need_inspection/pending/officer/id/{id}', 'ClientController@inspection_pending_needed_files'); //  get inspection needed files
