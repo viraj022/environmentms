@@ -56,11 +56,11 @@
                         <div class="card-body">
                             <!-- the events -->
                             <div id="external-events">
-                                <div class="external-event bg-success">EPL</div>
-                                <div class="external-event bg-warning">Telecommunication</div>
-                                <div class="external-event bg-info">Another [1]</div>
-                                <div class="external-event bg-primary">Another [2]</div>
-                                <div class="external-event bg-danger">Another [3]</div>
+                                <p class='text-success'>Loading...</p>
+                                <!--                                <div class="external-event bg-warning">Telecommunication</div>
+                                                                <div class="external-event bg-info">Another [1]</div>
+                                                                <div class="external-event bg-primary">Another [2]</div>
+                                                                <div class="external-event bg-danger">Another [3]</div>-->
                                 <!--                                <div class="checkbox">
                                                                     <label for="drop-remove">
                                                                         <input type="checkbox" id="drop-remove">
@@ -194,7 +194,8 @@
                 setInspectionNeededApi($('#getEnvOfficer').val(), function () {
                 });
                 loadCalenderApi($('#getEnvOfficer').val(), function (event) {//get all events from db
-//                    $('#calendar').fullCalendar('renderEvent', event, true);
+                    console.log(event);
+                    calendar.addEventSource(event); //Passing Funtion Array Into This(event)
                 });
             });
         });
@@ -214,8 +215,6 @@
         new Draggable(containerEl, {
             itemSelector: '.external-event',
             eventData: function (eventEl) {
-                console.log(eventEl);
-                console.log(eventEl.getAttribute('data-id'));
                 return {
                     title: eventEl.innerText,
                     backgroundColor: window.getComputedStyle(eventEl, null).getPropertyValue('background-color'),
@@ -236,8 +235,8 @@
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
-            //Random default events
-            events: [
+            events: '',
+//                    [
 //                {
 //                    title: 'All Day Event',
 //                    start: new Date(y, m, 1),
@@ -283,7 +282,7 @@
 //                    backgroundColor: '#3c8dbc', //Primary (light-blue)
 //                    borderColor: '#3c8dbc' //Primary (light-blue)
 //                }
-            ],
+//            ],
             editable: true,
             eventResizableFromStart: false,
             droppable: false, // this allows things to be dropped onto the calendar !!!
@@ -305,15 +304,16 @@
                     }
                 });
             }
-
         });
         calendar.render();
         //Show Modal By Clicking Dates On Calender
-        $('.fc-past,.fc-future,.fc-today').click(function () {
-            inspectionsByDateAPI($(this).data('date'), $('#getEnvOfficer').val(), function () {
+        $(document).ready(function () {
+            $('.fc-past,.fc-future,.fc-today').click(function () {
+                inspectionsByDateAPI($(this).data('date'), $('#getEnvOfficer').val(), function () {
+                });
+                $('#modal-xl').modal('show');
+                $('#modalTitle').html('Appoinment - ' + $(this).data('date'));
             });
-            $('#modal-xl').modal('show');
-            $('#modalTitle').html('Appoinment - ' + $(this).data('date'));
         });
     });
 </script>
