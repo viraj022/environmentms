@@ -283,7 +283,7 @@
 //                    borderColor: '#3c8dbc' //Primary (light-blue)
 //                }
 //            ],
-            editable: true,
+            editable: false,
             eventResizableFromStart: false,
             droppable: false, // this allows things to be dropped onto the calendar !!!
             drop: function (info) {
