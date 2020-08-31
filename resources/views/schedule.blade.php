@@ -193,8 +193,8 @@
             loadEnvOfficerCombo($('#getAsDirect').val(), function (rest) {
                 setInspectionNeededApi($('#getEnvOfficer').val(), function () {
                 });
-                loadCalenderApi($('#getEnvOfficer').val(), function (event) {
-                    $('#calendar').fullCalendar('renderEvent', event, true);
+                loadCalenderApi($('#getEnvOfficer').val(), function (event) {//get all events from db
+//                    $('#calendar').fullCalendar('renderEvent', event, true);
                 });
             });
         });
