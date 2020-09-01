@@ -61,7 +61,7 @@ function setInspectionNeededApi(id, callBack) {
     ajaxRequest('GET', "/api/files/need_inspection/officer/id/" + id, null, function (dataSet) {
         var ui = "";
         if (dataSet.length == 0) {
-            ui = "<div class='external-event bg-danger'>No Data Found</div>";
+            ui = "<p class='text-danger'>No Data Found</p>";
         } else {
             $.each(dataSet, function (index, row) {
                 ui += '<div class="external-event bg-info" data-id="' + row.id + '">' + row.industry_registration_no + '</div>';
@@ -95,14 +95,15 @@ function loadCalenderApi(id, callBack) {
             eventList.push({
                 title: row.file_no,
 //                start: new Date(y, m, 1),
-                start: row.assign_date,
-                backgroundColor: '#f56954', //red
-                borderColor: '#f56954', //red
+                start: row.inspection_sessions[0].schedule_date_only,
+                backgroundColor: '#403d3d', //dark
+                borderColor: '#000000', //black
+                textColor:'#ffffff', //white
                 allDay: false
             });
         });
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-            callBack(parameters);
+            callBack(eventList);
         }
     });
 }
