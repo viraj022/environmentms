@@ -47,6 +47,7 @@ class InspectionSessionController extends Controller
             request()->validate([
                 'schedule_date' => 'required|date',
                 'remark' => ['sometimes', 'nullable', 'string'],
+                'environment_officer_id' => 'required|integer',
             ]);
             $file = Client::find($id);
             if ($file) {
