@@ -57,6 +57,7 @@ class InspectionSessionController extends Controller
                 $inspectionSession->client_id = $file->id;
                 $inspectionSession->schedule_date = request('schedule_date');
                 $inspectionSession->remark = request('remark');
+                $inspectionSession->environment_officer_id = request('environment_officer_id');
                 $msg = $inspectionSession->save();
 
                 $dLog = new InspectionDateLog();
