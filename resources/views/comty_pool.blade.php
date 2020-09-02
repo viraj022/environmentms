@@ -57,7 +57,7 @@
                         </div>
                         <div class="form-group">
                             <label>Email</label>
-                            <input id="getEmail" type="text" class="form-control form-control-sm"
+                            <input id="getEmail" type="text" class="form-control form-control-sm" required pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}"
                                    placeholder="Enter Email..."
                                    value="">
                         </div>
