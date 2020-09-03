@@ -47,6 +47,7 @@ class InspectionSessionController extends Controller
             request()->validate([
                 'schedule_date' => 'required|date',
                 'remark' => ['sometimes', 'nullable', 'string'],
+                'environment_officer_id' => 'required|integer',
             ]);
             $file = Client::find($id);
             if ($file) {
@@ -57,6 +58,7 @@ class InspectionSessionController extends Controller
                 $inspectionSession->client_id = $file->id;
                 $inspectionSession->schedule_date = request('schedule_date');
                 $inspectionSession->remark = request('remark');
+                $inspectionSession->environment_officer_id = request('environment_officer_id');
                 $msg = $inspectionSession->save();
 
                 $dLog = new InspectionDateLog();
@@ -89,7 +91,7 @@ class InspectionSessionController extends Controller
         if (count($epls) > 0 && count($siteClearance) > 0) {
             return response(array('id' => 0, 'message' => 'Can not resolve whether file belong to a inspection or a site clearance'), 422);
         }
-        if (count($epls) > 1 && $siteClearance($siteClearance) > 1) {
+        if (count($epls) > 1 && count($siteClearance) > 1) {
             return response(array('id' => 0, 'message' => 'Can not resolve whether file belong to a inspection or a site clearance. more than one epls or site clearances found'), 422);
         }
 
@@ -131,12 +133,11 @@ class InspectionSessionController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-
         return InspectionSession::with('inspectionRemarks')
             ->with('inspectionSessionAttachments')
             ->with('inspectionPersonals')
-            ->with('client')
-            ->where('schedule_date', $date)
+            ->with('client')          
+            ->whereDate('schedule_date', $date)
             ->whereHas('client', function ($sql) use ($id) {
                 return $sql->where('clients.environment_officer_id', '=', $id);
             })

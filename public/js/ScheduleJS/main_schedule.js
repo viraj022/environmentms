@@ -22,7 +22,7 @@ function loadEnvOfficerCombo(uid, callBack) {
     let cbo = '';
     ajaxRequest('GET', url, null, function (dataSet) {
         if (dataSet.length == 0) {
-            cbo = "<option value=''>No Data Found</option>";
+            cbo = "<option value='4A616B65'>No Data Found</option>";
         } else {
             $.each(dataSet, function (index, row) {
                 cbo += '<option value="' + row.id + '">' + row.user.first_name + " " + row.user.last_name + '</option>';
@@ -45,8 +45,8 @@ function inspectionsByDateAPI(schedule_date, id, callBack) {
             $.each(dataSet, function (index, row) {
                 tbl += '<tr>';
                 tbl += '<td>' + ++index + '</td>';
-                tbl += '<td>' + row.industry_registration_no + '</td>';
-                tbl += '<td><a href="/industry_profile/id/' + row.id + '" type="button" class="btn btn-sm btn-dark">View Profile</a>&nbsp<a href="/register_old_data/id/' + row.id + '" type="button" class="btn btn-sm btn-success">Add Data</a></td>';
+                tbl += '<td><a href="/industry_profile/id/' + row.id + '" target="_blank">' + row.client.industry_registration_no + '</a></td>';
+                tbl += '<td><button href="#" value="' + row.id + '" class="btn btn-sm btn-danger removeInspecBtn"><i class="fas fa-times"></i> Remove</button></td>';
                 tbl += '</tr>';
             });
         }
@@ -61,7 +61,7 @@ function setInspectionNeededApi(id, callBack) {
     ajaxRequest('GET', "/api/files/need_inspection/officer/id/" + id, null, function (dataSet) {
         var ui = "";
         if (dataSet.length == 0) {
-            ui = "<div class='external-event bg-danger'>No Data Found</div>";
+            ui = "<p class='text-danger'>No Data Found</p>";
         } else {
             $.each(dataSet, function (index, row) {
                 ui += '<div class="external-event bg-info" data-id="' + row.id + '">' + row.industry_registration_no + '</div>';
@@ -86,8 +86,23 @@ function PersonalInspectionCreateApi(id, data, callBack) {
         }
     });
 }
+//Remove Inspections
+function InspectionRemoveApi(id, callBack) {
+    if (!id) {
+        return false;
+    }
+    let url = "/api/inspection/delete/id/" + id;
+    ajaxRequest("DELETE", url, null, function (parameters) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(parameters);
+        }
+    });
+}
 //Load Calender
 function loadCalenderApi(id, callBack) {
+    if (!id) {
+        return false;
+    }
     let eventList = [];
     let url = "/api/files/need_inspection/pending/officer/id/" + id;
     ajaxRequest("GET", url, null, function (parameters) {
@@ -95,14 +110,15 @@ function loadCalenderApi(id, callBack) {
             eventList.push({
                 title: row.file_no,
 //                start: new Date(y, m, 1),
-                start: row.assign_date,
-                backgroundColor: '#f56954', //red
-                borderColor: '#f56954', //red
+                start: row.inspection_sessions[0].schedule_date_only,
+                backgroundColor: '#403d3d', //dark
+                borderColor: '#000000', //black
+                textColor: '#ffffff', //white
                 allDay: false
             });
         });
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-            callBack(parameters);
+            callBack(eventList);
         }
     });
 }
