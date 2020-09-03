@@ -194,13 +194,29 @@
                 setInspectionNeededApi($('#getEnvOfficer').val(), function () {
                 });
                 loadCalenderApi($('#getEnvOfficer').val(), function (event) {//get all events from db
-                    console.log(event);
                     calendar.addEventSource(event); //Passing Funtion Array Into This(event)
                 });
             });
         });
-        $("#getAsDirect").change(function () {
-            loadEnvOfficerCombo($('#getAsDirect').val(), function (rest) {
+        //Function when change Assist Dir Combo
+        $(document).on('change', '#getAsDirect', function () {
+            loadEnvOfficerCombo($('#getAsDirect').val(), function () {
+                loadCalenderApi($('#getEnvOfficer').val(), function (event) {//get all events from db
+                    if ($('#getEnvOfficer').val() == '4A616B65') {
+                        calendar.getEventSources()[0].remove();
+                    } else {
+                        calendar.addEventSource(event); // This will add all events
+                    }
+                });
+            });
+        });
+
+        //Change EnvOfficer Combo
+        $("#getEnvOfficer").change(function () {
+            setInspectionNeededApi($('#getEnvOfficer').val(), false);
+            loadCalenderApi($('#getEnvOfficer').val(), function (event) {//get all events from db
+                calendar.getEventSources()[0].remove(); // This will remove all events from calender
+                calendar.addEventSource(event); // This will add all events
             });
         });
 
@@ -236,53 +252,6 @@
                 right: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
             events: '',
-//                    [
-//                {
-//                    title: 'All Day Event',
-//                    start: new Date(y, m, 1),
-//                    backgroundColor: '#f56954', //red
-//                    borderColor: '#f56954', //red
-//                    allDay: false
-//                },
-//                {
-//                    title: 'Long Event',
-//                    start: new Date(y, m, d - 5),
-//                    end: new Date(y, m, d - 2),
-//                    backgroundColor: '#f39c12', //yellow
-//                    borderColor: '#f39c12' //yellow
-//                },
-//                {
-//                    title: 'Meeting',
-//                    start: new Date(y, m, d, 10, 30),
-//                    allDay: false,
-//                    backgroundColor: '#0073b7', //Blue
-//                    borderColor: '#0073b7' //Blue
-//                },
-//                {
-//                    title: 'Lunch',
-//                    start: new Date(y, m, d, 12, 0),
-//                    end: new Date(y, m, d, 14, 0),
-//                    allDay: false,
-//                    backgroundColor: '#00c0ef', //Info (aqua)
-//                    borderColor: '#00c0ef' //Info (aqua)
-//                },
-//                {
-//                    title: 'Birthday Party',
-//                    start: new Date(y, m, d + 1, 19, 0),
-//                    end: new Date(y, m, d + 1, 22, 30),
-//                    allDay: false,
-//                    backgroundColor: '#00a65a', //Success (green)
-//                    borderColor: '#00a65a' //Success (green)
-//                },
-//                {
-//                    title: 'Click for Google',
-//                    start: new Date(y, m, 28),
-//                    end: new Date(y, m, 29),
-//                    url: 'http://google.com/',
-//                    backgroundColor: '#3c8dbc', //Primary (light-blue)
-//                    borderColor: '#3c8dbc' //Primary (light-blue)
-//                }
-//            ],
             editable: false,
             eventResizableFromStart: false,
             droppable: false, // this allows things to be dropped onto the calendar !!!
@@ -291,7 +260,9 @@
                 info.draggedEl.parentNode.removeChild(info.draggedEl);
             },
             eventReceive: function (info) {
-                var frmValues = {"remark": "", "schedule_date": info.event.start.toISOString().slice(0, 10)};
+                var date = new Date(info.event.start);
+                var returnDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(); //Format Date Manually
+                var frmValues = {"remark": "", "schedule_date": returnDate};
                 if (isNaN(parseInt(info.event.id))) {
                     return false;
                 }
@@ -305,16 +276,34 @@
                 });
             }
         });
-        calendar.render();
+        calendar.render(); //<-- Render Calender
         //Show Modal By Clicking Dates On Calender
         $(document).ready(function () {
-            $('.fc-past,.fc-future,.fc-today').click(function () {
+            $(document).on('click', '.fc-past,.fc-future,.fc-today', function () { // Remove ".fc-future" to prevent clicking future dates
                 inspectionsByDateAPI($(this).data('date'), $('#getEnvOfficer').val(), function () {
                 });
                 $('#modal-xl').modal('show');
                 $('#modalTitle').html('Appoinment - ' + $(this).data('date'));
+                $('#modalTitle').data('inspecdate', $(this).data('date'));
+            });
+
+        });
+
+        //Remove Inspection Btn After Clicking Date On Calender
+        $(document).on('click', '.removeInspecBtn', function () {
+            InspectionRemoveApi($(this).val(), function (resp) {
+                show_mesege(resp);
+                if (resp.id == 1) {
+                    inspectionsByDateAPI($('#modalTitle').data('inspecdate'), $('#getEnvOfficer').val(), false);
+                    setInspectionNeededApi($('#getEnvOfficer').val(), false);
+                    loadCalenderApi($('#getEnvOfficer').val(), function (event) {//get all events from db
+                        calendar.getEventSources()[0].remove(); // This will remove all events from calender
+                        calendar.addEventSource(event); // This will add all events
+                    });
+                }
             });
         });
+
     });
 </script>
 @endsection
