@@ -70,16 +70,7 @@ class UserController extends Controller
             //         ($user);
             UserController::PrevilagesAdd($user);
 
-            //            if ($msg) {
-            //                return redirect()
-            //                    ->back()
-            //                    ->with('success', 'Ok');
-            //            } else {
-            //                return redirect()
-            //                    ->back()
-            //                    ->withInput()
-            //                    ->with('error', 'Error');
-            //            }
+            
 
         });
         return redirect()
