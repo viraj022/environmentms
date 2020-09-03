@@ -22,21 +22,33 @@ function getAsetClientData(id, callBack) {
     });
 }
 
-function saveEPLOldFiles(epl_id, data, callBack) {
+function saveEPLOldFiles(profile_id, data, type, callBack) {
+    let url = "";
     if (!data || data.length == 0) {
         return false;
     }
-    submitDataWithFile("/api/epl/old/industry/" + epl_id, data, function (resp) {
+    if (type == 01) {
+        url = "/api/epl/old/industry/" + profile_id;
+    } else {
+        url = "/api/site_clearance/old/file/" + profile_id;
+    }
+    submitDataWithFile(url, data, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
         }
     });
 }
-function updateEPLOldFiles(epl_id, data, callBack) {
+function updateEPLOldFiles(epl_id, data, type, callBack) {
+    let url = "";
     if (!data || data.length == 0) {
         return false;
     }
-    submitDataWithFile("/api/epl/old/epl/" + epl_id, data, function (resp) {
+    if (type == 01) {
+        url = "/api/epl/old/epl/" + epl_id;
+    } else {
+        url = "/api/site_clearance/old/site_clearance_session/" + epl_id;
+    }
+    submitDataWithFile(url, data, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
         }
@@ -53,8 +65,14 @@ function uploadOldAttacments(client_id, key, value, callBack) {
     });
 }
 
-function deleteEPLOldFiles(id, callBack) {
-    let url = '/api/epl/old/epl/' + id;
+function deleteEPLOldFiles(id, type, callBack) {
+    let url = '';
+    if (type == 01) {
+        url = '/api/epl/old/epl/' + id;
+    } else {
+        url = "/api/site_clearance/old/site_clearance_session/" + id;
+    }
+
     ajaxRequest('DELETE', url, null, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
@@ -91,16 +109,36 @@ function Validiteinsert(data) {
 
 //GET EPL FORM Data
 function fromValues() {
+    let applicationType = parseInt($('#getIndustryType').val());
     var data = {
         epl_code: $('#getEPLCode').val(),
         remark: $('#getRemark').val(),
         issue_date: $('#issue_date').val(),
         expire_date: $('#expire_date').val(),
-        certificate_no: $('#getcertifateNo').val(),
         count: $('#getPreRenew').val(),
         submit_date: $('#getsubmitDate').val(),
         file: $('#last_certificate')[0].files[0]
     };
+    switch (applicationType) {
+        case 01:
+            data.certificate_no = $('#getcertifateNo').val();
+            break;
+        case 02:
+            data.code = $('#getEPLCode').val();
+            data.type = 'Site Clearance';
+            break;
+        case 03:
+            data.code = $('#getEPLCode').val();
+            data.type = 'Telecommunication';
+            break;
+        case 04:
+            data.code = $('#getEPLCode').val();
+            data.type = 'Schedule Waste';
+            break;
+
+        default:
+            break;
+    }
     return data;
 }
 
@@ -123,4 +161,30 @@ function setProfileDetails(obj) {
         $('#btnAssignEnv').removeClass("btn-success");
         $('.assignedOfficer').html("Current Environment Officer: " + obj.environment_officer.user.first_name + " " + obj.environment_officer.user.last_name);
     }
+}
+
+function checkSiteClearExist(id, callBack) {
+    if (id.length == 0) {
+        return false;
+    }
+    var url = "/api/old/site_clearance/industry/" + id;
+    ajaxRequest('GET', url, null, function (result) {
+        if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
+            callBack(result);
+        }
+    });
+}
+
+function resetCurrentFormVals() {
+    $('#getEPLCode').val('');
+    $('#getRemark').val('');
+    $('#issue_date').val('');
+    $('#expire_date').val('');
+    $('#getcertifateNo').val('');
+    $('#getPreRenew').val('');
+    $('#getsubmitDate').val('');
+    $('#btnUpdate').val('');
+    $('#btnshowDelete').val('');
+    $('#btnUpdate').addClass('d-none');
+    $('#btnshowDelete').addClass('d-none');
 }

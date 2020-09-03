@@ -66,15 +66,15 @@
                                 <select id="getIndustryType" class="form-control form-control-sm">
                                     <option value="01">EPL</option>
                                     <option value="02">Site Clearance</option>
-                                    <option value="03">Telecommunication Tower</option>
-                                    <option value="04">SiteClearn</option>
+                                    <option value="03">Telecommunication</option>
+                                    <option value="04">Schedule Waste</option>
                                 </select>
                             </div>
                         </div>
                         <button id="btnLoadAc" class="btn btn-primary">Load</button>
                         <div class="eplSection legitSection d-none"> 
                             <div class="form-group">
-                                <label>EPL Code*</label>
+                                <label class="txtCodeCn">EPL Code*</label>
                                 <input id="getEPLCode" type="text" class="form-control form-control-sm" placeholder="Enter EPL Code..." value="">
                                 <div id="valEPL" class="d-none"><p class="text-danger">EPL is required</p></div>
                             </div>
@@ -95,7 +95,7 @@
                                 <label> Last Submitted Date*</label>
                                 <input id="getsubmitDate" type="date" class="form-control form-control-sm" placeholder="Enter Submit Date..." value="">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group showCertificateNo">
                                 <label>Certificate No*</label>
                                 <input id="getcertifateNo" type="text" class="form-control form-control-sm" placeholder="Enter Certificate No..." value="">
                                 <div id="valcertifateNo" class="d-none"><p class="text-danger">Certificate No is required</p></div>
@@ -132,9 +132,6 @@
                                 <label>Last Issued Certificate: </label>
                                 <input id="last_certificate" type="file" accept="image/*,application/pdf">
                             </div>
-                        </div>
-                        <div class="siteClearSection legitSection d-none">
-                            <p>Site Clear</p>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -275,7 +272,8 @@
 <script src="../../js/OldFileListJS/assign-epl-combo-set.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
-    let EPL_PROFILE = '{{$id}}';
+    let PROFILE = '{{$id}}';
+
     $(function () {
 //Load Combo Sets
         loadAssistantDirectorCombo(function () {
@@ -290,13 +288,13 @@
 
 //click save button
         $('#btnSave').click(function () {
+            let TYPE = $('#getIndustryType').val();
             var data = fromValues();
             if (Validiteinsert(data)) {
-                // if validiated
-                saveEPLOldFiles(EPL_PROFILE, data, function (result) {
+                saveEPLOldFiles(PROFILE, data, TYPE, function (result) {
                     show_mesege(result);
                     visibleUploads(result);
-                    regenCLientData(EPL_PROFILE);
+                    regenCLientData(PROFILE);
                     resetinputFields();
                     hideAllErrors();
                     $("#btnLoadAc").click();
@@ -306,14 +304,19 @@
 
         //Load Sections Button
         $('#btnLoadAc').click(function () {
+            //EPL Section
             var load_val = $('#getIndustryType').val();
             if (load_val === '01') {
-                checkEPLExist(EPL_PROFILE, function (result) {
+                checkEPLExist(PROFILE, function (result) {
 //                    visibleUploads(result);
                     if (result.length === 0) {
+                        $('.txtCodeCn').html('EPL Code*');
+                        $('.showCertificateNo').removeClass('d-none');
                         $('.eplSection').removeClass('d-none');
                         showSave();
                     } else {
+                        $('.txtCodeCn').html('EPL Code*');
+                        $('.showCertificateNo').removeClass('d-none');
                         var trackIssueDate = new Date(result.issue_date);
                         var issueDate = trackIssueDate.toISOString().split('T')[0];
                         var trackExpireDate = new Date(result.expire_date);
@@ -331,17 +334,44 @@
                         $('#btnshowDelete').val(result.id);
                         $('.lastCertificatePath').attr('src', '/' + result.path);
                         $('#addCertificateURL').attr('href', '/' + result.path);
-                        if (result.path.length !== 0) {
+                        if (result.path !== null && result.path.length > 0) {
                             $('.lastIssuedCer').removeClass('d-none');
                         }
                         showUpdate();
                         $('.eplSection').removeClass('d-none');
                     }
                 });
-
             }
+            //Site Clearance Section
             if (load_val === '02') {
-                alert("Section 2");
+                checkSiteClearExist(PROFILE, function (result) {
+                    if (result.length === 0) {
+                        $('.txtCodeCn').html('Code*');
+                        $('.eplSection').removeClass('d-none');
+                        $('.showCertificateNo').addClass('d-none');
+                        showSave();
+                    } else {
+                        $('.txtCodeCn').html('Code*');
+                        $('.showCertificateNo').addClass('d-none');
+                        var trackIssueDate = new Date(result.site_clearances[0].issue_date);
+                        var issueDate = trackIssueDate.toISOString().split('T')[0];
+                        var trackExpireDate = new Date(result.site_clearances[0].expire_date);
+                        var expireDate = trackExpireDate.toISOString().split('T')[0];
+                        var trackSubmitDate = new Date(result.created_at);
+                        var submitDate = trackSubmitDate.toISOString().split('T')[0];
+                        $('#issue_date').val(issueDate);
+                        $('#expire_date').val(expireDate);
+                        $('#getsubmitDate').val(submitDate);
+                        $('#getEPLCode').val(result.code);
+                        $('#getRemark').val(result.remark);
+                        $('#getPreRenew').val(result.count);
+                        //Required
+                        $('#btnUpdate').val(result.id);
+                        $('#btnshowDelete').val(result.id);
+                        showUpdate();
+                        $('.eplSection').removeClass('d-none');
+                    }
+                });
             } else if (load_val === '03') {
                 alert("Section 3");
             } else if (load_val === '04') {
@@ -349,6 +379,7 @@
             }
         });
         $('#getIndustryType').on('change', function () {
+            resetCurrentFormVals();
             $('.legitSection').addClass('d-none');
         });
         //Load Sections Button END
@@ -356,10 +387,11 @@
 
 //click update button
         $('#btnUpdate').click(function () {
+            var load_val = $('#getIndustryType').val();
             //get form data
             var data = fromValues();
             if (Validiteinsert(data)) {
-                updateEPLOldFiles($(this).val(), data, function (result) {
+                updateEPLOldFiles($(this).val(), data, load_val, function (result) {
                     show_mesege(result);
                     hideAllErrors();
                     resetinputFields();
@@ -369,8 +401,9 @@
         });
 //click delete button
         $('#btnshowDelete').click(function () {
+            var load_val = $('#getIndustryType').val();
             if (confirm("Are you sure you want to delete this?")) {
-                deleteEPLOldFiles(EPL_PROFILE, function (result) {
+                deleteEPLOldFiles(PROFILE, load_val, function (result) {
                     show_mesege(result);
                     showSave();
                     hideAllErrors();
@@ -386,12 +419,12 @@
                 var getRemoveId = $(this).attr('id');
                 deleteOldAttachments(getRemoveId, function (result) {
                     show_mesege(result);
-                    regenCLientData(EPL_PROFILE);
+                    regenCLientData(PROFILE);
                 });
             }
         });
 
-        getAsetClientData(EPL_PROFILE, function (result) {
+        getAsetClientData(PROFILE, function (result) {
             setProfileDetails(result);
             loadAllOldAttachments(result, function () {
             });
@@ -400,7 +433,7 @@
     });
 
     $('#btnAssignEnv').click(function () {
-        let obj = {environment_officer_id: parseInt($("#env_officer_combo").val()), epl_id: EPL_PROFILE};
+        let obj = {environment_officer_id: parseInt($("#env_officer_combo").val()), epl_id: PROFILE};
         assign_epl_to_officer(obj, function (respo) {
             if (respo.id == 1) {
                 Toast.fire({
@@ -419,9 +452,9 @@
     $(document).ready(function () {
         $('#btnUpload').click(function () {
             var file = $('#otherFiles')[0].files[0];
-            uploadOldAttacments(EPL_PROFILE, 'file', file, function (result) {
+            uploadOldAttacments(PROFILE, 'file', file, function (result) {
                 show_mesege(result);
-                regenCLientData(EPL_PROFILE);
+                regenCLientData(PROFILE);
                 resetinputFields();
                 uploadButtonHandler($('#otherFiles').val());
             });

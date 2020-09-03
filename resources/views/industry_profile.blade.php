@@ -92,11 +92,11 @@
                                                 <!-- /.card-header -->
 
                                                 <div class="card-body">
-                                                    <div class="callout callout-danger">
+<!--                                                    <div class="callout callout-danger">
 
                                                         <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change Environment Officer</button>
-                                                        <!--<p>There is a problem that we need to</p>-->
-                                                    </div>
+                                                        <p>There is a problem that we need to</p>
+                                                    </div>-->
 
                                                     <div class="newEPL d-none info-box mb-3 bg-success">
                                                         <span class="info-box-icon">

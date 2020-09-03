@@ -163,7 +163,7 @@ Schedule Waste'
 */
 
 
-Route::middleware('auth:api')->put('/site_clearance/old/site_clearance_session/{id}', 'SiteClearanceController@updateOldData'); //   update site clearance
+Route::middleware('auth:api')->post('/site_clearance/old/site_clearance_session/{id}', 'SiteClearanceController@updateOldData'); //   update site clearance
 
 
 
