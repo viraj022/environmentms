@@ -155,7 +155,7 @@ function setProfileDetails(obj) {
     $('#obj_name').html(obj.industry_name);
     $('#obj_regno').html(obj.industry_registration_no);
     $('#obj_invest').html(obj.industry_investment);
-    if (obj.environment_officer.user.first_name != null) {
+    if (obj.environment_officer != null) {
         $('#btnAssignEnv').html("Change");
         $('#btnAssignEnv').addClass("btn-warning");
         $('#btnAssignEnv').removeClass("btn-success");

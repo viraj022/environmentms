@@ -52,9 +52,10 @@ class InspectionSessionController extends Controller
             $file = Client::find($id);
             if ($file) {
                 $inspectionSession = new InspectionSession();
-                $autoData = $this->getAutomaticInspectionPlacementData($id);
-                $inspectionSession->application_type = $autoData['type'];
-                $inspectionSession->profile_id = $autoData['id'];
+//                $autoData = $this->getAutomaticInspectionPlacementData($id);
+//                                dd($autoData);
+                $inspectionSession->application_type = 'File';
+               // $inspectionSession->profile_id = $autoData['id'];
                 $inspectionSession->client_id = $file->id;
                 $inspectionSession->schedule_date = request('schedule_date');
                 $inspectionSession->remark = request('remark');
@@ -89,18 +90,18 @@ class InspectionSessionController extends Controller
         $siteClearance = $client->siteClearenceSessions;
         // dd(count($epls));
         if (count($epls) > 0 && count($siteClearance) > 0) {
-            return response(array('id' => 0, 'message' => 'Can not resolve whether file belong to a inspection or a site clearance'), 422);
+            abort (422,'Can not resolve whether file belong to a inspection or a site clearance');
         }
         if (count($epls) > 1 && count($siteClearance) > 1) {
-            return response(array('id' => 0, 'message' => 'Can not resolve whether file belong to a inspection or a site clearance. more than one epls or site clearances found'), 422);
+             abort(422,'Can not resolve whether file belong to a inspection or a site clearance. more than one epls or site clearances found');
         }
 
         if (count($epls) > 0) {
             return array('type' => InspectionSession::TYPE_EPL, 'id' => $epls[0]->id);
-        } else if ($siteClearance($siteClearance) > 0) {
+        } else if (count($siteClearance) > 0) {
             return array('type' => InspectionSession::SITE_CLEARANCE, 'id' => $siteClearance[0]->id);
         } else {
-            return response(array('id' => 0, 'message' => 'Can not resolve whether file belong to a inspection or a site clearance. No epls or site clearances found'), 422);
+             abort( 422,'Can not resolve whether file belong to a inspection or a site clearance. No epls or site clearances found');
         }
     }
 
