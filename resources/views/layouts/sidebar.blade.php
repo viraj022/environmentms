@@ -238,9 +238,27 @@
                 @foreach((auth()->user()->privileges) as $indexKey=>$pre)
                 @if($pre['id']===config('auth.privileges.clientSpace'))
                 <li class="nav-item">
-                    <a href="{{ url('/application_payment') }}" class="nav-link {{ Request::is('/application_payment') ? 'active' : '' }}">
+                    <a href="{{ url('/application_payment') }}" class="nav-link {{ Request::is('application_payment') ? 'active' : '' }}">
                         <i class="fas fa-puzzle-piece nav-icon"></i>
                         <p>Issue Applications</p>
+                    </a>
+                </li>
+                @endif
+                @endforeach
+            </ul>
+        </li>
+        <li class="nav-item has-treeview menu-open">
+            <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-calendar"></i>
+                <p>Calendar <i class="right fas fa-angle-left"></i></p>
+            </a>
+            <ul class="nav nav-treeview">
+                @foreach((auth()->user()->privileges) as $indexKey=>$pre)
+                @if($pre['id']===config('auth.privileges.clientSpace'))
+                <li class="nav-item">
+                    <a href="{{ url('/schedule') }}" class="nav-link {{ Request::is('schedule') ? 'active' : '' }}">
+                        <i class="fas fa-clock nav-icon"></i>
+                        <p>Schedule</p>
                     </a>
                 </li>
                 @endif
