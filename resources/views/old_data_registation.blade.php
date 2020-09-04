@@ -306,17 +306,14 @@
         $('#btnLoadAc').click(function () {
             //EPL Section
             var load_val = $('#getIndustryType').val();
+            sectionIfSiteClears(load_val);
             if (load_val === '01') {
                 checkEPLExist(PROFILE, function (result) {
 //                    visibleUploads(result);
                     if (result.length === 0) {
-                        $('.txtCodeCn').html('EPL Code*');
-                        $('.showCertificateNo').removeClass('d-none');
                         $('.eplSection').removeClass('d-none');
                         showSave();
                     } else {
-                        $('.txtCodeCn').html('EPL Code*');
-                        $('.showCertificateNo').removeClass('d-none');
                         var trackIssueDate = new Date(result.issue_date);
                         var issueDate = trackIssueDate.toISOString().split('T')[0];
                         var trackExpireDate = new Date(result.expire_date);
@@ -346,9 +343,33 @@
             if (load_val === '02') {
                 checkSiteClearExist(PROFILE, function (result) {
                     if (result.length === 0) {
-                        $('.txtCodeCn').html('Code*');
                         $('.eplSection').removeClass('d-none');
-                        $('.showCertificateNo').addClass('d-none');
+                        showSave();
+                    } else {
+                        var trackIssueDate = new Date(result.site_clearances[0].issue_date);
+                        var issueDate = trackIssueDate.toISOString().split('T')[0];
+                        var trackExpireDate = new Date(result.site_clearances[0].expire_date);
+                        var expireDate = trackExpireDate.toISOString().split('T')[0];
+                        var trackSubmitDate = new Date(result.created_at);
+                        var submitDate = trackSubmitDate.toISOString().split('T')[0];
+                        $('#issue_date').val(issueDate);
+                        $('#expire_date').val(expireDate);
+                        $('#getsubmitDate').val(submitDate);
+                        $('#getEPLCode').val(result.code);
+                        $('#getRemark').val(result.remark);
+                        $('#getPreRenew').val(result.count);
+                        //Required
+                        $('#btnUpdate').val(result.id);
+                        $('#btnshowDelete').val(result.id);
+                        showUpdate();
+                        $('.eplSection').removeClass('d-none');
+                    }
+                });
+                //Telecomminication Section   
+            } else if (load_val === '03') {
+                checkSiteClearExist(PROFILE, function (result) {
+                    if (result.length === 0) {
+                        $('.eplSection').removeClass('d-none');
                         showSave();
                     } else {
                         $('.txtCodeCn').html('Code*');
@@ -372,10 +393,33 @@
                         $('.eplSection').removeClass('d-none');
                     }
                 });
-            } else if (load_val === '03') {
-                alert("Section 3");
             } else if (load_val === '04') {
-                alert("Section 4");
+                checkSiteClearExist(PROFILE, function (result) {
+                    if (result.length === 0) {
+                        $('.eplSection').removeClass('d-none');
+                        showSave();
+                    } else {
+                        $('.txtCodeCn').html('Code*');
+                        $('.showCertificateNo').addClass('d-none');
+                        var trackIssueDate = new Date(result.site_clearances[0].issue_date);
+                        var issueDate = trackIssueDate.toISOString().split('T')[0];
+                        var trackExpireDate = new Date(result.site_clearances[0].expire_date);
+                        var expireDate = trackExpireDate.toISOString().split('T')[0];
+                        var trackSubmitDate = new Date(result.created_at);
+                        var submitDate = trackSubmitDate.toISOString().split('T')[0];
+                        $('#issue_date').val(issueDate);
+                        $('#expire_date').val(expireDate);
+                        $('#getsubmitDate').val(submitDate);
+                        $('#getEPLCode').val(result.code);
+                        $('#getRemark').val(result.remark);
+                        $('#getPreRenew').val(result.count);
+                        //Required
+                        $('#btnUpdate').val(result.id);
+                        $('#btnshowDelete').val(result.id);
+                        showUpdate();
+                        $('.eplSection').removeClass('d-none');
+                    }
+                });
             }
         });
         $('#getIndustryType').on('change', function () {

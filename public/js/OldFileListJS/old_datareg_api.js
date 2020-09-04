@@ -188,3 +188,26 @@ function resetCurrentFormVals() {
     $('#btnUpdate').addClass('d-none');
     $('#btnshowDelete').addClass('d-none');
 }
+
+//Check if Industry Type NOT EPL
+function sectionIfSiteClears(industry_type) {
+    if (industry_type !== '01') {
+        $('.txtCodeCn').html('Code*');
+        $('.showCertificateNo').addClass('d-none');
+
+        var option = '';
+        for (var i = 0; i < 20; i++) { //Loop Combo Box Values For EPL
+            option += '<option value="' + i + '">' + i + '</option>';
+        }
+        $('#getPreRenew').html(option);
+    } else {
+        $('.txtCodeCn').html('EPL Code*');
+        $('.showCertificateNo').removeClass('d-none');
+
+        for (var i = 0; i < 20; i++) { //Loop Combo Box Values For Other
+            option += '<option value="' + i + '">R ' + i + '</option>';
+        }
+        $('#getPreRenew').html(option);
+    }
+
+}

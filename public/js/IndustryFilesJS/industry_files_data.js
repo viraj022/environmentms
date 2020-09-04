@@ -93,7 +93,11 @@ function forTypeFiles_table(obj, callBack) {
             tbl += '<td><a href="/industry_profile/id/' + row.id + '" target="_blank">' + row.file_no + '</a></td>';
             tbl += '<td class="">' + fixMydate + '</td>';
             if (row.is_working != 1) {
+                //$(".tblTrsec").append('<th class="inspectTbl" style="width: 180px">Set Inspection</th>');
                 tbl += '<td><button type="button" value="' + row.id + '" data-toggle="modal" data-target="#modal-xl" class="btn btn-success setInspeBtn">Set Inspection</button></td>';
+            } else {
+                //$(".inspectTbl").remove();
+                tbl += '<td></td>';
             }
             tbl += '</tr>';
         });
