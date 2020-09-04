@@ -431,8 +431,8 @@
                                 <div class="callout callout-danger">
                                     <h4>Status: <a class="setupInspectStatus text-success"></a></h4>
                                     <button type="button" onclick="location.href = '';" class="btn btn-dark addToSiteIns d-none" data-dismiss="modal"><i class="fa fa-plus"></i>&nbsp Add To Site Inspection</button>
-                                    <button type="button" onclick="location.href = '';" class="btn btn-info setInspectUI d-none" data-dismiss="modal"><i class="fa fa-plus"></i>&nbsp Set Inspection</button>
-                                    <button type="button" onclick="location.href = '';" class="btn btn-warning noNeedInspect d-none" data-dismiss="modal"><i class="fa fa-exclamation"></i>&nbsp No Need Inspection</button>
+                                    <button type="button" value="needed" class="btn btn-info setInspectUI d-none"><i class="fa fa-plus"></i>&nbsp Set Inspection</button>
+                                    <button type="button" value="no_needed" class="btn btn-warning noNeedInspect d-none"><i class="fa fa-exclamation"></i>&nbsp No Need Inspection</button>
                                 </div>
                                 <div class="callout callout-info">
                                     <dt>Upload Application :</dt>
@@ -462,28 +462,39 @@
                 <!--//All User Site Inspection Open//-->
                 <div class="tab-pane fade" id="custom-tabs-three-siteInspectionTab" role="tabpanel" aria-labelledby="custom-tabs-three-siteInspectionTab-tab">
                     <div class="col-md-12">
-                        <div class="row">
-                            <div class="card-body">
-                                <div class="col-md-6">
-                                    <div class="card card-primary card-outline">
-                                        <div class="card-body box-profile">
-                                            <h3 class="profile-username text-center">Inspection Details</h3>
-                                            <p class="text-muted text-center application_type"></p>
-                                            <ul class="list-group list-group-unbordered mb-3">
-                                                <li class="list-group-item">
-                                                    <b>Shcedule Date</b> <a class="float-right schedule_date"></a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">All Site Inspections</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body p-0">
+                                <div class="card-body table-responsive" style="height: 450px;">
+                                    <table class="table table-condensed" id="tblAllInspections">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 10px">#</th>
+                                                <th>Application Type</th>
+                                                <th>Schedule Date</th>
+                                                <th style="width: 140px">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
+                            <!-- /.card-body -->
                         </div>
-                    </div>                   
-                </div>
-                <!--//All Site Inspection END//-->
+                        <div class="callout callout-danger">
+                            <h6><a id="disInspeclink" href="/inspection/epl/id/{{$id}}" class="text-success isOld2">Inspection</a></h6>
+                            <p>Manage Inspection Details</p>
+                        </div>
+                    </div>  
+                </div>                   
             </div>
-        </div>  
+            <!--//All Site Inspection END//-->
+        </div>
+    </div>  
 </section>
 <!--//Tab Section END//-->  
 <section>
@@ -647,10 +658,17 @@
                                             });
                                         });
                                         //Load Inspections//-
-                                        getAllInspectionAPI(PROFILE_ID, function (get) {
-                                            $('.application_type').html(get[0].application_type);
-                                            $('.schedule_date').html(get[0].schedule_date);
-                                        });
+                                        loadAllSiteInspectionTable(PROFILE_ID);
 
+                                        $('.setInspectUI').on('click', function () {
+                                            checkInspectionStatus(PROFILE_ID, $(this).val(), function (rep) {
+                                                show_mesege(rep);
+                                            });
+                                        });
+                                        $('.noNeedInspect').on('click', function () {
+                                            checkInspectionStatus(PROFILE_ID, $(this).val(), function (rep) {
+                                                show_mesege(rep);
+                                            });
+                                        });
 </script>
 @endsection
