@@ -92,11 +92,11 @@
                                                 <!-- /.card-header -->
 
                                                 <div class="card-body">
-<!--                                                    <div class="callout callout-danger">
-
-                                                        <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change Environment Officer</button>
-                                                        <p>There is a problem that we need to</p>
-                                                    </div>-->
+                                                    <!--                                                    <div class="callout callout-danger">
+                                                    
+                                                                                                            <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change Environment Officer</button>
+                                                                                                            <p>There is a problem that we need to</p>
+                                                                                                        </div>-->
 
                                                     <div class="newEPL d-none info-box mb-3 bg-success">
                                                         <span class="info-box-icon">
@@ -464,7 +464,19 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="card-body">
-                                AAAA
+                                <div class="col-md-6">
+                                    <div class="card card-primary card-outline">
+                                        <div class="card-body box-profile">
+                                            <h3 class="profile-username text-center">Inspection Details</h3>
+                                            <p class="text-muted text-center application_type"></p>
+                                            <ul class="list-group list-group-unbordered mb-3">
+                                                <li class="list-group-item">
+                                                    <b>Shcedule Date</b> <a class="float-right schedule_date"></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>                   
@@ -634,5 +646,11 @@
                                                 uploadButtonHandler($('#otherFiles').val());
                                             });
                                         });
+                                        //Load Inspections//-
+                                        getAllInspectionAPI(PROFILE_ID, function (get) {
+                                            $('.application_type').html(get[0].application_type);
+                                            $('.schedule_date').html(get[0].schedule_date);
+                                        });
+
 </script>
 @endsection

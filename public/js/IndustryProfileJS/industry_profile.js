@@ -171,3 +171,15 @@ function setupInspectionUI(need_inspection_status) {
 
     }
 }
+
+function getAllInspectionAPI(id, callBack) {
+    if (id.length == 0) {
+        return false;
+    }
+    var url = "/api/inspections/file/id/" + id;
+    ajaxRequest('GET', url, null, function (result) {
+        if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
+            callBack(result);
+        }
+    });
+}
