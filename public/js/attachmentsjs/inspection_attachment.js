@@ -57,25 +57,37 @@ function readImage(selected_id, callback) {
     }
 }
 
-function save_Attachment(file_data, ref_id, callBack) {
-    $.ajax({
-        type: "POST",
-        headers: {
-            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-            "Accept": "application/json"
-        },
-        url: "/api/epl/inspection/attach/id/" + ref_id,
-        data: {file: file_data},
-        dataType: "json",
-        cache: false,
-        processDaate: false,
-        success: function (result) {
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack(result);
-            }
-        },
-        error: function (xhr, textStatus, errorThrown) {
-            alert(textStatus + ':' + errorThrown);
+//function save_Attachment(file_data, ref_id, callBack) {
+//    $.ajax({
+//        type: "POST",
+//        headers: {
+//            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+//            "Accept": "application/json"
+//        },
+//        url: "/api/epl/inspection/attach/id/" + ref_id,
+//        data: {file: file_data},
+//        dataType: "json",
+//        cache: false,
+//        processDaate: false,
+//        success: function (result) {
+//            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+//                callBack(result);
+//            }
+//        },
+//        error: function (xhr, textStatus, errorThrown) {
+//            alert(textStatus + ':' + errorThrown);
+//        }
+//    });
+//}
+
+function save_Attachment(id, data, callBack) {
+    let url = "/api/epl/inspection/attach/id/" + id;
+    if (!data || data.length == 0) {
+        return false;
+    }
+    submitDataWithFile(url, data, function (resp) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(resp);
         }
     });
 }
