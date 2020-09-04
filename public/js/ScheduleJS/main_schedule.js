@@ -75,7 +75,7 @@ function setInspectionNeededApi(id, callBack) {
 }
 
 //Save When Drag Into Calender
-function PersonalInspectionCreateApi(id, data, callBack) {
+function personalInspectionCreateApi(id, data, callBack) {
     if (!data) {
         return false;
     }

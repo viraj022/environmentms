@@ -196,10 +196,22 @@ function loadAllSiteInspectionTable(id) {
                 tbl += '<td>' + ++index + '</td>';
                 tbl += '<td>' + row.application_type + '</td>';
                 tbl += '<td>' + row.schedule_date_only + '</td>';
-                tbl += '<td><a type="button" href="/inspection/epl/id/' + PROFILE_ID +'" class="btn btn-primary"> View </a></td>';
+                tbl += '<td><a type="button" href="/inspection/epl/id/' + PROFILE_ID + '" class="btn btn-primary"> View </a></td>';
                 tbl += '</tr>';
             });
         }
         $('#tblAllInspections tbody').html(tbl);
+    });
+}
+
+//Check Inspection Need Or Not
+function checkInspectionStatus(id, btn_val, callBack) {
+    if (isNaN(id)) {
+        id = 0;
+    }
+    ajaxRequest('PATCH', "/api/inspection/" + btn_val + "/file/" + id, null, function (dataSet) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(dataSet);
+        }
     });
 }

@@ -431,8 +431,8 @@
                                 <div class="callout callout-danger">
                                     <h4>Status: <a class="setupInspectStatus text-success"></a></h4>
                                     <button type="button" onclick="location.href = '';" class="btn btn-dark addToSiteIns d-none" data-dismiss="modal"><i class="fa fa-plus"></i>&nbsp Add To Site Inspection</button>
-                                    <button type="button" onclick="location.href = '';" class="btn btn-info setInspectUI d-none" data-dismiss="modal"><i class="fa fa-plus"></i>&nbsp Set Inspection</button>
-                                    <button type="button" onclick="location.href = '';" class="btn btn-warning noNeedInspect d-none" data-dismiss="modal"><i class="fa fa-exclamation"></i>&nbsp No Need Inspection</button>
+                                    <button type="button" value="needed" class="btn btn-info setInspectUI d-none"><i class="fa fa-plus"></i>&nbsp Set Inspection</button>
+                                    <button type="button" value="no_needed" class="btn btn-warning noNeedInspect d-none"><i class="fa fa-exclamation"></i>&nbsp No Need Inspection</button>
                                 </div>
                                 <div class="callout callout-info">
                                     <dt>Upload Application :</dt>
@@ -484,6 +484,10 @@
                                 </div>
                             </div>
                             <!-- /.card-body -->
+                        </div>
+                        <div class="callout callout-danger">
+                            <h6><a id="disInspeclink" href="/inspection/epl/id/{{$id}}" class="text-success isOld2">Inspection</a></h6>
+                            <p>Manage Inspection Details</p>
                         </div>
                     </div>  
                 </div>                   
@@ -655,5 +659,16 @@
                                         });
                                         //Load Inspections//-
                                         loadAllSiteInspectionTable(PROFILE_ID);
+
+                                        $('.setInspectUI').on('click', function () {
+                                            checkInspectionStatus(PROFILE_ID, $(this).val(), function (rep) {
+                                                show_mesege(rep);
+                                            });
+                                        });
+                                        $('.noNeedInspect').on('click', function () {
+                                            checkInspectionStatus(PROFILE_ID, $(this).val(), function (rep) {
+                                                show_mesege(rep);
+                                            });
+                                        });
 </script>
 @endsection

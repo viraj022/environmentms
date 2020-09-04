@@ -267,7 +267,7 @@
                 if (isNaN(parseInt(info.event.id))) {
                     return false;
                 }
-                PersonalInspectionCreateApi(info.event.id, frmValues, function (rep) {
+                personalInspectionCreateApi(info.event.id, frmValues, function (rep) {
                     show_mesege(rep);
                     if (rep.message == 'true') {
                     } else {
