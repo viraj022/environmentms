@@ -23,7 +23,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>(<a href="/inspection/epl/remarks/id/{{$id}}">{{$epl_numner}}</a>) {{$inspec_date}} Inspection Images</h1>
+                <h1>(<a href="/inspection/epl/remarks/id/{{$id}}">{{$inspec_date}}</a>) - Inspection Images</h1>
             </div>
         </div>
     </div>
@@ -41,7 +41,7 @@
 
                     <div class="form-group" id="useToHideAmount">
                         <label>Attachment *</label>
-                        <input id="fileInput" type="file" class="form-control" value="">
+                        <input id="fileInput" type="file" accept="image/*" class="form-control" value="">
                     </div>
 
                 </div>
@@ -73,17 +73,8 @@
 @section('pageScripts')
 <!-- Page script -->
 
-<!-- Select2 -->
-<script src="/../../plugins/select2/js/select2.full.min.js"></script>
-<!-- Bootstrap4 Duallistbox -->
-<script src="/../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
-<!-- InputMask -->
 <script src="/../../plugins/moment/moment.min.js"></script>
 <script src="/../../plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
-<!-- date-range-picker -->
-<script src="/../../plugins/daterangepicker/daterangepicker.js"></script>
-<!-- bootstrap color picker -->
-<script src="/../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="/../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <!-- Bootstrap Switch -->
@@ -127,32 +118,14 @@ $(document).on('click', '.removeImage', function () {
     }
 });
 $(document).on('click', '#btnSave', function () {
-    let selector = $('#fileInput');
-    readImage(selector.attr('id'), function (img) {
-        if (img) {
-            save_Attachment(img, ID, function (parameters) {
-                if (parameters.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Enviremontal MS</br>Attachment Succuessfully Uploaded !'
-                    });
-                    getaAttachmentbyId(ID, function (res) {
-                        iterateSavedImages(res);
-                    });
-                    $('#fileInput').val('');
-                } else if (parameters.id == 0) {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Enviremontal MS</br>' + parameters.message
-                    });
-
-                } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Enviremontal MS</br>Error'
-                    });
-                }
+    let file = $('#fileInput')[0].files[0];
+    save_Attachment(ID, {'file': file}, function (parameters) {
+        show_mesege(parameters);
+        if (parameters.id == 1) {
+            getaAttachmentbyId(ID, function (res) {
+                iterateSavedImages(res);
             });
+            $('#fileInput').val('');
         }
     });
 });

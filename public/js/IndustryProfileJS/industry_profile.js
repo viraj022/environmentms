@@ -196,7 +196,7 @@ function loadAllSiteInspectionTable(id) {
                 tbl += '<td>' + ++index + '</td>';
                 tbl += '<td>' + row.application_type + '</td>';
                 tbl += '<td>' + row.schedule_date_only + '</td>';
-                tbl += '<td><a type="button" href="/inspection/epl/id/' + PROFILE_ID + '" class="btn btn-primary"> View </a></td>';
+                tbl += '<td><a type="button" href="/inspection/epl/remarks/id/' + row.id + '" class="btn btn-primary"> View </a></td>';
                 tbl += '</tr>';
             });
         }

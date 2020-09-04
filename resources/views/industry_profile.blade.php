@@ -485,10 +485,6 @@
                             </div>
                             <!-- /.card-body -->
                         </div>
-                        <div class="callout callout-danger">
-                            <h6><a id="disInspeclink" href="/inspection/epl/id/{{$id}}" class="text-success isOld2">Inspection</a></h6>
-                            <p>Manage Inspection Details</p>
-                        </div>
                     </div>  
                 </div>                   
             </div>

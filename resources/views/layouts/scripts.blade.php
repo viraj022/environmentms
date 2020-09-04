@@ -21,5 +21,6 @@
 <!-- SweetAlert2 -->
 <script src="/plugins/sweetalert2/sweetalert2.min.js"></script>
 <script src="/dist/js/demo.js"></script>
+<script src="/../../js/commonFunctions/file_upload.js"></script>
 <script src="/../../js/commonFunctions/functions.js"></script>
 @endsection

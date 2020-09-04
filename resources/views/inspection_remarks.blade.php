@@ -21,7 +21,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>(<a href="/inspection/epl/id/{{$epl_id}}">{{$epl_numner}}</a>) {{$inspec_date}} Inspection Comments</h1>
+                <h1>(<a href="/industry_profile/id/{{$file_id}}">{{$file_no}}</a>) {{$inspec_date}} Inspection Comments</h1>
             </div>
         </div>
     </div>
@@ -31,20 +31,35 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="row" id="showUiDb">
-                    <div class="c                                                ol-md-12">
-                        <div class="card card-outline card-success">
-                            <d                                                        iv class="card-header">
-                                <h3 class="card-title">2020/07/23 03.05PM</h3>
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool removeComm" data-card-widget="remove"><i class="fas fa-times"></i>
-                                    </button>
+
+                </div>
+                <!--Add New Comment Section-->
+                <div class="card card-primary">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Add New Comment</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label>Comment*</label>
+                                            <input id="getComment" type="text" class="form-control form-control-sm" placeholder="Enter Your Comment" value="">
+                                            <a class="error invalid-feedback aefFGE d-none">Please enter your comment</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        @if($pageAuth['is_create']==1 || false)
+                                        <button id="btnSave" type="submit" class="btn btn-success">Save</button>
+                                        @endif
+                                    </div>
                                 </div>
-                        </div>
-                        <div class="card-body">
-                            Loading...
+                            </div> 
                         </div>
                     </div>
-                </div>
+                </div> 
+                <!--Add New Comment END-->
             </div>
             <div class="col-md-4">
                 <div class="card card-default">
@@ -72,38 +87,10 @@
             </div>
 
             <div class="col-md-8">
-                <!--Add New Comment Section-->
-                <div class="card card-primary">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Add New Comment</h3>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <label>Comment*</label>
-                                            <input id="getComment" type="text" class="form-control form-control-sm"
-                                                   placeholder="Enter Your Comment"
-                                                   value="">
-                                            <a class="error invalid-feedback aefFGE d-none">Please enter your comment</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        @if($pageAuth['is_create']==1 || false)
-                                        <button id="btnSave" type="submit" class="btn btn-success">Save</button>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div> 
-                        </div>
-                    </div>
-                </div> 
-                <!--Add New Comment END-->
+
             </div>
         </div>
-        <div class="modal fade" id="modal-danger">
+<!--        <div class="modal fade" id="modal-danger">
             <div class="modal-dialog">
                 <div class="modal-content bg-danger">
                     <div class="modal-header">
@@ -121,10 +108,10 @@
                         <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
                     </div>
                 </div>
-                <!-- /.modal-content -->
+                 /.modal-content 
             </div>
-            <!-- /.modal-dialog -->
-        </div>
+             /.modal-dialog 
+        </div>-->
 </section>
 @endif
 @endsection

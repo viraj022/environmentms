@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\InspectionRemarks;
 use App\InspectionSession;
 use App\EPL;
+use App\Client;
 use App\ApplicationType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,8 +23,8 @@ class InspectionRemarksController extends Controller {
         if ($pageAuth['is_read']) {
             $InspectionSession = InspectionSession::find($id);
             if ($InspectionSession !== null) {
-                $epl = EPL::find($InspectionSession->profile_id);
-                return view('inspection_remarks', ['pageAuth' => $pageAuth, 'id' => $id, "inspec_date" => date("Y-m-d", strtotime($InspectionSession->schedule_date)), "epl_numner" => $epl->code, "epl_id" => $epl->id]);
+                $file = Client::find($InspectionSession->client_id);
+                return view('inspection_remarks', ['pageAuth' => $pageAuth, 'id' => $id, "inspec_date" => date("Y-m-d", strtotime($InspectionSession->schedule_date)), "file_no" => $file->file_no, "file_id" => $file->id]);
             } else {
                 abort(404);
             }
