@@ -260,9 +260,10 @@
                 info.draggedEl.parentNode.removeChild(info.draggedEl);
             },
             eventReceive: function (info) {
-                var date = new Date(info.event.start);
+                var env_officer_id = $('#getEnvOfficer').val(); //Env Officer ID
+                var date = new Date(info.event.start); //Unformatted Date
                 var returnDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(); //Format Date Manually
-                var frmValues = {"remark": "", "schedule_date": returnDate};
+                var frmValues = {"remark": "", "environment_officer_id": env_officer_id, "schedule_date": returnDate};
                 if (isNaN(parseInt(info.event.id))) {
                     return false;
                 }
