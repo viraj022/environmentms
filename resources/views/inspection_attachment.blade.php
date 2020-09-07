@@ -47,7 +47,10 @@
                 </div>
                 <div class="card-footer">
                     <button id="btnSave" type="button" class="btn btn-success">Save File</button>
-                </div>                           
+                </div>  
+                <div class="overlay dark disInspection">
+                    <p class="text-white"><i class="fa fa-check"></i> Inspection Completed </p>
+                </div>
             </div>
         </div>
 
@@ -87,6 +90,7 @@
 <!--<script src="/../../plugins/ekko-lightbox/ekko-lightbox.min.js"></script>-->
 
 <script src="/../../js/attachmentsjs/inspection_attachment.js"></script>
+<script src="/../../js/InspectionRemarksJS/inspection_status.js" type="text/javascript"></script>
 <!-- AdminLTE for demo purposes -->
 
 <script>
@@ -94,6 +98,13 @@
 var ID = "{{$id}}";
 getaAttachmentbyId(ID, function (res) {
     iterateSavedImages(res);
+});
+loadInspectionStatusAPI(ID, function (resp) { //<-- Get Inspection Status
+    if (resp.status === 0) {
+        $('.disInspection').removeClass('overlay'); //Remove If inspection not completed
+    } else {
+        $('.disInspection').addClass('overlay');
+    }
 });
 
 $(document).on('click', '.removeImage', function () {
