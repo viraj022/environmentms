@@ -436,8 +436,11 @@
         });
 //Search NIC Button 
         $(document).on('click', '#btnSearch', function () {
-            var data2 = fromValuesCv();
-            getClientbyNic($('#getDtaType').val(), data2, function (result) {
+            var data2 = {
+                value: $('#getNic').val()
+            };
+            if (data2.value.length != 0 && data2.value != null) {
+                getClientbyNic($('#getDtaType').val(), data2, function (result) {
 //                if (result.length == 0 || result == undefined) {
 //                    if (confirm("Client Not Found, Do you want to register New Client?")) {
 //                        setSectionVisible('reg-newClient');
@@ -445,67 +448,71 @@
 //                } else {
 //                }             
 //                $('#getName').val(result.name);
-                switch ($('#getDtaType').val()) {
-                    case 'name':
-                        if (result != 0) {
-                            showCustomerDetails(result);
-                            $('.view-Customer').removeClass('d-none');
-                        } else {
-                            if (confirm('Client Not Found!Do You Want Create New Client?')) {
-                                setSectionVisible('reg-newClient');
+                    switch ($('#getDtaType').val()) {
+                        case 'name':
+                            if (result != 0) {
+                                showCustomerDetails(result);
+                                $('.view-Customer').removeClass('d-none');
                             } else {
-                                return false;
+                                if (confirm('Client Not Found!Do You Want Create New Client?')) {
+                                    setSectionVisible('reg-newClient');
+                                } else {
+                                    return false;
+                                }
                             }
-                        }
-                        break;
-                    case 'id':
-                        if (result != 0) {
-                            window.location = "/industry_profile/id/" + result.id;
-                        } else {
-                            if (confirm('Client Not Found!Do You Want Create New Client?')) {
-                                setSectionVisible('reg-newClient');
+                            break;
+                        case 'id':
+                            if (result != 0) {
+                                window.location = "/industry_profile/id/" + result.id;
                             } else {
-                                return false;
+                                if (confirm('Client Not Found!Do You Want Create New Client?')) {
+                                    setSectionVisible('reg-newClient');
+                                } else {
+                                    return false;
+                                }
                             }
-                        }
-                        break;
-                    case 'license':
-                        if (result != 0) {
-                            window.location = "/industry_profile/id/" + result.id;
-                        } else {
-                            if (confirm('Client Not Found!Do You Want Create New Client?')) {
-                                setSectionVisible('reg-newClient');
+                            break;
+                        case 'license':
+                            if (result != 0) {
+                                window.location = "/industry_profile/id/" + result.id;
                             } else {
-                                return false;
+                                if (confirm('Client Not Found!Do You Want Create New Client?')) {
+                                    setSectionVisible('reg-newClient');
+                                } else {
+                                    return false;
+                                }
                             }
-                        }
-                        break;
-                    case 'epl':
-                        if (result != 0) {
-                            window.location = "/industry_profile/id/" + result.id;
-                        } else {
-                            if (confirm('Client Not Found!Do You Want Create New Client?')) {
-                                setSectionVisible('reg-newClient');
+                            break;
+                        case 'epl':
+                            if (result != 0) {
+                                window.location = "/industry_profile/id/" + result.id;
                             } else {
-                                return false;
+                                if (confirm('Client Not Found!Do You Want Create New Client?')) {
+                                    setSectionVisible('reg-newClient');
+                                } else {
+                                    return false;
+                                }
                             }
-                        }
-                        break;
-                    case 'business_reg':
-                        if (result != 0) {
-                            window.location = "/industry_profile/id/" + result.id;
-                        } else {
-                            if (confirm('Client Not Found!Do You Want Create New Client?')) {
-                                setSectionVisible('reg-newClient');
+                            break;
+                        case 'business_reg':
+                            if (result != 0) {
+                                window.location = "/industry_profile/id/" + result.id;
                             } else {
-                                return false;
+                                if (confirm('Client Not Found!Do You Want Create New Client?')) {
+                                    setSectionVisible('reg-newClient');
+                                } else {
+                                    return false;
+                                }
                             }
-                        }
-                        break;
-                    default:
-                        alert('Invalid Data');
-                }
-            });
+                            break;
+                        default:
+                            alert('Invalid Data');
+                    }
+                });
+            } else {
+                alert('Please Enter Client Information!');
+                $('#getNic').focus();
+            }
             hideAllErrors();
         });
 
