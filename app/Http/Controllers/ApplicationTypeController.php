@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Attachemnt;
 use App\ApplicationType;
+use App\Helpers\LogActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +29,7 @@ class ApplicationTypeController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_read']) {
+       
             return view('attachementsMap', ['pageAuth' => $pageAuth]);
         } else {
             abort(401);
@@ -51,7 +53,9 @@ class ApplicationTypeController extends Controller
                 foreach ($attachment as $value) {
                     $applicationType->attachemnts()->attach($value);
                 }
+                LogActivity::addToLog('Create a new application type',$applicationType);
             });
+      
             return array('id' => '1', 'msg' => 'true');
         } else {
             abort(401);
@@ -110,15 +114,13 @@ class ApplicationTypeController extends Controller
             } else {
                 $attachments = $applicetion->attachemnts;
             }
-
             //dd($applicetion);
-
-
             $array = array();
             foreach ($attachments as $value) {
                 array_push($array, $value['id']);
             }
             //            $array;
+            LogActivity::addToLog('Get available attachemnts',$applicetion);
             return Attachemnt::wherenotin('id', $array)->get();
         } else {
             abort(401);
@@ -134,7 +136,7 @@ class ApplicationTypeController extends Controller
                 $q->where('application_type_id', $id);
             })->first();
 
-
+            LogActivity::addToLog('get assigned attachemnts',$applicetion);
             if (!$applicetion) {
                 return new Attachemnt();
             } else {

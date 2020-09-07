@@ -137,10 +137,13 @@ class ClientController extends Controller
             $client->file_no = $this->generateCode($client);
             // dd($client->file_no);
             $msg = $msg && $client->save();
-            LogActivity::fileLog($client->id, 'CNFILE', "Create New File", 1);
+            LogActivity::fileLog($client->id, 'FileOP', "Create New File", 1);
+           
             if ($msg) {
+                LogActivity::addToLog('Create a new Industry File',$client);
                 return array('id' => 1, 'message' => 'true', 'id' => $client->id);
             } else {
+                LogActivity::addToLog('Fail to create new Industry File',$client);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -195,9 +198,13 @@ class ClientController extends Controller
             $client->contact_no = \request('contact_no');
             $client->email = \request('email');
             $msg = $client->save();
+
+            LogActivity::fileLog($client->id, 'FileOP', "File updated", 1);
             if ($msg) {
+                LogActivity::addToLog('File updated',$client);
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail t o update File',$client);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {

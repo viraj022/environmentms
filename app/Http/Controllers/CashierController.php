@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Transaction;
+use App\LogActivity;
 use App\Rules\nationalID;
 use Illuminate\Http\Request;
 
@@ -38,8 +39,11 @@ class CashierController extends Controller
         $transaction->invoice_no = request('invoice_no');
         $transaction->billed_at = Carbon::now()->toDateTimeString();
         if ($transaction->save()) {
+
+            LogActivity::addToLog($transaction->invoice_no.'payment Added',$transaction);
             return array('id' => 1, 'message' => 'true');
         } else {
+            LogActivity::addToLog('Fail to Add transaction'.$transaction->invoice_no,$transaction);
             return array('id' => 1, 'message' => 'false');
         }
     }
@@ -49,8 +53,10 @@ class CashierController extends Controller
         $transaction->status = 3;
         $transaction->canceled_at = Carbon::now()->toDateTimeString();
         if ($transaction->save()) {
+            LogActivity::addToLog($transaction->invoice_no.'canceled',$transaction);
             return array('id' => 1, 'message' => 'true');
         } else {
+            LogActivity::addToLog('faiL TO cancel'.$transaction->invoice_no,$transaction);
             return array('id' => 1, 'message' => 'false');
         }
     }
