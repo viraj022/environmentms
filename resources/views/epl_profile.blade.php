@@ -84,10 +84,6 @@
                             <h6><a href="/issue_certificate/id/{{$profile}}" class="text-success ">Certificate Information</a></h6>
                             <p>Issue Certificate / Certificate Information</p>
                         </div>
-                        <div class="callout callout-danger">
-                            <h6><a id="disInspeclink" href="/inspection/epl/id/{{$profile}}" class="text-success isOld2">Inspection</a></h6>
-                            <p>Manage Inspection Details</p>
-                        </div>
                     </div>
                     <!-- /.card-body -->
 
@@ -224,7 +220,7 @@ $(function () {
             disableLinkSection(result.is_old);
             checkIsOldTwo(result.is_old);
             $('.setFileNoTitile').html(result.file_no);
-            $(".setFileNoTitile").attr("href", "/industry_profile/id/" + PROFILE);
+            $(".setFileNoTitile").attr("href", "/industry_profile/id/" + PROFILE);  
         }
         initMap(parseFloat(result.industry_coordinate_x), parseFloat(result.industry_coordinate_y));
     });
@@ -235,6 +231,7 @@ $(function () {
         } else {
             setClearanceData(result);
             $('.eplCodeAfileNo').html(result.epl_instantNumber);
+            $(".navTodownload").attr("href", '/'+ result.path);
 //            setAllDetails(result);
 //            click(function () {
 //                downloadApp(result);

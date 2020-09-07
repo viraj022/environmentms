@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use App\SiteClearenceSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Helpers\LogActivity;
 
 class ClientController extends Controller
 {
@@ -136,6 +137,7 @@ class ClientController extends Controller
             $client->file_no = $this->generateCode($client);
             // dd($client->file_no);
             $msg = $msg && $client->save();
+            LogActivity::fileLog($client->id, 'CNFILE', "Create New File", 1);
             if ($msg) {
                 return array('id' => 1, 'message' => 'true', 'id' => $client->id);
             } else {
@@ -301,7 +303,7 @@ class ClientController extends Controller
         } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
             $data = Client::where('environment_officer_id', $id)->get();
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-            $envOfficer =   EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
+            $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
             if ($envOfficer) {
                 $data = Client::where('environment_officer_id', $envOfficer->id)->get();
             } else {
@@ -324,7 +326,7 @@ class ClientController extends Controller
         } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
             $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-            $envOfficer =   EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
+            $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
             if ($envOfficer) {
                 $data = Client::where('environment_officer_id', $user->id)->where('is_working', 1)->get();
             } else {
@@ -352,7 +354,7 @@ class ClientController extends Controller
                 ->where('is_working', Client::IS_WORKING_NEW)
                 ->get();
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-            $envOfficer =   EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
+            $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
             if ($envOfficer) {
                 $data = Client::where('environment_officer_id', $envOfficer->id)
                     ->where('is_working', Client::IS_WORKING_NEW)
@@ -379,10 +381,42 @@ class ClientController extends Controller
                 ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
                 ->get();
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-            $envOfficer =   EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
+            $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
             if ($envOfficer) {
                 $data = Client::where('environment_officer_id', $envOfficer->id)
                     ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
+                    ->get();
+            }
+        } else {
+            abort(401);
+        }
+        return $data;
+    }
+
+    public function inspection_pending_needed_files($id)
+    {
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        if ($user->roll->level->name == Level::DIRECTOR) {
+            $data = Client::with('inspectionSessions')->whereHas('inspectionSessions', function ($sql) {
+                return $sql->where('inspection_sessions.status', '=', 0);
+            })->where('environment_officer_id', $id)
+                ->where('need_inspection', Client::STATUS_PENDING)
+                ->get();
+        } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
+            $data = Client::with('inspectionSessions')->whereHas('inspectionSessions', function ($sql) {
+                return $sql->where('inspection_sessions.status', '=', 0);
+            })->where('environment_officer_id', $id)
+                ->where('need_inspection', Client::STATUS_PENDING)
+                ->get();
+        } else if ($user->roll->level->name == Level::ENV_OFFICER) {
+            $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
+            if ($envOfficer) {
+                $data = Client::with('inspectionSessions')->whereHas('inspectionSessions', function ($sql) {
+                    return $sql->where('inspection_sessions.status', '=', 0);
+                })->where('environment_officer_id', $envOfficer->id)
+                    ->where('need_inspection', Client::STATUS_PENDING)
                     ->get();
             }
         } else {
@@ -429,6 +463,7 @@ class ClientController extends Controller
             abort(404);
         }
     }
+
     public function getOldSiteClearanceData($id)
     {
         $user = Auth::user();
@@ -454,13 +489,32 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $client = Client::findOrFail($id);
         if ($inspectionNeed == 'needed') {
-            $client->need_inspection  = CLIENT::STATUS_INSPECTION_NEEDED;
+            $client->need_inspection = CLIENT::STATUS_INSPECTION_NEEDED;
         } else if ($inspectionNeed == 'no_needed') {
-            $client->need_inspection  = CLIENT::STATUS_INSPECTION_NOT_NEEDED;
+            $client->need_inspection = CLIENT::STATUS_INSPECTION_NOT_NEEDED;
         } else {
             abort(422);
         }
         if ($client->save()) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
+
+    public function file_problem_status($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        request()->validate([
+            'file_problem_status' => ['required', 'regex:(pending|clean|problem)'],
+            'file_problem_status_description' => 'required|string',
+        ]);
+
+        $file = Client::findOrFail($id);
+        $file->file_problem_status = \request('file_problem_status');
+        $file->file_problem_status_description = \request('file_problem_status_description');
+        if ($file->save()) {
             return array('id' => 1, 'message' => 'true');
         } else {
             return array('id' => 0, 'message' => 'false');

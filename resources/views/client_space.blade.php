@@ -155,7 +155,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Start Date*</label>
-                                    <input id="startDate" type="date" class="form-control form-control-sm" placeholder="Enter Date..." value="">
+                                    <input id="startDate" type="date" data-date="" data-date-format="YYYY-MMM-DD" class="form-control form-control-sm" placeholder="Enter Date..." value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Submitted Date*</label>
@@ -357,7 +357,7 @@
 //Register Button
         $('#btnSave').click(function () {
             var data = fromValues();
-            if (requiredFieldHandler(data ,".cutenzReq")) {
+            if (requiredFieldHandler(data, ".cutenzReq")) {
                 // if validiated
                 AddClient(data, function (result) {
                     if (result.message == 'true') {

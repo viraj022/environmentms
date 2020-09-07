@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\ApplicationType;
 use App\EPL;
+use App\Client;
 use App\InspectionSession;
 use Illuminate\Http\Request;
 use App\InspectionSessionAttachment;
@@ -22,9 +23,8 @@ class InspectionSessionAttachmentController extends Controller {
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
             $InspectionSession = InspectionSession::find($id);
-            if ($InspectionSession !== null) {
-                $epl = EPL::find($InspectionSession->profile_id);
-                return view('inspection_attachment', ['pageAuth' => $pageAuth, 'id' => $id, "inspec_date" => date("Y-m-d", strtotime($InspectionSession->schedule_date)), "epl_numner" => $epl->code]);
+            if ($InspectionSession) {
+                return view('inspection_attachment', ['pageAuth' => $pageAuth, 'id' => $id, "inspec_date" => date("Y-m-d", strtotime($InspectionSession->schedule_date))]);
             } else {
                 abort(404);
             }
@@ -38,24 +38,19 @@ class InspectionSessionAttachmentController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function createEPlInspection($id) {
+    public function createEPlInspection($id, Request $request) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
-            $inspection = InspectionSession::where('id', $id)->where('application_type_id', ApplicationType::getByName(ApplicationTypeController::EPL)->id)->first();
+            $inspection = InspectionSession::find($id);
             if ($inspection) {
-                $data = \request('file');
-                $array = explode(';', $data);
-                $array2 = explode(',', $array[1]);
-                $array3 = explode('/', $array[0]);
-                $type = $array3[1];
-                if (!($type == 'jpeg' || $type == 'png')) {
-                    return array('id' => 0, 'message' => 'Only you can add image(jpeg/png)');
-                }
-                $data = base64_decode($array2[1]);
-                $name = Carbon::now()->timestamp;
-                file_put_contents($this->makeEPLApplicationPath($inspection->profile_id, $id) . "" . $name . "." . $type, $data);
-                $path = $this->makeEPLApplicationPath($inspection->profile_id, $id) . "" . $name . "." . $type;
+                $e = Client::findOrFail($inspection->client_id);
+                $type = $request->file->extension();
+                $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+                $fileUrl = "/uploads/indurtry_files/" . $e->id . "/inspections/" . $inspection->id;
+                $storePath = 'public' . $fileUrl;
+                $path = 'storage' . $fileUrl . "/" . $file_name;
+                $request->file('file')->storeAs($storePath, $file_name);              
                 $inspectionSessionAttachment = new InspectionSessionAttachment();
                 $inspectionSessionAttachment->inspection_session_id = $id;
                 $inspectionSessionAttachment->path = $path;

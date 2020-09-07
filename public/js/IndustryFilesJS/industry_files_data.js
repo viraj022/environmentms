@@ -65,12 +65,24 @@ function loadNewFilesApi(env_id, callBack) {
 }
 //Get File Data End-----
 
+//Check Inspection Need Or Not
+function checkInspectionStatus(id, combo_val, callBack) {
+    if (isNaN(id)) {
+        id = 0;
+    }
+    ajaxRequest('PATCH', "/api/inspection/" + combo_val + "/file/" + id, null, function (dataSet) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(dataSet);
+        }
+    });
+}
+
 
 //----- Load Tables----//
 function forTypeFiles_table(obj, callBack) {
     var tbl = "";
     if (obj.length == 0) {
-        tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
+        tbl = "<tr><td colspan='5'>No Data Found</td></tr>";
     } else {
         $.each(obj, function (index, row) {
             var myDate = new Date(row.created_at);
@@ -78,8 +90,15 @@ function forTypeFiles_table(obj, callBack) {
             tbl += '<tr>';
             tbl += '<td>' + ++index + '</td>';
             tbl += '<td>' + row.industry_name + '</td>';
+            tbl += '<td><a href="/industry_profile/id/' + row.id + '" target="_blank">' + row.file_no + '</a></td>';
             tbl += '<td class="">' + fixMydate + '</td>';
-            tbl += '<td><a href="/industry_profile/id/' + row.id + '" type="button" class="btn btn-success">View Profile</a></td>';
+            if (row.is_working != 1) {
+                //$(".tblTrsec").append('<th class="inspectTbl" style="width: 180px">Set Inspection</th>');
+                tbl += '<td><button type="button" value="' + row.id + '" data-toggle="modal" data-target="#modal-xl" class="btn btn-success setInspeBtn">Set Inspection</button></td>';
+            } else {
+                //$(".inspectTbl").remove();
+                tbl += '<td></td>';
+            }
             tbl += '</tr>';
         });
     }

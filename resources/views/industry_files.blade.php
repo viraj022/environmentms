@@ -80,11 +80,12 @@
                         <div class="card-body table-responsive" style="height: 450px;">
                             <table class="table table-condensed" id="tblAllFiles">
                                 <thead>
-                                    <tr>
+                                    <tr class="tblTrsec">
                                         <th style="width: 10px">#</th>
                                         <th>Industry Name</th>
+                                        <th>File No</th>
                                         <th>Date</th>
-                                        <th style="width: 140px">Action</th>
+                                        <th class="inspectTbl" style="width: 180px">Set Inspection</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -98,6 +99,34 @@
         </div>
     </div>
     <!--Register New Client END-->
+
+    <div class="modal fade" id="modal-xl">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modalTitle">Modal</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Inspection*</label>
+                        <select id="getInspection" class="form-control form-control-sm">
+                            <option value="needed">Add To Inspection</option>
+                            <option value="no_needed">No Inspection</option>
+                        </select>
+                        <div id="valInspection" class="d-none"><p class="text-danger">Field is required</p></div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="setInspectionVal" class="btn btn-primary"><i class="fa fa-check"></i> Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </section>
 
 @endif
@@ -129,13 +158,12 @@
 <script src="../../dist/js/demo.js"></script>
 <!-- AdminLTE App -->
 <script>
-    let PROFILE_ID = '11';
     $(function () {
-//Load table
         //Load AssDir Combo
         loadAssDirCombo(function () {
             loadEnvOfficerCombo($('#getAsDirect').val(), function (rest) {
                 loadAllFilesApi($('#getEnvOfficer').val(), function (respo) {
+                    checkFileType();
                 });
             });
         });
@@ -144,7 +172,10 @@
             });
         });
         $("#getEnvOfficer").change(function () {
-
+            checkFileType();
+        });
+        $("#getFileType").change(function () {
+            checkFileType();
         });
     });
 
@@ -168,6 +199,16 @@
                     });
                     break;
             }
+        });
+        $(document).on('click', '.setInspeBtn', function () {
+            $('#setInspectionVal').val($(this).val());
+        });
+        $('#setInspectionVal').on('click', function () {
+            checkInspectionStatus($('#setInspectionVal').val(), $('#getInspection').val(), function (rep) {
+                show_mesege(rep);
+                $('#modal-xl').modal('hide');
+                checkFileType();
+            });
         });
     });
 
