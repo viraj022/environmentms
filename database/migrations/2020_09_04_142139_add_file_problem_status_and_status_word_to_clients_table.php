@@ -14,7 +14,7 @@ class AddFileProblemStatusAndStatusWordToClientsTable extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->string('file_problem_status', 50)->default('pending');
+            $table->string('file_problem_status', 50)->default('pending'); //abc
             $table->string('file_problem_status_description', 255)->default('');
         });
     }
