@@ -19,8 +19,10 @@ class CreateFileLogsTable extends Migration
             $table->string('code', 20);
             $table->text('description');
             $table->integer('auth_level');
+            $table->bigInteger('user_id')->unsigned();
             $table->timestamps();
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
         });
     }
 

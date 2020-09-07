@@ -32,13 +32,10 @@ class LogActivity
         LogActivityModel::create($log);
     }
 
-    public static function fileLog($file, $code, $description,  $authlevel)
+    public static function fileLog($id, $code, $description,  $authlevel)
     {
-        if (!is_subclass_of($$file, 'IllPuminate\Database\Eloquent\Model')) {
-            // not a model
-            abort(422);
-        }
-        $log['id'] = $file->id;
+        $log = [];
+        $log['client_id'] = $id;
         $log['code'] =  $code;
         $log['description'] = $description;
         $log['auth_level'] = $authlevel;

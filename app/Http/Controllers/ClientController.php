@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use App\SiteClearenceSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Helpers\LogActivity;
 
 class ClientController extends Controller
 {
@@ -136,6 +137,7 @@ class ClientController extends Controller
             $client->file_no = $this->generateCode($client);
             // dd($client->file_no);
             $msg = $msg && $client->save();
+            LogActivity::fileLog($client->id, 'CNFILE', "Create New File", 1);
             if ($msg) {
                 return array('id' => 1, 'message' => 'true', 'id' => $client->id);
             } else {
