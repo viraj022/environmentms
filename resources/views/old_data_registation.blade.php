@@ -188,13 +188,13 @@
                                         <div class="card-body table-responsive" style="height: 450px;">
                                             <div class="form-group">
                                                 <label>Upload: </label>
-                                                <input id="otherFiles" type="file">
+                                                <input id="otherFiles" accept="application/pdf,image/*" type="file">
                                                 @if($pageAuth['is_create']==1 || false)
                                                 <button disabled id="btnUpload" type="submit" class="btn btn-success">Upload</button>
                                                 @endif
                                             </div>
                                             <div class="card-body injectViewAttachs">                                
-                                                <a href="#" target="_blank">Loading Attachments...</a>                          
+                                                <a href="#" target="_blank">Loading Attachments...</a>
                                             </div>                                    
                                         </div>
                                     </div>

@@ -131,8 +131,8 @@
                                     <select id="businesScale" class="form-control form-control-sm cutenzReq" style="width: 100%;"></select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Business Registration Number*</label>
-                                    <input id="business_regno" type="text" class="form-control form-control-sm cutenzReq" placeholder="Enter Number" value="">
+                                    <label>Business Registration Number</label>
+                                    <input id="business_regno" type="text" class="form-control form-control-sm" placeholder="Enter Number" value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Business Name*</label>
@@ -172,7 +172,7 @@
                             </div>
                             <div class="card-footer">
                                 @if($pageAuth['is_create']==1 || false)
-                                <button id="btnSave" type="submit" class="btn btn-success">Register</button>
+                                <button id="btnSave" type="submit" class="btn btn-success"><i class="fas fa-check"></i> Register</button>
                                 @endif
                                 @if($pageAuth['is_update']==1 || false)
                                 <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
@@ -215,15 +215,15 @@
                             </div>
                             <div class="form-group">
                                 <input id="getNic" type="text" class="form-control form-control-sm"
-                                       placeholder="Enter NIC Number..."
+                                       placeholder="Enter Here..."
                                        value="">
                                 <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
                             </div>
                         </div>
                         <div class="card-footer">
                             @if($pageAuth['is_create']==1 || false)
-                            <button id="btnSearch" type="submit" class="btn btn-success">Search</button>
-                            <button id="btnRegister" class="btn btn-primary">Register New Client</button>
+                            <button id="btnSearch" type="submit" class="btn btn-success"><i class="fas fa-search"></i> Search</button>
+                            <button id="btnRegister" class="btn btn-primary"><i class="fas fa-plus"></i> Register New Client</button>
                             @endif
                             <!--<button type="submit" class="btn btn-default resetAll">Reset</button>-->
                         </div>                           

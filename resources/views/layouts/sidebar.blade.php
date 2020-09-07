@@ -101,7 +101,7 @@
                     </a>
                 </li>
                 @endif
-                @if($pre['id']===config('auth.privileges.pradesheyasaba') && auth()->user()->roll->level->value == 1)
+                @if($pre['id']===config('auth.privileges.pradesheyasaba'))
                 <li class="nav-item">
                     <a href="{{ url('/pradesheyasaba') }}" class="nav-link {{ Request::is('pradesheyasaba') ? 'active' : '' }}">
                         <i class="fas fa-city nav-icon"></i>
@@ -109,7 +109,7 @@
                     </a>
                 </li>
                 @endif
-                @if($pre['id']===config('auth.privileges.industry') && auth()->user()->roll->level->value == 1)
+                @if($pre['id']===config('auth.privileges.industry') )
                 <li class="nav-item">
                     <a href="{{ url('/industry_category') }}" class="nav-link {{ Request::is('industry_category') ? 'active' : '' }}">
                         <i class="fas fa-puzzle-piece nav-icon"></i>
@@ -193,7 +193,7 @@
                     </a>
                 </li>
                 @endif
-                @if($pre['id']===config('auth.privileges.clientSpace'))
+                @if($pre['id']===config('auth.privileges.industryFile') &&  auth()->user()->roll->level->value < 4)
                 <li class="nav-item">
                     <a href="{{ url('/industry_files') }}" class="nav-link {{ Request::is('industry_files') ? 'active' : '' }}">
                         <i class="fas fa-puzzle-piece nav-icon"></i>

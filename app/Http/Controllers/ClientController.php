@@ -10,8 +10,10 @@ use App\Pradesheeyasaba;
 use App\Rules\contactNo;
 use App\IndustryCategory;
 use App\Rules\nationalID;
+use App\EnvironmentOfficer;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\SiteClearenceSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -34,12 +36,14 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('client_space', ['pageAuth' => $pageAuth]);
     }
+
     public function indexOldFileList()
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('old_file_list', ['pageAuth' => $pageAuth]);
     }
+
     public function indexOldDataReg($id)
     {
         $user = Auth::user();
@@ -97,7 +101,7 @@ class ClientController extends Controller
             'industry_is_industry' => 'required|integer',
             'industry_investment' => 'required|numeric',
             'industry_start_date' => 'required|date',
-            'industry_registration_no' => 'required|string',
+            'industry_registration_no' => 'nullable|string',
             'is_old' => 'required|integer',
             // 'password' => 'required',
         ]);
@@ -126,7 +130,7 @@ class ClientController extends Controller
             $client->industry_start_date = \request('industry_start_date');
             $client->industry_registration_no = \request('industry_registration_no');
             $client->is_old = \request('is_old');
-
+            $client->is_working = Client::IS_WORKING_NEW;
 
             $msg = $client->save();
             $client->file_no = $this->generateCode($client);
@@ -284,7 +288,7 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
         //    PaymentType::get();
-        return Client::with('epls')->with('environmentOfficer.user')->with('oldFiles')->find($id);
+        return Client::with('epls')->with('environmentOfficer.user')->with('oldFiles')->with('industryCategory')->with('businessScale')->with('pradesheeyasaba')->find($id);
     }
 
     public function getAllFiles($id)
@@ -294,20 +298,18 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($user->roll->level->name == Level::DIRECTOR) {
             $data = Client::where('environment_officer_id', $id)->get();
-        } else if ($user->roll->level->name == Level::DIRECTOR) {
-            $client = Client::where('environment_officer_id', $id)->get();
-            if ($client->environmentOfficer->assistantDirector->id == $user->id) {
-                $data = $client;
-            } else {
-                abort(401);
-            }
+        } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
+            $data = Client::where('environment_officer_id', $id)->get();
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-            $data = Client::where('environment_officer_id', $user->id)->get();
+            $envOfficer =   EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
+            if ($envOfficer) {
+                $data = Client::where('environment_officer_id', $envOfficer->id)->get();
+            } else {
+                abort(404);
+            }
         } else {
             abort(401);
         }
-        //    Client::where()
-
         return $data;
     }
 
@@ -319,15 +321,15 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($user->roll->level->name == Level::DIRECTOR) {
             $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
-        } else if ($user->roll->level->name == Level::DIRECTOR) {
-            $client = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
-            if ($client->environmentOfficer->assistantDirector->id == $user->id) {
-                $data = $client;
-            } else {
-                abort(401);
-            }
+        } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
+            $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-            $data = Client::where('environment_officer_id', $user->id)->where('is_working', 1)->get();
+            $envOfficer =   EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
+            if ($envOfficer) {
+                $data = Client::where('environment_officer_id', $user->id)->where('is_working', 1)->get();
+            } else {
+                abort(404);
+            }
         } else {
             abort(401);
         }
@@ -338,40 +340,62 @@ class ClientController extends Controller
 
     public function newlyAssigned($id)
     {
-        $dateTo = Carbon::now();
-        $dateFrom = Carbon::now()->subDays(7);
         $data = array();
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($user->roll->level->name == Level::DIRECTOR) {
             $data = Client::where('environment_officer_id', $id)
-                ->whereBetween('assign_date', [$dateFrom, $dateTo])
+                ->where('is_working', Client::IS_WORKING_NEW)
                 ->get();
-        } else if ($user->roll->level->name == Level::DIRECTOR) {
-            $client = Client::where('environment_officer_id', $id)
-                ->whereBetween('assign_date', [$dateFrom, $dateTo])
+        } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
+            $data = Client::where('environment_officer_id', $id)
+                ->where('is_working', Client::IS_WORKING_NEW)
                 ->get();
-            if ($client->environmentOfficer->assistantDirector->id == $user->id) {
-                $data = $client;
-            } else {
-                abort(401);
-            }
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-            $data = Client::where('environment_officer_id', $user->id)
-                ->whereBetween('assign_date', [$dateFrom, $dateTo])
-                ->get();
+            $envOfficer =   EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
+            if ($envOfficer) {
+                $data = Client::where('environment_officer_id', $envOfficer->id)
+                    ->where('is_working', Client::IS_WORKING_NEW)
+                    ->get();
+            }
         } else {
             abort(401);
         }
-        //    Client::where()
 
         return $data;
     }
+
+    public function inspection_needed_files($id)
+    {
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        if ($user->roll->level->name == Level::DIRECTOR) {
+            $data = Client::where('environment_officer_id', $id)
+                ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
+                ->get();
+        } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
+            $data = Client::where('environment_officer_id', $id)
+                ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
+                ->get();
+        } else if ($user->roll->level->name == Level::ENV_OFFICER) {
+            $envOfficer =   EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
+            if ($envOfficer) {
+                $data = Client::where('environment_officer_id', $envOfficer->id)
+                    ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
+                    ->get();
+            }
+        } else {
+            abort(401);
+        }
+        return $data;
+    }
+
     public function getOldFiles()
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        return Client::where('is_old', 0)->with('epls')->get();
+        return Client::where('is_old', 0)->with('epls')->with('oldFiles')->get();
     }
 
     public function markOldFinish($id)
@@ -392,10 +416,10 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        $client = Client::where('is_old', 0)->where('id',$id)->first();
+        $client = Client::where('is_old', 0)->where('id', $id)->first();
         if ($client) {
             $epls = $client->epls;
-//            dd($client);
+            //            dd($client);
             if (count($epls) > 0) {
                 return $client->epls[0];
             } else {
@@ -403,6 +427,43 @@ class ClientController extends Controller
             }
         } else {
             abort(404);
+        }
+    }
+    public function getOldSiteClearanceData($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $client = Client::where('is_old', 0)->where('id', $id)->first();
+        if ($client) {
+            $siteClearance = $client->siteClearenceSessions;
+            if (count($siteClearance) > 0) {
+                $siteClearanceSession = $client->siteClearenceSessions[0];
+                $siteClearanceSession->site_clearances = $siteClearanceSession->siteClearances[0];
+                return $siteClearanceSession;
+            } else {
+                return $siteClearance;
+            }
+        } else {
+            abort(404);
+        }
+    }
+
+    public function markInspection($inspectionNeed, $id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $client = Client::findOrFail($id);
+        if ($inspectionNeed == 'needed') {
+            $client->need_inspection  = CLIENT::STATUS_INSPECTION_NEEDED;
+        } else if ($inspectionNeed == 'no_needed') {
+            $client->need_inspection  = CLIENT::STATUS_INSPECTION_NOT_NEEDED;
+        } else {
+            abort(422);
+        }
+        if ($client->save()) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
         }
     }
 }

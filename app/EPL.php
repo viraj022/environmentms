@@ -12,6 +12,7 @@ class EPL extends Model
     public const FINEDATE = '2012-01-01';
     public const INSPECTION = 'inspection';
     public const INSPECTION_FINE = 'inspection_fine';
+    protected $appends = ['epl_instantNumber'];
 
     public const INSPECTION_FEE = 'Inspection Fee';
 
@@ -135,4 +136,9 @@ class EPL extends Model
         }
         return $info;
     }
+    
+    public function getEplInstantNumberAttribute(){
+        return $this->code.'/r'.$this->count;
+    }
+    
 }
