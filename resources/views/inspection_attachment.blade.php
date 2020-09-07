@@ -35,7 +35,7 @@
         <div class="col-md-4">
             <div class="card card-primary">
                 <div class="card-header">
-                    <label id="lblTitle">Add New Payment</label>
+                    <label id="lblTitle">Add New Attachment</label>
                 </div>
                 <div class="card-body">
 

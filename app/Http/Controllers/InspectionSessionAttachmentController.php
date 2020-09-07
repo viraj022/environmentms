@@ -44,14 +44,13 @@ class InspectionSessionAttachmentController extends Controller {
         if ($pageAuth['is_create']) {
             $inspection = InspectionSession::find($id);
             if ($inspection) {
-                $e = EPL::findOrFail($inspection);
+                $e = Client::findOrFail($inspection->client_id);
                 $type = $request->file->extension();
                 $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                $fileUrl = "/uploads/indurtry_files/" . $e->client_id . "/attachments/" . $attachment;
+                $fileUrl = "/uploads/indurtry_files/" . $e->id . "/inspections/" . $inspection->id;
                 $storePath = 'public' . $fileUrl;
                 $path = 'storage' . $fileUrl . "/" . $file_name;
-                $request->file('file')->storeAs($storePath, $file_name);
-                $path = $this->makeEPLApplicationPath($inspection->profile_id, $id) . "" . $name . "." . $type;
+                $request->file('file')->storeAs($storePath, $file_name);              
                 $inspectionSessionAttachment = new InspectionSessionAttachment();
                 $inspectionSessionAttachment->inspection_session_id = $id;
                 $inspectionSessionAttachment->path = $path;
