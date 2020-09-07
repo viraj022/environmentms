@@ -34,9 +34,9 @@ function Validiteupdate(data) {
                 if (data.nic.length == 10) {
                     var str = data.nic;
                     var res = str.slice(0, 9);
-                   
+
                     if (isNaN(res)) {
-                         alert(res);
+                        alert(res);
                         $('#valNic').removeClass('d-none');
                         return false;
                     }
@@ -69,6 +69,13 @@ function Validiteupdate(data) {
         var firstVal = data.contact_no.charAt(0);
         if (firstVal != 0) {
             $('#valContact').removeClass('d-none');
+            response = false;
+        }
+    }
+    if (data.email.length) {
+        var expr = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        if (!expr.test(data.email)) {
+            alert("YOU MUST ENTER VALID EMAIL!!!");
             response = false;
         }
     }

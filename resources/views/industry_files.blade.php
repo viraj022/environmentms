@@ -80,12 +80,12 @@
                         <div class="card-body table-responsive" style="height: 450px;">
                             <table class="table table-condensed" id="tblAllFiles">
                                 <thead>
-                                    <tr>
+                                    <tr class="tblTrsec">
                                         <th style="width: 10px">#</th>
                                         <th>Industry Name</th>
                                         <th>File No</th>
                                         <th>Date</th>
-                                        <th style="width: 180px">Set Inspection</th>
+                                        <th class="inspectTbl" style="width: 180px">Set Inspection</th>
                                     </tr>
                                 </thead>
                                 <tbody>

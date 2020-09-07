@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\InspectionPersonal;
 use App\InspectionSession;
 use App\ApplicationType;
+use App\EPL;
+use App\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,8 +21,9 @@ class InspectionPersonalController extends Controller {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
-            if (InspectionSession::find($id) !== null) {
-                return view('inspection_personal', ['pageAuth' => $pageAuth, 'id' => $id]);
+            $InspectionSession = InspectionSession::find($id);
+            if ($InspectionSession) {
+                return view('inspection_personal', ['pageAuth' => $pageAuth, 'id' => $id, 'inspection_session_date' => date('Y-m-d', strtotime($InspectionSession->schedule_date))]);
             } else {
                 abort(404);
             }

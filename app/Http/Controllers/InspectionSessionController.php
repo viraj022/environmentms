@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
+
+use Carbon\Carbon;
 use App\EPL;
 use App\Client;
 use App\ApplicationType;
@@ -47,16 +50,19 @@ class InspectionSessionController extends Controller
             request()->validate([
                 'schedule_date' => 'required|date',
                 'remark' => ['sometimes', 'nullable', 'string'],
+                'environment_officer_id' => 'required|integer',
             ]);
             $file = Client::find($id);
             if ($file) {
                 $inspectionSession = new InspectionSession();
-                $autoData = $this->getAutomaticInspectionPlacementData($id);
-                $inspectionSession->application_type = $autoData['type'];
-                $inspectionSession->profile_id = $autoData['id'];
+//                $autoData = $this->getAutomaticInspectionPlacementData($id);
+//                                dd($autoData);
+                $inspectionSession->application_type = 'File';
+               // $inspectionSession->profile_id = $autoData['id'];
                 $inspectionSession->client_id = $file->id;
                 $inspectionSession->schedule_date = request('schedule_date');
                 $inspectionSession->remark = request('remark');
+                $inspectionSession->environment_officer_id = request('environment_officer_id');
                 $msg = $inspectionSession->save();
 
                 $dLog = new InspectionDateLog();
@@ -87,18 +93,18 @@ class InspectionSessionController extends Controller
         $siteClearance = $client->siteClearenceSessions;
         // dd(count($epls));
         if (count($epls) > 0 && count($siteClearance) > 0) {
-            return response(array('id' => 0, 'message' => 'Can not resolve whether file belong to a inspection or a site clearance'), 422);
+            abort (422,'Can not resolve whether file belong to a inspection or a site clearance');
         }
-        if (count($epls) > 1 && $siteClearance($siteClearance) > 1) {
-            return response(array('id' => 0, 'message' => 'Can not resolve whether file belong to a inspection or a site clearance. more than one epls or site clearances found'), 422);
+        if (count($epls) > 1 && count($siteClearance) > 1) {
+             abort(422,'Can not resolve whether file belong to a inspection or a site clearance. more than one epls or site clearances found');
         }
 
         if (count($epls) > 0) {
             return array('type' => InspectionSession::TYPE_EPL, 'id' => $epls[0]->id);
-        } else if ($siteClearance($siteClearance) > 0) {
+        } else if (count($siteClearance) > 0) {
             return array('type' => InspectionSession::SITE_CLEARANCE, 'id' => $siteClearance[0]->id);
         } else {
-            return response(array('id' => 0, 'message' => 'Can not resolve whether file belong to a inspection or a site clearance. No epls or site clearances found'), 422);
+             abort( 422,'Can not resolve whether file belong to a inspection or a site clearance. No epls or site clearances found');
         }
     }
 
@@ -131,12 +137,11 @@ class InspectionSessionController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-
         return InspectionSession::with('inspectionRemarks')
             ->with('inspectionSessionAttachments')
             ->with('inspectionPersonals')
-            ->with('client')
-            ->where('schedule_date', $date)
+            ->with('client')          
+            ->whereDate('schedule_date', $date)
             ->whereHas('client', function ($sql) use ($id) {
                 return $sql->where('clients.environment_officer_id', '=', $id);
             })
@@ -237,6 +242,7 @@ class InspectionSessionController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
 
         $inspectionSession = InspectionSession::findOrFail($sessionId);
+        $inspectionSession->completed_at = Carbon::now()->format('Y-m-d H:i:s') ;
         $inspectionSession->status = 1;
         $msg = $inspectionSession->save();
         $file = $inspectionSession->client;

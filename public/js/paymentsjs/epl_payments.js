@@ -154,7 +154,7 @@ function selectedPayments_table(obj, callBack) {
 
 function savePayment(data, epl_id, callBack) {
     if (!data || data.length == 0) {
-        alert('Please Add Pyaments Before Compleate!');
+        alert('Please Add Payments Before Complete!');
         return false;
     }
     ajaxRequest("POST", "/api/epl/pay/id/" + epl_id, {items: data}, function (resp) {

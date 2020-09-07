@@ -21,7 +21,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>(<a href="/inspection/epl/id/{{$epl_id}}">{{$epl_numner}}</a>) {{$inspec_date}} Inspection Comments</h1>
+                <h1>(<a href="/industry_profile/id/{{$file_id}}">{{$file_no}}</a>) {{$inspec_date}} Inspection Comments</h1>
             </div>
         </div>
     </div>
@@ -31,20 +31,38 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="row" id="showUiDb">
-                    <div class="c                                                ol-md-12">
-                        <div class="card card-outline card-success">
-                            <d                                                        iv class="card-header">
-                                <h3 class="card-title">2020/07/23 03.05PM</h3>
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool removeComm" data-card-widget="remove"><i class="fas fa-times"></i>
-                                    </button>
+
+                </div>
+                <!--Add New Comment Section-->
+                <div class="card card-primary">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Add New Comment</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label>Comment*</label>
+                                            <input id="getComment" type="text" class="form-control form-control-sm" placeholder="Enter Your Comment" value="">
+                                            <a class="error invalid-feedback aefFGE d-none">Please enter your comment</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        @if($pageAuth['is_create']==1 || false)
+                                        <button id="btnSave" type="submit" class="btn btn-success">Save</button>
+                                        @endif
+                                    </div>
+                                    <div class="overlay dark disInspection">
+                                        <p class="text-white"><i class="fa fa-check"></i> Inspection Completed </p>
+                                    </div>
                                 </div>
-                        </div>
-                        <div class="card-body">
-                            Loading...
+                            </div> 
                         </div>
                     </div>
-                </div>
+                </div> 
+                <!--Add New Comment END-->
             </div>
             <div class="col-md-4">
                 <div class="card card-default">
@@ -66,65 +84,43 @@
 
                             <p>Add images, attachment in inspection</p>
                         </div>
+                        <div class="callout callout-success inspectConfStatus d-none">
+                            <button type="button" id="completeInsBtn" class="btn btn-block btn-dark btn-lg"><i class="fa fa-check"></i> Complete Inspection</button>
+                        </div>
+                        <div class="callout callout-success compDoneUi d-none">
+                            <h4><i class="text-success fa fa-check"></i> Completed</h4> 
+                        </div>
                         <!-- /.card-body -->
                     </div>
                 </div>
             </div>
 
             <div class="col-md-8">
-                <!--Add New Comment Section-->
-                <div class="card card-primary">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Add New Comment</h3>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <label>Comment*</label>
-                                            <input id="getComment" type="text" class="form-control form-control-sm"
-                                                   placeholder="Enter Your Comment"
-                                                   value="">
-                                            <a class="error invalid-feedback aefFGE d-none">Please enter your comment</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        @if($pageAuth['is_create']==1 || false)
-                                        <button id="btnSave" type="submit" class="btn btn-success">Save</button>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div> 
+
+            </div>
+        </div>
+        <!--        <div class="modal fade" id="modal-danger">
+                    <div class="modal-dialog">
+                        <div class="modal-content bg-danger">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Delete Selected Remark</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p><b>Are you sure you want to permanently delete this Item? </b></p>
+                                <p>Once you continue, this process can not be undone. Please Procede with care.</p>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                                <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
+                            </div>
                         </div>
+                         /.modal-content 
                     </div>
-                </div> 
-                <!--Add New Comment END-->
-            </div>
-        </div>
-        <div class="modal fade" id="modal-danger">
-            <div class="modal-dialog">
-                <div class="modal-content bg-danger">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Delete Selected Remark</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p><b>Are you sure you want to permanently delete this Item? </b></p>
-                        <p>Once you continue, this process can not be undone. Please Procede with care.</p>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                        <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
+                     /.modal-dialog 
+                </div>-->
 </section>
 @endif
 @endsection
@@ -153,15 +149,21 @@
 <script src="/../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/../../dist/js/demo.js"></script>
-<script src="/../../js/InspectionRemarksJS/submit.js"></script>
-<script src="/../../js/InspectionRemarksJS/get.js"></script>
-<!--<script src="../../js/RemarksJS/update.js"></script>-->
-<script src="/../../js/InspectionRemarksJS/delete.js"></script>
+<script src="/../../js/InspectionRemarksJS/inspection_remarks.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
 $(function () {
     var ID = "{{$id}}";
     loadInterface(ID);
+    loadInspectionStatusAPI(ID, function (resp) { //<-- Get Inspection Status
+        if (resp.status === 0) {
+            $('.inspectConfStatus').removeClass('d-none'); //<-- Show Complete Inspection Btn
+            $('.disInspection').removeClass('overlay');
+        } else {
+            $('.inspectConfStatus').addClass('d-none'); //<-- Hide Complete Inspection Btn
+            $('.compDoneUi').removeClass('d-none'); //<-- Show Completed UI
+        }
+    });
 //click save button
     $('#btnSave').click(function () {
         var data = fromValues();
@@ -181,6 +183,16 @@ $(function () {
                 loadInterface(ID);
                 resetinputFields();
             });
+        }
+    });
+
+    $('#completeInsBtn').click(function () {
+        if (confirm('Are you sure you want to confirm this inspection?')) {
+            completeInspectionAPI(ID, function (resp) {
+                show_mesege(resp);
+            });
+        } else {
+            return false;
         }
     });
 

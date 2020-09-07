@@ -159,15 +159,89 @@ function setupInspectionUI(need_inspection_status) {
     } else if (need_inspection_status === 'Inspection Needed') {
 
         $('.setupInspectStatus').html('Inspection Needed');
+        $('.noNeedInspect').removeClass('d-none');
 
     } else if (need_inspection_status === 'Inspection Not Needed') {
 
         $('.setupInspectStatus').html('Inspection Not Needed');
+        $('.setInspectUI').removeClass('d-none');
 
     } else if (need_inspection_status === 'Completed') {
 
         $('.setupInspectStatus').html('Completed');
         $('.setInspectUI').removeClass('d-none');
 
+    }
+}
+
+function getAllInspectionAPI(id, callBack) {
+    if (id.length == 0) {
+        return false;
+    }
+    var url = "/api/inspections/file/id/" + id;
+    ajaxRequest('GET', url, null, function (result) {
+        if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
+            callBack(result);
+        }
+    });
+}
+
+function loadAllSiteInspectionTable(id) {
+    getAllInspectionAPI(id, function (result) {
+        var tbl = "";
+        var id = 1;
+        if (result.length == 0) {
+            tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
+        } else {
+            $.each(result, function (index, row) {
+                tbl += '<tr>';
+                tbl += '<td>' + ++index + '</td>';
+                if (row.status == 0) {
+                    tbl += '<td>Processing</td>';
+                } else {
+                    tbl += '<td>Completed (' + row.completed_at + ')</td>';
+                }
+                tbl += '<td>' + row.schedule_date_only + '</td>';
+                tbl += '<td><a type="button" href="/inspection/epl/remarks/id/' + row.id + '" class="btn btn-primary"> View </a></td>';
+                tbl += '</tr>';
+            });
+        }
+        $('#tblAllInspections tbody').html(tbl);
+    });
+}
+
+//Check Inspection Need Or Not
+function checkInspectionStatus(id, btn_val, callBack) {
+    if (isNaN(id)) {
+        id = 0;
+    }
+    ajaxRequest('PATCH', "/api/inspection/" + btn_val + "/file/" + id, null, function (dataSet) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(dataSet);
+        }
+    });
+}
+
+//Report File Issue
+function reportFileIssueAPI(id, data, callBack) {
+    if (isNaN(id)) {
+        id = 0;
+    }
+    ajaxRequest('POST', "/api/files/file_problem_status/id/" + id, data, function (dataSet) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(dataSet);
+        }
+    });
+}
+
+function checkFileIssueStatus(is_exist) {
+    if (is_exist.file_problem_status === 'problem') {
+        $('.markIssueClean').removeClass('d-none'); //<-- Show Issue Cleared
+        $('.showReportInfoUi').removeClass('d-none');
+        $('.reportIssueView').addClass('d-none'); //<-- Hide report issue
+        $('.reportInfo').html(is_exist.file_problem_status_description);
+    } else {
+        $('.markIssueClean').addClass('d-none'); //<-- Hide Issue Cleared
+        $('.showReportInfoUi').addClass('d-none');
     }
 }
