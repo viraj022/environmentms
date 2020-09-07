@@ -81,6 +81,12 @@
 
                             <p>Add images, attachment in inspection</p>
                         </div>
+                        <div class="callout callout-success inspectConfStatus d-none">
+                            <button type="button" id="completeInsBtn" class="btn btn-block btn-dark btn-lg"><i class="fa fa-check"></i> Complete Inspection</button>
+                        </div>
+                        <div class="callout callout-success compDoneUi d-none">
+                            <h4><i class="text-success fa fa-check"></i> Completed</h4> 
+                        </div>
                         <!-- /.card-body -->
                     </div>
                 </div>
@@ -90,28 +96,28 @@
 
             </div>
         </div>
-<!--        <div class="modal fade" id="modal-danger">
-            <div class="modal-dialog">
-                <div class="modal-content bg-danger">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Delete Selected Remark</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+        <!--        <div class="modal fade" id="modal-danger">
+                    <div class="modal-dialog">
+                        <div class="modal-content bg-danger">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Delete Selected Remark</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p><b>Are you sure you want to permanently delete this Item? </b></p>
+                                <p>Once you continue, this process can not be undone. Please Procede with care.</p>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                                <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
+                            </div>
+                        </div>
+                         /.modal-content 
                     </div>
-                    <div class="modal-body">
-                        <p><b>Are you sure you want to permanently delete this Item? </b></p>
-                        <p>Once you continue, this process can not be undone. Please Procede with care.</p>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                        <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
-                    </div>
-                </div>
-                 /.modal-content 
-            </div>
-             /.modal-dialog 
-        </div>-->
+                     /.modal-dialog 
+                </div>-->
 </section>
 @endif
 @endsection
@@ -140,15 +146,20 @@
 <script src="/../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/../../dist/js/demo.js"></script>
-<script src="/../../js/InspectionRemarksJS/submit.js"></script>
-<script src="/../../js/InspectionRemarksJS/get.js"></script>
-<!--<script src="../../js/RemarksJS/update.js"></script>-->
-<script src="/../../js/InspectionRemarksJS/delete.js"></script>
+<script src="/../../js/InspectionRemarksJS/inspection_remarks.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
 $(function () {
     var ID = "{{$id}}";
     loadInterface(ID);
+    loadInspectionStatusAPI(ID, function (resp) { //<-- Get Inspection Status
+        if (resp.status === 0) {
+            $('.inspectConfStatus').removeClass('d-none'); //<-- Show Complete Inspection Btn
+        } else {
+            $('.inspectConfStatus').addClass('d-none'); //<-- Hide Complete Inspection Btn
+            $('.compDoneUi').removeClass('d-none'); //<-- Show Completed UI
+        }
+    });
 //click save button
     $('#btnSave').click(function () {
         var data = fromValues();
@@ -168,6 +179,16 @@ $(function () {
                 loadInterface(ID);
                 resetinputFields();
             });
+        }
+    });
+
+    $('#completeInsBtn').click(function () {
+        if (confirm('Are you sure you want to confirm this inspection?')) {
+            completeInspectionAPI(ID, function (resp) {
+                show_mesege(resp);
+            });
+        } else {
+            return false;
         }
     });
 
