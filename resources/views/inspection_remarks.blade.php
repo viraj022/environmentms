@@ -54,6 +54,9 @@
                                         <button id="btnSave" type="submit" class="btn btn-success">Save</button>
                                         @endif
                                     </div>
+                                    <div class="overlay dark disInspection">
+                                        <p class="text-white"><i class="fa fa-check"></i> Inspection Completed </p>
+                                    </div>
                                 </div>
                             </div> 
                         </div>
@@ -155,6 +158,7 @@ $(function () {
     loadInspectionStatusAPI(ID, function (resp) { //<-- Get Inspection Status
         if (resp.status === 0) {
             $('.inspectConfStatus').removeClass('d-none'); //<-- Show Complete Inspection Btn
+            $('.disInspection').removeClass('overlay');
         } else {
             $('.inspectConfStatus').addClass('d-none'); //<-- Hide Complete Inspection Btn
             $('.compDoneUi').removeClass('d-none'); //<-- Show Completed UI
