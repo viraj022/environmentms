@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Level;
 use App\Privilege;
-use App\Roll;
+use App\Helpers\LogActivity;
 use App\Rules\contactNo;
 use App\Rules\nationalID;
 use App\User;
@@ -69,9 +69,6 @@ class UserController extends Controller
             $msg = $user->save();
             //         ($user);
             UserController::PrevilagesAdd($user);
-
-            
-
         });
         return redirect()
             ->back()
@@ -172,7 +169,7 @@ class UserController extends Controller
                 ->withInput()
                 ->with('error', 'Error');
         }
-        //        return redirect('/users/id/' . $id);
+        LogActivity::addToLog('Assign User Privileges', $user);
     }
 
     public function storePassword(Request $request, $id)
