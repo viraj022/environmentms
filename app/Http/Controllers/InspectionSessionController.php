@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
+
+use Carbon\Carbon;
 use App\EPL;
 use App\Client;
 use App\ApplicationType;
@@ -239,6 +242,7 @@ class InspectionSessionController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
 
         $inspectionSession = InspectionSession::findOrFail($sessionId);
+        $inspectionSession->completed_at = Carbon::now()->format('Y-m-d H:i:s') ;
         $inspectionSession->status = 1;
         $msg = $inspectionSession->save();
         $file = $inspectionSession->client;
