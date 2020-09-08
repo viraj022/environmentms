@@ -103,7 +103,7 @@
             </div>
             <!-- /.col -->
             <div class="col-md-9">
-                <div class="card card-primary">
+                <div class="card card-success">
                     <div class="card-body p-0">
                         <!-- THE CALENDAR -->
                         <div id="calendar"></div>

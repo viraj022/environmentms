@@ -33,7 +33,7 @@
 
     <div class="row">
         <div class="col-md-4">
-            <div class="card card-primary">
+            <div class="card card-success">
                 <div class="card-header">
                     <label id="lblTitle">Add New Attachment</label>
                 </div>
@@ -55,7 +55,7 @@
         </div>
 
         <div class="col-md-8">
-            <div class="card card-primary">
+            <div class="card card-success">
                 <div class="card-header">
                     <h4 class="card-title">Images</h4>
                 </div>

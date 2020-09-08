@@ -88,8 +88,7 @@ function getaClientbyId(id, callBack) {
 //}
 
 function getClientbyNic(type, data, callBack) {
-
-    if (type.length == 0) {
+    if (data.length == 0 && data == null) {
         return false;
     }
     $.ajax({
@@ -111,11 +110,4 @@ function getClientbyNic(type, data, callBack) {
         }
     });
 
-}
-
-function fromValuesCv() {
-    var data = {
-        value: $('#getNic').val()
-    };
-    return data;
 }

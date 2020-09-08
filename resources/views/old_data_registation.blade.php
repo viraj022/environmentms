@@ -55,7 +55,7 @@
                     </div>
                     <!-- /.card-body -->
                 </div>
-                <div class="card card-primary">
+                <div class="card card-success">
                     <div class="card-header">
                         <label id="lblTitle">Add Old File</label>
                     </div>
@@ -150,7 +150,7 @@
 
 
             <div class="col-md-7 uploadEPLSection">
-                <div class="card card-primary">
+                <div class="card card-success">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
@@ -204,7 +204,7 @@
                     </div>
                 </div>
 
-                <div class="card card-primary d-none lastIssuedCer">
+                <div class="card card-success d-none lastIssuedCer">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">

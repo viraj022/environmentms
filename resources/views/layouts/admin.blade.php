@@ -20,10 +20,10 @@
             <!-- Navbar -->
             <!-- Main Sidebar Container -->
             <!--  <aside class="main-sidebar sidebar-dark-primary elevation-4 nn">-->
-            <aside class="main-sidebar layout-fixed sidebar-dark-olive accent-navy">
+            <aside class="main-sidebar sidebar-dark-olive elevation-4">
                 <!-- Brand Logo -->
-                <a href="index3.html" class="brand-link">
-                    <img src="/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                <a href="#" class="brand-link">
+                    <img src="/dist/img/AdminLTELogo.png" alt="Env" class="brand-image img-circle elevation-3"
                          style="opacity: .8">
                     <span class="brand-text font-weight-light">Environemnt MS</span>
                 </a>

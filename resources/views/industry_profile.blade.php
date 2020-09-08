@@ -27,7 +27,7 @@
 </section>
 <!--//Tab Section START//-->
 <section class="content-header">
-    <div class="card card-primary card-outline card-outline-tabs">
+    <div class="card card-success card-outline card-outline-tabs">
         <div class="card-header p-0 border-bottom-0">
             <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
                 <li class="nav-item">
@@ -47,6 +47,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link siteInspectionTab" id="custom-tabs-three-siteInspectionTab-tab" data-toggle="pill" href="#custom-tabs-three-siteInspectionTab" role="tab" aria-controls="custom-tabs-three-siteInspectionTab" aria-selected="false">Site Inspection</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
                 </li>
             </ul>
         </div>
@@ -164,9 +167,9 @@
                                     <div class="col-md-12 showReportInfoUi d-none">
                                         <div class="card card-danger collapsed-card">
                                             <div class="card-header">
-                                                <h3 class="card-title text-danger"> There was a problem with  files. Please Check it.</h3>
+                                                <h3 class="card-title"> There was a problem with  file. Please Check it.</h3>
                                                 <div class="card-tools">
-                                                    <button type="button" class="btn btn-tool text-success" data-card-widget="collapse">Read More..
+                                                    <button type="button" class="btn btn-tool text-white" data-card-widget="collapse">Read More..
                                                     </button>
                                                 </div>
                                             </div>
@@ -187,8 +190,7 @@
                                             <dt>Name : <a id="obj_name"></a></dt>
                                             <dt>BR No : <a id="obj_regno"></a></dt>                       
                                             <dt>Investment : Rs <a id="obj_invest"></a>.00</dt>
-                                            <dt>Location : <a id="obj_name"></a></dt>
-                                            <div id="map" style="width: 100%; height: 400px;"></div>
+                                            <hr>
                                             <dt>Download & Upload Application :</dt>
 
                                             <a href="" class="btn btn-dark navToFile1" target="_blank">View Road Map</a>
@@ -282,7 +284,7 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="card card-success">
+                                <div class="card card-gray">
                                     <div class="card-header">
                                         <h3 class="card-title">EPL</h3>
                                         <div class="card-tools">
@@ -308,7 +310,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card card-success">
+                                <div class="card card-gray">
                                     <div class="card-header">
                                         <h3 class="card-title">Site Clearance</h3>
                                         <div class="card-tools">
@@ -322,7 +324,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card card-success">
+                                <div class="card card-gray">
                                     <div class="card-header">
                                         <h3 class="card-title">Telecommunication Site Clearance</h3>
                                         <div class="card-tools">
@@ -336,7 +338,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card card-success">
+                                <div class="card card-gray">
                                     <div class="card-header">
                                         <h3 class="card-title">Schedule Waste</h3>
                                         <div class="card-tools">
@@ -358,7 +360,7 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="card card-primary card-outline">
+                                <div class="card card-success card-outline">
                                     <div class="card-body box-profile">
                                         <h3 class="profile-username text-center">Client Details</h3>
 
@@ -388,7 +390,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card card-primary card-outline">
+                                <div class="card card-success card-outline">
                                     <div class="card-body box-profile">
                                         <h3 class="profile-username text-center">Industry Details</h3>
 
@@ -512,6 +514,12 @@
                             </div>
                             <!-- /.card-body -->
                         </div>
+                    </div>  
+                </div>                   
+                <!--//Location Open//-->
+                <div class="tab-pane fade" id="custom-tabs-three-locationTab" role="tabpanel" aria-labelledby="custom-tabs-three-locationTab-tab">
+                    <div class="col-md-12">
+                        <div id="map" style="width: 100%; height: 400px;"></div>
                     </div>  
                 </div>                   
             </div>
