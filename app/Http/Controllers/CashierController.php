@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Transaction;
+use App\ApplicationCliten;
+use App\Client;
+use App\TransactionItem;
 use App\Rules\nationalID;
 use Illuminate\Http\Request;
+use PhpParser\Node\Expr\Cast\Array_;
 
 class CashierController extends Controller
 {
@@ -56,9 +60,43 @@ class CashierController extends Controller
     }
 
     public function getPendingPaymentList(){
-        $transaction = Transaction::with('transactionItems')->whereNull('billed_at')->get();
-        $transactionItem = $transaction->transactionItems[0];
-        $transaction->toArray(); 
+        $a =   Array(); 
+        $transaction = Transaction::whereNull('billed_at')->get();
+        foreach ($transaction as &$value) {
+            // dd();
+          $t =  TransactionItem::where('transaction_id',$value->id)->first();
         
-    }
+         if($t->transaction_type == 'application_fee'){
+           
+             $value['name'] = ApplicationCliten::findOrFail($t->client_id)->name;
+         }else{
+            $value['name'] = ApplicationCliten::findOrFail($t->client_id)->name;
+        }        
+        $value['total'] = $value->getTotal();
+        array_push($a,$value);
+        }
+     return $a;  
+    
 }
+
+    public function getPendingPaymentByFileID(){
+        $a =   Array(); 
+        $transaction = Transaction::whereNull('billed_at')->get();
+        foreach ($transaction as &$value) {
+            // dd();
+          $t =  TransactionItem::where('transaction_id',$value->id)->first();
+        
+         if($t->transaction_type == 'application_fee'){
+           
+             $value['name'] = ApplicationCliten::findOrFail($t->client_id)->name;
+         }else{
+            $value['name'] = ApplicationCliten::findOrFail($t->client_id)->name;
+        }        
+        $value['total'] = $value->getTotal();
+        array_push($a,$value);
+        }
+     return $a;  
+    
+}
+}
+

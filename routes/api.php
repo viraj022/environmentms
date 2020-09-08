@@ -972,3 +972,13 @@ Route::middleware('auth:api')->get('/epl/certificate_information/id/{id}', 'EPLC
 */
 
 /// application attachment map
+
+
+Route::middleware('auth:api')->get('/payment/pending', 'CashierController@getPendingPaymentList'); // get app pending payment sessions
+/*
+{
+    "id": 1,
+    "message": "true"
+}
+*/
+

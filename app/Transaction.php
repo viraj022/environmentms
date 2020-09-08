@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\TransactionItem;
 
 class Transaction extends Model
 {
@@ -38,4 +39,12 @@ class Transaction extends Model
     {
         return $this->belongsTo(ApplicationCliten::class, 'type_id', 'id');
     }
+    
+    public function getTotal(){
+       return TransactionItem:: 
+        where('transaction_id', '=', $this->id)
+        ->sum('amount');
+       
+    }
+
 }
