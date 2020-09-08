@@ -26,5 +26,5 @@
 <!-- SweetAlert2 -->
 <link rel="stylesheet" href="/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 <!-- overlayScrollbars -->
-<link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+<link rel="stylesheet" href="/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
 @endsection
