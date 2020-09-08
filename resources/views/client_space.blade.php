@@ -34,7 +34,7 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="card card-primary">
+                        <div class="card card-success">
                             <div class="card-header">
                                 <label id="lblTitle">Register New Client</label>
                             </div>
@@ -91,7 +91,7 @@
                             </div>                           
                         </div>
                         <div class="">
-                            <div class="card card-primary">
+                            <div class="card card-success">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -113,7 +113,7 @@
                     </div>
                     <!--Industry details-->
                     <div class="col-md-6">
-                        <div class="card card-primary">
+                        <div class="card card-success">
                             <div class="card-header">
                                 <label id="lblTitle">Industry details</label>
                             </div>
@@ -198,7 +198,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="col-md-9">
-                    <div class="card card-primary">
+                    <div class="card card-success">
                         <div class="card-header">
                             <label id="lblTitle">Search Client</label>
                         </div>

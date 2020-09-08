@@ -30,7 +30,7 @@
     <div class="container-fluid reg-newClient">
         <div class="row">
             <div class="col-md-5">
-                <div class="card card-primary">
+                <div class="card card-success">
                     <div class="card-header">
                         <label id="lblTitle">Update Client</label>
                     </div>

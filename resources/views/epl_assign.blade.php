@@ -29,7 +29,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <div class="card card-primary">
+                <div class="card card-success">
                     <div class="card-header">
                         <label id="lblTitle">Un-assigned File</label>
                     </div>
@@ -53,7 +53,7 @@
 
 
             <div class="col-md-6">
-                <div class="card card-primary">
+                <div class="card card-success">
                     <div class="card-body">
                         <label>Environment Officer</label>
                         <select class="form-control combo_envOfficer" id="env_officer_combo"></select>
