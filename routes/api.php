@@ -774,7 +774,7 @@ Route::middleware('auth:api')->put('/client/id/{id}', 'ClientController@store');
   response Example
   validation response Example */
 
-Route::middleware('auth:api')->delete('/client/id/{id}', 'ClientController@destroy'); //deleteClient
+Route::middleware('auth:api')->delete('/client/id/{id}', 'ClientController@destroy'); //delete industry profile
 // {
 //     "id": 1,
 //     "message": "true"
