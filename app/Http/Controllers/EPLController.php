@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use App\BusinessScale;
 use App\Pradesheeyasaba;
 use App\IndustryCategory;
+use App\Helpers\LogActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -98,6 +99,8 @@ class EPLController extends Controller
     }
     public function issue_certificate($epl_id)
     {
+        //log skiped due to changes of requirements : nadun 2020 09 08 
+
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
@@ -191,6 +194,11 @@ class EPLController extends Controller
                     $client->is_working = 1;
                     $client->save();
                     $epl->save();
+
+                    LogActivity::addToLog('New EPL created',$epl);
+                    LogActivity::fileLog($epl->client_id,'CNFILE',"application_path updated",1);
+                    LogActivity::addToLog('Create a new Industry File',$client);
+
                     return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
                 } else {
                     return array('id' => 0, 'message' => 'false');

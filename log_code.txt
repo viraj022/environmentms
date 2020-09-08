@@ -10,14 +10,19 @@ OldFile
 	OldFileUpdate
 	OldFileDelate
 Inspections
+	inspectionNeed 
 
 FileAssign
+
+FileAssignEPL
 
 FileForward
 
 FileProblams
 
 FilePrograss
+
+
 
 
 

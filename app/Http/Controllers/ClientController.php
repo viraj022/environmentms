@@ -272,8 +272,11 @@ class ClientController extends Controller
             $client = Client::findOrFail($id);
             $msg = $client->delete();
             if ($msg) {
+                LogActivity::addToLog("File ".$id." deleted",$client);
+                LogActivity::fileLog($client->id, 'FileOP', "File ".$id." deleted", 1);
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog("Fail to delete File ".$id,$client);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -447,8 +450,11 @@ class ClientController extends Controller
         $client->is_old = 2; // inspected state
         $client->is_working = 0; // set working status of the client to not working
         if ($client->save()) {
+            LogActivity::addToLog("markOldFinish done ".$id,$client);
+            LogActivity::fileLog($client->id, 'FileOP',"markOldFinish", 1);
             return array('id' => 1, 'message' => 'true');
         } else {
+            LogActivity::addToLog("markOldFinish fail ".$id,$client);
             return array('id' => 0, 'message' => 'false');
         }
     }
@@ -495,16 +501,21 @@ class ClientController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $client = Client::findOrFail($id);
-        if ($inspectionNeed == 'needed') {
+        if ($inspectionNeed == 'needed') {            
+            LogActivity::fileLog($client->id, 'inspections',"inspection mark as needed", 1);
             $client->need_inspection = CLIENT::STATUS_INSPECTION_NEEDED;
         } else if ($inspectionNeed == 'no_needed') {
+            LogActivity::fileLog($client->id, 'inspections',"inspection mark as no needed", 1);
             $client->need_inspection = CLIENT::STATUS_INSPECTION_NOT_NEEDED;
         } else {
+            LogActivity::addToLog("markOldFinish done ",$client);
             abort(422);
         }
         if ($client->save()) {
+            LogActivity::addToLog("mark inspection  done ",$client);
             return array('id' => 1, 'message' => 'true');
         } else {
+            LogActivity::addToLog("fail to mark inspection ",$client);
             return array('id' => 0, 'message' => 'false');
         }
     }
@@ -521,9 +532,12 @@ class ClientController extends Controller
         $file = Client::findOrFail($id);
         $file->file_problem_status = \request('file_problem_status');
         $file->file_problem_status_description = \request('file_problem_status_description');
+        LogActivity::fileLog($file->id, 'FileProblams',"set FileProblam status ".$file->file_problem_status, 1);
         if ($file->save()) {
+            LogActivity::addToLog("mark inspection  status done ",$file);
             return array('id' => 1, 'message' => 'true');
         } else {
+            LogActivity::addToLog("fail to mark inspection status  ",$file);
             return array('id' => 0, 'message' => 'false');
         }
     }
