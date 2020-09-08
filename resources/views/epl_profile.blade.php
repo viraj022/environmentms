@@ -210,6 +210,7 @@ function initMap(_Latitude, _Longitude) {
 $(function () {
     var CLIENT = '{{$client}}';
     var PROFILE = '{{$profile}}';
+//    console.log('cli: ' + CLIENT + ', prof: ' + PROFILE);
     getaClientbyId(CLIENT, function (result) {
         if (result.length == 0 || result == undefined) {
             if (confirm("Client Not Found! Try Again!")) {
@@ -220,7 +221,7 @@ $(function () {
             disableLinkSection(result.is_old);
             checkIsOldTwo(result.is_old);
             $('.setFileNoTitile').html(result.file_no);
-            $(".setFileNoTitile").attr("href", "/industry_profile/id/" + PROFILE);  
+            $(".setFileNoTitile").attr("href", "/industry_profile/id/" + CLIENT);
         }
         initMap(parseFloat(result.industry_coordinate_x), parseFloat(result.industry_coordinate_y));
     });
@@ -231,11 +232,7 @@ $(function () {
         } else {
             setClearanceData(result);
             $('.eplCodeAfileNo').html(result.epl_instantNumber);
-            $(".navTodownload").attr("href", '/'+ result.path);
-//            setAllDetails(result);
-//            click(function () {
-//                downloadApp(result);
-//            });
+            $(".navTodownload").attr("href", '/' + result.path);
         }
     });
 });
@@ -246,45 +243,5 @@ function showNotAvailable() {
     toastr.info('Not Available For Old Files!');
 }
 </script>
-<!--<script>
-    $(function(){
-    {{-- function readFile() {
-
-    if (this.files && this.files[0]) {
-
-    var FR = new FileReader();
-    FR.addEventListener("load", function(e) {
-    document.getElementById("img").src = e.target.result;
-    document.getElementById("b64").innerHTML = e.target.result;
-    AddPayments({"name": e.target.result}, function(){
-    alert("Message Sent");
-    })
-    });
-    FR.readAsDataURL(this.files[0]);
-    }
-
-    } --}}
-
-    {{-- document.getElementById("inp").addEventListener("change", readFile); --}}
-    $("#btnSave").click(function(){
-    alert("wada");
-    var img = document.getElementById("inp")
-            if (img.files && img.files[0]) {
-
-    var FR = new FileReader();
-    FR.addEventListener("load", function(e) {
-    document.getElementById("img").src = e.target.result;
-    document.getElementById("b64").innerHTML = e.target.result;
-    AddPayments({"name": e.target.result}, function(){
-    alert("Message Sent");
-    })
-    });
-    FR.readAsDataURL(img.files[0]);
-    } else{
-    alert("No Image")
-    }
-    });
-    });
-</script>-->
 @endsection
 
