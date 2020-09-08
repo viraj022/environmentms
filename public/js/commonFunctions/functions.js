@@ -9,7 +9,6 @@ function ajaxRequest(Method, url, data, callBack) {
         data: data,
         cache: false,
         success: function (result) {
-
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
             }
@@ -34,7 +33,11 @@ function ajaxRequest(Method, url, data, callBack) {
             } else {
                 msg = 'Uncaught Error.\n' + jqXHR.responseText;
             }
-            alert(msg);
+            Toast.fire({
+                type: 'error',
+                title: 'Error</br>' + msg
+            });
+//            alert(msg);
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(msg);
             }

@@ -26,7 +26,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12">
-                <h1>File No: (<a href="#" class="setFileNoTitile">Loading..</a>) - EPL Number: <span class="right badge eplCodeAfileNo badge-primary">Loading..</span></h1>
+                <h1>File No: (<a href="/industry_profile/id/{{$client}}" class="setFileNoTitile">Loading..</a>) - EPL Number: <span class="right badge eplCodeAfileNo badge-primary">Loading..</span></h1>
             </div>
         </div>
     </div>
@@ -134,29 +134,6 @@
         </div>
     </div>
 </section>
-
-<div class="modal fade" id="modal-danger">
-    <div class="modal-dialog">
-        <div class="modal-content bg-danger">
-            <div class="modal-header"> 
-                <h4 class="modal-title">Delete Attachment</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><b>Are you sure you want to permanently delete this Attachment ? </b></p>
-                <p>Once you continue, this process can not be undone. Please Procede with care.</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
 
 @endif
 

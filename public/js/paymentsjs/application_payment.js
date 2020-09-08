@@ -1,20 +1,4 @@
-function ajaxRequest(Method, url, data, callBack) {
-    $.ajax({
-        type: Method,
-        headers: {
-            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-            "Accept": "application/json"
-        },
-        url: url,
-        data: data,
-        cache: false,
-        success: function (result) {
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack(result);
-            }
-        }
-    });
-}
+
 function loadApplication_types(callBack) {
     var cbo = "";
     ajaxRequest('GET', "/api/application/applicationList", null, function (dataSet) {
@@ -78,19 +62,6 @@ function saveApplicationPayment(data, callBack) {
             callBack(resp);
         }
     });
-}
-function show_mesege(resp_id) {
-    if (resp_id.message == "true") {
-        Toast.fire({
-            type: 'success',
-            title: 'Envirmontal MS</br>Success!'
-        });
-    } else {
-        Toast.fire({
-            type: 'error',
-            title: 'Enviremontal MS</br>Error'
-        });
-    }
 }
 
 function set_application_amount() {

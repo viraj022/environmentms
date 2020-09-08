@@ -26,125 +26,107 @@
     </div>
 </section>
 <section class="content-header">
-    <div class="col-md-12">
-        <div class="card card-success card-outline">
 
-            <div class="card-body">
-                <div class="tab-content" id="custom-tabs-two-tabContent">
-                    <div class="tab-pane fade active show" id="custom-tabs-two-home" role="tabpanel" aria-labelledby="custom-tabs-two-home-tab">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="card card-success">
+                    <div class="card-header">
+                        <label>Application Details</label>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>Inspection Type *</label>
+                            <select id="epl_methodCombo" class="form-control form-control-sm">
+                                <option>Loading...</option>
+                            </select>
+                        </div>
+                        <label>Amount </label>
+                        <div class="input-group mb-3">
+                            <input id="paymnt_amount" type="number" class="form-control form-control-sm" placeholder="" value="">
+                            <div class="input-group-prepend">
+                                <button type="button" class="btn btn-sm btn-dark" id="inspection_payBtn">Add</button>
+                            </div>
+                            <!-- /btn-group -->
+                        </div>
+                        <hr>
 
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="card card-success">
-                                        <div class="card-header">
-                                            <label>Application Details</label>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="form-group">
-                                                <label>Inspection Type *</label>
-                                                <select id="epl_methodCombo" class="form-control form-control-sm">
-                                                    <option>Loading...</option>
-                                                </select>
-                                            </div>
-                                            <label>Amount </label>
-                                            <div class="input-group mb-3">
-                                                <input id="paymnt_amount" type="number" class="form-control form-control-sm" placeholder="" value="">
-                                                <div class="input-group-prepend">
-                                                    <button type="button" class="btn btn-sm btn-dark" id="inspection_payBtn">Add</button>
-                                                </div>
-                                                <!-- /btn-group -->
-                                            </div>
-                                            <hr>
+                        <div id="fineDev" class="d-none">
+                            <div class="form-group">
+                                <label>Fine Type</label>
+                                <select id="fine_list" class="form-control form-control-sm">
+                                    <option>Loading...</option>
+                                </select>
+                            </div>
 
-                                            <div id="fineDev" class="d-none">
-                                                <div class="form-group">
-                                                    <label>Fine Type</label>
-                                                    <select id="fine_list" class="form-control form-control-sm">
-                                                        <option>Loading...</option>
-                                                    </select>
-                                                </div>
-
-                                                <label>Fine </label>
-                                                <div class="input-group mb-3">
-                                                    <input id="fine_amt" type="number" class="form-control form-control-sm" placeholder="" value="">
-                                                    <div class="input-group-prepend">
-                                                        <button type="button" class="btn btn-sm btn-dark" id="fine_payBtn">Add</button>
-                                                    </div>
-                                                    <!-- /btn-group -->
-                                                </div>
-                                            </div>
-
-
-                                            <hr>
-                                            <div class="form-group">
-                                                <label>Certificate List *</label>
-                                                <select id="certificate_list" class="form-control form-control-sm">
-                                                    <option>Loading...</option>
-                                                </select>
-                                            </div>
-
-                                            <label>Certificate Amount *</label>
-                                            <div class="input-group mb-3">
-                                                <input id="cert_amt" type="number" class="form-control form-control-sm" placeholder="" readonly="" value="">
-                                                <div class="input-group-prepend">
-                                                    <button type="button" class="btn btn-sm btn-dark" id="certificate_payBtn">Add</button>
-                                                </div>
-                                                <!-- /btn-group -->
-                                            </div>
-                                        </div>
-                                        <div class="card-footer">
-                                            @if($pageAuth['is_create']==1 || false)
-                                            <button id="btnSave" type="submit" class="btn btn-success pull-right"><i class="fa fa-print"></i> &nbsp;Complete</button>
-                                            @endif
-                                        </div>                           
-                                    </div>
+                            <label>Fine </label>
+                            <div class="input-group mb-3">
+                                <input id="fine_amt" type="number" class="form-control form-control-sm" placeholder="" value="">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-sm btn-dark" id="fine_payBtn">Add</button>
                                 </div>
-
-
-                                <div class="col-md-7">
-                                    <div class="card card-success">
-                                        <div class="card-body">
-                                            <div class="row">
-
-                                                <div class="col-md-12">
-                                                    <div class="card card-secondary">
-                                                        <div class="card-header">
-
-                                                            <h3 class="card-title">Pending Payment List</h3>
-                                                        </div>
-                                                        <!-- /.card-header -->
-                                                        <div class="card-body p-0">
-                                                            <div class="card-body table-responsive" style="height: 450px;">
-                                                                <table class="table table-condensed" id="tbl_applications">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th style="width: 10px">#</th>
-                                                                            <th>Name</th>
-                                                                            <th>Amount</th>
-                                                                            <th style="">Action</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.card-body -->
-                                                    </div>
-                                                </div>                                        
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <!-- /btn-group -->
                             </div>
                         </div>
 
-                    </div>
 
+                        <hr>
+                        <div class="form-group">
+                            <label>Certificate List *</label>
+                            <select id="certificate_list" class="form-control form-control-sm">
+                                <option>Loading...</option>
+                            </select>
+                        </div>
+
+                        <label>Certificate Amount *</label>
+                        <div class="input-group mb-3">
+                            <input id="cert_amt" type="number" class="form-control form-control-sm" placeholder="" readonly="" value="">
+                            <div class="input-group-prepend">
+                                <button type="button" class="btn btn-sm btn-dark" id="certificate_payBtn">Add</button>
+                            </div>
+                            <!-- /btn-group -->
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        @if($pageAuth['is_create']==1 || false)
+                        <button id="btnSave" type="submit" class="btn btn-success pull-right"><i class="fa fa-print"></i> &nbsp;Complete</button>
+                        @endif
+                    </div>                           
                 </div>
             </div>
-            <!-- /.card -->
+
+
+            <div class="col-md-7">
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="card card-secondary">
+                            <div class="card-header">
+
+                                <h3 class="card-title">Pending Payment List</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body p-0">
+                                <div class="card-body table-responsive" style="height: 450px;">
+                                    <table class="table table-condensed" id="tbl_applications">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 10px">#</th>
+                                                <th>Name</th>
+                                                <th>Amount</th>
+                                                <th style="">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    </div>                                        
+                </div>
+            </div>
         </div>
     </div>
 </section>

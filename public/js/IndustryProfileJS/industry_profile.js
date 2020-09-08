@@ -234,6 +234,18 @@ function reportFileIssueAPI(id, data, callBack) {
     });
 }
 
+//Remove Client File API
+function removeClientFileAPI(id, callBack) {
+    if (isNaN(id)) {
+        id = 0;
+    }
+    ajaxRequest('DELETE', "/api/client/id/" + id, null, function (dataSet) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(dataSet);
+        }
+    });
+}
+
 function checkFileIssueStatus(is_exist) {
     if (is_exist.file_problem_status === 'problem') {
         $('.markIssueClean').removeClass('d-none'); //<-- Show Issue Cleared
