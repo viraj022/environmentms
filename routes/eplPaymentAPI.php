@@ -18,18 +18,18 @@ Route::middleware('auth:api')->post('/epl/regPayment', 'EPLPaymentController@add
   {
   "name": "hansana",
   "items": [
-  {
-  "id": 4,
-  "qty": "5"
-  },
-  {
-  "id": 3,
-  "qty": "5"
-  },
-  {
-  "id": 5,
-  "qty": "5"
-  }
+    {
+    "id": 4,
+    "qty": "5"
+    },
+    {
+    "id": 3,
+    "qty": "5"
+    },
+    {
+    "id": 5,
+    "qty": "5"
+    }
   ]
   }
 
