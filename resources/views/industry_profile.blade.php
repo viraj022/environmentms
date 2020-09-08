@@ -27,7 +27,7 @@
 </section>
 <!--//Tab Section START//-->
 <section class="content-header">
-    <div class="card card-primary card-outline card-outline-tabs">
+    <div class="card card-success card-outline card-outline-tabs">
         <div class="card-header p-0 border-bottom-0">
             <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
                 <li class="nav-item">
@@ -47,6 +47,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link siteInspectionTab" id="custom-tabs-three-siteInspectionTab-tab" data-toggle="pill" href="#custom-tabs-three-siteInspectionTab" role="tab" aria-controls="custom-tabs-three-siteInspectionTab" aria-selected="false">Site Inspection</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
                 </li>
             </ul>
         </div>
@@ -161,6 +164,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
+                                    <div class="col-md-12 showReportInfoUi d-none">
+                                        <div class="card card-danger collapsed-card">
+                                            <div class="card-header">
+                                                <h3 class="card-title"> There was a problem with  file. Please Check it.</h3>
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool text-white" data-card-widget="collapse">Read More..
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="card-body reportInfo" style="display: none;">
+                                                Unknown Error!
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="card">
                                         <div class="card-header">
                                             <h3 class="card-title">
@@ -173,8 +190,7 @@
                                             <dt>Name : <a id="obj_name"></a></dt>
                                             <dt>BR No : <a id="obj_regno"></a></dt>                       
                                             <dt>Investment : Rs <a id="obj_invest"></a>.00</dt>
-                                            <dt>Location : <a id="obj_name"></a></dt>
-                                            <div id="map" style="width: 100%; height: 400px;"></div>
+                                            <hr>
                                             <dt>Download & Upload Application :</dt>
 
                                             <a href="" class="btn btn-dark navToFile1" target="_blank">View Road Map</a>
@@ -268,7 +284,7 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="card card-success">
+                                <div class="card card-gray">
                                     <div class="card-header">
                                         <h3 class="card-title">EPL</h3>
                                         <div class="card-tools">
@@ -294,7 +310,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card card-success">
+                                <div class="card card-gray">
                                     <div class="card-header">
                                         <h3 class="card-title">Site Clearance</h3>
                                         <div class="card-tools">
@@ -308,7 +324,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card card-success">
+                                <div class="card card-gray">
                                     <div class="card-header">
                                         <h3 class="card-title">Telecommunication Site Clearance</h3>
                                         <div class="card-tools">
@@ -322,7 +338,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card card-success">
+                                <div class="card card-gray">
                                     <div class="card-header">
                                         <h3 class="card-title">Schedule Waste</h3>
                                         <div class="card-tools">
@@ -344,7 +360,7 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="card card-primary card-outline">
+                                <div class="card card-success card-outline">
                                     <div class="card-body box-profile">
                                         <h3 class="profile-username text-center">Client Details</h3>
 
@@ -374,7 +390,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card card-primary card-outline">
+                                <div class="card card-success card-outline">
                                     <div class="card-body box-profile">
                                         <h3 class="profile-username text-center">Industry Details</h3>
 
@@ -429,6 +445,19 @@
                                     <!--<p>There is a problem that we need to</p>-->
                                 </div>
                                 <div class="callout callout-danger">
+                                    <button type="button" class="btn btn-danger reportIssueView"><i class="fa fa-file"></i>  Report Issue</button>
+                                    <button type="button" class="btn btn-success markIssueClean d-none"><i class="fa fa-file"></i>  Mark Issue Cleared</button>
+                                    <div class="reportView d-none">
+                                        <div class="form-group">
+                                            <label>Report File Issue</label>
+                                            <textarea class="form-control" id="reportTxtArea" rows="3" placeholder="Enter ..." autocomplete="off"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="button" id="reportSubmit" class="btn btn-success"><i class="fa fa-check"></i>  Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="callout callout-danger">
                                     <h4>Status: <a class="setupInspectStatus text-success"></a></h4>
                                     <button type="button" onclick="location.href = '';" class="btn btn-dark addToSiteIns d-none" data-dismiss="modal"><i class="fa fa-plus"></i>&nbsp Add To Site Inspection</button>
                                     <button type="button" value="needed" class="btn btn-info setInspectUI d-none"><i class="fa fa-plus"></i>&nbsp Set Inspection</button>
@@ -473,7 +502,7 @@
                                         <thead>
                                             <tr>
                                                 <th style="width: 10px">#</th>
-                                                <th>Application Type</th>
+                                                <th>Status</th>
                                                 <th>Schedule Date</th>
                                                 <th style="width: 140px">Action</th>
                                             </tr>
@@ -485,6 +514,12 @@
                             </div>
                             <!-- /.card-body -->
                         </div>
+                    </div>  
+                </div>                   
+                <!--//Location Open//-->
+                <div class="tab-pane fade" id="custom-tabs-three-locationTab" role="tabpanel" aria-labelledby="custom-tabs-three-locationTab-tab">
+                    <div class="col-md-12">
+                        <div id="map" style="width: 100%; height: 400px;"></div>
                     </div>  
                 </div>                   
             </div>
@@ -538,6 +573,7 @@
                                                 checkEPLstatus(parameters.epls);
                                                 loadAllEPLTable(parameters.epls);
                                                 setupInspectionUI(parameters.need_inspection);
+                                                checkFileIssueStatus(parameters);
                                             });
                                             $('#newEPL').click(function () {
                                                 if (isNaN(parseInt(PROFILE_ID))) {
@@ -664,6 +700,43 @@
                                         $('.noNeedInspect').on('click', function () {
                                             checkInspectionStatus(PROFILE_ID, $(this).val(), function (rep) {
                                                 show_mesege(rep);
+                                            });
+                                        });
+
+                                        //Sumbit Report
+                                        $('.reportIssueView').on('click', function () { //<-- Get View to report file
+                                            $(this).addClass('d-none');
+                                            $('.reportView').removeClass('d-none');
+                                        });
+
+                                        $('#reportSubmit').on('click', function () { // Report Issue Btn
+                                            var data = {
+                                                file_problem_status_description: $('#reportTxtArea').val(),
+                                                file_problem_status: 'problem'
+                                            };
+                                            reportFileIssueAPI(PROFILE_ID, data, function (resp) {
+                                                show_mesege(resp);
+                                                $('.reportView').addClass('d-none');
+                                                $('.reportIssueView').addClass('d-none');
+                                                $('.markIssueClean').removeClass('d-none');
+                                                getaProfilebyId(PROFILE_ID, function (parameters) {
+                                                    checkFileIssueStatus(parameters);
+                                                });
+                                            });
+                                        });
+
+                                        $('.markIssueClean').on('click', function () { // Mark As Cleared Btn
+                                            var data = {
+                                                file_problem_status: 'clean',
+                                                file_problem_status_description: 'NO-PROBLEM'
+                                            };
+                                            reportFileIssueAPI(PROFILE_ID, data, function (resp) {
+                                                show_mesege(resp);
+                                                $('.reportIssueView').removeClass('d-none');
+                                                $('.markIssueClean').addClass('d-none');
+                                                getaProfilebyId(PROFILE_ID, function (parameters) {
+                                                    checkFileIssueStatus(parameters);
+                                                });
                                             });
                                         });
 </script>

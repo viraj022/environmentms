@@ -45,7 +45,7 @@ function inspectionsByDateAPI(schedule_date, id, callBack) {
             $.each(dataSet, function (index, row) {
                 tbl += '<tr>';
                 tbl += '<td>' + ++index + '</td>';
-                tbl += '<td><a href="/industry_profile/id/' + row.id + '" target="_blank">' + row.client.industry_registration_no + '</a></td>';
+                tbl += '<td><a href="/industry_profile/id/' + row.client_id + '" target="_blank">' + row.client.industry_registration_no + '</a></td>';
                 tbl += '<td><button href="#" value="' + row.id + '" class="btn btn-sm btn-danger removeInspecBtn"><i class="fas fa-times"></i> Remove</button></td>';
                 tbl += '</tr>';
             });

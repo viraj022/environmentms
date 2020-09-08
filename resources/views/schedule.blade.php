@@ -103,7 +103,7 @@
             </div>
             <!-- /.col -->
             <div class="col-md-9">
-                <div class="card card-primary">
+                <div class="card card-success">
                     <div class="card-body p-0">
                         <!-- THE CALENDAR -->
                         <div id="calendar"></div>
@@ -143,7 +143,7 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <!--<button type="button" class="btn btn-primary">Save changes</button>-->
                 </div>
             </div>
             <!-- /.modal-content -->

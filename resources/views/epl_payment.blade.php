@@ -27,7 +27,7 @@
 </section>
 <section class="content-header">
     <div class="col-md-12">
-        <div class="card card-primary card-outline">
+        <div class="card card-success card-outline">
 
             <div class="card-body">
                 <div class="tab-content" id="custom-tabs-two-tabContent">
@@ -36,7 +36,7 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-5">
-                                    <div class="card card-primary">
+                                    <div class="card card-success">
                                         <div class="card-header">
                                             <label>Application Details</label>
                                         </div>
@@ -103,7 +103,7 @@
 
 
                                 <div class="col-md-7">
-                                    <div class="card card-primary">
+                                    <div class="card card-success">
                                         <div class="card-body">
                                             <div class="row">
 
