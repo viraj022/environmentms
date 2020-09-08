@@ -15,6 +15,7 @@ class Transaction extends Model
     public const APPLICATION_FEE = 'application_fee';
     public const TRANS_TYPE_EPL = "EPL";
     public const TRANS_TYPE_FINE = "EPL";
+    protected $appends = ['net_total'];
 
     public function getPaymentDetails()
     {
@@ -46,5 +47,12 @@ class Transaction extends Model
         ->sum('amount');
        
     }
+
+    public function getNetTotalAttribute(){
+        //return strtotime($this->schedule_date)->toDateString();
+        return TransactionItem:: 
+        where('transaction_id', '=', $this->id)
+        ->sum('amount');
+        }
 
 }

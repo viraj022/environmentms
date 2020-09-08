@@ -72,7 +72,7 @@ class CashierController extends Controller
          }else{
             $value['name'] = ApplicationCliten::findOrFail($t->client_id)->name;
         }        
-        $value['total'] = $value->getTotal();
+        // $value['total'] = $value->getTotal();
         array_push($a,$value);
         }
      return $a;  
@@ -80,8 +80,9 @@ class CashierController extends Controller
 }
 
     public function getPendingPaymentByFileID($id){
-    return Transaction::with('transactionItems')->whereHas('transactionItems', function ( $query) use($id) {
-    $query->where('client_id', '=', $id);
+ 
+   return Transaction::with('transactionItems')->whereHas('transactionItems', function ( $query) use($id) {
+    $query->where('client_id', '=', $id)->where('transaction_type', '!=', 'application_fee');
         })->get();
     
 }
