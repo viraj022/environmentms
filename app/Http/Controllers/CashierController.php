@@ -54,4 +54,11 @@ class CashierController extends Controller
             return array('id' => 1, 'message' => 'false');
         }
     }
+
+    public function getPendingPaymentList(){
+        $transaction = Transaction::with('transactionItems')->whereNull('billed_at')->get();
+        $transactionItem = $transaction->transactionItems[0];
+        $transaction->toArray(); 
+        
+    }
 }
