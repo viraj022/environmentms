@@ -27,7 +27,7 @@
 </section>
 <!--//Tab Section START//-->
 <section class="content-header">
-    <div class="card card-primary card-outline card-outline-tabs">
+    <div class="card card-success card-outline card-outline-tabs">
         <div class="card-header p-0 border-bottom-0">
             <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
                 <li class="nav-item">
@@ -360,7 +360,7 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="card card-primary card-outline">
+                                <div class="card card-success card-outline">
                                     <div class="card-body box-profile">
                                         <h3 class="profile-username text-center">Client Details</h3>
 
@@ -390,7 +390,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card card-primary card-outline">
+                                <div class="card card-success card-outline">
                                     <div class="card-body box-profile">
                                         <h3 class="profile-username text-center">Industry Details</h3>
 

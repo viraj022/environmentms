@@ -29,7 +29,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-5">
-                <div class="card card-primary">
+                <div class="card card-success">
                     <div class="card-header">
                         <label id="lblTitle">Create New Committee</label>
                     </div>
@@ -94,7 +94,7 @@
 
 
             <div class="col-md-7">
-                <div class="card card-primary">
+                <div class="card card-success">
                     <div class="card-body">
                         <div class="row">
 

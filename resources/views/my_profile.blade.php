@@ -42,7 +42,7 @@
                 @endif
                 <div class="row">
                     <div class="col-md-5">
-                        <div class="card card-primary">
+                        <div class="card card-success">
                             <div class="card-header">
                                 <label>Baic Information</label>
                             </div>
@@ -123,7 +123,7 @@
                     <div class="col-md-7">
                       @if($pageAuth['is_update']==1 || True)
                             <form method="POST" action="/users/my_password">
-                                <div class="card card-primary">
+                                <div class="card card-success">
                                     <div class="card-header">
                                         <h3 class="card-title">Credentials</h3>
                                     </div>
