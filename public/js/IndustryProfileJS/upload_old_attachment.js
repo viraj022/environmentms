@@ -54,14 +54,6 @@ function uploadOldAttacments(client_id, key, value, callBack) {
     });
 }
 
-function sectionProtector(is_old) {
-    if (is_old === 1) {
-        $('.oldAttachTab').addClass('disabled');
-    } else {
-        $('.oldAttachTab').removeClass('disabled');
-    }
-}
-
 function oldFileConfirmSection(is_old) {
     if (is_old === 0) {
 
