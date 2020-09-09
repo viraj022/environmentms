@@ -557,6 +557,9 @@
                 </div>                   
             </div>
         </div>
+        <div class="overlay dark loadingRenderUI">
+            <i class="fas fa-2x fa-sync-alt"></i>
+        </div>
     </div>  
 </section>
 <!--//Tab Section END//-->  
@@ -593,7 +596,6 @@
                                         $(function () {
                                             pendingPaymentsTable(PROFILE_ID); //<-- Load pending payment table
                                             deedList(PROFILE_ID, function () {
-
                                             });
                                             getaProfilebyId(PROFILE_ID, function (parameters) {
                                                 setProfileDetails(parameters);
@@ -606,6 +608,7 @@
                                                 loadAllEPLTable(parameters.epls);
                                                 setupInspectionUI(parameters.need_inspection);
                                                 checkFileIssueStatus(parameters);
+                                                $(".loadingRenderUI").remove(); //<--Check Loading Status
                                             });
                                             $('#newEPL').click(function () {
                                                 if (isNaN(parseInt(PROFILE_ID))) {
@@ -665,7 +668,6 @@
                                                     });
                                                 });
                                             });
-
                                         });
 
 //btnCustomerVa button action 
