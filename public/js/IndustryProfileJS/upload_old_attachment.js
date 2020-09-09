@@ -67,7 +67,7 @@ function oldFileConfirmSection(is_old) {
         $('.isConfirmed').addClass('d-none');
     } else if (is_old === 1) {
         $('.removeAttachs').addClass('d-none');
-        $('.uploadAttachments').addClass('d-none');
+//        $('.uploadAttachments').addClass('d-none');
         $('.is_oldProf').html('NEW');
     } else if (is_old === 2) {
         $('.isNotConfiremd').addClass('d-none');
