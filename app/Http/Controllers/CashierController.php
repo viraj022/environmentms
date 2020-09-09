@@ -61,27 +61,13 @@ class CashierController extends Controller
 
     public function getPendingPaymentList(){
         $a =   Array(); 
-     return    $transaction = Transaction::whereNull('billed_at')->get();
-        // foreach ($transaction as &$value) {
-        
-        //  if($value->type == 'application_fee'){
-           
-        //      $value['name'] = ApplicationCliten::findOrFail($value->type_id)->name;
-        //  }else{
-        //      $value['name'] =  Client::findOrFail($value->type_id)->name;
-        // }      
-      
-        // array_push($a,$value);
-        // }
-    //  return $a;  
+     return    $transaction = Transaction::whereNull('billed_at')->get();     
     
 }
 
     public function getPendingPaymentByFileID($id){
  
-   return Transaction::with('transactionItems')->whereHas('transactionItems', function ( $query) use($id) {
-    $query->where('client_id', '=', $id)->where('transaction_type', '!=', 'application_fee');
-        })->get();
+   return Transaction::with('transactionItems')->with('client')->where('client_id',$id)->get();
     
 }
 }

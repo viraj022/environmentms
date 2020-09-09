@@ -246,9 +246,21 @@ function removeClientFileAPI(id, callBack) {
     });
 }
 
+//Remove EPL Payment API
+function removeEPLPaymentAPI(id, callBack) {
+    if (isNaN(id)) {
+        id = 0;
+    }
+    ajaxRequest('DELETE', "/api/epl/regPayment/id/" + id, null, function (dataSet) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(dataSet);
+        }
+    });
+}
+
 //Pending Payments API
 function pendingPaymentsAPI(id, callBack) {
-    ajaxRequest('GET', "/api/payment/history/file/"+id, null, function (dataSet) {
+    ajaxRequest('GET', "/api/payment/history/file/" + id, null, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
@@ -265,10 +277,26 @@ function pendingPaymentsTable(id) {
             $.each(result, function (index, row) {
                 tbl += '<tr>';
                 tbl += '<td>' + ++index + '</td>';
-                tbl += '<td>' + row.cashier_name + '</td>';
-                tbl += '<td>' + row.invoice_no + '</td>';
-                if(row.status == 0){
-                  tbl += '<td><a type="button" href="#" class="btn btn-primary"> Print BarCode </a></td>';  
+                if (row.cashier_name !== null) {
+                    tbl += '<td>' + row.cashier_name + '</td>';
+                } else {
+                    tbl += '<td>N/A</td>';
+                }
+                if (row.invoice_no !== null) {
+                    tbl += '<td>' + row.invoice_no + '</td>';
+                } else {
+                    tbl += '<td>N/A</td>';
+                }
+                if (row.status == 0) {
+                    tbl += '<td>Pending Payment</td>';
+                } else if (row.status == 1) {
+                    tbl += '<td>Paid</td>';
+                } else {
+                    tbl += '<td>Payment Cancelled</td>';
+                }
+                tbl += '<td>'+ row.net_total +'</td>';
+                if (row.status == 0) {
+                    tbl += '<td><button type="button" data-name="'+ row.name +'" value="'+ row.id +'" class="btn btn-primary printBarcode"> Print BarCode </button> <button type="button" value="'+ row.id +'" class="btn btn-danger removeBarcode"> Remove </button></td>';
                 }
                 tbl += '</tr>';
             });
