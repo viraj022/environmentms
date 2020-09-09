@@ -40,6 +40,10 @@ class Transaction extends Model
     {
         return $this->belongsTo(ApplicationCliten::class, 'type_id', 'id');
     }
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
     
     public function getTotal(){
        return TransactionItem:: 
@@ -55,11 +59,10 @@ class Transaction extends Model
         ->sum('amount');
         }
     public function getNameAttribute(){
-        if($this->type == 'application_fee'){
-           
+        if($this->type == 'application_fee'){           
             return ApplicationCliten::findOrFail($this->type_id)->name;
         }else{
-            return Client::findOrFail($this->type_id)->name;
+            return Client::findOrFail($this->client_id)->first_name;
        }   
         }
 
