@@ -544,7 +544,8 @@
                                                 <th style="width: 10px">#</th>
                                                 <th>Cashier Name</th>
                                                 <th>Invoice No</th>
-                                                <th style="width: 140px">Action</th>
+                                                <th>Status</th>
+                                                <th style="width: 290px">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -784,5 +785,25 @@
                                                 });
                                             }
                                         });
+
+                                        $(document).on('click', '.printBarcode', function () {//<-- Print Bar Code In Payment Tab
+                                            var btnValue = $(this).val();
+                                            toastr.info('Printing Barcode...');
+                                            $.ajax({
+                                                url: 'http://127.0.0.1:8081/hansana',
+                                                data: {code: btnValue, name: 'name'},
+                                                success: function (result) {
+                                                }
+                                            });
+                                        });
+                                        $(document).on('click', '.removeBarcode', function () {//<-- Remove Button In Payment Tab
+                                            var btnValue = $(this).val();
+                                            if (confirm('Are you sure you want to remove this payment?')) {
+                                                removeEPLPaymentAPI(btnValue, function () {
+
+                                                });
+                                            }
+                                        });
+
 </script>
 @endsection
