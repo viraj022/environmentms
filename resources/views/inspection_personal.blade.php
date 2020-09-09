@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>(<a href="/inspection/epl/remarks/id/{{$id}}">{{$inspection_session_date}}</a>) - Inspection Personal</h1>
+                <h1>(<a href="/industry_profile/id/{{$file_id}}">{{$file_no}}</a>) {{$inspection_session_date}} Inspection Personal</h1>
             </div>
         </div>
     </div>
