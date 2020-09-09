@@ -81,48 +81,37 @@
                 </div>
             </div>
 
-
             <div class="col-md-7">
-                <div class="card card-success">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Payments</h3>
+                    </div>
                     <div class="card-body">
-                        <div class="row">
-
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Payments</h3>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <label>Payment Category*</label>
-                                            <select id="getPaymentInfobyCat" class="custom-select form-control-sm">
-                                                <option>Loading...</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!-- /.card-header -->
-                                    <div class="card-body p-0">
-                                        <div class="card-body table-responsive" style="height: 450px;">
-                                            <table class="table table-condensed" id="tblPayments">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="width: 10px">#</th>
-                                                        <th>Name</th>
-                                                        <th>Type</th>
-                                                        <th>Amount</th>
-                                                        <th style="width: 140px">Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <!-- /.card-body -->
-                                </div>
-                            </div>                                        
+                        <div class="form-group">
+                            <label>Payment Category*</label>
+                            <select id="getPaymentInfobyCat" class="custom-select form-control-sm">
+                                <option>Loading...</option>
+                            </select>
                         </div>
                     </div>
+                    <div class="card-body p-0">
+                        <div class="card-body table-responsive" style="height: 450px;">
+                            <table class="table table-condensed" id="tblPayments">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                        <th style="width: 140px">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
                 </div>
             </div>
         </div>

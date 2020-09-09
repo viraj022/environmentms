@@ -94,35 +94,24 @@
 
 
             <div class="col-md-7">
-                <div class="card card-success">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Committees</h3>
+                    </div>
                     <div class="card-body">
-                        <div class="row">
-
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Committees</h3>
-                                    </div>
-                                    <!-- /.card-header -->
-                                    <div class="card-body">
-                                        <div class="card-body table-responsive" style="height: 450px;">
-                                            <table class="table table-bordered table-striped" id="tblCommittees">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="width: 10px">#</th>
-                                                        <th>First Name</th>
-                                                        <th>NIC</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <!-- /.card-body -->
-                                </div>
-                            </div>                                        
+                        <div class="card-body table-responsive" style="height: 450px;">
+                            <table class="table table-bordered table-striped" id="tblCommittees">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th>First Name</th>
+                                        <th>NIC</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -272,7 +261,7 @@
                 $('#getLname').val(result.last_name);
                 $('#getNic').val(result.nic);
                 $('#getEmail').val(result.email),
-                $('#getAddress').val(result.address);
+                        $('#getAddress').val(result.address);
                 $('#getContact').val(result.contact_no);
                 showUpdate();
                 $('#btnUpdate').val(result.id);
@@ -322,7 +311,7 @@
         $('#getLname').val('');
         $('#getNic').val('');
         $('#getEmail').val(''),
-        $('#getAddress').val('');
+                $('#getAddress').val('');
         $('#getContact').val('');
         $('#btnUpdate').val('');
         $('#btnDelete').val('');
