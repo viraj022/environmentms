@@ -530,10 +530,31 @@
                 </div>                   
                 <!--//Payments Open//-->
                 <div class="tab-pane fade" id="custom-tabs-three-paymentsTab" role="tabpanel" aria-labelledby="custom-tabs-three-paymentsTab-tab">
-                    ///////////////////
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">All Payment Details</h3>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="card-body table-responsive" style="height: 450px;">
+                                    <table class="table table-condensed" id="tblAllPayments">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 10px">#</th>
+                                                <th>Cashier Name</th>
+                                                <th>Invoice No</th>
+                                                <th style="width: 140px">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
                 </div>                   
             </div>
-            <!--//All Site Inspection END//-->
         </div>
     </div>  
 </section>
@@ -569,6 +590,7 @@
 <script>
                                         PROFILE_ID = '{{$id}}';
                                         $(function () {
+                                            pendingPaymentsTable(PROFILE_ID); //<-- Load pending payment table
                                             deedList(PROFILE_ID, function () {
 
                                             });
