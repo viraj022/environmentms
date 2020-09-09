@@ -34,7 +34,7 @@
                     <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="false">Industry Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link oldAttachTab disabled" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false">Old Attachments</a>
+                    <a class="nav-link oldAttachTab" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false">Attachments</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link profileListTab" id="custom-tabs-three-profileListTab-tab" data-toggle="pill" href="#custom-tabs-three-profileListTab" role="tab" aria-controls="custom-tabs-three-profileListTab" aria-selected="false">Issued List</a>
@@ -50,6 +50,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link paymentsTab" id="custom-tabs-three-paymentsTab-tab" data-toggle="pill" href="#custom-tabs-three-paymentsTab" role="tab" aria-controls="custom-tabs-three-paymentsTab" aria-selected="false">Payments</a>
                 </li>
             </ul>
         </div>
@@ -248,13 +251,13 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Other Attachments</h3>
+                                <h3 class="card-title">Attachments</h3>
                             </div>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="form-group uploadAttachments">
                                         <label>Upload: </label>
-                                        <input id="otherFiles" type="file">
+                                        <input id="otherFiles" accept="image/*,application/pdf" type="file">
                                         @if($pageAuth['is_create']==1 || false)
                                         <button disabled id="btnUpload" type="submit" class="btn btn-success">Upload</button>
                                         @endif
@@ -525,8 +528,33 @@
                         <div id="map" style="width: 100%; height: 400px;"></div>
                     </div>  
                 </div>                   
+                <!--//Payments Open//-->
+                <div class="tab-pane fade" id="custom-tabs-three-paymentsTab" role="tabpanel" aria-labelledby="custom-tabs-three-paymentsTab-tab">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">All Payment Details</h3>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="card-body table-responsive" style="height: 450px;">
+                                    <table class="table table-condensed" id="tblAllPayments">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 10px">#</th>
+                                                <th>Cashier Name</th>
+                                                <th>Invoice No</th>
+                                                <th style="width: 140px">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>                   
             </div>
-            <!--//All Site Inspection END//-->
         </div>
     </div>  
 </section>
@@ -562,13 +590,13 @@
 <script>
                                         PROFILE_ID = '{{$id}}';
                                         $(function () {
+                                            pendingPaymentsTable(PROFILE_ID); //<-- Load pending payment table
                                             deedList(PROFILE_ID, function () {
 
                                             });
                                             getaProfilebyId(PROFILE_ID, function (parameters) {
                                                 setProfileDetails(parameters);
                                                 setIndustryAndClientDb(parameters);
-                                                sectionProtector(parameters.is_old);
                                                 updateAttachmentData(parameters);
                                                 loadAllOldAttachments(parameters.old_files, function () {
                                                 });

@@ -246,6 +246,37 @@ function removeClientFileAPI(id, callBack) {
     });
 }
 
+//Pending Payments API
+function pendingPaymentsAPI(id, callBack) {
+    ajaxRequest('GET', "/api/payment/history/file/"+id, null, function (dataSet) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(dataSet);
+        }
+    });
+}
+//Pending Payment Table
+function pendingPaymentsTable(id) {
+    pendingPaymentsAPI(id, function (result) {
+        var tbl = "";
+        var id = 1;
+        if (result.length == 0) {
+            tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
+        } else {
+            $.each(result, function (index, row) {
+                tbl += '<tr>';
+                tbl += '<td>' + ++index + '</td>';
+                tbl += '<td>' + row.cashier_name + '</td>';
+                tbl += '<td>' + row.invoice_no + '</td>';
+                if(row.status == 0){
+                  tbl += '<td><a type="button" href="#" class="btn btn-primary"> Print BarCode </a></td>';  
+                }
+                tbl += '</tr>';
+            });
+        }
+        $('#tblAllPayments tbody').html(tbl);
+    });
+}
+
 function checkFileIssueStatus(is_exist) {
     if (is_exist.file_problem_status === 'problem') {
         $('.markIssueClean').removeClass('d-none'); //<-- Show Issue Cleared
