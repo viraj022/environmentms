@@ -24,7 +24,8 @@ class InspectionSessionAttachmentController extends Controller {
         if ($pageAuth['is_read']) {
             $InspectionSession = InspectionSession::find($id);
             if ($InspectionSession) {
-                return view('inspection_attachment', ['pageAuth' => $pageAuth, 'id' => $id, "inspec_date" => date("Y-m-d", strtotime($InspectionSession->schedule_date))]);
+                $file = Client::find($InspectionSession->client_id);
+                return view('inspection_attachment', ['pageAuth' => $pageAuth, 'id' => $id, "inspec_date" => date("Y-m-d", strtotime($InspectionSession->schedule_date)), "file_no" => $file->file_no, "file_id" => $file->id]);
             } else {
                 abort(404);
             }
@@ -50,7 +51,7 @@ class InspectionSessionAttachmentController extends Controller {
                 $fileUrl = "/uploads/indurtry_files/" . $e->id . "/inspections/" . $inspection->id;
                 $storePath = 'public' . $fileUrl;
                 $path = 'storage' . $fileUrl . "/" . $file_name;
-                $request->file('file')->storeAs($storePath, $file_name);              
+                $request->file('file')->storeAs($storePath, $file_name);
                 $inspectionSessionAttachment = new InspectionSessionAttachment();
                 $inspectionSessionAttachment->inspection_session_id = $id;
                 $inspectionSessionAttachment->path = $path;

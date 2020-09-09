@@ -23,7 +23,8 @@ class InspectionPersonalController extends Controller {
         if ($pageAuth['is_read']) {
             $InspectionSession = InspectionSession::find($id);
             if ($InspectionSession) {
-                return view('inspection_personal', ['pageAuth' => $pageAuth, 'id' => $id, 'inspection_session_date' => date('Y-m-d', strtotime($InspectionSession->schedule_date))]);
+                $file = Client::find($InspectionSession->client_id);
+                return view('inspection_personal', ['pageAuth' => $pageAuth, 'id' => $id, 'inspection_session_date' => date('Y-m-d', strtotime($InspectionSession->schedule_date)), "file_no" => $file->file_no, "file_id" => $file->id]);
             } else {
                 abort(404);
             }
