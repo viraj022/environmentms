@@ -63,16 +63,14 @@ class CashierController extends Controller
         $a =   Array(); 
         $transaction = Transaction::whereNull('billed_at')->get();
         foreach ($transaction as &$value) {
-            // dd();
-          $t =  TransactionItem::where('transaction_id',$value->id)->first();
         
-         if($t->transaction_type == 'application_fee'){
+         if($value->type == 'application_fee'){
            
-             $value['name'] = ApplicationCliten::findOrFail($t->client_id)->name;
+             $value['name'] = ApplicationCliten::findOrFail($value->type_id)->name;
          }else{
-            $value['name'] = ApplicationCliten::findOrFail($t->client_id)->name;
-        }        
-        // $value['total'] = $value->getTotal();
+             $value['name'] =  Client::findOrFail($value->type_id)->name;
+        }       
+      
         array_push($a,$value);
         }
      return $a;  
