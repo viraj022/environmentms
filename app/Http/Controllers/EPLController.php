@@ -99,8 +99,7 @@ class EPLController extends Controller
     }
     public function issue_certificate($epl_id)
     {
-        //log skiped due to changes of requirements : nadun 2020 09 08 
-
+       
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
@@ -123,9 +122,11 @@ class EPLController extends Controller
                             $epl->certificate_no = request('certificate_no');
                             $epl->status = 1;
                             $msg = $epl->save();
+                          
                             $client = Client::find($epl->client_id);
                             $client->is_working = 0;
                             $msg = $msg && $client->save();
+                            LogActivity::fileLog($client->id, 'epl', "is_working status Changed ", 1);
                             if ($msg) {
                                 $issueLog = new IssueLog();
                                 $issueLog->certificate_type = IssueLog::CER_EPL;
@@ -136,8 +137,12 @@ class EPLController extends Controller
                                 $issueLog->user_id = $user->id;
                                 $msg = $issueLog->save();
                                 if ($msg) {
+
+                                    LogActivity::addToLog('Create a new IssueLog',$client);
+                                    LogActivity::fileLog($epl->id,'epl',"Certificate Issued", 1);
                                     return response(array('id' => 1, 'message' => 'success'), 200);
                                 } else {
+                                    LogActivity::addToLog('Create a new Industry File',$client);
                                     return response(array('id' => 0, 'message' => 'fail'), 200);
                                 }
                             } else {
@@ -145,9 +150,11 @@ class EPLController extends Controller
                             }
                         });
                     } else {
+                   
                         return response(array('id' => 0, 'message' => 'Payment no completed'), 403);
                     }
                 } else {
+               
                     return response(array('id' => 0, 'message' => 'Certificate already issued'), 403);
                 }
             } else {
@@ -196,11 +203,12 @@ class EPLController extends Controller
                     $epl->save();
 
                     LogActivity::addToLog('New EPL created',$epl);
-                    LogActivity::fileLog($epl->client_id,'CNFILE',"application_path updated",1);
-                    LogActivity::addToLog('Create a new Industry File',$client);
+                    LogActivity::fileLog($epl->client_id,'FileOP',"EPL creted and application path updated",1);
+               
 
                     return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
                 } else {
+                    LogActivity::addToLog(' Fail to  creted EPL and application path updated',$epl);
                     return array('id' => 0, 'message' => 'false');
                 }
             });
@@ -241,8 +249,14 @@ class EPLController extends Controller
                     $client->is_working = 1;
                     $client->save();
                     $epl->save();
+
+                    
+                    LogActivity::fileLog($client->client_id,'CNFILE',"application_path updated",1);
+                    LogActivity::addToLog('New EPL created',$client);
                     return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
                 } else {
+                    
+                    LogActivity::addToLog('New EPL created',$client);
                     return array('id' => 0, 'message' => 'false');
                 }
             });
