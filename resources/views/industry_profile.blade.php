@@ -488,6 +488,7 @@
                                 </div>
                                 <div class="callout callout-danger">
                                     <button type="button" id="removeFileBtn" class="btn btn-danger"><i class="fa fa-file"></i>  Remove File</button>
+                                    <a type="button" href="/update_client/id/{{$id}}" class="btn btn-warning"><i class="fa fa-file"></i>  Update This Client</a>
                                 </div>
                             </div>
                         </div>                   
@@ -543,7 +544,8 @@
                                                 <th style="width: 10px">#</th>
                                                 <th>Cashier Name</th>
                                                 <th>Invoice No</th>
-                                                <th style="width: 140px">Action</th>
+                                                <th>Status</th>
+                                                <th style="width: 290px">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -555,6 +557,9 @@
                     </div> 
                 </div>                   
             </div>
+        </div>
+        <div class="overlay dark loadingRenderUI">
+            <i class="fas fa-2x fa-sync-alt"></i>
         </div>
     </div>  
 </section>
@@ -592,7 +597,6 @@
                                         $(function () {
                                             pendingPaymentsTable(PROFILE_ID); //<-- Load pending payment table
                                             deedList(PROFILE_ID, function () {
-
                                             });
                                             getaProfilebyId(PROFILE_ID, function (parameters) {
                                                 setProfileDetails(parameters);
@@ -605,6 +609,7 @@
                                                 loadAllEPLTable(parameters.epls);
                                                 setupInspectionUI(parameters.need_inspection);
                                                 checkFileIssueStatus(parameters);
+                                                $(".loadingRenderUI").remove(); //<--Check Loading Status
                                             });
                                             $('#newEPL').click(function () {
                                                 if (isNaN(parseInt(PROFILE_ID))) {
@@ -664,7 +669,6 @@
                                                     });
                                                 });
                                             });
-
                                         });
 
 //btnCustomerVa button action 
@@ -781,5 +785,25 @@
                                                 });
                                             }
                                         });
+
+                                        $(document).on('click', '.printBarcode', function () {//<-- Print Bar Code In Payment Tab
+                                            var btnValue = $(this).val();
+                                            toastr.info('Printing Barcode...');
+                                            $.ajax({
+                                                url: 'http://127.0.0.1:8081/hansana',
+                                                data: {code: btnValue, name: 'name'},
+                                                success: function (result) {
+                                                }
+                                            });
+                                        });
+                                        $(document).on('click', '.removeBarcode', function () {//<-- Remove Button In Payment Tab
+                                            var btnValue = $(this).val();
+                                            if (confirm('Are you sure you want to remove this payment?')) {
+                                                removeEPLPaymentAPI(btnValue, function () {
+
+                                                });
+                                            }
+                                        });
+
 </script>
 @endsection
