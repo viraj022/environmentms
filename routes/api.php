@@ -774,7 +774,7 @@ Route::middleware('auth:api')->put('/client/id/{id}', 'ClientController@store');
   response Example
   validation response Example */
 
-Route::middleware('auth:api')->delete('/client/id/{id}', 'ClientController@destroy'); //deleteClient
+Route::middleware('auth:api')->delete('/client/id/{id}', 'ClientController@destroy'); //delete industry profile
 // {
 //     "id": 1,
 //     "message": "true"
@@ -972,3 +972,77 @@ Route::middleware('auth:api')->get('/epl/certificate_information/id/{id}', 'EPLC
 */
 
 /// application attachment map
+
+
+Route::middleware('auth:api')->get('/payment/pending', 'CashierController@getPendingPaymentList'); // get app pending payment sessions
+/*
+[
+    {
+        "id": 9,
+        "status": 0,
+        "created_at": "2020-09-08 16:13:09",
+        "updated_at": "2020-09-08 16:13:09",
+        "deleted_at": null,
+        "cashier_name": null,
+        "invoice_no": null,
+        "canceled_at": null,
+        "billed_at": null,
+        "type": "application_fee",
+        "type_id": 5,
+        "name": "Hansana",
+        "total": 150
+    },
+    {
+        "id": 13,
+        "status": 0,
+        "created_at": "2020-09-08 16:17:14",
+        "updated_at": "2020-09-08 16:17:14",
+        "deleted_at": null,
+        "cashier_name": null,
+        "invoice_no": null,
+        "canceled_at": null,
+        "billed_at": null,
+        "type": "application_fee",
+        "type_id": 9,
+        "name": "hansana",
+        "total": 100
+    }
+]
+*/
+
+Route::middleware('auth:api')->get('/payment/history/file/{id}', 'CashierController@getPendingPaymentByFileID'); // get payment history by id
+/*
+[
+    {
+        "id": 9,
+        "status": 0,
+        "created_at": "2020-09-08 16:13:09",
+        "updated_at": "2020-09-08 16:13:09",
+        "deleted_at": null,
+        "cashier_name": null,
+        "invoice_no": null,
+        "canceled_at": null,
+        "billed_at": null,
+        "type": "application_fee",
+        "type_id": 5,
+        "name": "Hansana",
+        "total": 150
+    },
+    {
+        "id": 13,
+        "status": 0,
+        "created_at": "2020-09-08 16:17:14",
+        "updated_at": "2020-09-08 16:17:14",
+        "deleted_at": null,
+        "cashier_name": null,
+        "invoice_no": null,
+        "canceled_at": null,
+        "billed_at": null,
+        "type": "application_fee",
+        "type_id": 9,
+        "name": "hansana",
+        "total": 100
+    }
+]
+*/
+

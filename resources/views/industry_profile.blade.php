@@ -486,6 +486,9 @@
                                     <div class="deedListUsr">
                                     </div>
                                 </div>
+                                <div class="callout callout-danger">
+                                    <button type="button" id="removeFileBtn" class="btn btn-danger"><i class="fa fa-file"></i>  Remove File</button>
+                                </div>
                             </div>
                         </div>                   
                     </div>
@@ -744,6 +747,17 @@
                                                     checkFileIssueStatus(parameters);
                                                 });
                                             });
+                                        });
+
+                                        $('#removeFileBtn').on('click', function () { // Remove File Btn
+                                            if (confirm('Are you sure you want to remove this file?')) {
+                                                removeClientFileAPI(PROFILE_ID, function (reps) {
+                                                    show_mesege(reps);
+                                                    if (reps.id == 1) {
+                                                        window.location.href = "/";
+                                                    }
+                                                });
+                                            }
                                         });
 </script>
 @endsection
