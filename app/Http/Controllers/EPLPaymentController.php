@@ -95,7 +95,8 @@ class EPLPaymentController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_delete']) {
-            $transaction = Transaction::where('id', $id)->first();
+            $transaction = Transaction::where('type', Transaction::APPLICATION_FEE)
+                ->where('id', $id)->first();
             if ($transaction) {
                 if ($transaction->delete()) {
                     return array('id' => 1, 'message' => 'true');
@@ -232,6 +233,7 @@ class EPLPaymentController extends Controller
                 $transaction->type = Transaction::TRANS_TYPE_EPL;
                 $transaction->status = 0;
                 $transaction->type_id = $epl->id;
+                $transaction->client_id = $epl->client_id;
                 $msg = $transaction->save();
                 if ($msg) {
                     $data = request('items');
