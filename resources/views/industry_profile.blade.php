@@ -623,13 +623,11 @@
                                                 $('#fileUploadInput').data('fileType', $(this).data('upload_file'));
                                                 $('#fileUpDiv').removeClass('d-none');
                                             });
-
                                             $('.upld_roadMap, .upld_deed, .upld_SurveyPlan').click(function () {
                                                 $('.uploadLabel').html('Select ' + $(this).data('upload_file') + ' File To Upload');
                                                 $('.fileUploadInput').data('fileType', $(this).data('upload_file'));
                                                 $('.fileUpDiv').removeClass('d-none');
                                             });
-
                                             //file upload click
                                             $('#fileUploadInput , .fileUploadInput').change(function () {
                                                 if (!confirm('Are you sure you want to save this attachment?')) {
@@ -639,7 +637,7 @@
                                                 let formData = new FormData();
                                                 let fileCat = '';
                                                 // populate fields
-                                                let file = $(this)[0].files[0];// file
+                                                let file = $(this)[0].files[0]; // file
                                                 formData.append('file', file);
                                                 switch (uploadFileType) {
                                                     case 'EPL':
@@ -654,7 +652,6 @@
                                                     case 'Survey Plan':
                                                         fileCat = 'file3';
                                                         break;
-
                                                     default:
 
                                                         break;
@@ -670,7 +667,6 @@
                                                 });
                                             });
                                         });
-
 //btnCustomerVa button action 
                                         $(document).on('click', '.btnCustomerVa', function () {
                                             var row = JSON.parse(decodeURIComponent($(this).data('row')));
@@ -726,7 +722,6 @@
                                         });
                                         //Load Inspections//-
                                         loadAllSiteInspectionTable(PROFILE_ID);
-
                                         $('.setInspectUI').on('click', function () {
                                             checkInspectionStatus(PROFILE_ID, $(this).val(), function (rep) {
                                                 show_mesege(rep);
@@ -737,13 +732,11 @@
                                                 show_mesege(rep);
                                             });
                                         });
-
                                         //Sumbit Report
                                         $('.reportIssueView').on('click', function () { //<-- Get View to report file
                                             $(this).addClass('d-none');
                                             $('.reportView').removeClass('d-none');
                                         });
-
                                         $('#reportSubmit').on('click', function () { // Report Issue Btn
                                             var data = {
                                                 file_problem_status_description: $('#reportTxtArea').val(),
@@ -759,7 +752,6 @@
                                                 });
                                             });
                                         });
-
                                         $('.markIssueClean').on('click', function () { // Mark As Cleared Btn
                                             var data = {
                                                 file_problem_status: 'clean',
@@ -774,7 +766,6 @@
                                                 });
                                             });
                                         });
-
                                         $('#removeFileBtn').on('click', function () { // Remove File Btn
                                             if (confirm('Are you sure you want to remove this file?')) {
                                                 removeClientFileAPI(PROFILE_ID, function (reps) {
@@ -785,7 +776,6 @@
                                                 });
                                             }
                                         });
-
                                         $(document).on('click', '.printBarcode', function () {//<-- Print Bar Code In Payment Tab
                                             var btnValue = $(this).val();
                                             toastr.info('Printing Barcode...');
@@ -799,8 +789,11 @@
                                         $(document).on('click', '.removeBarcode', function () {//<-- Remove Button In Payment Tab
                                             var btnValue = $(this).val();
                                             if (confirm('Are you sure you want to remove this payment?')) {
-                                                removeEPLPaymentAPI(btnValue, function () {
-
+                                                removeEPLPaymentAPI(btnValue, function (resp) {
+                                                    show_mesege(resp);
+                                                    if (resp.id === 1) {
+                                                        pendingPaymentsTable(PROFILE_ID);
+                                                    }
                                                 });
                                             }
                                         });
