@@ -545,6 +545,7 @@
                                                 <th>Cashier Name</th>
                                                 <th>Invoice No</th>
                                                 <th>Status</th>
+                                                <th>Total</th>
                                                 <th style="width: 290px">Action</th>
                                             </tr>
                                         </thead>
@@ -778,10 +779,11 @@
                                         });
                                         $(document).on('click', '.printBarcode', function () {//<-- Print Bar Code In Payment Tab
                                             var btnValue = $(this).val();
+                                            var btnName = $(this).data("name");
                                             toastr.info('Printing Barcode...');
                                             $.ajax({
                                                 url: 'http://127.0.0.1:8081/hansana',
-                                                data: {code: btnValue, name: 'name'},
+                                                data: {code: btnValue, name: btnName},
                                                 success: function (result) {
                                                 }
                                             });
