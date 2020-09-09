@@ -294,8 +294,9 @@ function pendingPaymentsTable(id) {
                 } else {
                     tbl += '<td>Payment Cancelled</td>';
                 }
+                tbl += '<td>'+ row.net_total +'</td>';
                 if (row.status == 0) {
-                    tbl += '<td><button type="button" value="'+ row.id +'" class="btn btn-primary printBarcode"> Print BarCode </button> <button type="button" value="'+ row.id +'" class="btn btn-danger removeBarcode"> Remove </button></td>';
+                    tbl += '<td><button type="button" data-name="'+ row.name +'" value="'+ row.id +'" class="btn btn-primary printBarcode"> Print BarCode </button> <button type="button" value="'+ row.id +'" class="btn btn-danger removeBarcode"> Remove </button></td>';
                 }
                 tbl += '</tr>';
             });
