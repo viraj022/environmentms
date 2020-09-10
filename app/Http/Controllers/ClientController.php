@@ -184,7 +184,6 @@ class ClientController extends Controller
      */
     public function store(Request $request,$id)
     {
-        // ,register_no,' . $vehicle->id
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         request()->validate([
@@ -200,8 +199,8 @@ class ClientController extends Controller
             'industry_contact_no' => ['nullable', new contactNo],
             'industry_address' => 'sometimes|required|string',
             'industry_email' => 'nullable|email',
-            'industry_coordinate_x' => ['numeric', 'required', 'between:-180,180'],
-            'industry_coordinate_y' => ['numeric', 'required', 'between:-90,90'],
+            'industry_coordinate_x' => ['sometimes','numeric', 'required', 'between:-180,180'],
+            'industry_coordinate_y' => ['sometimes','numeric', 'required', 'between:-90,90'],
             'pradesheeyasaba_id' => 'sometimes|required|integer',
             'industry_is_industry' => 'sometimes|required|integer',
             'industry_investment' => 'sometimes|required|numeric',
@@ -211,7 +210,7 @@ class ClientController extends Controller
             // 'password' => 'required',
         ]);
         if ($pageAuth['is_update']) {
-            $msg = Client::where('id', $id)->update($request);            
+            $msg = Client::where('id', $id)->update($request->all());            
             if ($msg) {
                 return array('id' => 1, 'message' => 'true');
             } else {
