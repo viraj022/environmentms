@@ -29,7 +29,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-5">
-                <div class="card card-primary">
+                <div class="card card-success">
                     <div class="card-header">
                         <label id="lblTitle">Add New Attachment</label>
                     </div>
@@ -56,38 +56,28 @@
                 </div>
             </div>
 
-
             <div class="col-md-7">
-                <div class="card card-primary">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Attachments</h3>
+                    </div>
+                    <!-- /.card-header -->
                     <div class="card-body">
-                        <div class="row">
-
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Attachments</h3>
-                                    </div>
-                                    <!-- /.card-header -->
-                                    <div class="card-body">
-                                        <div class="card-body table-responsive" style="height: 450px;">
-                                            <table class="table table-bordered table-striped" id="tblAttachments">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="width: 10px">#</th>
-                                                        <th>Attachments</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <!-- /.card-body -->
-                                </div>
-                            </div>                                        
+                        <div class="card-body table-responsive" style="height: 450px;">
+                            <table class="table table-bordered table-striped" id="tblAttachments">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th>Attachments</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                    <!-- /.card-body -->
                 </div>
             </div>
         </div>

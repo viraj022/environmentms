@@ -23,7 +23,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>(<a href="/inspection/epl/remarks/id/{{$id}}">{{$inspec_date}}</a>) - Inspection Images</h1>
+                <h1>(<a href="/industry_profile/id/{{$file_id}}">{{$file_no}}</a>) {{$inspec_date}} Inspection Images</h1>
             </div>
         </div>
     </div>
@@ -33,17 +33,15 @@
 
     <div class="row">
         <div class="col-md-4">
-            <div class="card card-primary">
+            <div class="card card-success">
                 <div class="card-header">
                     <label id="lblTitle">Add New Attachment</label>
                 </div>
                 <div class="card-body">
-
                     <div class="form-group" id="useToHideAmount">
                         <label>Attachment *</label>
                         <input id="fileInput" type="file" accept="image/*" class="form-control" value="">
                     </div>
-
                 </div>
                 <div class="card-footer">
                     <button id="btnSave" type="button" class="btn btn-success">Save File</button>
@@ -55,7 +53,7 @@
         </div>
 
         <div class="col-md-8">
-            <div class="card card-primary">
+            <div class="card card-success">
                 <div class="card-header">
                     <h4 class="card-title">Images</h4>
                 </div>

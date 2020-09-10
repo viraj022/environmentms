@@ -29,7 +29,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-5">
-                <div class="card card-primary">
+                <div class="card card-success">
                     <div class="card-header">
                         <label id="lblTitle">Add New Zone</label>
                     </div>
@@ -68,37 +68,28 @@
 
 
             <div class="col-md-7">
-                <div class="card card-primary">
-                    <div class="card-body">
-                        <div class="row">
-
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">All Zones</h3>
-                                    </div>
-                                    <!-- /.card-header -->
-                                    <div class="card-body p-0">
-                                        <div class="card-body table-responsive" style="height: 450px;">
-                                            <table class="table table-condensed" id="tblZone">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="width: 10px">#</th>
-                                                        <th>Name</th>
-                                                        <th>Code</th>
-                                                        <th style="width: 140px">Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <!-- /.card-body -->
-                                </div>
-                            </div>                                        
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">All Zones</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body p-0">
+                        <div class="card-body table-responsive" style="height: 450px;">
+                            <table class="table table-condensed" id="tblZone">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th>Name</th>
+                                        <th>Code</th>
+                                        <th style="width: 140px">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                    <!-- /.card-body -->
                 </div>
             </div>
         </div>
@@ -167,10 +158,10 @@
         $('#btnSave').click(function () {
             var data = fromValues();
             if (Validiteinsert(data)) {
-            uniqueNamecheck(data.name, function (res) {
-                if (res.message === 'unique') {
-                    uniqueCodecheck(data.code, function (rest) {
-                        if (rest.message === 'unique') {
+                uniqueNamecheck(data.name, function (res) {
+                    if (res.message === 'unique') {
+                        uniqueCodecheck(data.code, function (rest) {
+                            if (rest.message === 'unique') {
                                 // if validiated
                                 AddZone(data, function (result) {
                                     if (result.id == 1) {
@@ -188,19 +179,19 @@
                                     resetinputFields();
                                     hideAllErrors();
                                 });
-                            
-                            ///fkf   
-                        } else {
-                            $('#uniCode').removeClass('d-none');
-                        }
-                    });
 
-                } else {
-                    $('#uniName').removeClass('d-none');
-                    //$('#uniCode').removeClass('d-none');  
-                }
+                                ///fkf   
+                            } else {
+                                $('#uniCode').removeClass('d-none');
+                            }
+                        });
 
-            });
+                    } else {
+                        $('#uniName').removeClass('d-none');
+                        //$('#uniCode').removeClass('d-none');  
+                    }
+
+                });
             }
         });
 //click update button

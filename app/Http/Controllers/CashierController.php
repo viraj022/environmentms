@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Transaction;
 use App\LogActivity;
+use App\ApplicationCliten;
+use App\Client;
+use App\TransactionItem;
 use App\Rules\nationalID;
 use Illuminate\Http\Request;
+use PhpParser\Node\Expr\Cast\Array_;
 
 class CashierController extends Controller
 {
@@ -60,4 +64,18 @@ class CashierController extends Controller
             return array('id' => 1, 'message' => 'false');
         }
     }
+
+    public function getPendingPaymentList(){
+        $a =   Array(); 
+     return    $transaction = Transaction::whereNull('billed_at')->get();     
+    
 }
+
+    public function getPendingPaymentByFileID($id){
+
+        
+   return Transaction::with('transactionItems')->with('client')->where('client_id',$id)->get();
+    
+}
+}
+

@@ -27,14 +27,14 @@
 </section>
 <!--//Tab Section START//-->
 <section class="content-header">
-    <div class="card card-primary card-outline card-outline-tabs">
+    <div class="card card-success card-outline card-outline-tabs">
         <div class="card-header p-0 border-bottom-0">
             <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="false">Industry Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link oldAttachTab disabled" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false">Old Attachments</a>
+                    <a class="nav-link oldAttachTab" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false">Attachments</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link profileListTab" id="custom-tabs-three-profileListTab-tab" data-toggle="pill" href="#custom-tabs-three-profileListTab" role="tab" aria-controls="custom-tabs-three-profileListTab" aria-selected="false">Issued List</a>
@@ -47,6 +47,12 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link siteInspectionTab" id="custom-tabs-three-siteInspectionTab-tab" data-toggle="pill" href="#custom-tabs-three-siteInspectionTab" role="tab" aria-controls="custom-tabs-three-siteInspectionTab" aria-selected="false">Site Inspection</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link paymentsTab" id="custom-tabs-three-paymentsTab-tab" data-toggle="pill" href="#custom-tabs-three-paymentsTab" role="tab" aria-controls="custom-tabs-three-paymentsTab" aria-selected="false">Payments</a>
                 </li>
             </ul>
         </div>
@@ -164,9 +170,9 @@
                                     <div class="col-md-12 showReportInfoUi d-none">
                                         <div class="card card-danger collapsed-card">
                                             <div class="card-header">
-                                                <h3 class="card-title text-danger"> There was a problem with  files. Please Check it.</h3>
+                                                <h3 class="card-title"> There was a problem with  file. Please Check it.</h3>
                                                 <div class="card-tools">
-                                                    <button type="button" class="btn btn-tool text-success" data-card-widget="collapse">Read More..
+                                                    <button type="button" class="btn btn-tool text-white" data-card-widget="collapse">Read More..
                                                     </button>
                                                 </div>
                                             </div>
@@ -187,8 +193,7 @@
                                             <dt>Name : <a id="obj_name"></a></dt>
                                             <dt>BR No : <a id="obj_regno"></a></dt>                       
                                             <dt>Investment : Rs <a id="obj_invest"></a>.00</dt>
-                                            <dt>Location : <a id="obj_name"></a></dt>
-                                            <div id="map" style="width: 100%; height: 400px;"></div>
+                                            <hr>
                                             <dt>Download & Upload Application :</dt>
 
                                             <a href="" class="btn btn-dark navToFile1" target="_blank">View Road Map</a>
@@ -246,13 +251,13 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Other Attachments</h3>
+                                <h3 class="card-title">Attachments</h3>
                             </div>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="form-group uploadAttachments">
                                         <label>Upload: </label>
-                                        <input id="otherFiles" type="file">
+                                        <input id="otherFiles" accept="image/*,application/pdf" type="file">
                                         @if($pageAuth['is_create']==1 || false)
                                         <button disabled id="btnUpload" type="submit" class="btn btn-success">Upload</button>
                                         @endif
@@ -282,7 +287,7 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="card card-success">
+                                <div class="card card-gray">
                                     <div class="card-header">
                                         <h3 class="card-title">EPL</h3>
                                         <div class="card-tools">
@@ -308,7 +313,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card card-success">
+                                <div class="card card-gray">
                                     <div class="card-header">
                                         <h3 class="card-title">Site Clearance</h3>
                                         <div class="card-tools">
@@ -322,7 +327,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card card-success">
+                                <div class="card card-gray">
                                     <div class="card-header">
                                         <h3 class="card-title">Telecommunication Site Clearance</h3>
                                         <div class="card-tools">
@@ -336,7 +341,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card card-success">
+                                <div class="card card-gray">
                                     <div class="card-header">
                                         <h3 class="card-title">Schedule Waste</h3>
                                         <div class="card-tools">
@@ -358,7 +363,7 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="card card-primary card-outline">
+                                <div class="card card-success card-outline">
                                     <div class="card-body box-profile">
                                         <h3 class="profile-username text-center">Client Details</h3>
 
@@ -388,7 +393,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card card-primary card-outline">
+                                <div class="card card-success card-outline">
                                     <div class="card-body box-profile">
                                         <h3 class="profile-username text-center">Industry Details</h3>
 
@@ -481,6 +486,10 @@
                                     <div class="deedListUsr">
                                     </div>
                                 </div>
+                                <div class="callout callout-danger">
+                                    <button type="button" id="removeFileBtn" class="btn btn-danger"><i class="fa fa-file"></i>  Remove File</button>
+                                    <a type="button" href="/update_client/id/{{$id}}" class="btn btn-warning"><i class="fa fa-file"></i>  Update This Client</a>
+                                </div>
                             </div>
                         </div>                   
                     </div>
@@ -514,8 +523,44 @@
                         </div>
                     </div>  
                 </div>                   
+                <!--//Location Open//-->
+                <div class="tab-pane fade" id="custom-tabs-three-locationTab" role="tabpanel" aria-labelledby="custom-tabs-three-locationTab-tab">
+                    <div class="col-md-12">
+                        <div id="map" style="width: 100%; height: 400px;"></div>
+                    </div>  
+                </div>                   
+                <!--//Payments Open//-->
+                <div class="tab-pane fade" id="custom-tabs-three-paymentsTab" role="tabpanel" aria-labelledby="custom-tabs-three-paymentsTab-tab">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">All Payment Details</h3>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="card-body table-responsive" style="height: 450px;">
+                                    <table class="table table-condensed" id="tblAllPayments">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 10px">#</th>
+                                                <th>Cashier Name</th>
+                                                <th>Invoice No</th>
+                                                <th>Status</th>
+                                                <th>Total</th>
+                                                <th style="width: 290px">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>                   
             </div>
-            <!--//All Site Inspection END//-->
+        </div>
+        <div class="overlay dark loadingRenderUI">
+            <i class="fas fa-2x fa-sync-alt"></i>
         </div>
     </div>  
 </section>
@@ -551,13 +596,12 @@
 <script>
                                         PROFILE_ID = '{{$id}}';
                                         $(function () {
+                                            pendingPaymentsTable(PROFILE_ID); //<-- Load pending payment table
                                             deedList(PROFILE_ID, function () {
-
                                             });
                                             getaProfilebyId(PROFILE_ID, function (parameters) {
                                                 setProfileDetails(parameters);
                                                 setIndustryAndClientDb(parameters);
-                                                sectionProtector(parameters.is_old);
                                                 updateAttachmentData(parameters);
                                                 loadAllOldAttachments(parameters.old_files, function () {
                                                 });
@@ -566,6 +610,7 @@
                                                 loadAllEPLTable(parameters.epls);
                                                 setupInspectionUI(parameters.need_inspection);
                                                 checkFileIssueStatus(parameters);
+                                                $(".loadingRenderUI").remove(); //<--Check Loading Status
                                             });
                                             $('#newEPL').click(function () {
                                                 if (isNaN(parseInt(PROFILE_ID))) {
@@ -579,13 +624,11 @@
                                                 $('#fileUploadInput').data('fileType', $(this).data('upload_file'));
                                                 $('#fileUpDiv').removeClass('d-none');
                                             });
-
                                             $('.upld_roadMap, .upld_deed, .upld_SurveyPlan').click(function () {
                                                 $('.uploadLabel').html('Select ' + $(this).data('upload_file') + ' File To Upload');
                                                 $('.fileUploadInput').data('fileType', $(this).data('upload_file'));
                                                 $('.fileUpDiv').removeClass('d-none');
                                             });
-
                                             //file upload click
                                             $('#fileUploadInput , .fileUploadInput').change(function () {
                                                 if (!confirm('Are you sure you want to save this attachment?')) {
@@ -595,7 +638,7 @@
                                                 let formData = new FormData();
                                                 let fileCat = '';
                                                 // populate fields
-                                                let file = $(this)[0].files[0];// file
+                                                let file = $(this)[0].files[0]; // file
                                                 formData.append('file', file);
                                                 switch (uploadFileType) {
                                                     case 'EPL':
@@ -610,7 +653,6 @@
                                                     case 'Survey Plan':
                                                         fileCat = 'file3';
                                                         break;
-
                                                     default:
 
                                                         break;
@@ -625,9 +667,7 @@
                                                     });
                                                 });
                                             });
-
                                         });
-
 //btnCustomerVa button action 
                                         $(document).on('click', '.btnCustomerVa', function () {
                                             var row = JSON.parse(decodeURIComponent($(this).data('row')));
@@ -683,7 +723,6 @@
                                         });
                                         //Load Inspections//-
                                         loadAllSiteInspectionTable(PROFILE_ID);
-
                                         $('.setInspectUI').on('click', function () {
                                             checkInspectionStatus(PROFILE_ID, $(this).val(), function (rep) {
                                                 show_mesege(rep);
@@ -694,13 +733,11 @@
                                                 show_mesege(rep);
                                             });
                                         });
-
                                         //Sumbit Report
                                         $('.reportIssueView').on('click', function () { //<-- Get View to report file
                                             $(this).addClass('d-none');
                                             $('.reportView').removeClass('d-none');
                                         });
-
                                         $('#reportSubmit').on('click', function () { // Report Issue Btn
                                             var data = {
                                                 file_problem_status_description: $('#reportTxtArea').val(),
@@ -716,7 +753,6 @@
                                                 });
                                             });
                                         });
-
                                         $('.markIssueClean').on('click', function () { // Mark As Cleared Btn
                                             var data = {
                                                 file_problem_status: 'clean',
@@ -731,5 +767,38 @@
                                                 });
                                             });
                                         });
+                                        $('#removeFileBtn').on('click', function () { // Remove File Btn
+                                            if (confirm('Are you sure you want to remove this file?')) {
+                                                removeClientFileAPI(PROFILE_ID, function (reps) {
+                                                    show_mesege(reps);
+                                                    if (reps.id == 1) {
+                                                        window.location.href = "/";
+                                                    }
+                                                });
+                                            }
+                                        });
+                                        $(document).on('click', '.printBarcode', function () {//<-- Print Bar Code In Payment Tab
+                                            var btnValue = $(this).val();
+                                            var btnName = $(this).data("name");
+                                            toastr.info('Printing Barcode...');
+                                            $.ajax({
+                                                url: 'http://127.0.0.1:8081/hansana',
+                                                data: {code: btnValue, name: btnName},
+                                                success: function (result) {
+                                                }
+                                            });
+                                        });
+                                        $(document).on('click', '.removeBarcode', function () {//<-- Remove Button In Payment Tab
+                                            var btnValue = $(this).val();
+                                            if (confirm('Are you sure you want to remove this payment?')) {
+                                                removeEPLPaymentAPI(btnValue, function (resp) {
+                                                    show_mesege(resp);
+                                                    if (resp.id === 1) {
+                                                        pendingPaymentsTable(PROFILE_ID);
+                                                    }
+                                                });
+                                            }
+                                        });
+
 </script>
 @endsection

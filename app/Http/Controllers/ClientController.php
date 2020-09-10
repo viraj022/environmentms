@@ -74,6 +74,13 @@ class ClientController extends Controller
         }
     }
 
+    public function updateClient($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('update_industry_file', ['pageAuth' => $pageAuth, 'id' => $id]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -178,28 +185,38 @@ class ClientController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($id)
+    public function store(Request $request,$id)
     {
-        // ,register_no,' . $vehicle->id
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         request()->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'address' => 'required',
-            'contact_no' => ['required', new contactNo],
+            'first_name' => 'sometimes|required|string',
+            'last_name' => 'nullable|string',
+            'address' => 'nullable',
+            'contact_no' => ['nullable', new contactNo],
             'email' => 'nullable|sometimes',
+            'nic' => ['sometimes', 'nullable', 'unique:clients', new nationalID],
+            'industry_name' => 'sometimes|required|string',
+            'industry_category_id' => 'sometimes|required|integer',
+            'business_scale_id' => 'sometimes|required|integer',
+            'industry_contact_no' => ['nullable', new contactNo],
+            'industry_address' => 'sometimes|required|string',
+            'industry_email' => 'nullable|email',
+            'industry_coordinate_x' => ['sometimes','numeric', 'required', 'between:-180,180'],
+            'industry_coordinate_y' => ['sometimes','numeric', 'required', 'between:-90,90'],
+            'pradesheeyasaba_id' => 'sometimes|required|integer',
+            'industry_is_industry' => 'sometimes|required|integer',
+            'industry_investment' => 'sometimes|required|numeric',
+            'industry_start_date' => 'sometimes|required|date',
+            'industry_registration_no' => 'nullable|string',
+            'is_old' => 'sometimes|required|integer',
+            // 'password' => 'required',
         ]);
         if ($pageAuth['is_update']) {
-            $client = Client::findOrFail($id);
-            $client->first_name = \request('first_name');
-            $client->last_name = \request('last_name');
-            $client->address = \request('address');
-            $client->contact_no = \request('contact_no');
-            $client->email = \request('email');
-            $msg = $client->save();
-
-            LogActivity::fileLog($client->id, 'FileOP', "File updated", 1);
+           
+           $client = Client::findOrFail($id);
+            LogActivity::fileLog($client, 'FileOP', "File updated", 1);
+            $msg = Client::where('id', $id)->update($request->all());            
             if ($msg) {
                 LogActivity::addToLog('File updated',$client);
                 return array('id' => 1, 'message' => 'true');
@@ -300,7 +317,10 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
         //    PaymentType::get();
-        return Client::with('epls')->with('environmentOfficer.user')->with('oldFiles')->with('industryCategory')->with('businessScale')->with('pradesheeyasaba')->find($id);
+        $file = Client::with('epls')->with('environmentOfficer.user')->with('oldFiles')->with('industryCategory')->with('businessScale')->with('pradesheeyasaba')->find($id)->toArray();
+        $file['created_at'] = date('Y-m-d', strtotime($file['created_at']));
+        $file['industry_start_date'] = date('Y-m-d', strtotime($file['industry_start_date']));
+        return $file;
     }
 
     public function getAllFiles($id)
@@ -538,6 +558,25 @@ class ClientController extends Controller
             return array('id' => 1, 'message' => 'true');
         } else {
             LogActivity::addToLog("fail to mark inspection status  ",$file);
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
+
+
+
+    public function changeFileStatus($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        request()->validate([
+            'status_type' => 'required|string',
+            'status_code' => 'required|string',
+            'status_value' => 'nullable|string',      
+      
+        ]);
+        if(setFileStatus($id,\request('status_type'),\request('status_code'),\request('status_value'))){
+            return array('id' => 1, 'message' => 'true');
+        }else{
             return array('id' => 0, 'message' => 'false');
         }
     }

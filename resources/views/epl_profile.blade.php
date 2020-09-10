@@ -26,7 +26,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12">
-                <h1>File No: (<a href="#" class="setFileNoTitile">Loading..</a>) - EPL Number: <span class="right badge eplCodeAfileNo badge-primary">Loading..</span></h1>
+                <h1>File No: (<a href="/industry_profile/id/{{$client}}" class="setFileNoTitile">Loading..</a>) - EPL Number: <span class="right badge eplCodeAfileNo badge-primary">Loading..</span></h1>
             </div>
         </div>
     </div>
@@ -135,29 +135,6 @@
     </div>
 </section>
 
-<div class="modal fade" id="modal-danger">
-    <div class="modal-dialog">
-        <div class="modal-content bg-danger">
-            <div class="modal-header"> 
-                <h4 class="modal-title">Delete Attachment</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><b>Are you sure you want to permanently delete this Attachment ? </b></p>
-                <p>Once you continue, this process can not be undone. Please Procede with care.</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-
 @endif
 
 @endsection
@@ -210,6 +187,7 @@ function initMap(_Latitude, _Longitude) {
 $(function () {
     var CLIENT = '{{$client}}';
     var PROFILE = '{{$profile}}';
+//    console.log('cli: ' + CLIENT + ', prof: ' + PROFILE);
     getaClientbyId(CLIENT, function (result) {
         if (result.length == 0 || result == undefined) {
             if (confirm("Client Not Found! Try Again!")) {
@@ -220,7 +198,7 @@ $(function () {
             disableLinkSection(result.is_old);
             checkIsOldTwo(result.is_old);
             $('.setFileNoTitile').html(result.file_no);
-            $(".setFileNoTitile").attr("href", "/industry_profile/id/" + PROFILE);  
+            $(".setFileNoTitile").attr("href", "/industry_profile/id/" + CLIENT);
         }
         initMap(parseFloat(result.industry_coordinate_x), parseFloat(result.industry_coordinate_y));
     });
@@ -231,11 +209,7 @@ $(function () {
         } else {
             setClearanceData(result);
             $('.eplCodeAfileNo').html(result.epl_instantNumber);
-            $(".navTodownload").attr("href", '/'+ result.path);
-//            setAllDetails(result);
-//            click(function () {
-//                downloadApp(result);
-//            });
+            $(".navTodownload").attr("href", '/' + result.path);
         }
     });
 });
@@ -246,45 +220,5 @@ function showNotAvailable() {
     toastr.info('Not Available For Old Files!');
 }
 </script>
-<!--<script>
-    $(function(){
-    {{-- function readFile() {
-
-    if (this.files && this.files[0]) {
-
-    var FR = new FileReader();
-    FR.addEventListener("load", function(e) {
-    document.getElementById("img").src = e.target.result;
-    document.getElementById("b64").innerHTML = e.target.result;
-    AddPayments({"name": e.target.result}, function(){
-    alert("Message Sent");
-    })
-    });
-    FR.readAsDataURL(this.files[0]);
-    }
-
-    } --}}
-
-    {{-- document.getElementById("inp").addEventListener("change", readFile); --}}
-    $("#btnSave").click(function(){
-    alert("wada");
-    var img = document.getElementById("inp")
-            if (img.files && img.files[0]) {
-
-    var FR = new FileReader();
-    FR.addEventListener("load", function(e) {
-    document.getElementById("img").src = e.target.result;
-    document.getElementById("b64").innerHTML = e.target.result;
-    AddPayments({"name": e.target.result}, function(){
-    alert("Message Sent");
-    })
-    });
-    FR.readAsDataURL(img.files[0]);
-    } else{
-    alert("No Image")
-    }
-    });
-    });
-</script>-->
 @endsection
 

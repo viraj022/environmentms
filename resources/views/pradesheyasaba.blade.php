@@ -29,7 +29,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-5">
-                <div class="card card-primary">
+                <div class="card card-success">
                     <div class="card-header">
                         <label id="lblTitle">Add New Pradesiyasaba</label>
                     </div>
@@ -77,62 +77,51 @@
 
 
             <div class="col-md-7">
-                <div class="card card-primary">
-                    <div class="card-body">
-                        <div class="row">
-
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Pradesiyasaba</h3>
-                                    </div>
-                                    <!-- /.card-header -->
-                                    <div class="card-body p-0">
-
-                                        <div class="card-body">
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-md-8">
-                                                        <div class="row">
-                                                            <div class="col-md-2"><label>Zone*</label></div>
-                                                            <div class="col-md-10">
-                                                                <select id="getZoneForTbl" class="form-control form-control-sm combo_zone">
-                                                                    <option>Loading...</option>
-                                                                </select>
-                                                                <div id="valZone" class="d-none"><p class="text-danger">Field is required</p></div> 
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-check">
-                                                            <input type="checkbox" class="form-check-input" id="check_all_Zone">
-                                                            <label class="form-check-label" for="check_all_Zone">All</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div> 
-                                        </div>
-                                        <div class="card-body table-responsive" style="height: 450px;">
-                                            <table class="table table-condensed assignedPrivilages" id="tblPradesiyasaba">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="width: 10px">#</th>
-                                                        <th>Name</th>
-                                                        <th>Code</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Pradesiyasaba</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <div class="col-md-2"><label>Zone*</label></div>
+                                            <div class="col-md-10">
+                                                <select id="getZoneForTbl" class="form-control form-control-sm combo_zone">
+                                                    <option>Loading...</option>
+                                                </select>
+                                                <div id="valZone" class="d-none"><p class="text-danger">Field is required</p></div> 
+                                            </div>
                                         </div>
                                     </div>
-                                    <!-- /.card-body -->
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="check_all_Zone">
+                                            <label class="form-check-label" for="check_all_Zone">All</label>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>                                        
+
+                            </div> 
+                        </div>
+                        <div class="card-body table-responsive" style="height: 450px;">
+                            <table class="table table-condensed assignedPrivilages" id="tblPradesiyasaba">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th>Name</th>
+                                        <th>Code</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                    <!-- /.card-body -->
                 </div>
             </div>
         </div>

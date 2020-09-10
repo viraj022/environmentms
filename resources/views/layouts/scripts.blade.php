@@ -23,4 +23,6 @@
 <script src="/dist/js/demo.js"></script>
 <script src="/../../js/commonFunctions/file_upload.js"></script>
 <script src="/../../js/commonFunctions/functions.js"></script>
+<!-- overlayScrollbars -->
+<script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 @endsection

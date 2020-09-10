@@ -27,7 +27,7 @@
 </section>
 <section class="content-header">
     <div class="col-md-12">
-        <div class="card card-primary card-outline card-tabs">
+        <div class="card card-success card-outline card-tabs">
             <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
                     <li class="nav-item">
@@ -45,7 +45,7 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-5">
-                                    <div class="card card-primary">
+                                    <div class="card card-success">
                                         <div class="card-header">
                                             <label>Application Details</label>
                                         </div>
@@ -92,39 +92,29 @@
 
 
                                 <div class="col-md-7">
-                                    <div class="card card-primary">
-                                        <div class="card-body">
-                                            <div class="row">
-
-                                                <div class="col-md-12">
-                                                    <div class="card card-secondary">
-                                                        <div class="card-header">
-
-                                                            <h3 class="card-title">Pending Payment List</h3>
-                                                        </div>
-                                                        <!-- /.card-header -->
-                                                        <div class="card-body p-0">
-                                                            <div class="card-body table-responsive" style="height: 450px;">
-                                                                <table class="table table-condensed" id="tbl_applications">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th style="width: 10px">#</th>
-                                                                            <th>Name</th>
-                                                                            <th>Qty</th>
-                                                                            <th>Amount</th>
-                                                                            <th style="">Action</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.card-body -->
-                                                    </div>
-                                                </div>                                        
+                                    <div class="card card-secondary">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Pending Payment List</h3>
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body p-0">
+                                            <div class="card-body table-responsive" style="height: 450px;">
+                                                <table class="table table-condensed" id="tbl_applications">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="width: 10px">#</th>
+                                                            <th>Name</th>
+                                                            <th>Qty</th>
+                                                            <th>Amount</th>
+                                                            <th style="">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
+                                        <!-- /.card-body -->
                                     </div>
                                 </div>
                             </div>

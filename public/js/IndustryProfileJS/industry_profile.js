@@ -234,6 +234,77 @@ function reportFileIssueAPI(id, data, callBack) {
     });
 }
 
+//Remove Client File API
+function removeClientFileAPI(id, callBack) {
+    if (isNaN(id)) {
+        id = 0;
+    }
+    ajaxRequest('DELETE', "/api/client/id/" + id, null, function (dataSet) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(dataSet);
+        }
+    });
+}
+
+//Remove EPL Payment API
+function removeEPLPaymentAPI(id, callBack) {
+    if (isNaN(id)) {
+        id = 0;
+    }
+    ajaxRequest('DELETE', "/api/epl/regPayment/id/" + id, null, function (dataSet) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(dataSet);
+        }
+    });
+}
+
+//Pending Payments API
+function pendingPaymentsAPI(id, callBack) {
+    ajaxRequest('GET', "/api/payment/history/file/" + id, null, function (dataSet) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(dataSet);
+        }
+    });
+}
+//Pending Payment Table
+function pendingPaymentsTable(id) {
+    pendingPaymentsAPI(id, function (result) {
+        var tbl = "";
+        var id = 1;
+        if (result.length == 0) {
+            tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
+        } else {
+            $.each(result, function (index, row) {
+                tbl += '<tr>';
+                tbl += '<td>' + ++index + '</td>';
+                if (row.cashier_name !== null) {
+                    tbl += '<td>' + row.cashier_name + '</td>';
+                } else {
+                    tbl += '<td>N/A</td>';
+                }
+                if (row.invoice_no !== null) {
+                    tbl += '<td>' + row.invoice_no + '</td>';
+                } else {
+                    tbl += '<td>N/A</td>';
+                }
+                if (row.status == 0) {
+                    tbl += '<td>Pending Payment</td>';
+                } else if (row.status == 1) {
+                    tbl += '<td>Paid</td>';
+                } else {
+                    tbl += '<td>Payment Cancelled</td>';
+                }
+                tbl += '<td>'+ row.net_total +'</td>';
+                if (row.status == 0) {
+                    tbl += '<td><button type="button" data-name="'+ row.name +'" value="'+ row.id +'" class="btn btn-primary printBarcode"> Print BarCode </button> <button type="button" value="'+ row.id +'" class="btn btn-danger removeBarcode"> Remove </button></td>';
+                }
+                tbl += '</tr>';
+            });
+        }
+        $('#tblAllPayments tbody').html(tbl);
+    });
+}
+
 function checkFileIssueStatus(is_exist) {
     if (is_exist.file_problem_status === 'problem') {
         $('.markIssueClean').removeClass('d-none'); //<-- Show Issue Cleared

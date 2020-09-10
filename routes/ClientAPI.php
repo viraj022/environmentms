@@ -49,3 +49,13 @@ Route::middleware('auth:api')->get('/files/need_inspection/officer/id/{id}', 'Cl
 Route::middleware('auth:api')->get('/files/need_inspection/pending/officer/id/{id}', 'ClientController@inspection_pending_needed_files'); //  get inspection needed files
 
 Route::middleware('auth:api')->post('/files/file_problem_status/id/{id}', 'ClientController@file_problem_status'); //  set file problem status
+
+
+Route::middleware('auth:api')->post('/files/status/id/{id}', 'ClientController@changeFileStatus'); //  set file problem status
+/*
+{
+  "status_type":"file_approval",  // inspection , certificate_type , old_data , file_working , certificate , file_problem
+  "status_code" : "approved",
+  "status_value" : ""
+}
+*/

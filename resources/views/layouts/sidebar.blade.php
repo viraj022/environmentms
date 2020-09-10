@@ -120,19 +120,19 @@
                 @if($pre['id']===config('auth.privileges.industry'))
                 <li class="nav-item">
                     <a href="{{ url('/payment_type') }}" class="nav-link {{ Request::is('payment_type') ? 'active' : '' }}">
-                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <i class="fas fa-money-check-alt nav-icon"></i>
                         <p>Payment Categoty</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ url('/payments') }}" class="nav-link {{ Request::is('payments') ? 'active' : '' }}">
-                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <i class="fas fa-money-bill nav-icon"></i>
                         <p>Payments</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ url('/payment_range') }}" class="nav-link {{ Request::is('payment_range') ? 'active' : '' }}">
-                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <i class="fas fa-file-invoice-dollar nav-icon"></i>
                         <p>Payment Range</p>
                     </a>
                 </li>
@@ -148,7 +148,7 @@
                 @if($pre['id']===config('auth.privileges.assistantDirector'))
                 <li class="nav-item">
                     <a href="{{ url('/assistant_director') }}" class="nav-link {{ Request::is('assistant_director') ? 'active' : '' }}">
-                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <i class="fas fa-user-tag nav-icon"></i>
                         <p>Assistant Directors</p>
                     </a>
                 </li>
@@ -157,7 +157,7 @@
                 @if($pre['id']===config('auth.privileges.environmentOfficer'))
                 <li class="nav-item">
                     <a href="{{ url('/environment_officer') }}" class="nav-link {{ Request::is('environment_officer') ? 'active' : '' }}">
-                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <i class="far fa-user nav-icon"></i>
                         <p>Environment Officer</p>
                     </a>
                 </li>
