@@ -322,7 +322,7 @@
 
         // The map, centered at Uluru
         var map = new google.maps.Map(
-                document.getElementById('map'), {zoom: 15, center: defaultLocation});
+                document.getElementById('map'), {zoom: 13, center: defaultLocation});
         // The marker, positioned at Uluru
         var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: true,
             title: "Drag me!"});
