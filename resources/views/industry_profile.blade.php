@@ -780,7 +780,7 @@
                                         $(document).on('click', '.printBarcode', function () {//<-- Print Bar Code In Payment Tab
                                             var btnValue = $(this).val();
                                             var btnName = $(this).data("name");
-                                            toastr.info('Printing Barcode...');
+                                            toastr.info('Printing Barcode.Please Wait...');
                                             $.ajax({
                                                 url: 'http://127.0.0.1:8081/hansana',
                                                 data: {code: btnValue, name: btnName},
