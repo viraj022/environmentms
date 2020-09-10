@@ -80,6 +80,13 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('update_industry_file', ['pageAuth' => $pageAuth, 'id' => $id]);
     }
+    
+    public function certificatesUi()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('pending_certificates', ['pageAuth' => $pageAuth]);
+    }
 
     /**
      * Show the form for creating a new resource.
