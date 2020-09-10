@@ -190,7 +190,7 @@ class AssistantDirectorController extends Controller
         if ($pageAuth['is_read']) {
             $assistantDirectors = AssistantDirector::where('active_status', '1')->select('user_id')->get();
             $environmentOfficers = EnvironmentOfficer::where('active_status', '1')->select('user_id as id')->get();
-            LogActivity::addToLog('Request to Get all users not in assistantDirector',$assistantDirectors);
+           // LogActivity::addToLog('Request to Get all users not in assistantDirector',$assistantDirectors);
             //return $allAssistantDerectors;
             return User::whereHas('roll.level', function ($queary) {
                 $queary->where('name', Level::ASSI_DIRECTOR);
@@ -198,7 +198,7 @@ class AssistantDirectorController extends Controller
 
             //return AssistantDirector::get(); 
         } else {
-            LogActivity::addToLog('Fails to Get all users not in assistantDirector',null);
+          //  LogActivity::addToLog('Fails to Get all users not in assistantDirector',null);
             abort(401);
         }
     }
@@ -214,7 +214,7 @@ class AssistantDirectorController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
         if ($pageAuth['is_read']) {
 
-            LogActivity::addToLog('Request to Get all active assistantDirector',null);
+    //        LogActivity::addToLog('Request to Get all active assistantDirector',null);
             //    PaymentType::get();
             return AssistantDirector::join('users', 'assistant_directors.user_id', '=', 'users.id')
                 ->join('zones', 'assistant_directors.zone_id', '=', 'zones.id')
@@ -222,7 +222,7 @@ class AssistantDirectorController extends Controller
                 ->select('assistant_directors.id', 'users.first_name as first_name', 'users.last_name as last_name', 'users.user_name as user_name', 'users.id as user_id', 'zones.id as zone_id', 'zones.name as zone_name')
                 ->get();
         } else {
-            LogActivity::addToLog('Fails to Get all active assistantDirector',null);
+           // LogActivity::addToLog('Fails to Get all active assistantDirector',null);
             abort(401);
         }
     }

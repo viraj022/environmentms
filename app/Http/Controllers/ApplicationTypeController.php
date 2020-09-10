@@ -120,7 +120,7 @@ class ApplicationTypeController extends Controller
                 array_push($array, $value['id']);
             }
             //            $array;
-            LogActivity::addToLog('Get available attachemnts',$applicetion);
+          //  LogActivity::addToLog('Get available attachemnts',$applicetion);
             return Attachemnt::wherenotin('id', $array)->get();
         } else {
             abort(401);
@@ -136,7 +136,7 @@ class ApplicationTypeController extends Controller
                 $q->where('application_type_id', $id);
             })->first();
 
-            LogActivity::addToLog('get assigned attachemnts',$applicetion);
+        ///    LogActivity::addToLog('get assigned attachemnts',$applicetion);
             if (!$applicetion) {
                 return new Attachemnt();
             } else {

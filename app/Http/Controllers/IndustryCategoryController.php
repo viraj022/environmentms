@@ -147,11 +147,11 @@ class IndustryCategoryController extends Controller {
             //$attachment->name= \request('name');
             $msg = $industryCategory->delete();
 
-            if ($msg) {
-                return array('id' => 1, 'message' => 'true');
-            } else {
-                return array('id' => 0, 'message' => 'false');
-            }
+            // if ($msg) {
+            //     return array('id' => 1, 'message' => 'true');
+            // } else {
+            //     return array('id' => 0, 'message' => 'false');
+            // }
 
             if ($msg) {
                 LogActivity::addToLog('Industry Category Deleted',$industryCategory);            
