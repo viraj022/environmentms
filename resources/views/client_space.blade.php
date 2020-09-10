@@ -88,27 +88,12 @@
                                            value="">
                                     <div id="valnicName" class="d-none"><p class="text-danger">NIC is required</p></div>
                                 </div>
-                            </div>                           
-                        </div>
-                        <div class="">
-                            <div class="card card-success">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <label id="lblTitle">Map</label>
-                                                </div>
-                                                <!-- /.card-header -->
-                                                <div class="card-body p-0">
-                                                    <div id="map" style="width: 100%; height: 600px;"></div>
-                                                </div>
-                                                <!-- /.card-body -->
-                                            </div>
-                                        </div>
-                                    </div>
+                                <hr>
+                                <div class="card-header">
+                                    <label id="lblTitle">Map</label>
                                 </div>
-                            </div>
+                                <div id="map" style="width: 100%; height: 367px;"></div>
+                            </div>                           
                         </div>
                     </div>
                     <!--Industry details-->
