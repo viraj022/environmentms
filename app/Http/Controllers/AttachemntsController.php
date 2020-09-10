@@ -3,14 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\EPL;
-use App\User;
-use App\Level;
 use Carbon\Carbon;
 use App\Attachemnt;
-use App\ApplicationType;
-use App\Client;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class AttachemntsController extends Controller
