@@ -66,7 +66,8 @@ class CashierController extends Controller
 }
 
     public function getPendingPaymentByFileID($id){
- 
+
+        
    return Transaction::with('transactionItems')->with('client')->where('client_id',$id)->get();
     
 }
