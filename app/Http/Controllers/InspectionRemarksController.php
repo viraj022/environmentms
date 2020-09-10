@@ -9,6 +9,7 @@ use App\Client;
 use App\ApplicationType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\LogActivity;
 
 class InspectionRemarksController extends Controller {
 
@@ -53,8 +54,10 @@ class InspectionRemarksController extends Controller {
             $msg = $inspection_remark->save();
 
             if ($msg) {
+                LogActivity::addToLog(' Inspection Remark added',$inspection_remark);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to add Inspection Remark ',$inspection_remark);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -118,10 +121,13 @@ class InspectionRemarksController extends Controller {
             $msg = $inspection_remark->delete();
 
             if ($msg) {
+                LogActivity::addToLog(' Inspection Remark deleted',$inspection_remark);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to delete Inspection Remark ',$inspection_remark);
                 return array('id' => 0, 'message' => 'false');
             }
+
         } else {
             abort(401);
         }

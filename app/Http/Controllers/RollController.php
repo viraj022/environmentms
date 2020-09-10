@@ -7,6 +7,7 @@ use App\Privilege;
 use App\Roll;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\LogActivity;
 
 class RollController extends Controller
 {
@@ -36,15 +37,25 @@ class RollController extends Controller
         $roll->level_id = request('level');
         $msg = $roll->save();
         if ($msg) {
+            LogActivity::addToLog('roll added',$roll); 
             return redirect()
                 ->back()
                 ->with('success', 'Ok');
         } else {
+            LogActivity::addToLog('Fail to add  roll',$roll);
             return redirect()
                 ->back()
                 ->withInput()
                 ->with('error', 'Error');
         }
+
+
+           
+
+    
+  
+     
+        
     }
     public function store($id)
     {
@@ -55,10 +66,13 @@ class RollController extends Controller
         $roll = Roll::findOrFail($id);
         $roll->name = request('roll');
         $msg = $roll->save();
+
         if ($msg) {
-            return array('id' => 1, 'mgs' => 'true');
+            LogActivity::addToLog('roll updated',$roll);            
+            return array('id' => 1, 'message' => 'true');
         } else {
-            return array('id' => 2, 'mgs' => 'false');
+            LogActivity::addToLog('Fail to update roll',$roll);
+            return array('id' => 0, 'message' => 'false');
         }
     }
 
@@ -97,11 +111,15 @@ class RollController extends Controller
 
             $roll = ROll::findOrFail($id);
             $msg = $roll->delete();
+
             if ($msg) {
-                return array('id' => 1, 'mgs' => 'true');
+                LogActivity::addToLog('roll deleted',$roll);            
+                return array('id' => 1, 'message' => 'true');
             } else {
-                return array('id' => 2, 'mgs' => 'false');
+                LogActivity::addToLog('Fail to delete roll',$roll);
+                return array('id' => 0, 'message' => 'false');
             }
+
         } catch (\Illuminate\Database\QueryException $e) {
 
             if ($e->errorInfo[0] == 23000) {

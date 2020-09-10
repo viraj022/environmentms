@@ -7,6 +7,7 @@ use App\EPL;
 use App\ApplicationType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\LogActivity;
 
 class RemarkController extends Controller {
 
@@ -49,11 +50,15 @@ class RemarkController extends Controller {
             $remark->user_id = $user->id;
             $msg = $remark->save();
 
+
             if ($msg) {
+                LogActivity::addToLog('remark added',$remark);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to add  remark',$remark);
                 return array('id' => 0, 'message' => 'false');
             }
+
         } else {
             abort(401);
         }
@@ -114,9 +119,12 @@ class RemarkController extends Controller {
             ;
             $msg = $remark->delete();
 
+
             if ($msg) {
+                LogActivity::addToLog('remark deleted',$remark);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to delete remark',$remark);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {

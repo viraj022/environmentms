@@ -6,6 +6,7 @@ FileOP
 	FileUpdate
 	FileDelate
 	application path updated
+
 OldFile
 	OldFileCreate
 	OldFileUpdate
@@ -24,8 +25,22 @@ FileProblams
 FilePrograss
 
 epl
+	
 
 
+SiteClear
+	Site Clearance Added
+	
+EplPay
+	EPL Payment Added : addRegistrationPayment
+	EPL Payment Deleted : deleteApplicationPayment \\commented on run
+	EPL Payment marked : markApplicationPayment \\commented on run
+	processApplication \\commented on run
+	payEPL done \\commented on run
+	
+EPLrenew
+	
+	
 
 
 
@@ -43,7 +58,8 @@ epl
 
 .
 
-last edited epl controller
+last edited eplRenew
+
 
 
 

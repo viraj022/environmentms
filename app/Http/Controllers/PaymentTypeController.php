@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\PaymentType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\LogActivity;
 
 class PaymentTypeController extends Controller
 {
@@ -39,8 +40,10 @@ class PaymentTypeController extends Controller
             $msg =  $payment_type->save();
 
             if ($msg) {
+                LogActivity::addToLog('Payment type added',$payment_type);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to add  Payment  type',$payment_type);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -66,11 +69,15 @@ class PaymentTypeController extends Controller
             $payment_type->name = \request('name');
             $msg =  $payment_type->save();
 
+
             if ($msg) {
+                LogActivity::addToLog('Payment type updated',$payment_type);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to update  Payment  type',$payment_type);
                 return array('id' => 0, 'message' => 'false');
             }
+
         } else {
             abort(401);
         }
@@ -144,11 +151,15 @@ class PaymentTypeController extends Controller
         if ($pageAuth['is_delete']) {
             $payment_type = PaymentType::findOrFail($id);
             $msg = $payment_type->delete();
+
             if ($msg) {
+                LogActivity::addToLog('Payment type deleted',$payment_type);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to delete  Payment  type',$payment_type);
                 return array('id' => 0, 'message' => 'false');
             }
+
         } else {
             abort(401);
         }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Pradesheeyasaba;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\LogActivity;
 
 class PradesheeyasabaController extends Controller
 {
@@ -43,10 +44,13 @@ class PradesheeyasabaController extends Controller
             $msg = $pradesheyasaba->save();
 
             if ($msg) {
+                LogActivity::addToLog('pradesheyasaba added',$pradesheyasaba);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to add  pradesheyasaba',$pradesheyasaba);
                 return array('id' => 0, 'message' => 'false');
             }
+
         } else {
             abort(401);
         }
@@ -92,8 +96,10 @@ class PradesheeyasabaController extends Controller
             $msg = $pradesheyasaba->save();
 
             if ($msg) {
+                LogActivity::addToLog('pradesheyasaba updated',$pradesheyasaba);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to update pradesheyasaba',$pradesheyasaba);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -167,8 +173,10 @@ class PradesheeyasabaController extends Controller
             $msg = $pradesheyasaba->delete();
 
             if ($msg) {
+                LogActivity::addToLog('pradesheyasaba deleted',$pradesheyasaba);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to delete pradesheyasaba',$pradesheyasaba);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {

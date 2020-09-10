@@ -9,6 +9,7 @@ use App\EPL;
 use App\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\LogActivity;
 
 class InspectionPersonalController extends Controller {
 
@@ -50,10 +51,13 @@ class InspectionPersonalController extends Controller {
             $msg = $inspection_personal->save();
 
             if ($msg) {
+                LogActivity::addToLog(' Inspection personal added',$inspection_personal);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to add Inspection personal ',$inspection_personal);
                 return array('id' => 0, 'message' => 'false');
             }
+
         } else {
             abort(401);
         }
@@ -126,11 +130,16 @@ class InspectionPersonalController extends Controller {
             ;
             $msg = $inspection_personal->delete();
 
+
             if ($msg) {
+                LogActivity::addToLog(' Inspection personal deleted',$inspection_personal);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to delete Inspection personal ',$inspection_personal);
                 return array('id' => 0, 'message' => 'false');
             }
+
+
         } else {
             abort(401);
         }
