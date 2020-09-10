@@ -96,7 +96,7 @@
                 @if($pre['id']===config('auth.privileges.attachments'))
                 <li class="nav-item">
                     <a href="{{ url('/attachment_map') }}" class="nav-link {{ Request::is('attachment_map') ? 'active' : '' }}">
-                        <i class="fas fa-file-archive nav-icon"></i>
+                        <i class="fas fa-paperclip nav-icon"></i>
                         <p>Attachements Map</p>
                     </a>
                 </li>
@@ -112,7 +112,7 @@
                 @if($pre['id']===config('auth.privileges.industry') )
                 <li class="nav-item">
                     <a href="{{ url('/industry_category') }}" class="nav-link {{ Request::is('industry_category') ? 'active' : '' }}">
-                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <i class="fas fa-industry nav-icon"></i>
                         <p>Industry Category</p>
                     </a>
                 </li>
@@ -165,7 +165,7 @@
                 @if($pre['id']===config('auth.privileges.committeePool'))
                 <li class="nav-item">
                     <a href="{{ url('/committee_pool') }}" class="nav-link {{ Request::is('committee_pool') ? 'active' : '' }}">
-                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <i class="far fa-address-card nav-icon"></i>
                         <p>Committee Pool</p>
                     </a>
                 </li>
@@ -188,7 +188,7 @@
                 @if($pre['id']===config('auth.privileges.clientSpace'))
                 <li class="nav-item">
                     <a href="{{ url('/client_space') }}" class="nav-link {{ Request::is('client_space') ? 'active' : '' }}">
-                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <i class="fas fa-id-card-alt nav-icon"></i>
                         <p>Industry Registration</p>
                     </a>
                 </li>
@@ -196,7 +196,7 @@
                 @if($pre['id']===config('auth.privileges.industryFile') &&  auth()->user()->roll->level->value < 4)
                 <li class="nav-item">
                     <a href="{{ url('/industry_files') }}" class="nav-link {{ Request::is('industry_files') ? 'active' : '' }}">
-                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <i class="far fa-file-alt nav-icon"></i>
                         <p>Industry Files</p>
                     </a>
                 </li>
@@ -204,7 +204,7 @@
                 @if($pre['id']===config('auth.privileges.clientSpace'))
                 <li class="nav-item">
                     <a href="{{ url('/epl_assign') }}" class="nav-link {{ Request::is('epl_assign') ? 'active' : '' }}">
-                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <i class="far fa-id-badge nav-icon"></i>
                         <p>File Assign</p>
                     </a>
                 </li>
@@ -212,7 +212,7 @@
                 @if($pre['id']===config('auth.privileges.clientSpace'))
                 <li class="nav-item">
                     <a href="{{ url('/old_file_list') }}" class="nav-link {{ Request::is('old_file_list') ? 'active' : '' }}">
-                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <i class="fas fa-file-contract nav-icon"></i>
                         <p>Old Files</p>
                     </a>
                 </li>
@@ -220,7 +220,7 @@
                 {{-- @if($pre['id']===config('auth.privileges.clientSpace'))
                 <li class="nav-item">
                     <a href="{{ url('/env_officer') }}" class="nav-link {{ Request::is('env_officer') ? 'active' : '' }}">
-                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <i class="fas fa-user-clock nav-icon"></i>
                         <p>Pending EPL</p>
                     </a>
                 </li>
@@ -239,7 +239,7 @@
                 @if($pre['id']===config('auth.privileges.clientSpace'))
                 <li class="nav-item">
                     <a href="{{ url('/application_payment') }}" class="nav-link {{ Request::is('application_payment') ? 'active' : '' }}">
-                        <i class="fas fa-puzzle-piece nav-icon"></i>
+                        <i class="fas fa-file-signature nav-icon"></i>
                         <p>Issue Applications</p>
                     </a>
                 </li>
