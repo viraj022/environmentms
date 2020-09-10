@@ -487,8 +487,8 @@
                                     </div>
                                 </div>
                                 <div class="callout callout-danger">
-                                    <button type="button" id="removeFileBtn" class="btn btn-danger"><i class="fa fa-file"></i>  Remove File</button>
-                                    <a type="button" href="/update_client/id/{{$id}}" class="btn btn-warning"><i class="fa fa-file"></i>  Update This Client</a>
+                                    <button type="button" id="removeFileBtn" class="btn btn-danger"><i class="fas fa-times"></i>  Remove File</button>
+                                    <a href="/update_client/id/{{$id}}" class="btn btn-warning"><i class="far fa-edit"></i>  Update This Client</a>
                                 </div>
                             </div>
                         </div>                   

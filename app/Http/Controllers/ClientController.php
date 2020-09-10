@@ -195,7 +195,7 @@ class ClientController extends Controller
             'address' => 'nullable',
             'contact_no' => ['nullable', new contactNo],
             'email' => 'nullable|sometimes',
-            'nic' => ['sometimes', 'nullable', 'unique:clients', new nationalID],
+            'nic' => ['nullable', 'unique:users,nic,' . $id, new nationalID],
             'industry_name' => 'sometimes|required|string',
             'industry_category_id' => 'sometimes|required|integer',
             'business_scale_id' => 'sometimes|required|integer',
