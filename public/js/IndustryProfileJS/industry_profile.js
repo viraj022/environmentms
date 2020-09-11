@@ -104,7 +104,9 @@ function setIndustryAndClientDb(get) {
     //Client
     $('.firstL_name').html(get.first_name + ' ' + get.last_name);
     $('.file_no').html(get.file_no);
-    $('.assign_date').html(get.assign_date);
+    var or_assign_Date = new Date(get.assign_date);
+    var con_assign_Date = or_assign_Date.toISOString().split('T')[0];
+    $('.assign_date').html(con_assign_Date);
     $('.cl_address').html(get.address);
     $('.cl_email').html(get.email);
     $('.cl_contact_no').html(get.contact_no);
@@ -294,9 +296,9 @@ function pendingPaymentsTable(id) {
                 } else {
                     tbl += '<td>Payment Cancelled</td>';
                 }
-                tbl += '<td>'+ row.net_total +'</td>';
+                tbl += '<td>' + row.net_total + '</td>';
                 if (row.status == 0) {
-                    tbl += '<td><button type="button" data-name="'+ row.name +'" value="'+ row.id +'" class="btn btn-primary printBarcode"> Print BarCode </button> <button type="button" value="'+ row.id +'" class="btn btn-danger removeBarcode"> Remove </button></td>';
+                    tbl += '<td><button type="button" data-name="' + row.name + '" value="' + row.id + '" class="btn btn-primary printBarcode"><i class="fas fa-barcode"></i>  Re-Print BarCode </button> <button type="button" value="' + row.id + '" class="btn btn-danger removeBarcode"><i class="fas fa-times"></i> Remove </button></td>';
                 }
                 tbl += '</tr>';
             });

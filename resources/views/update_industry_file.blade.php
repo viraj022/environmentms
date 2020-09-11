@@ -208,7 +208,7 @@ function initMap() {
     var defaultLocation = {lat: 7.489050, lng: 80.349985}; //default Location for load map
     // The map, centered at Uluru
     var map = new google.maps.Map(
-            document.getElementById('map'), {zoom: 15, center: defaultLocation});
+            document.getElementById('map'), {zoom: 14, center: defaultLocation});
     // The marker, positioned at Uluru
     var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: true,
         title: "Drag me!"});
@@ -282,6 +282,7 @@ $('#btnUpdate').click(function () {
             show_mesege(resp);
             if (resp.id === 1) {
                 //Do redirect to indust profile if u want...
+                window.location = '/industry_profile/id/' + PROFILE;
             }
         });
     }

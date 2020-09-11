@@ -139,37 +139,23 @@
         $(document).on('click', '.selPendingEpl', function () {
             let obj = {environment_officer_id: parseInt($("#env_officer_combo").val()), epl_id: parseInt($(this).val())};
             assign_epl_to_officer(obj, function (parameters) {
+                show_mesege(parameters);
                 if (parameters.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Enviremontal MS</br>Saved!'
-                    });
                     assigned_EPL_table(parseInt($('#env_officer_combo').val()));
                     pending_EPL_table(parseInt($('#ass_dir_combo').val()));
-                } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Enviremontal MS</br>Error'
-                    });
                 }
             });
         });
         $(document).on('click', '.removePendingEpl', function () {
-            remove_epl_from_officer(parseInt($(this).val()), function (parameters) {
-                if (parameters.id == 1) {
-                    assigned_EPL_table(parseInt($('#env_officer_combo').val()));
-                    pending_EPL_table(parseInt($('#ass_dir_combo').val()));
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Envirmontal MS</br>Removed!'
-                    });
-                } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Enviremontal MS</br>Error'
-                    });
-                }
-            });
+            if (confirm('Are you sure you want to remove this?')) {
+                remove_epl_from_officer(parseInt($(this).val()), function (parameters) {
+                    show_mesege(parameters);
+                    if (parameters.id == 1) {
+                        assigned_EPL_table(parseInt($('#env_officer_combo').val()));
+                        pending_EPL_table(parseInt($('#ass_dir_combo').val()));
+                    }
+                });
+            }
         });
     });
 
