@@ -97,7 +97,7 @@ function forTypeFiles_table(obj, callBack) {
                 tbl += '<td><button type="button" value="' + row.id + '" data-toggle="modal" data-target="#modal-xl" class="btn btn-success setInspeBtn">Set Inspection</button></td>';
             } else {
                 //$(".inspectTbl").remove();
-                tbl += '<td></td>';
+                tbl += '<td>Done</td>';
             }
             tbl += '</tr>';
         });
