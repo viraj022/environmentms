@@ -23,6 +23,12 @@ class AssistantDirectorController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
         return view('assistant_director', ['pageAuth' => $pageAuth]);
     }
+    public function adPendingIndex()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
+        return view('ad_pending_list', ['pageAuth' => $pageAuth]);
+    }
 
     /**
      * Show the form for creating a new resource.
