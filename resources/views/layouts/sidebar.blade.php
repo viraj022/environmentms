@@ -244,6 +244,14 @@
                     </a>
                 </li>
                 @endif
+                @if($pre['id']===config('auth.privileges.clientSpace'))
+                <li class="nav-item">
+                    <a href="{{ url('/pending_certificates') }}" class="nav-link {{ Request::is('pending_certificates') ? 'active' : '' }}">
+                        <i class="fas fa-certificate nav-icon"></i>
+                        <p>Pending Certificate</p>
+                    </a>
+                </li>
+                @endif
                 @endforeach
             </ul>
         </li>
