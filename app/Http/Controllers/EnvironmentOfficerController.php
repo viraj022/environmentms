@@ -281,7 +281,7 @@ class EnvironmentOfficerController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_delete']) {
-            $epl = EPL::find($id);
+            $epl = Client::find($id);
             if ($epl) {
                 $epl->environment_officer_id = null;
                 $msg = $epl->save();
