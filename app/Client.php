@@ -53,4 +53,39 @@ class Client extends Model
         {
                 return $this->belongsTo(Pradesheeyasaba::class);
         }
+
+        public static function getFileByStatusQuery($statusType,$statusCodes)
+        {
+                $file = "";
+                switch($statusType){
+                        case 'file_status':
+                          $file = Client::whereIn('file_status',$statusCodes);
+                        break;
+                        case 'inspection':
+                                $file = Client::whereIn('file_status',$statusCodes);
+                        break;
+                        case 'cer_type_status':
+                                $file = Client::whereIn('file_status',$statusCodes);
+                        break;
+                        case 'old_data':
+                                $file = Client::whereIn('file_status',$statusCodes);
+                        break;
+                        case 'file_working':
+                                $file = Client::whereIn('file_status',$statusCodes);
+                        break;
+                        case 'cer_status':
+                                $file = Client::whereIn('file_status',$statusCodes);
+                        break;
+                        case 'file_problem':
+                                $file = Client::whereIn('file_status',$statusCodes);
+                        break;
+                        default:
+                        abort('422','unknown status type');
+                    }
+                    return $file->with('oldFiles')
+                    ->with('industryCategory')
+                    ->with('businessScale')
+                    ->with('pradesheeyasaba')
+                    ->with('environmentOfficer.assistantDirector');
+        }
 }

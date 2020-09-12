@@ -59,3 +59,284 @@ Route::middleware('auth:api')->post('/files/status/id/{id}', 'ClientController@c
   "status_value" : ""
 }
 */
+
+Route::middleware('auth:api')->get('/files/pending/assistance_director/{id}', 'ClientController@getAssistanceDirectorPendingList'); //  get director pending list
+/*
+[
+    {
+        "id": 21,
+        "first_name": "ahan",
+        "last_name": "last",
+        "address": null,
+        "contact_no": null,
+        "email": null,
+        "nic": null,
+        "password": "$2y$10$0dGuZ91Q/DnMByDd8rBfVOPzQHbaUfnYNuR6WMbQk7ustwx.tw/AW",
+        "api_token": "DPBaiY4knc4wcpDLq45z6u7vN2y3Dz9HO0VnxNFM7At3GQiI5n6oNkqxNFGaeAbCqKX6v5JpJPhEjxQ3",
+        "created_at": "2020-09-04 13:21:02",
+        "updated_at": "2020-09-04 13:21:02",
+        "deleted_at": null,
+        "industry_name": "ahan",
+        "industry_category_id": 84,
+        "business_scale_id": 2,
+        "industry_contact_no": null,
+        "industry_address": "kurunegala",
+        "industry_email": null,
+        "industry_coordinate_x": "7.48905",
+        "industry_coordinate_y": "80.349985",
+        "pradesheeyasaba_id": 52,
+        "industry_is_industry": 0,
+        "industry_investment": 15000,
+        "industry_start_date": "2020-09-15 00:00:00",
+        "industry_registration_no": "ahan/2020",
+        "application_path": null,
+        "environment_officer_id": null,
+        "file_01": null,
+        "file_02": null,
+        "file_03": null,
+        "file_no": "PEA/0903/TCC/M/21/2020",
+        "assign_date": null,
+        "is_old": 1,
+        "need_inspection": null,
+        "file_problem_status": "pending",
+        "file_problem_status_description": "",
+        "file_status": -2,
+        "cer_type_status": 0,
+        "cer_status": 0,
+        "old_files": [],
+        "industry_category": {
+            "id": 84,
+            "name": "climbing",
+            "code": "TC",
+            "created_at": "2020-09-03 13:28:36",
+            "updated_at": "2020-09-07 09:53:41"
+        },
+        "business_scale": {
+            "id": 2,
+            "name": "Medium- M(Industries of Category B)",
+            "code": "M",
+            "created_at": null,
+            "updated_at": null
+        },
+        "pradesheeyasaba": {
+            "id": 52,
+            "name": "test03",
+            "code": "0903",
+            "created_at": "2020-09-03 06:11:27",
+            "updated_at": "2020-09-03 06:11:27",
+            "zone_id": 1
+        },
+        "environment_officer": null
+    },
+]
+*/
+Route::middleware('auth:api')->get('/files/pending/environment_officer/{id}', 'ClientController@getEnvironmentOfficerPendingList'); //  get environment officer pending list
+/*
+[
+    {
+        "id": 21,
+        "first_name": "ahan",
+        "last_name": "last",
+        "address": null,
+        "contact_no": null,
+        "email": null,
+        "nic": null,
+        "password": "$2y$10$0dGuZ91Q/DnMByDd8rBfVOPzQHbaUfnYNuR6WMbQk7ustwx.tw/AW",
+        "api_token": "DPBaiY4knc4wcpDLq45z6u7vN2y3Dz9HO0VnxNFM7At3GQiI5n6oNkqxNFGaeAbCqKX6v5JpJPhEjxQ3",
+        "created_at": "2020-09-04 13:21:02",
+        "updated_at": "2020-09-04 13:21:02",
+        "deleted_at": null,
+        "industry_name": "ahan",
+        "industry_category_id": 84,
+        "business_scale_id": 2,
+        "industry_contact_no": null,
+        "industry_address": "kurunegala",
+        "industry_email": null,
+        "industry_coordinate_x": "7.48905",
+        "industry_coordinate_y": "80.349985",
+        "pradesheeyasaba_id": 52,
+        "industry_is_industry": 0,
+        "industry_investment": 15000,
+        "industry_start_date": "2020-09-15 00:00:00",
+        "industry_registration_no": "ahan/2020",
+        "application_path": null,
+        "environment_officer_id": null,
+        "file_01": null,
+        "file_02": null,
+        "file_03": null,
+        "file_no": "PEA/0903/TCC/M/21/2020",
+        "assign_date": null,
+        "is_old": 1,
+        "need_inspection": null,
+        "file_problem_status": "pending",
+        "file_problem_status_description": "",
+        "file_status": -2,
+        "cer_type_status": 0,
+        "cer_status": 0,
+        "old_files": [],
+        "industry_category": {
+            "id": 84,
+            "name": "climbing",
+            "code": "TC",
+            "created_at": "2020-09-03 13:28:36",
+            "updated_at": "2020-09-07 09:53:41"
+        },
+        "business_scale": {
+            "id": 2,
+            "name": "Medium- M(Industries of Category B)",
+            "code": "M",
+            "created_at": null,
+            "updated_at": null
+        },
+        "pradesheeyasaba": {
+            "id": 52,
+            "name": "test03",
+            "code": "0903",
+            "created_at": "2020-09-03 06:11:27",
+            "updated_at": "2020-09-03 06:11:27",
+            "zone_id": 1
+        },
+        "environment_officer": null
+    },
+]
+*/
+Route::middleware('auth:api')->get('/files/pending/director', 'ClientController@getDirectorPendingList'); //  get assistance director pending list
+/*
+[
+    {
+        "id": 21,
+        "first_name": "ahan",
+        "last_name": "last",
+        "address": null,
+        "contact_no": null,
+        "email": null,
+        "nic": null,
+        "password": "$2y$10$0dGuZ91Q/DnMByDd8rBfVOPzQHbaUfnYNuR6WMbQk7ustwx.tw/AW",
+        "api_token": "DPBaiY4knc4wcpDLq45z6u7vN2y3Dz9HO0VnxNFM7At3GQiI5n6oNkqxNFGaeAbCqKX6v5JpJPhEjxQ3",
+        "created_at": "2020-09-04 13:21:02",
+        "updated_at": "2020-09-04 13:21:02",
+        "deleted_at": null,
+        "industry_name": "ahan",
+        "industry_category_id": 84,
+        "business_scale_id": 2,
+        "industry_contact_no": null,
+        "industry_address": "kurunegala",
+        "industry_email": null,
+        "industry_coordinate_x": "7.48905",
+        "industry_coordinate_y": "80.349985",
+        "pradesheeyasaba_id": 52,
+        "industry_is_industry": 0,
+        "industry_investment": 15000,
+        "industry_start_date": "2020-09-15 00:00:00",
+        "industry_registration_no": "ahan/2020",
+        "application_path": null,
+        "environment_officer_id": null,
+        "file_01": null,
+        "file_02": null,
+        "file_03": null,
+        "file_no": "PEA/0903/TCC/M/21/2020",
+        "assign_date": null,
+        "is_old": 1,
+        "need_inspection": null,
+        "file_problem_status": "pending",
+        "file_problem_status_description": "",
+        "file_status": -2,
+        "cer_type_status": 0,
+        "cer_status": 0,
+        "old_files": [],
+        "industry_category": {
+            "id": 84,
+            "name": "climbing",
+            "code": "TC",
+            "created_at": "2020-09-03 13:28:36",
+            "updated_at": "2020-09-07 09:53:41"
+        },
+        "business_scale": {
+            "id": 2,
+            "name": "Medium- M(Industries of Category B)",
+            "code": "M",
+            "created_at": null,
+            "updated_at": null
+        },
+        "pradesheeyasaba": {
+            "id": 52,
+            "name": "test03",
+            "code": "0903",
+            "created_at": "2020-09-03 06:11:27",
+            "updated_at": "2020-09-03 06:11:27",
+            "zone_id": 1
+        },
+        "environment_officer": null
+    }
+]
+*/
+Route::middleware('auth:api')->get('/files/certificate_drafting', 'ClientController@getCertificateDraftingList'); //  get assistance director pending list
+/*
+[
+    {
+        "id": 21,
+        "first_name": "ahan",
+        "last_name": "last",
+        "address": null,
+        "contact_no": null,
+        "email": null,
+        "nic": null,
+        "password": "$2y$10$0dGuZ91Q/DnMByDd8rBfVOPzQHbaUfnYNuR6WMbQk7ustwx.tw/AW",
+        "api_token": "DPBaiY4knc4wcpDLq45z6u7vN2y3Dz9HO0VnxNFM7At3GQiI5n6oNkqxNFGaeAbCqKX6v5JpJPhEjxQ3",
+        "created_at": "2020-09-04 13:21:02",
+        "updated_at": "2020-09-04 13:21:02",
+        "deleted_at": null,
+        "industry_name": "ahan",
+        "industry_category_id": 84,
+        "business_scale_id": 2,
+        "industry_contact_no": null,
+        "industry_address": "kurunegala",
+        "industry_email": null,
+        "industry_coordinate_x": "7.48905",
+        "industry_coordinate_y": "80.349985",
+        "pradesheeyasaba_id": 52,
+        "industry_is_industry": 0,
+        "industry_investment": 15000,
+        "industry_start_date": "2020-09-15 00:00:00",
+        "industry_registration_no": "ahan/2020",
+        "application_path": null,
+        "environment_officer_id": null,
+        "file_01": null,
+        "file_02": null,
+        "file_03": null,
+        "file_no": "PEA/0903/TCC/M/21/2020",
+        "assign_date": null,
+        "is_old": 1,
+        "need_inspection": null,
+        "file_problem_status": "pending",
+        "file_problem_status_description": "",
+        "file_status": -2,
+        "cer_type_status": 0,
+        "cer_status": 0,
+        "old_files": [],
+        "industry_category": {
+            "id": 84,
+            "name": "climbing",
+            "code": "TC",
+            "created_at": "2020-09-03 13:28:36",
+            "updated_at": "2020-09-07 09:53:41"
+        },
+        "business_scale": {
+            "id": 2,
+            "name": "Medium- M(Industries of Category B)",
+            "code": "M",
+            "created_at": null,
+            "updated_at": null
+        },
+        "pradesheeyasaba": {
+            "id": 52,
+            "name": "test03",
+            "code": "0903",
+            "created_at": "2020-09-03 06:11:27",
+            "updated_at": "2020-09-03 06:11:27",
+            "zone_id": 1
+        },
+        "environment_officer": null
+    }
+]
+*/
