@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Setting;
+use App\Certificate;
 use App\Level;
 use App\Client;
 use Carbon\Carbon;
@@ -589,7 +592,36 @@ class ClientController extends Controller
 
     public function nextCertificateNumber($id)
     {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $client = Client::findOrFail($id);
-        return $client->generateCertificateNumber();
+        $certificate = new Certificate();
+
+        if ($client->cer_type_status == 1 || $client->cer_type_status == 2) {
+            //epl certificate
+            $certificate->certificate_type = 0;
+        } elseif ($client->cer_type_status == 3 || $client->cer_type_status == 4) {
+            $certificate->certificate_type = 1;
+        }
+        $certificate->cetificate_number = $client->generateCertificateNumber();
+
+        $certificate->client_id = $client->id;
+        $certificate->issue_status = 0;
+        $certificate->user_id = $user->id;
+
+        // $certificate->save();
+
+        $msg = $certificate->save();
+
+        $cerNo = Setting::Where('name', 'certificate_ai')->first();
+        $cerNo->value = $certificate->cetificate_number;
+        $cerNo->save();
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true', 'certificate_number' => $certificate->cetificate_number);
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+
+        //  return $client->generateCertificateNumber();
     }
 }

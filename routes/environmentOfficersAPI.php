@@ -82,4 +82,15 @@ Route::middleware('auth:api')->get('/epl/env_officer/{id}', 'EnvironmentOfficerC
 //         "zone_id": 1
 //     }
 // ]
-Route::middleware('auth:api')->get('/environment_officer/approve/{officer_id}/{file_id}', 'EnvironmentOfficerController@approveFile'); //   get epls by assistance director
+Route::middleware('auth:api')->get('/environment_officer/approve/{officer_id}/{file_id}', 'EnvironmentOfficerController@approveFile'); //   EO Approved file
+Route::middleware('auth:api')->get('/assistant_director/approve/{adId}/{file_id}', 'AssistantDirectorController@approveFile'); //   AD Approved FILE
+Route::middleware('auth:api')->get('/assistant_director/reject/{adId}/{file_id}', 'AssistantDirectorController@rejectFile'); //   AD Approved FILE
+Route::middleware('auth:api')->get('/environment_officer/reject/{officer_id}/{file_id}', 'EnvironmentOfficerController@rejectFile'); //   EO rejectFile
+
+
+
+
+// {
+//   "id": 1,
+//   "message": "true"
+// }

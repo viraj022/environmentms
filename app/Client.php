@@ -95,22 +95,29 @@ class Client extends Model
                         case 1: //new epl
                                 $cerNo = Setting::Where('name', 'certificate_ai')->sum('value');
                                 $cerNo++;
-                                return array('nextNumber' => str_pad($cerNo, 6, "0", STR_PAD_LEFT));
+                                // return array('nextNumber' => str_pad($cerNo, 6, "0", STR_PAD_LEFT));
+                                return  str_pad($cerNo, 6, "0", STR_PAD_LEFT);
                         case 2: //epl renewal
                                 $certificate = Certificate::Where('client_id', $this->id)->first();
                                 $certificate_count = Certificate::Where('client_id', $this->id)->count();
+
+                                $certificate_count = Certificate::Where('client_id', $this->id)->count();
+
                                 //  $cerNo = Setting::Where('name', 'certificate_ai')->sum('value');
                                 //  dd($certificate);
 
-                                return array('nextNumber' => str_pad($certificate->cetificate_number, 6, "0", STR_PAD_LEFT) . "\r" . $certificate_count);
+                                // return array('nextNumber' => str_pad($certificate->cetificate_number, 6, "0", STR_PAD_LEFT) . "\r" . $certificate_count);
+                                return  str_pad($certificate->cetificate_number, 6, "0", STR_PAD_LEFT);
                         case 3; //site_new
                                 $client = Client::findOrFail($this->id);
-                                return array('nextNumber' => $client->file_no);
+                                //return array('nextNumber' => $client->file_no);
+                                return $client->file_no;
 
 
                         case 4: //site_clearance_extetion
                                 $client = Client::findOrFail($this->id);
-                                return array('nextNumber' => $client->file_no);
+                                // return array('nextNumber' => $client->file_no);
+                                return $client->file_no;
                                 break;
 
                         default:
