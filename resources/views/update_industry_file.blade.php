@@ -126,7 +126,7 @@
                                     <input id="business_name" type="text" class="form-control form-control-sm cutenzReq" placeholder="Enter Name..." value="">
                                 </div>
                                 <div class="form-group">
-                                    <label>Is this Industry</label>
+                                    <label>Is this Industry Zone</label>
                                     <select id="getZone" class="form-control form-control-sm" style="width: 100%;">
                                         <option value="0">No</option>
                                         <option value="1">Yes</option>
@@ -225,6 +225,7 @@ $(function () {
 
     getaClientbyId(PROFILE, function (set) {
         //Client
+        $("#getisOld").val(set.is_old);
         $('#getfName').val(set.first_name);
         $('#getlName').val(set.last_name);
         $('#getAddress').val(set.address);
@@ -232,7 +233,7 @@ $(function () {
         $('#getEmail').val(set.email);
         $('#getNicSave').val(set.nic);
         //Industry
-//        $('#prsdeshiySb').val(set.pradesheeyasaba_id);
+        $('#prsdeshiySb').val(set.pradesheeyasaba_id);
         $('#industryCat').val(set.industry_category_id);
         $('#businesScale').val(set.business_scale_id);
         $('#business_regno').val(set.industry_registration_no);
