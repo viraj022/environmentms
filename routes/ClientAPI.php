@@ -416,4 +416,4 @@ Route::middleware('auth:api')->post('/certificate/draft/{id}', 'ClientController
 Route::middleware('auth:api')->post('/certificate/original/{id}', 'ClientController@uploadOriginalCertificate'); //  upload certificate original
 
 
-Route::middleware('auth:api')->patch('/certificate/drafted/{id}', 'ClientController@completeDraftingCertificate'); //  make complete
+Route::middleware('auth:api')->patch('/certificate/drafted/{id}', 'ClientController@completeDraftingCertificate'); //  make certificate drafted
