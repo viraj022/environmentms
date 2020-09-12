@@ -706,28 +706,7 @@ class ClientController extends Controller
             return array('id' => 0, 'message' => 'false');
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // hansana
+  
     public function completeDraftingCertificate($id){
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
@@ -745,5 +724,5 @@ class ClientController extends Controller
     }
 
 
-    // hansna a 
+
 }
