@@ -633,7 +633,7 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
         $client = Client::findOrFail($id);
-        $certificate = Certificate::where('client_id', $client->id)->where('issue_status', 0)->orderBy('id', 'desc')->first();
+        $certificate = Certificate::with('client')->where('client_id', $client->id)->where('issue_status', 0)->orderBy('id', 'desc')->first();
         if (!$certificate) {
             return array();
         }else{
