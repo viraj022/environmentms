@@ -53,6 +53,8 @@ Route::get('/register_old_data/id/{id}', 'ClientController@indexOldDataReg');
 Route::get('/schedule', 'EnvironmentOfficerController@index3');
 Route::get('/update_client/id/{id}', 'ClientController@updateClient');
 Route::get('/pending_certificates', 'ClientController@certificatesUi');
+Route::get('/ad_pending_list', 'AssistantDirectorController@adPendingIndex');
+Route::get('/certificate_perforation', 'ClientController@certificatePrefer');
 //ui routs
 
 //dashboard

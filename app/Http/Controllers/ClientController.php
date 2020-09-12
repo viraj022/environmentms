@@ -87,6 +87,12 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('pending_certificates', ['pageAuth' => $pageAuth]);
     }
+    public function certificatePrefer()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('certificate_perforation', ['pageAuth' => $pageAuth]);
+    }
 
     /**
      * Show the form for creating a new resource.
