@@ -413,3 +413,4 @@ Route::middleware('auth:api')->get('/working_certificate/file/{file}', 'ClientCo
 */
 
 Route::middleware('auth:api')->post('/certificate/draft/{id}', 'ClientController@uploadCertificate'); //  upload certificate draft
+Route::middleware('auth:api')->post('/certificate/original/{id}', 'ClientController@uploadOriginalCertificate'); //  upload certificate original
