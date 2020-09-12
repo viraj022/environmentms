@@ -710,14 +710,14 @@ class ClientController extends Controller
 
 
 
-    public function issueCertificate($file_id, $cer_id)
+    public function issueCertificate($cer_id)
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        $file = Client::findOrFail($file_id);
-        $msg = setFileStatus($file_id, 'file_status', 6);
-        $msg = $msg && setFileStatus($file_id, 'cer_status', 6);
         $certificate = Certificate::findOrFail($cer_id);
+        $file = Client::findOrFail($certificate->client_id);
+        $msg = setFileStatus($file->id, 'file_status', 6);
+        $msg = $msg && setFileStatus($file->id, 'cer_status', 6);
         $certificate->issue_date = Carbon::now();
         $certificate->issue_status = 1;
         $certificate->user_id = $user->id;
