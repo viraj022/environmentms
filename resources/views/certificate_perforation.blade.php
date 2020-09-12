@@ -1,0 +1,353 @@
+@extends('layouts.admin')
+@extends('layouts.styles')
+@extends('layouts.scripts')
+@extends('layouts.navbar')
+@extends('layouts.sidebar')
+@extends('layouts.footer')
+@section('pageStyles')
+<!-- Select2 -->
+<link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<!-- Bootstrap4 Duallistbox -->
+<link rel="stylesheet" href="/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="/dist/css/adminlte.min.css">
+<!-- Google Font: Source Sans Pro -->
+@endsection
+@section('content')
+@if($pageAuth['is_read']==1 || false)
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-12 col-sm-6">
+                <h1>Certificate Perforation</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content-header">
+    <div class="card card-success card-outline card-outline-tabs">
+        <div class="card-header p-0 border-bottom-0">
+            <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="false">Industry Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link userDataTab" id="custom-tabs-three-userDataTab-tab" data-toggle="pill" href="#custom-tabs-three-userDataTab" role="tab" aria-controls="custom-tabs-three-userDataTab" aria-selected="false">Profile Details</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content" id="custom-tabs-three-tabContent">
+                <div class="tab-pane fade active show" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+                    <!--//Industry Profile Start//-->
+                    <section class="content-header">
+                        <!--show lient details START-->
+                        <div class="view-Client ">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h3 class="card-title">
+                                                        <i class="fas fa-user"></i> Client Details
+
+                                                    </h3>
+                                                </div>
+                                                <!-- /.card-header -->
+                                                <div class="card-body">
+                                                    <dl class="row">
+                                                        <dt class="col-sm-4">Name:</dt>
+                                                        <dd class="col-sm-6" id="client_name"></dd>
+                                                        <dt class="col-sm-4">Address:</dt>
+                                                        <dd class="col-sm-6" id="client_address"></dd>
+                                                        <dt class="col-sm-4">Contact No:</dt>
+                                                        <dd class="col-sm-6" id="client_cont"></dd>
+                                                        <dt class="col-sm-4">Contact Email:</dt>
+                                                        <dd class="col-sm-6" id="client_amil"></dd>
+                                                    </dl>
+                                                </div>
+                                                <!-- /.card-body -->
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h3 class="card-title"><i class="fas fa-address-card"></i> Services</h3>
+                                                </div>
+                                                <!-- /.card-header -->
+
+                                                <div class="card-body">
+                                                    <!--                                                    <div class="callout callout-danger">
+                                                    
+                                                                                                            <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change Environment Officer</button>
+                                                                                                            <p>There is a problem that we need to</p>
+                                                                                                        </div>-->
+
+                                                    <div class="newEPL d-none info-box mb-3 bg-success">
+                                                        <span class="info-box-icon">
+                                                            <button class="btn btn-lg btn-default" id="newEPL"><i class="fa fa-plus"></i></button></span>
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text">Create new environment protection license file</span>
+                                                            <span class="info-box-number">New EPL</span>
+                                                        </div>
+                                                        <!-- /.info-box-content -->
+                                                    </div>
+                                                    <div class="viewEPL info-box mb-3 bg-success d-none">
+                                                        <span class="info-box-icon">
+                                                            <a class="btn btn-lg btn-default" href="" id="setEPlLink"><i class="fa fa-plus"></i></a></span>
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text">Environment protection license file</span>
+                                                            <span class="info-box-number">View <a id="setEPLCode"></a></span>
+                                                        </div>
+                                                        <!-- /.info-box-content -->
+                                                    </div>
+
+                                                    <div class="info-box mb-3 bg-info">
+                                                        <span class="info-box-icon">
+                                                            <button class="btn btn-lg btn-default" id="newSiteClearence" ><i class="fa fa-plus"></i></button></span>
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text">Create new site clearance file</span>
+                                                            <span class="info-box-number">New Site Clearance</span>
+                                                        </div>
+                                                        <!-- /.info-box-content -->
+                                                    </div>
+
+                                                    <div class="info-box mb-3 bg-info">
+                                                        <span class="info-box-icon">
+                                                            <button class="btn btn-lg btn-default" id="teli" ><i class="fa fa-plus"></i></button></span>
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text">Create new telecommunication site clearance file</span>
+                                                            <span class="info-box-number">Telecommunication Site Clearance</span>
+                                                        </div>
+                                                        <!-- /.info-box-content -->
+                                                    </div>
+
+                                                    <div class="info-box mb-3 bg-info">
+                                                        <span class="info-box-icon">
+                                                            <button class="btn btn-lg btn-default" id="scheduleWaste"><i class="fa fa-plus"></i></button></span>
+
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text">Create new schedule waste management certificate</span>
+                                                            <span class="info-box-number">Schedule Waste</span>
+                                                        </div>
+                                                        <!-- /.info-box-content -->
+                                                    </div>
+
+                                                </div>
+                                                <!-- /.card-body -->
+
+                                                <div class="serviceSectionCnf dark">
+                                                    <a class="text-white">Not Allowed To Add New EPL For Old Profile!</a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="col-md-12 showReportInfoUi d-none">
+                                        <div class="card card-danger collapsed-card">
+                                            <div class="card-header">
+                                                <h3 class="card-title"> There was a problem with  file. Please Check it.</h3>
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool text-white" data-card-widget="collapse">Read More..
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="card-body reportInfo" style="display: none;">
+                                                Unknown Error!
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                <i class="fas fa-address-card"></i> EPL Details
+                                            </h3>
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <h6 id="env_firstname">Application/Licence Number: <a class="text-danger">Not Assigned</a></h6>
+                                            <dt>Name : <a id="obj_name"></a></dt>
+                                            <dt>File No : <a id="obj_regno"></a></dt>                       
+                                            <dt>Industry Name : <a id="342"></a></dt>                       
+                                            <dt>Industry Address : <a id="34"></a></dt>                       
+                                            <hr>
+                                            <dt>Download & Upload Application :</dt>
+
+                                            <a href="" class="btn btn-dark navToFile1" target="_blank"><i class="fas fa-file-upload"></i> Upload Certificate/Application</a>
+
+                                            <div class="form-group d-none" id="fileUpDiv">
+                                                <hr>
+                                                <label id="uploadLabel">File Upload </label>
+                                                <input id="fileUploadInput" type="file" class=""  accept="image/*, .pdf">
+                                                <div class="progress d-none">
+                                                    <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                                        <!--<span class="sr-only">40% Complete (success)</span>-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <a href="" class="btn btn-primary" target="_blank"><i class="fa fa-check"></i> Complete Certificate</a>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                        <!--Search Client By NIC END-->
+
+                        <div class="modal fade" id="modal-danger">
+                            <div class="modal-dialog">
+                                <div class="modal-content bg-danger">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Delete Selected Item</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p><b>Are you sure you want to permanently delete this Item? </b></p>
+                                        <p>Once you continue, this process can not be undone. Please Procede with care.</p>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                                        <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                    </section>
+                    <!--//Industry Profile END//-->
+                </div>
+                <!--//All User Data Open//-->
+                <div class="tab-pane fade" id="custom-tabs-three-userDataTab" role="tabpanel" aria-labelledby="custom-tabs-three-userDataTab-tab">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card card-success card-outline">
+                                    <div class="card-body box-profile">
+                                        <h3 class="profile-username text-center">Client Details</h3>
+
+                                        <p class="text-muted text-center firstL_name">{Client Name}</p>
+
+                                        <ul class="list-group list-group-unbordered mb-3">
+                                            <li class="list-group-item">
+                                                <b>File No</b> <a class="float-right file_no"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Assign Date</b> <a class="float-right assign_date"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Address</b> <a class="float-right cl_address"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Email</b> <a class="float-right cl_email"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Contact No</b> <a class="float-right cl_contact_no"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>NIC</b> <a class="float-right cl_nic"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card card-success card-outline">
+                                    <div class="card-body box-profile">
+                                        <h3 class="profile-username text-center">Industry Details</h3>
+
+                                        <p class="text-muted text-center tabf_industry_name">{industry name}</p>
+
+                                        <ul class="list-group list-group-unbordered mb-3">
+                                            <li class="list-group-item">
+                                                <b>Registration No</b> <a class="float-right tabf_industry_registration_no"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Industry Category</b> <a class="float-right tabf_industry_cat_name"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Business Scale</b> <a class="float-right tabf_business_scale"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>PradesheeyaSaba</b> <a class="float-right tabf_pradesheeyasaba"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Start Date</b> <a class="float-right tabf_industry_start_date"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Investment</b> <a class="float-right tabf_industry_investment"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Address</b> <a class="float-right tabf_industry_address"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Contact No</b> <a class="float-right tabf_industry_contact_no"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Email</b> <a class="float-right tabf_industry_email"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Environment Officer</b> <a class="float-right tabf_environment_officer"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                   
+                </div>                
+            </div>
+        </div>
+        <!--        <div class="overlay dark loadingRenderUI">
+                    <i class="fas fa-2x fa-sync-alt"></i>
+                </div>-->
+    </div>  
+</section>
+<!--//Tab Section END//-->  
+@endif
+@endsection
+
+@section('pageScripts')
+<!-- Page script -->
+<!-- Select2 -->
+<script src="../../plugins/select2/js/select2.full.min.js"></script>
+<!-- Bootstrap4 Duallistbox -->
+<script src="../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+<!-- InputMask -->
+<script src="../../plugins/moment/moment.min.js"></script>
+<script src="../../plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+<!-- date-range-picker -->
+<script src="../../plugins/daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap color picker -->
+<script src="../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Bootstrap Switch -->
+<script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<script src="../../dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../dist/js/demo.js"></script>
+<script src="../../js/CertificatePreferJS/certificate_perf.js" type="text/javascript"></script>
+<!-- AdminLTE App -->
+<script>
+    $(function () {
+//Load table
+        getaProfilebyId(PROFILE_ID, function (parameters) {
+            setProfileDetails(parameters);
+            $(".loadingRenderUI").remove(); //<--Check Loading Status
+        });
+
+//select button action 
+        $(document).on('click', '.btnAction', function () {
+        });
+    });
+
+</script>
+@endsection

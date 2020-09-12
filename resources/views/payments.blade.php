@@ -64,7 +64,6 @@
                                    value="">
                             <div id="valAmount" class="d-none"><p class="text-danger">Field is required</p></div>
                         </div>
-
                     </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
