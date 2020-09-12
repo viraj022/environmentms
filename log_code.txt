@@ -1,0 +1,48 @@
+max length for code is 20
+
+FileOP
+	attachment
+	FileCreate
+	FileUpdate
+	FileDelate
+OldFile
+	OldFileCreate
+	OldFileUpdate
+	OldFileDelate
+Inspections
+	inspectionNeed 
+
+FileAssign
+
+FileAssignEPL
+
+FileForward
+
+FileProblams
+
+FilePrograss
+
+
+
+
+
+================== view Levels =================
+1 -> Basic
+2 -> Officer
+3 -> Assistant Director
+4 -> Director
+5 -> System Owner
+
+
+
+            LogActivity::fileLog($client->id, 'CNFILE', "Create New File", 1);
+            LogActivity::addToLog('Create a new Industry File',$client);
+
+
+
+
+
+
+
+	
+

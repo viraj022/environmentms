@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\EPL;
 use Carbon\Carbon;
 use App\Attachemnt;
+use App\Helpers\LogActivity;
+use App\ApplicationType;
+use App\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -64,8 +67,10 @@ class AttachemntsController extends Controller
             $msg = $attachment->save();
 
             if ($msg) {
+                 LogActivity::addToLog('New attachment created',$attachment);
                 return array('id' => 1, 'message' => 'true');
             } else {
+                 LogActivity::addToLog('Fail to create new attachment',$attachment);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -93,8 +98,10 @@ class AttachemntsController extends Controller
             $msg = $attachment->save();
 
             if ($msg) {
+                LogActivity::addToLog('Attachment updated',$attachment);
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Attachment update fail',$attachment);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -170,8 +177,10 @@ class AttachemntsController extends Controller
             $msg = $attachment->delete();
 
             if ($msg) {
+                LogActivity::addToLog('Attachment deleted',$attachment);
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to delete attachment',$attachment);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -220,9 +229,13 @@ class AttachemntsController extends Controller
                         'created_at' => Carbon::now()->toDateTimeString()
                     ]
                 );
+                LogActivity::addToLog('File attached',$attachment);             
+
                 return array('id' => 1, 'message' => 'true');
             });
+            LogActivity::fileLog($e->client_id,'FileOP', "File ".$file_name." attached", 1);
         } else {
+            LogActivity::addToLog('Fail to attach ',$attachment);  
             abort(401);
         }
     }
@@ -231,11 +244,14 @@ class AttachemntsController extends Controller
     {
         $e = EPL::findOrFail($epl);
         $e->attachemnts()->detach($attachment);
+        LogActivity::addToLog('File deattached',$attachment);  
+        LogActivity::fileLog($e->client_id,'FileOP', "File deattached", 1);      
         return array('id' => 1, 'message' => 'true');
     }
 
     public function getEplAttachments($epl)
     {
+        LogActivity::addToLog('EPL Attachment requested',$epl); 
         return \DB::select(\DB::raw("SELECT b.path, b.type, b.attachment_epl_id, a.att_id, a.attachment_name FROM (SELECT
 	application_types.`name`, 
 	attachemnts.`name` AS attachment_name,
@@ -277,6 +293,7 @@ WHERE attachemnt_e_p_l.e_p_l_id = '{$epl}') AS b
             //Create our directory if it does not exist
             mkdir("uploads/EPL/" . $id . "/attachments/" . $attachemntId);
         }
+       
         return "uploads/EPL/" . $id . "/attachments/" . $attachemntId . "/";
     }
 }

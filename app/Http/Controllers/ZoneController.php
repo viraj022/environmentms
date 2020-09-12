@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Zone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\LogActivity;
 
 class ZoneController extends Controller {
 
@@ -37,9 +38,12 @@ class ZoneController extends Controller {
             $zone->code = \request('code');
             $msg = $zone->save();
 
+   
             if ($msg) {
+                LogActivity::addToLog('Created : ZoneController',$zone);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to Create : ZoneController',$zone);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -82,9 +86,12 @@ class ZoneController extends Controller {
             }
             $msg = $zone->save();
 
+
             if ($msg) {
+                LogActivity::addToLog('Updated : ZoneController',$zone);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to Update : ZoneController',$zone);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -144,8 +151,10 @@ class ZoneController extends Controller {
             $msg = $zone->delete();
 
             if ($msg) {
+                LogActivity::addToLog('Deleted : ZoneController',$zone);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to Delete : ZoneController',$zone);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
