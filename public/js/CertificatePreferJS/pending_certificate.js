@@ -1,6 +1,7 @@
 function getaProfilebyId(callBack) {
     var url = "/api/files/certificate_drafting";
-    var Obj = {1: 'New EPL', 2: 'Renew EPL', 3: 'New Site Clearance', 4: 'Site Clearance'};
+    var certificate_status = {0: 'pending', 1: 'Drafting', 2: 'Drafted', 3: 'AD Pending', 4: 'Director Pending', 5: 'Director Approved', 6: 'Issued','-1': 'Hold'};
+    var certificate_type = {0: 'pending', 1: 'New EPL', 2: 'Renew EPL', 3: 'New Site Clearance', 4: 'Site Clearance Extended'};
     ajaxRequest('GET', url, null, function (result) {
         var tbl = '';
         if (result.length == 0) {
@@ -10,9 +11,9 @@ function getaProfilebyId(callBack) {
                 tbl += '<tr>';
                 tbl += '<td>' + ++index + '</td>';
                 tbl += '<td>' + row.industry_name + '</td>';
-                tbl += '<td><a href="/industry_profile/id/' + row.id + '" target="_blank">' + row.file_no + '</a></td>';
-                tbl += '<td>' + Obj[row.cer_type_status] + '</td>';
-                tbl += '<td><a href="/certificate_perforation/id/' + row.id + '" class="btn btn-success">Update Certificate<a></td>';
+                tbl += '<td><a href="/industry_profile/id/' + row.id + '" target="_blank">' + row.file_no + '</a>(' + certificate_type[row.cer_type_status] + ')</td>';
+                tbl += '<td>' + certificate_status[row.cer_status] + '</td>';
+                tbl += '<td><a href="/certificate_perforation/id/' + row.id + '" class="btn btn-success">Certificate<a></td>';
                 tbl += '</tr>';
             });
         }

@@ -67,7 +67,13 @@
                                                         <dt class="col-sm-4">Contact Email:</dt>
                                                         <dd class="col-sm-6" id="client_amil"></dd>
                                                     </dl>
+                                                    <hr>
+                                                    <dt>Name : <a id="obj_name"></a></dt>
+                                                    <dt>File No : <a id="obj_regno"></a></dt>                       
+                                                    <dt>Industry Name : <a id="342"></a></dt>                       
+                                                    <dt>Industry Address : <a id="34"></a></dt> 
                                                 </div>
+                                                <button class="btn btn-primary genCertificateNum d-none"><i class="fa fa-gear"></i> Generate Certificate Number</button>
                                                 <!-- /.card-body -->
                                             </div>
                                         </div>
@@ -91,62 +97,45 @@
                                     <div class="card">
                                         <div class="card-header">
                                             <h3 class="card-title">
-                                                <i class="fas fa-address-card"></i> EPL Details
+                                                <i class="fas fa-address-card"></i> Certificate Details
                                             </h3>
                                         </div>
                                         <!-- /.card-header -->
                                         <div class="card-body">
-                                            <h6 id="env_firstname">Application/Licence Number: <a class="text-danger">Not Assigned</a></h6>
-                                            <dt>Name : <a id="obj_name"></a></dt>
-                                            <dt>File No : <a id="obj_regno"></a></dt>                       
-                                            <dt>Industry Name : <a id="342"></a></dt>                       
-                                            <dt>Industry Address : <a id="34"></a></dt>                       
+                                            <h6 id="certificate_Num">Application/Licence Number: <a class="text-danger">Not Assigned</a></h6>                      
+                                            <h6 id="created_at">Created At:</h6>                      
+                                            <h6 id="updated_at">Updated At:</h6>                      
                                             <hr>
                                             <dt>Download & Upload Application :</dt>
 
-                                            <a href="" class="btn btn-dark navToFile1" target="_blank"><i class="fas fa-file-upload"></i> Upload Certificate/Application</a>
-
+                                            <button class="btn btn-dark navToFile1"><i class="fas fa-file-upload"></i> Upload Certificate/Application</button>
                                             <div class="form-group d-none" id="fileUpDiv">
                                                 <hr>
                                                 <label id="uploadLabel">File Upload </label>
-                                                <input id="fileUploadInput" type="file" class=""  accept="image/*, .pdf">
+                                                <input id="fileUploadInput" type="file" class=""  accept="application/pdf">
+                                                <button id="uploadCerfile" class="btn btn-success"><i class="fas fa-file-upload"></i> Upload</button>
+                                                <div class="col-3 fileShowUi d-none" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 200px;">
+                                                    <a href="#" target="_blank">
+                                                        <img class="rounded" alt="PDF" style="width: 100%; height: 80%;" src="/dist/img/pdf-view.png" data-holder-rendered="true">
+                                                    </a>
+                                                </div>
                                                 <div class="progress d-none">
                                                     <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
                                                         <!--<span class="sr-only">40% Complete (success)</span>-->
                                                     </div>
                                                 </div>
                                             </div>
-                                            <a href="" class="btn btn-primary" target="_blank"><i class="fa fa-check"></i> Complete Certificate</a>
+                                            <button class="btn btn-primary complCertificate d-none"><i class="fa fa-check"></i> Complete Certificate</button>
                                         </div>
                                         <!-- /.card-body -->
+                                        <div class="overlay certificateDetails dark">
+                                            <i class="fas fa-2x fa-sync-alt"></i>
+                                        </div>
                                     </div> 
                                 </div>
                             </div>
                         </div>
                         <!--Search Client By NIC END-->
-
-                        <div class="modal fade" id="modal-danger">
-                            <div class="modal-dialog">
-                                <div class="modal-content bg-danger">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">Delete Selected Item</h4>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p><b>Are you sure you want to permanently delete this Item? </b></p>
-                                        <p>Once you continue, this process can not be undone. Please Procede with care.</p>
-                                    </div>
-                                    <div class="modal-footer justify-content-between">
-                                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                                        <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
-                                    </div>
-                                </div>
-                                <!-- /.modal-content -->
-                            </div>
-                            <!-- /.modal-dialog -->
-                        </div>
                     </section>
                     <!--//Industry Profile END//-->
                 </div>
@@ -264,6 +253,7 @@
 <!-- AdminLTE App -->
 <script>
     var PROFILE_ID = '{{$id}}';
+    var CERTIFICATE_ID = '';
     $(function () {
 //Load table
         getaProfilebyId(PROFILE_ID, function (parameters) {
@@ -274,6 +264,56 @@
 
 //select button action 
         $(document).on('click', '.btnAction', function () {
+        });
+    });
+
+//Show Certificate Details
+    getCertificateDetails(PROFILE_ID, function name(resp) {
+        if (resp.length == 0) {
+            $('.genCertificateNum').removeClass('d-none');
+        } else {
+            $('.certificateDetails').remove();
+            $('#certificate_Num').html('Application/Licence Number: ' + resp.cetificate_number);
+            $('#created_at').html('Created At: ' + resp.created_at);
+            $('#updated_at').html('Updated At: ' + resp.updated_at);
+            CERTIFICATE_ID = parseInt(resp.id);
+            if (resp.certificate_path != null) {
+                $('.complCertificate').removeClass('d-none');
+                $('.fileShowUi').removeClass('d-none');
+                $(".fileShowUi").attr("href", resp.certificate_path);
+            } else {
+
+            }
+        }
+    });
+//Gen Certificate Number
+    $('.genCertificateNum').click(function () {
+        genCertificateNumbyId(PROFILE_ID, function (resp) {
+            show_mesege(resp);
+            if (resp.id == 1) {
+                getCertificateDetails(PROFILE_ID);
+            }
+        });
+    });
+    $('.navToFile1').click(function () {
+        $('#fileUpDiv').removeClass('d-none');
+    });
+
+    $('#uploadCerfile').click(function () {
+        if (isNaN(CERTIFICATE_ID)) {
+            alert('Certificate ID Error!');
+            return false;
+        }
+        let file = $('#fileUploadInput')[0].files[0];
+        if ($('#fileUploadInput')[0].files.length === 0) {
+            alert('No File Selected!');
+            return false;
+        }
+        submitDataWithFile('/api/certificate/draft/' + CERTIFICATE_ID, {file: file}, function (resp) {
+            show_mesege(resp);
+            if (resp.id == 1) {
+                getCertificateDetails(PROFILE_ID);
+            }
         });
     });
 
