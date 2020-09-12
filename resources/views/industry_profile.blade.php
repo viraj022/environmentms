@@ -401,7 +401,7 @@
 
                                         <ul class="list-group list-group-unbordered mb-3">
                                             <li class="list-group-item">
-                                                <b>Registration No</b> <a class="float-right tabf_industry_registration_no"></a>
+                                                <b>BR No</b> <a class="float-right tabf_industry_registration_no"></a>
                                             </li>
                                             <li class="list-group-item">
                                                 <b>Industry Category</b> <a class="float-right tabf_industry_cat_name"></a>
