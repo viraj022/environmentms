@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use App\User;
 use App\AssistantDirector;
 use App\EnvironmentOfficer;
@@ -293,5 +294,47 @@ class AssistantDirectorController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+    }
+
+
+
+    public function approveFile($adId, $file_id)
+    {
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $file = Client::findOrFail($file_id);
+        $assistantDirector = AssistantDirector::with('user')->findOrFail($adId);
+        // dd($assistantDirector->user);
+        $msg = setFileStatus($file_id, 'file_status', 2);
+        $msg = setFileStatus($file_id, 'cer_status', 0);
+
+        fileLog($file->id, 'AdApprove', 'Asistant Director (' . $assistantDirector->user->user_name . ') Approve the file and forward to certificate drafting.', 0);
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
+
+
+
+    public function rejectFile($adId, $file_id)
+    {
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $file = Client::findOrFail($file_id);
+        $assistantDirector = AssistantDirector::with('user')->findOrFail($adId);
+        // dd($assistantDirector->user);
+        $msg = setFileStatus($file_id, 'file_status', -1);
+        // $msg = setFileStatus($file_id, 'cer_status', 0);
+
+        fileLog($file->id, 'AdReject', 'Asistant Director (' . $assistantDirector->user->user_name . ') Rejected the file.', 0);
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
     }
 }//end calss
