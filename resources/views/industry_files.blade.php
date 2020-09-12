@@ -125,6 +125,8 @@
                 <div class="modal-body">
                     <button type="button" id="setInspectionVal2" class="btn btn-primary d-none"><i class="fa fa-check"></i> Set Inspection</button>
                     <button type="button" id="needApproval" class="btn btn-primary d-none"><i class="fa fa-check"></i> AD Approval</button>
+                    <button type="button" id="submitAdCerApproval" class="btn btn-primary d-none"><i class="fa fa-check"></i> Submit For AD Certificate Approval</button>
+                    <button type="button" id="rejectAdCerApproval" class="btn btn-danger d-none"><i class="fa fa-check"></i> Reject Certificate Approval</button>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -213,6 +215,8 @@
         $('#modal-x2').modal();
         var fileData = JSON.parse(unescape($(this).val()));
         $('#needApproval').val($(this).val()); //<-- Share this button value to this button
+        $('#submitAdCerApproval').val($(this).val()); //<-- Share this button value to submitAdCerApproval button
+        $('#rejectAdCerApproval').val($(this).val()); //<-- Share this button value to submitAdCerApproval button
         let f_Status = fileData.file_status;
         $('#modalTitlex2').html(fileData.file_no);
         if ((f_Status == 0) && (fileData.need_inspection == null)) {
@@ -220,6 +224,10 @@
             $('#needApproval').addClass('d-none');
         } else {
             $('#setInspectionVal2').addClass('d-none');
+        }
+        if ((f_Status == 2) && (fileData.cer_status == 2)) {
+            $('#submitAdCerApproval').removeClass('d-none');
+            $('#rejectAdCerApproval').removeClass('d-none');
         }
         if ((fileData.file_status == 0) && (fileData.need_inspection == 'Completed')) {
             $('#needApproval').removeClass('d-none');
@@ -230,6 +238,31 @@
         var fileData = JSON.parse(unescape($(this).val()));
         if (confirm('Are you sure you want to approve?')) {
             approvalApi(fileData.id, fileData.environment_officer_id, function (resp) {
+                show_mesege(resp);
+                if (resp.id == 1) {
+                    $('#modal-x2').modal('hide');
+                    forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+                }
+            });
+        }
+    });
+
+    $(document).on('click', '#submitAdCerApproval', function () {
+        var fileData = JSON.parse(unescape($(this).val()));
+        if (confirm('Are you sure you want to approve?')) {
+            adCertificateApproval(fileData.id, fileData.environment_officer_id, function (resp) {
+                show_mesege(resp);
+                if (resp.id == 1) {
+                    $('#modal-x2').modal('hide');
+                    forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+                }
+            });
+        }
+    });
+    $(document).on('click', '#rejectAdCerApproval', function () {
+        var fileData = JSON.parse(unescape($(this).val()));
+        if (confirm('Are you sure you want to approve?')) {
+            rejectCertificateApproval(fileData.id, fileData.environment_officer_id, function (resp) {
                 show_mesege(resp);
                 if (resp.id == 1) {
                     $('#modal-x2').modal('hide');

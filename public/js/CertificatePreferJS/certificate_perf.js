@@ -77,19 +77,43 @@ function getCertificateDetails(file_id, callBack) {
         return false;
     }
     var url = "/api/working_certificate/file/" + file_id;
-    ajaxRequest('GET', url, null, function (result) {
+    ajaxRequest('GET', url, null, function (resp) {
+        if (resp.length == 0) {
+            $('.genCertificateNum').removeClass('d-none');
+        } else {
+            $('.certificateDetails').remove();
+            $('#certificate_Num').html('Application/Licence Number: ' + resp.cetificate_number);
+            $('#created_at').html('Created At: ' + resp.created_at);
+            $('#updated_at').html('Updated At: ' + resp.updated_at);
+            if (resp.certificate_path != null) {
+                $('.fileShowUi').removeClass('d-none');
+                $("#fileuploadedPath").attr("href", "/" + resp.certificate_path);
+                if (resp.client.cer_status == 2) {
+                    console.log(resp.client.cer_status);
+                    $('#uploadFileSection').addClass('d-none');
+                    $('#certificateSubmittedLable').removeClass('d-none');
+                    $('.complCertificate').addClass('d-none');
+                } else {
+                    $('#certificateSubmittedLable').addClass('d-none');
+                    $('#uploadFileSection').removeClass('d-none');
+                    $('.complCertificate').removeClass('d-none');
+                }
+
+            }
+
+        }
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
-            callBack(result);
+            callBack(resp);
         }
     });
 }
 
-function completeCertificateAPI(file_id, callBack) {
-    if (file_id.length == 0) {
+function completeCertificateAPI(certificate_id, callBack) {
+    if (isNaN(certificate_id)) {
         return false;
     }
-    var url = "/api/working_certificate/file/" + file_id;
-    ajaxRequest('GET', url, null, function (result) {
+    var url = "/api/certificate/drafted/" + certificate_id;
+    ajaxRequest('PATCH', url, null, function (result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }
