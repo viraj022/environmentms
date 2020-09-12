@@ -58,8 +58,24 @@
             </div>
         </div>
     </div>
-</div>
-</div>
+    <div class="modal fade" id="modal-x2">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modalTitlex2">Modal</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="button" id="prepareCertificate" class="btn btn-primary d-none"><i class="fa fa-check"></i> Approve For Prepare Certificate</button>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 @endif
 @endsection
@@ -99,6 +115,34 @@
 //select button action 
         $(document).on('click', '.btnAction', function () {
         });
+
+
+        $(document).on('click', '.actionDetails', function () {
+            $('#modal-x2').modal();
+            var fileData = JSON.parse(unescape($(this).val()));
+            $('#prepareCertificate').val($(this).val()); //<-- Share this button value to this button
+            let f_Status = fileData.file_status;
+            $('#modalTitlex2').html(fileData.file_no);
+            if (f_Status == 1) {
+                $('#prepareCertificate').removeClass('d-none');
+            } else {
+                $('#prepareCertificate').addClass('d-none');
+            }
+        });
+
+        $(document).on('click', '#prepareCertificate', function () {
+            var fileData = JSON.parse(unescape($(this).val()));
+            if (confirm('Are you sure you want to approve?')) {
+                preCertificateApi(fileData.id, $('#getAssistantDirector').val(), function (resp) {
+                    show_mesege(resp);
+                    if (resp.id == 1) {
+                        loadAdPendingListTable($('#getAssistantDirector').val());
+                        $('#modal-x2').modal('hide');
+                    }
+                });
+            }
+        });
+
     });
 
 </script>

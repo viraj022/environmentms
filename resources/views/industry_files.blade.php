@@ -220,13 +220,10 @@
             $('#needApproval').addClass('d-none');
         } else {
             $('#setInspectionVal2').addClass('d-none');
+        }
+        if ((fileData.file_status == 0) && (fileData.need_inspection == 'Completed')) {
             $('#needApproval').removeClass('d-none');
         }
-//        if (f_Status == 0) {
-//            $('#needApproval').removeClass('d-none');
-//        } else {
-//            $('#needApproval').addClass('d-none');
-//        }
     });
 
     $(document).on('click', '#needApproval', function () {

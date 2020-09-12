@@ -67,7 +67,13 @@
                                                         <dt class="col-sm-4">Contact Email:</dt>
                                                         <dd class="col-sm-6" id="client_amil"></dd>
                                                     </dl>
+                                                    <hr>
+                                                    <dt>Name : <a id="obj_name"></a></dt>
+                                                    <dt>File No : <a id="obj_regno"></a></dt>                       
+                                                    <dt>Industry Name : <a id="342"></a></dt>                       
+                                                    <dt>Industry Address : <a id="34"></a></dt> 
                                                 </div>
+                                                <a href="" class="btn btn-primary" target="_blank"><i class="fa fa-gear genCertificateNum"></i> Generate Certificate Number</a>
                                                 <!-- /.card-body -->
                                             </div>
                                         </div>
@@ -91,16 +97,12 @@
                                     <div class="card">
                                         <div class="card-header">
                                             <h3 class="card-title">
-                                                <i class="fas fa-address-card"></i> EPL Details
+                                                <i class="fas fa-address-card"></i> Certificate Details
                                             </h3>
                                         </div>
                                         <!-- /.card-header -->
                                         <div class="card-body">
-                                            <h6 id="env_firstname">Application/Licence Number: <a class="text-danger">Not Assigned</a></h6>
-                                            <dt>Name : <a id="obj_name"></a></dt>
-                                            <dt>File No : <a id="obj_regno"></a></dt>                       
-                                            <dt>Industry Name : <a id="342"></a></dt>                       
-                                            <dt>Industry Address : <a id="34"></a></dt>                       
+                                            <h6 id="env_firstname">Application/Licence Number: <a class="text-danger">Not Assigned</a></h6>                      
                                             <hr>
                                             <dt>Download & Upload Application :</dt>
 
@@ -119,6 +121,9 @@
                                             <a href="" class="btn btn-primary" target="_blank"><i class="fa fa-check"></i> Complete Certificate</a>
                                         </div>
                                         <!-- /.card-body -->
+                                        <div class="overlay certificateDetails dark">
+                                            <i class="fas fa-2x fa-sync-alt"></i>
+                                        </div>
                                     </div> 
                                 </div>
                             </div>
@@ -274,6 +279,20 @@
 
 //select button action 
         $(document).on('click', '.btnAction', function () {
+        });
+    });
+
+//Show Certificate Details
+    function certificateStatus() {
+
+    }
+//Gen Certificate Number
+    $('#genCertificateNum').click(function () {
+        genCertificateNumbyId(PROFILE_ID, function (resp) {
+            show_mesege(resp);
+            if (resp.id == 1) {
+                $('.certificateDetails').remove();
+            }
         });
     });
 
