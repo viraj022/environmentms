@@ -80,7 +80,7 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('update_industry_file', ['pageAuth' => $pageAuth, 'id' => $id]);
     }
-    
+
     public function certificatesUi()
     {
         $user = Auth::user();
@@ -195,7 +195,7 @@ class ClientController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,$id)
+    public function store(Request $request, $id)
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
@@ -212,8 +212,8 @@ class ClientController extends Controller
             'industry_contact_no' => ['nullable', new contactNo],
             'industry_address' => 'sometimes|required|string',
             'industry_email' => 'nullable|email',
-            'industry_coordinate_x' => ['sometimes','numeric', 'required', 'between:-180,180'],
-            'industry_coordinate_y' => ['sometimes','numeric', 'required', 'between:-90,90'],
+            'industry_coordinate_x' => ['sometimes', 'numeric', 'required', 'between:-180,180'],
+            'industry_coordinate_y' => ['sometimes', 'numeric', 'required', 'between:-90,90'],
             'pradesheeyasaba_id' => 'sometimes|required|integer',
             'industry_is_industry' => 'sometimes|required|integer',
             'industry_investment' => 'sometimes|required|numeric',
@@ -223,7 +223,7 @@ class ClientController extends Controller
             // 'password' => 'required',
         ]);
         if ($pageAuth['is_update']) {
-            $msg = Client::where('id', $id)->update($request->all());            
+            $msg = Client::where('id', $id)->update($request->all());
             if ($msg) {
                 return array('id' => 1, 'message' => 'true');
             } else {
@@ -562,13 +562,34 @@ class ClientController extends Controller
         request()->validate([
             'status_type' => 'required|string',
             'status_code' => 'required|string',
-            'status_value' => 'nullable|string',      
-      
+            'status_value' => 'nullable|string',
+
         ]);
-        if(setFileStatus($id,\request('status_type'),\request('status_code'),\request('status_value'))){
+        if (setFileStatus($id, \request('status_type'), \request('status_code'), \request('status_value'))) {
             return array('id' => 1, 'message' => 'true');
-        }else{
+        } else {
             return array('id' => 0, 'message' => 'false');
         }
+    }
+
+    public function getDirectorPendingList()
+    {
+        return  Client::getFileByStatusQuery('file_status', array(-2, 6))->get();
+    }
+    public function getAssistanceDirectorPendingList($id)
+    {
+        return  Client::getFileByStatusQuery('file_status', array(1, 3))->whereHas('environmentOfficer.assistantDirector', function ($query) use($id) {
+            $query->where('assistant_directors.id',  $id);
+        })->get();
+    }
+    public function getEnvironmentOfficerPendingList($id)
+    {
+        return  Client::getFileByStatusQuery('file_status', array(0))->whereHas('environmentOfficer', function ($query) use($id) {
+            $query->where('environment_officers.id',  $id);
+        })->get();
+    }
+    public function getCertificateDraftingList()
+    {
+        return  Client::getFileByStatusQuery('file_status', array(2))->get();
     }
 }

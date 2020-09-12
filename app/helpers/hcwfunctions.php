@@ -14,16 +14,16 @@ function productImagePath($image_name)
 
 function setFileStatus($fileId, $statusType, $statusCode, $statusValue = '')
 {
-    $file = Client::findOrfail($fileId);
+    $file = Client::findOrFail($fileId);
     switch($statusType){
-        case 'file_approval':
-            $file->file_approval_status = $statusCode;
+        case 'file_status':
+            $file->file_status = $statusCode;
         break;
         case 'inspection':
             $file->need_inspection = $statusCode;
         break;
-        case 'certificate_type':
-            $file->certificate_type_status = $statusCode;
+        case 'cer_type_status':
+            $file->cer_type_status = $statusCode;
         break;
         case 'old_data':
             $file->is_old = $statusCode;
@@ -31,8 +31,8 @@ function setFileStatus($fileId, $statusType, $statusCode, $statusValue = '')
         case 'file_working':
             $file->file_approval_status = $statusCode;
         break;
-        case 'certificate':
-            $file->certificate_status = $statusCode;
+        case 'cer_status':
+            $file->cer_status = $statusCode;
         break;
         case 'file_problem':
             $file->file_problem_status = $statusCode;
@@ -43,3 +43,5 @@ function setFileStatus($fileId, $statusType, $statusCode, $statusValue = '')
     }
     return $file->save();
 }
+
+
