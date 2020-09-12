@@ -337,4 +337,45 @@ class AssistantDirectorController extends Controller
             return array('id' => 0, 'message' => 'false');
         }
     }
+    // hansana
+    public function directorRejectCertificate($file_id)
+    {
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $file = Client::findOrFail($file_id);
+        
+        // dd($assistantDirector->user);
+        $msg = setFileStatus($file_id, 'file_status', 2);
+        $msg = setFileStatus($file_id, 'cer_status', 2);
+        // $msg = setFileStatus($file_id, 'cer_status', 0);
+
+        fileLog($file->id, 'DReject', 'Director (' . $user->user_name . ') Rejected the certificate.', 0);
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
+    public function directorHoldCertificate( $file_id)
+    {
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $file = Client::findOrFail($file_id);
+        
+        // dd($assistantDirector->user);
+        $msg = setFileStatus($file_id, 'file_status', -2);
+        $msg = setFileStatus($file_id, 'cer_status', -1);
+        // $msg = setFileStatus($file_id, 'cer_status', 0);
+
+        fileLog($file->id, 'DReject', 'Director (' . $user->user_name . ') Rejected the certificate.', 0);
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
+//hansana
+
 }//end calss
