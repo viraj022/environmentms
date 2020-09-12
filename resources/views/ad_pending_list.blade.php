@@ -69,6 +69,9 @@
                 </div>
                 <div class="modal-body">
                     <button type="button" id="prepareCertificate" class="btn btn-primary d-none"><i class="fa fa-check"></i> Approve For Prepare Certificate</button>
+                    <button type="button" id="approveCertificate" class="btn btn-primary d-none"><i class="fa fa-check"></i> Approve Certificate</button>
+                    <button type="button" id="rejectCertificate" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject Certificate</button>
+                    <button type="button" id="rejectFile" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject File</button>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -121,10 +124,16 @@
             $('#modal-x2').modal();
             var fileData = JSON.parse(unescape($(this).val()));
             $('#prepareCertificate').val($(this).val()); //<-- Share this button value to this button
+            $('#approveCertificate').val($(this).val()); //<-- Share this button value to this button
+            $('#rejectCertificate').val($(this).val()); //<-- Share this button value to this button
             let f_Status = fileData.file_status;
             $('#modalTitlex2').html(fileData.file_no);
             if (f_Status == 1) {
                 $('#prepareCertificate').removeClass('d-none');
+                $('#rejectFile').removeClass('d-none');
+            } else if (f_Status == 3) {
+                $('#approveCertificate').removeClass('d-none');
+                $('#rejectCertificate').removeClass('d-none');
             } else {
                 $('#prepareCertificate').addClass('d-none');
             }
@@ -134,6 +143,30 @@
             var fileData = JSON.parse(unescape($(this).val()));
             if (confirm('Are you sure you want to approve?')) {
                 preCertificateApi(fileData.id, $('#getAssistantDirector').val(), function (resp) {
+                    show_mesege(resp);
+                    if (resp.id == 1) {
+                        loadAdPendingListTable($('#getAssistantDirector').val());
+                        $('#modal-x2').modal('hide');
+                    }
+                });
+            }
+        });
+        $(document).on('click', '#approveCertificate', function () { // approve certificate btn
+            var fileData = JSON.parse(unescape($(this).val()));
+            if (confirm('Are you sure you want to approve?')) {
+                certificateApproveApi(fileData.id, $('#getAssistantDirector').val(), function (resp) {
+                    show_mesege(resp);
+                    if (resp.id == 1) {
+                        loadAdPendingListTable($('#getAssistantDirector').val());
+                        $('#modal-x2').modal('hide');
+                    }
+                });
+            }
+        });
+        $(document).on('click', '#rejectCertificate', function () { // reject certificate btn
+            var fileData = JSON.parse(unescape($(this).val()));
+            if (confirm('Are you sure you want to approve?')) {
+                certificateRejectApi(fileData.id, $('#getAssistantDirector').val(), function (resp) {
                     show_mesege(resp);
                     if (resp.id == 1) {
                         loadAdPendingListTable($('#getAssistantDirector').val());

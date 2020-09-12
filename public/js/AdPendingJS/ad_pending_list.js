@@ -29,7 +29,7 @@ function getAdPendingList(id, callBack) {
 
 function loadAdPendingListTable(id) {
     getAdPendingList(id, function (result) {
-        var dataObj = {0: 'pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Prenidng Approval', 4: 'D Certificate Approval Prenidng', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold'};
+        var dataObj = {0: 'pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Pending Approval', 4: 'D Certificate Approval Prenidng', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold'};
         var tbl = "";
         var id = 1;
         if (result.length == 0) {
@@ -58,6 +58,28 @@ function preCertificateApi(file_id, assDir_id, callBack) {
         return false;
     }
     var url = "/api/assistant_director/approve/" + assDir_id + "/" + file_id;
+    ajaxRequest('PATCH', url, null, function (result) {
+        if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
+            callBack(result);
+        }
+    });
+}
+function certificateApproveApi(file_id, assDir_id, callBack) {
+    if (file_id.length == 0) {
+        return false;
+    }
+    var url = "/api/assistant_director/approve_certificate/" + assDir_id + "/" + file_id;
+    ajaxRequest('PATCH', url, null, function (result) {
+        if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
+            callBack(result);
+        }
+    });
+}
+function certificateRejectApi(file_id, assDir_id, callBack) {
+    if (file_id.length == 0) {
+        return false;
+    }
+    var url = "/api/assistant_director/reject_certificate/" + assDir_id + "/" + file_id;
     ajaxRequest('PATCH', url, null, function (result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);

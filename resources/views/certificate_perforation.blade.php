@@ -107,9 +107,10 @@
                                             <h6 id="updated_at">Updated At:</h6>                      
                                             <hr>
                                             <div id="uploadFileSection">
-                                                <dt>Download & Upload Application :</dt>
+                                                <dt>Upload Application :</dt>
                                                 <button class="btn btn-dark navToFile1"><i class="fas fa-file-upload"></i> Upload Certificate/Application</button>   
                                             </div>
+                                            <hr>
                                             <div class="form-group d-none" id="fileUpDiv">
                                                 <hr>
                                                 <label id="uploadLabel">File Upload </label>
@@ -123,11 +124,27 @@
                                             </div>
                                             <h4 class="text-success d-none" id="certificateSubmittedLable">Certificate Submitted</h4>
                                             <button class="btn btn-primary complCertificate d-none"><i class="fa fa-check"></i> Complete Certificate</button>
-                                            <div class="col-3 fileShowUi d-none" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 200px;">
-                                                <a data-toggle="tooltip" data-placement="top" title="Click to view file" id="fileuploadedPath" href="" target="_blank">
-                                                    <img class="rounded" alt="PDF" style="width: 100%; height: 80%;" src="/dist/img/pdf-view.png" data-holder-rendered="true">
-                                                </a>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="fileShowUi d-none" style=" height: 200px;">
+                                                        <hr>
+                                                        <a data-toggle="tooltip" data-placement="top" title="Click to view file" id="fileuploadedPath" href="" target="_blank">
+                                                            <p>Drafted Certificate</p>
+                                                            <img class="rounded" alt="PDF" style="width: 100%; height: 80%;" src="/dist/img/pdf-view.png" data-holder-rendered="true">
+                                                        </a>
+                                                    </div>       
+                                                </div>   
+                                                <div class="col-6">
+                                                    <div class="originalCertificateShowUi d-none" style=" height: 200px;">
+                                                        <hr>
+                                                        <a data-toggle="tooltip" data-placement="top" title="Click to view file" id="originalCertificatePath" href="" target="_blank">
+                                                            <p>Original Certificate</p>
+                                                            <img class="rounded" alt="PDF" style="width: 100%; height: 80%;" src="/dist/img/pdf-view.png" data-holder-rendered="true">
+                                                        </a>
+                                                    </div>
+                                                </div>   
                                             </div>
+
                                         </div>
                                         <!-- /.card-body -->
                                         <div class="overlay certificateDetails dark">
@@ -255,6 +272,7 @@
 <!-- AdminLTE App -->
 <script>
     var PROFILE_ID = '{{$id}}';
+    var FILE_STATUS = '';
     var CERTIFICATE_ID = '';
     $(function () {
 //Load table
@@ -271,6 +289,7 @@
 
 //Show Certificate Details
     getCertificateDetails(PROFILE_ID, function (resp) {
+        FILE_STATUS = parseInt(resp.client.file_status);
         CERTIFICATE_ID = parseInt(resp.id);
     });
 //Gen Certificate Number
@@ -289,6 +308,7 @@
     });
 
     $('#uploadCerfile').click(function () {
+        let url_upload = '';
         if (isNaN(CERTIFICATE_ID)) {
             alert('Certificate ID Error!');
             return false;
@@ -298,11 +318,18 @@
             alert('No File Selected!');
             return false;
         }
-        submitDataWithFile('/api/certificate/draft/' + CERTIFICATE_ID, {file: file}, function (resp) {
+        if (FILE_STATUS == 4) {
+            url_upload = '/api/certificate/original/';
+        } else if (FILE_STATUS == 2) {
+            url_upload = '/api/certificate/draft/';
+        }
+        console.log(FILE_STATUS);
+        submitDataWithFile(url_upload + CERTIFICATE_ID, {file: file}, function (resp) {
             show_mesege(resp);
             if (resp.id == 1) {
                 getCertificateDetails(PROFILE_ID, function (resp) {
                     CERTIFICATE_ID = parseInt(resp.id);
+                    FILE_STATUS = parseInt(resp.client.file_status);
                 });
             }
         });
@@ -310,10 +337,11 @@
 
     $('.complCertificate').click(function () {
         if (confirm('Are you sure you want to cimplete this certificate?')) {
-            completeCertificateAPI(CERTIFICATE_ID, function (resp) {
+            completeCertificateAPI(CERTIFICATE_ID, FILE_STATUS, function (resp) {
                 show_mesege(resp);
                 getCertificateDetails(PROFILE_ID, function (resp) {
                     CERTIFICATE_ID = parseInt(resp.id);
+                    FILE_STATUS = parseInt(resp.client.file_status);
                 });
             });
         }
