@@ -201,7 +201,7 @@ class EPLController extends Controller
                     // $client->is_working = 1;
                     $client->save();
                     $epl->save();
-
+                    setFileStatus($client->id, 'cer_type_status', 1);
                     LogActivity::addToLog('New EPL created', $epl);
                     LogActivity::fileLog($epl->client_id, 'FileOP', "EPL creted and application path updated", 1);
 
