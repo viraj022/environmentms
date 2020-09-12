@@ -351,3 +351,6 @@ Route::middleware('auth:api')->post('/start_drafting/id/{id}', 'ClientController
 {
     "nextNumber": "000001"
 }*/
+
+
+Route::middleware('auth:api')->get('/working_certificate/file/{file}', 'ClientController@getCertificateDetails'); //  get Working certificate
