@@ -70,8 +70,7 @@ class InspectionSessionController extends Controller
                 $dLog->inspection_session_id = $inspectionSession->id;
                 $msg = $msg &&  $dLog->save();
 
-                $file->need_inspection = Client::STATUS_PENDING;
-                $file->is_working = Client::IS_WORKING_WORKING;
+                $file->need_inspection = Client::STATUS_PENDING;               
                 $msg = $msg && $file->save();
                 if ($msg) {
                     return array('id' => 1, 'message' => 'true');
@@ -212,8 +211,7 @@ class InspectionSessionController extends Controller
             $inspectionSession = InspectionSession::findOrFail($sessionId);
             $file = $inspectionSession->client;
             $msg = $inspectionSession->delete();
-            $file->need_inspection = Client::STATUS_INSPECTION_NEEDED;
-            $file->is_working = Client::IS_WORKING_WORKING;
+            $file->need_inspection = Client::STATUS_INSPECTION_NEEDED;         
             $msg = $msg && $file->save();
             if ($msg) {
                 return array('id' => 1, 'message' => 'true');
