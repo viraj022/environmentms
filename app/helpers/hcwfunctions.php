@@ -1,6 +1,7 @@
 <?php
 
 use App\Client;
+use App\FileLog;
 
 function changeDateFormate()
 {
@@ -42,6 +43,17 @@ function setFileStatus($fileId, $statusType, $statusCode, $statusValue = '')
         abort('422','unknown status type');
     }
     return $file->save();
+}
+
+ function fileLog($id, $code, $description,  $authlevel)
+{
+    $log = [];
+    $log['client_id'] = $id;
+    $log['code'] =  $code;
+    $log['description'] = $description;
+    $log['auth_level'] = $authlevel;
+    $log['user_id'] = auth()->check() ? auth()->user()->id : "N/A";
+    FileLog::create($log);
 }
 
 

@@ -352,4 +352,20 @@ class EnvironmentOfficerController extends Controller
         }
         return $data;
     }
+    public function approveFile($officerId, $file_id)
+    {
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $file = Client::findOrFail($file_id);
+        $officer = EnvironmentOfficer::with('user')->findOrFail($officerId);
+
+       $msg = setFileStatus($file_id,'file_status',1);
+        fileLog($file->id,'EOAPPROVE','Environment Officer ('.$officer->user->user_name.') Approve the file and forward to the AD',0);
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
 }
