@@ -302,7 +302,7 @@ class EPLController extends Controller
             $msg = $client->save();
             if ($msg) {
                 LogActivity::fileLog($client->id, 'FileOP', "application_path updated", 1);
-                LogActivity::addToLog('Save File' . $epl->id, $client);
+                LogActivity::addToLog('Save File' . $client->id, $client);
                 return array('id' => 1, 'message' => 'true');
             } else {
                 LogActivity::addToLog('fail to save File' . $epl->id, $client);
