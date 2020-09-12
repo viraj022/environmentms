@@ -348,7 +348,7 @@ class ClientController extends Controller
 
     public function workingFiles($id)
     {
-       return response (array('id'=>'API removed contact hansana'),422,);
+       return response (array('id'=>'API removed contact hansana ffvg '),422,);
         // $data = array();
         // $user = Auth::user();
         // $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
