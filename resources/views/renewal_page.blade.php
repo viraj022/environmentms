@@ -51,7 +51,7 @@
                         </div>
                         <div class="form-group">
                             <label>Date *</label>
-                            <input id="renewDate" type="date" class="form-control form-control-sm" placeholder="" value="">
+                            <input id="renewDate" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="" value="">
                         </div>
                         <div class="form-group">
                             <label>Renewal Application*</label>
