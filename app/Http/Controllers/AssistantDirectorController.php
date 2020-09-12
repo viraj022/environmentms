@@ -343,7 +343,7 @@ class AssistantDirectorController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $file = Client::findOrFail($file_id);
           $msg = setFileStatus($file_id, 'file_status', 2);
-          $msg = setFileStatus($file_id, 'cer_status', 2);
+          $msg = setFileStatus($file_id, 'cer_status', 1);
           fileLog($file->id, 'FileStatus', 'Director (' . $user->user_name . ') Rejected the certificate.', 0);
           if ($msg) {
             return array('id' => 1, 'message' => 'true');
@@ -381,7 +381,7 @@ class AssistantDirectorController extends Controller
         $file = Client::findOrFail($file_id);
         $assistantDirector = AssistantDirector::with('user')->findOrFail($adId);
         $msg = setFileStatus($file_id, 'file_status', 2);
-        $msg = setFileStatus($file_id, 'cer_status', 2);
+        $msg = setFileStatus($file_id, 'cer_status', 1);
 
         fileLog($file->id, 'FileStatus', 'Asistant Director (' . $assistantDirector->user->user_name . ') Rejected the Certificate and forward to drafting.', 0);
         if ($msg) {

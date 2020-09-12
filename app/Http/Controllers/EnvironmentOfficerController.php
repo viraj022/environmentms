@@ -419,7 +419,7 @@ class EnvironmentOfficerController extends Controller
         $officer = EnvironmentOfficer::with('user')->findOrFail($officerId);
         // dd($assistantDirector->user);
         $msg = setFileStatus($file_id, 'file_status', 2);
-        $msg = $msg && setFileStatus($file_id, 'cer_status', 2);
+        $msg = $msg && setFileStatus($file_id, 'cer_status', 1);
 
         fileLog($file->id, 'FileStatus', 'Environment Officer (' . $officer->user->user_name . ') Rejected the certificate forward to drafting.', 0);
         if ($msg) {
