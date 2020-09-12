@@ -53,7 +53,7 @@
                             <label>File Type*</label>
                             <select id="getFileType" class="form-control form-control-sm">
                                 <option value="01">New</option>
-                                <option value="02">Working</option>
+<!--                                <option value="02">Working</option>-->
                                 <option value="03">All</option>
                             </select>
                             <div id="valfileType" class="d-none"><p class="text-danger">Field is required</p></div>

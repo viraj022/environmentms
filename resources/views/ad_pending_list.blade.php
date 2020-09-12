@@ -43,7 +43,9 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 10px">#</th>
-                                        <th>Name</th>
+                                        <th>Industry Name</th>
+                                        <th>File No</th>
+                                        <th>Status</th>
                                         <th style="width: 140px">Action</th>
                                     </tr>
                                 </thead>
