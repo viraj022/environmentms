@@ -589,7 +589,7 @@ class ClientController extends Controller
 
     public function getDirectorPendingList()
     {
-        return Client::getFileByStatusQuery('file_status', array(-2, 6))->get();
+        return Client::getFileByStatusQuery('file_status', array(-2, 4,6))->get();
     }
 
     public function getAssistanceDirectorPendingList($id)
