@@ -337,4 +337,65 @@ class AssistantDirectorController extends Controller
             return array('id' => 0, 'message' => 'false');
         }
     }
+
+
+    public function approveCertificate($adId, $file_id)
+    {
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $file = Client::findOrFail($file_id);
+        $assistantDirector = AssistantDirector::with('user')->findOrFail($adId);
+        // dd($assistantDirector->user);
+        $msg = setFileStatus($file_id, 'file_status', 4);
+        $msg = setFileStatus($file_id, 'cer_status', 4);
+
+        fileLog($file->id, 'AdApproveCer', 'Asistant Director (' . $assistantDirector->user->user_name . ') Approve the Certificate and forward.', 0);
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
+
+
+
+    public function rejectCertificate($adId, $file_id)
+    {
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $file = Client::findOrFail($file_id);
+        $assistantDirector = AssistantDirector::with('user')->findOrFail($adId);
+        // dd($assistantDirector->user);
+        $msg = setFileStatus($file_id, 'file_status', 2);
+        $msg = setFileStatus($file_id, 'cer_status', 2);
+
+        fileLog($file->id, 'AdRejectCer', 'Asistant Director (' . $assistantDirector->user->user_name . ') Rejected the Certificate and forward to drafting.', 0);
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
+
+
+    public function derectorApproveCertificate($file_id)
+    {
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $file = Client::findOrFail($file_id);
+        //$assistantDirector = AssistantDirector::with('user')->findOrFail($dId);
+        // dd($assistantDirector->user);
+        $msg = setFileStatus($file_id, 'file_status', 5);
+        $msg = setFileStatus($file_id, 'cer_status', 5);
+
+        fileLog($file->id, 'AdApprove', 'Director (' . $user->user_name . ') Approve the Certificate and forward.', 0);
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
 }//end calss

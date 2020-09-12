@@ -90,7 +90,12 @@ Route::middleware('auth:api')->patch('/environment_officer/reject/{officer_id}/{
 Route::middleware('auth:api')->patch('/environment_officer/approve_certificate/{officer_id}/{file_id}', 'EnvironmentOfficerController@approveCertificate'); //   EO Approved  certificate
 Route::middleware('auth:api')->patch('/environment_officer/reject_certificate/{officer_id}/{file_id}', 'EnvironmentOfficerController@rejectCertificate'); //   EO reject certificate
 
+Route::middleware('auth:api')->patch('/assistant_director/approve_certificate/{adId}/{file_id}', 'AssistantDirectorController@approveCertificate'); //   AD Approved certificate
+Route::middleware('auth:api')->patch('/assistant_director/reject_certificate/{adId}/{file_id}', 'AssistantDirectorController@rejectCertificate'); //   AD Approved certificate
 
+Route::middleware('auth:api')->patch('/assistant_director/reject_certificate/{adId}/{file_id}', 'AssistantDirectorController@rejectCertificate'); //   AD Approved certificate
+
+Route::middleware('auth:api')->patch('/director/approve_certificate/{file_id}', 'AssistantDirectorController@derectorApproveCertificate'); //   Director Approved certificate
 
 
 // {
