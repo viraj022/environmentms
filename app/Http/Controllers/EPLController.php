@@ -99,7 +99,7 @@ class EPLController extends Controller
     }
     public function issue_certificate($epl_id)
     {
-       
+
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
@@ -122,9 +122,9 @@ class EPLController extends Controller
                             $epl->certificate_no = request('certificate_no');
                             $epl->status = 1;
                             $msg = $epl->save();
-                          
+
                             $client = Client::find($epl->client_id);
-                          //  $client->is_working = 0;
+                            //  $client->is_working = 0;
                             $msg = $msg && $client->save();
                             LogActivity::fileLog($client->id, 'epl', "is_working status Changed ", 1);
                             if ($msg) {
@@ -138,11 +138,11 @@ class EPLController extends Controller
                                 $msg = $issueLog->save();
                                 if ($msg) {
 
-                                    LogActivity::addToLog('Create a new IssueLog',$client);
-                                    LogActivity::fileLog($epl->id,'epl',"Certificate Issued", 1);
+                                    LogActivity::addToLog('Create a new IssueLog', $client);
+                                    LogActivity::fileLog($epl->id, 'epl', "Certificate Issued", 1);
                                     return response(array('id' => 1, 'message' => 'success'), 200);
                                 } else {
-                                    LogActivity::addToLog('Create a new Industry File',$client);
+                                    LogActivity::addToLog('Create a new Industry File', $client);
                                     return response(array('id' => 0, 'message' => 'fail'), 200);
                                 }
                             } else {
@@ -150,11 +150,11 @@ class EPLController extends Controller
                             }
                         });
                     } else {
-                   
+
                         return response(array('id' => 0, 'message' => 'Payment no completed'), 403);
                     }
                 } else {
-               
+
                     return response(array('id' => 0, 'message' => 'Certificate already issued'), 403);
                 }
             } else {
@@ -198,17 +198,17 @@ class EPLController extends Controller
                     $path = $request->file('file')->storeAs($storePath, $file_name);
                     $client->application_path = "storage/" . $fileUrl . "/" . $file_name;
                     $epl->path = "storage/" . $fileUrl . "/" . $file_name;
-                   // $client->is_working = 1;
+                    // $client->is_working = 1;
                     $client->save();
                     $epl->save();
 
-                    LogActivity::addToLog('New EPL created',$epl);
-                    LogActivity::fileLog($epl->client_id,'FileOP',"EPL creted and application path updated",1);
-               
+                    LogActivity::addToLog('New EPL created', $epl);
+                    LogActivity::fileLog($epl->client_id, 'FileOP', "EPL creted and application path updated", 1);
+
 
                     return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
                 } else {
-                    LogActivity::addToLog(' Fail to  creted EPL and application path updated',$epl);
+                    LogActivity::addToLog(' Fail to  creted EPL and application path updated', $epl);
                     return array('id' => 0, 'message' => 'false');
                 }
             });
@@ -246,17 +246,17 @@ class EPLController extends Controller
                     $storePath = 'public' . $fileUrl;
                     $path = $request->file('file')->storeAs($storePath, $file_name);
                     $epl->path = "storage/" . $fileUrl . "/" . $file_name;
-                 //   $client->is_working = 1;
+                    //   $client->is_working = 1;
                     $client->save();
                     $epl->save();
 
-                    
-                    LogActivity::fileLog($client->client_id,'FileOP',"application_path updated",1);
-                    LogActivity::addToLog('Renew EPL '.$epl->id,$client);
+
+                    LogActivity::fileLog($client->client_id, 'FileOP', "application_path updated", 1);
+                    LogActivity::addToLog('Renew EPL ' . $epl->id, $client);
                     return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
                 } else {
-                    
-                    LogActivity::addToLog('Fail to Renew EPL '.$epl->id,$client);
+
+                    LogActivity::addToLog('Fail to Renew EPL ' . $epl->id, $client);
                     return array('id' => 0, 'message' => 'false');
                 }
             });
@@ -301,11 +301,11 @@ class EPLController extends Controller
             $path = $request->file('file')->storeAs($storePath, $file_name);
             $msg = $client->save();
             if ($msg) {
-                LogActivity::fileLog($client->client_id,'FileOP',"application_path updated",1);
-                LogActivity::addToLog('Save File'.$epl->id,$client);
+                LogActivity::fileLog($client->id, 'FileOP', "application_path updated", 1);
+                LogActivity::addToLog('Save File' . $epl->id, $client);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('fail to save File'.$epl->id,$client);
+                LogActivity::addToLog('fail to save File' . $epl->id, $client);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -468,11 +468,11 @@ class EPLController extends Controller
                 $transaction['type'] = EPL::INSPECTION;
                 $msg = TransactionController::create($transaction);
                 if ($msg) {
-                    LogActivity::fileLog($epl->id,'FileOP',"Inspection payment added",1);
-                    LogActivity::addToLog('Inspection payment added'.$epl->id,$epl);
+                    LogActivity::fileLog($epl->id, 'FileOP', "Inspection payment added", 1);
+                    LogActivity::addToLog('Inspection payment added' . $epl->id, $epl);
                     return $this->addInspectionFine($epl);
                 } else {
-                    LogActivity::addToLog('Fail to add Inspection payment'.$epl->id,$epl);
+                    LogActivity::addToLog('Fail to add Inspection payment' . $epl->id, $epl);
                     return array('id' => 0, 'message' => 'false');
                 }
             } else {
@@ -518,11 +518,11 @@ class EPLController extends Controller
                 $epl->site_clearance_file = \request('site_clearance_file');
                 $msg = $epl->save();
                 if ($msg) {
-                    LogActivity::fileLog($epl->id,'SiteClear',"Site Clearance Added",1);
-                    LogActivity::addToLog('Site Clearance Added'.$epl->id,$epl);
+                    LogActivity::fileLog($epl->id, 'SiteClear', "Site Clearance Added", 1);
+                    LogActivity::addToLog('Site Clearance Added' . $epl->id, $epl);
                     return array('id' => 1, 'message' => 'true');
                 } else {
-                    LogActivity::addToLog('Fail to add Site Clearance'.$epl->id,$epl);
+                    LogActivity::addToLog('Fail to add Site Clearance' . $epl->id, $epl);
                     return array('id' => 0, 'message' => 'false');
                 }
             } else {
@@ -555,7 +555,7 @@ class EPLController extends Controller
             if (count($epls) > 0) {
                 return response(array("id" => 2, "message" => 'Record Already Exist Please Update the existing record'), 403);
             }
-          //  $client->is_working = 1;
+            //  $client->is_working = 1;
             $msg = $client->save();
             $epl = new EPL();
             $epl->client_id = $client->id;
@@ -577,7 +577,7 @@ class EPLController extends Controller
                     $path = $request->file('file')->storeAs($storePath, $file_name);
                     $epl->path =  "storage/" . $fileUrl . "/" . $file_name;
                     $msg = $epl->save();
-                    LogActivity::fileLog($client->id,'OldFile',"Save Old Data",1);
+                    LogActivity::fileLog($client->id, 'OldFile', "Save Old Data", 1);
                 } else {
                     return response(array('id' => 1, 'message' => 'application not found'), 422);
                 }
@@ -586,11 +586,11 @@ class EPLController extends Controller
             }
             // sending response
             if ($msg) {
-          
-                LogActivity::addToLog('Save old data done'.$epl->id,$epl);
+
+                LogActivity::addToLog('Save old data done' . $epl->id, $epl);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to save old data'.$epl->id,$epl);
+                LogActivity::addToLog('Fail to save old data' . $epl->id, $epl);
                 return array('id' => 0, 'message' => 'false');
             }
         });
@@ -607,11 +607,11 @@ class EPLController extends Controller
             abort(404);
         } else if (count($epls) == 1) {
             if ($epls[0]->delete()) {
-                LogActivity::fileLog($client->id,'OldFile',"Delete Old Data",1);
-                LogActivity::addToLog('Delete old data done'.$client->id,$client);
+                LogActivity::fileLog($client->id, 'OldFile', "Delete Old Data", 1);
+                LogActivity::addToLog('Delete old data done' . $client->id, $client);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to delete old data'.$client->id,$client);
+                LogActivity::addToLog('Fail to delete old data' . $client->id, $client);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -661,11 +661,11 @@ class EPLController extends Controller
             }
             // sending response
             if ($msg) {
-                LogActivity::fileLog($epl->id,'OldFile',"Update Old Data",1);
-                LogActivity::addToLog('Update old data done'.$client->id,$client);
+                LogActivity::fileLog($epl->id, 'OldFile', "Update Old Data", 1);
+                LogActivity::addToLog('Update old data done' . $client->id, $client);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to update old data'.$client->id,$client);
+                LogActivity::addToLog('Fail to update old data' . $client->id, $client);
                 return array('id' => 0, 'message' => 'false');
             }
         });
