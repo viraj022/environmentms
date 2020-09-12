@@ -39,7 +39,9 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 10px">#</th>
-                                        <th>Name</th>
+                                        <th>Industry Name</th>
+                                        <th>File No</th>
+                                        <th>Status</th>
                                         <th style="width: 140px">Action</th>
                                     </tr>
                                 </thead>
@@ -78,23 +80,16 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
-<script src="../../js/#/submit.js"></script>
+<script src="../../js/CertificatePreferJS/pending_certificate.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
     $(function () {
 //Load table
-        loadTable();
-        $('#34242').click(function () {
-        });
+        getaProfilebyId();
 //select button action 
         $(document).on('click', '.btnAction', function () {
         });
     });
-//Reset all fields    
-    function resetinputFields() {
-        $('#getName').val('');
-        $('#btnUpdate').val('');
-        $('#btnDelete').val('');
-    }
+
 </script>
 @endsection

@@ -200,7 +200,7 @@ Route::middleware('auth:api')->get('/files/pending/environment_officer/{id}', 'C
     },
 ]
 */
-Route::middleware('auth:api')->get('/files/pending/director', 'ClientController@getDirectorPendingList'); //  get assistance director pending list
+Route::middleware('auth:api')->get('/files/pending/director', 'ClientController@getDirectorPendingList'); //  get director pending list
 /*
 [
     {
@@ -270,7 +270,7 @@ Route::middleware('auth:api')->get('/files/pending/director', 'ClientController@
     }
 ]
 */
-Route::middleware('auth:api')->get('/files/certificate_drafting', 'ClientController@getCertificateDraftingList'); //  get assistance director pending list
+Route::middleware('auth:api')->get('/files/certificate_drafting', 'ClientController@getCertificateDraftingList'); //  get Certificate Drafting List
 /*
 [
     {

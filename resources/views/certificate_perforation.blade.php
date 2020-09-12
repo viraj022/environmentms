@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Certificate Perforation</h1>
+                <h1>Certificate Perforation (<a id="cer_status"></a>)</h1>
             </div>
         </div>
     </div>
@@ -71,80 +71,6 @@
                                                 <!-- /.card-body -->
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <h3 class="card-title"><i class="fas fa-address-card"></i> Services</h3>
-                                                </div>
-                                                <!-- /.card-header -->
-
-                                                <div class="card-body">
-                                                    <!--                                                    <div class="callout callout-danger">
-                                                    
-                                                                                                            <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change Environment Officer</button>
-                                                                                                            <p>There is a problem that we need to</p>
-                                                                                                        </div>-->
-
-                                                    <div class="newEPL d-none info-box mb-3 bg-success">
-                                                        <span class="info-box-icon">
-                                                            <button class="btn btn-lg btn-default" id="newEPL"><i class="fa fa-plus"></i></button></span>
-                                                        <div class="info-box-content">
-                                                            <span class="info-box-text">Create new environment protection license file</span>
-                                                            <span class="info-box-number">New EPL</span>
-                                                        </div>
-                                                        <!-- /.info-box-content -->
-                                                    </div>
-                                                    <div class="viewEPL info-box mb-3 bg-success d-none">
-                                                        <span class="info-box-icon">
-                                                            <a class="btn btn-lg btn-default" href="" id="setEPlLink"><i class="fa fa-plus"></i></a></span>
-                                                        <div class="info-box-content">
-                                                            <span class="info-box-text">Environment protection license file</span>
-                                                            <span class="info-box-number">View <a id="setEPLCode"></a></span>
-                                                        </div>
-                                                        <!-- /.info-box-content -->
-                                                    </div>
-
-                                                    <div class="info-box mb-3 bg-info">
-                                                        <span class="info-box-icon">
-                                                            <button class="btn btn-lg btn-default" id="newSiteClearence" ><i class="fa fa-plus"></i></button></span>
-                                                        <div class="info-box-content">
-                                                            <span class="info-box-text">Create new site clearance file</span>
-                                                            <span class="info-box-number">New Site Clearance</span>
-                                                        </div>
-                                                        <!-- /.info-box-content -->
-                                                    </div>
-
-                                                    <div class="info-box mb-3 bg-info">
-                                                        <span class="info-box-icon">
-                                                            <button class="btn btn-lg btn-default" id="teli" ><i class="fa fa-plus"></i></button></span>
-                                                        <div class="info-box-content">
-                                                            <span class="info-box-text">Create new telecommunication site clearance file</span>
-                                                            <span class="info-box-number">Telecommunication Site Clearance</span>
-                                                        </div>
-                                                        <!-- /.info-box-content -->
-                                                    </div>
-
-                                                    <div class="info-box mb-3 bg-info">
-                                                        <span class="info-box-icon">
-                                                            <button class="btn btn-lg btn-default" id="scheduleWaste"><i class="fa fa-plus"></i></button></span>
-
-                                                        <div class="info-box-content">
-                                                            <span class="info-box-text">Create new schedule waste management certificate</span>
-                                                            <span class="info-box-number">Schedule Waste</span>
-                                                        </div>
-                                                        <!-- /.info-box-content -->
-                                                    </div>
-
-                                                </div>
-                                                <!-- /.card-body -->
-
-                                                <div class="serviceSectionCnf dark">
-                                                    <a class="text-white">Not Allowed To Add New EPL For Old Profile!</a>
-                                                </div>
-
-                                            </div>
-                                        </div>
-
                                     </div>
                                 </div>
                                 <div class="col-md-8">
@@ -337,10 +263,12 @@
 <script src="../../js/CertificatePreferJS/certificate_perf.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
+    var PROFILE_ID = '{{$id}}';
     $(function () {
 //Load table
         getaProfilebyId(PROFILE_ID, function (parameters) {
             setProfileDetails(parameters);
+            setIndustryAndClientDb(parameters);
             $(".loadingRenderUI").remove(); //<--Check Loading Status
         });
 

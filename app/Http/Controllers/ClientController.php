@@ -87,11 +87,11 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('pending_certificates', ['pageAuth' => $pageAuth]);
     }
-    public function certificatePrefer()
+    public function certificatePrefer($id)
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        return view('certificate_perforation', ['pageAuth' => $pageAuth]);
+        return view('certificate_perforation', ['pageAuth' => $pageAuth, 'id' => $id]);
     }
 
     /**
@@ -378,19 +378,13 @@ class ClientController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($user->roll->level->name == Level::DIRECTOR) {
-            $data = Client::where('environment_officer_id', $id)
-                ->where('is_working', Client::IS_WORKING_NEW)
-                ->get();
+            $data = Client::where('environment_officer_id', $id)->get();
         } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
-            $data = Client::where('environment_officer_id', $id)
-                ->where('is_working', Client::IS_WORKING_NEW)
-                ->get();
+            $data = Client::where('environment_officer_id', $id)->get();
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
             $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
             if ($envOfficer) {
-                $data = Client::where('environment_officer_id', $envOfficer->id)
-                    ->where('is_working', Client::IS_WORKING_NEW)
-                    ->get();
+                $data = Client::where('environment_officer_id', $envOfficer->id)->get();
             }
         } else {
             abort(401);

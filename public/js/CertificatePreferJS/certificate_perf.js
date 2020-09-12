@@ -9,7 +9,7 @@ function getaProfilebyId(id, callBack) {
         }
     });
 }
-
+var certificate_Status = {1: 'New EPL', 2: 'Renew EPL', 3: 'New Site Clearance', 4: 'Site Clearance'};
 function setProfileDetails(obj) {
     //    $('#newEPL').val(obj.id);
     if (obj.epls.length == 0) {
@@ -28,6 +28,35 @@ function setProfileDetails(obj) {
     $('#obj_name').html(obj.industry_name);
     $('#obj_regno').html(obj.industry_registration_no);
     $('#obj_invest').html(obj.industry_investment);
-    initMap(parseFloat(obj.industry_coordinate_x), parseFloat(obj.industry_coordinate_y));
-    documentUploadDetails(obj);
+    $('#cer_status').html(certificate_Status[obj.cer_type_status]);
+}
+
+
+function setIndustryAndClientDb(get) {
+    //Client
+    $('.firstL_name').html(get.first_name + ' ' + get.last_name);
+    $('.file_no').html(get.file_no);
+    var or_assign_Date = new Date(get.assign_date);
+    var con_assign_Date = or_assign_Date.toISOString().split('T')[0];
+    $('.assign_date').html(con_assign_Date);
+    $('.cl_address').html(get.address);
+    $('.cl_email').html(get.email);
+    $('.cl_contact_no').html(get.contact_no);
+    $('.cl_nic').html(get.nic);
+    //Industry
+    $('.tabf_industry_name').html(get.industry_name);
+    $('.tabf_industry_cat_name').html(get.industry_category.name);
+    $('.tabf_business_scale').html(get.business_scale.name);
+    $('.tabf_pradesheeyasaba').html(get.pradesheeyasaba.name);
+    $('.tabf_industry_registration_no').html(get.industry_registration_no);
+    $('.tabf_industry_start_date').html(get.industry_start_date);
+    $('.tabf_industry_investment').html(get.industry_investment);
+    $('.tabf_industry_address').html(get.industry_address);
+    $('.tabf_industry_contact_no').html(get.industry_contact_no);
+    $('.tabf_industry_email').html(get.industry_email);
+    let env_officer = 'Not Assinged';
+    if (!(get.environment_officer == null)) {
+        env_officer = get.environment_officer.user.first_name + ' ' + get.environment_officer.user.last_name;
+    }
+    $('.tabf_environment_officer').html(env_officer);
 }
