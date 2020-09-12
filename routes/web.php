@@ -55,6 +55,7 @@ Route::get('/update_client/id/{id}', 'ClientController@updateClient');
 Route::get('/pending_certificates', 'ClientController@certificatesUi');
 Route::get('/ad_pending_list', 'AssistantDirectorController@adPendingIndex');
 Route::get('/certificate_perforation/id/{id}', 'ClientController@certificatePrefer');
+Route::get('/director_pending_list', 'AssistantDirectorController@directorPendingListIndex');
 //ui routs
 
 //dashboard

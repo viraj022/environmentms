@@ -131,7 +131,7 @@ function approvalApi(file_id, env_offi, callBack) {
     if (isNaN(file_id)) {
         file_id = 0;
     }
-    ajaxRequest('GET', "/api/environment_officer/approve/" + env_offi + "/" + file_id, null, function (dataSet) {
+    ajaxRequest('PATCH', "/api/environment_officer/approve/" + env_offi + "/" + file_id, null, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }

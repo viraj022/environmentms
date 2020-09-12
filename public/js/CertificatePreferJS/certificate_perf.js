@@ -85,20 +85,36 @@ function getCertificateDetails(file_id, callBack) {
             $('#certificate_Num').html('Application/Licence Number: ' + resp.cetificate_number);
             $('#created_at').html('Created At: ' + resp.created_at);
             $('#updated_at').html('Updated At: ' + resp.updated_at);
-            if (resp.certificate_path != null) {
-                $('.fileShowUi').removeClass('d-none');
-                $("#fileuploadedPath").attr("href", "/" + resp.certificate_path);
-                if (resp.client.cer_status == 2) {
-                    console.log(resp.client.cer_status);
-                    $('#uploadFileSection').addClass('d-none');
-                    $('#certificateSubmittedLable').removeClass('d-none');
-                    $('.complCertificate').addClass('d-none');
-                } else {
-                    $('#certificateSubmittedLable').addClass('d-none');
-                    $('#uploadFileSection').removeClass('d-none');
-                    $('.complCertificate').removeClass('d-none');
+            $('#fileUpDiv').addClass('d-none');
+            if (resp.cetificate_number != null) {
+                $('.genCertificateNum').addClass('d-none');
+            }
+            if (resp.client.file_status == 2) {
+                if (resp.certificate_path != null) {
+                    $('.fileShowUi').removeClass('d-none');
+                    $("#fileuploadedPath").attr("href", "/" + resp.certificate_path);
+                    if (resp.client.cer_status == 2) {
+                        console.log(resp.client.cer_status);
+                        $('#uploadFileSection').addClass('d-none');
+                        $('#certificateSubmittedLable').removeClass('d-none');
+                        $('.complCertificate').addClass('d-none');
+                    } else {
+                        $('#certificateSubmittedLable').addClass('d-none');
+                        $('#uploadFileSection').removeClass('d-none');
+                        $('.complCertificate').removeClass('d-none');
+                    }
                 }
-
+            } else if (resp.client.file_status == 4) {
+                $('.fileShowUi').removeClass('d-none');
+                if (resp.signed_certificate_path != null) {
+                    $('.complCertificate').removeClass('d-none').text('Issue Certificate').addClass('btn-success');
+                    $('.originalCertificateShowUi').removeClass('d-none');
+                    $("#originalCertificatePath").attr("href", "/" + resp.signed_certificate_path);
+                }
+            } else {
+                $('#uploadFileSection').addClass('d-none');
+                $('.complCertificate').addClass('d-none');
+                $('.issueCertificate').addClass('d-none');
             }
 
         }
@@ -108,11 +124,18 @@ function getCertificateDetails(file_id, callBack) {
     });
 }
 
-function completeCertificateAPI(certificate_id, callBack) {
+function completeCertificateAPI(certificate_id, FILE_STATUS, callBack) {
+    let url = '';
     if (isNaN(certificate_id)) {
         return false;
     }
-    var url = "/api/certificate/drafted/" + certificate_id;
+    if (FILE_STATUS == 2) {
+        url = "/api/certificate/drafted/";
+    } else if (FILE_STATUS == 4) {
+        url = "/api/certificate/complete/";
+    }
+
+    url += certificate_id;
     ajaxRequest('PATCH', url, null, function (result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);

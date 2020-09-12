@@ -291,6 +291,24 @@
                 @endforeach
             </ul>
         </li>
+        <li class="nav-item has-treeview menu-open">
+            <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-calendar"></i>
+                <p>Director <i class="right fas fa-angle-left"></i></p>
+            </a>
+            <ul class="nav nav-treeview">
+                @foreach((auth()->user()->privileges) as $indexKey=>$pre)
+                @if($pre['id']===config('auth.privileges.clientSpace'))
+                <li class="nav-item">
+                    <a href="{{ url('/director_pending_list') }}" class="nav-link {{ Request::is('director_pending_list') ? 'active' : '' }}">
+                        <i class="fas fa-clock nav-icon"></i>
+                        <p>Director Pending List</p>
+                    </a>
+                </li>
+                @endif
+                @endforeach
+            </ul>
+        </li>
 
     </ul>
 </nav>

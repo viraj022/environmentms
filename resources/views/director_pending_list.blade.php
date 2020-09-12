@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>AD Pending List</h1>
+                <h1>Director Pending List</h1>
             </div>
         </div>
     </div>
@@ -30,29 +30,20 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
-                        <div class="form-group" id="comboAssistantDirectorDisplay">
-                            <label>Assistant Director*</label>
-                            <select id="getAssistantDirector" class="form-control form-control-sm combo_AssistantDirector" style="width: 100%;" ></select>
-                            <div id="valZone" class="d-none"><p class="text-danger">Field is required</p></div>
-                        </div>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="card-body table-responsive" style="height: 450px;">
-                            <table class="table table-condensed" id="tblPendingAdList">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 10px">#</th>
-                                        <th>Industry Name</th>
-                                        <th>File No</th>
-                                        <th>Status</th>
-                                        <th style="width: 140px">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="card-body table-responsive" style="height: 450px;">
+                        <table class="table table-condensed" id="tblPendingAdList">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>Industry Name</th>
+                                    <th>File No</th>
+                                    <th>Status</th>
+                                    <th style="width: 140px">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -68,10 +59,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="button" id="prepareCertificate" class="btn btn-primary d-none"><i class="fa fa-check"></i> Approve For Prepare Certificate</button>
-                    <button type="button" id="approveCertificate" class="btn btn-primary d-none"><i class="fa fa-check"></i> Approve Certificate</button>
+                    <!--<button type="button" id="prepareCertificate" class="btn btn-primary d-none"><i class="fa fa-check"></i> Approve Certificate</button>-->
+                    <a id="viewCertificate" href="" class="btn btn-info d-none"><i class="fa fa-check"></i> View Certificate</a>
+                    <button type="button" id="holdCertificate" class="btn btn-warning d-none"><i class="fa fa-warning"></i> Hold Certificate</button>
                     <button type="button" id="rejectCertificate" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject Certificate</button>
-                    <button type="button" id="rejectFile" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject File</button>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -103,39 +94,30 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
-<script src="../../js/AdPendingJS/ad_pending_list.js" type="text/javascript"></script>
+<script src="../../js/DirectorPendingJS/director_pending_list.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
     $(function () {
 //Load table
-        loadAssistantDirectorCombo(function () {
-            loadAdPendingListTable($('#getAssistantDirector').val());
-        });
-
-        $('#getAssistantDirector').change(function () {
-            loadAdPendingListTable($('#getAssistantDirector').val());
-        });
-//select button action 
-        $(document).on('click', '.btnAction', function () {
-        });
-
+        loadDirectorPendingListTable();
 
         $(document).on('click', '.actionDetails', function () {
             $('#modal-x2').modal();
             var fileData = JSON.parse(unescape($(this).val()));
             $('#prepareCertificate').val($(this).val()); //<-- Share this button value to this button
-            $('#approveCertificate').val($(this).val()); //<-- Share this button value to this button
-            $('#rejectCertificate').val($(this).val()); //<-- Share this button value to this button
             let f_Status = fileData.file_status;
             $('#modalTitlex2').html(fileData.file_no);
-            if (f_Status == 1) {
+            if (f_Status == 4) {
+//                $("#viewCertificate").attr("href", "https://www.w3schools.com/jquery/");
                 $('#prepareCertificate').removeClass('d-none');
-                $('#rejectFile').removeClass('d-none');
-            } else if (f_Status == 3) {
-                $('#approveCertificate').removeClass('d-none');
+                $('#viewCertificate').removeClass('d-none').attr("href", "/certificate_perforation/id/"+fileData.id);
+                $('#holdCertificate').removeClass('d-none');
                 $('#rejectCertificate').removeClass('d-none');
             } else {
                 $('#prepareCertificate').addClass('d-none');
+                $('#viewCertificate').addClass('d-none');
+                $('#holdCertificate').addClass('d-none');
+                $('#rejectCertificate').addClass('d-none');
             }
         });
 
@@ -145,31 +127,20 @@
                 preCertificateApi(fileData.id, $('#getAssistantDirector').val(), function (resp) {
                     show_mesege(resp);
                     if (resp.id == 1) {
-                        loadAdPendingListTable($('#getAssistantDirector').val());
+                        loadDirectorPendingListTable();
                         $('#modal-x2').modal('hide');
                     }
                 });
             }
         });
-        $(document).on('click', '#approveCertificate', function () { // approve certificate btn
+
+        $(document).on('click', '#rejectCertificate', function () {
             var fileData = JSON.parse(unescape($(this).val()));
             if (confirm('Are you sure you want to approve?')) {
-                certificateApproveApi(fileData.id, $('#getAssistantDirector').val(), function (resp) {
+                preCertificateApi(fileData.id, $('#getAssistantDirector').val(), function (resp) {
                     show_mesege(resp);
                     if (resp.id == 1) {
-                        loadAdPendingListTable($('#getAssistantDirector').val());
-                        $('#modal-x2').modal('hide');
-                    }
-                });
-            }
-        });
-        $(document).on('click', '#rejectCertificate', function () { // reject certificate btn
-            var fileData = JSON.parse(unescape($(this).val()));
-            if (confirm('Are you sure you want to approve?')) {
-                certificateRejectApi(fileData.id, $('#getAssistantDirector').val(), function (resp) {
-                    show_mesege(resp);
-                    if (resp.id == 1) {
-                        loadAdPendingListTable($('#getAssistantDirector').val());
+                        loadDirectorPendingListTable();
                         $('#modal-x2').modal('hide');
                     }
                 });

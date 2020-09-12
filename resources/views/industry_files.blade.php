@@ -219,18 +219,21 @@
         $('#rejectAdCerApproval').val($(this).val()); //<-- Share this button value to submitAdCerApproval button
         let f_Status = fileData.file_status;
         $('#modalTitlex2').html(fileData.file_no);
-        if ((f_Status == 0) && (fileData.need_inspection == null)) {
-            $('#setInspectionVal2').removeClass('d-none');
-            $('#needApproval').addClass('d-none');
+        if (f_Status == 0) {
+            if (fileData.need_inspection == null) {
+                $('#setInspectionVal2').removeClass('d-none');
+            } else if (fileData.need_inspection == 'Completed') {
+                $('#needApproval').removeClass('d-none');
+            } else {
+                $('#needApproval').removeClass('d-none');
+            }
+        } else if (f_Status == 2) {
+            if (fileData.cer_status == 2) {
+                $('#submitAdCerApproval').removeClass('d-none');
+                $('#rejectAdCerApproval').removeClass('d-none');
+            }
         } else {
             $('#setInspectionVal2').addClass('d-none');
-        }
-        if ((f_Status == 2) && (fileData.cer_status == 2)) {
-            $('#submitAdCerApproval').removeClass('d-none');
-            $('#rejectAdCerApproval').removeClass('d-none');
-        }
-        if ((fileData.file_status == 0) && (fileData.need_inspection == 'Completed')) {
-            $('#needApproval').removeClass('d-none');
         }
     });
 

@@ -696,7 +696,7 @@ class ClientController extends Controller
         $storePath = 'public' . $fileUrl;
         $path = 'storage' . $fileUrl . "/" . $file_name;
         $request->file('file')->storeAs($storePath, $file_name);
-        $certificate->certificate_path = $path;
+        $certificate->signed_certificate_path = $path;
         $certificate->user_id_certificate_upload =  $user->id;
         //        $certificate->certificate_upload_date = Carbon::now()->toDateTimeString();
         fileLog($certificate->client_id, 'certificate', 'User (' . $user->user_name . ')  uploaded the original certificate', 0);
