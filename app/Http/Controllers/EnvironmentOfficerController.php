@@ -386,4 +386,46 @@ class EnvironmentOfficerController extends Controller
             return array('id' => 0, 'message' => 'false');
         }
     }
+
+
+
+    public function approveCertificate($officerId, $file_id)
+    {
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $file = Client::findOrFail($file_id);
+        $officer = EnvironmentOfficer::with('user')->findOrFail($officerId);
+        // dd($assistantDirector->user);
+        $msg = setFileStatus($file_id, 'file_status', 3);
+        $msg = $msg && setFileStatus($file_id, 'cer_status', 3);
+
+        fileLog($file->id, 'AdApprove', 'Environment Officer (' . $officer->user->user_name . ') Approve the certificate and forward to assistant director.', 0);
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
+
+
+
+    public function rejectCertificate($officerId, $file_id)
+    {
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $file = Client::findOrFail($file_id);
+        $officer = EnvironmentOfficer::with('user')->findOrFail($officerId);
+        // dd($assistantDirector->user);
+        $msg = setFileStatus($file_id, 'file_status', 2);
+        $msg = $msg && setFileStatus($file_id, 'cer_status', 2);
+
+        fileLog($file->id, 'AdReject', 'Environment Officer (' . $officer->user->user_name . ') Rejected the certificate forward to drafting.', 0);
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
 }

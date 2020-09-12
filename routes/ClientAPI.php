@@ -343,7 +343,10 @@ Route::middleware('auth:api')->get('/files/certificate_drafting', 'ClientControl
 
 
 
-Route::middleware('auth:api')->post('/start_drafting/id/{id}', 'ClientController@nextCertificateNumber'); //  get Certificate Drafting List
+Route::middleware('auth:api')->post('/start_drafting/id/{id}', 'ClientController@nextCertificateNumber'); //  start certificate drafting
+
+
+
 /*
 {
     "nextNumber": "000001"
