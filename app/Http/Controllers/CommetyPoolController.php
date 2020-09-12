@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\CommetyPool;
 use App\Rules\contactNo;
 use App\Rules\nationalID;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use App\Helpers\LogActivity;
 class CommetyPoolController extends Controller {
 
     public function __construct() {
@@ -55,11 +56,14 @@ class CommetyPoolController extends Controller {
 
             $msg = $CommetyPool->save();
             if ($msg) {
+                LogActivity::addToLog('Create a new commety pool',$CommetyPool);
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to create new commety pool',$CommetyPool);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
+            
             abort(401);
         }
     }
@@ -95,8 +99,10 @@ class CommetyPoolController extends Controller {
             $msg = $commetyPool->save();
 
             if ($msg) {
+                LogActivity::addToLog(' commety pool updated',$commetyPool);
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to update  commety pool',$commetyPool);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -166,8 +172,10 @@ class CommetyPoolController extends Controller {
             $commetyPool = CommetyPool::find($id);
             $msg = $commetyPool->delete();
             if ($msg) {
+                LogActivity::addToLog('Commety pool deleted',$commetyPool);
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to delete commety pool',$commetyPool);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -182,8 +190,10 @@ class CommetyPoolController extends Controller {
             $commetyPool = CommetyPool::where('nic', '=', $nic)
                     ->first();
             if ($commetyPool === null) {
+               // LogActivity::addToLog('Fail to delete commety pool',$commetyPool);
                 return array('id' => 0, 'message' => 'true'); // nic not available 
             } else {
+                //LogActivity::addToLog('Fail to delete commety pool',$commetyPool);
                 return array('id' => 0, 'message' => 'false'); // nic on the data base
             }
         } else {

@@ -6,6 +6,7 @@ use App\EPL;
 use App\EPLRenew;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\LogActivity;
 
 class EPLRenewController extends Controller {
 
@@ -59,10 +60,11 @@ class EPLRenewController extends Controller {
                             $ePLRenew->renew_application_path = $this->makeApplicationPath($epl->id) . $epl->getNextRnumber() . "." . $type;
                             $msg = $ePLRenew->save();
                             if ($msg) {
-
+                                LogActivity::fileLog($ePLRenew->id, 'EPLrenew', "EPLRenew Created", 1);
+                                LogActivity::addToLog('EPLRenew Created',$ePLRenew);
                                 return array('id' => 1, 'message' => 'true');
                             } else {
-
+                                LogActivity::addToLog('Fail to Create EPLRenew',$ePLRenew);
                                 return array('id' => 0, 'message' => 'false');
                             }
                         } else {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\IndustryCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\LogActivity;
 
 class IndustryCategoryController extends Controller {
 
@@ -42,8 +43,10 @@ class IndustryCategoryController extends Controller {
             $msg = $industryCategory->save();
 
             if ($msg) {
+                LogActivity::addToLog('Create a new Industry Category done',$industryCategory);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to create new  Industry category',$industryCategory);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -79,9 +82,12 @@ class IndustryCategoryController extends Controller {
 //        $industryCategory->name= \request('name'); 
             $msg = $industryCategory->save();
 
+     
             if ($msg) {
+                LogActivity::addToLog('Industry Category Updated',$industryCategory);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to Update Industry category',$industryCategory);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -141,9 +147,17 @@ class IndustryCategoryController extends Controller {
             //$attachment->name= \request('name');
             $msg = $industryCategory->delete();
 
+            // if ($msg) {
+            //     return array('id' => 1, 'message' => 'true');
+            // } else {
+            //     return array('id' => 0, 'message' => 'false');
+            // }
+
             if ($msg) {
+                LogActivity::addToLog('Industry Category Deleted',$industryCategory);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to Delete Industry category',$industryCategory);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {

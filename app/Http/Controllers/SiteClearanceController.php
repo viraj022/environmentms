@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\SiteClearenceSession;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\LogActivity;
 
 class SiteClearanceController extends Controller
 {
@@ -62,6 +63,7 @@ class SiteClearanceController extends Controller
             $siteClearance->count = \request('count');
             $siteClearance->site_clearence_session_id = $siteSessions->id;
             $msg = $msg && $siteClearance->save();
+            LogActivity::fileLog($client->id, 'SiteClear', "Save old data :SiteClearanceController", 1);
             // save old data file
             if ($msg) {
                 if ($request->file('file') != null) {
@@ -78,9 +80,11 @@ class SiteClearanceController extends Controller
                 abort(500);
             }
             // sending response
-            if ($msg) {
+                 if ($msg) {
+                LogActivity::addToLog('saveOldData : SiteClearanceController',$client);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('saveOldData Fail : SiteClearanceController',$client);
                 return array('id' => 0, 'message' => 'false');
             }
         });
@@ -132,8 +136,10 @@ class SiteClearanceController extends Controller
             }
             // sending response
             if ($msg) {
+                LogActivity::addToLog('updateOldData done : SiteClearanceController',$siteClearance);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('updateOldData Fail : SiteClearanceController',$siteClearance);
                 return array('id' => 0, 'message' => 'false');
             }
         });
@@ -148,8 +154,10 @@ class SiteClearanceController extends Controller
             $siteClearance = SiteClearance::findOrFail($siteClearanceSession->siteClearances[0]->id);
             $msg = $msg && $siteClearance->delete();
             if ($msg) {
+                LogActivity::addToLog('deleteOldData done : SiteClearanceController',$siteClearance);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('deleteOldData Fail : SiteClearanceController',$siteClearance);
                 return array('id' => 0, 'message' => 'false');
             }
         });

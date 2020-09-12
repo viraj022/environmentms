@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use App\FileHandlerLog;
 use App\AssistantDirector;
 use App\EnvironmentOfficer;
+use App\Helpers\LogActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Cache\Console\ClearCommand;
@@ -69,8 +70,10 @@ class EnvironmentOfficerController extends Controller
                     $environmentOfficer->active_status = '1';
                     $msg = $environmentOfficer->save();
                     if ($msg) {
+                        LogActivity::addToLog('Create a new Environment Officer',$environmentOfficer);
                         return array('id' => 1, 'message' => 'true');
                     } else {
+                        LogActivity::addToLog('Fail to create a new Environment Officer',$environmentOfficer);
                         return array('id' => 0, 'message' => 'false');
                     }
                 } else {
@@ -213,11 +216,14 @@ class EnvironmentOfficerController extends Controller
             $environmentOfficer->active_status = 0;
             $msg = $environmentOfficer->save();
             if ($msg) {
+                LogActivity::addToLog('Environment Officer deleted',$environmentOfficer); 
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to create Environment Officer',$environmentOfficer);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
+            LogActivity::addToLog('Fail to create Environment Officer',$environmentOfficer);
             abort(401);
         }
     }
@@ -258,14 +264,18 @@ class EnvironmentOfficerController extends Controller
                 $client->environment_officer_id = $environmentOfficer->id;
                 $client->assign_date = Carbon::now();
                 $msg = $client->save();
+
                 $officeLog = new FileHandlerLog();
                 $officeLog->type = ApplicationTypeController::EPL;
                 $officeLog->environment_officer_id = $environmentOfficer->id;
                 $officeLog->assistant_director_id = $environmentOfficer->assistant_director_id;
                 $msg = $msg && $officeLog->save();
                 if ($msg) {
+                    LogActivity::fileLog($client->id, 'FileAssign', "Assigned to Environment Officer", 1);
+                     LogActivity::addToLog('EPL assigned to Environment Officer  ',$environmentOfficer);
                     return array('id' => 1, 'message' => 'true');
                 } else {
+                     LogActivity::addToLog('Fail to assign EPL to Environment Officer  ',$environmentOfficer);
                     return array('id' => 0, 'message' => 'false');
                 }
             } else {
@@ -286,8 +296,11 @@ class EnvironmentOfficerController extends Controller
                 $epl->environment_officer_id = null;
                 $msg = $epl->save();
                 if ($msg) {
+                    LogActivity::fileLog($epl->id, 'FileAssignEPL', "Environment Officer Removed from EPL", 1);
+                    LogActivity::addToLog('Environment Officer Removed from EPL',$epl);
                     return array('id' => 1, 'message' => 'true');
                 } else {
+                    LogActivity::addToLog('Fail to remove Environment Officer from EPL',$epl);
                     return array('id' => 0, 'message' => 'false');
                 }
             } else {
