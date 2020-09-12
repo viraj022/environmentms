@@ -361,7 +361,7 @@ class EnvironmentOfficerController extends Controller
         $officer = EnvironmentOfficer::with('user')->findOrFail($officerId);
 
         $msg = setFileStatus($file_id, 'file_status', 1);
-        fileLog($file->id, 'EOAPPROVE', 'Environment Officer (' . $officer->user->user_name . ') Approve the file and forward to the AD', 0);
+        fileLog($file->id, 'FileStatus', 'Environment Officer (' . $officer->user->user_name . ') Approve the file and forward to the AD', 0);
         if ($msg) {
             return array('id' => 1, 'message' => 'true');
         } else {
@@ -379,7 +379,7 @@ class EnvironmentOfficerController extends Controller
         $officer = EnvironmentOfficer::with('user')->findOrFail($officerId);
 
         $msg = setFileStatus($file_id, 'file_status', -1);
-        fileLog($file->id, 'EoReject', 'Environment Officer (' . $officer->user->user_name . ') rejected the file', 0);
+        fileLog($file->id, 'FileStatus', 'Environment Officer (' . $officer->user->user_name . ') rejected the file', 0);
         if ($msg) {
             return array('id' => 1, 'message' => 'true');
         } else {
@@ -400,7 +400,7 @@ class EnvironmentOfficerController extends Controller
         $msg = setFileStatus($file_id, 'file_status', 3);
         $msg = $msg && setFileStatus($file_id, 'cer_status', 3);
 
-        fileLog($file->id, 'AdApprove', 'Environment Officer (' . $officer->user->user_name . ') Approve the certificate and forward to assistant director.', 0);
+        fileLog($file->id, 'FileStatus', 'Environment Officer (' . $officer->user->user_name . ') Approve the certificate and forward to assistant director.', 0);
         if ($msg) {
             return array('id' => 1, 'message' => 'true');
         } else {
@@ -421,7 +421,7 @@ class EnvironmentOfficerController extends Controller
         $msg = setFileStatus($file_id, 'file_status', 2);
         $msg = $msg && setFileStatus($file_id, 'cer_status', 2);
 
-        fileLog($file->id, 'AdReject', 'Environment Officer (' . $officer->user->user_name . ') Rejected the certificate forward to drafting.', 0);
+        fileLog($file->id, 'FileStatus', 'Environment Officer (' . $officer->user->user_name . ') Rejected the certificate forward to drafting.', 0);
         if ($msg) {
             return array('id' => 1, 'message' => 'true');
         } else {
