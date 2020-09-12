@@ -231,7 +231,7 @@ class ClientController extends Controller
             $msg = Client::where('id', $id)->update($request->all());
            
            $client = Client::findOrFail($id);
-            LogActivity::fileLog($client, 'FileOP', "File updated", 1);
+            LogActivity::fileLog($client->id, 'FileOP', "File updated", 1);
             $msg = Client::where('id', $id)->update($request->all());            
             if ($msg) {
                 LogActivity::addToLog('File updated',$client);
