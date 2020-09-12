@@ -82,3 +82,4 @@ Route::middleware('auth:api')->get('/epl/env_officer/{id}', 'EnvironmentOfficerC
 //         "zone_id": 1
 //     }
 // ]
+Route::middleware('auth:api')->get('/environment_officer/approve/{officer_id}/{file_id}', 'EnvironmentOfficerController@approveFile'); //   get epls by assistance director
