@@ -346,58 +346,58 @@ class ClientController extends Controller
         return $data;
     }
 
-    // public function workingFiles($id)
-    // {
-    //    return response (array('id'=>'API removed contact hansana ffvg '),422,);
-    //     // $data = array();
-    //     // $user = Auth::user();
-    //     // $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-    //     // if ($user->roll->level->name == Level::DIRECTOR) {
-    //     //     $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
-    //     // } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
-    //     //     $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
-    //     // } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-    //     //     $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
-    //     //     if ($envOfficer) {
-    //     //         $data = Client::where('environment_officer_id', $user->id)->where('is_working', 1)->get();
-    //     //     } else {
-    //     //         abort(404);
-    //     //     }
-    //     // } else {
-    //     //     abort(401);
-    //     // }
-    //     // //    Client::where()
+    public function workingFiles($id)
+    {
+        return array('id'=>'API removed contact hansana');
+        // $data = array();
+        // $user = Auth::user();
+        // $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        // if ($user->roll->level->name == Level::DIRECTOR) {
+        //     $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
+        // } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
+        //     $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
+        // } else if ($user->roll->level->name == Level::ENV_OFFICER) {
+        //     $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
+        //     if ($envOfficer) {
+        //         $data = Client::where('environment_officer_id', $user->id)->where('is_working', 1)->get();
+        //     } else {
+        //         abort(404);
+        //     }
+        // } else {
+        //     abort(401);
+        // }
+        // //    Client::where()
 
-    //     // return $data;
-    // }
+        // return $data;
+    }
 
-    // public function newlyAssigned($id)
-    // {
-    //     return response (array('id'=>'API removed contact hansana'),422,);
-    //     // $data = array();
-    //     // $user = Auth::user();
-    //     // $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-    //     // if ($user->roll->level->name == Level::DIRECTOR) {
-    //     //     $data = Client::where('environment_officer_id', $id)
-    //     //         ->where('is_working', Client::IS_WORKING_NEW)
-    //     //         ->get();
-    //     // } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
-    //     //     $data = Client::where('environment_officer_id', $id)
-    //     //         ->where('is_working', Client::IS_WORKING_NEW)
-    //     //         ->get();
-    //     // } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-    //     //     $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
-    //     //     if ($envOfficer) {
-    //     //         $data = Client::where('environment_officer_id', $envOfficer->id)
-    //     //             ->where('is_working', Client::IS_WORKING_NEW)
-    //     //             ->get();
-    //     //     }
-    //     // } else {
-    //     //     abort(401);
-    //     // }
+    public function newlyAssigned($id)
+    {
+        return array('id'=>'API removed contact hansana');
+        // $data = array();
+        // $user = Auth::user();
+        // $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        // if ($user->roll->level->name == Level::DIRECTOR) {
+        //     $data = Client::where('environment_officer_id', $id)
+        //         ->where('is_working', Client::IS_WORKING_NEW)
+        //         ->get();
+        // } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
+        //     $data = Client::where('environment_officer_id', $id)
+        //         ->where('is_working', Client::IS_WORKING_NEW)
+        //         ->get();
+        // } else if ($user->roll->level->name == Level::ENV_OFFICER) {
+        //     $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
+        //     if ($envOfficer) {
+        //         $data = Client::where('environment_officer_id', $envOfficer->id)
+        //             ->where('is_working', Client::IS_WORKING_NEW)
+        //             ->get();
+        //     }
+        // } else {
+        //     abort(401);
+        // }
 
-    //     // return $data;
-    // }
+        // return $data;
+    }
 
     public function inspection_needed_files($id)
     {
