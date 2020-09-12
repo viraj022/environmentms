@@ -648,13 +648,34 @@ class ClientController extends Controller
         $certificate = Certificate::findOrFail($id);
         $type = $request->file->extension();
         $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-        $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/" . $id;
+        $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/draft/" . $id;
         $storePath = 'public' . $fileUrl;
         $path = 'storage' . $fileUrl . "/" . $file_name;
         $request->file('file')->storeAs($storePath, $file_name);
         $certificate->certificate_path = $path;
         $certificate->user_id_certificate_upload = Carbon::now();
-        fileLog($certificate->client, 'certificate', 'User (' . $user->user_name . ')  uploaded the certificate', 0);
+        fileLog($certificate->client, 'certificate', 'User (' . $user->user_name . ')  uploaded the draft certificate', 0);
+        if ($certificate->save()) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
+
+    public function uploadOriginalCertificate($id, Request $request)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        $certificate = Certificate::findOrFail($id);
+        $type = $request->file->extension();
+        $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+        $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/original/" . $id;
+        $storePath = 'public' . $fileUrl;
+        $path = 'storage' . $fileUrl . "/" . $file_name;
+        $request->file('file')->storeAs($storePath, $file_name);
+        $certificate->certificate_path = $path;
+        $certificate->user_id_certificate_upload = Carbon::now();
+        fileLog($certificate->client, 'certificate', 'User (' . $user->user_name . ')  uploaded the original certificate', 0);
         if ($certificate->save()) {
             return array('id' => 1, 'message' => 'true');
         } else {
