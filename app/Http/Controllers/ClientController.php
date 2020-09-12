@@ -636,8 +636,26 @@ class ClientController extends Controller
         $certificate = Certificate::with('client')->where('client_id', $client->id)->where('issue_status', 0)->orderBy('id', 'desc')->first();
         if (!$certificate) {
             return array();
-        }else{
-            return $certificate; 
+        } else {
+            return $certificate;
+        }
+    }
+
+    public function uploadCertificate($id, Request $request)
+    {
+        $certificate = Certificate::findOrFail($id);
+        $type = $request->file->extension();
+        $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+        $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/" . $id;
+        $storePath = 'public' . $fileUrl;
+        $path = 'storage' . $fileUrl . "/" . $file_name;
+        $request->file('file')->storeAs($storePath, $file_name);
+        $certificate->certificate_path = $path;
+        $certificate->user_id_certificate_upload = Carbon::now();
+        if ($certificate->save()) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
         }
     }
 }
