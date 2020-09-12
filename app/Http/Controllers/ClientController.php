@@ -616,6 +616,8 @@ class ClientController extends Controller
         $cerNo = Setting::Where('name', 'certificate_ai')->first();
         $cerNo->value = $certificate->cetificate_number;
         $cerNo->save();
+        setFileStatus($client->id, 'cer_status', 1);
+        fileLog($client->id, 'StartDrafting', 'User (' . $user->user_name . ')  Start certificate drafting', 0);
         if ($msg) {
             return array('id' => 1, 'message' => 'true', 'certificate_number' => $certificate->cetificate_number);
         } else {
