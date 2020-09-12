@@ -59,7 +59,7 @@
                                                 </div>-->
                         <div class="form-group">
                             <label>Date*</label>
-                            <input id="startDate" type="date" class="form-control form-control-sm" placeholder="Enter Date..." value="">
+                            <input id="startDate" type="date"  max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">
                         </div>
                         <div class="form-group">
                             <label>Remark*</label>

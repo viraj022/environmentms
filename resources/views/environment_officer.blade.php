@@ -301,7 +301,6 @@
                                     }
 
                                     $('#getAssistantDirectorTbl').change(function () {
-
                                         loadEnvOficerTable($('#getAssistantDirectorTbl').val());
                                     });
                                 </script>
