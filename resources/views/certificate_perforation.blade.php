@@ -106,9 +106,10 @@
                                             <h6 id="created_at">Created At:</h6>                      
                                             <h6 id="updated_at">Updated At:</h6>                      
                                             <hr>
-                                            <dt>Download & Upload Application :</dt>
-
-                                            <button class="btn btn-dark navToFile1"><i class="fas fa-file-upload"></i> Upload Certificate/Application</button>
+                                            <div id="uploadFileSection">
+                                                <dt>Download & Upload Application :</dt>
+                                                <button class="btn btn-dark navToFile1"><i class="fas fa-file-upload"></i> Upload Certificate/Application</button>   
+                                            </div>
                                             <div class="form-group d-none" id="fileUpDiv">
                                                 <hr>
                                                 <label id="uploadLabel">File Upload </label>
@@ -120,6 +121,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <h4 class="text-success d-none" id="certificateSubmittedLable">Certificate Submitted</h4>
                                             <button class="btn btn-primary complCertificate d-none"><i class="fa fa-check"></i> Complete Certificate</button>
                                             <div class="col-3 fileShowUi d-none" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 200px;">
                                                 <a data-toggle="tooltip" data-placement="top" title="Click to view file" id="fileuploadedPath" href="" target="_blank">
@@ -268,30 +270,17 @@
     });
 
 //Show Certificate Details
-    getCertificateDetails(PROFILE_ID, function name(resp) {
-        if (resp.length == 0) {
-            $('.genCertificateNum').removeClass('d-none');
-        } else {
-            $('.certificateDetails').remove();
-            $('#certificate_Num').html('Application/Licence Number: ' + resp.cetificate_number);
-            $('#created_at').html('Created At: ' + resp.created_at);
-            $('#updated_at').html('Updated At: ' + resp.updated_at);
-            CERTIFICATE_ID = parseInt(resp.id);
-            if (resp.certificate_path != null) {
-                $('.complCertificate').removeClass('d-none');
-                $('.fileShowUi').removeClass('d-none');
-                $("#fileuploadedPath").attr("href", "/" + resp.certificate_path);
-            } else {
-
-            }
-        }
+    getCertificateDetails(PROFILE_ID, function (resp) {
+        CERTIFICATE_ID = parseInt(resp.id);
     });
 //Gen Certificate Number
     $('.genCertificateNum').click(function () {
         genCertificateNumbyId(PROFILE_ID, function (resp) {
             show_mesege(resp);
             if (resp.id == 1) {
-                getCertificateDetails(PROFILE_ID);
+                getCertificateDetails(PROFILE_ID, function (resp) {
+                    CERTIFICATE_ID = parseInt(resp.id);
+                });
             }
         });
     });
@@ -312,15 +301,20 @@
         submitDataWithFile('/api/certificate/draft/' + CERTIFICATE_ID, {file: file}, function (resp) {
             show_mesege(resp);
             if (resp.id == 1) {
-                getCertificateDetails(PROFILE_ID);
+                getCertificateDetails(PROFILE_ID, function (resp) {
+                    CERTIFICATE_ID = parseInt(resp.id);
+                });
             }
         });
     });
 
     $('.complCertificate').click(function () {
         if (confirm('Are you sure you want to cimplete this certificate?')) {
-            completeCertificateAPI(PROFILE_ID, function (resp) {
-
+            completeCertificateAPI(CERTIFICATE_ID, function (resp) {
+                show_mesege(resp);
+                getCertificateDetails(PROFILE_ID, function (resp) {
+                    CERTIFICATE_ID = parseInt(resp.id);
+                });
             });
         }
     });
