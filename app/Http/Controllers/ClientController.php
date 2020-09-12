@@ -643,6 +643,8 @@ class ClientController extends Controller
 
     public function uploadCertificate($id, Request $request)
     {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $certificate = Certificate::findOrFail($id);
         $type = $request->file->extension();
         $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
@@ -652,6 +654,7 @@ class ClientController extends Controller
         $request->file('file')->storeAs($storePath, $file_name);
         $certificate->certificate_path = $path;
         $certificate->user_id_certificate_upload = Carbon::now();
+        fileLog($certificate->client, 'certificate', 'User (' . $user->user_name . ')  uploaded the certificate', 0);
         if ($certificate->save()) {
             return array('id' => 1, 'message' => 'true');
         } else {
