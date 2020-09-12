@@ -114,11 +114,6 @@
                                                 <label id="uploadLabel">File Upload </label>
                                                 <input id="fileUploadInput" type="file" class=""  accept="application/pdf">
                                                 <button id="uploadCerfile" class="btn btn-success"><i class="fas fa-file-upload"></i> Upload</button>
-                                                <div class="col-3 fileShowUi d-none" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 200px;">
-                                                    <a href="#" target="_blank">
-                                                        <img class="rounded" alt="PDF" style="width: 100%; height: 80%;" src="/dist/img/pdf-view.png" data-holder-rendered="true">
-                                                    </a>
-                                                </div>
                                                 <div class="progress d-none">
                                                     <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
                                                         <!--<span class="sr-only">40% Complete (success)</span>-->
@@ -126,6 +121,11 @@
                                                 </div>
                                             </div>
                                             <button class="btn btn-primary complCertificate d-none"><i class="fa fa-check"></i> Complete Certificate</button>
+                                            <div class="col-3 fileShowUi d-none" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 200px;">
+                                                <a data-toggle="tooltip" data-placement="top" title="Click to view file" id="fileuploadedPath" href="" target="_blank">
+                                                    <img class="rounded" alt="PDF" style="width: 100%; height: 80%;" src="/dist/img/pdf-view.png" data-holder-rendered="true">
+                                                </a>
+                                            </div>
                                         </div>
                                         <!-- /.card-body -->
                                         <div class="overlay certificateDetails dark">
@@ -280,7 +280,7 @@
             if (resp.certificate_path != null) {
                 $('.complCertificate').removeClass('d-none');
                 $('.fileShowUi').removeClass('d-none');
-                $(".fileShowUi").attr("href", resp.certificate_path);
+                $("#fileuploadedPath").attr("href", "/" + resp.certificate_path);
             } else {
 
             }
@@ -315,6 +315,14 @@
                 getCertificateDetails(PROFILE_ID);
             }
         });
+    });
+
+    $('.complCertificate').click(function () {
+        if (confirm('Are you sure you want to cimplete this certificate?')) {
+            completeCertificateAPI(PROFILE_ID, function (resp) {
+
+            });
+        }
     });
 
 </script>

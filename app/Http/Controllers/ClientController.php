@@ -615,9 +615,9 @@ class ClientController extends Controller {
         $path = 'storage' . $fileUrl . "/" . $file_name;
         $request->file('file')->storeAs($storePath, $file_name);
         $certificate->certificate_path = $path;
-        $certificate->user_id_certificate_upload =  $user;
-        $certificate->certificate_upload_date = Carbon::now();
-        fileLog($certificate->client, 'certificate', 'User (' . $user->user_name . ')  uploaded the draft certificate', 0);
+        $certificate->user_id_certificate_upload =  $user->id;
+        $certificate->certificate_upload_date = Carbon::now()->toDateString();
+        fileLog($certificate->client_id, 'certificate', 'User (' . $user->user_name . ')  uploaded the draft certificate', 0);
         if ($certificate->save()) {
             return array('id' => 1, 'message' => 'true');
         } else {
@@ -637,9 +637,9 @@ class ClientController extends Controller {
         $path = 'storage' . $fileUrl . "/" . $file_name;
         $request->file('file')->storeAs($storePath, $file_name);
         $certificate->certificate_path = $path;
-        $certificate->user_id_certificate_upload =  $user;
-        $certificate->certificate_upload_date = Carbon::now();
-        fileLog($certificate->client, 'certificate', 'User (' . $user->user_name . ')  uploaded the original certificate', 0);
+        $certificate->user_id_certificate_upload =  $user->id;
+//        $certificate->certificate_upload_date = Carbon::now()->toDateTimeString();
+        fileLog($certificate->client_id, 'certificate', 'User (' . $user->user_name . ')  uploaded the original certificate', 0);
         if ($certificate->save()) {
             return array('id' => 1, 'message' => 'true');
         } else {
