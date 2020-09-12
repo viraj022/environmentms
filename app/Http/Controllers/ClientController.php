@@ -348,7 +348,7 @@ class ClientController extends Controller
 
     public function workingFiles($id)
     {
-        return array('id'=>'API removed contact hansana');
+        return array('id' => 'API removed contact hansana');
         // $data = array();
         // $user = Auth::user();
         // $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
@@ -463,7 +463,7 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $client = Client::find($id);
         $client->is_old = 2; // inspected state
-       
+
         if ($client->save()) {
             return array('id' => 1, 'message' => 'true');
         } else {
@@ -571,13 +571,13 @@ class ClientController extends Controller
     }
     public function getAssistanceDirectorPendingList($id)
     {
-        return  Client::getFileByStatusQuery('file_status', array(1, 3))->whereHas('environmentOfficer.assistantDirector', function ($query) use($id) {
+        return  Client::getFileByStatusQuery('file_status', array(1, 3))->whereHas('environmentOfficer.assistantDirector', function ($query) use ($id) {
             $query->where('assistant_directors.id',  $id);
         })->get();
     }
     public function getEnvironmentOfficerPendingList($id)
     {
-        return  Client::getFileByStatusQuery('file_status', array(0))->whereHas('environmentOfficer', function ($query) use($id) {
+        return  Client::getFileByStatusQuery('file_status', array(0))->whereHas('environmentOfficer', function ($query) use ($id) {
             $query->where('environment_officers.id',  $id);
         })->get();
     }
@@ -585,4 +585,11 @@ class ClientController extends Controller
     {
         return  Client::getFileByStatusQuery('file_status', array(2))->get();
     }
-} 
+
+
+    public function nextCertificateNumber($id)
+    {
+        $client = Client::findOrFail($id);
+        return $client->generateCertificateNumber();
+    }
+}
