@@ -72,3 +72,14 @@ function genCertificateNumbyId(file_id, callBack) {
         }
     });
 }
+function getCertificateDetails(file_id, callBack) {
+    if (file_id.length == 0) {
+        return false;
+    }
+    var url = "/api/working_certificate/file/" + file_id;
+    ajaxRequest('GET', url, null, function (result) {
+        if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
+            callBack(result);
+        }
+    });
+}

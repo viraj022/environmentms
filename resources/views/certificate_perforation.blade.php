@@ -73,7 +73,7 @@
                                                     <dt>Industry Name : <a id="342"></a></dt>                       
                                                     <dt>Industry Address : <a id="34"></a></dt> 
                                                 </div>
-                                                <a href="" class="btn btn-primary" target="_blank"><i class="fa fa-gear genCertificateNum"></i> Generate Certificate Number</a>
+                                                <a href="" class="btn btn-primary genCertificateNum d-none" target="_blank"><i class="fa fa-gear"></i> Generate Certificate Number</a>
                                                 <!-- /.card-body -->
                                             </div>
                                         </div>
@@ -283,9 +283,9 @@
     });
 
 //Show Certificate Details
-    function certificateStatus() {
-
-    }
+    getCertificateDetails(PROFILE_ID, function name(resp) {
+        console.log(resp);
+    });
 //Gen Certificate Number
     $('#genCertificateNum').click(function () {
         genCertificateNumbyId(PROFILE_ID, function (resp) {

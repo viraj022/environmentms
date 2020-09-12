@@ -351,3 +351,63 @@ Route::middleware('auth:api')->post('/start_drafting/id/{id}', 'ClientController
 {
     "nextNumber": "000001"
 }*/
+
+
+Route::middleware('auth:api')->get('/working_certificate/file/{file}', 'ClientController@getCertificateDetails'); //  get Working certificate
+/*
+{
+    "id": 1,
+    "client_id": 16,
+    "certificate_type": 456,
+    "cetificate_number": "dsada",
+    "issue_date": "2020-09-12 18:42:52",
+    "issue_status": 0,
+    "user_id": 41,
+    "certificate_path": "dsad",
+    "signed_certificate_path": "dsad",
+    "created_at": "2020-09-12 18:42:52",
+    "updated_at": "2020-09-12 18:42:52",
+    "deleted_at": null,
+    "client": {
+        "id": 16,
+        "first_name": "light",
+        "last_name": "blue",
+        "address": "file_approval",
+        "contact_no": null,
+        "email": null,
+        "nic": null,
+        "password": "$2y$10$87AzS.8pAr6U8TrQFbpPq.xilz9nOQSfo2lUD5eDXkL3pQ62hFmAG",
+        "api_token": "m4uX4kHcTBmGe2VSnbke0x5lXUGZPxrLZKYDjR6JJADusfjnLWsr1lKcfm4vI9QRtE8ZROzN7QfHhAVF",
+        "created_at": "2020-09-03 16:11:56",
+        "updated_at": "2020-09-12 17:58:51",
+        "deleted_at": null,
+        "industry_name": "testindustry",
+        "industry_category_id": 5,
+        "business_scale_id": 2,
+        "industry_contact_no": null,
+        "industry_address": "kurunegala",
+        "industry_email": null,
+        "industry_coordinate_x": "7.48905",
+        "industry_coordinate_y": "80.349985",
+        "pradesheeyasaba_id": 54,
+        "industry_is_industry": 0,
+        "industry_investment": 1000,
+        "industry_start_date": "2020-06-30 00:00:00",
+        "industry_registration_no": "light/2020",
+        "application_path": "storage//uploads/industry_files/16/application/1599130463.pdf",
+        "environment_officer_id": 10,
+        "file_01": "storage/uploads/industry_files/16/application/file1/1599218113.png",
+        "file_02": "storage/uploads/industry_files/16/application/file2/1599218121.jpeg",
+        "file_03": "storage/uploads/industry_files/16/application/file3/1599218127.png",
+        "file_no": "PEA/604//3/AG/M/16/2020",
+        "assign_date": "2020-09-04 12:06:01",
+        "is_old": 1,
+        "need_inspection": null,
+        "file_problem_status": "pending",
+        "file_problem_status_description": "",
+        "file_status": -2,
+        "cer_type_status": 0,
+        "cer_status": -1
+    }
+}
+*/

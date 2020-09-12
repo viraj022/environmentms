@@ -99,6 +99,28 @@ Route::middleware('auth:api')->patch('/director/approve_certificate/{file_id}', 
 
 
 // {
-//   "id": 1,
-//   "message": "true"
-// }
+  //   "id": 1,
+  //   "message": "true"
+  // }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  // hansana
+  
+  Route::middleware('auth:api')->patch('/director/reject/{file_id}', 'AssistantDirectorController@directorRejectCertificate'); //   Director reject certificate
+  Route::middleware('auth:api')->patch('/director/hold/{file_id}', 'AssistantDirectorController@directorHoldCertificate'); //   Director hold certificate
+
+
+
+
+
+
+// hansana

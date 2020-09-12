@@ -9,4 +9,8 @@ class Certificate extends Model
 {
     use SoftDeletes;
     
+    public function client()
+    {
+            return $this->belongsTo(Client::class);
+    }
 }
