@@ -140,11 +140,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Start Date*</label>
-                                    <input id="startDate" type="date" data-date="" data-date-format="YYYY-MMM-DD" class="form-control form-control-sm" placeholder="Enter Date..." value="">
+                                    <input id="startDate" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Submitted Date*</label>
-                                    <input id="submittedDate" type="date" class="form-control form-control-sm cutenzReq" placeholder="Enter Date..." value="">
+                                    <input id="submittedDate" type="date" max="2999-12-31" class="form-control form-control-sm cutenzReq" placeholder="Enter Date..." value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Contact No</label>
