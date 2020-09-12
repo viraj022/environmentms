@@ -151,7 +151,6 @@ class ClientController extends Controller
             $client->industry_start_date = \request('industry_start_date');
             $client->industry_registration_no = \request('industry_registration_no');
             $client->is_old = \request('is_old');
-            $client->is_working = Client::IS_WORKING_NEW;
 
             $msg = $client->save();
             $client->file_no = $this->generateCode($client);
@@ -349,54 +348,55 @@ class ClientController extends Controller
 
     public function workingFiles($id)
     {
+       return response (array('id'=>'API removed contact hansana'),422,);
+        // $data = array();
+        // $user = Auth::user();
+        // $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        // if ($user->roll->level->name == Level::DIRECTOR) {
+        //     $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
+        // } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
+        //     $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
+        // } else if ($user->roll->level->name == Level::ENV_OFFICER) {
+        //     $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
+        //     if ($envOfficer) {
+        //         $data = Client::where('environment_officer_id', $user->id)->where('is_working', 1)->get();
+        //     } else {
+        //         abort(404);
+        //     }
+        // } else {
+        //     abort(401);
+        // }
+        // //    Client::where()
 
-        $data = array();
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        if ($user->roll->level->name == Level::DIRECTOR) {
-            $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
-        } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
-            $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
-        } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-            $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
-            if ($envOfficer) {
-                $data = Client::where('environment_officer_id', $user->id)->where('is_working', 1)->get();
-            } else {
-                abort(404);
-            }
-        } else {
-            abort(401);
-        }
-        //    Client::where()
-
-        return $data;
+        // return $data;
     }
 
     public function newlyAssigned($id)
     {
-        $data = array();
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        if ($user->roll->level->name == Level::DIRECTOR) {
-            $data = Client::where('environment_officer_id', $id)
-                ->where('is_working', Client::IS_WORKING_NEW)
-                ->get();
-        } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
-            $data = Client::where('environment_officer_id', $id)
-                ->where('is_working', Client::IS_WORKING_NEW)
-                ->get();
-        } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-            $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
-            if ($envOfficer) {
-                $data = Client::where('environment_officer_id', $envOfficer->id)
-                    ->where('is_working', Client::IS_WORKING_NEW)
-                    ->get();
-            }
-        } else {
-            abort(401);
-        }
+        return response (array('id'=>'API removed contact hansana'),422,);
+        // $data = array();
+        // $user = Auth::user();
+        // $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        // if ($user->roll->level->name == Level::DIRECTOR) {
+        //     $data = Client::where('environment_officer_id', $id)
+        //         ->where('is_working', Client::IS_WORKING_NEW)
+        //         ->get();
+        // } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
+        //     $data = Client::where('environment_officer_id', $id)
+        //         ->where('is_working', Client::IS_WORKING_NEW)
+        //         ->get();
+        // } else if ($user->roll->level->name == Level::ENV_OFFICER) {
+        //     $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
+        //     if ($envOfficer) {
+        //         $data = Client::where('environment_officer_id', $envOfficer->id)
+        //             ->where('is_working', Client::IS_WORKING_NEW)
+        //             ->get();
+        //     }
+        // } else {
+        //     abort(401);
+        // }
 
-        return $data;
+        // return $data;
     }
 
     public function inspection_needed_files($id)
@@ -470,7 +470,7 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $client = Client::find($id);
         $client->is_old = 2; // inspected state
-        $client->is_working = 0; // set working status of the client to not working
+       
         if ($client->save()) {
             return array('id' => 1, 'message' => 'true');
         } else {
