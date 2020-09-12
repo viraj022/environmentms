@@ -121,7 +121,7 @@ class EPLController extends Controller
                             $epl->status = 1;
                             $msg = $epl->save();
                             $client = Client::find($epl->client_id);
-                            $client->is_working = 0;
+                          //  $client->is_working = 0;
                             $msg = $msg && $client->save();
                             if ($msg) {
                                 $issueLog = new IssueLog();
@@ -188,7 +188,7 @@ class EPLController extends Controller
                     $path = $request->file('file')->storeAs($storePath, $file_name);
                     $client->application_path = "storage/" . $fileUrl . "/" . $file_name;
                     $epl->path = "storage/" . $fileUrl . "/" . $file_name;
-                    $client->is_working = 1;
+                   // $client->is_working = 1;
                     $client->save();
                     $epl->save();
                     return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
@@ -218,7 +218,7 @@ class EPLController extends Controller
                 $epl = new EPL();
                 $epl->client_id = \request('client_id');
                 $epl->remark = \request('remark');
-                $epl->is_working = 1;
+                //$epl->is_working = 1;
                 $epl->code = $this->generateCode($client);
                 $client->application_path = "";
                 $epl->submitted_date = \request('created_date');
@@ -230,7 +230,7 @@ class EPLController extends Controller
                     $storePath = 'public' . $fileUrl;
                     $path = $request->file('file')->storeAs($storePath, $file_name);
                     $epl->path = "storage/" . $fileUrl . "/" . $file_name;
-                    $client->is_working = 1;
+                 //   $client->is_working = 1;
                     $client->save();
                     $epl->save();
                     return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
@@ -524,7 +524,7 @@ class EPLController extends Controller
             if (count($epls) > 0) {
                 return response(array("id" => 2, "message" => 'Record Already Exist Please Update the existing record'), 403);
             }
-            $client->is_working = 1;
+          //  $client->is_working = 1;
             $msg = $client->save();
             $epl = new EPL();
             $epl->client_id = $client->id;
