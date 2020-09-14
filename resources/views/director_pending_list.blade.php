@@ -102,15 +102,16 @@
         loadDirectorPendingListTable();
 
         $(document).on('click', '.actionDetails', function () {
+            let f_Status = fileData.file_status;
             $('#modal-x2').modal();
             var fileData = JSON.parse(unescape($(this).val()));
             $('#prepareCertificate').val($(this).val()); //<-- Share this button value to this button
-            let f_Status = fileData.file_status;
             $('#modalTitlex2').html(fileData.file_no);
+            $('#viewCertificate,#prepareCertificate,#holdCertificate,#rejectCertificate').addClass('d-none');
             if (f_Status == 4) {
 //                $("#viewCertificate").attr("href", "https://www.w3schools.com/jquery/");
                 $('#prepareCertificate').removeClass('d-none');
-                $('#viewCertificate').removeClass('d-none').attr("href", "/certificate_perforation/id/"+fileData.id);
+                $('#viewCertificate').removeClass('d-none').attr("href", "/certificate_perforation/id/" + fileData.id);
                 $('#holdCertificate').removeClass('d-none');
                 $('#rejectCertificate').removeClass('d-none');
             } else {

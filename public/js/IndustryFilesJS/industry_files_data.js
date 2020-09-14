@@ -102,17 +102,23 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
                 var myDate = new Date(row.created_at);
                 var fixMydate = myDate.toISOString().split('T')[0];
                 if ((row.file_status == file_status) || (file_status == 'all')) {
-                    tbl += '<tr>';
+                    let tr_style = '';
+                    if ((row.file_status == 0) && (row.need_inspection == null)) {
+                        tr_style = '    background-color: #dcf3e0;';
+                    } else if (row.file_status == 5) {
+                        tr_style = '    background-color: #cfd8d08a;';
+                    }
+                    tbl += '<tr style="' + tr_style + '">';
                     tbl += '<td>' + ++index + '</td>';
                     tbl += '<td>' + row.industry_name + '</td>';
                     tbl += '<td><a href="/industry_profile/id/' + row.id + '" class="btn btn-dark" target="_blank">' + row.file_no + '</a></td>';
                     tbl += '<td class="">' + fixMydate + '</td>';
                     tbl += '<td>' + file_status_list[row.file_status] + status_Lable + '</td>';
-                    if ((row.file_status == 0) && (row.need_inspection == null)) {
-                        tbl += '<td><button type="button" value="' + row.id + '" data-toggle="modal" data-target="#modal-xl" class="btn btn-success setInspeBtn">Set Inspection</button></td>';
-                    } else {
-                        tbl += '<td>' + row.need_inspection + '</td>';
-                    }
+//                    if ((row.file_status == 0) && (row.need_inspection == null)) {
+//                        tbl += '<td><button type="button" value="' + row.id + '" data-toggle="modal" data-target="#modal-xl" class="btn btn-success setInspeBtn">Set Inspection</button></td>';
+//                    } else {
+//                        tbl += '<td>' + row.need_inspection + '</td>';
+//                    }
                     tbl += '<td><button type="button" value="' + escape(JSON.stringify(row)) + '" class="btn btn-info detailsData">Details</button></td>';
                     tbl += '</tr>';
                 }
