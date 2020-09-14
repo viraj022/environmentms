@@ -102,9 +102,9 @@
         loadDirectorPendingListTable();
 
         $(document).on('click', '.actionDetails', function () {
+            var fileData = JSON.parse(unescape($(this).val()));
             let f_Status = fileData.file_status;
             $('#modal-x2').modal();
-            var fileData = JSON.parse(unescape($(this).val()));
             $('#prepareCertificate').val($(this).val()); //<-- Share this button value to this button
             $('#modalTitlex2').html(fileData.file_no);
             $('#viewCertificate,#prepareCertificate,#holdCertificate,#rejectCertificate').addClass('d-none');
