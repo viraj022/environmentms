@@ -121,13 +121,15 @@
 
 
         $(document).on('click', '.actionDetails', function () {
-            $('#modal-x2').modal();
+            let f_Status = fileData.file_status;
             var fileData = JSON.parse(unescape($(this).val()));
+            $('#modalTitlex2').html(fileData.file_no);
+            $('#modal-x2').modal();
+
             $('#prepareCertificate').val($(this).val()); //<-- Share this button value to this button
             $('#approveCertificate').val($(this).val()); //<-- Share this button value to this button
             $('#rejectCertificate').val($(this).val()); //<-- Share this button value to this button
-            let f_Status = fileData.file_status;
-            $('#modalTitlex2').html(fileData.file_no);
+            $('#prepareCertificate,#rejectFile,#approveCertificate,#rejectCertificate').addClass('d-none');
             if (f_Status == 1) {
                 $('#prepareCertificate').removeClass('d-none');
                 $('#rejectFile').removeClass('d-none');

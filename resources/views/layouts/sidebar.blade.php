@@ -44,7 +44,7 @@
                 </li>
             </ul>
         </li>
-        <li class="nav-item has-treeview menu-open">
+        <li class="nav-item has-treeview {{ Request::is('users','rolls') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-user-shield"></i>
                 <p>
@@ -229,7 +229,7 @@
 
             </ul>
         </li>
-        <li class="nav-item has-treeview menu-open">
+        <li class="nav-item has-treeview {{ Request::is('application_payment','pending_certificates') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-address-card"></i>
                 <p>Application <i class="right fas fa-angle-left"></i></p>
@@ -255,7 +255,7 @@
                 @endforeach
             </ul>
         </li>
-        <li class="nav-item has-treeview menu-open">
+        <li class="nav-item has-treeview {{ Request::is('schedule') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-calendar"></i>
                 <p>Calendar <i class="right fas fa-angle-left"></i></p>
@@ -273,10 +273,10 @@
                 @endforeach
             </ul>
         </li>
-        <li class="nav-item has-treeview menu-open">
+        <li class="nav-item has-treeview {{ Request::is('ad_pending_list') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link active">
-                <i class="nav-icon fas fa-calendar"></i>
-                <p>AD <i class="right fas fa-angle-left"></i></p>
+                <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                <p>Assistant Director <i class="right fas fa-angle-left"></i></p>
             </a>
             <ul class="nav nav-treeview">
                 @foreach((auth()->user()->privileges) as $indexKey=>$pre)
@@ -291,9 +291,9 @@
                 @endforeach
             </ul>
         </li>
-        <li class="nav-item has-treeview menu-open">
+        <li class="nav-item has-treeview {{ Request::is('director_pending_list') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link active">
-                <i class="nav-icon fas fa-calendar"></i>
+                <i class="nav-icon fas fa-user-tie"></i>
                 <p>Director <i class="right fas fa-angle-left"></i></p>
             </a>
             <ul class="nav nav-treeview">

@@ -130,7 +130,7 @@
                                                         <hr>
                                                         <a data-toggle="tooltip" data-placement="top" title="Click to view file" id="fileuploadedPath" href="" target="_blank">
                                                             <p>Drafted Certificate</p>
-                                                            <img class="rounded" alt="PDF" style="width: 100%; height: 80%;" src="/dist/img/pdf-view.png" data-holder-rendered="true">
+                                                            <img class="rounded" alt="PDF" style="width: 50%; height: 80%;" src="/dist/img/pdf-view.png" data-holder-rendered="true">
                                                         </a>
                                                     </div>       
                                                 </div>   
@@ -139,7 +139,7 @@
                                                         <hr>
                                                         <a data-toggle="tooltip" data-placement="top" title="Click to view file" id="originalCertificatePath" href="" target="_blank">
                                                             <p>Original Certificate</p>
-                                                            <img class="rounded" alt="PDF" style="width: 100%; height: 80%;" src="/dist/img/pdf-view.png" data-holder-rendered="true">
+                                                            <img class="rounded" alt="PDF" style="width: 50%; height: 80%;" src="/dist/img/pdf-view.png" data-holder-rendered="true">
                                                         </a>
                                                     </div>
                                                 </div>   
@@ -299,6 +299,7 @@
             if (resp.id == 1) {
                 getCertificateDetails(PROFILE_ID, function (resp) {
                     CERTIFICATE_ID = parseInt(resp.id);
+                    location.reload();
                 });
             }
         });
