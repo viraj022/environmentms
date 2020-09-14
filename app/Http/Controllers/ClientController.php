@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Setting;
+use App\Certificate;
 use App\Level;
 use App\Client;
 use Carbon\Carbon;
@@ -18,9 +20,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Helpers\LogActivity;
 
-class ClientController extends Controller {
+class ClientController extends Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware(['auth']);
     }
 
@@ -29,25 +33,29 @@ class ClientController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('client_space', ['pageAuth' => $pageAuth]);
     }
 
-    public function indexOldFileList() {
+    public function indexOldFileList()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('old_file_list', ['pageAuth' => $pageAuth]);
     }
 
-    public function indexOldDataReg($id) {
+    public function indexOldDataReg($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('old_data_registation', ['pageAuth' => $pageAuth, 'id' => $id]);
     }
 
-    public function allClientsindex() {
+    public function allClientsindex()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.industryFile'));
         if ($pageAuth['is_read']) {
@@ -57,7 +65,8 @@ class ClientController extends Controller {
         }
     }
 
-    public function index1($id) {
+    public function index1($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         if ($pageAuth['is_read']) {
@@ -67,10 +76,25 @@ class ClientController extends Controller {
         }
     }
 
-    public function updateClient($id) {
+    public function updateClient($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('update_industry_file', ['pageAuth' => $pageAuth, 'id' => $id]);
+    }
+
+    public function certificatesUi()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('pending_certificates', ['pageAuth' => $pageAuth]);
+    }
+
+    public function certificatePrefer($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('certificate_perforation', ['pageAuth' => $pageAuth, 'id' => $id]);
     }
 
     /**
@@ -78,7 +102,8 @@ class ClientController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         request()->validate([
@@ -102,7 +127,7 @@ class ClientController extends Controller {
             'industry_start_date' => 'required|date',
             'industry_registration_no' => 'nullable|string',
             'is_old' => 'required|integer',
-                // 'password' => 'required',
+            // 'password' => 'required',
         ]);
         if ($pageAuth['is_create']) {
             $client = new Client();
@@ -129,16 +154,18 @@ class ClientController extends Controller {
             $client->industry_start_date = \request('industry_start_date');
             $client->industry_registration_no = \request('industry_registration_no');
             $client->is_old = \request('is_old');
-            $client->is_working = Client::IS_WORKING_NEW;
 
             $msg = $client->save();
             $client->file_no = $this->generateCode($client);
             // dd($client->file_no);
             $msg = $msg && $client->save();
-            LogActivity::fileLog($client->id, 'CNFILE', "Create New File", 1);
+            LogActivity::fileLog($client->id, 'FileOP', "Create New File", 1);
+
             if ($msg) {
+                LogActivity::addToLog('Create a new Industry File', $client);
                 return array('id' => 1, 'message' => 'true', 'id' => $client->id);
             } else {
+                LogActivity::addToLog('Fail to create new Industry File', $client);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -146,7 +173,8 @@ class ClientController extends Controller {
         }
     }
 
-    private function generateCode($client) {
+    private function generateCode($client)
+    {
         $la = Pradesheeyasaba::find($client->pradesheeyasaba_id);
         // print_r($la);
         $lsCOde = $la->code;
@@ -172,28 +200,44 @@ class ClientController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($id) {
-        // ,register_no,' . $vehicle->id
+    public function store(Request $request, $id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         request()->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'address' => 'required',
-            'contact_no' => ['required', new contactNo],
+            'first_name' => 'sometimes|required|string',
+            'last_name' => 'nullable|string',
+            'address' => 'nullable',
+            'contact_no' => ['nullable', new contactNo],
             'email' => 'nullable|sometimes',
+            'nic' => ['nullable', 'unique:users,nic,' . $id, new nationalID],
+            'industry_name' => 'sometimes|required|string',
+            'industry_category_id' => 'sometimes|required|integer',
+            'business_scale_id' => 'sometimes|required|integer',
+            'industry_contact_no' => ['nullable', new contactNo],
+            'industry_address' => 'sometimes|required|string',
+            'industry_email' => 'nullable|email',
+            'industry_coordinate_x' => ['sometimes', 'numeric', 'required', 'between:-180,180'],
+            'industry_coordinate_y' => ['sometimes', 'numeric', 'required', 'between:-90,90'],
+            'pradesheeyasaba_id' => 'sometimes|required|integer',
+            'industry_is_industry' => 'sometimes|required|integer',
+            'industry_investment' => 'sometimes|required|numeric',
+            'industry_start_date' => 'sometimes|required|date',
+            'industry_registration_no' => 'nullable|string',
+            'is_old' => 'sometimes|required|integer',
+            // 'password' => 'required',
         ]);
         if ($pageAuth['is_update']) {
+            $msg = Client::where('id', $id)->update($request->all());
+
             $client = Client::findOrFail($id);
-            $client->first_name = \request('first_name');
-            $client->last_name = \request('last_name');
-            $client->address = \request('address');
-            $client->contact_no = \request('contact_no');
-            $client->email = \request('email');
-            $msg = $client->save();
+            LogActivity::fileLog($client->id, 'FileOP', "File updated", 1);
+            $msg = Client::where('id', $id)->update($request->all());
             if ($msg) {
+                LogActivity::addToLog('File updated', $client);
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail t o update File', $client);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -201,7 +245,8 @@ class ClientController extends Controller {
         }
     }
 
-    public function getClientById($id) {
+    public function getClientById($id)
+    {
         return Client::findOrFail($id);
     }
 
@@ -211,7 +256,8 @@ class ClientController extends Controller {
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function show() {
+    public function show()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         if ($pageAuth['is_read']) {
@@ -227,7 +273,8 @@ class ClientController extends Controller {
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function edit(Client $client) {
+    public function edit(Client $client)
+    {
         //
     }
 
@@ -238,7 +285,8 @@ class ClientController extends Controller {
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Client $client) {
+    public function update(Request $request, Client $client)
+    {
         //
     }
 
@@ -248,7 +296,8 @@ class ClientController extends Controller {
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
 
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
@@ -256,8 +305,11 @@ class ClientController extends Controller {
             $client = Client::findOrFail($id);
             $msg = $client->delete();
             if ($msg) {
+                LogActivity::addToLog("File " . $id . " deleted", $client);
+                LogActivity::fileLog($client->id, 'FileOP', "File " . $id . " deleted", 1);
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog("Fail to delete File " . $id, $client);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -265,16 +317,18 @@ class ClientController extends Controller {
         }
     }
 
-    public function findClient_by_nic($nic) {
+    public function findClient_by_nic($nic)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
         //    PaymentType::get();
         return Client::with('epls')->with('oldFiles')->where('nic', '=', $nic)
-                        ->get();
+            ->get();
     }
 
-    public function findClient_by_id($id) {
+    public function findClient_by_id($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
@@ -285,7 +339,8 @@ class ClientController extends Controller {
         return $file;
     }
 
-    public function getAllFiles($id) {
+    public function getAllFiles($id)
+    {
         $data = array();
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
@@ -306,48 +361,43 @@ class ClientController extends Controller {
         return $data;
     }
 
-    public function workingFiles($id) {
-
-        $data = array();
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        if ($user->roll->level->name == Level::DIRECTOR) {
-            $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
-        } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
-            $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
-        } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-            $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
-            if ($envOfficer) {
-                $data = Client::where('environment_officer_id', $user->id)->where('is_working', 1)->get();
-            } else {
-                abort(404);
-            }
-        } else {
-            abort(401);
-        }
-        //    Client::where()
-
-        return $data;
+    public function workingFiles($id)
+    {
+        return array('id' => 'API removed contact hansana');
+        // $data = array();
+        // $user = Auth::user();
+        // $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        // if ($user->roll->level->name == Level::DIRECTOR) {
+        //     $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
+        // } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
+        //     $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
+        // } else if ($user->roll->level->name == Level::ENV_OFFICER) {
+        //     $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
+        //     if ($envOfficer) {
+        //         $data = Client::where('environment_officer_id', $user->id)->where('is_working', 1)->get();
+        //     } else {
+        //         abort(404);
+        //     }
+        // } else {
+        //     abort(401);
+        // }
+        // //    Client::where()
+        // return $data;
     }
 
-    public function newlyAssigned($id) {
+    public function newlyAssigned($id)
+    {
         $data = array();
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($user->roll->level->name == Level::DIRECTOR) {
-            $data = Client::where('environment_officer_id', $id)
-                    ->where('is_working', Client::IS_WORKING_NEW)
-                    ->get();
+            $data = Client::where('environment_officer_id', $id)->get();
         } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
-            $data = Client::where('environment_officer_id', $id)
-                    ->where('is_working', Client::IS_WORKING_NEW)
-                    ->get();
+            $data = Client::where('environment_officer_id', $id)->get();
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
             $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
             if ($envOfficer) {
-                $data = Client::where('environment_officer_id', $envOfficer->id)
-                        ->where('is_working', Client::IS_WORKING_NEW)
-                        ->get();
+                $data = Client::where('environment_officer_id', $envOfficer->id)->get();
             }
         } else {
             abort(401);
@@ -356,24 +406,25 @@ class ClientController extends Controller {
         return $data;
     }
 
-    public function inspection_needed_files($id) {
+    public function inspection_needed_files($id)
+    {
         $data = array();
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($user->roll->level->name == Level::DIRECTOR) {
             $data = Client::where('environment_officer_id', $id)
-                    ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
-                    ->get();
+                ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
+                ->get();
         } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
             $data = Client::where('environment_officer_id', $id)
-                    ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
-                    ->get();
+                ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
+                ->get();
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
             $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
             if ($envOfficer) {
                 $data = Client::where('environment_officer_id', $envOfficer->id)
-                        ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
-                        ->get();
+                    ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
+                    ->get();
             }
         } else {
             abort(401);
@@ -381,30 +432,31 @@ class ClientController extends Controller {
         return $data;
     }
 
-    public function inspection_pending_needed_files($id) {
+    public function inspection_pending_needed_files($id)
+    {
         $data = array();
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($user->roll->level->name == Level::DIRECTOR) {
             $data = Client::with('inspectionSessions')->whereHas('inspectionSessions', function ($sql) {
-                        return $sql->where('inspection_sessions.status', '=', 0);
-                    })->where('environment_officer_id', $id)
-                    ->where('need_inspection', Client::STATUS_PENDING)
-                    ->get();
+                return $sql->where('inspection_sessions.status', '=', 0);
+            })->where('environment_officer_id', $id)
+                ->where('need_inspection', Client::STATUS_PENDING)
+                ->get();
         } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
             $data = Client::with('inspectionSessions')->whereHas('inspectionSessions', function ($sql) {
-                        return $sql->where('inspection_sessions.status', '=', 0);
-                    })->where('environment_officer_id', $id)
-                    ->where('need_inspection', Client::STATUS_PENDING)
-                    ->get();
+                return $sql->where('inspection_sessions.status', '=', 0);
+            })->where('environment_officer_id', $id)
+                ->where('need_inspection', Client::STATUS_PENDING)
+                ->get();
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
             $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
             if ($envOfficer) {
                 $data = Client::with('inspectionSessions')->whereHas('inspectionSessions', function ($sql) {
-                            return $sql->where('inspection_sessions.status', '=', 0);
-                        })->where('environment_officer_id', $envOfficer->id)
-                        ->where('need_inspection', Client::STATUS_PENDING)
-                        ->get();
+                    return $sql->where('inspection_sessions.status', '=', 0);
+                })->where('environment_officer_id', $envOfficer->id)
+                    ->where('need_inspection', Client::STATUS_PENDING)
+                    ->get();
             }
         } else {
             abort(401);
@@ -412,26 +464,32 @@ class ClientController extends Controller {
         return $data;
     }
 
-    public function getOldFiles() {
+    public function getOldFiles()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         return Client::where('is_old', 0)->with('epls')->with('oldFiles')->get();
     }
 
-    public function markOldFinish($id) {
+    public function markOldFinish($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $client = Client::find($id);
         $client->is_old = 2; // inspected state
-        $client->is_working = 0; // set working status of the client to not working
+
         if ($client->save()) {
+            LogActivity::addToLog("markOldFinish done " . $id, $client);
+            LogActivity::fileLog($client->id, 'FileOP', "markOldFinish", 1);
             return array('id' => 1, 'message' => 'true');
         } else {
+            LogActivity::addToLog("markOldFinish fail " . $id, $client);
             return array('id' => 0, 'message' => 'false');
         }
     }
 
-    public function getOldFilesDetails($id) {
+    public function getOldFilesDetails($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $client = Client::where('is_old', 0)->where('id', $id)->first();
@@ -448,7 +506,8 @@ class ClientController extends Controller {
         }
     }
 
-    public function getOldSiteClearanceData($id) {
+    public function getOldSiteClearanceData($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $client = Client::where('is_old', 0)->where('id', $id)->first();
@@ -466,25 +525,32 @@ class ClientController extends Controller {
         }
     }
 
-    public function markInspection($inspectionNeed, $id) {
+    public function markInspection($inspectionNeed, $id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $client = Client::findOrFail($id);
         if ($inspectionNeed == 'needed') {
+            LogActivity::fileLog($client->id, 'inspections', "inspection mark as needed", 1);
             $client->need_inspection = CLIENT::STATUS_INSPECTION_NEEDED;
         } else if ($inspectionNeed == 'no_needed') {
+            LogActivity::fileLog($client->id, 'inspections', "inspection mark as no needed", 1);
             $client->need_inspection = CLIENT::STATUS_INSPECTION_NOT_NEEDED;
         } else {
+            LogActivity::addToLog("markOldFinish done ", $client);
             abort(422);
         }
         if ($client->save()) {
+            LogActivity::addToLog("mark inspection  done ", $client);
             return array('id' => 1, 'message' => 'true');
         } else {
+            LogActivity::addToLog("fail to mark inspection ", $client);
             return array('id' => 0, 'message' => 'false');
         }
     }
 
-    public function file_problem_status($id) {
+    public function file_problem_status($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         request()->validate([
@@ -495,7 +561,146 @@ class ClientController extends Controller {
         $file = Client::findOrFail($id);
         $file->file_problem_status = \request('file_problem_status');
         $file->file_problem_status_description = \request('file_problem_status_description');
+        LogActivity::fileLog($file->id, 'FileProblams', "set FileProblam status " . $file->file_problem_status, 1);
         if ($file->save()) {
+            LogActivity::addToLog("mark inspection  status done ", $file);
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            LogActivity::addToLog("fail to mark inspection status  ", $file);
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
+
+    public function changeFileStatus($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        request()->validate([
+            'status_type' => 'required|string',
+            'status_code' => 'required|string',
+            'status_value' => 'nullable|string',
+        ]);
+        if (setFileStatus($id, \request('status_type'), \request('status_code'), \request('status_value'))) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
+
+    public function getDirectorPendingList()
+    {
+        return Client::getFileByStatusQuery('file_status', array(-2, 4, 6))->get();
+    }
+
+    public function getAssistanceDirectorPendingList($id)
+    {
+        return Client::getFileByStatusQuery('file_status', array(1, 3))->whereHas('environmentOfficer.assistantDirector', function ($query) use ($id) {
+            $query->where('assistant_directors.id', $id);
+        })->get();
+    }
+
+    public function getEnvironmentOfficerPendingList($id)
+    {
+        return Client::getFileByStatusQuery('file_status', array(0))->whereHas('environmentOfficer', function ($query) use ($id) {
+            $query->where('environment_officers.id', $id);
+        })->get();
+    }
+
+    public function getCertificateDraftingList()
+    {
+        return Client::getFileByStatusQuery('file_status', array(2))->where('cer_type_status', '!=', 0)->get();
+    }
+
+    public function nextCertificateNumber($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        $client = Client::findOrFail($id);
+        $certificate = new Certificate();
+
+        if ($client->cer_type_status == 1 || $client->cer_type_status == 2) {
+            //epl certificate
+            $certificate->certificate_type = 0;
+        } elseif ($client->cer_type_status == 3 || $client->cer_type_status == 4) {
+            $certificate->certificate_type = 1;
+        }
+        $certificate->cetificate_number = $client->generateCertificateNumber();
+
+        $certificate->client_id = $client->id;
+        $certificate->issue_status = 0;
+        $certificate->user_id = $user->id;
+
+        // $certificate->save();
+
+        $msg = $certificate->save();
+
+        $cerNo = Setting::Where('name', 'certificate_ai')->first();
+        $cerNo->value = $certificate->cetificate_number;
+        $cerNo->save();
+        setFileStatus($client->id, 'cer_status', 1);
+        fileLog($client->id, 'StartDrafting', 'User (' . $user->user_name . ')  Start certificate drafting', 0);
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true', 'certificate_number' => $certificate->cetificate_number);
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+
+        //  return $client->generateCertificateNumber();
+    }
+
+
+    public function getCertificateDetails($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+
+        $client = Client::findOrFail($id);
+        $certificate = Certificate::with('client')->where('client_id', $client->id)->where('issue_status', 0)->orderBy('id', 'desc')->first();
+        if (!$certificate) {
+            return array();
+        } else {
+            return $certificate;
+        }
+    }
+
+    public function uploadCertificate($id, Request $request)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        $certificate = Certificate::findOrFail($id);
+        $type = $request->file->extension();
+        $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+        $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/draft/" . $id;
+        $storePath = 'public' . $fileUrl;
+        $path = 'storage' . $fileUrl . "/" . $file_name;
+        $request->file('file')->storeAs($storePath, $file_name);
+        $certificate->certificate_path = $path;
+        $certificate->user_id_certificate_upload =  $user->id;
+        $certificate->certificate_upload_date = Carbon::now()->toDateString();
+        fileLog($certificate->client_id, 'certificate', 'User (' . $user->user_name . ')  uploaded the draft certificate', 0);
+        if ($certificate->save()) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
+
+    public function uploadOriginalCertificate($id, Request $request)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        $certificate = Certificate::findOrFail($id);
+        $type = $request->file->extension();
+        $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+        $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/original/" . $id;
+        $storePath = 'public' . $fileUrl;
+        $path = 'storage' . $fileUrl . "/" . $file_name;
+        $request->file('file')->storeAs($storePath, $file_name);
+        $certificate->signed_certificate_path = $path;
+        $certificate->user_id_certificate_upload =  $user->id;
+        //        $certificate->certificate_upload_date = Carbon::now()->toDateTimeString();
+        fileLog($certificate->client_id, 'certificate', 'User (' . $user->user_name . ')  uploaded the original certificate', 0);
+        if ($certificate->save()) {
             return array('id' => 1, 'message' => 'true');
         } else {
             return array('id' => 0, 'message' => 'false');
@@ -503,4 +708,57 @@ class ClientController extends Controller {
     }
 
 
+
+
+    public function issueCertificate($cer_id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $certificate = Certificate::findOrFail($cer_id);
+        $file = Client::findOrFail($certificate->client_id);
+        $msg = setFileStatus($file->id, 'file_status', 6);
+        $msg = $msg && setFileStatus($file->id, 'cer_status', 6);
+        $certificate->issue_date = Carbon::now();
+        $certificate->issue_status = 1;
+        $certificate->user_id = $user->id;
+        $msg = $msg && $certificate->save();
+        fileLog($file->id, 'CerIssue', 'User  (' . $user->user_name . ') Issued the Certificate : ' . $certificate->cetificate_number, 0);
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
+
+    public function completeDraftingCertificate($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        $certificate = Certificate::findOrFail($id);
+
+        // $msg = setFileStatus($certificate->client_id, 'file_status', 2);
+        $msg = setFileStatus($certificate->client_id, 'cer_status', 2);
+
+        fileLog($certificate->client_id, 'FileStatus', 'User (' . $user->user_name . ') Finish drafting the certificate', 0);
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
+    public function completeCertificate($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        $certificate = Certificate::findOrFail($id);
+        $file = Client::findOrFail($certificate->client_id);
+        $msg = setFileStatus($certificate->client_id, 'file_status', 5);
+        // $msg = setFileStatus($certificate->client_id, 'cer_status', 5);
+        fileLog($certificate->client_id, 'FileStatus', 'DIrector (' . $user->user_name . ') Complete the certificate', 0);
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
 }

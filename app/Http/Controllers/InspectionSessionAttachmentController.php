@@ -10,6 +10,7 @@ use App\InspectionSession;
 use Illuminate\Http\Request;
 use App\InspectionSessionAttachment;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\LogActivity;
 
 class InspectionSessionAttachmentController extends Controller {
 
@@ -57,9 +58,13 @@ class InspectionSessionAttachmentController extends Controller {
                 $inspectionSessionAttachment->path = $path;
                 $inspectionSessionAttachment->type = $type;
                 $msg = $inspectionSessionAttachment->save();
+         
+
                 if ($msg) {
+                    LogActivity::addToLog('EPL Inspection Created',$inspectionSessionAttachment);            
                     return array('id' => 1, 'message' => 'true');
                 } else {
+                    LogActivity::addToLog('Fail to create EPL Inspection ',$inspectionSessionAttachment);
                     return array('id' => 0, 'message' => 'false');
                 }
             } else {
@@ -129,11 +134,16 @@ class InspectionSessionAttachmentController extends Controller {
         if ($pageAuth['is_delete']) {
             $inspectionSessionAttachment = InspectionSessionAttachment::findOrFail($id);
             $msg = $inspectionSessionAttachment->delete();
+             
             if ($msg) {
+                LogActivity::addToLog('EPL Inspection Deleted : InspectionSessionAttachmentController',$inspectionSessionAttachment);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to delete EPL Inspection : InspectionSessionAttachmentController ',$inspectionSessionAttachment);
                 return array('id' => 0, 'message' => 'false');
             }
+
+
         } else {
             abort(401);
         }

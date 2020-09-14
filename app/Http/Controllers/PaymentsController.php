@@ -6,6 +6,7 @@ use App\Payment;
 use App\PaymentRange;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\LogActivity;
 
 class PaymentsController extends Controller
 {
@@ -73,10 +74,15 @@ return response($error, 422)
 
 
 if ($msg) {
-return array('id' => 1, 'message' => 'true');
+    LogActivity::addToLog('Payment Created',$payment);            
+    return array('id' => 1, 'message' => 'true');
 } else {
-return array('id' => 0, 'message' => 'false');
+    LogActivity::addToLog('Fail to create Payment ',$payment);
+    return array('id' => 0, 'message' => 'false');
 }
+
+
+
 } else {
 abort(401);
 }
@@ -119,11 +125,15 @@ return response($error, 422)
 ->header('Content-Type', 'application/JSON'); // validation
 
 }
+
 if ($msg) {
-return array('id' => 1, 'message' => 'true');
+    LogActivity::addToLog('Payment Updated',$payment);            
+    return array('id' => 1, 'message' => 'true');
 } else {
-return array('id' => 0, 'message' => 'false');
+    LogActivity::addToLog('Fail to update Payment ',$payment);
+    return array('id' => 0, 'message' => 'false');
 }
+
 } else {
 abort(401);
 }
@@ -202,11 +212,16 @@ $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
 if ($pageAuth['is_delete']) {
 $payment = Payment::findOrFail($id);
 $msg = $payment->delete();
+
 if ($msg) {
-return array('id' => 1, 'message' => 'true');
+    LogActivity::addToLog('Payment Deleted',$payment);            
+    return array('id' => 1, 'message' => 'true');
 } else {
-return array('id' => 0, 'message' => 'false');
+    LogActivity::addToLog('Fail to delete Payment ',$payment);
+    return array('id' => 0, 'message' => 'false');
 }
+
+
 } else {
 abort(401);
 }
@@ -262,9 +277,14 @@ $paymentRange->to = $payment_range['to'];
 }
 
 $paymentRange->save();
+LogActivity::addToLog('Payment Range Created',$paymentRange);
 }
 });
 return array('id' => 1, 'message' => 'true');
+
+            
+ 
+
 } else {
 abort(401);
 }
@@ -273,7 +293,7 @@ abort(401);
 //deleteRangedPayment 
 public function destroyRangedPayment($id)
 {
-
+//no log added 2020 09 10 to this function 
 
 $user = Auth::user();
 $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
@@ -285,6 +305,8 @@ return array('id' => 1, 'message' => 'true');
 } else {
 return array('id' => 0, 'message' => 'false');
 }
+
+
 } else {
 abort(401);
 }

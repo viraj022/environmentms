@@ -125,7 +125,7 @@
 
                                                     <div class="info-box mb-3 bg-info">
                                                         <span class="info-box-icon">
-                                                            <button class="btn btn-lg btn-default" id="newSiteClearence" ><i class="fa fa-plus"></i></button></span>
+                                                            <button class="btn btn-lg btn-default" id="newSiteClearence"><i class="fa fa-plus"></i></button></span>
                                                         <div class="info-box-content">
                                                             <span class="info-box-text">Create new site clearance file</span>
                                                             <span class="info-box-number">New Site Clearance</span>
@@ -135,7 +135,7 @@
 
                                                     <div class="info-box mb-3 bg-info">
                                                         <span class="info-box-icon">
-                                                            <button class="btn btn-lg btn-default" id="teli" ><i class="fa fa-plus"></i></button></span>
+                                                            <button class="btn btn-lg btn-default" id="teli"><i class="fa fa-plus"></i></button></span>
                                                         <div class="info-box-content">
                                                             <span class="info-box-text">Create new telecommunication site clearance file</span>
                                                             <span class="info-box-number">Telecommunication Site Clearance</span>
@@ -170,7 +170,7 @@
                                     <div class="col-md-12 showReportInfoUi d-none">
                                         <div class="card card-danger collapsed-card">
                                             <div class="card-header">
-                                                <h3 class="card-title"> There was a problem with  file. Please Check it.</h3>
+                                                <h3 class="card-title"> There was a problem with file. Please Check it.</h3>
                                                 <div class="card-tools">
                                                     <button type="button" class="btn btn-tool text-white" data-card-widget="collapse">Read More..
                                                     </button>
@@ -191,7 +191,7 @@
                                         <div class="card-body">
                                             <h6 id="env_firstname">Environment Officer: <a class="text-danger">Not Assigned</a></h6>
                                             <dt>Name : <a id="obj_name"></a></dt>
-                                            <dt>BR No : <a id="obj_regno"></a></dt>                       
+                                            <dt>BR No : <a id="obj_regno"></a></dt>
                                             <dt>Investment : Rs <a id="obj_invest"></a>.00</dt>
                                             <hr>
                                             <dt>Download & Upload Application :</dt>
@@ -206,7 +206,7 @@
                                             <div class="form-group d-none" id="fileUpDiv">
                                                 <hr>
                                                 <label id="uploadLabel">File Upload </label>
-                                                <input id="fileUploadInput" type="file" class=""  accept="image/*, .pdf">
+                                                <input id="fileUploadInput" type="file" class="" accept="image/*, .pdf">
                                                 <div class="progress d-none">
                                                     <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
                                                         <!--<span class="sr-only">40% Complete (success)</span>-->
@@ -215,7 +215,7 @@
                                             </div>
                                         </div>
                                         <!-- /.card-body -->
-                                    </div> 
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -322,7 +322,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body" style="display: block;">
-                                        The body of the card
+                                        No data found
                                     </div>
                                 </div>
                             </div>
@@ -336,7 +336,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body" style="display: block;">
-                                        The body of the card
+                                        No data found
                                     </div>
                                 </div>
                             </div>
@@ -350,12 +350,12 @@
                                         </div>
                                     </div>
                                     <div class="card-body" style="display: block;">
-                                        The body of the card
+                                        No data found
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>                   
+                    </div>
                 </div>
                 <!--//All Profile END//-->
                 <!--//All User Data Open//-->
@@ -401,7 +401,7 @@
 
                                         <ul class="list-group list-group-unbordered mb-3">
                                             <li class="list-group-item">
-                                                <b>Registration No</b> <a class="float-right tabf_industry_registration_no"></a>
+                                                <b>BR No</b> <a class="float-right tabf_industry_registration_no"></a>
                                             </li>
                                             <li class="list-group-item">
                                                 <b>Industry Category</b> <a class="float-right tabf_industry_cat_name"></a>
@@ -435,7 +435,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>                   
+                    </div>
                 </div>
                 <!--//All User Data END//-->
                 <!--//All User Profile Settings Open//-->
@@ -448,15 +448,15 @@
                                     <!--<p>There is a problem that we need to</p>-->
                                 </div>
                                 <div class="callout callout-danger">
-                                    <button type="button" class="btn btn-danger reportIssueView"><i class="fa fa-file"></i>  Report Issue</button>
-                                    <button type="button" class="btn btn-success markIssueClean d-none"><i class="fa fa-file"></i>  Mark Issue Cleared</button>
+                                    <button type="button" class="btn btn-danger reportIssueView"><i class="fa fa-file"></i> Report Issue</button>
+                                    <button type="button" class="btn btn-success markIssueClean d-none"><i class="fa fa-file"></i> Mark Issue Cleared</button>
                                     <div class="reportView d-none">
                                         <div class="form-group">
                                             <label>Report File Issue</label>
                                             <textarea class="form-control" id="reportTxtArea" rows="3" placeholder="Enter ..." autocomplete="off"></textarea>
                                         </div>
                                         <div class="form-group">
-                                            <button type="button" id="reportSubmit" class="btn btn-success"><i class="fa fa-check"></i>  Submit</button>
+                                            <button type="button" id="reportSubmit" class="btn btn-success"><i class="fa fa-check"></i> Submit</button>
                                         </div>
                                     </div>
                                 </div>
@@ -474,7 +474,7 @@
                                     <div class="form-group fileUpDiv d-none">
                                         <hr>
                                         <label class="uploadLabel">File Upload </label>
-                                        <input type="file" class="fileUploadInput"  accept=".png,.jpg,.jpeg, .pdf">
+                                        <input type="file" class="fileUploadInput" accept=".png,.jpg,.jpeg, .pdf">
                                         <div class="progress d-none">
                                             <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
                                             </div>
@@ -487,11 +487,11 @@
                                     </div>
                                 </div>
                                 <div class="callout callout-danger">
-                                    <button type="button" id="removeFileBtn" class="btn btn-danger"><i class="fa fa-file"></i>  Remove File</button>
-                                    <a type="button" href="/update_client/id/{{$id}}" class="btn btn-warning"><i class="fa fa-file"></i>  Update This Client</a>
+                                    <button type="button" id="removeFileBtn" class="btn btn-danger"><i class="fas fa-times"></i> Remove File</button>
+                                    <a href="/update_client/id/{{$id}}" class="btn btn-warning"><i class="far fa-edit"></i> Update This Client</a>
                                 </div>
                             </div>
-                        </div>                   
+                        </div>
                     </div>
                     <!--//All Profile Settings END//-->
                 </div>
@@ -521,14 +521,14 @@
                             </div>
                             <!-- /.card-body -->
                         </div>
-                    </div>  
-                </div>                   
+                    </div>
+                </div>
                 <!--//Location Open//-->
                 <div class="tab-pane fade" id="custom-tabs-three-locationTab" role="tabpanel" aria-labelledby="custom-tabs-three-locationTab-tab">
                     <div class="col-md-12">
                         <div id="map" style="width: 100%; height: 400px;"></div>
-                    </div>  
-                </div>                   
+                    </div>
+                </div>
                 <!--//Payments Open//-->
                 <div class="tab-pane fade" id="custom-tabs-three-paymentsTab" role="tabpanel" aria-labelledby="custom-tabs-three-paymentsTab-tab">
                     <div class="col-md-12">
@@ -555,16 +555,16 @@
                                 </div>
                             </div>
                         </div>
-                    </div> 
-                </div>                   
+                    </div>
+                </div>
             </div>
         </div>
         <div class="overlay dark loadingRenderUI">
             <i class="fas fa-2x fa-sync-alt"></i>
         </div>
-    </div>  
+    </div>
 </section>
-<!--//Tab Section END//-->  
+<!--//Tab Section END//-->
 <section>
     <div class="viewClientData d-none">
         <p>Here Is Our Client Data!</p>
@@ -594,211 +594,209 @@
 <!-- AdminLTE App -->
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
 <script>
-                                        PROFILE_ID = '{{$id}}';
-                                        $(function () {
-                                            pendingPaymentsTable(PROFILE_ID); //<-- Load pending payment table
-                                            deedList(PROFILE_ID, function () {
-                                            });
-                                            getaProfilebyId(PROFILE_ID, function (parameters) {
-                                                setProfileDetails(parameters);
-                                                setIndustryAndClientDb(parameters);
-                                                updateAttachmentData(parameters);
-                                                loadAllOldAttachments(parameters.old_files, function () {
-                                                });
-                                                oldFileConfirmSection(parameters.is_old);
-                                                checkEPLstatus(parameters.epls);
-                                                loadAllEPLTable(parameters.epls);
-                                                setupInspectionUI(parameters.need_inspection);
-                                                checkFileIssueStatus(parameters);
-                                                $(".loadingRenderUI").remove(); //<--Check Loading Status
-                                            });
-                                            $('#newEPL').click(function () {
-                                                if (isNaN(parseInt(PROFILE_ID))) {
-                                                    return false;
-                                                }
-                                                window.location = "/epl_register/id/" + PROFILE_ID;
-                                            });
-                                            //new
-                                            $('#upld_roadMap, #upld_deed, #upld_SurveyPlan').click(function () {
-                                                $('#uploadLabel').html('Select ' + $(this).data('upload_file') + ' File To Upload');
-                                                $('#fileUploadInput').data('fileType', $(this).data('upload_file'));
-                                                $('#fileUpDiv').removeClass('d-none');
-                                            });
-                                            $('.upld_roadMap, .upld_deed, .upld_SurveyPlan').click(function () {
-                                                $('.uploadLabel').html('Select ' + $(this).data('upload_file') + ' File To Upload');
-                                                $('.fileUploadInput').data('fileType', $(this).data('upload_file'));
-                                                $('.fileUpDiv').removeClass('d-none');
-                                            });
-                                            //file upload click
-                                            $('#fileUploadInput , .fileUploadInput').change(function () {
-                                                if (!confirm('Are you sure you want to save this attachment?')) {
-                                                    return false;
-                                                }
-                                                let uploadFileType = $(this).data('fileType');
-                                                let formData = new FormData();
-                                                let fileCat = '';
-                                                // populate fields
-                                                let file = $(this)[0].files[0]; // file
-                                                formData.append('file', file);
-                                                switch (uploadFileType) {
-                                                    case 'EPL':
-                                                        fileCat = 'file';
-                                                        break;
-                                                    case 'Road Map':
-                                                        fileCat = 'file1';
-                                                        break;
-                                                    case 'Deed Of The Land':
-                                                        fileCat = 'file2';
-                                                        break;
-                                                    case 'Survey Plan':
-                                                        fileCat = 'file3';
-                                                        break;
-                                                    default:
+    PROFILE_ID = '{{$id}}';
+    $(function() {
+        pendingPaymentsTable(PROFILE_ID); //<-- Load pending payment table
+        deedList(PROFILE_ID, function() {});
+        getaProfilebyId(PROFILE_ID, function(parameters) {
+            setProfileDetails(parameters);
+            setIndustryAndClientDb(parameters);
+            updateAttachmentData(parameters);
+            loadAllOldAttachments(parameters.old_files, function() {});
+            oldFileConfirmSection(parameters.is_old);
+            checkEPLstatus(parameters.epls);
+            loadAllEPLTable(parameters.epls);
+            setupInspectionUI(parameters.need_inspection);
+            checkFileIssueStatus(parameters);
+            $(".loadingRenderUI").remove(); //<--Check Loading Status
+        });
+        $('#newEPL').click(function() {
+            if (isNaN(parseInt(PROFILE_ID))) {
+                return false;
+            }
+            window.location = "/epl_register/id/" + PROFILE_ID;
+        });
+        //new
+        $('#upld_roadMap, #upld_deed, #upld_SurveyPlan').click(function() {
+            $('#uploadLabel').html('Select ' + $(this).data('upload_file') + ' File To Upload');
+            $('#fileUploadInput').data('fileType', $(this).data('upload_file'));
+            $('#fileUpDiv').removeClass('d-none');
+        });
+        $('.upld_roadMap, .upld_deed, .upld_SurveyPlan').click(function() {
+            $('.uploadLabel').html('Select ' + $(this).data('upload_file') + ' File To Upload');
+            $('.fileUploadInput').data('fileType', $(this).data('upload_file'));
+            $('.fileUpDiv').removeClass('d-none');
+        });
+        //file upload click
+        $('#fileUploadInput , .fileUploadInput').change(function() {
+            if (!confirm('Are you sure you want to save this attachment?')) {
+                return false;
+            }
+            let uploadFileType = $(this).data('fileType');
+            let formData = new FormData();
+            let fileCat = '';
+            // populate fields
+            let file = $(this)[0].files[0]; // file
+            formData.append('file', file);
+            switch (uploadFileType) {
+                case 'EPL':
+                    fileCat = 'file';
+                    break;
+                case 'Road Map':
+                    fileCat = 'file1';
+                    break;
+                case 'Deed Of The Land':
+                    fileCat = 'file2';
+                    break;
+                case 'Survey Plan':
+                    fileCat = 'file3';
+                    break;
+                default:
 
-                                                        break;
-                                                }
-                                                ulploadFile2('/api/epl/upload/epl/' + PROFILE_ID + '/file/' + fileCat, formData, function (parameters) {
-                                                    show_mesege(parameters);
-                                                    getaProfilebyId(PROFILE_ID, function (result) {
-                                                        setProfileDetails(result);
-                                                    });
-                                                    deedList(PROFILE_ID, function () {
-                                                        $('.fileUploadInput').val('');
-                                                    });
-                                                });
-                                            });
-                                        });
-//btnCustomerVa button action 
-                                        $(document).on('click', '.btnCustomerVa', function () {
-                                            var row = JSON.parse(decodeURIComponent($(this).data('row')));
-                                            setClientDetails(row);
-                                            setSectionVisible('view-Client');
-                                        });
-                                        function disWarnPay() {
-                                            toastr.error('Assign Environment Officer & Try Again!');
-                                        }
-                                        //Upload Old Attachments
-                                        $('#btnUpload').click(function () {
-                                            var file = $('#otherFiles')[0].files[0];
-                                            uploadOldAttacments(PROFILE_ID, 'file', file, function (result) {
-                                                show_mesege(result);
-                                                getaProfilebyId(PROFILE_ID, function (parameters) {
-                                                    loadAllOldAttachments(parameters.old_files, function () {
-                                                    });
-                                                });
-                                            });
-                                        });
-                                        //Remove Old Attachments
-                                        $(document).on('click', '.removeAttachs', function () {
-                                            var getRemoveId = $(this).attr('id');
-                                            deleteOldAttachments(getRemoveId, function (result) {
-                                                show_mesege(result);
-                                                getaProfilebyId(PROFILE_ID, function (parameters) {
-                                                    loadAllOldAttachments(parameters.old_files, function () {
-                                                    });
-                                                });
-                                            });
-                                        });
-                                        //Confirm Button
-                                        $('#btnConfirm').click(function () {
-                                            if (confirm("Not able to be reversed! Are you sure?")) {
-                                                ConfirmUploadingAttachs(PROFILE_ID, function (respo) {
-                                                    show_mesege(respo);
-                                                    location.reload();
-                                                });
-                                            } else {
-                                                return false;
-                                            }
-                                        });
-//Handle Upload Button
-                                        $(document).ready(function () {
-                                            $('#otherFiles').bind('change', function () {
-                                                uploadButtonHandler($('#otherFiles').val());
-                                            });
-                                        });
-                                        $(document).ready(function () {
-                                            $('#otherFiles').bind('change', function () {
-                                                uploadButtonHandler($('#otherFiles').val());
-                                            });
-                                        });
-                                        //Load Inspections//-
-                                        loadAllSiteInspectionTable(PROFILE_ID);
-                                        $('.setInspectUI').on('click', function () {
-                                            checkInspectionStatus(PROFILE_ID, $(this).val(), function (rep) {
-                                                show_mesege(rep);
-                                            });
-                                        });
-                                        $('.noNeedInspect').on('click', function () {
-                                            checkInspectionStatus(PROFILE_ID, $(this).val(), function (rep) {
-                                                show_mesege(rep);
-                                            });
-                                        });
-                                        //Sumbit Report
-                                        $('.reportIssueView').on('click', function () { //<-- Get View to report file
-                                            $(this).addClass('d-none');
-                                            $('.reportView').removeClass('d-none');
-                                        });
-                                        $('#reportSubmit').on('click', function () { // Report Issue Btn
-                                            var data = {
-                                                file_problem_status_description: $('#reportTxtArea').val(),
-                                                file_problem_status: 'problem'
-                                            };
-                                            reportFileIssueAPI(PROFILE_ID, data, function (resp) {
-                                                show_mesege(resp);
-                                                $('.reportView').addClass('d-none');
-                                                $('.reportIssueView').addClass('d-none');
-                                                $('.markIssueClean').removeClass('d-none');
-                                                getaProfilebyId(PROFILE_ID, function (parameters) {
-                                                    checkFileIssueStatus(parameters);
-                                                });
-                                            });
-                                        });
-                                        $('.markIssueClean').on('click', function () { // Mark As Cleared Btn
-                                            var data = {
-                                                file_problem_status: 'clean',
-                                                file_problem_status_description: 'NO-PROBLEM'
-                                            };
-                                            reportFileIssueAPI(PROFILE_ID, data, function (resp) {
-                                                show_mesege(resp);
-                                                $('.reportIssueView').removeClass('d-none');
-                                                $('.markIssueClean').addClass('d-none');
-                                                getaProfilebyId(PROFILE_ID, function (parameters) {
-                                                    checkFileIssueStatus(parameters);
-                                                });
-                                            });
-                                        });
-                                        $('#removeFileBtn').on('click', function () { // Remove File Btn
-                                            if (confirm('Are you sure you want to remove this file?')) {
-                                                removeClientFileAPI(PROFILE_ID, function (reps) {
-                                                    show_mesege(reps);
-                                                    if (reps.id == 1) {
-                                                        window.location.href = "/";
-                                                    }
-                                                });
-                                            }
-                                        });
-                                        $(document).on('click', '.printBarcode', function () {//<-- Print Bar Code In Payment Tab
-                                            var btnValue = $(this).val();
-                                            var btnName = $(this).data("name");
-                                            toastr.info('Printing Barcode...');
-                                            $.ajax({
-                                                url: 'http://127.0.0.1:8081/hansana',
-                                                data: {code: btnValue, name: btnName},
-                                                success: function (result) {
-                                                }
-                                            });
-                                        });
-                                        $(document).on('click', '.removeBarcode', function () {//<-- Remove Button In Payment Tab
-                                            var btnValue = $(this).val();
-                                            if (confirm('Are you sure you want to remove this payment?')) {
-                                                removeEPLPaymentAPI(btnValue, function (resp) {
-                                                    show_mesege(resp);
-                                                    if (resp.id === 1) {
-                                                        pendingPaymentsTable(PROFILE_ID);
-                                                    }
-                                                });
-                                            }
-                                        });
+                    break;
+            }
+            ulploadFile2('/api/epl/upload/epl/' + PROFILE_ID + '/file/' + fileCat, formData, function(parameters) {
+                show_mesege(parameters);
+                getaProfilebyId(PROFILE_ID, function(result) {
+                    setProfileDetails(result);
+                });
+                deedList(PROFILE_ID, function() {
+                    $('.fileUploadInput').val('');
+                });
+            });
+        });
+    });
+    //btnCustomerVa button action 
+    $(document).on('click', '.btnCustomerVa', function() {
+        var row = JSON.parse(decodeURIComponent($(this).data('row')));
+        setClientDetails(row);
+        setSectionVisible('view-Client');
+    });
 
+    function disWarnPay() {
+        toastr.error('Assign Environment Officer & Try Again!');
+    }
+    //Upload Old Attachments
+    $('#btnUpload').click(function() {
+        var file = $('#otherFiles')[0].files[0];
+        uploadOldAttacments(PROFILE_ID, 'file', file, function(result) {
+            show_mesege(result);
+            getaProfilebyId(PROFILE_ID, function(parameters) {
+                loadAllOldAttachments(parameters.old_files, function() {});
+            });
+        });
+    });
+    //Remove Old Attachments
+    $(document).on('click', '.removeAttachs', function() {
+        var getRemoveId = $(this).attr('id');
+        deleteOldAttachments(getRemoveId, function(result) {
+            show_mesege(result);
+            getaProfilebyId(PROFILE_ID, function(parameters) {
+                loadAllOldAttachments(parameters.old_files, function() {});
+            });
+        });
+    });
+    //Confirm Button
+    $('#btnConfirm').click(function() {
+        if (confirm("Not able to be reversed! Are you sure?")) {
+            ConfirmUploadingAttachs(PROFILE_ID, function(respo) {
+                show_mesege(respo);
+                location.reload();
+            });
+        } else {
+            return false;
+        }
+    });
+    //Handle Upload Button
+    $(document).ready(function() {
+        $('#otherFiles').bind('change', function() {
+            uploadButtonHandler($('#otherFiles').val());
+        });
+    });
+    $(document).ready(function() {
+        $('#otherFiles').bind('change', function() {
+            uploadButtonHandler($('#otherFiles').val());
+        });
+    });
+    //Load Inspections//-
+    loadAllSiteInspectionTable(PROFILE_ID);
+    $('.setInspectUI').on('click', function() {
+        checkInspectionStatus(PROFILE_ID, $(this).val(), function(rep) {
+            show_mesege(rep);
+        });
+    });
+    $('.noNeedInspect').on('click', function() {
+        checkInspectionStatus(PROFILE_ID, $(this).val(), function(rep) {
+            show_mesege(rep);
+        });
+    });
+    //Sumbit Report
+    $('.reportIssueView').on('click', function() { //<-- Get View to report file
+        $(this).addClass('d-none');
+        $('.reportView').removeClass('d-none');
+    });
+    $('#reportSubmit').on('click', function() { // Report Issue Btn
+        var data = {
+            file_problem_status_description: $('#reportTxtArea').val(),
+            file_problem_status: 'problem'
+        };
+        reportFileIssueAPI(PROFILE_ID, data, function(resp) {
+            show_mesege(resp);
+            $('.reportView').addClass('d-none');
+            $('.reportIssueView').addClass('d-none');
+            $('.markIssueClean').removeClass('d-none');
+            getaProfilebyId(PROFILE_ID, function(parameters) {
+                checkFileIssueStatus(parameters);
+            });
+        });
+    });
+    $('.markIssueClean').on('click', function() { // Mark As Cleared Btn
+        var data = {
+            file_problem_status: 'clean',
+            file_problem_status_description: 'NO-PROBLEM'
+        };
+        reportFileIssueAPI(PROFILE_ID, data, function(resp) {
+            show_mesege(resp);
+            $('.reportIssueView').removeClass('d-none');
+            $('.markIssueClean').addClass('d-none');
+            getaProfilebyId(PROFILE_ID, function(parameters) {
+                checkFileIssueStatus(parameters);
+            });
+        });
+    });
+    $('#removeFileBtn').on('click', function() { // Remove File Btn
+        if (confirm('Are you sure you want to remove this file?')) {
+            removeClientFileAPI(PROFILE_ID, function(reps) {
+                show_mesege(reps);
+                if (reps.id == 1) {
+                    window.location.href = "/";
+                }
+            });
+        }
+    });
+    $(document).on('click', '.printBarcode', function() { //<-- Print Bar Code In Payment Tab
+        var btnValue = $(this).val();
+        var btnName = $(this).data("name");
+        toastr.info('Printing Barcode.Please Wait...');
+        $.ajax({
+            url: 'http://127.0.0.1:8081/hansana',
+            data: {
+                code: btnValue,
+                name: btnName
+            },
+            success: function(result) {}
+        });
+    });
+    $(document).on('click', '.removeBarcode', function() { //<-- Remove Button In Payment Tab
+        var btnValue = $(this).val();
+        if (confirm('Are you sure you want to remove this payment?')) {
+            removeEPLPaymentAPI(btnValue, function(resp) {
+                show_mesege(resp);
+                if (resp.id === 1) {
+                    pendingPaymentsTable(PROFILE_ID);
+                }
+            });
+        }
+    });
 </script>
 @endsection

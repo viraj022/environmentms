@@ -39,11 +39,11 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Issue Date *</label>
-                                    <input id="issueDate" type="date" class="form-control form-control-sm" placeholder="" value="">
+                                    <input id="issueDate" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="" value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Expire Date *</label>
-                                    <input id="expireDate" type="date" class="form-control form-control-sm" placeholder="" value="">
+                                    <input id="expireDate" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="" value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Certificate Number *</label>

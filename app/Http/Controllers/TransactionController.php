@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Transaction;
 use Illuminate\Http\Request;
+use App\Helpers\LogActivity;
 
 class TransactionController extends Controller
 {
@@ -34,11 +35,16 @@ class TransactionController extends Controller
         $transaction->status = $request['status'];
         $transaction->type = $request['type'];
         $msg = $transaction->save();
+
         if ($msg) {
+            LogActivity::addToLog('Created : TransactionController',$transaction);            
             return array('id' => 1, 'message' => 'true');
         } else {
+            LogActivity::addToLog('Fail to Create : TransactionController',$transaction);
             return array('id' => 0, 'message' => 'false');
         }
+
+        
     }
 
     /**

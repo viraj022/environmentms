@@ -67,12 +67,23 @@ class UserController extends Controller
             // }
 
             $msg = $user->save();
+
+            if ($msg) {
+                LogActivity::addToLog('Save User : UserController',$user);            
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                LogActivity::addToLog('Save User Fail : UserController',$user);
+                return array('id' => 0, 'message' => 'false');
+            }
+      
             //         ($user);
             UserController::PrevilagesAdd($user);
         });
         return redirect()
             ->back()
             ->with('success', 'Ok');
+          
+            
     }
 
     public function edit(Request $request, $id)
@@ -159,6 +170,16 @@ class UserController extends Controller
         $user->email = request('email');
         $user->nic = request('nic');
         $msg = $user->save();
+
+
+        if ($msg) {
+            LogActivity::addToLog('Update User Done: UserController',$user);          
+ 
+        } else {
+            LogActivity::addToLog('Update User Fail : UserController',$user);
+        }
+
+
         if ($msg) {
             return redirect()
                 ->back()
@@ -180,6 +201,15 @@ class UserController extends Controller
         ]);
         $user->password = Hash::make(request('password'));
         $msg = $user->save();
+
+
+        if ($msg) {
+            LogActivity::addToLog('Store Password Done: UserController',$user);          
+ 
+        } else {
+            LogActivity::addToLog('Store Password Fail: UserController',$user);
+        }
+
         if ($msg) {
             return redirect()
                 ->back()
@@ -229,12 +259,22 @@ class UserController extends Controller
     public function delete($id)
     {
         $user = User::findOrFail($id);
-        $user->delete();
+        $msg = $user->delete();
         $users = User::with('roll')->get();
         $level = Level::get();
         $Auser = Auth::user();
         $pageAuth = $Auser->authentication(config('auth.privileges.userCreate'));
         return view('user', ['levels' => $level, 'users' => $users, 'pageAuth' => $pageAuth]);
+
+ 
+
+
+        if ($msg) {
+            LogActivity::addToLog('Delete Done: UserController',$user);          
+ 
+        } else {
+            LogActivity::addToLog('Delete fail: UserController',$user);
+        }
     }
 
     public function logout()
@@ -257,6 +297,14 @@ class UserController extends Controller
         ]);
         $aUser->password = Hash::make(request('password'));
         $msg = $aUser->save();
+
+        if ($msg) {
+            LogActivity::addToLog('changeMyPass Done: UserController',$aUser);          
+ 
+        } else {
+            LogActivity::addToLog('changeMyPass fail: UserController',$aUser);
+        }
+
         if ($msg) {
             return redirect()
                 ->back()

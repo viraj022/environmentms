@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use App\FileHandlerLog;
 use App\AssistantDirector;
 use App\EnvironmentOfficer;
+use App\Helpers\LogActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Cache\Console\ClearCommand;
@@ -69,8 +70,10 @@ class EnvironmentOfficerController extends Controller
                     $environmentOfficer->active_status = '1';
                     $msg = $environmentOfficer->save();
                     if ($msg) {
+                        LogActivity::addToLog('Create a new Environment Officer',$environmentOfficer);
                         return array('id' => 1, 'message' => 'true');
                     } else {
+                        LogActivity::addToLog('Fail to create a new Environment Officer',$environmentOfficer);
                         return array('id' => 0, 'message' => 'false');
                     }
                 } else {
@@ -213,11 +216,14 @@ class EnvironmentOfficerController extends Controller
             $environmentOfficer->active_status = 0;
             $msg = $environmentOfficer->save();
             if ($msg) {
+                LogActivity::addToLog('Environment Officer deleted',$environmentOfficer); 
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to create Environment Officer',$environmentOfficer);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
+            LogActivity::addToLog('Fail to create Environment Officer',$environmentOfficer);
             abort(401);
         }
     }
@@ -258,14 +264,18 @@ class EnvironmentOfficerController extends Controller
                 $client->environment_officer_id = $environmentOfficer->id;
                 $client->assign_date = Carbon::now();
                 $msg = $client->save();
+
                 $officeLog = new FileHandlerLog();
                 $officeLog->type = ApplicationTypeController::EPL;
                 $officeLog->environment_officer_id = $environmentOfficer->id;
                 $officeLog->assistant_director_id = $environmentOfficer->assistant_director_id;
                 $msg = $msg && $officeLog->save();
                 if ($msg) {
+                    LogActivity::fileLog($client->id, 'FileAssign', "Assigned to Environment Officer", 1);
+                     LogActivity::addToLog('EPL assigned to Environment Officer  ',$environmentOfficer);
                     return array('id' => 1, 'message' => 'true');
                 } else {
+                     LogActivity::addToLog('Fail to assign EPL to Environment Officer  ',$environmentOfficer);
                     return array('id' => 0, 'message' => 'false');
                 }
             } else {
@@ -281,13 +291,16 @@ class EnvironmentOfficerController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_delete']) {
-            $epl = EPL::find($id);
+            $epl = Client::find($id);
             if ($epl) {
                 $epl->environment_officer_id = null;
                 $msg = $epl->save();
                 if ($msg) {
+                    LogActivity::fileLog($epl->id, 'FileAssignEPL', "Environment Officer Removed from EPL", 1);
+                    LogActivity::addToLog('Environment Officer Removed from EPL',$epl);
                     return array('id' => 1, 'message' => 'true');
                 } else {
+                    LogActivity::addToLog('Fail to remove Environment Officer from EPL',$epl);
                     return array('id' => 0, 'message' => 'false');
                 }
             } else {
@@ -351,5 +364,81 @@ class EnvironmentOfficerController extends Controller
             $data = EnvironmentOfficer::with('user')->where('user_id', $user->id)->where('active_status', 1)->get();
         }
         return $data;
+    }
+    public function approveFile($officerId, $file_id)
+    {
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $file = Client::findOrFail($file_id);
+        $officer = EnvironmentOfficer::with('user')->findOrFail($officerId);
+
+        $msg = setFileStatus($file_id, 'file_status', 1);
+        fileLog($file->id, 'FileStatus', 'Environment Officer (' . $officer->user->user_name . ') Approve the file and forward to the AD', 0);
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
+
+
+    public function rejectFile($officerId, $file_id)
+    {
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $file = Client::findOrFail($file_id);
+        $officer = EnvironmentOfficer::with('user')->findOrFail($officerId);
+
+        $msg = setFileStatus($file_id, 'file_status', -1);
+        fileLog($file->id, 'FileStatus', 'Environment Officer (' . $officer->user->user_name . ') rejected the file', 0);
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
+
+
+
+    public function approveCertificate($officerId, $file_id)
+    {
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $file = Client::findOrFail($file_id);
+        $officer = EnvironmentOfficer::with('user')->findOrFail($officerId);
+        // dd($assistantDirector->user);
+        $msg = setFileStatus($file_id, 'file_status', 3);
+        $msg = $msg && setFileStatus($file_id, 'cer_status', 3);
+
+        fileLog($file->id, 'FileStatus', 'Environment Officer (' . $officer->user->user_name . ') Approve the certificate and forward to assistant director.', 0);
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
+
+
+
+    public function rejectCertificate($officerId, $file_id)
+    {
+        $data = array();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $file = Client::findOrFail($file_id);
+        $officer = EnvironmentOfficer::with('user')->findOrFail($officerId);
+        // dd($assistantDirector->user);
+        $msg = setFileStatus($file_id, 'file_status', 2);
+        $msg = $msg && setFileStatus($file_id, 'cer_status', 1);
+
+        fileLog($file->id, 'FileStatus', 'Environment Officer (' . $officer->user->user_name . ') Rejected the certificate forward to drafting.', 0);
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
     }
 }

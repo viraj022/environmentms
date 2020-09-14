@@ -38,12 +38,10 @@
                     <label id="lblTitle">Add New Attachment</label>
                 </div>
                 <div class="card-body">
-
                     <div class="form-group" id="useToHideAmount">
                         <label>Attachment *</label>
                         <input id="fileInput" type="file" accept="image/*" class="form-control" value="">
                     </div>
-
                 </div>
                 <div class="card-footer">
                     <button id="btnSave" type="button" class="btn btn-success">Save File</button>

@@ -29,54 +29,40 @@
     <!--    Register New Client START-->
     <div class="container-fluid reg-newClient">
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-12">
                 <div class="card card-success">
-                    <div class="card-header">
-                        <label id="lblTitle">Update Client</label>
-                    </div>
                     <div class="card-body">
-                        <div class="form-group">
-                            <label>Assistant Director*</label>
-                            <select id="getAsDirect" class="form-control form-control-sm">
-                                <option value="0">Loading..</option>
-                            </select>
-                            <div id="valAsDirect" class="d-none"><p class="text-danger">Field is required</p></div>
+                        <div class="row">
+                            <div class="col-5">
+                                <div class="form-group">
+                                    <label>Assistant Director*</label>
+                                    <select id="getAsDirect" class="form-control form-control-sm">
+                                        <option value="0">Loading..</option>
+                                    </select>
+                                    <div id="valAsDirect" class="d-none"><p class="text-danger">Field is required</p></div>
+                                </div>    
+                            </div>
+                            <div class="col-5">
+                                <div class="form-group">
+                                    <label>Environment Officer*</label>
+                                    <select id="getEnvOfficer" class="form-control form-control-sm">
+                                        <option value="0">Loading..</option>
+                                    </select>
+                                    <div id="valEnvOfficer" class="d-none"><p class="text-danger">Field is required</p></div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label>File Type*</label>
+                                    <select id="getFileType" class="form-control form-control-sm">
+                                    </select>
+                                    <div id="valfileType" class="d-none"><p class="text-danger">Field is required</p></div>
+                                </div> 
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Environment Officer*</label>
-                            <select id="getEnvOfficer" class="form-control form-control-sm">
-                                <option value="0">Loading..</option>
-                            </select>
-                            <div id="valEnvOfficer" class="d-none"><p class="text-danger">Field is required</p></div>
-                        </div>
-                        <div class="form-group">
-                            <label>File Type*</label>
-                            <select id="getFileType" class="form-control form-control-sm">
-                                <option value="01">New</option>
-                                <option value="02">Working</option>
-                                <option value="03">All</option>
-                            </select>
-                            <div id="valfileType" class="d-none"><p class="text-danger">Field is required</p></div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        @if($pageAuth['is_create']==1 || false)
-                        <button id="btnSave" type="submit" class="btn btn-success">Check</button>
-                        @endif
-                        @if($pageAuth['is_delete']==1 || false)
-                        <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
-                                 data-target="#modal-danger">Delete</button>
-                        @endif
-                    </div>                           
-                </div>
-            </div>
-            <div class="col-md-7">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title setCurrentEnvProf">All Data</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body p-0">
+                    </div>  
+                    <hr>
+                    <div class="card">
                         <div class="card-body table-responsive" style="height: 450px;">
                             <table class="table table-condensed" id="tblAllFiles">
                                 <thead>
@@ -85,7 +71,9 @@
                                         <th>Industry Name</th>
                                         <th>File No</th>
                                         <th>Date</th>
-                                        <th class="inspectTbl" style="width: 180px">Set Inspection</th>
+                                        <th>Status</th>
+                                        <th class="inspectTbl" style="width: 180px">Inspection</th>
+                                        <th class="" style="width: 180px">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -93,9 +81,8 @@
                             </table>
                         </div>
                     </div>
-                    <!-- /.card-body -->
                 </div>
-            </div>                                          
+            </div>                                      
         </div>
     </div>
     <!--Register New Client END-->
@@ -122,6 +109,27 @@
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" id="setInspectionVal" class="btn btn-primary"><i class="fa fa-check"></i> Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-x2">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modalTitlex2">Modal</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="button" id="setInspectionVal2" class="btn btn-primary d-none"><i class="fa fa-check"></i> Set Inspection</button>
+                    <button type="button" id="needApproval" class="btn btn-primary d-none"><i class="fa fa-check"></i> AD Approval</button>
+                    <button type="button" id="submitAdCerApproval" class="btn btn-primary d-none"><i class="fa fa-check"></i> Submit For AD Certificate Approval</button>
+                    <button type="button" id="rejectAdCerApproval" class="btn btn-danger d-none"><i class="fa fa-check"></i> Reject Certificate Approval</button>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -158,48 +166,38 @@
 <script src="../../dist/js/demo.js"></script>
 <!-- AdminLTE App -->
 <script>
+    var file_status = {0: 'pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Prenidng Approval', 4: 'D Certificate Approval Prenidng', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold'};
+    fileStatusCombo(file_status);
+    function fileStatusCombo(file_status) {
+        var options = $('#getFileType');
+        options.append($("<option>").val('all').text('All'));
+        $.each(file_status, function (key, val) {
+            options.append($("<option>").val(key).text(val));
+        });
+    }
+
     $(function () {
         //Load AssDir Combo
         loadAssDirCombo(function () {
             loadEnvOfficerCombo($('#getAsDirect').val(), function (rest) {
-                loadAllFilesApi($('#getEnvOfficer').val(), function (respo) {
-                    checkFileType();
-                });
+                forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
             });
         });
         $("#getAsDirect").change(function () {
             loadEnvOfficerCombo($('#getAsDirect').val(), function (rest) {
+                forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
             });
         });
         $("#getEnvOfficer").change(function () {
-            checkFileType();
+            forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
         });
         $("#getFileType").change(function () {
-            checkFileType();
+            forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
         });
     });
 
 
     $(document).ready(function () {
-        $('#btnSave').on('click', function () {
-            switch ($('#getFileType option:selected').val()) {
-                case '01':
-                    loadNewFilesApi($('#getEnvOfficer').val(), function (respo) {
-                        forTypeFiles_table(respo);
-                    });
-                    break;
-                case '02':
-                    loadWorkingFilesApi($('#getEnvOfficer').val(), function (respo) {
-                        forTypeFiles_table(respo);
-                    });
-                    break;
-                case '03':
-                    loadAllFilesApi($('#getEnvOfficer').val(), function (respo) {
-                        forTypeFiles_table(respo);
-                    });
-                    break;
-            }
-        });
         $(document).on('click', '.setInspeBtn', function () {
             $('#setInspectionVal').val($(this).val());
         });
@@ -212,25 +210,70 @@
         });
     });
 
-    function checkFileType() {
-        switch ($('#getFileType option:selected').val()) {
-            case '01':
-                loadNewFilesApi($('#getEnvOfficer').val(), function (respo) {
-                    forTypeFiles_table(respo);
-                });
-                break;
-            case '02':
-                loadWorkingFilesApi($('#getEnvOfficer').val(), function (respo) {
-                    forTypeFiles_table(respo);
-                });
-                break;
-            case '03':
-                loadAllFilesApi($('#getEnvOfficer').val(), function (respo) {
-                    forTypeFiles_table(respo);
-                });
-                break;
+
+    $(document).on('click', '.detailsData', function () {
+        $('#modal-x2').modal();
+        var fileData = JSON.parse(unescape($(this).val()));
+        $('#needApproval').val($(this).val()); //<-- Share this button value to this button
+        $('#submitAdCerApproval').val($(this).val()); //<-- Share this button value to submitAdCerApproval button
+        $('#rejectAdCerApproval').val($(this).val()); //<-- Share this button value to submitAdCerApproval button
+        let f_Status = fileData.file_status;
+        $('#modalTitlex2').html(fileData.file_no);
+        if (f_Status == 0) {
+            if (fileData.need_inspection == null) {
+                $('#setInspectionVal2').removeClass('d-none');
+            } else if (fileData.need_inspection == 'Completed') {
+                $('#needApproval').removeClass('d-none');
+            } else {
+                $('#needApproval').removeClass('d-none');
+            }
+        } else if (f_Status == 2) {
+            if (fileData.cer_status == 2) {
+                $('#submitAdCerApproval').removeClass('d-none');
+                $('#rejectAdCerApproval').removeClass('d-none');
+            }
+        } else {
+            $('#setInspectionVal2').addClass('d-none');
         }
-    }
+    });
+
+    $(document).on('click', '#needApproval', function () {
+        var fileData = JSON.parse(unescape($(this).val()));
+        if (confirm('Are you sure you want to approve?')) {
+            approvalApi(fileData.id, fileData.environment_officer_id, function (resp) {
+                show_mesege(resp);
+                if (resp.id == 1) {
+                    $('#modal-x2').modal('hide');
+                    forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+                }
+            });
+        }
+    });
+
+    $(document).on('click', '#submitAdCerApproval', function () {
+        var fileData = JSON.parse(unescape($(this).val()));
+        if (confirm('Are you sure you want to approve?')) {
+            adCertificateApproval(fileData.id, fileData.environment_officer_id, function (resp) {
+                show_mesege(resp);
+                if (resp.id == 1) {
+                    $('#modal-x2').modal('hide');
+                    forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+                }
+            });
+        }
+    });
+    $(document).on('click', '#rejectAdCerApproval', function () {
+        var fileData = JSON.parse(unescape($(this).val()));
+        if (confirm('Are you sure you want to approve?')) {
+            rejectCertificateApproval(fileData.id, fileData.environment_officer_id, function (resp) {
+                show_mesege(resp);
+                if (resp.id == 1) {
+                    $('#modal-x2').modal('hide');
+                    forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+                }
+            });
+        }
+    });
 
 </script>
 @endsection
