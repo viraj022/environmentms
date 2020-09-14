@@ -72,7 +72,7 @@
                                         <th>File No</th>
                                         <th>Date</th>
                                         <th>Status</th>
-                                        <th class="inspectTbl" style="width: 180px">Inspection</th>
+                                        <!--<th class="inspectTbl" style="width: 180px">Inspection</th>-->
                                         <th class="" style="width: 180px">Action</th>
                                     </tr>
                                 </thead>
@@ -126,7 +126,7 @@
                     <button type="button" id="setInspectionVal2" class="btn btn-primary d-none"><i class="fa fa-check"></i> Set Inspection</button>
                     <button type="button" id="needApproval" class="btn btn-primary d-none"><i class="fa fa-check"></i> AD Approval</button>
                     <button type="button" id="submitAdCerApproval" class="btn btn-primary d-none"><i class="fa fa-check"></i> Submit For AD Certificate Approval</button>
-                    <button type="button" id="rejectAdCerApproval" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject Certificate Approval</button>
+                    <button type="button" id="rejectAdCerApproval" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject Certificate</button>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -212,13 +212,18 @@
 
 
     $(document).on('click', '.detailsData', function () {
-        $('#modal-x2').modal();
         var fileData = JSON.parse(unescape($(this).val()));
+        let f_Status = fileData.file_status;
+        
+        $('#modal-x2').modal();
+        console.log(fileData);
         $('#needApproval').val($(this).val()); //<-- Share this button value to this button
         $('#submitAdCerApproval').val($(this).val()); //<-- Share this button value to submitAdCerApproval button
         $('#rejectAdCerApproval').val($(this).val()); //<-- Share this button value to submitAdCerApproval button
-        let f_Status = fileData.file_status;
         $('#modalTitlex2').html(fileData.file_no);
+        
+        $('#needApproval,#submitAdCerApproval,#rejectAdCerApproval,#setInspectionVal2').addClass('d-none');
+        
         if (f_Status == 0) {
             if (fileData.need_inspection == null) {
                 $('#setInspectionVal2').removeClass('d-none');
@@ -273,6 +278,10 @@
                 }
             });
         }
+    });
+    $(document).on('click', '#setInspectionVal2', function () {
+        $('#modal-x2').modal('hide');
+        $('#modal-xl').modal('show');
     });
 
 </script>

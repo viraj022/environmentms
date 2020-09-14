@@ -461,7 +461,7 @@
                                     </div>
                                 </div>
                                 <div class="callout callout-danger">
-                                    <h4>Status: <a class="setupInspectStatus text-success"></a></h4>
+                                    <h4>Current Status: <a class="setupInspectStatus text-success"></a></h4>
                                     <button type="button" onclick="location.href = '';" class="btn btn-dark addToSiteIns d-none" data-dismiss="modal"><i class="fa fa-plus"></i>&nbsp Add To Site Inspection</button>
                                     <button type="button" value="needed" class="btn btn-info setInspectUI d-none"><i class="fa fa-plus"></i>&nbsp Set Inspection</button>
                                     <button type="button" value="no_needed" class="btn btn-warning noNeedInspect d-none"><i class="fa fa-exclamation"></i>&nbsp No Need Inspection</button>
