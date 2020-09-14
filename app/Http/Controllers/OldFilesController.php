@@ -7,6 +7,7 @@ use App\OldFiles;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\LogActivity;
 
 class OldFilesController extends Controller
 {
@@ -27,11 +28,16 @@ class OldFilesController extends Controller
         $oldFiles->path = "storage/" . $fileUrl . "/" . $file_name;
         $oldFiles->type = $request->file->extension();
         $oldFiles->client_id = $client->id;
-        if ($oldFiles->save()) {
+             $msg =$oldFiles->save();
+        LogActivity::fileLog($oldFiles->client_id, 'OldFile', "OldFileCreate", 1);
+
+        if ($msg) {
+            LogActivity::addToLog('OldFileCreate Created',$oldFiles);            
             return array('id' => 1, 'message' => 'true');
         } else {
+            LogActivity::addToLog('Fail to create OldFile ',$oldFiles);
+            return array('id' => 0, 'message' => 'false');
         }
-        return array('id' => 0, 'message' => 'false');
     }
 
     public function delete($id)
@@ -39,9 +45,15 @@ class OldFilesController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $oldFiles = OldFiles::findOrFail($id);
-        if ($oldFiles->delete()) {
+        $msg=$oldFiles->delete();
+
+        LogActivity::fileLog($oldFiles->client_id, 'OldFile', "OldFileDelate", 1);
+
+        if ($msg) {
+            LogActivity::addToLog('OldFileCreate Deleted',$oldFiles);            
             return array('id' => 1, 'message' => 'true');
         } else {
+            LogActivity::addToLog('Fail to delete OldFile ',$oldFiles);
             return array('id' => 0, 'message' => 'false');
         }
     }

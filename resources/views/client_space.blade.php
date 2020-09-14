@@ -88,27 +88,12 @@
                                            value="">
                                     <div id="valnicName" class="d-none"><p class="text-danger">NIC is required</p></div>
                                 </div>
-                            </div>                           
-                        </div>
-                        <div class="">
-                            <div class="card card-success">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <label id="lblTitle">Map</label>
-                                                </div>
-                                                <!-- /.card-header -->
-                                                <div class="card-body p-0">
-                                                    <div id="map" style="width: 100%; height: 600px;"></div>
-                                                </div>
-                                                <!-- /.card-body -->
-                                            </div>
-                                        </div>
-                                    </div>
+                                <hr>
+                                <div class="card-header">
+                                    <label id="lblTitle">Map</label>
                                 </div>
-                            </div>
+                                <div id="map" style="width: 100%; height: 367px;"></div>
+                            </div>                           
                         </div>
                     </div>
                     <!--Industry details-->
@@ -155,11 +140,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Start Date*</label>
-                                    <input id="startDate" type="date" data-date="" data-date-format="YYYY-MMM-DD" class="form-control form-control-sm" placeholder="Enter Date..." value="">
+                                    <input id="startDate" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Submitted Date*</label>
-                                    <input id="submittedDate" type="date" class="form-control form-control-sm cutenzReq" placeholder="Enter Date..." value="">
+                                    <input id="submittedDate" type="date" max="2999-12-31" class="form-control form-control-sm cutenzReq" placeholder="Enter Date..." value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Contact No</label>
@@ -337,7 +322,7 @@
 
         // The map, centered at Uluru
         var map = new google.maps.Map(
-                document.getElementById('map'), {zoom: 15, center: defaultLocation});
+                document.getElementById('map'), {zoom: 13, center: defaultLocation});
         // The marker, positioned at Uluru
         var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: true,
             title: "Drag me!"});

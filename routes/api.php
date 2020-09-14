@@ -764,13 +764,9 @@ Route::middleware('auth:api')->put('/client/id/{id}', 'ClientController@store');
 /* request Example 
   {
   "first_name" : "Nadun",
-  "last_name" : "test lname",
-  "address" : "test address",
-  "contact_no" : "0719546738",
-  "email": "test@email.com",
-  "nic" : "000000000V",
-  "password" : "00000"
   }
+
+  // send the key names and values that needs to be updated
   response Example
   validation response Example */
 

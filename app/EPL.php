@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -12,7 +13,7 @@ class EPL extends Model
     public const FINEDATE = '2012-01-01';
     public const INSPECTION = 'inspection';
     public const INSPECTION_FINE = 'inspection_fine';
-    protected $appends = ['epl_instantNumber'];
+    protected $appends = ['epl_instantNumber', 'expire_date_only', 'issue_date_only'];
 
     public const INSPECTION_FEE = 'Inspection Fee';
 
@@ -136,9 +137,24 @@ class EPL extends Model
         }
         return $info;
     }
-    
-    public function getEplInstantNumberAttribute(){
-        return $this->code.'/r'.$this->count;
+
+    public function getEplInstantNumberAttribute()
+    {
+        return $this->code . '/r' . $this->count;
     }
-    
+    // issue_date
+    // expire_date
+    //to fix date format 2020 09 12
+
+    public function getIssueDateOnlyAttribute()
+    {
+        //return strtotime($this->schedule_date)->toDateString();
+        return Carbon::parse($this->issue_date)->format('Y-m-d');
+    }
+
+    public function getExpireDateOnlyAttribute()
+    {
+        //return strtotime($this->schedule_date)->toDateString();
+        return Carbon::parse($this->expire_date)->format('Y-m-d');
+    }
 }

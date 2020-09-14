@@ -12,6 +12,7 @@ use App\InspectionDateLog;
 use App\InspectionSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\LogActivity;
 
 class InspectionSessionController extends Controller
 {
@@ -70,14 +71,18 @@ class InspectionSessionController extends Controller
                 $dLog->inspection_session_id = $inspectionSession->id;
                 $msg = $msg &&  $dLog->save();
 
-                $file->need_inspection = Client::STATUS_PENDING;
-                $file->is_working = Client::IS_WORKING_WORKING;
+                $file->need_inspection = Client::STATUS_PENDING;               
                 $msg = $msg && $file->save();
+ 
+
                 if ($msg) {
+                    LogActivity::addToLog('Inspection Session Created',$inspectionSession);            
                     return array('id' => 1, 'message' => 'true');
                 } else {
+                    LogActivity::addToLog('Fail to create Inspection Session  ',$inspectionSession);
                     return array('id' => 0, 'message' => 'false');
                 }
+
             } else {
                 abort(404);
             }
@@ -212,12 +217,15 @@ class InspectionSessionController extends Controller
             $inspectionSession = InspectionSession::findOrFail($sessionId);
             $file = $inspectionSession->client;
             $msg = $inspectionSession->delete();
-            $file->need_inspection = Client::STATUS_INSPECTION_NEEDED;
-            $file->is_working = Client::IS_WORKING_WORKING;
+            $file->need_inspection = Client::STATUS_INSPECTION_NEEDED;         
             $msg = $msg && $file->save();
+    
+
             if ($msg) {
+                LogActivity::addToLog('Inspection Session Deleted',$inspectionSession);            
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to Delete Inspection Session  ',$inspectionSession);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -248,9 +256,13 @@ class InspectionSessionController extends Controller
         $file = $inspectionSession->client;
         $file->need_inspection = Client::STATUS_COMPLETED;
         $msg = $msg && $file->save();
+  
+
         if ($msg) {
+            LogActivity::addToLog('Inspection Session Mark as complete',$inspectionSession);            
             return array('id' => 1, 'message' => 'true');
         } else {
+            LogActivity::addToLog('Fail to Mark as complete Inspection Session  ',$inspectionSession);
             return array('id' => 0, 'message' => 'false');
         }
     }
@@ -266,9 +278,12 @@ class InspectionSessionController extends Controller
         $file = $inspectionSession->client;
         $file->need_inspection = Client::STATUS_COMPLETED;
         $msg = $msg && $file->save();
+      
         if ($msg) {
+            LogActivity::addToLog('Inspection Session Mark as pending',$inspectionSession);            
             return array('id' => 1, 'message' => 'true');
         } else {
+            LogActivity::addToLog('Fail to Mark as pending Inspection Session  ',$inspectionSession);
             return array('id' => 0, 'message' => 'false');
         }
     }

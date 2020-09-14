@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\EnvOfficer;
 use Illuminate\Http\Request;
+use App\Helpers\LogActivity;
 use Illuminate\Support\Facades\Auth;
 
 class EnvOfficerController extends Controller {
@@ -37,11 +38,16 @@ class EnvOfficerController extends Controller {
             $zone->code = \request('code');
             $msg = $zone->save();
 
+
             if ($msg) {
+                LogActivity::addToLog('Create a new Zone',$zone);
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to create a new Zone',$zone);
                 return array('id' => 0, 'message' => 'false');
             }
+
+
         } else {
             abort(401);
         }
@@ -83,8 +89,10 @@ class EnvOfficerController extends Controller {
             $msg = $zone->save();
 
             if ($msg) {
+                LogActivity::addToLog('Zone updated',$zone);
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('Fail to upodate zone',$zone);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -144,8 +152,10 @@ class EnvOfficerController extends Controller {
             $msg = $zone->delete();
 
             if ($msg) {
+                LogActivity::addToLog('Zone deleted',$zone);
                 return array('id' => 1, 'message' => 'true');
             } else {
+                LogActivity::addToLog('fail to delete zone',$zone);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {

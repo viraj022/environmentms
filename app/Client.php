@@ -53,4 +53,74 @@ class Client extends Model
         {
                 return $this->belongsTo(Pradesheeyasaba::class);
         }
+
+        public static function getFileByStatusQuery($statusType, $statusCodes)
+        {
+                $file = "";
+                switch ($statusType) {
+                        case 'file_status':
+                                $file = Client::whereIn('file_status', $statusCodes);
+                                break;
+                        case 'inspection':
+                                $file = Client::whereIn('file_status', $statusCodes);
+                                break;
+                        case 'cer_type_status':
+                                $file = Client::whereIn('file_status', $statusCodes);
+                                break;
+                        case 'old_data':
+                                $file = Client::whereIn('file_status', $statusCodes);
+                                break;
+                        case 'file_working':
+                                $file = Client::whereIn('file_status', $statusCodes);
+                                break;
+                        case 'cer_status':
+                                $file = Client::whereIn('file_status', $statusCodes);
+                                break;
+                        case 'file_problem':
+                                $file = Client::whereIn('file_status', $statusCodes);
+                                break;
+                        default:
+                                abort('422', 'unknown status type');
+                }
+                return $file->with('oldFiles')
+                        ->with('industryCategory')
+                        ->with('businessScale')
+                        ->with('pradesheeyasaba')
+                        ->with('environmentOfficer.assistantDirector');
+        }
+
+        public function generateCertificateNumber()
+        {
+                switch ($this->cer_type_status) {
+                        case 1: //new epl
+                                $cerNo = Setting::Where('name', 'certificate_ai')->sum('value');
+                                $cerNo++;
+                                // return array('nextNumber' => str_pad($cerNo, 6, "0", STR_PAD_LEFT));
+                                return  str_pad($cerNo, 6, "0", STR_PAD_LEFT);
+                        case 2: //epl renewal
+                                $certificate = Certificate::Where('client_id', $this->id)->first();
+                                $certificate_count = Certificate::Where('client_id', $this->id)->count();
+
+                                $certificate_count = Certificate::Where('client_id', $this->id)->count();
+
+                                //  $cerNo = Setting::Where('name', 'certificate_ai')->sum('value');
+                                //  dd($certificate);
+
+                                // return array('nextNumber' => str_pad($certificate->cetificate_number, 6, "0", STR_PAD_LEFT) . "\r" . $certificate_count);
+                                return  str_pad($certificate->cetificate_number, 6, "0", STR_PAD_LEFT);
+                        case 3; //site_new
+                                $client = Client::findOrFail($this->id);
+                                //return array('nextNumber' => $client->file_no);
+                                return $client->file_no;
+
+
+                        case 4: //site_clearance_extetion
+                                $client = Client::findOrFail($this->id);
+                                // return array('nextNumber' => $client->file_no);
+                                return $client->file_no;
+                                break;
+
+                        default:
+                }
+        }
 }

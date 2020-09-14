@@ -56,38 +56,28 @@
                 </div>
             </div>
 
-
             <div class="col-md-7">
-                <div class="card card-success">
-                    <div class="card-body">
-                        <div class="row">
-
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Payment Categories</h3>
-                                    </div>
-                                    <!-- /.card-header -->
-                                    <div class="card-body p-0">
-                                        <div class="card-body table-responsive" style="height: 450px;">
-                                            <table class="table table-condensed" id="tblPaymentCat">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="width: 10px">#</th>
-                                                        <th>Name</th>
-                                                        <th style="width: 140px">Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <!-- /.card-body -->
-                                </div>
-                            </div>                                        
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Payment Categories</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body p-0">
+                        <div class="card-body table-responsive" style="height: 450px;">
+                            <table class="table table-condensed" id="tblPaymentCat">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th>Name</th>
+                                        <th style="width: 140px">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                    <!-- /.card-body -->
                 </div>
             </div>
         </div>
@@ -258,6 +248,6 @@
 //HIDE ALL ERROR MSGS   
     function hideAllErrors() {
         $('#valName').addClass('d-none');
-    }    
+    }
 </script>
 @endsection
