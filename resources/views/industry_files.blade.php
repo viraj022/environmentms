@@ -126,7 +126,7 @@
                     <button type="button" id="setInspectionVal2" class="btn btn-primary d-none"><i class="fa fa-check"></i> Set Inspection</button>
                     <button type="button" id="needApproval" class="btn btn-primary d-none"><i class="fa fa-check"></i> AD Approval</button>
                     <button type="button" id="submitAdCerApproval" class="btn btn-primary d-none"><i class="fa fa-check"></i> Submit For AD Certificate Approval</button>
-                    <button type="button" id="rejectAdCerApproval" class="btn btn-danger d-none"><i class="fa fa-check"></i> Reject Certificate Approval</button>
+                    <button type="button" id="rejectAdCerApproval" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject Certificate Approval</button>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
