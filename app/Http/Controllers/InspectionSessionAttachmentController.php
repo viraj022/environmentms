@@ -12,14 +12,16 @@ use App\InspectionSessionAttachment;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\LogActivity;
 
-class InspectionSessionAttachmentController extends Controller {
+class InspectionSessionAttachmentController extends Controller
+{
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id) {
+    public function index($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
@@ -40,7 +42,8 @@ class InspectionSessionAttachmentController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function createEPlInspection($id, Request $request) {
+    public function createEPlInspection($id, Request $request)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
@@ -49,7 +52,7 @@ class InspectionSessionAttachmentController extends Controller {
                 $e = Client::findOrFail($inspection->client_id);
                 $type = $request->file->extension();
                 $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                $fileUrl = "/uploads/indurtry_files/" . $e->id . "/inspections/" . $inspection->id;
+                $fileUrl = "/uploads/industry_files/" . $e->id . "/inspections/" . $inspection->id;
                 $storePath = 'public' . $fileUrl;
                 $path = 'storage' . $fileUrl . "/" . $file_name;
                 $request->file('file')->storeAs($storePath, $file_name);
@@ -58,13 +61,13 @@ class InspectionSessionAttachmentController extends Controller {
                 $inspectionSessionAttachment->path = $path;
                 $inspectionSessionAttachment->type = $type;
                 $msg = $inspectionSessionAttachment->save();
-         
+
 
                 if ($msg) {
-                    LogActivity::addToLog('EPL Inspection Created',$inspectionSessionAttachment);            
+                    LogActivity::addToLog('EPL Inspection Created', $inspectionSessionAttachment);
                     return array('id' => 1, 'message' => 'true');
                 } else {
-                    LogActivity::addToLog('Fail to create EPL Inspection ',$inspectionSessionAttachment);
+                    LogActivity::addToLog('Fail to create EPL Inspection ', $inspectionSessionAttachment);
                     return array('id' => 0, 'message' => 'false');
                 }
             } else {
@@ -81,7 +84,8 @@ class InspectionSessionAttachmentController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         //
     }
 
@@ -91,7 +95,8 @@ class InspectionSessionAttachmentController extends Controller {
      * @param  \App\InspectionSessionAttachment  $inspectionSessionAttachment
      * @return \Illuminate\Http\Response
      */
-    public function showEpl($id) {
+    public function showEpl($id)
+    {
         $user = Auth::user($id);
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_delete']) {
@@ -107,7 +112,8 @@ class InspectionSessionAttachmentController extends Controller {
      * @param  \App\InspectionSessionAttachment  $inspectionSessionAttachment
      * @return \Illuminate\Http\Response
      */
-    public function edit(InspectionSessionAttachment $inspectionSessionAttachment) {
+    public function edit(InspectionSessionAttachment $inspectionSessionAttachment)
+    {
         //
     }
 
@@ -118,7 +124,8 @@ class InspectionSessionAttachmentController extends Controller {
      * @param  \App\InspectionSessionAttachment  $inspectionSessionAttachment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, InspectionSessionAttachment $inspectionSessionAttachment) {
+    public function update(Request $request, InspectionSessionAttachment $inspectionSessionAttachment)
+    {
         //
     }
 
@@ -128,28 +135,28 @@ class InspectionSessionAttachmentController extends Controller {
      * @param  \App\InspectionSessionAttachment  $inspectionSessionAttachment
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_delete']) {
             $inspectionSessionAttachment = InspectionSessionAttachment::findOrFail($id);
             $msg = $inspectionSessionAttachment->delete();
-             
+
             if ($msg) {
-                LogActivity::addToLog('EPL Inspection Deleted : InspectionSessionAttachmentController',$inspectionSessionAttachment);            
+                LogActivity::addToLog('EPL Inspection Deleted : InspectionSessionAttachmentController', $inspectionSessionAttachment);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to delete EPL Inspection : InspectionSessionAttachmentController ',$inspectionSessionAttachment);
+                LogActivity::addToLog('Fail to delete EPL Inspection : InspectionSessionAttachmentController ', $inspectionSessionAttachment);
                 return array('id' => 0, 'message' => 'false');
             }
-
-
         } else {
             abort(401);
         }
     }
 
-    private function makeEPLApplicationPath($id, $attachemntId) {
+    private function makeEPLApplicationPath($id, $attachemntId)
+    {
         if (!is_dir("uploads")) {
             //Create our directory if it does not exist
             mkdir("uploads");
@@ -172,5 +179,4 @@ class InspectionSessionAttachmentController extends Controller {
         }
         return "uploads/EPL/" . $id . "/inspections/" . $attachemntId . "/";
     }
-
 }
