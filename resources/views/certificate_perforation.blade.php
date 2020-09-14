@@ -299,6 +299,7 @@
             if (resp.id == 1) {
                 getCertificateDetails(PROFILE_ID, function (resp) {
                     CERTIFICATE_ID = parseInt(resp.id);
+                    location.reload();
                 });
             }
         });
