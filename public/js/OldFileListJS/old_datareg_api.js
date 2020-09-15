@@ -99,10 +99,10 @@ function Validiteinsert(data) {
         $('#valEPL').removeClass('d-none');
         response = false;
     }
-    if (data.remark.length == 0) {
-        $('#valRemark').removeClass('d-none');
-        response = false;
-    }
+//    if (data.remark.length == 0) {
+//        $('#valRemark').removeClass('d-none');
+//        response = false;
+//    }
     return response;
 }
 //END OF VALIDATE DATA
