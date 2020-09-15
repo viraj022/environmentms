@@ -14,6 +14,7 @@ function resetinputFields() {
 function fromValues() {
     var data = {
         is_old: $('#getisOld').val(),
+        name_title: $('#getTitle').val(),
         first_name: $('#getfName').val(),
         last_name: $('#getlName').val(),
         address: $('#getAddress').val(),

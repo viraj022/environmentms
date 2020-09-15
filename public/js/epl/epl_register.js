@@ -9,6 +9,7 @@ function loadPradeshiyaSabha(callBack) {
             cbo = "<option value=''>No Data Found</option>";
         }
         $('#prsdeshiySb').html(cbo);
+        $('.select2').select2();
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack();
         }
@@ -25,6 +26,7 @@ function IndustryCategoryCombo(callBack) {
             cbo = "<option value=''>No Data Found</option>";
         }
         $('#industryCat').html(cbo);
+        $('.select2').select2();
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack();
         }
@@ -41,6 +43,7 @@ function BusinessScaleCombo(callBack) {
             cbo = "<option value=''>No Data Found</option>";
         }
         $('#businesScale').html(cbo);
+        $('.select2').select2();
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack();
         }

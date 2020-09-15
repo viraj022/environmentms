@@ -78,14 +78,14 @@ class EPLPaymentController extends Controller
                         }
                     }
                     if ($msg) {
-                        LogActivity::fileLog($client->id, 'EplPay', "EPL Payment Added : addRegistrationPayment", 1);
-                        LogActivity::addToLog('EPL Payment Added : addRegistrationPayment',$client);
+                        //LogActivity::fileLog($client->id, 'EplPay', "EPL Payment Added : addRegistrationPayment", 1);
+                        LogActivity::addToLog('EPL Payment Added : addRegistrationPayment', $client);
                         return array('id' => 1, 'message' => 'true', 'code' => $transaction->id);
                     } else {
                         abort(500);
                     }
                 } else {
-                    LogActivity::addToLog('Fail to add EPL Payment : addRegistrationPayment',$client);
+                    LogActivity::addToLog('Fail to add EPL Payment : addRegistrationPayment', $client);
                     return array('id' => 0, 'message' => 'false');
                 }
             });
@@ -103,11 +103,11 @@ class EPLPaymentController extends Controller
                 ->where('id', $id)->first();
             if ($transaction) {
                 if ($transaction->delete()) {
-                 //   LogActivity::fileLog($transaction->id, 'EplPay', "EPL Payment Deleted : deleteApplicationPayment", 1);
-                    LogActivity::addToLog('EPL Payment Added : addRegistrationPayment',$transaction);
+                    //   LogActivity::fileLog($transaction->id, 'EplPay', "EPL Payment Deleted : deleteApplicationPayment", 1);
+                    LogActivity::addToLog('EPL Payment Added : addRegistrationPayment', $transaction);
                     return array('id' => 1, 'message' => 'true');
                 } else {
-                    LogActivity::addToLog('Fail to delete EPL Payment : deleteApplicationPayment',$transaction);
+                    LogActivity::addToLog('Fail to delete EPL Payment : deleteApplicationPayment', $transaction);
                     return array('id' => 0, 'message' => 'false');
                 }
             } else {
@@ -138,11 +138,11 @@ class EPLPaymentController extends Controller
         $transaction->payment_status = 1;
         $msg = $transaction->save();
         if ($msg) {
-         //   LogActivity::fileLog($transaction->id, 'EplPay', "EPL Payment marked : markApplicationPayment", 1);
-            LogActivity::addToLog('EPL Payment Added : addRegistrationPayment',$transaction);
+            //   LogActivity::fileLog($transaction->id, 'EplPay', "EPL Payment marked : markApplicationPayment", 1);
+            LogActivity::addToLog('EPL Payment Added : addRegistrationPayment', $transaction);
             return array('id' => 1, 'message' => 'true');
         } else {
-            LogActivity::addToLog('Fail to mark EPL Payment : markApplicationPayment',$transaction);
+            LogActivity::addToLog('Fail to mark EPL Payment : markApplicationPayment', $transaction);
             return array('id' => 0, 'message' => 'false');
         }
     }
@@ -159,11 +159,11 @@ class EPLPaymentController extends Controller
                 if ($transaction->status == 1) {
                     $transaction->status = 2;
                     if ($transaction->save()) {
-            //   LogActivity::fileLog($transaction->id, 'EplPay', "processApplication", 1);
-            LogActivity::addToLog('processApplication',$transaction);
+                        //   LogActivity::fileLog($transaction->id, 'EplPay', "processApplication", 1);
+                        LogActivity::addToLog('processApplication', $transaction);
                         return array('id' => 1, 'message' => 'true');
                     } else {
-                        LogActivity::addToLog('Fail to processApplication',$transaction);
+                        LogActivity::addToLog('Fail to processApplication', $transaction);
                         return array('id' => 0, 'message' => 'false');
                     }
                 } else {
@@ -263,12 +263,12 @@ class EPLPaymentController extends Controller
                             $paymentType = PaymentType::getpaymentByTypeName(PaymentType::INSPECTIONFEE);
                             if ($payment->payment_type_id == $paymentType->id) {
                                 // if payment is a fine
-                                    //   LogActivity::fileLog($transaction->id, 'EplPay', "payEPL done", 1);
-                                     LogActivity::addToLog('payEPL done',$transaction);
+                                //   LogActivity::fileLog($transaction->id, 'EplPay', "payEPL done", 1);
+                                LogActivity::addToLog('payEPL done', $transaction);
                                 $transactionItem->amount = $item['amount'];
                             } else {
                                 // if payment is not valid
-                                LogActivity::addToLog('fail to payEPL',$transaction);
+                                LogActivity::addToLog('fail to payEPL', $transaction);
                                 $transactionItem->amount = $item['amount'];
                             }
                             $msg = $msg && $transactionItem->save();
