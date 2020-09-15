@@ -142,11 +142,25 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Start Date*</label>
-                                    <input id="startDate" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="far fa-calendar-alt"></i>
+                                            </span>
+                                        </div>
+                                        <input id="startDate" name="datepickerUi" type="text" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Submitted Date*</label>
-                                    <input id="submittedDate" type="date" max="2999-12-31" class="form-control form-control-sm cutenzReq" placeholder="Enter Date..." value="">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="far fa-calendar-alt"></i>
+                                            </span>
+                                        </div>
+                                        <input id="submittedDate" name="datepickerUi" max="2999-12-31" class="form-control form-control-sm cutenzReq" placeholder="Enter Date..." value="">
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Contact No</label>
@@ -252,6 +266,14 @@
             initMap();
             $(".loadingRenderUI").remove(); //<--Check Loading Status
         });
+
+        $('input[name="datepickerUi"]').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
+        });
+
     });
 
 
@@ -289,7 +311,6 @@
             });
         }
     });
-
 
 </script>
 @endsection

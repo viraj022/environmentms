@@ -85,15 +85,36 @@
                             </div>
                             <div class="form-group">
                                 <label>Issue Date*</label>
-                                <input id="issue_date" type="date" data-date="" data-date-format="YYYY MM DD" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Issue Date..." value="">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="far fa-calendar-alt"></i>
+                                        </span>
+                                    </div>
+                                    <input id="issue_date" name="datepickerUi" type="text" data-date="" data-date-format="YYYY MM DD" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Issue Date..." value="">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>Expire Date*</label>
-                                <input id="expire_date" type="date"  max="2999-12-31"class="form-control form-control-sm " disabled placeholder="Enter Expire Date..." value="">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="far fa-calendar-alt"></i>
+                                        </span>
+                                    </div>
+                                    <input id="expire_date" name="datepickerUi"  max="2999-12-31"class="form-control form-control-sm " disabled placeholder="Enter Expire Date..." value="">
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label> Last Submitted Date*</label>
-                                <input id="getsubmitDate" type="date"  max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Submit Date..." value="">
+                                <label>Last Submitted Date*</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="far fa-calendar-alt"></i>
+                                        </span>
+                                    </div>
+                                    <input id="getsubmitDate" name="datepickerUi"  max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Submit Date..." value="">
+                                </div>
                             </div>
                             <div class="form-group showCertificateNo">
                                 <label>Certificate No*</label>
@@ -481,6 +502,13 @@
             setProfileDetails(result);
             loadAllOldAttachments(result, function () {
             });
+        });
+
+        $('input[name="datepickerUi"]').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
         });
 
     });
