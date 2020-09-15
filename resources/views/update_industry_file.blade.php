@@ -107,15 +107,15 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Pradeshiya Sabha*</label>
-                                    <select id="prsdeshiySb" class="form-control form-control-sm cutenzReq prsdeshiySb" style="width: 100%;"></select>
+                                    <select id="prsdeshiySb" class="form-control form-control-sm select2 select2-purple cutenzReq prsdeshiySb" style="width: 100%;"></select>
                                 </div>
                                 <div class="form-group">
                                     <label>Industry Category*</label>
-                                    <select id="industryCat" class="form-control form-control-sm cutenzReq" style="width: 100%;"></select>
+                                    <select id="industryCat" class="form-control form-control-sm select2 select2-purple cutenzReq" style="width: 100%;"></select>
                                 </div>
                                 <div class="form-group">
                                     <label>Business Scale*</label>
-                                    <select id="businesScale" class="form-control form-control-sm cutenzReq" style="width: 100%;"></select>
+                                    <select id="businesScale" class="form-control form-control-sm  select2 select2-purple cutenzReq" style="width: 100%;"></select>
                                 </div>
                                 <div class="form-group">
                                     <label>Business Registration Number</label>
