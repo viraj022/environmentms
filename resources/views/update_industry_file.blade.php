@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Update Industry File - <span class="right badge badge-primary">{{$id}}</span></h1>
+                <h1>Update Industry File - <span class="right badge badge-primary fileNoDbzz">Loading..</span></h1>
 
             </div>
         </div>
@@ -199,95 +199,96 @@
 <!-- AdminLTE for demo purposes -->
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
 <script>
-var _Latitude = 7.489050;
-var _Longitude = 80.349985;
-var PROFILE = '{{$id}}';
+    var _Latitude = 7.489050;
+    var _Longitude = 80.349985;
+    var PROFILE = '{{$id}}';
 // Initialize and add the map
-function initMap() {
-    // The location of CeyTech
-    var defaultLocation = {lat: 7.489050, lng: 80.349985}; //default Location for load map
-    // The map, centered at Uluru
-    var map = new google.maps.Map(
-            document.getElementById('map'), {zoom: 14, center: defaultLocation});
-    // The marker, positioned at Uluru
-    var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: true,
-        title: "Drag me!"});
-    google.maps.event.addListener(marker, 'dragend', function (evt) {
-        _Latitude = evt.latLng.lat().toFixed(6); //change  decimal point if have problam with location accuracy
-        _Longitude = evt.latLng.lng().toFixed(6); //change  decimal point if have problam with location accuracy
-    });
-}
-
-$(function () {
-    loadPradeshiyaSabha();
-    IndustryCategoryCombo();
-    BusinessScaleCombo();
-
-    getaClientbyId(PROFILE, function (set) {
-        //Client
-        $("#getisOld").val(set.is_old);
-        $('#getfName').val(set.first_name);
-        $('#getlName').val(set.last_name);
-        $('#getAddress').val(set.address);
-        $('#getContact').val(set.contact_no);
-        $('#getEmail').val(set.email);
-        $('#getNicSave').val(set.nic);
-        //Industry
-        $('#prsdeshiySb').val(set.pradesheeyasaba_id);
-        $('#industryCat').val(set.industry_category_id);
-        $('#businesScale').val(set.business_scale_id);
-        $('#business_regno').val(set.industry_registration_no);
-        $('#business_name').val(set.industry_name);
-        $('#getZone').val(set.industry_is_industry);
-        $('#getAddressT').val(set.industry_address);
-        $('#inventsment').val(set.industry_investment);
-        $('#startDate').val(set.created_at);
-        $('#submittedDate').val(set.industry_start_date);
-        $('#getContactn').val(set.industry_contact_no);
-        $('#getEmailI').val(set.industry_email);
-        $('#btnUpdate').val(set.id);
-        _Latitude = parseFloat(set.industry_coordinate_x);
-        _Longitude = parseFloat(set.industry_coordinate_y);
-        initMap();
-        $(".loadingRenderUI").remove(); //<--Check Loading Status
-    });
-});
-
-
-$('#btnUpdate').click(function () {
-    var dataz = {
-        is_old: $('#getisOld').val(),
-        first_name: $('#getfName').val(),
-        last_name: $('#getlName').val(),
-        address: $('#getAddress').val(),
-        contact_no: $('#getContact').val(),
-        email: $('#getEmail').val(),
-        nic: $('#getNicSave').val(),
-        industry_name: $('#business_name').val().trim(),
-        industry_category_id: $('#industryCat').val(),
-        business_scale_id: $('#businesScale').val(),
-        industry_contact_no: $('#getContactn').val().trim(),
-        industry_address: $('#getAddressT').val().trim(),
-        industry_email: $('#getEmailI').val(),
-        pradesheeyasaba_id: $('#prsdeshiySb').val(),
-        industry_is_industry: $('#getZone').val(),
-        industry_investment: $('#inventsment').val(),
-        industry_start_date: $('#startDate').val(),
-        industry_registration_no: $('#business_regno').val().trim(),
-        industry_coordinate_x: _Latitude,
-        industry_coordinate_y: _Longitude,
-        assign_date: $('#submittedDate').val()
-    };
-    if (requiredFieldHandler(dataz, ".cutenzReq")) {
-        updateClientFileAPI($(this).val(), dataz, function (resp) {
-            show_mesege(resp);
-            if (resp.id === 1) {
-                //Do redirect to indust profile if u want...
-                window.location = '/industry_profile/id/' + PROFILE;
-            }
+    function initMap() {
+        // The location of CeyTech
+        var defaultLocation = {lat: 7.489050, lng: 80.349985}; //default Location for load map
+        // The map, centered at Uluru
+        var map = new google.maps.Map(
+                document.getElementById('map'), {zoom: 14, center: defaultLocation});
+        // The marker, positioned at Uluru
+        var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: true,
+            title: "Drag me!"});
+        google.maps.event.addListener(marker, 'dragend', function (evt) {
+            _Latitude = evt.latLng.lat().toFixed(6); //change  decimal point if have problam with location accuracy
+            _Longitude = evt.latLng.lng().toFixed(6); //change  decimal point if have problam with location accuracy
         });
     }
-});
+
+    $(function () {
+        loadPradeshiyaSabha();
+        IndustryCategoryCombo();
+        BusinessScaleCombo();
+
+        getaClientbyId(PROFILE, function (set) {
+            //Client
+            $(".fileNoDbzz").html(set.file_no);
+            $("#getisOld").val(set.is_old);
+            $('#getfName').val(set.first_name);
+            $('#getlName').val(set.last_name);
+            $('#getAddress').val(set.address);
+            $('#getContact').val(set.contact_no);
+            $('#getEmail').val(set.email);
+            $('#getNicSave').val(set.nic);
+            //Industry
+            $('#prsdeshiySb').val(set.pradesheeyasaba_id);
+            $('#industryCat').val(set.industry_category_id);
+            $('#businesScale').val(set.business_scale_id);
+            $('#business_regno').val(set.industry_registration_no);
+            $('#business_name').val(set.industry_name);
+            $('#getZone').val(set.industry_is_industry);
+            $('#getAddressT').val(set.industry_address);
+            $('#inventsment').val(set.industry_investment);
+            $('#startDate').val(set.created_at);
+            $('#submittedDate').val(set.industry_start_date);
+            $('#getContactn').val(set.industry_contact_no);
+            $('#getEmailI').val(set.industry_email);
+            $('#btnUpdate').val(set.id);
+            _Latitude = parseFloat(set.industry_coordinate_x);
+            _Longitude = parseFloat(set.industry_coordinate_y);
+            initMap();
+            $(".loadingRenderUI").remove(); //<--Check Loading Status
+        });
+    });
+
+
+    $('#btnUpdate').click(function () {
+        var dataz = {
+            is_old: $('#getisOld').val(),
+            first_name: $('#getfName').val(),
+            last_name: $('#getlName').val(),
+            address: $('#getAddress').val(),
+            contact_no: $('#getContact').val(),
+            email: $('#getEmail').val(),
+            nic: $('#getNicSave').val(),
+            industry_name: $('#business_name').val().trim(),
+            industry_category_id: $('#industryCat').val(),
+            business_scale_id: $('#businesScale').val(),
+            industry_contact_no: $('#getContactn').val().trim(),
+            industry_address: $('#getAddressT').val().trim(),
+            industry_email: $('#getEmailI').val(),
+            pradesheeyasaba_id: $('#prsdeshiySb').val(),
+            industry_is_industry: $('#getZone').val(),
+            industry_investment: $('#inventsment').val(),
+            industry_start_date: $('#startDate').val(),
+            industry_registration_no: $('#business_regno').val().trim(),
+            industry_coordinate_x: _Latitude,
+            industry_coordinate_y: _Longitude,
+            assign_date: $('#submittedDate').val()
+        };
+        if (requiredFieldHandler(dataz, ".cutenzReq")) {
+            updateClientFileAPI($(this).val(), dataz, function (resp) {
+                show_mesege(resp);
+                if (resp.id === 1) {
+                    //Do redirect to indust profile if u want...
+                    window.location = '/industry_profile/id/' + PROFILE;
+                }
+            });
+        }
+    });
 
 
 </script>
