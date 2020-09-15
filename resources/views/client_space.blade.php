@@ -47,6 +47,14 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
+                                    <label>Title*</label>
+                                    <select id="getTitle" class="form-control form-control-sm cutenzReq" style="width: 100%;">
+                                        <option value="Mr">Mr.</option>
+                                        <option value="Mrs">Mrs.</option>
+                                        <option value="-">-</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label>First Name*</label>
                                     <input id="getfName" type="text" class="form-control form-control-sm cutenzReq"
                                            placeholder="Enter FirstName..."
@@ -105,15 +113,15 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Pradeshiya Sabha*</label>
-                                    <select id="prsdeshiySb" class="form-control form-control-sm cutenzReq" style="width: 100%;"></select>
+                                    <select id="prsdeshiySb" class="form-control form-control-sm select2 select2-purple cutenzReq" style="width: 100%;"></select>
                                 </div>
                                 <div class="form-group">
                                     <label>Industry Category*</label>
-                                    <select id="industryCat" class="form-control form-control-sm cutenzReq" style="width: 100%;"></select>
+                                    <select id="industryCat" class="form-control form-control-sm select2 select2-purple cutenzReq" style="width: 100%;"></select>
                                 </div>
                                 <div class="form-group">
                                     <label>Business Scale*</label>
-                                    <select id="businesScale" class="form-control form-control-sm cutenzReq" style="width: 100%;"></select>
+                                    <select id="businesScale" class="form-control form-control-sm select2 select2-purple cutenzReq" style="width: 100%;"></select>
                                 </div>
                                 <div class="form-group">
                                     <label>Business Registration Number</label>
@@ -290,6 +298,7 @@
 
 <!-- Bootstrap4 Duallistbox -->
 <script src="../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+<script src="../../plugins/select2/js/select2.full.min.js"></script>
 <!-- InputMask -->
 <script src="../../plugins/moment/moment.min.js"></script>
 <script src="../../plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
@@ -525,5 +534,12 @@
         var row = JSON.parse(decodeURIComponent($(this).data('row')));
         window.location = "/industry_profile/id/" + row.id;
     });
+
+    $('#getfName,#getlName').on('change', function () {
+        let frName = $('#getfName').val();
+        let lName = $('#getlName').val();
+        $('#business_name').val(frName + '-' + lName);
+    });
+
 </script>
 @endsection
