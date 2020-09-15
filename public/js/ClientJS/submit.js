@@ -51,6 +51,10 @@ function requiredFieldHandler(frm_data,required_class) {
         toastr.error('Submitted Required!');
         response = false;
     }
+    if (frm_data.name_title.length == 0) {
+        toastr.error('Title Required!');
+        response = false;
+    }
     $(required_class).each(function () {
         if ($(this).val().length === 0) {
             $(this).addClass("is-invalid");

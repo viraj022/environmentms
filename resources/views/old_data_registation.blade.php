@@ -85,11 +85,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Issue Date*</label>
-                                <input id="issue_date" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Issue Date..." value="">
+                                <input id="issue_date" type="date" data-date="" data-date-format="YYYY MM DD" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Issue Date..." value="">
                             </div>
                             <div class="form-group">
                                 <label>Expire Date*</label>
-                                <input id="expire_date" type="date"  max="2999-12-31"class="form-control form-control-sm" placeholder="Enter Expire Date..." value="">
+                                <input id="expire_date" type="date"  max="2999-12-31"class="form-control form-control-sm " disabled placeholder="Enter Expire Date..." value="">
                             </div>
                             <div class="form-group">
                                 <label> Last Submitted Date*</label>
@@ -273,7 +273,6 @@
 <!-- AdminLTE App -->
 <script>
     let PROFILE = '{{$id}}';
-
     $(function () {
 //Load Combo Sets
         loadAssistantDirectorCombo(function () {
@@ -422,11 +421,21 @@
                 });
             }
         });
+        //Load Sections Button END
         $('#getIndustryType').on('change', function () {
             resetCurrentFormVals();
             $('.legitSection').addClass('d-none');
         });
-        //Load Sections Button END
+
+        $('#issue_date').on('change', function () { //<--On change issue date configer expire date
+            var issueDate = new Date($('#issue_date').val());
+            var year = issueDate.getFullYear() + 1;
+            var month = issueDate.getMonth() + 1;
+            var date = issueDate.getDate();
+            var expireDate = year + "-" + ('0' + month).slice(-2) + "-" + ('0' + date).slice(-2);
+            console.log(expireDate);
+            $('#expire_date').val(expireDate);
+        });
 
 
 //click update button
@@ -508,6 +517,5 @@
             uploadButtonHandler($('#otherFiles').val());
         });
     });
-
 </script>
 @endsection
