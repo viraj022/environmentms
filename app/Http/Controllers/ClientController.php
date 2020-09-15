@@ -15,7 +15,6 @@ use App\Rules\nationalID;
 use App\EnvironmentOfficer;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\SiteClearenceSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Helpers\LogActivity;
@@ -127,10 +126,12 @@ class ClientController extends Controller
             'industry_start_date' => 'required|date',
             'industry_registration_no' => 'nullable|string',
             'is_old' => 'required|integer',
+            'name_title' => 'required|string',
             // 'password' => 'required',
         ]);
         if ($pageAuth['is_create']) {
             $client = new Client();
+            $client->name_title = \request('name_title');
             $client->first_name = \request('first_name');
             $client->last_name = \request('last_name');
             $client->address = \request('address');
@@ -205,6 +206,7 @@ class ClientController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         request()->validate([
+            'name_title' => 'sometimes|required|string',
             'first_name' => 'sometimes|required|string',
             'last_name' => 'nullable|string',
             'address' => 'nullable',

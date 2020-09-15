@@ -127,6 +127,9 @@
                     <button type="button" id="needApproval" class="btn btn-primary d-none"><i class="fa fa-check"></i> AD Approval</button>
                     <button type="button" id="submitAdCerApproval" class="btn btn-primary d-none"><i class="fa fa-check"></i> Submit For AD Certificate Approval</button>
                     <button type="button" id="rejectAdCerApproval" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject Certificate</button>
+                    <div class="btn btn-group-lg">
+                        <button type="button" id="viewCertificateBtn" class="btn btn-info d-none"><i class="fa fa-file"></i> View Certificate</button>
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -214,16 +217,16 @@
     $(document).on('click', '.detailsData', function () {
         var fileData = JSON.parse(unescape($(this).val()));
         let f_Status = fileData.file_status;
-        
+
         $('#modal-x2').modal();
         console.log(fileData);
         $('#needApproval').val($(this).val()); //<-- Share this button value to this button
         $('#submitAdCerApproval').val($(this).val()); //<-- Share this button value to submitAdCerApproval button
         $('#rejectAdCerApproval').val($(this).val()); //<-- Share this button value to submitAdCerApproval button
         $('#modalTitlex2').html(fileData.file_no);
-        
-        $('#needApproval,#submitAdCerApproval,#rejectAdCerApproval,#setInspectionVal2').addClass('d-none');
-        
+
+        $('#needApproval,#submitAdCerApproval,#rejectAdCerApproval,#setInspectionVal2,#viewCertificateBtn').addClass('d-none');
+
         if (f_Status == 0) {
             if (fileData.need_inspection == null) {
                 $('#setInspectionVal2').removeClass('d-none');
@@ -236,6 +239,7 @@
             if (fileData.cer_status == 2) {
                 $('#submitAdCerApproval').removeClass('d-none');
                 $('#rejectAdCerApproval').removeClass('d-none');
+                $('#viewCertificateBtn').removeClass('d-none');
             }
         } else {
             $('#setInspectionVal2').addClass('d-none');

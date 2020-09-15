@@ -121,8 +121,8 @@
 
 
         $(document).on('click', '.actionDetails', function () {
-            let f_Status = fileData.file_status;
             var fileData = JSON.parse(unescape($(this).val()));
+            let f_Status = fileData.file_status;
             $('#modalTitlex2').html(fileData.file_no);
             $('#modal-x2').modal();
 
