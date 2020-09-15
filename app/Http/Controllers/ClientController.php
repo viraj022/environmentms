@@ -15,7 +15,6 @@ use App\Rules\nationalID;
 use App\EnvironmentOfficer;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\SiteClearenceSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Helpers\LogActivity;
@@ -232,17 +231,10 @@ class ClientController extends Controller
         ]);
         if ($pageAuth['is_update']) {
             $msg = Client::where('id', $id)->update($request->all());
-
-            $client = Client::findOrFail($id);
-            LogActivity::fileLog($client->id, 'FileOP', "File updated", 1);
-            $msg = Client::where('id', $id)->update($request->all());
-            if ($msg) {
-                LogActivity::addToLog('File updated', $client);
-                return array('id' => 1, 'message' => 'true');
-            } else {
-                LogActivity::addToLog('Fail t o update File', $client);
-                return array('id' => 0, 'message' => 'false');
-            }
+            // $client = Client::findOrFail($id);
+            // LogActivity::fileLog($client->id, 'FileOP', "File updated", 1);
+            // $msg = Client::where('id', $id)->update($request->all());
+            return array('id' => 1, 'message' => 'true');
         } else {
             abort(401);
         }
