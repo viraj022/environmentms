@@ -43,11 +43,10 @@ class CashierController extends Controller
         $transaction->invoice_no = request('invoice_no');
         $transaction->billed_at = Carbon::now()->toDateTimeString();
         if ($transaction->save()) {
-
-            LogActivity::addToLog($transaction->invoice_no.'payment Added',$transaction);
+            //  LogActivity::addToLog($transaction->invoice_no.'payment Added',$transaction);
             return array('id' => 1, 'message' => 'true');
         } else {
-            LogActivity::addToLog('Fail to Add transaction'.$transaction->invoice_no,$transaction);
+            // LogActivity::addToLog('Fail to Add transaction' . $transaction->invoice_no, $transaction);
             return array('id' => 1, 'message' => 'false');
         }
     }
@@ -57,25 +56,24 @@ class CashierController extends Controller
         $transaction->status = 3;
         $transaction->canceled_at = Carbon::now()->toDateTimeString();
         if ($transaction->save()) {
-            LogActivity::addToLog($transaction->invoice_no.'canceled',$transaction);
+            //  LogActivity::addToLog($transaction->invoice_no . 'canceled', $transaction);
             return array('id' => 1, 'message' => 'true');
         } else {
-            LogActivity::addToLog('faiL TO cancel'.$transaction->invoice_no,$transaction);
+            //    LogActivity::addToLog('faiL TO cancel' . $transaction->invoice_no, $transaction);
             return array('id' => 1, 'message' => 'false');
         }
     }
 
-    public function getPendingPaymentList(){
-        $a =   Array(); 
-     return    $transaction = Transaction::whereNull('billed_at')->get();     
-    
-}
+    public function getPendingPaymentList()
+    {
+        $a =   array();
+        return    $transaction = Transaction::whereNull('billed_at')->get();
+    }
 
-    public function getPendingPaymentByFileID($id){
+    public function getPendingPaymentByFileID($id)
+    {
 
-        
-   return Transaction::with('transactionItems')->with('client')->where('client_id',$id)->get();
-    
-}
-}
 
+        return Transaction::with('transactionItems')->with('client')->where('client_id', $id)->get();
+    }
+}
