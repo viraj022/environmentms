@@ -125,10 +125,10 @@
 
                                                     <div class="info-box mb-3 bg-info">
                                                         <span class="info-box-icon">
-                                                            <button class="btn btn-lg btn-default" id="newSiteClearence"><i class="fa fa-plus"></i></button></span>
+                                                            <a class="btn btn-lg btn-default" id="setSiteClear"><i class="fa fa-plus"></i></a></span>
                                                         <div class="info-box-content">
                                                             <span class="info-box-text">Create new site clearance file</span>
-                                                            <span class="info-box-number">New Site Clearance</span>
+                                                            <span class="info-box-number" id="">New Site Clearance</span>
                                                         </div>
                                                         <!-- /.info-box-content -->
                                                     </div>

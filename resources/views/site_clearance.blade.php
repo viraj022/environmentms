@@ -164,6 +164,7 @@
 <script src="/../../js/EPLProfileJS/client_space.js"></script>
 <script src="/../../js/EPLProfileJS/update.js"></script>
 <script src="/../../js/EPLProfileJS/delete.js"></script>
+<script src="/../../js/SiteClearanceJS/site_clearance_scr.js" type="text/javascript"></script>
 
 <!-- AdminLTE App -->
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>

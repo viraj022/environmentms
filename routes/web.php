@@ -56,6 +56,7 @@ Route::get('/pending_certificates', 'ClientController@certificatesUi');
 Route::get('/ad_pending_list', 'AssistantDirectorController@adPendingIndex');
 Route::get('/certificate_perforation/id/{id}', 'ClientController@certificatePrefer');
 Route::get('/director_pending_list', 'AssistantDirectorController@directorPendingListIndex');
+Route::get('/site_clearance/client/{client}/profile/{profile}', 'SiteClearanceController@index');
 //ui routs
 
 //dashboard

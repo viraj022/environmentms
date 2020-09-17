@@ -458,6 +458,7 @@
             var load_val = $('#getIndustryType').val();
             //get form data
             var data = fromValues();
+            delete data["file"];
             if (Validiteinsert(data)) {
                 updateEPLOldFiles($(this).val(), data, load_val, function (result) {
                     show_mesege(result);
