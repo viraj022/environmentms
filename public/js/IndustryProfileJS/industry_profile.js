@@ -104,7 +104,7 @@ function documentUploadDetails(obj) {
     $(".navToFile2").attr("href", "/" + obj.file_02);
     $(".navToFile3").attr("href", "/" + obj.file_03);
 
-    if (obj.environment_officer != null && obj.environment_officer.user.first_name != 0) {
+    if (obj.environment_officer != null && obj.environment_officer.user != 0) {
         $("#env_firstname").html(
                 "Environment Officer: " +
                 obj.environment_officer.user.first_name +
