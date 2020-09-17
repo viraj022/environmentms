@@ -152,10 +152,12 @@ function setIndustryAndClientDb(get) {
     $(".tabf_industry_email").html(get.industry_email);
     let env_officer = "Not Assinged";
     if (!(get.environment_officer == null)) {
-        env_officer =
-                get.environment_officer.user.first_name +
-                " " +
-                get.environment_officer.user.last_name;
+        if (get.environment_officer.user != null) {
+            env_officer =
+                    get.environment_officer.user.first_name +
+                    " " +
+                    get.environment_officer.user.last_name;
+        }
     }
     $(".tabf_environment_officer").html(env_officer);
 }
