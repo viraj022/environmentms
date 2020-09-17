@@ -661,7 +661,7 @@ class EPLController extends Controller
             }
             // sending response
             if ($msg) {
-                LogActivity::fileLog($epl->id, 'OldFile', "Update Old Data", 1);
+                // LogActivity::fileLog($epl->id, 'OldFile', "Update Old Data", 1);
                 LogActivity::addToLog('Update old data done' . $epl->client_id, $epl);
                 return array('id' => 1, 'message' => 'true');
             } else {
