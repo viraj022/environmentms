@@ -30,6 +30,13 @@ function setProfileDetails(obj) {
                 "/profile/" +
                 obj.epls[obj.epls.length - 1].id
                 );
+        $("#setSiteClear").attr(
+                "href",
+                "/site_clearance/client/" +
+                PROFILE_ID +
+                "/profile/" +
+                obj.epls[obj.epls.length - 1].id
+                );
     }
     obj.last_name == null
             ? $("#client_name").html(obj.first_name)
