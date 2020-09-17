@@ -6,10 +6,10 @@ function getaProfilebyId(id, callBack) {
     var url = "/api/client/id/" + id;
     ajaxRequest("GET", url, null, function (result) {
         if (
-            typeof callBack !== "undefined" &&
-            callBack !== null &&
-            typeof callBack === "function"
-        ) {
+                typeof callBack !== "undefined" &&
+                callBack !== null &&
+                typeof callBack === "function"
+                ) {
             callBack(result);
         }
     });
@@ -24,16 +24,16 @@ function setProfileDetails(obj) {
         $(".newEPL").addClass("d-none");
         $("#setEPLCode").html(obj.epls[obj.epls.length - 1].code);
         $("#setEPlLink").attr(
-            "href",
-            "/epl_profile/client/" +
+                "href",
+                "/epl_profile/client/" +
                 PROFILE_ID +
                 "/profile/" +
                 obj.epls[obj.epls.length - 1].id
-        );
+                );
     }
     obj.last_name == null
-        ? $("#client_name").html(obj.first_name)
-        : $("#client_name").html(obj.first_name + " " + obj.last_name);
+            ? $("#client_name").html(obj.first_name)
+            : $("#client_name").html(obj.first_name + " " + obj.last_name);
     $("#client_address").html(obj.address);
     $("#client_cont").html(obj.contact_no);
     $("#client_amil").html(obj.email);
@@ -42,16 +42,16 @@ function setProfileDetails(obj) {
     $("#obj_regno").html(obj.industry_registration_no);
     $("#obj_invest").html(obj.industry_investment);
     initMap(
-        parseFloat(obj.industry_coordinate_x),
-        parseFloat(obj.industry_coordinate_y)
-    );
+            parseFloat(obj.industry_coordinate_x),
+            parseFloat(obj.industry_coordinate_y)
+            );
     documentUploadDetails(obj);
 }
 
 // Initialize and add the map
 function initMap(_Latitude, _Longitude) {
     // The location of CeyTech
-    var defaultLocation = { lat: _Latitude, lng: _Longitude }; //default Location for load map
+    var defaultLocation = {lat: _Latitude, lng: _Longitude}; //default Location for load map
 
     // The map, centered at Uluru
     var map = new google.maps.Map(document.getElementById("map"), {
@@ -104,13 +104,13 @@ function documentUploadDetails(obj) {
     $(".navToFile2").attr("href", "/" + obj.file_02);
     $(".navToFile3").attr("href", "/" + obj.file_03);
 
-    if (obj.environment_officer != null) {
+    if (obj.environment_officer != null && obj.environment_officer.length != 0) {
         $("#env_firstname").html(
-            "Environment Officer: " +
+                "Environment Officer: " +
                 obj.environment_officer.user.first_name +
                 " " +
                 obj.environment_officer.user.last_name
-        );
+                );
     } else if (obj.first_name == null) {
         $("#disPaylink").attr("href", "javascript:disWarnPay();");
         $("#disInspeclink").attr("href", "javascript:disWarnPay();");
@@ -151,9 +151,9 @@ function setIndustryAndClientDb(get) {
     let env_officer = "Not Assinged";
     if (!(get.environment_officer == null)) {
         env_officer =
-            get.environment_officer.user.first_name +
-            " " +
-            get.environment_officer.user.last_name;
+                get.environment_officer.user.first_name +
+                " " +
+                get.environment_officer.user.last_name;
     }
     $(".tabf_environment_officer").html(env_officer);
 }
@@ -169,13 +169,13 @@ function loadAllEPLTable(dataSet, callBack) {
             tbl += "<tr>";
             tbl += "<td>" + ++index + "</td>";
             tbl +=
-                '<td><a type="button" href="/epl_profile/client/' +
-                PROFILE_ID +
-                "/profile/" +
-                row.id +
-                '" class="btn btn-primary">' +
-                row.code +
-                "</a></td>";
+                    '<td><a type="button" href="/epl_profile/client/' +
+                    PROFILE_ID +
+                    "/profile/" +
+                    row.id +
+                    '" class="btn btn-primary">' +
+                    row.code +
+                    "</a></td>";
             tbl += "<td>" + row.certificate_no + "</td>";
             tbl += "<td>" + row.issue_date_only + "</td>";
             tbl += "<td>" + row.expire_date_only + "</td>";
@@ -184,19 +184,19 @@ function loadAllEPLTable(dataSet, callBack) {
     }
     $("#clientEplList tbody").html(tbl);
     if (
-        typeof callBack !== "undefined" &&
-        callBack != null &&
-        typeof callBack === "function"
-    ) {
+            typeof callBack !== "undefined" &&
+            callBack != null &&
+            typeof callBack === "function"
+            ) {
         callBack(dataSet);
     }
 }
 
 function setupInspectionUI(need_inspection_status) {
     if (
-        need_inspection_status === null ||
-        need_inspection_status === "Completed"
-    ) {
+            need_inspection_status === null ||
+            need_inspection_status === "Completed"
+            ) {
         $(".setupInspectStatus").html("NEW");
         $(".setInspectUI").removeClass("d-none");
         $(".noNeedInspect").removeClass("d-none");
@@ -219,10 +219,10 @@ function getAllInspectionAPI(id, callBack) {
     var url = "/api/inspections/file/id/" + id;
     ajaxRequest("GET", url, null, function (result) {
         if (
-            typeof callBack !== "undefined" &&
-            callBack !== null &&
-            typeof callBack === "function"
-        ) {
+                typeof callBack !== "undefined" &&
+                callBack !== null &&
+                typeof callBack === "function"
+                ) {
             callBack(result);
         }
     });
@@ -245,9 +245,9 @@ function loadAllSiteInspectionTable(id) {
                 }
                 tbl += "<td>" + row.schedule_date_only + "</td>";
                 tbl +=
-                    '<td><a type="button" href="/inspection/epl/remarks/id/' +
-                    row.id +
-                    '" class="btn btn-primary"> View </a></td>';
+                        '<td><a type="button" href="/inspection/epl/remarks/id/' +
+                        row.id +
+                        '" class="btn btn-primary"> View </a></td>';
                 tbl += "</tr>";
             });
         }
@@ -261,18 +261,18 @@ function checkInspectionStatus(id, btn_val, callBack) {
         id = 0;
     }
     ajaxRequest(
-        "PATCH",
-        "/api/inspection/" + btn_val + "/file/" + id,
-        null,
-        function (dataSet) {
-            if (
-                typeof callBack !== "undefined" &&
-                callBack != null &&
-                typeof callBack === "function"
-            ) {
-                callBack(dataSet);
+            "PATCH",
+            "/api/inspection/" + btn_val + "/file/" + id,
+            null,
+            function (dataSet) {
+                if (
+                        typeof callBack !== "undefined" &&
+                        callBack != null &&
+                        typeof callBack === "function"
+                        ) {
+                    callBack(dataSet);
+                }
             }
-        }
     );
 }
 
@@ -282,18 +282,18 @@ function reportFileIssueAPI(id, data, callBack) {
         id = 0;
     }
     ajaxRequest(
-        "POST",
-        "/api/files/file_problem_status/id/" + id,
-        data,
-        function (dataSet) {
-            if (
-                typeof callBack !== "undefined" &&
-                callBack != null &&
-                typeof callBack === "function"
-            ) {
-                callBack(dataSet);
+            "POST",
+            "/api/files/file_problem_status/id/" + id,
+            data,
+            function (dataSet) {
+                if (
+                        typeof callBack !== "undefined" &&
+                        callBack != null &&
+                        typeof callBack === "function"
+                        ) {
+                    callBack(dataSet);
+                }
             }
-        }
     );
 }
 
@@ -304,10 +304,10 @@ function removeClientFileAPI(id, callBack) {
     }
     ajaxRequest("DELETE", "/api/client/id/" + id, null, function (dataSet) {
         if (
-            typeof callBack !== "undefined" &&
-            callBack != null &&
-            typeof callBack === "function"
-        ) {
+                typeof callBack !== "undefined" &&
+                callBack != null &&
+                typeof callBack === "function"
+                ) {
             callBack(dataSet);
         }
     });
@@ -319,13 +319,13 @@ function removeEPLPaymentAPI(id, callBack) {
         id = 0;
     }
     ajaxRequest("DELETE", "/api/epl/regPayment/id/" + id, null, function (
-        dataSet
-    ) {
+            dataSet
+            ) {
         if (
-            typeof callBack !== "undefined" &&
-            callBack != null &&
-            typeof callBack === "function"
-        ) {
+                typeof callBack !== "undefined" &&
+                callBack != null &&
+                typeof callBack === "function"
+                ) {
             callBack(dataSet);
         }
     });
@@ -334,13 +334,13 @@ function removeEPLPaymentAPI(id, callBack) {
 //Pending Payments API
 function pendingPaymentsAPI(id, callBack) {
     ajaxRequest("GET", "/api/payment/history/file/" + id, null, function (
-        dataSet
-    ) {
+            dataSet
+            ) {
         if (
-            typeof callBack !== "undefined" &&
-            callBack != null &&
-            typeof callBack === "function"
-        ) {
+                typeof callBack !== "undefined" &&
+                callBack != null &&
+                typeof callBack === "function"
+                ) {
             callBack(dataSet);
         }
     });
@@ -376,13 +376,13 @@ function pendingPaymentsTable(id) {
                 tbl += "<td>" + row.net_total + "</td>";
                 if (row.status == 0) {
                     tbl +=
-                        '<td><button type="button" data-name="' +
-                        row.name +
-                        '" value="' +
-                        row.id +
-                        '" class="btn btn-primary printBarcode"><i class="fas fa-barcode"></i>  Re-Print BarCode </button> <button type="button" value="' +
-                        row.id +
-                        '" class="btn btn-danger removeBarcode"><i class="fas fa-times"></i> Remove </button></td>';
+                            '<td><button type="button" data-name="' +
+                            row.name +
+                            '" value="' +
+                            row.id +
+                            '" class="btn btn-primary printBarcode"><i class="fas fa-barcode"></i>  Re-Print BarCode </button> <button type="button" value="' +
+                            row.id +
+                            '" class="btn btn-danger removeBarcode"><i class="fas fa-times"></i> Remove </button></td>';
                 }
                 tbl += "</tr>";
             });
