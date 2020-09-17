@@ -124,7 +124,7 @@ function getCertificateDetails(file_id, callBack) {
     });
 }
 
-function completeCertificateAPI(certificate_id, FILE_STATUS, callBack) {
+function completeCertificateAPI(certificate_id, FILE_STATUS, data, callBack) {
     let url = '';
     if (isNaN(certificate_id)) {
         return false;
@@ -136,7 +136,7 @@ function completeCertificateAPI(certificate_id, FILE_STATUS, callBack) {
     }
 
     url += certificate_id;
-    ajaxRequest('PATCH', url, null, function (result) {
+    ajaxRequest('PATCH', url, data, function (result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }
