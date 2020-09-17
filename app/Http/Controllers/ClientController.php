@@ -680,6 +680,8 @@ class ClientController extends Controller
             $req['user_id_certificate_upload'] = $user->id;
             $req['certificate_upload_date'] = Carbon::now()->toDateString();
             $req['certificate_path'] = $path;
+        } else {
+            abort(422, "file key not found , ctech validation");
         }
         $msg = Certificate::where('id', $id)->update($req);
         // $certificate
@@ -697,30 +699,32 @@ class ClientController extends Controller
     public function uploadOriginalCertificate($id, Request $request)
     {
         request()->validate([
-            'epl_code' => 'required|string',
-            'remark' => 'nullable|string',
-            'issue_date' => 'required|date',
-            'expire_date' => 'required|date',
-            'certificate_no' => 'required|string',
-            'count' => 'required|integer',
-            'submit_date' => 'required|date',
-            'file' => 'sometimes|nullable|mimes:jpeg,jpg,png,pdf'
+            'issue_date' => 'sometimes|required|date',
+            'expire_date' => 'sometimes|required|date',
+            'file' => 'sometimes|required|mimes:jpeg,jpg,png,pdf'
         ]);
         $user = Auth::user();
+        $req = request()->all();
+        unset($req['file']);
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $certificate = Certificate::findOrFail($id);
-        $type = $request->file->extension();
-        $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-        $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/original/" . $id;
-        $storePath = 'public' . $fileUrl;
-        $path = 'storage' . $fileUrl . "/" . $file_name;
-        $request->file('file')->storeAs($storePath, $file_name);
-
-
-        $certificate->signed_certificate_path = $path;
-        $certificate->user_id_certificate_upload =  $user->id;
+        if ($request->exists('file')) {
+            $type = $request->file->extension();
+            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+            $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/original/" . $id;
+            $storePath = 'public' . $fileUrl;
+            $path = 'storage' . $fileUrl . "/" . $file_name;
+            $request->file('file')->storeAs($storePath, $file_name);
+            $req['signed_certificate_path'] = $path;
+            $req['user_id_certificate_upload'] = $user->id;
+        } else {
+            abort(422, "file key not found , ctech validation");
+        }
+        $msg = Certificate::where('id', $id)->update($req);
+        // $certificate->signed_certificate_path = $path;
+        // $certificate->user_id_certificate_upload =  $user->id;
         fileLog($certificate->client_id, 'certificate', 'User (' . $user->user_name . ')  uploaded the original certificate', 0);
-        if ($certificate->save()) {
+        if ($msg) {
             return array('id' => 1, 'message' => 'true');
         } else {
             return array('id' => 0, 'message' => 'false');
