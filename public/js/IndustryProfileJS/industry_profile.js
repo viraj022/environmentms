@@ -104,13 +104,15 @@ function documentUploadDetails(obj) {
     $(".navToFile2").attr("href", "/" + obj.file_02);
     $(".navToFile3").attr("href", "/" + obj.file_03);
 
-    if (obj.environment_officer != null && obj.environment_officer.user != 0) {
-        $("#env_firstname").html(
-                "Environment Officer: " +
-                obj.environment_officer.user.first_name +
-                " " +
-                obj.environment_officer.user.last_name
-                );
+    if (obj.environment_officer != null) {
+        if (obj.environment_officer.user.first_name != null) {
+            $("#env_firstname").html(
+                    "Environment Officer: " +
+                    obj.environment_officer.user.first_name +
+                    " " +
+                    obj.environment_officer.user.last_name
+                    );
+        }
     } else if (obj.first_name == null) {
         $("#disPaylink").attr("href", "javascript:disWarnPay();");
         $("#disInspeclink").attr("href", "javascript:disWarnPay();");
