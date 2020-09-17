@@ -226,34 +226,28 @@
                 </div>
 
                 <div class="card card-success d-none lastIssuedCer">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card">
+                    <div class="col-md-12">
+                        <div class="card-header">
+                            <h3 class="card-title">Last Issued Certificate</h3>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="card-body" style="height: 70%; width: 60%;">
+                                <div class="card card-widget card-dark">
                                     <div class="card-header">
-                                        <h3 class="card-title">Last Issued Certificate</h3>
-                                    </div>
-                                    <div class="card-body p-0">
-                                        <div class="card-body" style="height: 70%; width: 60%;">
-                                            <div class="card card-widget">
-                                                <div class="card-header">
-                                                    <div class="card-tools">
-                                                        <button type="button" class="btn btn-tool" data-toggle="tooltip" title="Mark as read">
-                                                            <i class="far fa-circle"></i></button>
-                                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                                                        </button>
-                                                        <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div class="card-body" style="display: block;">
-                                                    <a id="addCertificateURL" target="_blank" href=""><img class="img-fluid pad lastCertificatePath" src="#" alt="Certificate"></a>
-                                                </div>
-                                            </div>
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-toggle="tooltip" title="Mark as read">
+                                                <i class="far fa-circle"></i></button>
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                                            </button>
                                         </div>
                                     </div>
+                                    <div class="card-body" style="display: block;">
+                                        <a id="addCertificateURL" target="_blank" href=""><img class="img-fluid pad lastCertificatePath" src="#" alt="Certificate"></a>
+                                    </div>
                                 </div>
-                            </div>                                        
+                            </div>
                         </div>
                     </div>
                 </div>
