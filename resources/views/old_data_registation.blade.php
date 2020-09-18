@@ -330,7 +330,7 @@
                     var submitDate = trackSubmitDate.toISOString().split('T')[0];
                     $('#getEPLCode').val(result.code);
                     $('#getRemark').val(result.remark);
-                    $('#ississueDate').val(result.issue_date_only);
+                    $('#issue_date').val(result.issue_date_only);
                     $('#expire_date').val(result.expire_date_only);
                     $('#getcertifateNo').val(result.certificate_no);
                     $('#getPreRenew').val(result.count);
