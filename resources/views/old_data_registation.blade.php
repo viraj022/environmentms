@@ -334,7 +334,7 @@
                     $('#expire_date').val(result.expire_date_only);
                     $('#getcertifateNo').val(result.certificate_no);
                     $('#getPreRenew').val(result.count);
-                    $('#getsubmitDate').val(result.submitted_date);
+                    $('#getsubmitDate').val(result.submit_date_only);
                     $('#btnUpdate').val(result.id);
                     $('#btnshowDelete').val(result.id);
                     $('.lastCertificatePath').attr('src', '/' + result.path);
