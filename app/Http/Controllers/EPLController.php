@@ -16,11 +16,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
-class EPLController extends Controller
-{
+class EPLController extends Controller {
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware(['auth']);
     }
 
@@ -29,8 +27,7 @@ class EPLController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
-    {
+    public function index($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
@@ -43,8 +40,8 @@ class EPLController extends Controller
             abort(401);
         }
     }
-    public function index2()
-    {
+
+    public function index2() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
@@ -53,8 +50,8 @@ class EPLController extends Controller
             abort(401);
         }
     }
-    public function index3($id)
-    {
+
+    public function index3($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
@@ -68,8 +65,8 @@ class EPLController extends Controller
             abort(401);
         }
     }
-    public function profile($client, $profile)
-    {
+
+    public function profile($client, $profile) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
@@ -82,8 +79,8 @@ class EPLController extends Controller
             abort(401);
         }
     }
-    public function attachment_upload_view($epl_id)
-    {
+
+    public function attachment_upload_view($epl_id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $EPL = EPL::find($epl_id);
@@ -97,8 +94,8 @@ class EPLController extends Controller
             abort(401);
         }
     }
-    public function issue_certificate($epl_id)
-    {
+
+    public function issue_certificate($epl_id) {
 
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
@@ -109,7 +106,7 @@ class EPLController extends Controller
                 if ($epl->status == 0) {
                     $payList = $epl->paymentList();
                     if (
-                        $payList['inspection']['status'] == 'payed' && $payList['license_fee']['status'] == 'payed' && ($payList['fine']['status'] == 'payed' || $payList['fine']['status'] == 'not_available')
+                            $payList['inspection']['status'] == 'payed' && $payList['license_fee']['status'] == 'payed' && ($payList['fine']['status'] == 'payed' || $payList['fine']['status'] == 'not_available')
                     ) {
                         request()->validate([
                             'issue_date' => 'required|date',
@@ -117,38 +114,38 @@ class EPLController extends Controller
                             'certificate_no' => 'required|string',
                         ]);
                         return \DB::transaction(function () use ($epl, $user) {
-                            $epl->issue_date = request('issue_date');
-                            $epl->expire_date = request('expire_date');
-                            $epl->certificate_no = request('certificate_no');
-                            $epl->status = 1;
-                            $msg = $epl->save();
+                                    $epl->issue_date = request('issue_date');
+                                    $epl->expire_date = request('expire_date');
+                                    $epl->certificate_no = request('certificate_no');
+                                    $epl->status = 1;
+                                    $msg = $epl->save();
 
-                            $client = Client::find($epl->client_id);
-                            //  $client->is_working = 0;
-                            $msg = $msg && $client->save();
-                            LogActivity::fileLog($client->id, 'epl', "is_working status Changed ", 1);
-                            if ($msg) {
-                                $issueLog = new IssueLog();
-                                $issueLog->certificate_type = IssueLog::CER_EPL;
-                                $issueLog->issue_type = IssueLog::CER_EPL;
-                                $issueLog->issue_id = $epl->id;
-                                $issueLog->issue_date = request('issue_date');
-                                $issueLog->expire_date = request('expire_date');
-                                $issueLog->user_id = $user->id;
-                                $msg = $issueLog->save();
-                                if ($msg) {
+                                    $client = Client::find($epl->client_id);
+                                    //  $client->is_working = 0;
+                                    $msg = $msg && $client->save();
+                                    LogActivity::fileLog($client->id, 'epl', "is_working status Changed ", 1);
+                                    if ($msg) {
+                                        $issueLog = new IssueLog();
+                                        $issueLog->certificate_type = IssueLog::CER_EPL;
+                                        $issueLog->issue_type = IssueLog::CER_EPL;
+                                        $issueLog->issue_id = $epl->id;
+                                        $issueLog->issue_date = request('issue_date');
+                                        $issueLog->expire_date = request('expire_date');
+                                        $issueLog->user_id = $user->id;
+                                        $msg = $issueLog->save();
+                                        if ($msg) {
 
-                                    LogActivity::addToLog('Create a new IssueLog', $client);
-                                    LogActivity::fileLog($epl->id, 'epl', "Certificate Issued", 1);
-                                    return response(array('id' => 1, 'message' => 'success'), 200);
-                                } else {
-                                    LogActivity::addToLog('Create a new Industry File', $client);
-                                    return response(array('id' => 0, 'message' => 'fail'), 200);
-                                }
-                            } else {
-                                abort(500);
-                            }
-                        });
+                                            LogActivity::addToLog('Create a new IssueLog', $client);
+                                            LogActivity::fileLog($epl->id, 'epl', "Certificate Issued", 1);
+                                            return response(array('id' => 1, 'message' => 'success'), 200);
+                                        } else {
+                                            LogActivity::addToLog('Create a new Industry File', $client);
+                                            return response(array('id' => 0, 'message' => 'fail'), 200);
+                                        }
+                                    } else {
+                                        abort(500);
+                                    }
+                                });
                     } else {
 
                         return response(array('id' => 0, 'message' => 'Payment no completed'), 403);
@@ -170,104 +167,101 @@ class EPLController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
-    {
+    public function create(Request $request) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
             $msg = \DB::transaction(function () use ($request) {
-                $client = Client::find(\request('client_id'));
-                request()->validate([
-                    'client_id' => 'required|integer',
-                    'remark' => ['sometimes', 'nullable'],
-                    'created_date' => ['required', 'date'],
-                    'file' => 'required|mimes:jpeg,jpg,png,pdf'
-                ]);
-                $epl = new EPL();
-                $epl->client_id = \request('client_id');
-                $epl->remark = \request('remark');
-                $epl->code = $this->generateCode($client);
-                $client->application_path = "";
-                $epl->submitted_date = \request('created_date');
-                $epl->count = 0;
-                $msg = $epl->save();
-                if ($msg) {
-                    $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                    $fileUrl = '/uploads/industry_files/' . $client->id . '/application';
-                    $storePath = 'public' . $fileUrl;
-                    $path = $request->file('file')->storeAs($storePath, $file_name);
-                    $client->application_path = "storage/" . $fileUrl . "/" . $file_name;
-                    $epl->path = "storage/" . $fileUrl . "/" . $file_name;
-                    // $client->is_working = 1;
-                    $client->save();
-                    $epl->save();
-                    setFileStatus($client->id, 'cer_type_status', 1);
-                    LogActivity::addToLog('New EPL created', $epl);
-                    LogActivity::fileLog($epl->client_id, 'FileOP', "EPL creted and application path updated", 1);
+                        $client = Client::find(\request('client_id'));
+                        request()->validate([
+                            'client_id' => 'required|integer',
+                            'remark' => ['sometimes', 'nullable'],
+                            'created_date' => ['required', 'date'],
+                            'file' => 'required|mimes:jpeg,jpg,png,pdf'
+                        ]);
+                        $epl = new EPL();
+                        $epl->client_id = \request('client_id');
+                        $epl->remark = \request('remark');
+                        $epl->code = $this->generateCode($client);
+                        $client->application_path = "";
+                        $epl->submitted_date = \request('created_date');
+                        $epl->count = 0;
+                        $msg = $epl->save();
+                        if ($msg) {
+                            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+                            $fileUrl = '/uploads/industry_files/' . $client->id . '/application';
+                            $storePath = 'public' . $fileUrl;
+                            $path = $request->file('file')->storeAs($storePath, $file_name);
+                            $client->application_path = "storage/" . $fileUrl . "/" . $file_name;
+                            $epl->path = "storage/" . $fileUrl . "/" . $file_name;
+                            // $client->is_working = 1;
+                            $client->save();
+                            $epl->save();
+                            setFileStatus($client->id, 'cer_type_status', 1);
+                            LogActivity::addToLog('New EPL created', $epl);
+                            LogActivity::fileLog($epl->client_id, 'FileOP', "EPL creted and application path updated", 1);
 
 
-                    return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
-                } else {
-                    LogActivity::addToLog(' Fail to  creted EPL and application path updated', $epl);
-                    return array('id' => 0, 'message' => 'false');
-                }
-            });
+                            return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
+                        } else {
+                            LogActivity::addToLog(' Fail to  creted EPL and application path updated', $epl);
+                            return array('id' => 0, 'message' => 'false');
+                        }
+                    });
             return $msg;
         } else {
             abort(401);
         }
     }
 
-    public function renew(Request $request)
-    {
+    public function renew(Request $request) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
             $msg = \DB::transaction(function () use ($request) {
-                $client = Client::find(\request('client_id'));
-                request()->validate([
-                    'client_id' => 'required|integer',
-                    'remark' => ['sometimes', 'nullable'],
-                    'created_date' => ['required', 'date'],
-                    'file' => 'required|mimes:jpeg,jpg,png,pdf'
-                ]);
-                $epl = new EPL();
-                $epl->client_id = \request('client_id');
-                $epl->remark = \request('remark');
-                //$epl->is_working = 1;
-                $epl->code = $this->generateCode($client);
-                $client->application_path = "";
-                $epl->submitted_date = \request('created_date');
-                $epl->count = $epl->getRenewCount() + 1;
-                $msg = $epl->save();
-                if ($msg) {
-                    $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                    $fileUrl = '/uploads/industry_files/' . $client->id . '/application';
-                    $storePath = 'public' . $fileUrl;
-                    $path = $request->file('file')->storeAs($storePath, $file_name);
-                    $epl->path = "storage/" . $fileUrl . "/" . $file_name;
-                    //   $client->is_working = 1;
-                    $client->save();
-                    $epl->save();
+                        $client = Client::find(\request('client_id'));
+                        request()->validate([
+                            'client_id' => 'required|integer',
+                            'remark' => ['sometimes', 'nullable'],
+                            'created_date' => ['required', 'date'],
+                            'file' => 'required|mimes:jpeg,jpg,png,pdf'
+                        ]);
+                        $epl = new EPL();
+                        $epl->client_id = \request('client_id');
+                        $epl->remark = \request('remark');
+                        //$epl->is_working = 1;
+                        $epl->code = $this->generateCode($client);
+                        $client->application_path = "";
+                        $epl->submitted_date = \request('created_date');
+                        $epl->count = $epl->getRenewCount() + 1;
+                        $msg = $epl->save();
+                        if ($msg) {
+                            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+                            $fileUrl = '/uploads/industry_files/' . $client->id . '/application';
+                            $storePath = 'public' . $fileUrl;
+                            $path = $request->file('file')->storeAs($storePath, $file_name);
+                            $epl->path = "storage/" . $fileUrl . "/" . $file_name;
+                            //   $client->is_working = 1;
+                            $client->save();
+                            $epl->save();
 
 
-                    LogActivity::fileLog($client->client_id, 'FileOP', "application_path updated", 1);
-                    LogActivity::addToLog('Renew EPL ' . $epl->id, $client);
-                    return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
-                } else {
+                            LogActivity::fileLog($client->client_id, 'FileOP', "application_path updated", 1);
+                            LogActivity::addToLog('Renew EPL ' . $epl->id, $client);
+                            return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
+                        } else {
 
-                    LogActivity::addToLog('Fail to Renew EPL ' . $epl->id, $client);
-                    return array('id' => 0, 'message' => 'false');
-                }
-            });
+                            LogActivity::addToLog('Fail to Renew EPL ' . $epl->id, $client);
+                            return array('id' => 0, 'message' => 'false');
+                        }
+                    });
             return $msg;
         } else {
             abort(401);
         }
     }
 
-    public function saveFile($epl, $type, Request $request)
-    {
+    public function saveFile($epl, $type, Request $request) {
         request()->validate([
             'file' => 'sometimes|nullable|mimes:jpeg,jpg,png,pdf',
             'file1' => 'sometimes|nullable|mimes:jpeg,jpg,png,pdf',
@@ -313,8 +307,7 @@ class EPLController extends Controller
         }
     }
 
-    public function getDeadList($id)
-    {
+    public function getDeadList($id) {
         $files = Storage::files("public/uploads/industry_files/{$id}/application/file2");
         $links = array();
         foreach ($files as $file) {
@@ -329,19 +322,17 @@ class EPLController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
-    public function find($id)
-    {
+    public function find($id) {
         $epl = EPL::with('client')->Join('clients', 'e_p_l_s.client_id', 'clients.id')
-            ->leftJoin('environment_officers', 'clients.environment_officer_id', 'environment_officers.id')
-            ->leftJoin('users', 'environment_officers.user_id', 'users.id')
-            ->where('e_p_l_s.id', $id)
-            ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
-            ->first()->toArray();
+                        ->leftJoin('environment_officers', 'clients.environment_officer_id', 'environment_officers.id')
+                        ->leftJoin('users', 'environment_officers.user_id', 'users.id')
+                        ->where('e_p_l_s.id', $id)
+                        ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
+                        ->first()->toArray();
         $issueDate = date_create($epl['issue_date']);
         $todayDate = Carbon::now();
         //        $todayDate = $mytime->toDateTimeString();
@@ -360,14 +351,13 @@ class EPLController extends Controller
      * @param  \App\EPL  $ePL
      * @return \Illuminate\Http\Response
      */
-    public function show($epl_status)
-    {
+    public function show($epl_status) {
         return EPL::Join('clients', 'e_p_l_s.client_id', 'clients.id')
-            ->leftJoin('environment_officers', 'clients.environment_officer_id', 'environment_officers.id')
-            ->leftJoin('users', 'environment_officers.user_id', 'users.id')
-            ->where('e_p_l_s.is_old', $epl_status)
-            ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
-            ->get();
+                        ->leftJoin('environment_officers', 'clients.environment_officer_id', 'environment_officers.id')
+                        ->leftJoin('users', 'environment_officers.user_id', 'users.id')
+                        ->where('e_p_l_s.is_old', $epl_status)
+                        ->select('e_p_l_s.*', 'users.first_name', 'users.last_name')
+                        ->get();
     }
 
     /**
@@ -376,8 +366,7 @@ class EPLController extends Controller
      * @param  \App\EPL  $ePL
      * @return \Illuminate\Http\Response
      */
-    public function edit(EPL $ePL)
-    {
+    public function edit(EPL $ePL) {
         //
     }
 
@@ -388,8 +377,7 @@ class EPLController extends Controller
      * @param  \App\EPL  $ePL
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, EPL $ePL)
-    {
+    public function update(Request $request, EPL $ePL) {
         //
     }
 
@@ -399,13 +387,11 @@ class EPLController extends Controller
      * @param  \App\EPL  $ePL
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EPL $ePL)
-    {
+    public function destroy(EPL $ePL) {
         //
     }
 
-    private function generateCode($client)
-    {
+    private function generateCode($client) {
         $la = Pradesheeyasaba::find($client->pradesheeyasaba_id);
         // print_r($la);
         $lsCOde = $la->code;
@@ -425,8 +411,7 @@ class EPLController extends Controller
         return "PEA/" . $lsCOde . "/EPL/" . $industryCode . "/" . $scaleCode . "/" . $serial . "/" . date("Y");
     }
 
-    private function makeApplicationPath($id)
-    {
+    private function makeApplicationPath($id) {
         if (!is_dir("uploads")) {
             //Create our directory if it does not exist
             mkdir("uploads");
@@ -446,8 +431,7 @@ class EPLController extends Controller
         return "uploads/EPL/" . $id . "/application/";
     }
 
-    public function addInspectionPayment()
-    {
+    public function addInspectionPayment() {
         $epl = EPL::find(\request('id'));
         if ($epl !== null) {
             $user = Auth::user();
@@ -483,8 +467,7 @@ class EPLController extends Controller
         }
     }
 
-    public function getInspectionPaymentDetails($epl)
-    {
+    public function getInspectionPaymentDetails($epl) {
         $epl = EPL::find($epl);
         if ($epl !== null) {
             return $epl->paymentDetails();
@@ -493,8 +476,7 @@ class EPLController extends Controller
         }
     }
 
-    public function newEpls()
-    {
+    public function newEpls() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
@@ -504,8 +486,7 @@ class EPLController extends Controller
         }
     }
 
-    public function addSiteClearance($epl)
-    {
+    public function addSiteClearance($epl) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
@@ -533,8 +514,7 @@ class EPLController extends Controller
         }
     }
 
-    public function saveOldData($id, Request $request)
-    {
+    public function saveOldData($id, Request $request) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         // validations 
@@ -545,59 +525,58 @@ class EPLController extends Controller
             'expire_date' => 'required|date',
             'certificate_no' => 'required|string',
             'count' => 'required|integer',
-            'submit_date' => 'required|date',
+            'submitted_date' => 'required|date',
             'file' => 'required|mimes:jpeg,jpg,png,pdf'
         ]);
         // save epl main file      
         return \DB::transaction(function () use ($id, $request) {
-            $client = Client::findOrFail($id);
-            $epls = $client->epls;
-            if (count($epls) > 0) {
-                return response(array("id" => 2, "message" => 'Record Already Exist Please Update the existing record'), 403);
-            }
-            //  $client->is_working = 1;
-            $msg = $client->save();
-            $epl = new EPL();
-            $epl->client_id = $client->id;
-            $epl->code = \request('epl_code');
-            $epl->remark = \request('remark');
-            $epl->issue_date = \request('issue_date');
-            $epl->expire_date = \request('expire_date');
-            $epl->certificate_no = \request('certificate_no');
-            $epl->status = 1;
-            $epl->count = \request('count');
-            $epl->submitted_date = \request('submitted_date');
+                    $client = Client::findOrFail($id);
+                    $epls = $client->epls;
+                    if (count($epls) > 0) {
+                        return response(array("id" => 2, "message" => 'Record Already Exist Please Update the existing record'), 403);
+                    }
+                    //  $client->is_working = 1;
+                    $msg = $client->save();
+                    $epl = new EPL();
+                    $epl->client_id = $client->id;
+                    $epl->code = \request('epl_code');
+                    $epl->remark = \request('remark');
+                    $epl->issue_date = \request('issue_date');
+                    $epl->expire_date = \request('expire_date');
+                    $epl->certificate_no = \request('certificate_no');
+                    $epl->status = 1;
+                    $epl->count = \request('count');
+                    $epl->submitted_date = \request('submitted_date');
 
-            // save old data file
-            if ($msg) {
-                if ($request->file('file') != null) {
-                    $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                    $fileUrl = '/uploads/industry_files/' . $client->id . '/application';
-                    $storePath = 'public' . $fileUrl;
-                    $path = $request->file('file')->storeAs($storePath, $file_name);
-                    $epl->path =  "storage/" . $fileUrl . "/" . $file_name;
-                    $msg = $epl->save();
-                    LogActivity::fileLog($client->id, 'OldFile', "Save Old Data", 1);
-                } else {
-                    return response(array('id' => 1, 'message' => 'application not found'), 422);
-                }
-            } else {
-                abort(500);
-            }
-            // sending response
-            if ($msg) {
+                    // save old data file
+                    if ($msg) {
+                        if ($request->file('file') != null) {
+                            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+                            $fileUrl = '/uploads/industry_files/' . $client->id . '/application';
+                            $storePath = 'public' . $fileUrl;
+                            $path = $request->file('file')->storeAs($storePath, $file_name);
+                            $epl->path = "storage/" . $fileUrl . "/" . $file_name;
+                            $msg = $epl->save();
+                            LogActivity::fileLog($client->id, 'OldFile', "Save Old Data", 1);
+                        } else {
+                            return response(array('id' => 1, 'message' => 'application not found'), 422);
+                        }
+                    } else {
+                        abort(500);
+                    }
+                    // sending response
+                    if ($msg) {
 
-                LogActivity::addToLog('Save old data done' . $epl->id, $epl);
-                return array('id' => 1, 'message' => 'true');
-            } else {
-                LogActivity::addToLog('Fail to save old data' . $epl->id, $epl);
-                return array('id' => 0, 'message' => 'false');
-            }
-        });
+                        LogActivity::addToLog('Save old data done' . $epl->id, $epl);
+                        return array('id' => 1, 'message' => 'true');
+                    } else {
+                        LogActivity::addToLog('Fail to save old data' . $epl->id, $epl);
+                        return array('id' => 0, 'message' => 'false');
+                    }
+                });
     }
 
-    public function deleteOldData($id)
-    {
+    public function deleteOldData($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         // save epl main file      
@@ -619,8 +598,7 @@ class EPLController extends Controller
         }
     }
 
-    public function updateOldData($id, Request $request)
-    {
+    public function updateOldData($id, Request $request) {
         // dd('das');
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
@@ -632,48 +610,47 @@ class EPLController extends Controller
             'expire_date' => 'required|date',
             'certificate_no' => 'required|string',
             'count' => 'required|integer',
-            'submit_date' => 'required|date',
+            'submitted_date' => 'required|date',
             'file' => 'sometimes|nullable|mimes:jpeg,jpg,png,pdf'
         ]);
         // save epl main file      
         return \DB::transaction(function () use ($id, $request) {
-            $msg = true;
-            $epl = EPL::findOrFail($id);
-            $epl->code = \request('epl_code');
-            $epl->remark = \request('remark');
-            $epl->issue_date = \request('issue_date');
-            $epl->expire_date = \request('expire_date');
-            $epl->certificate_no = \request('certificate_no');
-            $epl->count = \request('count');
-            $epl->submitted_date = \request('submitted_date');
-            $msg = $msg && $epl->save();
-            // save old data file
-            if ($msg) {
-                if ($request->file('file') != null) {
-                    $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                    $fileUrl = '/uploads/industry_files/' . $epl->client_id . '/application';
-                    $storePath = 'public' . $fileUrl;
-                    $path = $request->file('file')->storeAs($storePath, $file_name);
-                    $epl->path =  "storage/" . $fileUrl . "/" . $file_name;
-                }
-                $msg = $epl->save();
-            } else {
-                abort(500);
-            }
-            // sending response
-            if ($msg) {
-                // LogActivity::fileLog($epl->id, 'OldFile', "Update Old Data", 1);
-                LogActivity::addToLog('Update old data done' . $epl->client_id, $epl);
-                return array('id' => 1, 'message' => 'true');
-            } else {
-                LogActivity::addToLog('Fail to update old data' . $client->id, $client);
-                return array('id' => 0, 'message' => 'false');
-            }
-        });
+                    $msg = true;
+                    $epl = EPL::findOrFail($id);
+                    $epl->code = \request('epl_code');
+                    $epl->remark = \request('remark');
+                    $epl->issue_date = \request('issue_date');
+                    $epl->expire_date = \request('expire_date');
+                    $epl->certificate_no = \request('certificate_no');
+                    $epl->count = \request('count');
+                    $epl->submitted_date = \request('submitted_date');
+                    $msg = $msg && $epl->save();
+                    // save old data file
+                    if ($msg) {
+                        if ($request->file('file') != null) {
+                            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+                            $fileUrl = '/uploads/industry_files/' . $epl->client_id . '/application';
+                            $storePath = 'public' . $fileUrl;
+                            $path = $request->file('file')->storeAs($storePath, $file_name);
+                            $epl->path = "storage/" . $fileUrl . "/" . $file_name;
+                        }
+                        $msg = $epl->save();
+                    } else {
+                        abort(500);
+                    }
+                    // sending response
+                    if ($msg) {
+                        // LogActivity::fileLog($epl->id, 'OldFile', "Update Old Data", 1);
+                        LogActivity::addToLog('Update old data done' . $epl->client_id, $epl);
+                        return array('id' => 1, 'message' => 'true');
+                    } else {
+                        LogActivity::addToLog('Fail to update old data' . $client->id, $client);
+                        return array('id' => 0, 'message' => 'false');
+                    }
+                });
     }
 
-    public function certificateInformation($id)
-    {
+    public function certificateInformation($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $epl = EPL::find($id);
@@ -684,4 +661,5 @@ class EPLController extends Controller
             abort(404);
         }
     }
+
 }
