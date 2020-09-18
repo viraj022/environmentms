@@ -785,4 +785,42 @@ class ClientController extends Controller
             return array('id' => 0, 'message' => 'false');
         }
     }
+
+    public  function getExpiredCertificates() //to get expired certificates and certificates that expired within a month 
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+
+
+        $date = Carbon::now();
+        $date = $date->addDays(30);
+
+        if ($pageAuth['is_read']) {
+            $responses =  Certificate::With('Client')->selectRaw('max(id) as id, client_id,expire_date')
+                ->where('expire_date', '<', $date)
+                ->groupBy('client_id')
+                ->get();
+
+            $reses = $responses->toArray();
+
+            foreach ($reses as $k => $res) {
+
+
+                $origin = date_create(date("Y-m-d"));
+                $target = date_create(date($res['expire_date']));
+                $interval = date_diff($origin, $target);
+
+
+                if ($interval->format('%R%a days') > 0) {
+                    $reses[$k]['due_date'] = $interval->format('Expire within %a days');
+                } else {
+                    $reses[$k]['due_date'] = "expired";
+                }
+            }
+
+            return $reses;
+        } else {
+            abort(401);
+        }
+    }
 }
