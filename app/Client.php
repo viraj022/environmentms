@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 class Client extends Model
 {
@@ -16,8 +17,13 @@ class Client extends Model
         public const IS_WORKING_NEW = 0;
         public const IS_WORKING_WORKING = 1;
         public const IS_WORKING_FINISH = 2;
+        protected $appends = ['start_date_only'];
 
-
+        public function getStartDateOnlyAttribute()
+        {
+                //return strtotime($this->schedule_date)->toDateString();
+                return Carbon::parse($this->industry_start_date)->format('Y-m-d');
+        }
 
         use SoftDeletes;
         public function epls()

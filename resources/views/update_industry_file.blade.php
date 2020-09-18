@@ -256,7 +256,7 @@
             $('#getZone').val(set.industry_is_industry);
             $('#getAddressT').val(set.industry_address);
             $('#inventsment').val(set.industry_investment);
-            $('#startDate').val(set.industry_start_date_only);
+            $('#startDate').val(set.industry_start_date);
 //            $('#submittedDate').val(set.industry_start_date);
             $('#getContactn').val(set.industry_contact_no);
             $('#getEmailI').val(set.industry_email);
