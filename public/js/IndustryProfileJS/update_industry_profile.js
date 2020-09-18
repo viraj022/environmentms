@@ -87,10 +87,10 @@ function requiredFieldHandler(frm_data, required_class) {
         toastr.error('Start Date Required!');
         response = false;
     }
-    if (frm_data.assign_date.length == 0) {
-        toastr.error('Submitted Required!');
-        response = false;
-    }
+//    if (frm_data.assign_date.length == 0) {
+//        toastr.error('Submitted Required!');
+//        response = false;
+//    }
     $(required_class).each(function () {
         if ($(this).val().length === 0) {
             $(this).addClass("is-invalid");
