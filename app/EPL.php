@@ -13,7 +13,7 @@ class EPL extends Model
     public const FINEDATE = '2012-01-01';
     public const INSPECTION = 'inspection';
     public const INSPECTION_FINE = 'inspection_fine';
-    protected $appends = ['epl_instantNumber', 'expire_date_only', 'issue_date_only'];
+    protected $appends = ['epl_instantNumber', 'expire_date_only', 'issue_date_only', 'submit_date_only'];
 
     public const INSPECTION_FEE = 'Inspection Fee';
 
@@ -156,5 +156,10 @@ class EPL extends Model
     {
         //return strtotime($this->schedule_date)->toDateString();
         return Carbon::parse($this->expire_date)->format('Y-m-d');
+    }
+    public function getSubmitDateOnlyAttribute()
+    {
+        //return strtotime($this->schedule_date)->toDateString();
+        return Carbon::parse($this->submitted_date)->format('Y-m-d');
     }
 }
