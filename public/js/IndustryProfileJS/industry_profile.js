@@ -152,7 +152,7 @@ function setIndustryAndClientDb(get) {
     $(".tabf_business_scale").html(get.business_scale.name);
     $(".tabf_pradesheeyasaba").html(get.pradesheeyasaba.name);
     $(".tabf_industry_registration_no").html(get.industry_registration_no);
-    $(".tabf_industry_start_date").html(get.industry_start_date);
+    $(".tabf_industry_start_date").html(get.start_date_only);
     $(".tabf_industry_investment").html(get.industry_investment);
     $(".tabf_industry_address").html(get.industry_address);
     $(".tabf_industry_contact_no").html(get.industry_contact_no);

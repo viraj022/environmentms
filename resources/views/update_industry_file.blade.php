@@ -151,17 +151,17 @@
                                         <input id="startDate" name="datepickerUi" type="text" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Submitted Date*</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="far fa-calendar-alt"></i>
-                                            </span>
-                                        </div>
-                                        <input id="submittedDate" name="datepickerUi" max="2999-12-31" class="form-control form-control-sm cutenzReq" placeholder="Enter Date..." value="">
-                                    </div>
-                                </div>
+                                <!--                                <div class="form-group">
+                                                                    <label>Submitted Date*</label>
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text">
+                                                                                <i class="far fa-calendar-alt"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                        <input id="submittedDate" name="datepickerUi" max="2999-12-31" class="form-control form-control-sm cutenzReq" placeholder="Enter Date..." value="">
+                                                                    </div>
+                                                                </div>-->
                                 <div class="form-group">
                                     <label>Contact No</label>
                                     <input id="getContactn" type="text" class="form-control form-control-sm" placeholder="Enter Contact Info..." value="">
@@ -256,8 +256,8 @@
             $('#getZone').val(set.industry_is_industry);
             $('#getAddressT').val(set.industry_address);
             $('#inventsment').val(set.industry_investment);
-            $('#startDate').val(set.created_at);
-            $('#submittedDate').val(set.industry_start_date);
+            $('#startDate').val(set.industry_start_date);
+//            $('#submittedDate').val(set.industry_start_date);
             $('#getContactn').val(set.industry_contact_no);
             $('#getEmailI').val(set.industry_email);
             $('#btnUpdate').val(set.id);
