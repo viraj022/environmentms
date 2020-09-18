@@ -102,7 +102,7 @@
                                             <i class="far fa-calendar-alt"></i>
                                         </span>
                                     </div>
-                                    <input id="expire_date" name="datepickerUi"  max="2999-12-31"class="form-control form-control-sm " disabled placeholder="Enter Expire Date..." value="">
+                                    <input id="expire_date" name="datepickerUi"  max="2999-12-31"class="form-control form-control-sm " placeholder="Enter Expire Date..." value="">
                                 </div>
                             </div>
                             <div class="form-group">
