@@ -621,6 +621,7 @@ class EPLController extends Controller
 
     public function updateOldData($id, Request $request)
     {
+        // dd('das');
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         // validations 

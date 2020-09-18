@@ -122,6 +122,28 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                                <label>Issue Date*</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="far fa-calendar-alt"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input id="issue_date" name="datepickerUi" type="text" data-date="" data-date-format="YYYY MM DD" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Issue Date..." value="" autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Expire Date*</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="far fa-calendar-alt"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input id="expire_date" name="datepickerUi" max="2999-12-31" class="form-control form-control-sm " placeholder="Enter Expire Date..." value="">
+                                                </div>
+                                            </div>
                                             <h4 class="text-success d-none" id="certificateSubmittedLable">Certificate Submitted</h4>
                                             <button class="btn btn-primary complCertificate d-none"><i class="fa fa-check"></i> Complete Certificate</button>
                                             <div class="row">
@@ -338,13 +360,34 @@
 
     $('.complCertificate').click(function () {
         if (confirm('Are you sure you want to cimplete this certificate?')) {
-            completeCertificateAPI(CERTIFICATE_ID, FILE_STATUS, function (resp) {
+            var data = {
+                issue_date: $('#issue_date').val(),
+                expire_date: $('#expire_date').val()
+            }
+            completeCertificateAPI(CERTIFICATE_ID, FILE_STATUS, data, function (resp) {
                 show_mesege(resp);
                 getCertificateDetails(PROFILE_ID, function (resp) {
                     CERTIFICATE_ID = parseInt(resp.id);
                     FILE_STATUS = parseInt(resp.client.file_status);
                 });
             });
+        }
+    });
+
+    $('#issue_date').on('change', function () { //<--On change issue date configer expire date
+        var issueDate = new Date($('#issue_date').val());
+        var year = issueDate.getFullYear() + 1;
+        var month = issueDate.getMonth() + 1;
+        var date = issueDate.getDate();
+        var expireDate = year + "-" + ('0' + month).slice(-2) + "-" + ('0' + date).slice(-2);
+        console.log(expireDate);
+        $('#expire_date').val(expireDate);
+    });
+
+    $('input[name="datepickerUi"]').daterangepicker({
+        singleDatePicker: true,
+        locale: {
+            format: 'YYYY-MM-DD'
         }
     });
 
