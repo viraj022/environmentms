@@ -32,6 +32,18 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">All Expired Certificates</h3>
+                        <div class="card-tools">
+                            <div class="form-check">
+                                <input id="getByAssDir" class="form-check-input" type="checkbox">
+                                <label class="form-check-label">Search By Assistant Director</label>
+                            </div>
+                            <div class="form-group">
+                                <select id="getAsDirect" class="form-control form-control-sm">
+                                    <option value="0">Loading..</option>
+                                </select>
+                            </div>
+                            <button id="getByAssDirGenBtn" type="button" class="btn btn-block btn-primary btn-xs">Generate</button>
+                        </div>
                     </div>
                     <div class="card-body p-0">
                         <div class="card-body table-responsive" style="height: 450px;">
@@ -84,10 +96,17 @@
 <!-- AdminLTE App -->
 <script>
     $(function () {
+        var assDirValue = $('#getAsDirect').val();
 //Load table
+        loadAssDirCombo();
         getaProfilebyId();
 //select button action 
-        $(document).on('click', '.btnAction', function () {
+        $(document).on('click', '#getByAssDirGenBtn', function () {
+            if ($('#getByAssDir').is(":checked")) {
+                getExpireCerByAssDir(assDirValue);
+            } else {
+                getaProfilebyId();
+            }
         });
     });
 
