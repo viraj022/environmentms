@@ -422,4 +422,5 @@ Route::middleware('auth:api')->patch('/certificate/drafted/{id}', 'ClientControl
 Route::middleware('auth:api')->post('/certificate/issue/{id}', 'ClientController@issueCertificate'); //  certificate issued
 
 Route::middleware('auth:api')->patch('/certificate/complete/{id}', 'ClientController@completeCertificate'); //  complete certificate
-Route::middleware('auth:api')->get('/certificate/expiredCertificates/id/{id}', 'ClientController@getExpiredCertificates'); //  get Working certificate
+Route::middleware('auth:api')->get('/certificate/expiredCertificates', 'ClientController@getExpiredCertificates'); //  get all Expired Certificates and certificate that expired within  a month by environment
+Route::middleware('auth:api')->get('/certificate/expiredCertificates/id/{id}', 'ClientController@getExpiredCertificatesByEnvOfficer'); //  get Expired Certificates and certificate that expired within  a month by environment officer id
