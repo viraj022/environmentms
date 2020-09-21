@@ -422,4 +422,4 @@ Route::middleware('auth:api')->patch('/certificate/drafted/{id}', 'ClientControl
 Route::middleware('auth:api')->post('/certificate/issue/{id}', 'ClientController@issueCertificate'); //  certificate issued
 
 Route::middleware('auth:api')->patch('/certificate/complete/{id}', 'ClientController@completeCertificate'); //  complete certificate
-Route::middleware('auth:api')->get('/certificate/expiredCertificates', 'ClientController@getExpiredCertificates'); //  get Working certificate
+Route::middleware('auth:api')->get('/certificate/expiredCertificates/id/{id}', 'ClientController@getExpiredCertificates'); //  get Working certificate

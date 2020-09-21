@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Helpers\LogActivity;
+use Illuminate\Database\Eloquent\Builder;
 
 class ClientController extends Controller
 {
@@ -786,7 +787,7 @@ class ClientController extends Controller
         }
     }
 
-    public  function getExpiredCertificates() //to get expired certificates and certificates that expired within a month 
+    public  function getExpiredCertificates($id) //to get expired certificates and certificates that expired within a month 
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
@@ -797,10 +798,16 @@ class ClientController extends Controller
 
         if ($pageAuth['is_read']) {
             $responses =  Certificate::With('Client')->selectRaw('max(id) as id, client_id,expire_date')
+                ->whereHas('Client', function ($query) use ($id) {
+                    $query->where('environment_officer_id', '=', $id);
+                })
                 ->where('expire_date', '<', $date)
                 ->groupBy('client_id')
                 ->get();
 
+            // $posts = App\Post::whereHas('comments', function (Builder $query) {
+            //     $query->where('content', 'like', 'foo%');
+            // })->get();
             $reses = $responses->toArray();
 
             foreach ($reses as $k => $res) {
