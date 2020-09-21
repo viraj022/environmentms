@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Helpers\LogActivity;
+use Illuminate\Database\Eloquent\Builder;
 
 class ClientController extends Controller {
 
@@ -746,7 +747,12 @@ class ClientController extends Controller {
         }
     }
 
+<<<<<<< HEAD
     public function getExpiredCertificates() { //to get expired certificates and certificates that expired within a month 
+=======
+    public  function getExpiredCertificatesByEnvOfficer($id) //to get expired certificates and certificates that expired within a month by env officer id
+    {
+>>>>>>> 6c4db09c0295221043c152b7f1d2c2f02b6b6a94
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
@@ -755,11 +761,66 @@ class ClientController extends Controller {
         $date = $date->addDays(30);
 
         if ($pageAuth['is_read']) {
+<<<<<<< HEAD
             $responses = Certificate::With('Client')->selectRaw('max(id) as id, client_id,expire_date')
                     ->where('expire_date', '<', $date)
                     ->groupBy('client_id')
                     ->get();
+=======
+            $responses =  Certificate::With('Client')->selectRaw('max(id) as id, client_id,expire_date')
+                ->whereHas('Client', function ($query) use ($id) {
+                    $query->where('environment_officer_id', '=', $id);
+                })
+                ->where('expire_date', '<', $date)
+                ->groupBy('client_id')
+                ->get();
+>>>>>>> 6c4db09c0295221043c152b7f1d2c2f02b6b6a94
 
+            // $posts = App\Post::whereHas('comments', function (Builder $query) {
+            //     $query->where('content', 'like', 'foo%');
+            // })->get();
+            $reses = $responses->toArray();
+
+            foreach ($reses as $k => $res) {
+
+
+                $origin = date_create(date("Y-m-d"));
+                $target = date_create(date($res['expire_date']));
+                $interval = date_diff($origin, $target);
+
+
+                if ($interval->format('%R%a days') > 0) {
+                    $reses[$k]['due_date'] = $interval->format('Expire within %a days');
+                } else {
+                    $reses[$k]['due_date'] = "expired";
+                }
+            }
+
+            return $reses;
+        } else {
+            abort(401);
+        }
+    } //end to get expired certificates and certificates that expired within a month by env officer id
+
+
+    public  function getExpiredCertificates() //to all get expired certificates and certificates that expired within a month by env officer id
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+
+
+        $date = Carbon::now();
+        $date = $date->addDays(30);
+
+        if ($pageAuth['is_read']) {
+            $responses =  Certificate::With('Client')->selectRaw('max(id) as id, client_id,expire_date')
+                ->where('expire_date', '<', $date)
+                ->groupBy('client_id')
+                ->get();
+
+            // $posts = App\Post::whereHas('comments', function (Builder $query) {
+            //     $query->where('content', 'like', 'foo%');
+            // })->get();
             $reses = $responses->toArray();
 
             foreach ($reses as $k => $res) {
