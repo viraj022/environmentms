@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Helpers\LogActivity;
 use Illuminate\Database\Eloquent\Builder;
+use App\EPL;
 
 class ClientController extends Controller
 {
@@ -743,10 +744,24 @@ class ClientController extends Controller
         $file = Client::findOrFail($certificate->client_id);
         $msg = setFileStatus($file->id, 'file_status', 6);
         $msg = $msg && setFileStatus($file->id, 'cer_status', 6);
-        $certificate->issue_date = Carbon::now();
+        // $certificate->issue_date = Carbon::now();
         $certificate->issue_status = 1;
         $certificate->user_id = $user->id;
         $msg = $msg && $certificate->save();
+        // $certificate = Certificate::findOrFail($cer_id);
+        // dd($certificate);
+        $epl = EPL::where('client_id', $certificate->client_id)
+            ->whereNull('issue_date')->first();
+        // dd($epl);
+        $epl->issue_date = $certificate->issue_date;
+        // dd($epl->issue_date);
+        $epl->expire_date = $certificate->expire_date;
+        $epl->certificate_no = $certificate->id;
+        // dd($epl);
+        $msg = $msg && $epl->save();
+
+
+
         fileLog($file->id, 'CerIssue', 'User  (' . $user->user_name . ') Issued the Certificate : ' . $certificate->cetificate_number, 0);
         if ($msg) {
             return array('id' => 1, 'message' => 'true');
