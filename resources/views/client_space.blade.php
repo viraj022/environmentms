@@ -538,7 +538,7 @@
     $('#getfName,#getlName').on('change', function () {
         let frName = $('#getfName').val();
         let lName = $('#getlName').val();
-        $('#business_name').val(frName + '-' + lName);
+        $('#business_name').val(frName + ' ' + lName);
     });
 
 </script>
