@@ -32,9 +32,10 @@ function setProfileDetails(obj) {
                 );
     }
     //Check site clearance
-    if (obj.epls.length == 0) {
-//------------
+    if (obj.site_clearence_sessions.length == 0) {
+        $(".newSiteClear").removeClass("d-none");
     } else {
+        $(".setSiteClear").removeClass("d-none");
         $("#setSiteClear").attr(
                 "href",
                 "/site_clearance/client/" +
