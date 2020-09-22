@@ -176,6 +176,7 @@ class SiteClearanceController extends Controller
 
     public function create(Request $request)
     {
+    return  DB::transaction(function () use($request) {
         request()->validate([
             'remark' => 'nullable|string',
             'type' => ["required", "regex:(" . SiteClearance::SITE_CLEARANCE . "|" . SiteClearance::SITE_TELECOMMUNICATION . "|" . SiteClearance::SITE_SCHEDULE_WASTE . ")"],
@@ -187,9 +188,10 @@ class SiteClearanceController extends Controller
             $siteSessions = new SiteClearenceSession();
             $siteSessions->client_id = $request->client_id;
             $siteSessions->code =  $this->generateCode($request->client_id);
-            $siteSessions->remark = \request('remark');
-            $siteSessions->site_clearance_type = \request('type');
+            $siteSessions->remark = $request->remark;
+            $siteSessions->site_clearance_type = $request->type;
             $msg = $siteSessions->save();
+            
         //  save site clearance
               $siteClearance = new SiteClearence();
               $siteClearance->submit_date = $$request->submit_date;
@@ -214,12 +216,13 @@ class SiteClearanceController extends Controller
        setFileStatus($siteSessions->client_id,'file_problem',0); // set file problem status to 0
 
         // $file = #ssiteClearenceSession->client;
-     
+       LogActivity::addToLog('create new site clearence ', $siteSessions);
         if ($siteClearenceSession) {
             return response(array("id" => 1, "message" => "ok"));
         } else {
             return response(array("id" => 0, "message" => "fail"));
         }
+    });
     }
 
 
