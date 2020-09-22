@@ -28,8 +28,8 @@ class SiteClearanceController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
-            if (Client::find($client) !== null && EPL::find($profile) !== null) {
-                return view('site_clearance', ['pageAuth' => $pageAuth, 'client' => $client, 'profile' => $profile]);
+            if (Client::find($client) !== null && SiteClearenceSession::find($profile) !== null) {
+                return view('site_clearance', ['pageAuth' => $pageAuth, 'client' => $client, 'profile' => $profile, 'code' => SiteClearenceSession::find($profile)->code]);
             } else {
                 abort(404);
             }
@@ -193,8 +193,8 @@ class SiteClearanceController extends Controller
             $msg = $siteSessions->save();
             
         //  save site clearance
-              $siteClearance = new SiteClearence();
-              $siteClearance->submit_date = $$request->submit_date;
+              $siteClearance = new SiteClearance();
+              $siteClearance->submit_date = $request->submit_date;
               $siteClearance->site_clearence_session_id = $siteSessions->id;
               $siteClearance->count = 1;
         // upload file
@@ -203,7 +203,7 @@ class SiteClearanceController extends Controller
                     $fileUrl = '/uploads/industry_files/' . $siteSessions->client_id . '/site_clearance/application/' . $siteSessions->id;
                     $storePath = 'public' . $fileUrl;
                     $path = $request->file('file')->storeAs($storePath, $file_name);
-                    $siteClearance->application_path = "storage/" . $fileUrl . "/" . $file_name;
+                    $siteClearance->application_path = "storage" . $fileUrl . "/" . $file_name;
                     $msg = $msg && $siteClearance->save();
                 } else {
                     return response(array('id' => 1, 'message' => 'certificate not found'), 422);
@@ -217,8 +217,8 @@ class SiteClearanceController extends Controller
 
         // $file = #ssiteClearenceSession->client;
        LogActivity::addToLog('create new site clearence ', $siteSessions);
-        if ($siteClearenceSession) {
-            return response(array("id" => 1, "message" => "ok"));
+        if ($siteSessions) {
+            return response(array("id" => 1, "message" => "ok",'rout' => "/site_clearance/client/" . $siteSessions->client_id . "/profile/" . $siteSessions->id));
         } else {
             return response(array("id" => 0, "message" => "fail"));
         }
@@ -230,6 +230,7 @@ class SiteClearanceController extends Controller
     }
     private function generateCode($client)
     {
+        $client= Client::findOrFail($client);
         $la = Pradesheeyasaba::find($client->pradesheeyasaba_id);
         // print_r($la);
         $lsCOde = $la->code;
