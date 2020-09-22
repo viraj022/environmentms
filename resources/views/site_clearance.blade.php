@@ -26,12 +26,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12">
-                <h1>File No: (<a href="/industry_profile/id/{{$client}}" class="setFileNoTitile">Loading..</a>) - Site Clearance Number: <span class="right badge eplCodeAfileNo badge-primary">Loading..</span></h1>
+                <h1>File No: (<a href="/industry_profile/id/{{$client}}" class="setFileNoTitile">Loading..</a>) - Site Clearance Number: <span class="right badge badge-primary">{{$code}}</span></h1>
             </div>
         </div>
     </div>
 </section>
-<section class="content-header">
+<section class="conte        nt-header">
     <div class="container-fluid view-Profile">
         <div class="row">
             <div class="col-md-6">
@@ -44,11 +44,21 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
+                        <h4 class="siteClearType text-success"></h4>
+                        <h5 class="processingMethod text-success"></h5>
                         <dt class="">Name : <a id="client_name"></a></dt>            
                         <dt class="">Address : <a id="client_address"></a></dt>
-                        <dt class="">Contact Number : <a id="client_cont"></a></dt>
+                        <dt                                                                                     class="">Contact Number : <a id="client_cont"></a></dt>
                         <dt class="">Contact Email : <a id="client_amil"></a></dt>
                         <dt class="">NIC : <a id="client_nic"> </a></dt>
+                        <hr>
+                        <div class="col-md-8">
+                            <dt >Industry Name : <a id="obj_name"></a></dt>
+                            <dt >Industry Registration No : <a id="                                                            obj_regno"></a></dt>
+                            <dt >Industry Code : <a id="obj_code"></a></dt>
+                            <dt >Industry Investment :  <a  id="obj_invest"></a></dt>
+                            <dt >Industry Remark : <a  id="obj_remark"></a></dt>
+                        </div>
                     </div>
                     <!-- /.card-body -->
                 </div>                                                                        
@@ -64,15 +74,6 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body" style="height: 350px; overflow-y: scroll;">
-                        <div class="col-md-8">
-                            <dt >Name : <a id="obj_name"></a></dt>
-                            <dt >Registration No : <a id="obj_regno"></a></dt>
-                            <dt >Code : <a id="obj_code"></a></dt>
-                            <dt >Investment :  <a  id="obj_invest"></a></dt>
-                            <dt >Remark : <a  id="obj_remark"></a></dt>
-                            <dt >Location :---</dt>
-                        </div>
-                        <hr>
                         <div class="callout callout-danger">
                             <h6><a id="disPaylink" href="/epl_payments/id/{{$profile}}" class="text-success isOld2">Payments</a></h6>
                             <p>All Payment (EPL, Fine,Inspection Fee, Certificate)</p>
@@ -269,21 +270,18 @@ $(function () {
             $(".setFileNoTitile").attr("href", "/industry_profile/id/" + CLIENT);
         }
     });
-    getDetailsbyId(PROFILE, function (result) {
-        if (result.length == 0 || result == undefined) {
-            if (confirm("Details Not Found! Try Again!")) {
-            }
-        } else {
-            setClearanceData(result);
-            $('.eplCodeAfileNo').html(result.epl_instantNumber);
-            $(".navTodownload").attr("href", '/' + result.path);
-        }
-    });
 
-    getSiteClearanceAPI(CLIENT, function (resp) {
-        if (resp.status == EIA && resp.status == IEA) {
-            $('.sectionUploadClReport').removeClass('d-none');
-            $('.sectionUploadTor').removeClass('d-none');
+    var SITE_CLEARANCE_STATUS = {0: 'pending', 1: 'site clearance', 2: 'EIA', 3: 'IEA'};
+    getSiteClearanceAPI(PROFILE, function (resp) {
+        if (resp.site_clearances.length != 0) {
+            let cleareance = resp.site_clearances[(resp.site_clearances.length) - 1];
+            $('.processingMethod').html('Processing Method:'+ SITE_CLEARANCE_STATUS[resp.processing_status]);
+            if (resp.processing_status == 2 || resp.processing_status == 3) {
+                $('.sectionUploadClReport').removeClass('d-none');
+                $('.sectionUploadTor').removeClass('d-none');
+            }
+            $('.navTodownload').attr('href', '/' + cleareance.application_path);
+            $('.siteClearType').html(resp.site_clearance_type);
         } else {
             $('.sectionArrangeCommittee').removeClass('d-none');
         }
