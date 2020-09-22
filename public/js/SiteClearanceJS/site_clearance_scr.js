@@ -1,7 +1,12 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
+//Get Site Clear By ID
+function getSiteClearanceAPI(id, callBack) {
+    if (isNaN(id)) {
+        id = 0;
+    }
+    var url = "/api/site_clearance/" + id;
+    ajaxRequest('GET', url, null, function (dataSet) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(dataSet);
+        }
+    });
+}

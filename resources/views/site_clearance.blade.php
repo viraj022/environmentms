@@ -26,7 +26,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12">
-                <h1>File No: (<a href="/industry_profile/id/{{$client}}" class="setFileNoTitile">Loading..</a>) - EPL Number: <span class="right badge eplCodeAfileNo badge-primary">Loading..</span></h1>
+                <h1>File No: (<a href="/industry_profile/id/{{$client}}" class="setFileNoTitile">Loading..</a>) - Site Clearance Number: <span class="right badge eplCodeAfileNo badge-primary">Loading..</span></h1>
             </div>
         </div>
     </div>
@@ -64,6 +64,15 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body" style="height: 350px; overflow-y: scroll;">
+                        <div class="col-md-8">
+                            <dt >Name : <a id="obj_name"></a></dt>
+                            <dt >Registration No : <a id="obj_regno"></a></dt>
+                            <dt >Code : <a id="obj_code"></a></dt>
+                            <dt >Investment :  <a  id="obj_invest"></a></dt>
+                            <dt >Remark : <a  id="obj_remark"></a></dt>
+                            <dt >Location :---</dt>
+                        </div>
+                        <hr>
                         <div class="callout callout-danger">
                             <h6><a id="disPaylink" href="/epl_payments/id/{{$profile}}" class="text-success isOld2">Payments</a></h6>
                             <p>All Payment (EPL, Fine,Inspection Fee, Certificate)</p>
@@ -98,17 +107,16 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <dl class="row ">
-                            <div class="col-md-8">
-                                <dt >Name : <a id="obj_name"></a></dt>
-                                <dt >Registration No : <a id="obj_regno"></a></dt>
-                                <dt >Code : <a id="obj_code"></a></dt>
-                                <dt >Investment :  <a  id="obj_invest"></a></dt>
-                                <dt >Remark : <a  id="obj_remark"></a></dt>
-                                <dt >Location :---</dt>
-                            </div>
-                            <div id="map" style="width: 100%; height: 400px;"></div>
-                        </dl>
+                        <div class="form-group disType">
+                            <label>Processing Type*</label>
+                            <select id="setSiteType" class="form-control form-control-sm cutenzReq" style="width: 100%;">
+                                <option value="0">Site Clearance</option>
+                                <option value="1">EIA</option>
+                                <option value="2">IEA</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-dark navTodownload">Change</button>
+                        <hr>
                         <dt>Download Application :</dt>
                         <a href="" class="btn btn-dark navTodownload" target="_blank">View Application</a>
 
@@ -125,7 +133,71 @@
                         </div>
                     </div>
                     <!-- /.card-body -->
-                </div>                                    
+                </div>     
+                <div class="card card-success d-none sectionUploadTor collapsed-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Upload TOR</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body" style="display: none;">
+                        <div class="form-group">
+                            <label>Expire Date*</label>
+                            <input id="expireDateTor" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">
+                        </div>
+                        <div class="form-group">
+                            <label>Valid Date*</label>
+                            <input id="validDateTor" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">
+                        </div>
+                        <div class="form-group">
+                            <button id="uploadTOR" type="submit" class="btn btn-success"><i class="fas fa-check"></i> Upload TOR</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-success d-none sectionUploadClReport collapsed-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Upload Client Report</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body" style="display: none;">
+                        <div class="form-group">
+                            <label>Expire Date*</label>
+                            <input id="expireClientReport" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">
+                        </div>
+                        <div class="form-group" id="fileUpDiv">
+                            <hr>
+                            <input id="fileUploadInput" type="file" class="" accept="image/*, .pdf">
+                            <div class="progress d-none">
+                                <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                    <!--<span class="sr-only">40% Complete (success)</span>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button id="uploadClReport" type="submit" class="btn btn-success"><i class="fas fa-check"></i> Upload Report</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-success d-none sectionArrangeCommittee collapsed-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Arange Committee</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body" style="display: none;">
+                        The body of the card
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -167,20 +239,19 @@
 <script src="/../../js/SiteClearanceJS/site_clearance_scr.js" type="text/javascript"></script>
 
 <!-- AdminLTE App -->
-<script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
 <script>
-//Map Start    
-// Initialize and add the map
-function initMap(_Latitude, _Longitude) {
-    // The location of CeyTech
-    var defaultLocation = {lat: _Latitude, lng: _Longitude}; //default Location for load map
-
-    // The map, centered at Uluru
-    var map = new google.maps.Map(document.getElementById('map'), {zoom: 15, center: defaultLocation});
-    // The marker, positioned at Uluru
-    var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: false, title: "Drag me!"});
-}
-//Map END
+////Map Start    
+//// Initialize and add the map
+//function initMap(_Latitude, _Longitude) {
+//    // The location of CeyTech
+//    var defaultLocation = {lat: _Latitude, lng: _Longitude}; //default Location for load map
+//
+//    // The map, centered at Uluru
+//    var map = new google.maps.Map(document.getElementById('map'), {zoom: 15, center: defaultLocation});
+//    // The marker, positioned at Uluru
+//    var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: false, title: "Drag me!"});
+//}
+////Map END
 $(function () {
     var CLIENT = '{{$client}}';
     var PROFILE = '{{$profile}}';
@@ -197,7 +268,6 @@ $(function () {
             $('.setFileNoTitile').html(result.file_no);
             $(".setFileNoTitile").attr("href", "/industry_profile/id/" + CLIENT);
         }
-        initMap(parseFloat(result.industry_coordinate_x), parseFloat(result.industry_coordinate_y));
     });
     getDetailsbyId(PROFILE, function (result) {
         if (result.length == 0 || result == undefined) {
@@ -209,6 +279,16 @@ $(function () {
             $(".navTodownload").attr("href", '/' + result.path);
         }
     });
+
+    getSiteClearanceAPI(CLIENT, function (resp) {
+        if (resp.status == EIA && resp.status == IEA) {
+            $('.sectionUploadClReport').removeClass('d-none');
+            $('.sectionUploadTor').removeClass('d-none');
+        } else {
+            $('.sectionArrangeCommittee').removeClass('d-none');
+        }
+    });
+
 });
 function disWarnPay() {
     toastr.error('Assign Environment Officer & Try Again!');
