@@ -225,7 +225,9 @@ class SiteClearanceController extends Controller
     });
     }
 
-
+    public function find($id){
+   return  SiteClearenceSession::with('siteClearances')->with('client.environmentOfficer')->findOrFail($id);
+    }
     private function generateCode($client)
     {
         $la = Pradesheeyasaba::find($client->pradesheeyasaba_id);
