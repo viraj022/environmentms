@@ -142,15 +142,15 @@
                                                         <!-- /.info-box-content -->
                                                     </div>
 
-                                                    <div class="info-box mb-3 bg-info">
+<!--                                                    <div class="info-box mb-3 bg-info">
                                                         <span class="info-box-icon">
                                                             <button class="btn btn-lg btn-default" id="teli"><i class="fa fa-plus"></i></button></span>
                                                         <div class="info-box-content">
                                                             <span class="info-box-text">Create new telecommunication site clearance file</span>
                                                             <span class="info-box-number">Telecommunication Site Clearance</span>
                                                         </div>
-                                                        <!-- /.info-box-content -->
-                                                    </div>
+                                                         /.info-box-content 
+                                                    </div>-->
 
                                                     <div class="info-box mb-3 bg-info">
                                                         <span class="info-box-icon">
