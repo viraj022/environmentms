@@ -171,31 +171,31 @@
 <!-- Page script -->
 
 <!-- Select2 -->
-<script src="../../plugins/select2/js/select2.full.min.js"></script>
+<script src="/../../plugins/select2/js/select2.full.min.js"></script>
 <!-- Bootstrap4 Duallistbox -->
-<script src="../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+<script src="/../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 <!-- InputMask -->
-<script src="../../plugins/moment/moment.min.js"></script>
-<script src="../../plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+<script src="/../../plugins/moment/moment.min.js"></script>
+<script src="/../../plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
 <!-- date-range-picker -->
-<script src="../../plugins/daterangepicker/daterangepicker.js"></script>
+<script src="/../../plugins/daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap color picker -->
-<script src="../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+<script src="/../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
 <!-- Tempusdominus Bootstrap 4 -->
-<script src="../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<script src="/../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <!-- Bootstrap Switch -->
-<script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-<script src="../../dist/js/adminlte.min.js"></script>
+<script src="/../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<script src="/../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="../../dist/js/demo.js"></script>
-<script src="../../js/commonFunctions/functions.js" type="text/javascript"></script>
-<script src="../../js/commonFunctions/file_upload.js" type="text/javascript"></script>
-<script src="../../js/epl/epl_register.js"></script>
-<script src="../../js/EplRegJS/submit.js"></script>
-<script src="../../js/EplRegJS/get.js"></script>
-<script src="../../js/EplRegJS/get_data.js"></script>
-<script src="../../js/EplRegJS/update.js"></script>
-<script src="../../js/EplRegJS/delete.js"></script>
+<script src="/../../dist/js/demo.js"></script>
+<script src="/../../js/commonFunctions/functions.js" type="text/javascript"></script>
+<script src="/../../js/commonFunctions/file_upload.js" type="text/javascript"></script>
+<script src="/../../js/epl/epl_register.js"></script>
+<script src="/../../js/EplRegJS/submit.js"></script>
+<script src="/../../js/EplRegJS/get.js"></script>
+<script src="/../../js/EplRegJS/get_data.js"></script>
+<script src="/../../js/EplRegJS/update.js"></script>
+<script src="/../../js/EplRegJS/delete.js"></script>
 <!-- AdminLTE App -->
 <!--<script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>-->
 <script>
