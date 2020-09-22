@@ -30,6 +30,11 @@ function setProfileDetails(obj) {
                 "/profile/" +
                 obj.epls[obj.epls.length - 1].id
                 );
+    }
+    //Check site clearance
+    if (obj.epls.length == 0) {
+//------------
+    } else {
         $("#setSiteClear").attr(
                 "href",
                 "/site_clearance/client/" +
