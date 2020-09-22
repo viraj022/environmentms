@@ -27,12 +27,12 @@ class EPLController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id) {
+    public function index($id, $type) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
             if (Client::find($id) !== null) {
-                return view('epl_register', ['pageAuth' => $pageAuth, 'id' => $id]);
+                return view('epl_register', ['pageAuth' => $pageAuth, 'id' => $id, 'type' => $type]);
             } else {
                 abort(404);
             }

@@ -40,13 +40,13 @@
                         <label id="lblTitle">Register New EPL</label>
                     </div>
                     <div class="card-body">
-<!--                        <div class="form-group">
-                            <label>Is New*</label>
-                            <select id="getisOld" class="form-control form-control-sm" style="width: 100%;">
-                                <option value="1">New</option>
-                                                                <option value="0">Old</option>
-                            </select>
-                        </div>-->
+                        <!--                        <div class="form-group">
+                                                    <label>Is New*</label>
+                                                    <select id="getisOld" class="form-control form-control-sm" style="width: 100%;">
+                                                        <option value="1">New</option>
+                                                                                        <option value="0">Old</option>
+                                                    </select>
+                                                </div>-->
                         <!--                        <div id="old_file" class="d-none">
                                                     <div class="form-group">
                                                         <label>EPL Code*</label>
@@ -64,6 +64,13 @@
                         <div class="form-group">
                             <label>Remark*</label>
                             <input id="getRemark" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                        </div>
+                        <div class="form-group disType d-none">
+                            <label>Type*</label>
+                            <select id="setSiteType" class="form-control form-control-sm cutenzReq" style="width: 100%;">
+                                <option value="1">Site Clearance</option>
+                                <option value="0">Telecommunication Site Clearance</option>
+                            </select>
                         </div>
                         <input hidden id="client_id" type="text" class="form-control form-control-sm" placeholder="" value="{{$id ?? ''}}">
                         <div class="form-group">
@@ -192,6 +199,7 @@
 <!-- AdminLTE App -->
 <!--<script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>-->
 <script>
+var SITE_TYPE = '{{$type}}';
 //var _Latitude = 7.489050;
 //var _Longitude = 80.349985;
 //// Initialize and add the map
@@ -227,6 +235,10 @@ $("#btnSave").click(function () {
         show_mesege(result);
     });
 });
+
+if (SITE_TYPE == 'site_clearance') {
+    $('.disType').removeClass('d-none');
+}
 
 </script>
 <script>
