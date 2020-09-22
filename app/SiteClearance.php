@@ -11,4 +11,6 @@ class SiteClearance extends Model
     public const SITE_CLEARANCE = 'Site Clearance';
     public const SITE_TELECOMMUNICATION = 'Telecommunication';
     public const SITE_SCHEDULE_WASTE = 'Schedule Waste';
+
+    protected $fillable = ['client_id', 'remark', 'site_clearance_type'];
 }
