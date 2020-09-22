@@ -26,7 +26,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>New EPL</h1>
+                <h1>File No: (<a href="/industry_profile/id/{{$id}}">{{$file_no}}</a>) - <b class="setBySiteClearType">New EPL</b></h1>
             </div>
         </div>
     </div>
@@ -200,6 +200,13 @@
 <!--<script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>-->
 <script>
 var SITE_TYPE = '{{$type}}';
+
+if (SITE_TYPE === 'site_clearance') {
+    $('.disType').removeClass('d-none');
+    $('.setBySiteClearType').html('Site Clearance');
+} else {
+    $('.setBySiteClearType').html('New EPL');
+}
 //var _Latitude = 7.489050;
 //var _Longitude = 80.349985;
 //// Initialize and add the map
@@ -236,9 +243,6 @@ $("#btnSave").click(function () {
     });
 });
 
-if (SITE_TYPE == 'site_clearance') {
-    $('.disType').removeClass('d-none');
-}
 
 </script>
 <script>

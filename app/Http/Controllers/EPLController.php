@@ -29,10 +29,11 @@ class EPLController extends Controller {
      */
     public function index($id, $type) {
         $user = Auth::user();
+        $client = Client::find($id);
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
-            if (Client::find($id) !== null) {
-                return view('epl_register', ['pageAuth' => $pageAuth, 'id' => $id, 'type' => $type]);
+            if ($client !== null) {
+                return view('epl_register', ['pageAuth' => $pageAuth, 'id' => $id, 'type' => $type, 'file_no' => $client->file_no]);
             } else {
                 abort(404);
             }
