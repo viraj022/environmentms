@@ -23,26 +23,31 @@ function setProfileDetails(obj) {
         $(".viewEPL").removeClass("d-none");
         $(".newEPL").addClass("d-none");
         $("#setEPLCode").html(obj.epls[obj.epls.length - 1].code);
-        $("#setEPlLink").attr(
-                "href",
-                "/epl_profile/client/" +
-                PROFILE_ID +
-                "/profile/" +
-                obj.epls[obj.epls.length - 1].id
-                );
+        if (obj.epls.length != 0) {
+            $("#setEPlLink").attr(
+                    "href",
+                    "/epl_profile/client/" +
+                    PROFILE_ID +
+                    "/profile/" +
+                    obj.epls[obj.epls.length - 1].id
+                    );
+        }
     }
     //Check site clearance
     if (obj.site_clearence_sessions.length == 0) {
         $(".newSiteClear").removeClass("d-none");
     } else {
         $(".setSiteClear").removeClass("d-none");
-        $("#setSiteClear").attr(
-                "href",
-                "/site_clearance/client/" +
-                PROFILE_ID +
-                "/profile/" +
-                obj.epls[obj.epls.length - 1].id
-                );
+        if (obj.epls.length != 0) {
+            $("#setSiteClear").attr(
+                    "href",
+                    "/site_clearance/client/" +
+                    PROFILE_ID +
+                    "/profile/" +
+                    obj.epls[obj.epls.length - 1].id
+                    );
+        }
+
     }
     obj.last_name == null
             ? $("#client_name").html(obj.first_name)
