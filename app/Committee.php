@@ -19,4 +19,9 @@ class Committee extends Model
       {
             return $this->belongsToMany(CommetyPool::class);
       }
+
+      public function committeeRemarks()
+      {
+            return $this->hasMany(CommitteeRemark::class);
+      }
 }

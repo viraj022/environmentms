@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Committee;
+use App\CommitteeRemark;
 use App\SiteClearenceSession;
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -50,10 +51,21 @@ class CommitteeRepository
 
     public function show($id)
     {
-        return Committee::with('siteClearenceSession.client')->findOrFail($id);
+        return Committee::with('siteClearenceSession.client')->with('commetyPool')->findOrFail($id);
     }
     public function getByAttribute($attribute, $value)
     {
         return Committee::with('siteClearenceSession.client')->where($attribute, $value)->get();
+    }
+    public function getRemarkByCommittee($committee)
+    {
+        // dd($committee);
+        return Committee::findOrFail($committee)->committeeRemarks;
+    }
+    public function saveRemarksByCommittee($committee, $requestData)
+    {
+        $committee = Committee::findOrFail($committee)->committeeRemarks;
+        $committeeRemark  = CommitteeRemark::create($requestData);
+        return  $committeeRemark == true;
     }
 }

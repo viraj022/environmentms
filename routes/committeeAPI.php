@@ -1,6 +1,7 @@
 <?php
-Route::get('/committees/{attribute}/{value}', 'CommitteeController@attribute');
+Route::get('/committees/find/{attribute}/{value}', 'CommitteeController@attribute');
 Route::apiResource('/committees', 'CommitteeController');
+Route::apiResource('/committees.remarks', 'CommitteeRemarkController');
 
 /**
  * input data
