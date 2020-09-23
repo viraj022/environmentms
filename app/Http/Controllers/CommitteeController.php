@@ -47,6 +47,8 @@ class CommitteeController extends Controller
             'site_clearence_session_id' => 'required|integer',
             'remark' => 'nullable|string',
             'schedule_date' => 'nullable|date',
+            'members' => 'required|array',
+            'members.*' => 'integer'
         ]);
         if ($this->committeeRepository->create($request)) {
             return array('id' => 1, 'message' => 'true');
