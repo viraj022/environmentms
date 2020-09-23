@@ -14,7 +14,7 @@ class AddIndustrySubCategoryToClientsTable extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->string('industry_sub_category')->nullable();
+            $table->string('industry_sub_category', 255)->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddIndustrySubCategoryToClientsTable extends Migration
     public function down()
     {
         Schema::table('clients', function (Blueprint $table) {
-            //
+            $table->dropColumn('industry_sub_category');
         });
     }
 }
