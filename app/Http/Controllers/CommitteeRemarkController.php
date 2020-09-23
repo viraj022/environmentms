@@ -46,6 +46,9 @@ class CommitteeRemarkController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.zone'));
+        request()->validate([
+            'remark' => 'required|string',
+        ]);
         $requestData = $request->all();
         $requestData['user_id'] =  $user->id;
         $requestData['committee_id'] = $committee;
@@ -97,7 +100,6 @@ class CommitteeRemarkController extends Controller
      */
     public function destroy($committee)
     {
-
         if ($this->committeeRepository->deleteRemarksByCommittee($committee)) {
             return array('id' => 1, 'message' => 'true');
         } else {

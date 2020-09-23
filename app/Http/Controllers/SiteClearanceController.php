@@ -252,7 +252,7 @@ class SiteClearanceController extends Controller
     public function setProcessingStatus(Request $request, SiteClearenceSession $siteClearanceSession)
     {
         request()->validate([
-            'status' => 'required|integer',
+            'status' => 'required|integer|between:0,3',
         ]);
         // dd($siteClearanceSession);
         $siteClearanceSession->processing_status = $request->status;
