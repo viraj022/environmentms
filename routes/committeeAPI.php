@@ -97,7 +97,49 @@ Route::apiResource('/committees.c_remarks', 'CommitteeRemarkController')->shallo
   "remark": "My first remark third"  
 }
  */
+/**
+ * out put data
+  {
+        "id": 3,
+        "remark": "My first remark",
+        "user_id": 1,
+        "committee_id": 3,
+        "created_at": "2020-09-23 13:02:11",
+        "updated_at": "2020-09-23 13:02:11",
+        "user": {
+            "id": 1,
+            "user_name": "National",
+            "first_name": "National",
+            "last_name": "National",
+            "address": null,
+            "contact_no": null,
+            "email": null,
+            "nic": null,
+            "roll_id": 6,
+            "api_token": "XgbgwtLu3indZ10QQV0uu7e3bc2ONVgeLp9xHoUqe5v2d17zI4RJlcMP8gVKapfVQTcsTUhtrJXTI4ri",
+            "institute_Id": null,
+            "activeStatus": "Active",
+            "created_at": "2020-02-12 20:55:42",
+            "updated_at": "2020-09-02 04:42:24",
+            "deleted_at": null
+        }
+    }
+ */
 
+/**
+ * Response
+ *{
+         "id": 1,
+         "message": "true"
+        }  
+ */
+Route::apiResource('/committees.c_attachments', 'CommitteeRemarkController')->shallow();
+/**
+ * input data
+ * {{
+  "remark": "My first remark third"  
+}
+ */
 /**
  * out put data
   {

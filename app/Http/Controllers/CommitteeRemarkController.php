@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Committee;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\CommitteeRepository;
@@ -47,12 +48,19 @@ class CommitteeRemarkController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.zone'));
         request()->validate([
-            'remark' => 'required|string',
+            'remark' => 'nullable|string',
+            'file' => 'nullable|',
         ]);
         $requestData = $request->all();
         $requestData['user_id'] =  $user->id;
         $requestData['committee_id'] = $committee;
-        if ($this->committeeRepository->saveRemarksByCommittee($committee, $requestData)) {
+        if ($request->has('file')) {
+            $file = $request->file('file');
+        } else {
+            $file = null;
+        }
+        $extension = $request->file->extension();
+        if ($this->committeeRepository->saveRemarksByCommittee($committee, $requestData, $file, $extension)) {
             return array('id' => 1, 'message' => 'true');
         } else {
             return array('id' => 0, 'message' => 'false');

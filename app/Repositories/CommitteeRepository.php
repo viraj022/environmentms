@@ -3,8 +3,10 @@
 namespace App\Repositories;
 
 use App\Committee;
+use Carbon\Carbon;
 use App\CommitteeRemark;
 use App\SiteClearenceSession;
+use Illuminate\Support\Facades\DB;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -67,11 +69,18 @@ class CommitteeRepository
         // dd($committee);
         return CommitteeRemark::with('user')->findOrFail($remark);
     }
-    public function saveRemarksByCommittee($committee, $requestData)
+
+    // committee remarks ----
+    public function saveRemarksByCommittee($committee, $requestData, $file = null, $extension)
     {
-        $committee = Committee::findOrFail($committee)->committeeRemarks;
-        $committeeRemark  = CommitteeRemark::create($requestData);
-        return  $committeeRemark == true;
+        DB::transaction(function () use ($committee, $requestData, $file, $extension) {
+            $committee = Committee::findOrFail($committee)->committeeRemarks;
+            if ($file != null) {
+                $requestData['path'] = $this->uploadAttachment($file, $extension, $committee);
+            }
+            $committeeRemark  = CommitteeRemark::create($requestData);
+            return  $committeeRemark == true;
+        });
     }
 
     public function updateRemarksByCommittee($remarks, $requestData)
@@ -85,5 +94,19 @@ class CommitteeRepository
         $committeeRemark = CommitteeRemark::findOrFail($remarks);
         $committeeRemark  = $committeeRemark->delete();
         return  $committeeRemark == true;
+    }
+
+    // committee attachments ---------
+
+
+    public function uploadAttachment($file, $extension, $committee)
+    {
+        if ($file != null) {
+            $file_name = Carbon::now()->timestamp . '.' . $extension;
+            $fileUrl = '/uploads/industry_files/committee/' . $committee->siteClearenceSession->id . '/' . $committee->site_clearence_session_id . '/' . $committee->id . '/application';
+            $storePath = 'public' . $fileUrl;
+            $path = $file->storeAs($storePath, $file_name);
+            return "storage/" . $fileUrl . "/" . $file_name;
+        }
     }
 }
