@@ -73,8 +73,8 @@ class CommitteeRepository
     // committee remarks ----
     public function saveRemarksByCommittee($committee, $requestData, $file = null, $extension)
     {
-        DB::transaction(function () use ($committee, $requestData, $file, $extension) {
-            $committee = Committee::findOrFail($committee)->committeeRemarks;
+        return  DB::transaction(function () use ($committee, $requestData, $file, $extension) {
+            $committee = Committee::findOrFail($committee);
             if ($file != null) {
                 $requestData['path'] = $this->uploadAttachment($file, $extension, $committee);
             }
@@ -101,12 +101,13 @@ class CommitteeRepository
 
     public function uploadAttachment($file, $extension, $committee)
     {
+        // dd($committee);
         if ($file != null) {
             $file_name = Carbon::now()->timestamp . '.' . $extension;
             $fileUrl = '/uploads/industry_files/committee/' . $committee->siteClearenceSession->id . '/' . $committee->site_clearence_session_id . '/' . $committee->id . '/application';
             $storePath = 'public' . $fileUrl;
             $path = $file->storeAs($storePath, $file_name);
-            return "storage/" . $fileUrl . "/" . $file_name;
+            return "storage" . $fileUrl . "/" . $file_name;
         }
     }
 }

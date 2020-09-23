@@ -48,18 +48,19 @@ class CommitteeRemarkController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.zone'));
         request()->validate([
-            'remark' => 'nullable|string',
-            'file' => 'nullable|',
+            'remark' => 'sometimes|required|string',
+            'file' => 'sometimes|required|mimes:jpeg,jpg,png,pdf',
         ]);
         $requestData = $request->all();
         $requestData['user_id'] =  $user->id;
         $requestData['committee_id'] = $committee;
         if ($request->has('file')) {
             $file = $request->file('file');
+            $extension = $request->file->extension();
         } else {
             $file = null;
+            $extension = null;
         }
-        $extension = $request->file->extension();
         if ($this->committeeRepository->saveRemarksByCommittee($committee, $requestData, $file, $extension)) {
             return array('id' => 1, 'message' => 'true');
         } else {
