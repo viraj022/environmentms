@@ -48,13 +48,13 @@
                         <h5 class="processingMethod text-success"></h5>
                         <dt class="">Name : <a id="client_name"></a></dt>            
                         <dt class="">Address : <a id="client_address"></a></dt>
-                        <dt                                                                                     class="">Contact Number : <a id="client_cont"></a></dt>
+                        <dt class="">Contact Number : <a id="client_cont"></a></dt>
                         <dt class="">Contact Email : <a id="client_amil"></a></dt>
                         <dt class="">NIC : <a id="client_nic"> </a></dt>
                         <hr>
                         <div class="col-md-8">
                             <dt >Industry Name : <a id="obj_name"></a></dt>
-                            <dt >Industry Registration No : <a id="                                                            obj_regno"></a></dt>
+                            <dt >Industry Registration No : <a id=" obj_regno"></a></dt>
                             <dt >Industry Code : <a id="obj_code"></a></dt>
                             <dt >Industry Investment :  <a  id="obj_invest"></a></dt>
                             <dt >Industry Remark : <a  id="obj_remark"></a></dt>
@@ -109,14 +109,16 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div class="form-group disType">
+                            <input id="currentProStatus" type="text" class="d-none">
                             <label>Processing Type*</label>
                             <select id="setSiteType" class="form-control form-control-sm cutenzReq" style="width: 100%;">
-                                <option value="0">Site Clearance</option>
-                                <option value="1">EIA</option>
-                                <option value="2">IEA</option>
+                                <option value="0">Pending</option>
+                                <option value="1">Site Clearance</option>
+                                <option value="2">EIA</option>
+                                <option value="3">IEA</option>
                             </select>
                         </div>
-                        <button class="btn btn-dark navTodownload">Change</button>
+                        <button id="changeProcessingBtn" class="btn btn-dark">Change</button>
                         <hr>
                         <dt>Download Application :</dt>
                         <a href="" class="btn btn-dark navTodownload" target="_blank">View Application</a>
@@ -195,7 +197,7 @@
                         </div>
                     </div>
                     <div class="card-body" style="display: none;">
-                        The body of the card
+                        <a href="/committee/id/{{$profile}}" class="btn btn-success navToCommittee" target="_blank">Add Committee</a>
                     </div>
                 </div>
 
@@ -256,6 +258,7 @@
 $(function () {
     var CLIENT = '{{$client}}';
     var PROFILE = '{{$profile}}';
+    $('#currentProStatus').val(PROFILE);
 //    console.log('cli: ' + CLIENT + ', prof: ' + PROFILE);
     getaClientbyId(CLIENT, function (result) {
         if (result.length == 0 || result == undefined) {
@@ -275,15 +278,48 @@ $(function () {
     getSiteClearanceAPI(PROFILE, function (resp) {
         if (resp.site_clearances.length != 0) {
             let cleareance = resp.site_clearances[(resp.site_clearances.length) - 1];
-            $('.processingMethod').html('Processing Method:'+ SITE_CLEARANCE_STATUS[resp.processing_status]);
+            $('.processingMethod').html('Processing Method:' + SITE_CLEARANCE_STATUS[resp.processing_status]);
             if (resp.processing_status == 2 || resp.processing_status == 3) {
                 $('.sectionUploadClReport').removeClass('d-none');
                 $('.sectionUploadTor').removeClass('d-none');
+                $('.sectionArrangeCommittee').removeClass('d-none');
+            } else {
+                $('.sectionUploadClReport').addClass('d-none');
+                $('.sectionUploadTor').addClass('d-none');
+                $('.sectionArrangeCommittee').addClass('d-none');
             }
             $('.navTodownload').attr('href', '/' + cleareance.application_path);
             $('.siteClearType').html(resp.site_clearance_type);
         } else {
-            $('.sectionArrangeCommittee').removeClass('d-none');
+        }
+    });
+
+    $("#changeProcessingBtn").click(function () {
+        var data = {
+            status: $('#setSiteType').val()
+        };
+        if (confirm('Are you sure you want to change?')) {
+            setProcessingTypeAPI($('#currentProStatus').val(), data, function (respo) {
+                show_mesege(respo);
+                getSiteClearanceAPI(PROFILE, function (resp) {
+                    if (resp.site_clearances.length != 0) {
+                        let cleareance = resp.site_clearances[(resp.site_clearances.length) - 1];
+                        $('.processingMethod').html('Processing Method:' + SITE_CLEARANCE_STATUS[resp.processing_status]);
+                        if (resp.processing_status == 2 || resp.processing_status == 3) {
+                            $('.sectionUploadClReport').removeClass('d-none');
+                            $('.sectionUploadTor').removeClass('d-none');
+                            $('.sectionArrangeCommittee').removeClass('d-none');
+                        } else {
+                            $('.sectionUploadClReport').addClass('d-none');
+                            $('.sectionUploadTor').addClass('d-none');
+                            $('.sectionArrangeCommittee').addClass('d-none');
+                        }
+                        $('.navTodownload').attr('href', '/' + cleareance.application_path);
+                        $('.siteClearType').html(resp.site_clearance_type);
+                    } else {
+                    }
+                });
+            });
         }
     });
 
