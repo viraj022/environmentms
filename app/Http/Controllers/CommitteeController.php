@@ -96,6 +96,8 @@ class CommitteeController extends Controller
             'name' => 'sometimes|required|string',
             'remark' => 'nullable|string',
             'schedule_date' => 'nullable|date',
+            'members' => 'sometimes|required|array',
+            'members.*' => 'integer'
         ]);
         if ($this->committeeRepository->update($request, $id)) {
             return array('id' => 1, 'message' => 'true');
