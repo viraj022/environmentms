@@ -55,7 +55,7 @@ class CommitteeRepository
     }
     public function getByAttribute($attribute, $value)
     {
-        return Committee::with('siteClearenceSession.client')->where($attribute, $value)->get();
+        return Committee::with('siteClearenceSession.client')->with('commetyPool')->where($attribute, $value)->get();
     }
     public function getRemarkByCommittee($committee)
     {
