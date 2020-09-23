@@ -14,7 +14,7 @@ class AddUniqueToEPLSTable extends Migration
     public function up()
     {
         Schema::table('e_p_l_s', function (Blueprint $table) {
-            $table->string('certificate_no')->unique()->change();
+            // $table->string('certificate_no')->unique()->change();
         });
     }
 
@@ -26,7 +26,7 @@ class AddUniqueToEPLSTable extends Migration
     public function down()
     {
         Schema::table('e_p_l_s', function (Blueprint $table) {
-            $table->string('certificate_no')->change();
+            // $table->string('certificate_no')->change();
         });
     }
 }
