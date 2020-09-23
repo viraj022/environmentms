@@ -5,9 +5,10 @@ Route::apiResource('/committees', 'CommitteeController');
 /**
  * input data
  * {
-  "name": "hansana",
+  "name": "hansana Updated",
   "site_clearence_session_id" : 1,
-  "schedule_date": "2020-01-01"
+  "schedule_date": "2020-01-01",
+  "members": [1,2]
 
 }
  */

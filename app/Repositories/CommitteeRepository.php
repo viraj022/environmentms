@@ -29,6 +29,7 @@ class CommitteeRepository
         // dd($requestData['site_clearence_session_id']);
         $requestData['client_id'] = SiteClearenceSession::findOrFail($requestData['site_clearence_session_id'])->client_id;
         $committee  = Committee::create($requestData);
+        $committee->commetyPool()->sync($request->members);
         return  $committee == true;
     }
 
@@ -37,8 +38,9 @@ class CommitteeRepository
         // should remove client_id if present 
         // dd($id);
         $committee = Committee::findOrFail($id);
-        $committee = $committee->update($request->all());
-        return  $committee == true;
+        $committeeResult = $committee->update($request->all());
+        $committee->commetyPool()->sync($request->members);
+        return  $committeeResult == true;
     }
 
     public function delete($id)

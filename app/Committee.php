@@ -14,4 +14,9 @@ class Committee extends Model
       {
             return $this->belongsTo(SiteClearenceSession::class);
       }
+
+      public function commetyPool()
+      {
+            return $this->belongsToMany(CommetyPool::class);
+      }
 }
