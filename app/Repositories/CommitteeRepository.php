@@ -60,12 +60,30 @@ class CommitteeRepository
     public function getRemarkByCommittee($committee)
     {
         // dd($committee);
-        return Committee::findOrFail($committee)->committeeRemarks;
+        return Committee::with('committeeRemarks.user')->findOrFail($committee)->committeeRemarks;
+    }
+    public function showRemark($remark)
+    {
+        // dd($committee);
+        return CommitteeRemark::with('user')->findOrFail($remark);
     }
     public function saveRemarksByCommittee($committee, $requestData)
     {
         $committee = Committee::findOrFail($committee)->committeeRemarks;
         $committeeRemark  = CommitteeRemark::create($requestData);
+        return  $committeeRemark == true;
+    }
+
+    public function updateRemarksByCommittee($remarks, $requestData)
+    {
+        $committeeRemark = CommitteeRemark::findOrFail($remarks);
+        $committeeRemark  = $committeeRemark::update($requestData);
+        return  $committeeRemark == true;
+    }
+    public function deleteRemarksByCommittee($remarks)
+    {
+        $committeeRemark = CommitteeRemark::findOrFail($remarks);
+        $committeeRemark  = $committeeRemark->delete();
         return  $committeeRemark == true;
     }
 }

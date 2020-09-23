@@ -65,6 +65,7 @@ class CommitteeController extends Controller
      */
     public function show($id)
     {
+
         return $this->committeeRepository->show($id);
     }
     public function attribute($attribute, $value)
@@ -80,7 +81,6 @@ class CommitteeController extends Controller
      */
     public function edit(Committee $committee)
     {
-        //
     }
 
     /**

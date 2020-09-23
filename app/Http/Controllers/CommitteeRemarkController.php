@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Committee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Repositories\CommitteeRepository;
 
 class CommitteeRemarkController extends Controller
@@ -33,7 +34,6 @@ class CommitteeRemarkController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -42,9 +42,18 @@ class CommitteeRemarkController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $committee)
     {
-        //
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.zone'));
+        $requestData = $request->all();
+        $requestData['user_id'] =  $user->id;
+        $requestData['committee_id'] = $committee;
+        if ($this->committeeRepository->saveRemarksByCommittee($committee, $requestData)) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
     }
 
     /**
@@ -55,7 +64,7 @@ class CommitteeRemarkController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->committeeRepository->showRemark($id);
     }
 
     /**
@@ -66,7 +75,6 @@ class CommitteeRemarkController extends Controller
      */
     public function edit($id)
     {
-        //
     }
 
     /**
@@ -78,7 +86,7 @@ class CommitteeRemarkController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        abort('404', "Update not available in this version");
     }
 
     /**
@@ -87,8 +95,13 @@ class CommitteeRemarkController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($committee)
     {
-        //
+
+        if ($this->committeeRepository->deleteRemarksByCommittee($committee)) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
     }
 }
