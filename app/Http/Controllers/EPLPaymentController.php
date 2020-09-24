@@ -290,6 +290,57 @@ class EPLPaymentController extends Controller
         });
     }
 
+    public function paySiteClearance($id)
+    {
+        return \DB::transaction(function () use ($eplId) {
+            $site = SiteClearenceSession::find($id);
+            if ($site) {
+                $transaction = new Transaction();
+                $transaction->type = Transaction::TRANS_SITE_CLEARANCE;
+                $transaction->status = 0;
+                $transaction->type_id = $site->id;
+                $transaction->client_id = $site->client_id;
+                $msg = $transaction->save();
+                if ($msg) {
+                    $data = request('items');
+                    foreach ($data as $item) {
+                        $payment = Payment::find($item['id']);
+                        if ($payment) {
+                            $transactionItem = new TransactionItem();
+                            $transactionItem->transaction_id = $transaction->id;
+                            $transactionItem->payment_type_id = $payment->payment_type_id;
+                            $transactionItem->payment_id = $payment->id;
+                            $transactionItem->client_id = $site->id;
+                            $transactionItem->qty = 1;
+                            $transactionItem->transaction_type = Transaction::TRANS_TYPE_EPL;
+                            $paymentType = PaymentType::getpaymentByTypeName(PaymentType::INSPECTIONFEE);
+                            if ($payment->payment_type_id == $paymentType->id) {
+                                // if payment is a fine
+                                //   LogActivity::fileLog($transaction->id, 'EplPay', "payEPL done", 1);
+                                LogActivity::addToLog('payEPL done', $transaction);
+                                $transactionItem->amount = $item['amount'];
+                            } else {
+                                // if payment is not valid
+                                LogActivity::addToLog('fail to payEPL', $transaction);
+                                $transactionItem->amount = $item['amount'];
+                            }
+                            $msg = $msg && $transactionItem->save();
+                        } else {
+                            abort(404);
+                        }
+                    }
+                    if ($msg) {
+                        return array('id' => 1, 'message' => 'true', 'code' => $transaction->id);
+                    } else {
+                        return array('id' => 0, 'message' => 'false');
+                    }
+                }
+            } else {
+                abort(404);
+            }
+        });
+    }
+
     public function paymentList($id)
     {
         $user = Auth::user();
@@ -352,7 +403,7 @@ class EPLPaymentController extends Controller
         if ($site) {
             $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
             // dd($inspectionTypes);
-            $inspection = TransactionItem::with('transaction')->where('transaction_type', Transaction::TRANS_TYPE_EPL)
+            $inspection = TransactionItem::with('transaction')->where('transaction_type', Transaction::TRANS_SITE_CLEARANCE)
                 ->where('client_id', $id)
                 ->where('payment_type_id', $inspectionTypes->id)
                 ->first();
