@@ -59,6 +59,7 @@ function setProfileDetails(obj) {
     $("#obj_name").html(obj.industry_name);
     $("#obj_regno").html(obj.industry_registration_no);
     $("#obj_invest").html(obj.industry_investment);
+    $("#obj_industrySub").html(obj.industry_sub_category);
     initMap(
             parseFloat(obj.industry_coordinate_x),
             parseFloat(obj.industry_coordinate_y)

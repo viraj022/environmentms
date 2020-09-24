@@ -21,6 +21,7 @@ function fromValues() {
         contact_no: $('#getContact').val(),
         email: $('#getEmail').val(),
         nic: $('#getNicSave').val(),
+        industry_sub_category: $('#industry_sub_cat').val(),
         industry_name: $('#business_name').val().trim(),
         industry_category_id: $('#industryCat').val(),
         business_scale_id: $('#businesScale').val(),

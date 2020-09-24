@@ -278,8 +278,9 @@ class EPLPaymentController extends Controller
                             abort(404);
                         }
                     }
+                    // dd($epl->client);
                     if ($msg) {
-                        return array('id' => 1, 'message' => 'true', 'code' => $transaction->id);
+                        return array('id' => 1, 'message' => 'true', 'code' => $transaction->id, 'name' => $epl->client->first_name);
                     } else {
                         return array('id' => 0, 'message' => 'false');
                     }
@@ -330,7 +331,7 @@ class EPLPaymentController extends Controller
                         }
                     }
                     if ($msg) {
-                        return array('id' => 1, 'message' => 'true', 'code' => $transaction->id);
+                        return array('id' => 1, 'message' => 'true', 'code' => $transaction->id, 'name' => $epl->client->first_name);
                     } else {
                         return array('id' => 0, 'message' => 'false');
                     }

@@ -159,6 +159,7 @@
 <!-- AdminLTE App -->
 <script>
 $(function () {
+    // alert("123");
     var ITEM_LIST = [];
 
     var EPL_ID = "{{$id}}";
@@ -225,8 +226,10 @@ $(function () {
         remove_itemFrom_bill($(this).val());
     });
     $('#btnSave').click(function () {
+        // alert("ok");
         savePayment(ITEM_LIST, EPL_ID, function (r) {
             show_mesege(r);
+            // alert(r.name);
             if (r.id == 1) {
                 ITEM_LIST = [];
                 selectedPayments_table(ITEM_LIST);

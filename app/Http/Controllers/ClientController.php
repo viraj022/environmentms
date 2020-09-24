@@ -91,6 +91,13 @@ class ClientController extends Controller
         return view('pending_certificates', ['pageAuth' => $pageAuth]);
     }
 
+    public function expireCertificatesUi()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('expired_certificates', ['pageAuth' => $pageAuth]);
+    }
+
     public function certificatePrefer($id)
     {
         $user = Auth::user();
@@ -129,6 +136,7 @@ class ClientController extends Controller
             'industry_registration_no' => 'nullable|string',
             'is_old' => 'required|integer',
             'name_title' => 'required|string',
+            'industry_sub_category' => 'sometimes|required|string',
             // 'password' => 'required',
         ]);
         if ($pageAuth['is_create']) {
@@ -156,6 +164,7 @@ class ClientController extends Controller
             $client->industry_investment = \request('industry_investment');
             $client->industry_start_date = \request('industry_start_date');
             $client->industry_registration_no = \request('industry_registration_no');
+            $client->industry_sub_category = \request('industry_sub_category');
             $client->is_old = \request('is_old');
 
             $msg = $client->save();
@@ -229,6 +238,7 @@ class ClientController extends Controller
             'industry_start_date' => 'sometimes|required|date',
             'industry_registration_no' => 'nullable|string',
             'is_old' => 'sometimes|required|integer',
+            'industry_sub_category' => 'sometimes|required|string',
             // 'password' => 'required',
         ]);
         if ($pageAuth['is_update']) {
@@ -645,7 +655,6 @@ class ClientController extends Controller
         //  return $client->generateCertificateNumber();
     }
 
-
     public function getCertificateDetails($id)
     {
         $user = Auth::user();
@@ -733,9 +742,6 @@ class ClientController extends Controller
         }
     }
 
-
-
-
     public function issueCertificate($cer_id)
     {
         $user = Auth::user();
@@ -786,6 +792,7 @@ class ClientController extends Controller
             return array('id' => 0, 'message' => 'false');
         }
     }
+
     public function completeCertificate($id)
     {
         $user = Auth::user();
@@ -802,17 +809,16 @@ class ClientController extends Controller
         }
     }
 
-    public  function getExpiredCertificatesByEnvOfficer($id) //to get expired certificates and certificates that expired within a month by env officer id
-    {
+    public function getExpiredCertificatesByEnvOfficer($id)
+    { //to get expired certificates and certificates that expired within a month by env officer id
+
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-
-
         $date = Carbon::now();
         $date = $date->addDays(30);
-
         if ($pageAuth['is_read']) {
-            $responses =  Certificate::With('Client')->selectRaw('max(id) as id, client_id,expire_date')
+
+            $responses = Certificate::With('Client')->selectRaw('max(id) as id, client_id,expire_date')
                 ->whereHas('Client', function ($query) use ($id) {
                     $query->where('environment_officer_id', '=', $id);
                 })
@@ -820,9 +826,6 @@ class ClientController extends Controller
                 ->groupBy('client_id')
                 ->get();
 
-            // $posts = App\Post::whereHas('comments', function (Builder $query) {
-            //     $query->where('content', 'like', 'foo%');
-            // })->get();
             $reses = $responses->toArray();
 
             foreach ($reses as $k => $res) {
@@ -844,11 +847,12 @@ class ClientController extends Controller
         } else {
             abort(401);
         }
-    } //end to get expired certificates and certificates that expired within a month by env officer id
+    }
 
+    //end to get expired certificates and certificates that expired within a month by env officer id
 
-    public  function getExpiredCertificates() //to all get expired certificates and certificates that expired within a month by env officer id
-    {
+    public function getExpiredCertificates()
+    { //to all get expired certificates and certificates that expired within a month by env officer id
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
@@ -857,7 +861,7 @@ class ClientController extends Controller
         $date = $date->addDays(30);
 
         if ($pageAuth['is_read']) {
-            $responses =  Certificate::With('Client')->selectRaw('max(id) as id, client_id,expire_date')
+            $responses = Certificate::With('Client')->selectRaw('max(id) as id, client_id,expire_date')
                 ->where('expire_date', '<', $date)
                 ->groupBy('client_id')
                 ->get();

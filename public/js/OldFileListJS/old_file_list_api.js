@@ -8,6 +8,7 @@ function getAllOldFilesApi(callBack) {
                 tbl += '<tr>';
                 tbl += '<td>' + ++index + '</td>';
                 tbl += (row.industry_registration_no == null) ? '<td>-</td>' : '<td>' + row.industry_registration_no + '</td>';
+                tbl += '<td>' + row.file_no + '</td>';
                 tbl += '<td>' + row.industry_name + '</td>';
                 (row.epls.length == 0) ? tbl += '<td>-</td>' : tbl += '<td><i class="fa fa-check"></i></td>';
                 (row.old_files.length == 0) ? tbl += '<td>-</td>' : tbl += '<td><i class="fa fa-check"></i></td>';
