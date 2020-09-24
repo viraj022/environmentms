@@ -202,6 +202,7 @@
                                             <dt>Name : <a id="obj_name"></a></dt>
                                             <dt>BR No : <a id="obj_regno"></a></dt>
                                             <dt>Investment : Rs <a id="obj_invest"></a>.00</dt>
+                                            <dt>Industry Sub-Category :<a id="obj_industrySub"></a></dt>
                                             <hr>
                                             <dt>Download & Upload Application :</dt>
 

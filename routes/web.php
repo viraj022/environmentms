@@ -1,14 +1,14 @@
 <?php
 
 /*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
+  |--------------------------------------------------------------------------
+  | Web Routes
+  |--------------------------------------------------------------------------
+  |
+  | Here is where you can register web routes for your application. These
+  | routes are loaded by the RouteServiceProvider within a group which
+  | contains the "web" middleware group. Now create something great!
+  |
  */
 
 use Doctrine\DBAL\Schema\View;
@@ -57,12 +57,12 @@ Route::get('/ad_pending_list', 'AssistantDirectorController@adPendingIndex');
 Route::get('/certificate_perforation/id/{id}', 'ClientController@certificatePrefer');
 Route::get('/director_pending_list', 'AssistantDirectorController@directorPendingListIndex');
 Route::get('/site_clearance/client/{client}/profile/{profile}', 'SiteClearanceController@index');
+Route::get('/expired_certificates', 'ClientController@expireCertificatesUi');
 Route::get('/committee/id/{id}', 'WebRouteController@indexCommittee');
 Route::get('/committee_remarks/id/{id}', 'WebRouteController@indexCommitteeRemarks');
 //ui routs
-
 //dashboard
 Route::get('/dashboard', function () {
-    return view('welcome');
+  return view('welcome');
 });
 //dashboard

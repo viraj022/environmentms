@@ -124,6 +124,10 @@
                                     <select id="businesScale" class="form-control form-control-sm select2 select2-purple cutenzReq" style="width: 100%;"></select>
                                 </div>
                                 <div class="form-group">
+                                    <label>Industry Sub-Category</label>
+                                    <input id="industry_sub_cat" type="text" class="form-control form-control-sm " placeholder="Enter Text." value="">
+                                </div>
+                                <div class="form-group">
                                     <label>Business Registration Number</label>
                                     <input id="business_regno" type="text" class="form-control form-control-sm" placeholder="Enter Number" value="">
                                 </div>
