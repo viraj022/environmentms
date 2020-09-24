@@ -738,15 +738,6 @@
                                         loadAllSiteInspectionTable(PROFILE_ID);
                                         $('.setInspectUI').on('click', function () {
                                             checkInspectionStatus(PROFILE_ID, $(this).val(), function (rep) {
-<<<<<<< HEAD
-                                                show_mesege(rep);
-                                            });
-                                        });
-                                        $('.noNeedInspect').on('click', function () {
-                                            checkInspectionStatus(PROFILE_ID, $(this).val(), function (rep) {
-                                                show_mesege(rep);
-                                            });
-=======
                                                 getaProfilebyId(PROFILE_ID, function (parameters) {
                                                     setupInspectionUI(parameters.need_inspection);
                                                 });
@@ -762,7 +753,6 @@
                                                 show_mesege(rep);
                                             });
                                             $(this).addClass('d-none');
->>>>>>> 6ad179a83681fcccf78248139fbb9ee2a59b129b
                                         });
                                         //Sumbit Report
                                         $('.reportIssueView').on('click', function () { //<-- Get View to report file
