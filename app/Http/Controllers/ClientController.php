@@ -338,6 +338,7 @@ class ClientController extends Controller
 
     public function getAllFiles($id)
     {
+//        dd('ffff');
         $data = array();
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
@@ -356,6 +357,11 @@ class ClientController extends Controller
             abort(401);
         }
         return $data;
+    }
+    
+    public function certificatePath($id) {
+           $client = Client::findOrFail($id);
+         return  Certificate::where('client_id', $client->id)->orderBy('id', 'desc')->first();
     }
 
     public function workingFiles($id)
@@ -868,12 +874,9 @@ class ClientController extends Controller
             $reses = $responses->toArray();
 
             foreach ($reses as $k => $res) {
-
-
                 $origin = date_create(date("Y-m-d"));
                 $target = date_create(date($res['expire_date']));
                 $interval = date_diff($origin, $target);
-
 
                 if ($interval->format('%R%a days') > 0) {
                     $reses[$k]['due_date'] = $interval->format('Expire within %a days');

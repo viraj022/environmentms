@@ -205,20 +205,13 @@ function loadAllEPLTable(dataSet, callBack) {
         });
     }
     $("#clientEplList tbody").html(tbl);
-    if (
-            typeof callBack !== "undefined" &&
-            callBack != null &&
-            typeof callBack === "function"
-            ) {
+    if (typeof callBack !== "undefined" && callBack != null && typeof callBack === "function") {
         callBack(dataSet);
     }
 }
 
 function setupInspectionUI(need_inspection_status) {
-    if (
-            need_inspection_status === null ||
-            need_inspection_status === "Completed"
-            ) {
+    if (need_inspection_status === null) {
         $(".setupInspectStatus").html("NEW");
         $(".setInspectUI").removeClass("d-none");
         $(".noNeedInspect").removeClass("d-none");
@@ -263,13 +256,10 @@ function loadAllSiteInspectionTable(id) {
                 if (row.status == 0) {
                     tbl += "<td>Processing</td>";
                 } else {
-                    tbl += "<td>Completed (" + row.completed_at + ")</td>";
+                    tbl += "<td><i class='fa fa-check text-success'></i> Completed (" + row.completed_at + ")</td>";
                 }
                 tbl += "<td>" + row.schedule_date_only + "</td>";
-                tbl +=
-                        '<td><a type="button" href="/inspection/epl/remarks/id/' +
-                        row.id +
-                        '" class="btn btn-primary"> View </a></td>';
+                tbl += '<td><a type="button" href="/inspection/epl/remarks/id/' + row.id + '" class="btn btn-primary"> View </a></td>';
                 tbl += "</tr>";
             });
         }
@@ -280,7 +270,7 @@ function loadAllSiteInspectionTable(id) {
 //Check Inspection Need Or Not
 function checkInspectionStatus(id, btn_val, callBack) {
     if (isNaN(id)) {
-        id = 0;
+        return false;
     }
     ajaxRequest(
             "PATCH",
@@ -301,7 +291,7 @@ function checkInspectionStatus(id, btn_val, callBack) {
 //Report File Issue
 function reportFileIssueAPI(id, data, callBack) {
     if (isNaN(id)) {
-        id = 0;
+        return false;
     }
     ajaxRequest(
             "POST",
@@ -322,7 +312,7 @@ function reportFileIssueAPI(id, data, callBack) {
 //Remove Client File API
 function removeClientFileAPI(id, callBack) {
     if (isNaN(id)) {
-        id = 0;
+       return false;
     }
     ajaxRequest("DELETE", "/api/client/id/" + id, null, function (dataSet) {
         if (
@@ -338,7 +328,7 @@ function removeClientFileAPI(id, callBack) {
 //Remove EPL Payment API
 function removeEPLPaymentAPI(id, callBack) {
     if (isNaN(id)) {
-        id = 0;
+       return false;
     }
     ajaxRequest("DELETE", "/api/epl/regPayment/id/" + id, null, function (
             dataSet

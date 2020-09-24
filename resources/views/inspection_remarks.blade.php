@@ -190,6 +190,15 @@ $(function () {
         if (confirm('Are you sure you want to confirm this inspection?')) {
             completeInspectionAPI(ID, function (resp) {
                 show_mesege(resp);
+                loadInspectionStatusAPI(ID, function (resp) { //<-- Get Inspection Status
+                    if (resp.status === 0) {
+                        $('.inspectConfStatus').removeClass('d-none'); //<-- Show Complete Inspection Btn
+                        $('.disInspection').removeClass('overlay');
+                    } else {
+                        $('.inspectConfStatus').addClass('d-none'); //<-- Hide Complete Inspection Btn
+                        $('.compDoneUi').removeClass('d-none'); //<-- Show Completed UI
+                    }
+                });
             });
         } else {
             return false;

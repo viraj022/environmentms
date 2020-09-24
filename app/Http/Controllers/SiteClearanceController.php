@@ -210,7 +210,7 @@ class SiteClearanceController extends Controller
             }
             // change file status        
             setFileStatus($siteSessions->client_id, 'file_status', 0);  // set file status to zero 
-            setFileStatus($siteSessions->client_id, 'inspection', 'Pending');  //  set inspection pending status to 'pending'
+            setFileStatus($siteSessions->client_id, 'inspection', null);  //  set inspection pending status to 'null'
             setFileStatus($siteSessions->client_id, 'cer_type_status', 3);  // set inspection pending status to 3
             setFileStatus($siteSessions->client_id, 'cer_status', 0);  // set certificate status to 0
             setFileStatus($siteSessions->client_id, 'file_problem', 0); // set file problem status to 0
