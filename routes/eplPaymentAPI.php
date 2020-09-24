@@ -609,3 +609,20 @@ Route::middleware('auth:api')->post('/siteClearance/pay/id/{id}', 'EPLPaymentCon
   "code": 41
   }
  */
+Route::middleware('auth:api')->get('/processing_list', 'EPLPaymentController@getProcessingFeeList'); //get processing payment list
+/**
+ * {
+    "EIA": {
+        "id": 6,
+        "name": "EIA Processing fee",
+        "created_at": "2020-03-13 15:26:05",
+        "updated_at": "2020-03-13 15:26:05"
+    },
+    "IEE": {
+        "id": 7,
+        "name": "IEE Processing Fee",
+        "created_at": "2020-03-13 15:26:45",
+        "updated_at": "2020-03-13 15:26:45"
+    }
+}
+ */

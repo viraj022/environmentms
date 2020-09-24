@@ -238,6 +238,21 @@ class EPLPaymentController extends Controller
             return response("Fine Not Found in the db", 404);
         }
     }
+    public function getProcessingFeeList()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        $eia = PaymentType::getpaymentByTypeName(PaymentType::EIA);
+        $iee = PaymentType::getpaymentByTypeName(PaymentType::IEE);
+        if ($eia  && $iee) {
+
+            $eiaPayment = Payment::with('paymentRanges')->where('payment_type_id', $eia->id)->get();
+            $ieePayment = Payment::with('paymentRanges')->where('payment_type_id', $iee->id)->get();
+        } else {
+            return response("Fine Not Found in the db", 404);
+        }
+        return ["EIA" => $eia, "IEE" => $iee];
+    }
 
     public function payEPL($eplId)
     {
