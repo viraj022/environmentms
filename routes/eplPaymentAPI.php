@@ -484,25 +484,53 @@ Route::middleware('auth:api')->get('/siteClearance/pay/id/{id}', 'EPLPaymentCont
 /**
  * not payed structure
  * {
-    "inspection": {
-        "status": "not_payed"
-    },
-    "license_fee": {
-        "status": "not_payed"
-    },
-    "processing_fee": {
-        "processing_fee_type": "IEE",
-        "status": "not_payed"
-    }
+ "inspection": {
+   "status": "not_payed"
+  },
+  "license_fee": {
+    "status": "not_payed"
+  },
+  "processing_fee": {
+    "processing_fee_type": "IEE",
+    "status": "not_payed"
+  }
 } 
- 
+
  */
 /**
  *  payed structure
  * {
-    "inspection": {
-        "status": "not_payed",
-        "object": {
+ "inspection": {
+   "status": "not_payed",
+   "object": {
+     "id": 32,
+     "transaction_id": 45,
+     "qty": 1,
+     "amount": 450,
+     "payment_type_id": 8,
+     "payment_id": 74,
+     "created_at": "2020-06-29 15:51:17",
+     "updated_at": "2020-06-29 15:51:17",
+     "transaction_type": "EPL",
+     "client_id": 9,
+     "transaction": {
+       "id": 45,
+       "status": 0,
+       "created_at": "2020-06-29 15:51:17",
+       "updated_at": "2020-06-29 15:51:17",
+       "deleted_at": null,
+       "cashier_name": null,
+       "invoice_no": null,
+       "canceled_at": null,
+       "billed_at": null,
+       "type": "EPL",
+       "type_id": 9
+      }
+    }
+  },
+  "license_fee": {
+    "status": "not_payed",
+    "object": {
       "id": 32,
       "transaction_id": 45,
       "qty": 1,
@@ -527,10 +555,11 @@ Route::middleware('auth:api')->get('/siteClearance/pay/id/{id}', 'EPLPaymentCont
         "type_id": 9
       }
     }
-    },
-    "license_fee": {
-        "status": "not_payed",
-        "object": {
+  },
+  "processing_fee": {
+    "processing_fee_type": "IEE",
+    "status": "not_payed",
+    "object": {
       "id": 32,
       "transaction_id": 45,
       "qty": 1,
@@ -555,36 +584,28 @@ Route::middleware('auth:api')->get('/siteClearance/pay/id/{id}', 'EPLPaymentCont
         "type_id": 9
       }
     }
-    },
-    "processing_fee": {
-        "processing_fee_type": "IEE",
-        "status": "not_payed",
-        "object": {
-      "id": 32,
-      "transaction_id": 45,
-      "qty": 1,
-      "amount": 450,
-      "payment_type_id": 8,
-      "payment_id": 74,
-      "created_at": "2020-06-29 15:51:17",
-      "updated_at": "2020-06-29 15:51:17",
-      "transaction_type": "EPL",
-      "client_id": 9,
-      "transaction": {
-        "id": 45,
-        "status": 0,
-        "created_at": "2020-06-29 15:51:17",
-        "updated_at": "2020-06-29 15:51:17",
-        "deleted_at": null,
-        "cashier_name": null,
-        "invoice_no": null,
-        "canceled_at": null,
-        "billed_at": null,
-        "type": "EPL",
-        "type_id": 9
-      }
-    }
-    }
+  }
 } 
- 
+
+ */
+
+Route::middleware('auth:api')->post('/siteClearance/pay/id/{id}', 'EPLPaymentController@paySiteClearance'); //site clearance pay
+/*
+
+  {
+  "items": [
+  {
+  "id": "19",
+  "amount" : "450"
+  }
+  ]
+  }
+
+ */
+/*
+  {
+  "id": 1,
+  "message": "true",
+  "code": 41
+  }
  */

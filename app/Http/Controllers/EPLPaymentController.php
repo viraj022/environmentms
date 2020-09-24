@@ -293,7 +293,7 @@ class EPLPaymentController extends Controller
 
     public function paySiteClearance($id)
     {
-        return \DB::transaction(function () use ($eplId) {
+        return \DB::transaction(function () use ($id) {
             $site = SiteClearenceSession::find($id);
             if ($site) {
                 $transaction = new Transaction();
@@ -331,7 +331,7 @@ class EPLPaymentController extends Controller
                         }
                     }
                     if ($msg) {
-                        return array('id' => 1, 'message' => 'true', 'code' => $transaction->id, 'name' => $epl->client->first_name);
+                        return array('id' => 1, 'message' => 'true', 'code' => $transaction->id, 'name' => $site->client->first_name);
                     } else {
                         return array('id' => 0, 'message' => 'false');
                     }
