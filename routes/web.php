@@ -58,9 +58,11 @@ Route::get('/certificate_perforation/id/{id}', 'ClientController@certificatePref
 Route::get('/director_pending_list', 'AssistantDirectorController@directorPendingListIndex');
 Route::get('/site_clearance/client/{client}/profile/{profile}', 'SiteClearanceController@index');
 Route::get('/expired_certificates', 'ClientController@expireCertificatesUi');
+Route::get('/committee/id/{id}', 'WebRouteController@indexCommittee');
+Route::get('/committee_remarks/id/{id}', 'WebRouteController@indexCommitteeRemarks');
 //ui routs
 //dashboard
 Route::get('/dashboard', function () {
-    return view('welcome');
+  return view('welcome');
 });
 //dashboard

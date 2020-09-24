@@ -142,15 +142,15 @@
                                                         <!-- /.info-box-content -->
                                                     </div>
 
-<!--                                                    <div class="info-box mb-3 bg-info">
-                                                        <span class="info-box-icon">
-                                                            <button class="btn btn-lg btn-default" id="teli"><i class="fa fa-plus"></i></button></span>
-                                                        <div class="info-box-content">
-                                                            <span class="info-box-text">Create new telecommunication site clearance file</span>
-                                                            <span class="info-box-number">Telecommunication Site Clearance</span>
-                                                        </div>
-                                                         /.info-box-content 
-                                                    </div>-->
+                                                    <!--                                                    <div class="info-box mb-3 bg-info">
+                                                                                                            <span class="info-box-icon">
+                                                                                                                <button class="btn btn-lg btn-default" id="teli"><i class="fa fa-plus"></i></button></span>
+                                                                                                            <div class="info-box-content">
+                                                                                                                <span class="info-box-text">Create new telecommunication site clearance file</span>
+                                                                                                                <span class="info-box-number">Telecommunication Site Clearance</span>
+                                                                                                            </div>
+                                                                                                             /.info-box-content 
+                                                                                                        </div>-->
 
                                                     <div class="info-box mb-3 bg-info">
                                                         <span class="info-box-icon">
@@ -624,7 +624,13 @@
                                                 if (isNaN(parseInt(PROFILE_ID))) {
                                                     return false;
                                                 }
-                                                window.location = "/epl_register/id/" + PROFILE_ID;
+                                                window.location = "/epl_register/id/" + PROFILE_ID + "/type/epl";
+                                            });
+                                            $('#newSiteClear').click(function () {
+                                                if (isNaN(parseInt(PROFILE_ID))) {
+                                                    return false;
+                                                }
+                                                window.location = "/epl_register/id/" + PROFILE_ID + "/type/site_clearance";
                                             });
                                             //new
                                             $('#upld_roadMap, #upld_deed, #upld_SurveyPlan').click(function () {
@@ -732,6 +738,7 @@
                                         loadAllSiteInspectionTable(PROFILE_ID);
                                         $('.setInspectUI').on('click', function () {
                                             checkInspectionStatus(PROFILE_ID, $(this).val(), function (rep) {
+<<<<<<< HEAD
                                                 show_mesege(rep);
                                             });
                                         });
@@ -739,6 +746,23 @@
                                             checkInspectionStatus(PROFILE_ID, $(this).val(), function (rep) {
                                                 show_mesege(rep);
                                             });
+=======
+                                                getaProfilebyId(PROFILE_ID, function (parameters) {
+                                                    setupInspectionUI(parameters.need_inspection);
+                                                });
+                                                show_mesege(rep);
+                                            });
+                                            $(this).addClass('d-none');
+                                        });
+                                        $('.noNeedInspect').on('click', function () {
+                                            checkInspectionStatus(PROFILE_ID, $(this).val(), function (rep) {
+                                                getaProfilebyId(PROFILE_ID, function (parameters) {
+                                                    setupInspectionUI(parameters.need_inspection);
+                                                });
+                                                show_mesege(rep);
+                                            });
+                                            $(this).addClass('d-none');
+>>>>>>> 6ad179a83681fcccf78248139fbb9ee2a59b129b
                                         });
                                         //Sumbit Report
                                         $('.reportIssueView').on('click', function () { //<-- Get View to report file
