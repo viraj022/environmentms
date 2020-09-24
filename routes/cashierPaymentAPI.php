@@ -124,4 +124,44 @@ Route::middleware('auth:api')->post('/cancel/invoice_no/{invoice_no}', 'CashierC
 }
 */
 
+Route::middleware('auth:api')->get('/payment_types', 'CashierController@getPaymentTypes'); // get payment types for sync cashier local db
+/*
+[
+    {
+        "id": 3,
+        "name": "Application Fee",
+        "created_at": "2020-03-13 15:25:07",
+        "updated_at": "2020-03-13 15:25:07"
+    },
+    {
+        "id": 4,
+        "name": "Inspection Fee",
+        "created_at": "2020-03-13 15:25:29",
+        "updated_at": "2020-03-13 15:25:29"
+    }
+    ]
+*/
 
+Route::middleware('auth:api')->get('/payments', 'CashierController@getPayments'); // get payment types for sync cashier local db
+/*
+[
+    {
+        "id": 2,
+        "payment_type_id": 3,
+        "name": "Site Clearance Application Fee",
+        "type": "regular",
+        "amount": "100.00",
+        "created_at": "2020-03-13 15:37:15",
+        "updated_at": "2020-03-13 15:37:15"
+    },
+    {
+        "id": 3,
+        "payment_type_id": 3,
+        "name": "Telecommunication Tower Site Clearance Application Fee",
+        "type": "regular",
+        "amount": "100.00",
+        "created_at": "2020-03-13 15:38:20",
+        "updated_at": "2020-03-13 15:38:51"
+    }
+    ]
+*/
