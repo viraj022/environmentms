@@ -16,36 +16,36 @@ function productImagePath($image_name)
 function setFileStatus($fileId, $statusType, $statusCode, $statusValue = '')
 {
     $file = Client::findOrFail($fileId);
-    switch($statusType){
+    switch ($statusType) {
         case 'file_status':
             $file->file_status = $statusCode;
-        break;
+            break;
         case 'inspection':
             $file->need_inspection = $statusCode;
-        break;
+            break;
         case 'cer_type_status':
             $file->cer_type_status = $statusCode;
-        break;
+            break;
         case 'old_data':
             $file->is_old = $statusCode;
-        break;
+            break;
         case 'file_working':
             $file->file_approval_status = $statusCode;
-        break;
+            break;
         case 'cer_status':
             $file->cer_status = $statusCode;
-        break;
+            break;
         case 'file_problem':
             $file->file_problem_status = $statusCode;
             $file->file_problem_status_description = $statusValue;
-        break;
+            break;
         default:
-        abort('422','unknown status type');
+            abort('422', 'unknown status type');
     }
     return $file->save();
 }
 
- function fileLog($id, $code, $description,  $authlevel)
+function fileLog($id, $code, $description,  $authlevel)
 {
     $log = [];
     $log['client_id'] = $id;
@@ -55,5 +55,3 @@ function setFileStatus($fileId, $statusType, $statusCode, $statusValue = '')
     $log['user_id'] = auth()->check() ? auth()->user()->id : "N/A";
     FileLog::create($log);
 }
-
-

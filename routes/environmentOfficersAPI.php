@@ -84,7 +84,7 @@ Route::middleware('auth:api')->get('/epl/env_officer/{id}', 'EnvironmentOfficerC
 // ]
 Route::middleware('auth:api')->patch('/environment_officer/approve/{officer_id}/{file_id}', 'EnvironmentOfficerController@approveFile'); //   EO Approved file
 Route::middleware('auth:api')->patch('/assistant_director/approve/{adId}/{file_id}', 'AssistantDirectorController@approveFile'); //   AD Approved FILE
-Route::middleware('auth:api')->patch('/assistant_director/reject/{adId}/{file_id}', 'AssistantDirectorController@rejectFile'); //   AD Approved FILE
+Route::middleware('auth:api')->patch('/assistant_director/reject/{adId}/{file_id}', 'AssistantDirectorController@rejectFile'); //   AD Reject FILE
 Route::middleware('auth:api')->patch('/environment_officer/reject/{officer_id}/{file_id}', 'EnvironmentOfficerController@rejectFile'); //   EO rejectFile
 
 Route::middleware('auth:api')->patch('/environment_officer/approve_certificate/{officer_id}/{file_id}', 'EnvironmentOfficerController@approveCertificate'); //   EO Approved  certificate
@@ -99,24 +99,24 @@ Route::middleware('auth:api')->patch('/director/approve_certificate/{file_id}', 
 
 
 // {
-  //   "id": 1,
-  //   "message": "true"
-  // }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  // hansana
-  
-  Route::middleware('auth:api')->patch('/director/reject/{file_id}', 'AssistantDirectorController@directorRejectCertificate'); //   Director reject certificate
-  Route::middleware('auth:api')->patch('/director/hold/{file_id}', 'AssistantDirectorController@directorHoldCertificate'); //   Director hold certificate
+//   "id": 1,
+//   "message": "true"
+// }
+
+
+
+
+
+
+
+
+
+
+
+// hansana
+
+Route::middleware('auth:api')->patch('/director/reject/{file_id}', 'AssistantDirectorController@directorRejectCertificate'); //   Director reject certificate
+Route::middleware('auth:api')->patch('/director/hold/{file_id}', 'AssistantDirectorController@directorHoldCertificate'); //   Director hold certificate
 
 
 

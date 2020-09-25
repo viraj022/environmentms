@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Old File List</h1>
+                <h1>Old File  (<b class="oldFilesCount"></b>)</h1>
             </div>
         </div>
     </div>
@@ -40,6 +40,7 @@
                                     <tr>
                                         <th style="width: 10px">#</th>
                                         <th>BR</th>
+                                        <th>File No</th>
                                         <th>Industry Name</th>
                                         <th >EPL</th>
                                         <th >Old Files</th>
@@ -110,6 +111,8 @@
     $(function () {
 //Load table
         getAllOldFilesApi();
+        var colCount = $("#tblOldFiles tr th").length - 2;
+        $('.oldFilesCount').html(colCount);
 //click save button
         $('#btnSave').click(function () {
             var data = fromValues();

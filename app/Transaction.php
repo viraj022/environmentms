@@ -15,7 +15,8 @@ class Transaction extends Model
     public const APPLICATION_FEE = 'application_fee';
     public const TRANS_TYPE_EPL = "EPL";
     public const TRANS_TYPE_FINE = "EPL";
-    protected $appends = ['net_total','name'];
+    public const TRANS_SITE_CLEARANCE = "Site";
+    protected $appends = ['net_total', 'name'];
 
     public function getPaymentDetails()
     {
@@ -40,30 +41,31 @@ class Transaction extends Model
     {
         return $this->belongsTo(ApplicationCliten::class, 'type_id', 'id');
     }
+
+
     public function client()
     {
         return $this->belongsTo(Client::class);
     }
-    
-    public function getTotal(){
-       return TransactionItem:: 
-        where('transaction_id', '=', $this->id)
-        ->sum('amount');
-       
+
+    public function getTotal()
+    {
+        return TransactionItem::where('transaction_id', '=', $this->id)
+            ->sum('amount');
     }
 
-    public function getNetTotalAttribute(){
+    public function getNetTotalAttribute()
+    {
         //return strtotime($this->schedule_date)->toDateString();
-        return TransactionItem:: 
-        where('transaction_id', '=', $this->id)
-        ->sum('amount');
-        }
-    public function getNameAttribute(){
-        if($this->type == 'application_fee'){           
+        return TransactionItem::where('transaction_id', '=', $this->id)
+            ->sum('amount');
+    }
+    public function getNameAttribute()
+    {
+        if ($this->type == 'application_fee') {
             return ApplicationCliten::findOrFail($this->type_id)->name;
-        }else{
+        } else {
             return Client::findOrFail($this->client_id)->first_name;
-       }   
         }
-
+    }
 }

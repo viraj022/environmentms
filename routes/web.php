@@ -29,7 +29,7 @@ Route::get('/zone', 'ZoneController@index');
 Route::get('/assistant_director', 'AssistantDirectorController@index');
 Route::get('/environment_officer', 'EnvironmentOfficerController@index');
 Route::get('/attachment_map', 'ApplicationTypeController@index');
-Route::get('/epl_register/id/{id}', 'EPLController@index');
+Route::get('/epl_register/id/{id}/type/{type}', 'EPLController@index');
 Route::get('/epl_profile/client/{client}/profile/{profile}', 'EPLController@profile');
 Route::get('/epl_profile/atachments/{epl_id}', 'EPLController@attachment_upload_view');
 Route::get('/client_space', 'ClientController@index');
@@ -58,9 +58,11 @@ Route::get('/certificate_perforation/id/{id}', 'ClientController@certificatePref
 Route::get('/director_pending_list', 'AssistantDirectorController@directorPendingListIndex');
 Route::get('/site_clearance/client/{client}/profile/{profile}', 'SiteClearanceController@index');
 Route::get('/expired_certificates', 'ClientController@expireCertificatesUi');
+Route::get('/committee/id/{id}', 'WebRouteController@indexCommittee');
+Route::get('/committee_remarks/id/{id}', 'WebRouteController@indexCommitteeRemarks');
 //ui routs
 //dashboard
 Route::get('/dashboard', function () {
-    return view('welcome');
+  return view('welcome');
 });
 //dashboard

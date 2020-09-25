@@ -363,100 +363,100 @@ Route::middleware('auth:api')->post('/epl/pay/id/{id}', 'EPLPaymentController@pa
 Route::middleware('auth:api')->get('/epl/pay/id/{id}', 'EPLPaymentController@paymentList'); // get payment list
 
 /*
-  {
+{
   "inspection": {
-  "status": "payed",
-  "object": {
-  "id": 33,
-  "transaction_id": 46,
-  "qty": 1,
-  "amount": 450,
-  "payment_type_id": 4,
-  "payment_id": 19,
-  "created_at": "2020-06-29 15:59:44",
-  "updated_at": "2020-06-29 15:59:44",
-  "transaction_type": "EPL",
-  "client_id": 9,
-  "transaction": {
-  "id": 46,
-  "status": 0,
-  "created_at": "2020-06-29 15:59:44",
-  "updated_at": "2020-06-29 15:59:44",
-  "deleted_at": null,
-  "cashier_name": null,
-  "invoice_no": null,
-  "canceled_at": null,
-  "billed_at": null,
-  "type": "EPL",
-  "type_id": 9
-  }
-  }
+    "status": "payed",
+    "object": {
+      "id": 33,
+      "transaction_id": 46,
+      "qty": 1,
+      "amount": 450,
+      "payment_type_id": 4,
+      "payment_id": 19,
+      "created_at": "2020-06-29 15:59:44",
+      "updated_at": "2020-06-29 15:59:44",
+      "transaction_type": "EPL",
+      "client_id": 9,
+      "transaction": {
+        "id": 46,
+        "status": 0,
+        "created_at": "2020-06-29 15:59:44",
+        "updated_at": "2020-06-29 15:59:44",
+        "deleted_at": null,
+        "cashier_name": null,
+        "invoice_no": null,
+        "canceled_at": null,
+        "billed_at": null,
+        "type": "EPL",
+        "type_id": 9
+      }
+    }
   },
   "license_fee": {
-  "status": "payed",
-  "object": {
-  "id": 31,
-  "transaction_id": 44,
-  "qty": 1,
-  "amount": 450,
-  "payment_type_id": 5,
-  "payment_id": 6,
-  "created_at": "2020-06-29 11:03:47",
-  "updated_at": "2020-06-29 11:03:47",
-  "transaction_type": "EPL",
-  "client_id": 9,
-  "transaction": {
-  "id": 44,
-  "status": 0,
-  "created_at": "2020-06-29 11:03:47",
-  "updated_at": "2020-06-29 11:03:47",
-  "deleted_at": null,
-  "cashier_name": null,
-  "invoice_no": null,
-  "canceled_at": null,
-  "billed_at": null,
-  "type": "EPL",
-  "type_id": 9
-  }
-  }
+    "status": "payed",
+    "object": {
+      "id": 31,
+      "transaction_id": 44,
+      "qty": 1,
+      "amount": 450,
+      "payment_type_id": 5,
+      "payment_id": 6,
+      "created_at": "2020-06-29 11:03:47",
+      "updated_at": "2020-06-29 11:03:47",
+      "transaction_type": "EPL",
+      "client_id": 9,
+      "transaction": {
+        "id": 44,
+        "status": 0,
+        "created_at": "2020-06-29 11:03:47",
+        "updated_at": "2020-06-29 11:03:47",
+        "deleted_at": null,
+        "cashier_name": null,
+        "invoice_no": null,
+        "canceled_at": null,
+        "billed_at": null,
+        "type": "EPL",
+        "type_id": 9
+      }
+    }
   },
   "fine": {
-  "status": "payed", // not_payed // not_available
-  "object": {
-  "id": 32,
-  "transaction_id": 45,
-  "qty": 1,
-  "amount": 450,
-  "payment_type_id": 8,
-  "payment_id": 74,
-  "created_at": "2020-06-29 15:51:17",
-  "updated_at": "2020-06-29 15:51:17",
-  "transaction_type": "EPL",
-  "client_id": 9,
-  "transaction": {
-  "id": 45,
-  "status": 0,
-  "created_at": "2020-06-29 15:51:17",
-  "updated_at": "2020-06-29 15:51:17",
-  "deleted_at": null,
-  "cashier_name": null,
-  "invoice_no": null,
-  "canceled_at": null,
-  "billed_at": null,
-  "type": "EPL",
-  "type_id": 9
+    "status": "payed", // not_payed // not_available
+    "object": {
+      "id": 32,
+      "transaction_id": 45,
+      "qty": 1,
+      "amount": 450,
+      "payment_type_id": 8,
+      "payment_id": 74,
+      "created_at": "2020-06-29 15:51:17",
+      "updated_at": "2020-06-29 15:51:17",
+      "transaction_type": "EPL",
+      "client_id": 9,
+      "transaction": {
+        "id": 45,
+        "status": 0,
+        "created_at": "2020-06-29 15:51:17",
+        "updated_at": "2020-06-29 15:51:17",
+        "deleted_at": null,
+        "cashier_name": null,
+        "invoice_no": null,
+        "canceled_at": null,
+        "billed_at": null,
+        "type": "EPL",
+        "type_id": 9
+      }
+    }
   }
-  }
-  }
-  }
- */
+}
+*/
 
 Route::middleware('auth:api')->post('/get/epl/inspection/fine/id/{id}', 'EPLPaymentController@getInspectionFine'); // get inspection fine amount
 
 /*
 * input
 {
-    "inspection_fee" : 700000
+  "inspection_fee" : 700000
 }
 
 */
@@ -465,17 +465,164 @@ Route::middleware('auth:api')->post('/get/epl/inspection/fine/id/{id}', 'EPLPaym
 * output
 * case 1 // have a fine
 {
-    "id": 1,
-    "message": "fine",
-    "amount": 114500
+  "id": 1,
+  "message": "fine",
+  "amount": 114500
 }
 
 *case 2 no fine
 {
-    "id": 1,
-    "message": "no_fine",
-    "amount": "0"
+  "id": 1,
+  "message": "no_fine",
+  "amount": "0"
 }
 
 
 */
+Route::middleware('auth:api')->get('/siteClearance/pay/id/{id}', 'EPLPaymentController@SiteClearancePaymentList'); // get site clearance payment list
+
+/**
+ * not payed structure
+ * {
+ "inspection": {
+   "status": "not_payed"
+  },
+  "license_fee": {
+    "status": "not_payed"
+  },
+  "processing_fee": {
+    "processing_fee_type": "IEE",
+    "status": "not_payed"
+  }
+} 
+
+ */
+/**
+ *  payed structure
+ * {
+ "inspection": {
+   "status": "not_payed",
+   "object": {
+     "id": 32,
+     "transaction_id": 45,
+     "qty": 1,
+     "amount": 450,
+     "payment_type_id": 8,
+     "payment_id": 74,
+     "created_at": "2020-06-29 15:51:17",
+     "updated_at": "2020-06-29 15:51:17",
+     "transaction_type": "EPL",
+     "client_id": 9,
+     "transaction": {
+       "id": 45,
+       "status": 0,
+       "created_at": "2020-06-29 15:51:17",
+       "updated_at": "2020-06-29 15:51:17",
+       "deleted_at": null,
+       "cashier_name": null,
+       "invoice_no": null,
+       "canceled_at": null,
+       "billed_at": null,
+       "type": "EPL",
+       "type_id": 9
+      }
+    }
+  },
+  "license_fee": {
+    "status": "not_payed",
+    "object": {
+      "id": 32,
+      "transaction_id": 45,
+      "qty": 1,
+      "amount": 450,
+      "payment_type_id": 8,
+      "payment_id": 74,
+      "created_at": "2020-06-29 15:51:17",
+      "updated_at": "2020-06-29 15:51:17",
+      "transaction_type": "EPL",
+      "client_id": 9,
+      "transaction": {
+        "id": 45,
+        "status": 0,
+        "created_at": "2020-06-29 15:51:17",
+        "updated_at": "2020-06-29 15:51:17",
+        "deleted_at": null,
+        "cashier_name": null,
+        "invoice_no": null,
+        "canceled_at": null,
+        "billed_at": null,
+        "type": "EPL",
+        "type_id": 9
+      }
+    }
+  },
+  "processing_fee": {
+    "processing_fee_type": "IEE",
+    "status": "not_payed",
+    "object": {
+      "id": 32,
+      "transaction_id": 45,
+      "qty": 1,
+      "amount": 450,
+      "payment_type_id": 8,
+      "payment_id": 74,
+      "created_at": "2020-06-29 15:51:17",
+      "updated_at": "2020-06-29 15:51:17",
+      "transaction_type": "EPL",
+      "client_id": 9,
+      "transaction": {
+        "id": 45,
+        "status": 0,
+        "created_at": "2020-06-29 15:51:17",
+        "updated_at": "2020-06-29 15:51:17",
+        "deleted_at": null,
+        "cashier_name": null,
+        "invoice_no": null,
+        "canceled_at": null,
+        "billed_at": null,
+        "type": "EPL",
+        "type_id": 9
+      }
+    }
+  }
+} 
+
+ */
+
+Route::middleware('auth:api')->post('/siteClearance/pay/id/{id}', 'EPLPaymentController@paySiteClearance'); //site clearance pay
+/*
+
+  {
+  "items": [
+  {
+  "id": "19",
+  "amount" : "450"
+  }
+  ]
+  }
+
+ */
+/*
+  {
+  "id": 1,
+  "message": "true",
+  "code": 41
+  }
+ */
+Route::middleware('auth:api')->get('/processing_list', 'EPLPaymentController@getProcessingFeeList'); //get processing payment list
+/**
+ * {
+    "EIA": {
+        "id": 6,
+        "name": "EIA Processing fee",
+        "created_at": "2020-03-13 15:26:05",
+        "updated_at": "2020-03-13 15:26:05"
+    },
+    "IEE": {
+        "id": 7,
+        "name": "IEE Processing Fee",
+        "created_at": "2020-03-13 15:26:45",
+        "updated_at": "2020-03-13 15:26:45"
+    }
+}
+ */

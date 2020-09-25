@@ -152,7 +152,7 @@
                                                         <hr>
                                                         <a data-toggle="tooltip" data-placement="top" title="Click to view file" id="fileuploadedPath" href="" target="_blank">
                                                             <p>Drafted Certificate</p>
-                                                            <img class="rounded" alt="PDF" style="width: 50%; height: 80%;" src="/dist/img/pdf-view.png" data-holder-rendered="true">
+                                                            <img class="img-fluid rounded" alt="PDF" style="width: auto; height: auto;" src="/dist/img/pdf-view.png" data-holder-rendered="true">
                                                         </a>
                                                     </div>       
                                                 </div>   
@@ -161,7 +161,7 @@
                                                         <hr>
                                                         <a data-toggle="tooltip" data-placement="top" title="Click to view file" id="originalCertificatePath" href="" target="_blank">
                                                             <p>Original Certificate</p>
-                                                            <img class="rounded" alt="PDF" style="width: 50%; height: 80%;" src="/dist/img/pdf-view.png" data-holder-rendered="true">
+                                                            <img class="img-fluid rounded" alt="PDF" style="width: auto; height: auto;" src="/dist/img/pdf-view.png" data-holder-rendered="true">
                                                         </a>
                                                     </div>
                                                 </div>   
@@ -316,15 +316,17 @@
     });
 //Gen Certificate Number
     $('.genCertificateNum').click(function () {
-        genCertificateNumbyId(PROFILE_ID, function (resp) {
-            show_mesege(resp);
-            if (resp.id == 1) {
-                getCertificateDetails(PROFILE_ID, function (resp) {
-                    CERTIFICATE_ID = parseInt(resp.id);
-                    location.reload();
-                });
-            }
-        });
+        if (confirm('Are you sure you want to create certificate number?')) {
+            genCertificateNumbyId(PROFILE_ID, function (resp) {
+                show_mesege(resp);
+                if (resp.id == 1) {
+                    getCertificateDetails(PROFILE_ID, function (resp) {
+                        CERTIFICATE_ID = parseInt(resp.id);
+                        location.reload();
+                    });
+                }
+            });
+        }
     });
     $('.navToFile1').click(function () {
         $('#fileUpDiv').removeClass('d-none');
