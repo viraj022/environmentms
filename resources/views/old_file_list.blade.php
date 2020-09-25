@@ -110,9 +110,10 @@
 <script>
     $(function () {
 //Load table
-        getAllOldFilesApi();
-        var colCount = $("#tblOldFiles tr th").length - 2;
-        $('.oldFilesCount').html(colCount);
+        getAllOldFilesApi(function () {
+            var colCount = $("#tblOldFiles tr").length - 1;
+            $('.oldFilesCount').html(colCount);
+        });
 //click save button
         $('#btnSave').click(function () {
             var data = fromValues();
