@@ -41,6 +41,8 @@ class Transaction extends Model
     {
         return $this->belongsTo(ApplicationCliten::class, 'type_id', 'id');
     }
+
+
     public function client()
     {
         return $this->belongsTo(Client::class);
