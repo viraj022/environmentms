@@ -136,7 +136,7 @@ class ClientController extends Controller
             'industry_registration_no' => 'nullable|string',
             'is_old' => 'required|integer',
             'name_title' => 'required|string',
-            'industry_sub_category' => 'sometimes|required|string',
+            'industry_sub_category' => 'nullable|string',
             // 'password' => 'required',
         ]);
         if ($pageAuth['is_create']) {
@@ -238,7 +238,7 @@ class ClientController extends Controller
             'industry_start_date' => 'sometimes|required|date',
             'industry_registration_no' => 'nullable|string',
             'is_old' => 'sometimes|required|integer',
-            'industry_sub_category' => 'sometimes|required|string',
+            'industry_sub_category' => 'nullable|string',
             // 'password' => 'required',
         ]);
         if ($pageAuth['is_update']) {
