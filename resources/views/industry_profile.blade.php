@@ -123,9 +123,18 @@
                                                         <!-- /.info-box-content -->
                                                     </div>
 
-                                                    <div class="info-box mb-3 bg-info">
+                                                    <div class="info-box mb-3 bg-success setSiteClear d-none">
                                                         <span class="info-box-icon">
                                                             <a class="btn btn-lg btn-default" id="setSiteClear"><i class="fa fa-plus"></i></a></span>
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text">View site clearance file</span>
+                                                            <span class="info-box-number" id="">View</span>
+                                                        </div>
+                                                        <!-- /.info-box-content -->
+                                                    </div>
+                                                    <div class="info-box mb-3 bg-info newSiteClear d-none">
+                                                        <span class="info-box-icon">
+                                                            <button class="btn btn-lg btn-default" id="newSiteClear"><i class="fa fa-plus"></i></button></span>
                                                         <div class="info-box-content">
                                                             <span class="info-box-text">Create new site clearance file</span>
                                                             <span class="info-box-number" id="">New Site Clearance</span>
@@ -133,15 +142,15 @@
                                                         <!-- /.info-box-content -->
                                                     </div>
 
-                                                    <div class="info-box mb-3 bg-info">
-                                                        <span class="info-box-icon">
-                                                            <button class="btn btn-lg btn-default" id="teli"><i class="fa fa-plus"></i></button></span>
-                                                        <div class="info-box-content">
-                                                            <span class="info-box-text">Create new telecommunication site clearance file</span>
-                                                            <span class="info-box-number">Telecommunication Site Clearance</span>
-                                                        </div>
-                                                        <!-- /.info-box-content -->
-                                                    </div>
+                                                    <!--                                                    <div class="info-box mb-3 bg-info">
+                                                                                                            <span class="info-box-icon">
+                                                                                                                <button class="btn btn-lg btn-default" id="teli"><i class="fa fa-plus"></i></button></span>
+                                                                                                            <div class="info-box-content">
+                                                                                                                <span class="info-box-text">Create new telecommunication site clearance file</span>
+                                                                                                                <span class="info-box-number">Telecommunication Site Clearance</span>
+                                                                                                            </div>
+                                                                                                             /.info-box-content 
+                                                                                                        </div>-->
 
                                                     <div class="info-box mb-3 bg-info">
                                                         <span class="info-box-icon">
@@ -615,7 +624,13 @@
                                                 if (isNaN(parseInt(PROFILE_ID))) {
                                                     return false;
                                                 }
-                                                window.location = "/epl_register/id/" + PROFILE_ID;
+                                                window.location = "/epl_register/id/" + PROFILE_ID + "/type/epl";
+                                            });
+                                            $('#newSiteClear').click(function () {
+                                                if (isNaN(parseInt(PROFILE_ID))) {
+                                                    return false;
+                                                }
+                                                window.location = "/epl_register/id/" + PROFILE_ID + "/type/site_clearance";
                                             });
                                             //new
                                             $('#upld_roadMap, #upld_deed, #upld_SurveyPlan').click(function () {
@@ -723,13 +738,21 @@
                                         loadAllSiteInspectionTable(PROFILE_ID);
                                         $('.setInspectUI').on('click', function () {
                                             checkInspectionStatus(PROFILE_ID, $(this).val(), function (rep) {
+                                                getaProfilebyId(PROFILE_ID, function (parameters) {
+                                                    setupInspectionUI(parameters.need_inspection);
+                                                });
                                                 show_mesege(rep);
                                             });
+                                            $(this).addClass('d-none');
                                         });
                                         $('.noNeedInspect').on('click', function () {
                                             checkInspectionStatus(PROFILE_ID, $(this).val(), function (rep) {
+                                                getaProfilebyId(PROFILE_ID, function (parameters) {
+                                                    setupInspectionUI(parameters.need_inspection);
+                                                });
                                                 show_mesege(rep);
                                             });
+                                            $(this).addClass('d-none');
                                         });
                                         //Sumbit Report
                                         $('.reportIssueView').on('click', function () { //<-- Get View to report file

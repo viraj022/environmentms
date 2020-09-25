@@ -11,6 +11,8 @@ use App\TransactionItem;
 use App\Rules\nationalID;
 use Illuminate\Http\Request;
 use PhpParser\Node\Expr\Cast\Array_;
+use App\PaymentType;
+use App\Payment;
 
 class CashierController extends Controller
 {
@@ -72,8 +74,19 @@ class CashierController extends Controller
 
     public function getPendingPaymentByFileID($id)
     {
-
-
         return Transaction::with('transactionItems')->with('client')->where('client_id', $id)->get();
+    }
+
+
+    public function getPaymentTypes()
+    {
+        $paymentType = PaymentType::get();
+        return $paymentType;
+    }
+
+    public function getPayments()
+    {
+        $payment = Payment::get();
+        return $payment;
     }
 }

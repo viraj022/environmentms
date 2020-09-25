@@ -70,7 +70,7 @@
                                         <th style="width: 10px">#</th>
                                         <th>Industry Name</th>
                                         <th>File No</th>
-                                        <th>Date</th>
+                                        <th>#</th>
                                         <th>Status</th>
                                         <!--<th class="inspectTbl" style="width: 180px">Inspection</th>-->
                                         <th class="" style="width: 180px">Action</th>
@@ -178,7 +178,6 @@
             options.append($("<option>").val(key).text(val));
         });
     }
-
     $(function () {
         //Load AssDir Combo
         loadAssDirCombo(function () {
@@ -201,11 +200,14 @@
 
 
     $(document).ready(function () {
-        $(document).on('click', '.setInspeBtn', function () {
+        $(document).on('click', '#setInspectionVal2', function () {
             $('#setInspectionVal').val($(this).val());
         });
         $('#setInspectionVal').on('click', function () {
-            checkInspectionStatus($('#setInspectionVal').val(), $('#getInspection').val(), function (rep) {
+            var fileData = JSON.parse(unescape($(this).val()));
+            let f_id = fileData.id;
+
+            checkInspectionStatus(f_id, $('#getInspection').val(), function (rep) {
                 show_mesege(rep);
                 $('#modal-xl').modal('hide');
                 checkFileType();
@@ -223,6 +225,8 @@
         $('#needApproval').val($(this).val()); //<-- Share this button value to this button
         $('#submitAdCerApproval').val($(this).val()); //<-- Share this button value to submitAdCerApproval button
         $('#rejectAdCerApproval').val($(this).val()); //<-- Share this button value to submitAdCerApproval button
+        $('#setInspectionVal2').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
+        $('#viewCertificateBtn').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
         $('#modalTitlex2').html(fileData.file_no);
 
         $('#needApproval,#submitAdCerApproval,#rejectAdCerApproval,#setInspectionVal2,#viewCertificateBtn').addClass('d-none');
@@ -241,6 +245,8 @@
                 $('#rejectAdCerApproval').removeClass('d-none');
                 $('#viewCertificateBtn').removeClass('d-none');
             }
+        } else if (f_Status == -1) {
+            $('#needApproval').removeClass('d-none');
         } else {
             $('#setInspectionVal2').addClass('d-none');
         }
@@ -282,6 +288,13 @@
                 }
             });
         }
+    });
+    //View certificate btn click
+    $(document).on('click', '#viewCertificateBtn', function () {
+        var fileData = JSON.parse(unescape($(this).val()));
+        loadCertificatePathsApi(parseInt(fileData.id), function (set) {
+            window.open(set.certificate_path, '_blank');
+        });
     });
     $(document).on('click', '#setInspectionVal2', function () {
         $('#modal-x2').modal('hide');

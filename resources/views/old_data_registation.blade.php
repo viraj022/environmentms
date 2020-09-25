@@ -67,7 +67,6 @@
                                     <option value="01">EPL</option>
                                     <option value="02">Site Clearance</option>
                                     <option value="03">Telecommunication</option>
-                                    <option value="04">Schedule Waste</option>
                                 </select>
                             </div>
                         </div>
