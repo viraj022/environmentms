@@ -23,10 +23,20 @@ class CashierController extends Controller
 
     public function getDetailsByCode($id)
     {
-        $transaction = Transaction::with('applicationClient')
-            ->with('transactionItems.payment')
+        $transaction = Transaction::with('transactionItems.payment')
             ->where('id', $id)
             ->first();
+        if (Transaction::APPLICATION_FEE == $transaction->type) {
+            $transaction = Transaction::with('transactionItems.payment')->with('applicationClient')
+                ->where('id', $id)
+                ->first();
+        } else {
+            $transaction->application_Client = $transaction->client;
+            $transaction->application_Client->name = $transaction->client->first_name;
+            // dd($transaction->client);
+        }
+
+
         if ($transaction) {
             return $transaction;
         } else {
