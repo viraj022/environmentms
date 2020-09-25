@@ -129,6 +129,7 @@
             $('#prepareCertificate').val($(this).val()); //<-- Share this button value to this button
             $('#approveCertificate').val($(this).val()); //<-- Share this button value to this button
             $('#rejectCertificate').val($(this).val()); //<-- Share this button value to this button
+            $('#rejectFile').val($(this).val()); //<-- Share this button value to this button
             $('#prepareCertificate,#rejectFile,#approveCertificate,#rejectCertificate').addClass('d-none');
             if (f_Status == 1) {
                 $('#prepareCertificate').removeClass('d-none');
@@ -169,6 +170,18 @@
             var fileData = JSON.parse(unescape($(this).val()));
             if (confirm('Are you sure you want to approve?')) {
                 certificateRejectApi(fileData.id, $('#getAssistantDirector').val(), function (resp) {
+                    show_mesege(resp);
+                    if (resp.id == 1) {
+                        loadAdPendingListTable($('#getAssistantDirector').val());
+                        $('#modal-x2').modal('hide');
+                    }
+                });
+            }
+        });
+        $(document).on('click', '#rejectFile', function () { // reject file btn
+            var fileData = JSON.parse(unescape($(this).val()));
+            if (confirm('Are you sure you want to approve?')) {
+                fileRejectApi(fileData.id, $('#getAssistantDirector').val(), function (resp) {
                     show_mesege(resp);
                     if (resp.id == 1) {
                         loadAdPendingListTable($('#getAssistantDirector').val());

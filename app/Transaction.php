@@ -15,6 +15,7 @@ class Transaction extends Model
     public const APPLICATION_FEE = 'application_fee';
     public const TRANS_TYPE_EPL = "EPL";
     public const TRANS_TYPE_FINE = "EPL";
+    public const TRANS_SITE_CLEARANCE = "Site";
     protected $appends = ['net_total', 'name'];
 
     public function getPaymentDetails()

@@ -86,3 +86,15 @@ function certificateRejectApi(file_id, assDir_id, callBack) {
         }
     });
 }
+
+function fileRejectApi(file_id, assDir_id, callBack) {
+    if (file_id.length == 0) {
+        return false;
+    }
+    var url = "/api/assistant_director/reject/" + assDir_id + "/" + file_id;
+    ajaxRequest('PATCH', url, null, function (result) {
+        if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
+            callBack(result);
+        }
+    });
+}
