@@ -17,11 +17,12 @@ class CreateMinutesTable extends Migration
             $table->bigIncrements('id');
             $table->string('file_type');
             $table->bigInteger('file_type_id')->unsigned();
-            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned()->nullable();
             $table->text('minute_description');
             $table->string('situation');
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
         });
     }
 
