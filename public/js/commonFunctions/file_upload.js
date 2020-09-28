@@ -70,8 +70,8 @@ function ulploadFile2(URL, formData, callBack, metod = false) {
 }
 
 $("input[type='file']").on("change", function () {
-    if (this.files[0].size > 8000000) {
-        alert("Please upload file less than 8MB.");
+    if (this.files[0].size > 30000000) {
+        alert("Please upload file less than 20MB.");
         $(this).val('');
     }
 });
