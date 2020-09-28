@@ -162,4 +162,8 @@ class EPL extends Model
         //return strtotime($this->schedule_date)->toDateString();
         return Carbon::parse($this->submitted_date)->format('Y-m-d');
     }
+    public function minutes()
+    {
+        return $this->hasMany(Minute::class);
+    }
 }
