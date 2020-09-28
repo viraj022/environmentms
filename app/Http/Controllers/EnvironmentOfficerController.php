@@ -6,15 +6,16 @@ use App\EPL;
 use App\User;
 use App\Level;
 use App\Client;
+use App\Minute;
 use Carbon\Carbon;
 use App\FileHandlerLog;
 use App\AssistantDirector;
 use App\EnvironmentOfficer;
 use App\Helpers\LogActivity;
-use App\Minute;
-use App\Repositories\MinutesRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Repositories\MinutesRepository;
 use Illuminate\Cache\Console\ClearCommand;
 
 class EnvironmentOfficerController extends Controller
@@ -369,25 +370,27 @@ class EnvironmentOfficerController extends Controller
     }
     public function approveFile(Request $request, MinutesRepository $minutesRepository, $officerId, $file_id)
     {
-        dd();
-        request()->validate([
-            'minutes' => 'sometimes|required|string',
-        ]);
-        $data = array();
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        $file = Client::findOrFail($file_id);
-        $officer = EnvironmentOfficer::with('user')->findOrFail($officerId);
+        return   DB::transaction(function () use ($request, $minutesRepository, $officerId, $file_id) {
+            request()->validate([
+                'minutes' => 'sometimes|required|string',
+            ]);
+            $data = array();
+            $user = Auth::user();
+            $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+            $file = Client::findOrFail($file_id);
+            $officer = EnvironmentOfficer::with('user')->findOrFail($officerId);
 
-        $msg = setFileStatus($file_id, 'file_status', 1);
-        fileLog($file->id, 'FileStatus', 'Environment Officer (' . $officer->user->user_name . ') Approve the file and forward to the AD', 0);
-
-        $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ENV_APPROVE, $user->id));
-        if ($msg) {
-            return array('id' => 1, 'message' => 'true');
-        } else {
-            return array('id' => 0, 'message' => 'false');
-        }
+            $msg = setFileStatus($file_id, 'file_status', 1);
+            fileLog($file->id, 'FileStatus', 'Environment Officer (' . $officer->user->user_name . ') Approve the file and forward to the AD', 0);
+            if ($request->has('minutes')) {
+                $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ENV_APPROVE_FILE, $user->id));
+            }
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        });
     }
 
 

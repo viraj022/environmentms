@@ -57,21 +57,24 @@ function fileLog($id, $code, $description,  $authlevel)
     FileLog::create($log);
 }
 
-function prepareMinutesArray($file,$description,$situation,$user_id){
-    dd($file);
-    if($file->file_status == 1 || $file->file_status == 2){
-    $type = Minute::EPL;    
-    $type_id = $file->epls->last()->id;
-    }
-    else if($file->file_status == 3 || $file->file_status == 4){
-        $type = Minute::SITE_CLEARANCE;    
+function prepareMinutesArray($file, $description, $situation, $user_id)
+{
+    // dd($file);
+    if ($file->file_status == 1 || $file->file_status == 2) {
+        $type = Minute::EPL;
         $type_id = $file->epls->last()->id;
+    } else if ($file->file_status == 3 || $file->file_status == 4) {
+        $type = Minute::SITE_CLEARANCE;
+        $type_id = $file->epls->last()->id;
+    } else {
+        abort(501, "hcw error code");
     }
     return [
-        "file_id" => $file->id, 
-        "minute_description" => $description->minutes, 
-        "situation" => Minute::DESCRIPTION_ENV_APPROVE,
-        "file_type" => $user_id,
-        "file_type_id" => $type_id 
-    ]
+        "file_id" => $file->id,
+        "minute_description" => $description,
+        "situation" => $situation,
+        "file_type" => $type,
+        "file_type_id" => $type_id,
+        "user_id" => $user_id
+    ];
 }
