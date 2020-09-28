@@ -8,3 +8,9 @@ Route::middleware('auth:api')->patch('/site_clearance/processing_status/{siteCle
   "status": "1"   //0 => pending 1 =>  site clearance , 2 => eia 3 => ieea
     }
  */
+
+
+/**
+ * APis for manipulating  minutes records 
+ */
+Route::apiResource('/file_minutes', 'MinuteController');
