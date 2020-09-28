@@ -24,9 +24,8 @@ class MinutesRepository
         return Minute::get();
     }
 
-    public function create($request)
+    public function save($requestData)
     {
-        $requestData = $request->all();
         $minutes  = Minute::create($requestData);
         return  $minutes  == true;
     }

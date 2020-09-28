@@ -13,7 +13,13 @@ class SiteClearenceSession extends Model
         return $this->hasMany(SiteClearance::class);
     }
 
-    public function client(){
+    public function client()
+    {
         return $this->belongsTo(Client::class);
+    }
+
+    public function minutes()
+    {
+        return $this->hasMany(Minute::class);
     }
 }
