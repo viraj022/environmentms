@@ -130,6 +130,10 @@
                     <div class="btn btn-group-lg">
                         <button type="button" id="viewCertificateBtn" class="btn btn-info d-none"><i class="fa fa-file"></i> View Certificate</button>
                     </div>
+                    <div class="form-group">
+                        <label>Minutes</label>
+                        <input id="getMinutes" maxlength="55" type="text" class="form-control form-control-sm" placeholder="Enter Minutes..." value="">
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

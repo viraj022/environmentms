@@ -72,6 +72,10 @@
                     <button type="button" id="approveCertificate" class="btn btn-primary d-none"><i class="fa fa-check"></i> Approve Certificate</button>
                     <button type="button" id="rejectCertificate" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject Certificate</button>
                     <button type="button" id="rejectFile" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject File</button>
+                    <div class="form-group">
+                        <label>Minutes</label>
+                        <input id="getMinutes" maxlength="55" type="text" class="form-control form-control-sm" placeholder="Enter Minutes..." value="">
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
