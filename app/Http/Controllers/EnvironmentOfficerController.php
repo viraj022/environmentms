@@ -11,6 +11,8 @@ use App\FileHandlerLog;
 use App\AssistantDirector;
 use App\EnvironmentOfficer;
 use App\Helpers\LogActivity;
+use App\Minute;
+use App\Repositories\MinutesRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Cache\Console\ClearCommand;
@@ -70,10 +72,10 @@ class EnvironmentOfficerController extends Controller
                     $environmentOfficer->active_status = '1';
                     $msg = $environmentOfficer->save();
                     if ($msg) {
-                        LogActivity::addToLog('Create a new Environment Officer',$environmentOfficer);
+                        LogActivity::addToLog('Create a new Environment Officer', $environmentOfficer);
                         return array('id' => 1, 'message' => 'true');
                     } else {
-                        LogActivity::addToLog('Fail to create a new Environment Officer',$environmentOfficer);
+                        LogActivity::addToLog('Fail to create a new Environment Officer', $environmentOfficer);
                         return array('id' => 0, 'message' => 'false');
                     }
                 } else {
@@ -216,14 +218,14 @@ class EnvironmentOfficerController extends Controller
             $environmentOfficer->active_status = 0;
             $msg = $environmentOfficer->save();
             if ($msg) {
-                LogActivity::addToLog('Environment Officer deleted',$environmentOfficer); 
+                LogActivity::addToLog('Environment Officer deleted', $environmentOfficer);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to create Environment Officer',$environmentOfficer);
+                LogActivity::addToLog('Fail to create Environment Officer', $environmentOfficer);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
-            LogActivity::addToLog('Fail to create Environment Officer',$environmentOfficer);
+            LogActivity::addToLog('Fail to create Environment Officer', $environmentOfficer);
             abort(401);
         }
     }
@@ -272,10 +274,10 @@ class EnvironmentOfficerController extends Controller
                 $msg = $msg && $officeLog->save();
                 if ($msg) {
                     LogActivity::fileLog($client->id, 'FileAssign', "Assigned to Environment Officer", 1);
-                     LogActivity::addToLog('EPL assigned to Environment Officer  ',$environmentOfficer);
+                    LogActivity::addToLog('EPL assigned to Environment Officer  ', $environmentOfficer);
                     return array('id' => 1, 'message' => 'true');
                 } else {
-                     LogActivity::addToLog('Fail to assign EPL to Environment Officer  ',$environmentOfficer);
+                    LogActivity::addToLog('Fail to assign EPL to Environment Officer  ', $environmentOfficer);
                     return array('id' => 0, 'message' => 'false');
                 }
             } else {
@@ -297,10 +299,10 @@ class EnvironmentOfficerController extends Controller
                 $msg = $epl->save();
                 if ($msg) {
                     LogActivity::fileLog($epl->id, 'FileAssignEPL', "Environment Officer Removed from EPL", 1);
-                    LogActivity::addToLog('Environment Officer Removed from EPL',$epl);
+                    LogActivity::addToLog('Environment Officer Removed from EPL', $epl);
                     return array('id' => 1, 'message' => 'true');
                 } else {
-                    LogActivity::addToLog('Fail to remove Environment Officer from EPL',$epl);
+                    LogActivity::addToLog('Fail to remove Environment Officer from EPL', $epl);
                     return array('id' => 0, 'message' => 'false');
                 }
             } else {
@@ -365,8 +367,12 @@ class EnvironmentOfficerController extends Controller
         }
         return $data;
     }
-    public function approveFile($officerId, $file_id)
+    public function approveFile(Request $request, MinutesRepository $minutesRepository, $officerId, $file_id)
     {
+        dd();
+        request()->validate([
+            'minutes' => 'sometimes|required|string',
+        ]);
         $data = array();
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
@@ -375,6 +381,8 @@ class EnvironmentOfficerController extends Controller
 
         $msg = setFileStatus($file_id, 'file_status', 1);
         fileLog($file->id, 'FileStatus', 'Environment Officer (' . $officer->user->user_name . ') Approve the file and forward to the AD', 0);
+
+        $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ENV_APPROVE, $user->id));
         if ($msg) {
             return array('id' => 1, 'message' => 'true');
         } else {

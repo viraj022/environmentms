@@ -1,6 +1,7 @@
 <?php
 
 use App\Client;
+use App\Minute;
 use App\FileLog;
 
 function changeDateFormate()
@@ -54,4 +55,23 @@ function fileLog($id, $code, $description,  $authlevel)
     $log['auth_level'] = $authlevel;
     $log['user_id'] = auth()->check() ? auth()->user()->id : "N/A";
     FileLog::create($log);
+}
+
+function prepareMinutesArray($file,$description,$situation,$user_id){
+    dd($file);
+    if($file->file_status == 1 || $file->file_status == 2){
+    $type = Minute::EPL;    
+    $type_id = $file->epls->last()->id;
+    }
+    else if($file->file_status == 3 || $file->file_status == 4){
+        $type = Minute::SITE_CLEARANCE;    
+        $type_id = $file->epls->last()->id;
+    }
+    return [
+        "file_id" => $file->id, 
+        "minute_description" => $description->minutes, 
+        "situation" => Minute::DESCRIPTION_ENV_APPROVE,
+        "file_type" => $user_id,
+        "file_type_id" => $type_id 
+    ]
 }
