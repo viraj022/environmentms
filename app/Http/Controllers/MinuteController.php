@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use App\Minute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Repositories\MinutesRepository;
+use App\Repositories\CommitteeRepository;
 
 class MinuteController extends Controller
 {
-    public function __construct()
+    private  $minutesRepository;
+
+    public function __construct(MinutesRepository $minutesRepository)
     {
-        $this->middleware('auth:api');
+        $this->middleware(['auth:api']);
+        $this->minutesRepository = $minutesRepository;
     }
     /**
      * Display a listing of the resource.
@@ -19,6 +24,7 @@ class MinuteController extends Controller
      */
     public function index()
     {
+        return $this->minutesRepository->all();
         return array(
             array(
                 "type" => "EPL",

@@ -2,7 +2,10 @@
 
 namespace App\Repositories;
 
+use App\EPL;
+use App\Client;
 use App\Minute;
+use App\SiteClearance;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 /*
@@ -21,7 +24,30 @@ class MinutesRepository
 
     public function all()
     {
-        return Minute::get();
+        // $file =   Client::FindOrfail($file_id);
+        $minutes = Minute::get();
+        $minutes =  $minutes->groupBy('file_type');
+        // dd($minutes->toArray());
+        $array = [];
+        foreach ($minutes as $key => $value) {
+            if ($key == Minute::EPL) {
+                $grp =  $value->groupBy('file_type_id');
+                // dd($grp->toArray());
+                foreach ($grp as $keyEPl => $valueEPL) {
+                    EPL::findOrFail($keyEPl);
+                    array_push($array, array("type" => "EPL", "Date" => '2020-01', 'minute_object' => $valueEPL->toArray()));
+                }
+            } else if ($key == Minute::SITE_CLEARANCE) {
+                $grp =  $value->groupBy('file_type_id');
+                // dd($grp->toArray());
+                foreach ($grp as $keySITE => $valueSITE) {
+                    // dd($keySITE);
+                    SiteClearance::findOrFail($keySITE);
+                    array_push($array, array("type" => "Site Clearance", "Date" => '2020-01', 'minute_object' => $valueSITE->toArray()));
+                }
+            }
+        }
+        return $array;
     }
 
     public function save($requestData)
