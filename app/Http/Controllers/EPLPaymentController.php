@@ -81,6 +81,7 @@ class EPLPaymentController extends Controller
                             $transactionItem->transaction_type = Transaction::APPLICATION_FEE;
                             $transactionItem->client_id = $client->id;
                             $transactionItem->amount = $payment->amount;
+                            $transactionItem->transaction_type_id = $client->id;
                             $transactionItem->qty = $item['qty'];
                             $msg = $msg && $transactionItem->save();
                         } else {
@@ -280,6 +281,7 @@ class EPLPaymentController extends Controller
                             $transactionItem->client_id = $epl->client_id;
                             $transactionItem->qty = 1;
                             $transactionItem->transaction_type = Transaction::TRANS_TYPE_EPL;
+                            $transactionItem->transaction_type_id = $epl->id;
                             $transactionItem->amount = $item['amount'];
                             $msg = $msg && $transactionItem->save();
                         } else {
@@ -322,6 +324,7 @@ class EPLPaymentController extends Controller
                             $transactionItem->client_id = $site->id;
                             $transactionItem->qty = 1;
                             $transactionItem->transaction_type = Transaction::TRANS_TYPE_EPL;
+                            $transactionItem->transaction_type_id = $site->id;
                             $transactionItem->amount = $item['amount'];
                             $msg = $msg && $transactionItem->save();
                         } else {
@@ -350,20 +353,20 @@ class EPLPaymentController extends Controller
             $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
             // dd($inspectionTypes);
             $inspection = TransactionItem::with('transaction')->where('transaction_type', Transaction::TRANS_TYPE_EPL)
-                ->where('client_id', $id)
+                ->where('transaction_type_id', $id)
                 ->where('payment_type_id', $inspectionTypes->id)
                 ->first();
 
             $license_fee = PaymentType::getpaymentByTypeName(PaymentType::LICENCE_FEE);
             $certificate_fee = TransactionItem::with('transaction')
                 ->where('transaction_type', Transaction::TRANS_TYPE_EPL)
-                ->where('client_id', $id)
+                ->where('transaction_type_id', $id)
                 ->where('payment_type_id', $license_fee->id)
                 ->first();
             $fintType = PaymentType::getpaymentByTypeName(PaymentType::FINE);
             $fine = TransactionItem::with('transaction')
                 ->where('transaction_type', Transaction::TRANS_TYPE_EPL)
-                ->where('client_id', $id)
+                ->where('transaction_type_id', $id)
                 ->where('payment_type_id', $fintType->id)
                 ->first();
             $rtn = array();
@@ -412,7 +415,7 @@ class EPLPaymentController extends Controller
             $license_fee = PaymentType::getpaymentByTypeName(PaymentType::LICENCE_FEE);
             $certificate_fee = TransactionItem::with('transaction')
                 ->where('transaction_type', Transaction::TRANS_TYPE_EPL)
-                ->where('client_id', $id)
+                ->where('transaction_type_id', $id)
                 ->where('payment_type_id', $license_fee->id)
                 ->first();
             $rtn = array();
@@ -421,14 +424,14 @@ class EPLPaymentController extends Controller
                 // EIA payment
                 $processingFee = TransactionItem::with('transaction')
                     ->where('transaction_type', SiteClearance::EIA_POSS_FEE)
-                    ->where('client_id', $id)
+                    ->where('transaction_type_id', $id)
                     ->where('payment_type_id', $license_fee->id)
                     ->first();
             } else if ($site->processing_status == 3) {
                 //IEE payment
                 $processingFee = TransactionItem::with('transaction')
                     ->where('transaction_type', SiteClearance::IEE_POSS_FEE)
-                    ->where('client_id', $id)
+                    ->where('transaction_type_id', $id)
                     ->where('payment_type_id', $license_fee->id)
                     ->first();
             } else {
