@@ -60,12 +60,16 @@
                 </div>
                 <div class="modal-body">
                     <!--<button type="button" id="prepareCertificate" class="btn btn-primary d-none"><i class="fa fa-check"></i> Approve Certificate</button>-->
-                    <a id="viewCertificate" href="" class="btn btn-info d-none"><i class="fa fa-check"></i> View Certificate</a>
-                    <button type="button" id="holdCertificate" class="btn btn-warning d-none"><i class="fa fa-warning"></i> Hold Certificate</button>
-                    <button type="button" id="rejectCertificate" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject Certificate</button>
+                    <div class="form-group">
+                        <label>Minute</label>
+                        <textarea id="getMinutes" maxlength="55" type="text" class="form-control form-control-sm" placeholder="Enter Minute..." value=""></textarea>
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <a id="viewCertificate" href="" class="btn btn-info d-none"><i class="fa fa-check"></i> View Certificate</a>
+                    <button type="button" id="holdCertificate" class="btn btn-warning d-none"><i class="fa fa-warning"></i> Hold Certificate</button>
+                    <button type="button" id="rejectCertificate" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject Certificate</button>
                 </div>
             </div>
         </div>
@@ -97,15 +101,21 @@
 <script src="../../js/DirectorPendingJS/director_pending_list.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
+    function minute() {
+        var data = {
+            minutes: $('#getMinutes').val()
+        };
+        return data;
+    }
     $(function () {
 //Load table
         loadDirectorPendingListTable();
-
         $(document).on('click', '.actionDetails', function () {
             var fileData = JSON.parse(unescape($(this).val()));
             let f_Status = fileData.file_status;
             $('#modal-x2').modal();
             $('#prepareCertificate').val($(this).val()); //<-- Share this button value to this button
+            $('#rejectCertificate').val($(this).val()); //<-- Share this button value to this button
             $('#modalTitlex2').html(fileData.file_no);
             $('#viewCertificate,#prepareCertificate,#holdCertificate,#rejectCertificate').addClass('d-none');
             if (f_Status == 4) {
@@ -125,7 +135,7 @@
         $(document).on('click', '#prepareCertificate', function () {
             var fileData = JSON.parse(unescape($(this).val()));
             if (confirm('Are you sure you want to approve?')) {
-                preCertificateApi(fileData.id, $('#getAssistantDirector').val(), function (resp) {
+                preCertificateApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
                     show_mesege(resp);
                     if (resp.id == 1) {
                         loadDirectorPendingListTable();
@@ -138,7 +148,7 @@
         $(document).on('click', '#rejectCertificate', function () {
             var fileData = JSON.parse(unescape($(this).val()));
             if (confirm('Are you sure you want to approve?')) {
-                preCertificateApi(fileData.id, $('#getAssistantDirector').val(), function (resp) {
+                preCertificateApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
                     show_mesege(resp);
                     if (resp.id == 1) {
                         loadDirectorPendingListTable();

@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>(<a href="/epl_profile/client/{{$client}}/profile/{{$id}}">{{$epl_no}}</a>) EPL Payment</h1>
+                <h1>(<a href="/epl_profile/client/{{$client}}/profile/{{$id}}">{{$epl_no}}</a>) <b class="siteDataType">...</b></h1>
             </div>
         </div>
     </div>
@@ -139,40 +139,57 @@
 <!-- Page script -->
 
 <!-- Select2 -->
-<script src="../../plugins/select2/js/select2.full.min.js"></script>
+<script src="/../../plugins/select2/js/select2.full.min.js"></script>
 <!-- Bootstrap4 Duallistbox -->
-<script src="../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+<script src="/../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 <!-- InputMask -->
-<script src="../../plugins/moment/moment.min.js"></script>
-<script src="../../plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+<script src="/../../plugins/moment/moment.min.js"></script>
+<script src="/../../plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
 <!-- date-range-picker -->
-<script src="../../plugins/daterangepicker/daterangepicker.js"></script>
+<script src="/../../plugins/daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap color picker -->
-<script src="../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+<script src="/../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
 <!-- Tempusdominus Bootstrap 4 -->
-<script src="../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<script src="/../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <!-- Bootstrap Switch -->
-<script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-<script src="../../dist/js/adminlte.min.js"></script>
+<script src="/../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<script src="/../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="../../js/paymentsjs/epl_payments.js" type="text/javascript"></script>
+<script src="/../../js/paymentsjs/epl_payments.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
 $(function () {
     // alert("123");
     var ITEM_LIST = [];
-
     var EPL_ID = "{{$id}}";
-    loadEPL_details(EPL_ID, function (parameters) {
-        loadEPL_methodCombo(function () {
-            if (parameters.inspection.status == "not_payed") {
-                calc_amount();
-            }
+    var TYPE = '{{$type}}';
+
+
+    if (TYPE == 'epl') {
+        $('.siteDataType').html('EPL Payment');
+        loadEPL_details(EPL_ID, function (parameters) {
+            loadEPL_methodCombo(function () {
+                if (parameters.inspection.status == "not_payed") {
+                    calc_amount();
+                }
+            });
         });
-    });
-    fineList_Combo(function () {
-        loadFine_amount(EPL_ID, parseFloat($('#paymnt_amount').val()));
-    });//fine combo
+        fineList_Combo(function () {
+            loadFine_amount(EPL_ID, parseFloat($('#paymnt_amount').val()));
+        });//fine combo
+    } else if (TYPE == 'site_clearance') {
+        $('.siteDataType').html('Site Clearance Payment');
+        loadSiteClear_details(EPL_ID, function (parameters) {
+            loadEPL_methodCombo(function () {
+                if (parameters.inspection.status == "not_payed") {
+                    calc_amount();
+                }
+            });
+        });
+    } else {
+        return false;
+    }
+
     certificateList_Combo(function () {
         certificate_amount();
     });
@@ -226,28 +243,53 @@ $(function () {
         remove_itemFrom_bill($(this).val());
     });
     $('#btnSave').click(function () {
-        // alert("ok");
-        savePayment(ITEM_LIST, EPL_ID, function (r) {
-            show_mesege(r);
-            // alert(r.name);
-            if (r.id == 1) {
-                ITEM_LIST = [];
-                selectedPayments_table(ITEM_LIST);
-                $.ajax({
-                    url: 'http://127.0.0.1:8081/hansana',
-                    data: {code: r.code, name: r.name},
-                    success: function (result) {
-                    }
-                });
-                loadEPL_details(EPL_ID, function (parameters) {
-                    loadEPL_methodCombo(function () {
-                        if (parameters.inspection.status == "not_payed") {
-                            calc_amount();
+        if (TYPE == 'epl') {
+            savePayment(ITEM_LIST, EPL_ID, function (r) {
+                show_mesege(r);
+                // alert(r.name);
+                if (r.id == 1) {
+                    ITEM_LIST = [];
+                    selectedPayments_table(ITEM_LIST);
+                    $.ajax({
+                        url: 'http://127.0.0.1:8081/hansana',
+                        data: {code: r.code, name: r.name},
+                        success: function (result) {
                         }
                     });
-                });
-            }
-        });
+                    loadEPL_details(EPL_ID, function (parameters) {
+                        loadEPL_methodCombo(function () {
+                            if (parameters.inspection.status == "not_payed") {
+                                calc_amount();
+                            }
+                        });
+                    });
+                }
+            });
+        } else if (TYPE == 'site_clearance') {
+            saveSiteClearPayment(ITEM_LIST, EPL_ID, function (r) {
+                show_mesege(r);
+                // alert(r.name);
+                if (r.id == 1) {
+                    ITEM_LIST = [];
+                    selectedPayments_table(ITEM_LIST);
+                    $.ajax({
+                        url: 'http://127.0.0.1:8081/hansana',
+                        data: {code: r.code, name: r.name},
+                        success: function (result) {
+                        }
+                    });
+                    loadSiteClear_details(EPL_ID, function (parameters) {
+                        loadEPL_methodCombo(function () {
+                            if (parameters.inspection.status == "not_payed") {
+                                calc_amount();
+                            }
+                        });
+                    });
+                }
+            });
+        } else {
+            return false;
+        }
     });
     function remove_itemFrom_bill(rem_val) {
 // get index of object with id:37

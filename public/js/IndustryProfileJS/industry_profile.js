@@ -38,13 +38,13 @@ function setProfileDetails(obj) {
         $(".newSiteClear").removeClass("d-none");
     } else {
         $(".setSiteClear").removeClass("d-none");
-        if (obj.epls.length != 0) {
+        if (obj.site_clearence_sessions.length != 0) {
             $("#setSiteClear").attr(
                     "href",
                     "/site_clearance/client/" +
                     PROFILE_ID +
                     "/profile/" +
-                    obj.epls[obj.epls.length - 1].id
+                    obj.site_clearence_sessions[obj.site_clearence_sessions.length - 1].id
                     );
         }
 

@@ -30,14 +30,14 @@ class EPLPaymentController extends Controller
             if ($type == 'epl') {
                 $epl = EPL::find($id);
                 if ($epl) {
-                    return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id, "epl_no" => $epl->code, "client" => $epl->client_id]);
+                    return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id, "epl_no" => $epl->code, "client" => $epl->client_id, 'type' => $type]);
                 } else {
                     abort(404);
                 }
             } else if ($type == 'site_clearance') {
                 $site = SiteClearenceSession::find($id);
                 if ($site) {
-                    return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id, "epl_no" => $site->code, "client" => $site->client_id]);
+                    return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id, "epl_no" => $site->code, "client" => $site->client_id, 'type' => $type]);
                 } else {
                     abort(404);
                 }
