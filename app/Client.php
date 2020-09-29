@@ -129,4 +129,9 @@ class Client extends Model
                         default:
                 }
         }
+
+        public function minutes()
+        {
+                return $this->hasMany(Minute::class,);
+        }
 }

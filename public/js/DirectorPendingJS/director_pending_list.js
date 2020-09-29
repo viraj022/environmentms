@@ -34,12 +34,12 @@ function loadDirectorPendingListTable() {
     });
 }
 
-function preCertificateApi(file_id, assDir_id, callBack) {
+function preCertificateApi(file_id, assDir_id, DATA, callBack) {
     if (file_id.length == 0) {
         return false;
     }
     var url = "/api/assistant_director/approve/" + assDir_id + "/" + file_id;
-    ajaxRequest('PATCH', url, null, function (result) {
+    ajaxRequest('PATCH', url, DATA, function (result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }

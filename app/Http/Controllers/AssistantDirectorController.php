@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use App\User;
+use App\Minute;
 use App\AssistantDirector;
 use App\EnvironmentOfficer;
 use App\Level;
 use App\Helpers\LogActivity;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Repositories\MinutesRepository;
 use Illuminate\Support\Facades\Auth;
 
 class AssistantDirectorController extends Controller {

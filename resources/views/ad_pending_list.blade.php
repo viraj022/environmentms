@@ -68,17 +68,17 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="button" id="prepareCertificate" class="btn btn-primary d-none"><i class="fa fa-check"></i> Approve For Prepare Certificate</button>
-                    <button type="button" id="approveCertificate" class="btn btn-primary d-none"><i class="fa fa-check"></i> Approve Certificate</button>
-                    <button type="button" id="rejectCertificate" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject Certificate</button>
-                    <button type="button" id="rejectFile" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject File</button>
                     <div class="form-group">
-                        <label>Minutes</label>
-                        <input id="getMinutes" maxlength="55" type="text" class="form-control form-control-sm" placeholder="Enter Minutes..." value="">
+                        <label>Minute</label>
+                        <textarea id="getMinutes" maxlength="55" type="text" class="form-control form-control-sm" placeholder="Enter Minute..." value=""></textarea>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="prepareCertificate" class="btn btn-primary d-none"><i class="fa fa-check"></i> Approve For Prepare Certificate</button>
+                    <button type="button" id="approveCertificate" class="btn btn-primary d-none"><i class="fa fa-check"></i> Approve Certificate</button>
+                    <button type="button" id="rejectCertificate" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject Certificate</button>
+                    <button type="button" id="rejectFile" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject File</button>
                 </div>
             </div>
         </div>
@@ -110,6 +110,12 @@
 <script src="../../js/AdPendingJS/ad_pending_list.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
+    function minute() {
+        var data = {
+            minute: $('#getMinutes').val()
+        };
+        return data;
+    }
     $(function () {
 //Load table
         loadAssistantDirectorCombo(function () {
@@ -149,7 +155,7 @@
         $(document).on('click', '#prepareCertificate', function () {
             var fileData = JSON.parse(unescape($(this).val()));
             if (confirm('Are you sure you want to approve?')) {
-                preCertificateApi(fileData.id, $('#getAssistantDirector').val(), function (resp) {
+                preCertificateApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
                     show_mesege(resp);
                     if (resp.id == 1) {
                         loadAdPendingListTable($('#getAssistantDirector').val());
@@ -161,7 +167,7 @@
         $(document).on('click', '#approveCertificate', function () { // approve certificate btn
             var fileData = JSON.parse(unescape($(this).val()));
             if (confirm('Are you sure you want to approve?')) {
-                certificateApproveApi(fileData.id, $('#getAssistantDirector').val(), function (resp) {
+                certificateApproveApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
                     show_mesege(resp);
                     if (resp.id == 1) {
                         loadAdPendingListTable($('#getAssistantDirector').val());
@@ -173,7 +179,7 @@
         $(document).on('click', '#rejectCertificate', function () { // reject certificate btn
             var fileData = JSON.parse(unescape($(this).val()));
             if (confirm('Are you sure you want to approve?')) {
-                certificateRejectApi(fileData.id, $('#getAssistantDirector').val(), function (resp) {
+                certificateRejectApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
                     show_mesege(resp);
                     if (resp.id == 1) {
                         loadAdPendingListTable($('#getAssistantDirector').val());
@@ -185,7 +191,7 @@
         $(document).on('click', '#rejectFile', function () { // reject file btn
             var fileData = JSON.parse(unescape($(this).val()));
             if (confirm('Are you sure you want to approve?')) {
-                fileRejectApi(fileData.id, $('#getAssistantDirector').val(), function (resp) {
+                fileRejectApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
                     show_mesege(resp);
                     if (resp.id == 1) {
                         loadAdPendingListTable($('#getAssistantDirector').val());

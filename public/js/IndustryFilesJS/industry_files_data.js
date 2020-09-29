@@ -150,11 +150,11 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
 
 
 //Approval API Btn
-function approvalApi(file_id, env_offi, callBack) {
+function approvalApi(file_id, env_offi, DATA, callBack) {
     if (isNaN(file_id)) {
         return false;
     }
-    ajaxRequest('PATCH', "/api/environment_officer/approve/" + env_offi + "/" + file_id, null, function (dataSet) {
+    ajaxRequest('PATCH', "/api/environment_officer/approve/" + env_offi + "/" + file_id, DATA, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
@@ -162,22 +162,22 @@ function approvalApi(file_id, env_offi, callBack) {
 }
 
 //Sumbit For AD Certificate Approval Btn
-function adCertificateApproval(file_id, env_offi, callBack) {
+function adCertificateApproval(file_id, env_offi, DATA, callBack) {
     if (isNaN(file_id)) {
         return false;
     }
-    ajaxRequest('PATCH', "/api/environment_officer/approve_certificate/" + env_offi + "/" + file_id, null, function (dataSet) {
+    ajaxRequest('PATCH', "/api/environment_officer/approve_certificate/" + env_offi + "/" + file_id, DATA, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
     });
 }
 //Rejection For AD Certificate Btn
-function rejectCertificateApproval(file_id, env_offi, callBack) {
+function rejectCertificateApproval(file_id, env_offi, DATA, callBack) {
     if (isNaN(file_id)) {
         return false;
     }
-    ajaxRequest('PATCH', "/api/environment_officer/reject_certificate/" + env_offi + "/" + file_id, null, function (dataSet) {
+    ajaxRequest('PATCH', "/api/environment_officer/reject_certificate/" + env_offi + "/" + file_id, DATA, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
