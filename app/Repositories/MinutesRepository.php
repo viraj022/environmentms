@@ -25,7 +25,7 @@ class MinutesRepository
     public function all()
     {
         // $file =   Client::FindOrfail($file_id);
-        $minutes = Minute::get();
+        $minutes = Minute::with('user')->get();
         $minutes =  $minutes->groupBy('file_type');
         // dd($minutes->toArray());
         $array = [];
