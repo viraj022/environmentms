@@ -18,12 +18,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-class EPLPaymentController extends Controller {
+class EPLPaymentController extends Controller
+{
     public
 
     const REG_FEE = 'EPL Application Fee';
 
-    public function index($id, $type) {
+    public function index($id, $type)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
@@ -45,7 +47,8 @@ class EPLPaymentController extends Controller {
         }
     }
 
-    public function addRegistrationPayment() {
+    public function addRegistrationPayment()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
@@ -56,58 +59,59 @@ class EPLPaymentController extends Controller {
                 'contact_no' => ['nullable', new contactNo],
             ]);
             return \DB::transaction(function () {
-                        $client = new ApplicationCliten();
-                        $client->name = request('name');
-                        $client->nic = request('nic');
-                        $client->address = request('address');
-                        $client->contact_no = request('contact_no');
-                        $msg = $client->save();
-                        $transaction = new Transaction();
-                        $transaction->status = 0;
-                        $transaction->type = Transaction::APPLICATION_FEE;
-                        $transaction->type_id = $client->id;
-                        $msg = $msg && $transaction->save();
-                        if ($msg) {
-                            $data = request('items');
-                            foreach ($data as $item) {
-                                $payment = Payment::find($item['id']);
-                                if ($payment) {
-                                    $transactionItem = new TransactionItem();
-                                    $transactionItem->transaction_id = $transaction->id;
-                                    $transactionItem->payment_type_id = $payment->payment_type_id;
-                                    $transactionItem->payment_id = $payment->id;
-                                    $transactionItem->transaction_type = Transaction::APPLICATION_FEE;
-                                    $transactionItem->client_id = $client->id;
-                                    $transactionItem->amount = $payment->amount;
-                                    $transactionItem->qty = $item['qty'];
-                                    $msg = $msg && $transactionItem->save();
-                                } else {
-                                    abort(404);
-                                }
-                            }
-                            if ($msg) {
-                                //LogActivity::fileLog($client->id, 'EplPay', "EPL Payment Added : addRegistrationPayment", 1);
-                                LogActivity::addToLog('EPL Payment Added : addRegistrationPayment', $client);
-                                return array('id' => 1, 'message' => 'true', 'code' => $transaction->id);
-                            } else {
-                                abort(500);
-                            }
+                $client = new ApplicationCliten();
+                $client->name = request('name');
+                $client->nic = request('nic');
+                $client->address = request('address');
+                $client->contact_no = request('contact_no');
+                $msg = $client->save();
+                $transaction = new Transaction();
+                $transaction->status = 0;
+                $transaction->type = Transaction::APPLICATION_FEE;
+                $transaction->type_id = $client->id;
+                $msg = $msg && $transaction->save();
+                if ($msg) {
+                    $data = request('items');
+                    foreach ($data as $item) {
+                        $payment = Payment::find($item['id']);
+                        if ($payment) {
+                            $transactionItem = new TransactionItem();
+                            $transactionItem->transaction_id = $transaction->id;
+                            $transactionItem->payment_type_id = $payment->payment_type_id;
+                            $transactionItem->payment_id = $payment->id;
+                            $transactionItem->transaction_type = Transaction::APPLICATION_FEE;
+                            $transactionItem->client_id = $client->id;
+                            $transactionItem->amount = $payment->amount;
+                            $transactionItem->qty = $item['qty'];
+                            $msg = $msg && $transactionItem->save();
                         } else {
-                            LogActivity::addToLog('Fail to add EPL Payment : addRegistrationPayment', $client);
-                            return array('id' => 0, 'message' => 'false');
+                            abort(404);
                         }
-                    });
+                    }
+                    if ($msg) {
+                        //LogActivity::fileLog($client->id, 'EplPay', "EPL Payment Added : addRegistrationPayment", 1);
+                        LogActivity::addToLog('EPL Payment Added : addRegistrationPayment', $client);
+                        return array('id' => 1, 'message' => 'true', 'code' => $transaction->id);
+                    } else {
+                        abort(500);
+                    }
+                } else {
+                    LogActivity::addToLog('Fail to add EPL Payment : addRegistrationPayment', $client);
+                    return array('id' => 0, 'message' => 'false');
+                }
+            });
         } else {
             abort(401);
         }
     }
 
-    public function deleteApplicationPayment($id) {
+    public function deleteApplicationPayment($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_delete']) {
             $transaction = Transaction::where('type', Transaction::APPLICATION_FEE)
-                            ->where('id', $id)->first();
+                ->where('id', $id)->first();
             if ($transaction) {
                 if ($transaction->delete()) {
                     //   LogActivity::fileLog($transaction->id, 'EplPay', "EPL Payment Deleted : deleteApplicationPayment", 1);
@@ -125,18 +129,20 @@ class EPLPaymentController extends Controller {
         }
     }
 
-    public function getPendingApplicationList() {
+    public function getPendingApplicationList()
+    {
         // return Transaction::with('transactionItems')->get();
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         return $transaction = Transaction::with('transactionItems')
-                ->with('applicationClient')
-                ->where('status', '<', 2)
-                ->where('type', Transaction::APPLICATION_FEE)
-                ->get();
+            ->with('applicationClient')
+            ->where('status', '<', 2)
+            ->where('type', Transaction::APPLICATION_FEE)
+            ->get();
     }
 
-    public function markApplicationPayment($id) {
+    public function markApplicationPayment($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $transaction = Transactioncounter::findOrFail($id);
@@ -152,12 +158,13 @@ class EPLPaymentController extends Controller {
         }
     }
 
-    public function processApplication($id) {
+    public function processApplication($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
             $transaction = Transaction::where('type', Transaction::APPLICATION_FEE)
-                            ->where('id', $id)->first();
+                ->where('id', $id)->first();
             dd($id);
             if ($transaction) {
                 if ($transaction->status == 1) {
@@ -181,7 +188,8 @@ class EPLPaymentController extends Controller {
         }
     }
 
-    public function getApplicationList() {
+    public function getApplicationList()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $pt = PaymentType::getpaymentByTypeName(PaymentType::APPLICATIONFEE);
@@ -206,14 +214,16 @@ class EPLPaymentController extends Controller {
     //     }
     // }
 
-    public function getInspectionPaymentList() {
+    public function getInspectionPaymentList()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $pt = PaymentType::getpaymentByTypeName(PaymentType::INSPECTIONFEE);
         return Payment::with('paymentRanges')->where('payment_type_id', $pt->id)->get();
     }
 
-    public function getLicenctList() {
+    public function getLicenctList()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $pt = PaymentType::getpaymentByTypeName(PaymentType::LICENCE_FEE);
@@ -225,7 +235,8 @@ class EPLPaymentController extends Controller {
         }
     }
 
-    public function getFineList() {
+    public function getFineList()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $pt = PaymentType::getpaymentByTypeName(PaymentType::FINE);
@@ -237,7 +248,8 @@ class EPLPaymentController extends Controller {
         }
     }
 
-    public function getProcessingFeeList() {
+    public function getProcessingFeeList()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $eia = PaymentType::getpaymentByTypeName(PaymentType::EIA);
@@ -249,111 +261,114 @@ class EPLPaymentController extends Controller {
         } else {
             return response("Fine Not Found in the db", 404);
         }
-        return ["EIA" => $eia, "IEE" => $iee];
+        return ["EIA" => $eiaPayment, "IEE" => $ieePayment];
     }
 
-    public function payEPL($eplId) {
+    public function payEPL($eplId)
+    {
         return \DB::transaction(function () use ($eplId) {
-                    $epl = EPL::find($eplId);
-                    if ($epl) {
-                        $transaction = new Transaction();
-                        $transaction->type = Transaction::TRANS_TYPE_EPL;
-                        $transaction->status = 0;
-                        $transaction->type_id = $epl->id;
-                        $transaction->client_id = $epl->client_id;
-                        $msg = $transaction->save();
-                        if ($msg) {
-                            $data = request('items');
-                            foreach ($data as $item) {
-                                $payment = Payment::find($item['id']);
-                                if ($payment) {
-                                    $transactionItem = new TransactionItem();
-                                    $transactionItem->transaction_id = $transaction->id;
-                                    $transactionItem->payment_type_id = $payment->payment_type_id;
-                                    $transactionItem->payment_id = $payment->id;
-                                    $transactionItem->client_id = $epl->id;
-                                    $transactionItem->qty = 1;
-                                    $transactionItem->transaction_type = Transaction::TRANS_TYPE_EPL;
-                                    $paymentType = PaymentType::getpaymentByTypeName(PaymentType::INSPECTIONFEE);
-                                    if ($payment->payment_type_id == $paymentType->id) {
-                                        // if payment is a fine
-                                        //   LogActivity::fileLog($transaction->id, 'EplPay', "payEPL done", 1);
-                                        LogActivity::addToLog('payEPL done', $transaction);
-                                        $transactionItem->amount = $item['amount'];
-                                    } else {
-                                        // if payment is not valid
-                                        LogActivity::addToLog('fail to payEPL', $transaction);
-                                        $transactionItem->amount = $item['amount'];
-                                    }
-                                    $msg = $msg && $transactionItem->save();
-                                } else {
-                                    abort(404);
-                                }
-                            }
-                            // dd($epl->client);
-                            if ($msg) {
-                                return array('id' => 1, 'message' => 'true', 'code' => $transaction->id, 'name' => $epl->client->first_name);
+            $epl = EPL::find($eplId);
+            if ($epl) {
+                $transaction = new Transaction();
+                $transaction->type = Transaction::TRANS_TYPE_EPL;
+                $transaction->status = 0;
+                $transaction->type_id = $epl->id;
+                $transaction->client_id = $epl->client_id;
+                $msg = $transaction->save();
+                if ($msg) {
+                    $data = request('items');
+                    foreach ($data as $item) {
+                        $payment = Payment::find($item['id']);
+                        if ($payment) {
+                            $transactionItem = new TransactionItem();
+                            $transactionItem->transaction_id = $transaction->id;
+                            $transactionItem->payment_type_id = $payment->payment_type_id;
+                            $transactionItem->payment_id = $payment->id;
+                            $transactionItem->client_id = $epl->id;
+                            $transactionItem->qty = 1;
+                            $transactionItem->transaction_type = Transaction::TRANS_TYPE_EPL;
+                            $paymentType = PaymentType::getpaymentByTypeName(PaymentType::INSPECTIONFEE);
+                            if ($payment->payment_type_id == $paymentType->id) {
+                                // if payment is a fine
+                                //   LogActivity::fileLog($transaction->id, 'EplPay', "payEPL done", 1);
+                                LogActivity::addToLog('payEPL done', $transaction);
+                                $transactionItem->amount = $item['amount'];
                             } else {
-                                return array('id' => 0, 'message' => 'false');
+                                // if payment is not valid
+                                LogActivity::addToLog('fail to payEPL', $transaction);
+                                $transactionItem->amount = $item['amount'];
                             }
+                            $msg = $msg && $transactionItem->save();
+                        } else {
+                            abort(404);
                         }
-                    } else {
-                        abort(404);
                     }
-                });
+                    // dd($epl->client);
+                    if ($msg) {
+                        return array('id' => 1, 'message' => 'true', 'code' => $transaction->id, 'name' => $epl->client->first_name);
+                    } else {
+                        return array('id' => 0, 'message' => 'false');
+                    }
+                }
+            } else {
+                abort(404);
+            }
+        });
     }
 
-    public function paySiteClearance($id) {
+    public function paySiteClearance($id)
+    {
         return \DB::transaction(function () use ($id) {
-                    $site = SiteClearenceSession::find($id);
-                    if ($site) {
-                        $transaction = new Transaction();
-                        $transaction->type = Transaction::TRANS_SITE_CLEARANCE;
-                        $transaction->status = 0;
-                        $transaction->type_id = $site->id;
-                        $transaction->client_id = $site->client_id;
-                        $msg = $transaction->save();
-                        if ($msg) {
-                            $data = request('items');
-                            foreach ($data as $item) {
-                                $payment = Payment::find($item['id']);
-                                if ($payment) {
-                                    $transactionItem = new TransactionItem();
-                                    $transactionItem->transaction_id = $transaction->id;
-                                    $transactionItem->payment_type_id = $payment->payment_type_id;
-                                    $transactionItem->payment_id = $payment->id;
-                                    $transactionItem->client_id = $site->id;
-                                    $transactionItem->qty = 1;
-                                    $transactionItem->transaction_type = Transaction::TRANS_TYPE_EPL;
-                                    $paymentType = PaymentType::getpaymentByTypeName(PaymentType::INSPECTIONFEE);
-                                    if ($payment->payment_type_id == $paymentType->id) {
-                                        // if payment is a fine
-                                        //   LogActivity::fileLog($transaction->id, 'EplPay', "payEPL done", 1);
-                                        LogActivity::addToLog('payEPL done', $transaction);
-                                        $transactionItem->amount = $item['amount'];
-                                    } else {
-                                        // if payment is not valid
-                                        LogActivity::addToLog('fail to payEPL', $transaction);
-                                        $transactionItem->amount = $item['amount'];
-                                    }
-                                    $msg = $msg && $transactionItem->save();
-                                } else {
-                                    abort(404);
-                                }
-                            }
-                            if ($msg) {
-                                return array('id' => 1, 'message' => 'true', 'code' => $transaction->id, 'name' => $site->client->first_name);
+            $site = SiteClearenceSession::find($id);
+            if ($site) {
+                $transaction = new Transaction();
+                $transaction->type = Transaction::TRANS_SITE_CLEARANCE;
+                $transaction->status = 0;
+                $transaction->type_id = $site->id;
+                $transaction->client_id = $site->client_id;
+                $msg = $transaction->save();
+                if ($msg) {
+                    $data = request('items');
+                    foreach ($data as $item) {
+                        $payment = Payment::find($item['id']);
+                        if ($payment) {
+                            $transactionItem = new TransactionItem();
+                            $transactionItem->transaction_id = $transaction->id;
+                            $transactionItem->payment_type_id = $payment->payment_type_id;
+                            $transactionItem->payment_id = $payment->id;
+                            $transactionItem->client_id = $site->id;
+                            $transactionItem->qty = 1;
+                            $transactionItem->transaction_type = Transaction::TRANS_TYPE_EPL;
+                            $paymentType = PaymentType::getpaymentByTypeName(PaymentType::INSPECTIONFEE);
+                            if ($payment->payment_type_id == $paymentType->id) {
+                                // if payment is a fine
+                                //   LogActivity::fileLog($transaction->id, 'EplPay', "payEPL done", 1);
+                                LogActivity::addToLog('payEPL done', $transaction);
+                                $transactionItem->amount = $item['amount'];
                             } else {
-                                return array('id' => 0, 'message' => 'false');
+                                // if payment is not valid
+                                LogActivity::addToLog('fail to payEPL', $transaction);
+                                $transactionItem->amount = $item['amount'];
                             }
+                            $msg = $msg && $transactionItem->save();
+                        } else {
+                            abort(404);
                         }
-                    } else {
-                        abort(404);
                     }
-                });
+                    if ($msg) {
+                        return array('id' => 1, 'message' => 'true', 'code' => $transaction->id, 'name' => $site->client->first_name);
+                    } else {
+                        return array('id' => 0, 'message' => 'false');
+                    }
+                }
+            } else {
+                abort(404);
+            }
+        });
     }
 
-    public function paymentList($id) {
+    public function paymentList($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $epl = EPL::find($id);
@@ -361,22 +376,22 @@ class EPLPaymentController extends Controller {
             $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
             // dd($inspectionTypes);
             $inspection = TransactionItem::with('transaction')->where('transaction_type', Transaction::TRANS_TYPE_EPL)
-                    ->where('client_id', $id)
-                    ->where('payment_type_id', $inspectionTypes->id)
-                    ->first();
+                ->where('client_id', $id)
+                ->where('payment_type_id', $inspectionTypes->id)
+                ->first();
 
             $license_fee = PaymentType::getpaymentByTypeName(PaymentType::LICENCE_FEE);
             $certificate_fee = TransactionItem::with('transaction')
-                    ->where('transaction_type', Transaction::TRANS_TYPE_EPL)
-                    ->where('client_id', $id)
-                    ->where('payment_type_id', $license_fee->id)
-                    ->first();
+                ->where('transaction_type', Transaction::TRANS_TYPE_EPL)
+                ->where('client_id', $id)
+                ->where('payment_type_id', $license_fee->id)
+                ->first();
             $fintType = PaymentType::getpaymentByTypeName(PaymentType::FINE);
             $fine = TransactionItem::with('transaction')
-                    ->where('transaction_type', Transaction::TRANS_TYPE_EPL)
-                    ->where('client_id', $id)
-                    ->where('payment_type_id', $fintType->id)
-                    ->first();
+                ->where('transaction_type', Transaction::TRANS_TYPE_EPL)
+                ->where('client_id', $id)
+                ->where('payment_type_id', $fintType->id)
+                ->first();
             $rtn = array();
             if ($inspection) {
                 $rtn['inspection']['status'] = "payed";
@@ -407,7 +422,8 @@ class EPLPaymentController extends Controller {
         }
     }
 
-    public function SiteClearancePaymentList($id) {
+    public function SiteClearancePaymentList($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $site = SiteClearenceSession::find($id);
@@ -415,32 +431,32 @@ class EPLPaymentController extends Controller {
             $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
             // dd($inspectionTypes);
             $inspection = TransactionItem::with('transaction')->where('transaction_type', Transaction::TRANS_SITE_CLEARANCE)
-                    ->where('client_id', $id)
-                    ->where('payment_type_id', $inspectionTypes->id)
-                    ->first();
+                ->where('client_id', $id)
+                ->where('payment_type_id', $inspectionTypes->id)
+                ->first();
 
             $license_fee = PaymentType::getpaymentByTypeName(PaymentType::LICENCE_FEE);
             $certificate_fee = TransactionItem::with('transaction')
-                    ->where('transaction_type', Transaction::TRANS_TYPE_EPL)
-                    ->where('client_id', $id)
-                    ->where('payment_type_id', $license_fee->id)
-                    ->first();
+                ->where('transaction_type', Transaction::TRANS_TYPE_EPL)
+                ->where('client_id', $id)
+                ->where('payment_type_id', $license_fee->id)
+                ->first();
             $rtn = array();
 
             if ($site->processing_status == 2) {
                 // EIA payment
                 $processingFee = TransactionItem::with('transaction')
-                        ->where('transaction_type', SiteClearance::EIA_POSS_FEE)
-                        ->where('client_id', $id)
-                        ->where('payment_type_id', $license_fee->id)
-                        ->first();
+                    ->where('transaction_type', SiteClearance::EIA_POSS_FEE)
+                    ->where('client_id', $id)
+                    ->where('payment_type_id', $license_fee->id)
+                    ->first();
             } else if ($site->processing_status == 3) {
                 //IEE payment
                 $processingFee = TransactionItem::with('transaction')
-                        ->where('transaction_type', SiteClearance::IEE_POSS_FEE)
-                        ->where('client_id', $id)
-                        ->where('payment_type_id', $license_fee->id)
-                        ->first();
+                    ->where('transaction_type', SiteClearance::IEE_POSS_FEE)
+                    ->where('client_id', $id)
+                    ->where('payment_type_id', $license_fee->id)
+                    ->first();
             } else {
                 $processingFee = array();
             }
@@ -482,7 +498,8 @@ class EPLPaymentController extends Controller {
         }
     }
 
-    public function getInspectionFine($eplId) {
+    public function getInspectionFine($eplId)
+    {
         return array('id' => 1, 'message' => 'no_fine', 'amount' => '0');
         request()->validate([
             'inspection_fee' => 'required|numeric'
@@ -558,5 +575,4 @@ class EPLPaymentController extends Controller {
             abort(404);
         }
     }
-
 }
