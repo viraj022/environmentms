@@ -41,13 +41,13 @@ function loadEPL_details(epl_id, callBack) {
 function loadSiteClear_details(site_id, callBack) {
     ajaxRequest('GET', "/api/siteClearance/pay/id/" + site_id, null, function (dataSet) {
         if (dataSet.inspection.status == "not_payed") {
-            $('#fineDev').removeClass('d-none');
+//            $('#fineDev').removeClass('d-none');
             $('#fine_amt').prop('readonly', false);
             $('#fine_payBtn').prop('disabled', false);
         } else if (dataSet.inspection.status == "not_available") {
             $('#fineDev').addClass('d-none');
         } else {
-            $('#fineDev').removeClass('d-none');
+//            $('#fineDev').removeClass('d-none');
             $('#fine_amt').prop('readonly', true);
             $('#fine_payBtn').prop('disabled', true);
         }

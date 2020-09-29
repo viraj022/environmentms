@@ -174,6 +174,9 @@ $(function () {
                 }
             });
         });
+        fineList_Combo(function () {
+            loadFine_amount(EPL_ID, parseFloat($('#paymnt_amount').val()));
+        });//fine combo
     } else if (TYPE == 'site_clearance') {
         $('.siteDataType').html('Site Clearance Payment');
         loadSiteClear_details(EPL_ID, function (parameters) {
@@ -187,10 +190,6 @@ $(function () {
         return false;
     }
 
-
-    fineList_Combo(function () {
-        loadFine_amount(EPL_ID, parseFloat($('#paymnt_amount').val()));
-    });//fine combo
     certificateList_Combo(function () {
         certificate_amount();
     });
