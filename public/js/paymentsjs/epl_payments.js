@@ -51,7 +51,11 @@ function loadSiteClear_details(site_id, callBack) {
             $('#fine_amt').prop('readonly', true);
             $('#fine_payBtn').prop('disabled', true);
         }
-
+        $('#applicationtype_lbl').text(dataSet.processing_fee.processing_fee_type + ' Amount');
+        if (dataSet.processing_fee.status == 'not_payed') {
+            $('.eiApaySection').removeClass('d-none');
+        } else {
+        }
         if (dataSet.inspection.status == "not_payed") {
             $('#epl_methodCombo').prop('disabled', false);
             $('#paymnt_amount').prop('readonly', false);

@@ -41,6 +41,10 @@
                                 <option>Loading...</option>
                             </select>
                         </div>
+                        <div class="form-group eiApaySection d-none">
+                            <label id="applicationtype_lbl">EIA Payment*</label>
+                            <input id="eiaPayment" type="text" class="form-control form-control-sm" placeholder="0.00" value="">
+                        </div>
                         <label>Amount </label>
                         <div class="input-group mb-3">
                             <input id="paymnt_amount" type="number" class="form-control form-control-sm" placeholder="" value="">
