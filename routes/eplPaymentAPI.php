@@ -501,7 +501,7 @@ Route::middleware('auth:api')->get('/siteClearance/pay/id/{id}', 'EPLPaymentCont
  *  payed structure
  * {
  "inspection": {
-   "status": "not_payed",
+   "status": "payed",
    "object": {
      "id": 32,
      "transaction_id": 45,
