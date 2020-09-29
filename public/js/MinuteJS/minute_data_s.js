@@ -35,7 +35,7 @@ function getCardOfTableUI(callBack) {
             $.each(dataSet, function (index, set) {
                 card += '<div class="card card-success">';
                 card += '<div class="card-header">';
-                card += ' <h3 class="card-title">' + set.type + '(' + set.date + ')' + '</h3>';
+                card += ' <h3 class="card-title">' + set.type + '(' + set.Date + ')' + '</h3>';
                 card += ' <div class="card-tools">';
                 card += ' <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>';
                 card += '  </button>';
@@ -52,11 +52,13 @@ function getCardOfTableUI(callBack) {
                 card += '    </tr>';
                 card += '  </thead>';
                 card += ' <tbody>';
-                card += '<tr>';
-                card += '<td>' + ++index + '</td>';
-                card += '<td>' + set.minute_object.minute_description + '</td>';
-                card += '<td>' + set.minute_object.situation + '</td>';
-                card += '</tr>';
+                $.each(set.minute_object, function (index, e) {
+                    card += '<tr>';
+                    card += '<td>' + ++index + '</td>';
+                    card += '<td>' + e.minute_description + '</td>';
+                    card += '<td>' + e.situation + '</td>';
+                    card += '</tr>';
+                });
                 card += '  </tbody>';
                 card += ' </table>';
 //                });

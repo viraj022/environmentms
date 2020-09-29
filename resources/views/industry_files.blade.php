@@ -176,7 +176,7 @@
     var file_status = {0: 'pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Prenidng Approval', 4: 'D Certificate Approval Prenidng', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold'};
     function minute() {
         var data = {
-            minute: $('#getMinutes').val()
+            minutes: $('#getMinutes').val()
         };
         return data;
     }

@@ -103,7 +103,7 @@
 <script>
     function minute() {
         var data = {
-            minute: $('#getMinutes').val()
+            minutes: $('#getMinutes').val()
         };
         return data;
     }
