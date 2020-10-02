@@ -40,11 +40,11 @@ class FieUploadController extends Controller
     }
     public static function getEPLCertificateFilePath(EPL $epl)
     {
-        return  FieUploadController::getEPLFolderPath($epl->id) . "/certificates";
+        return  FieUploadController::getEPLFolderPath($epl) . "/certificates";
     }
     public static function getSiteClearanceCertificateFilePath(SiteClearenceSession $site)
     {
-        return  FieUploadController::getEPLFolderPath($site->id) . "/certificates";
+        return  FieUploadController::getEPLSiteClearanceFoldersPath($site) . "/certificates";
     }
     public static function getInspectionFilePath(InspectionSession $inspection)
     {

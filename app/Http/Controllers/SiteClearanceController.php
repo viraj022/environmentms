@@ -81,7 +81,7 @@ class SiteClearanceController extends Controller
             if ($msg) {
                 if ($request->file('file') != null) {
                     $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                    $fileUrl = '/uploads/' . FieUploadController::getSiteClearanceAPPLICATIONFilePath($siteSessions);
+                    $fileUrl = '/uploads/' . FieUploadController::getSiteClearanceCertificateFilePath($siteSessions);
                     $storePath = 'public' . $fileUrl;
                     $path = $request->file('file')->storeAs($storePath, $file_name);
                     $siteClearance->certificate_path = "storage/" . $fileUrl . "/" . $file_name;
@@ -137,7 +137,7 @@ class SiteClearanceController extends Controller
             if ($msg) {
                 if ($request->file('file') != null) {
                     $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                    $fileUrl = '/uploads/' . FieUploadController::getSiteClearanceAPPLICATIONFilePath($siteClearanceSession);
+                    $fileUrl = '/uploads/' . FieUploadController::getSiteClearanceCertificateFilePath($siteClearanceSession);
                     $storePath = 'public' . $fileUrl;
                     $path = $request->file('file')->storeAs($storePath, $file_name);
                     $siteClearance->certificate_path = "storage/" . $fileUrl . "/" . $file_name;
