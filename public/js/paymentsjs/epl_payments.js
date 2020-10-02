@@ -51,7 +51,11 @@ function loadSiteClear_details(site_id, callBack) {
             $('#fine_amt').prop('readonly', true);
             $('#fine_payBtn').prop('disabled', true);
         }
-
+        $('#applicationtype_lbl').text(dataSet.processing_fee.processing_fee_type + ' Amount');
+        if (dataSet.processing_fee.status == 'not_payed') {
+            $('.eiApaySection').removeClass('d-none');
+        } else {
+        }
         if (dataSet.inspection.status == "not_payed") {
             $('#epl_methodCombo').prop('disabled', false);
             $('#paymnt_amount').prop('readonly', false);
@@ -198,6 +202,13 @@ function savePayment(data, epl_id, callBack) {
         return false;
     }
     ajaxRequest("POST", "/api/epl/pay/id/" + epl_id, {items: data}, function (resp) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(resp);
+        }
+    });
+}
+function processingFeeList(callBack) {
+    ajaxRequest("GET", "/api/processing_list", null, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
         }
