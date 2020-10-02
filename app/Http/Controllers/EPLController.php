@@ -576,7 +576,7 @@ class EPLController extends Controller
             if ($msg) {
                 if ($request->file('file') != null) {
                     $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                    $fileUrl = '/uploads/industry_files/' . $client->id . '/application';
+                    $fileUrl = '/uploads/industry_files/' . FieUploadController::getEPLApplicationFilePath($epl);
                     $storePath = 'public' . $fileUrl;
                     $path = $request->file('file')->storeAs($storePath, $file_name);
                     $epl->path = "storage/" . $fileUrl . "/" . $file_name;
