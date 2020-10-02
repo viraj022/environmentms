@@ -41,10 +41,6 @@
                                 <option>Loading...</option>
                             </select>
                         </div>
-                        <div class="form-group eiApaySection d-none">
-                            <label id="applicationtype_lbl">EIA Payment*</label>
-                            <input id="eiaPayment" type="text" class="form-control form-control-sm" placeholder="0.00" value="">
-                        </div>
                         <label>Amount </label>
                         <div class="input-group mb-3">
                             <input id="paymnt_amount" type="number" class="form-control form-control-sm" placeholder="" value="">
@@ -52,6 +48,10 @@
                                 <button type="button" class="btn btn-sm btn-dark" id="inspection_payBtn">Add</button>
                             </div>
                             <!-- /btn-group -->
+                        </div>
+                        <div class="form-group eiApaySection d-none">
+                            <label id="applicationtype_lbl">EIA Payment*</label>
+                            <input id="eiaPayment" type="text" class="form-control form-control-sm" placeholder="0.00" value="">
                         </div>
                         <hr>
 
@@ -168,7 +168,7 @@ $(function () {
     var EPL_ID = "{{$id}}";
     var TYPE = '{{$type}}';
 
-
+    processingFeeList();
     if (TYPE == 'epl') {
         $('.siteDataType').html('EPL Payment');
         loadEPL_details(EPL_ID, function (parameters) {

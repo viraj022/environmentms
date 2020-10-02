@@ -207,6 +207,13 @@ function savePayment(data, epl_id, callBack) {
         }
     });
 }
+function processingFeeList(callBack) {
+    ajaxRequest("GET", "/api/processing_list", null, function (resp) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(resp);
+        }
+    });
+}
 function saveSiteClearPayment(data, site_id, callBack) {
     if (!data || data.length == 0) {
         alert('Please Add Payments Before Complete!');
