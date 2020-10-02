@@ -285,19 +285,20 @@ class EPLController extends Controller
             $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
             switch ($type) {
                 case 'file':
-                    $fileUrl = '/uploads/industry_files/' . $client->id . '/application';
-                    $client->application_path = "storage" . $fileUrl . "/" . $file_name;
-                    break;
+                    // $fileUrl = '/uploads/industry_files/' . $client->id . '/application';
+                    // $client->application_path = "storage" . $fileUrl . "/" . $file_name;
+                    // break;
+                    abort(405, "HCW process aborted by hansana");
                 case 'file1':
-                    $fileUrl = '/uploads/industry_files/' . $client->id . '/application/file1';
+                    $fileUrl = '/uploads/' . FieUploadController::getRoadMapPath($client);
                     $client->file_01 = "storage" . $fileUrl . "/" . $file_name;
                     break;
                 case 'file2':
-                    $fileUrl = '/uploads/industry_files/' . $client->id . '/application/file2'; // dead
+                    $fileUrl = '/uploads/' . FieUploadController::getDeedFilePath($client);
                     $client->file_02 = "storage" . $fileUrl . "/" . $file_name;
                     break;
                 case 'file3':
-                    $fileUrl = '/uploads/industry_files/' . $client->id . '/application/file3';
+                    $fileUrl = '/uploads/' . FieUploadController::getSurveyFilePath($client);
                     $client->file_03 = "storage" . $fileUrl . "/" . $file_name;
                     break;
                 default:

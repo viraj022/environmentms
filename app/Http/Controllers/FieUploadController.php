@@ -25,21 +25,18 @@ class FieUploadController extends Controller
     {
         return  FieUploadController::BASE_PATH . "/" . $client->id . "/old";
     }
-    public static function getDeedFilePath(Client $client)
-    {
-        return  FieUploadController::BASE_PATH . "/" . $client->id . "/deed";
-    }
+
     public static function getInspectionFolderPath(InspectionSession $inspection)
     {
         return  FieUploadController::BASE_PATH . "/" . $inspection->client_id . "/inspection" . $inspection->id;
     }
     public static function getEPLApplicationFilePath(EPL $epl)
     {
-        return  FieUploadController::getEPLFolderPath($epl) . "/applications";
+        return  FieUploadController::getEPLFolderPath($epl) . "/application";
     }
     public static function getSiteClearanceAPPLICATIONFilePath(SiteClearenceSession $site)
     {
-        return  FieUploadController::getEPLSiteClearanceFoldersPath($site) . "/applications";
+        return  FieUploadController::getEPLSiteClearanceFoldersPath($site) . "/application";
     }
     public static function getEPLCertificateFilePath(EPL $epl)
     {
@@ -52,5 +49,17 @@ class FieUploadController extends Controller
     public static function getEPLInspectionFilePath(InspectionSession $inspection)
     {
         return  FieUploadController::getInspectionFolderPath($inspection->id) . "/epl" . $inspection->id;
+    }
+    public static function getRoadMapPath(Client $client)
+    {
+        return  FieUploadController::BASE_PATH . "/" . $client->id . "/application/file1";
+    }
+    public static function getDeedFilePath(Client $client)
+    {
+        return  FieUploadController::BASE_PATH . "/" . $client->id . "/application/file2";
+    }
+    public static function getSurveyFilePath(Client $client)
+    {
+        return  FieUploadController::BASE_PATH . "/" . $client->id . "/application/file3";
     }
 }
