@@ -42,7 +42,6 @@ function getCardOfTableUI(callBack) {
                 card += ' </div>';
                 card += ' </div>';
                 card += ' <div class="card-body" style="display: block;">';
-//                $.each(set.minute_object, function (index, e) {
                 card += '<table class="table table-condensed">';
                 card += ' <thead>';
                 card += '    <tr>';
@@ -61,7 +60,6 @@ function getCardOfTableUI(callBack) {
                 });
                 card += '  </tbody>';
                 card += ' </table>';
-//                });
                 card += ' </div>';
                 card += '</div>';
             });

@@ -49,6 +49,10 @@
                             </div>
                             <!-- /btn-group -->
                         </div>
+                        <div class="form-group eiApaySection d-none">
+                            <label id="applicationtype_lbl">EIA Payment*</label>
+                            <input id="eiaPayment" type="text" class="form-control form-control-sm" placeholder="0.00" value="">
+                        </div>
                         <hr>
 
                         <div id="fineDev" class="d-none">
@@ -164,7 +168,7 @@ $(function () {
     var EPL_ID = "{{$id}}";
     var TYPE = '{{$type}}';
 
-
+    processingFeeList();
     if (TYPE == 'epl') {
         $('.siteDataType').html('EPL Payment');
         loadEPL_details(EPL_ID, function (parameters) {
