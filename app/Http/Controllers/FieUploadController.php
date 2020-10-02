@@ -46,9 +46,9 @@ class FieUploadController extends Controller
     {
         return  FieUploadController::getEPLFolderPath($site->id) . "/certificates";
     }
-    public static function getEPLInspectionFilePath(InspectionSession $inspection)
+    public static function getInspectionFilePath(InspectionSession $inspection)
     {
-        return  FieUploadController::getInspectionFolderPath($inspection->id) . "/epl" . $inspection->id;
+        return  FieUploadController::BASE_PATH . "/"  . $inspection->client_id . "/inspections/" . $inspection->id;
     }
     public static function getRoadMapPath(Client $client)
     {
@@ -61,5 +61,9 @@ class FieUploadController extends Controller
     public static function getSurveyFilePath(Client $client)
     {
         return  FieUploadController::BASE_PATH . "/" . $client->id . "/application/file3";
+    }
+    public static function getEPLAttachmentPath(EPL $epl)
+    {
+        return  FieUploadController::getEPLApplicationFilePath($epl) . "/attachments";
     }
 }
