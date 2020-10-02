@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use App\EPL;
+use App\InspectionSession;
 use App\SiteClearenceSession;
 use Illuminate\Http\Request;
 
@@ -27,6 +28,10 @@ class FieUploadController extends Controller
     {
         return  FieUploadController::BASE_PATH . "/" . $client->id . "/deed";
     }
+    public static function getInspectionFolderPath(InspectionSession $inspection)
+    {
+        return  FieUploadController::BASE_PATH . "/" . $client->id . "/deed";
+    }
     public static function getEPLAPPLICATIONFilePath(EPL $epl)
     {
         return  FieUploadController::getEPLFolderPath($epl->id) . "/applications";
@@ -37,10 +42,14 @@ class FieUploadController extends Controller
     }
     public static function getEPLCertificateFilePath(EPL $epl)
     {
-        return  FieUploadController::getEPLFolderPath($epl->id) . "/applications";
+        return  FieUploadController::getEPLFolderPath($epl->id) . "/certificates";
     }
     public static function getSiteClearanceCertificateFilePath(SiteClearenceSession $site)
     {
-        return  FieUploadController::getEPLFolderPath($site->id) . "/applications";
+        return  FieUploadController::getEPLFolderPath($site->id) . "/certificates";
+    }
+    public static function getEPLInspectionFilePath(InspectionSession $inspection)
+    {
+        return  FieUploadController::getEPLFolderPath($site->id) . "/certificates";
     }
 }

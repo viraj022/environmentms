@@ -132,6 +132,6 @@ class Client extends Model
 
         public function minutes()
         {
-                return $this->hasMany(Minute::class,);
+                return $this->hasMany(Minute::class);
         }
 }
