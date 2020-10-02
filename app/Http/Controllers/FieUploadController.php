@@ -10,15 +10,16 @@ use Illuminate\Http\Request;
 
 class FieUploadController extends Controller
 {
-    public const BASE_PATH = "IndustryFiles";
+    public const BASE_PATH = "industry_files";
 
     public static function getEPLFolderPath(EPL $epl)
     {
-        return  FieUploadController::BASE_PATH . "/" . $epl->client_id . "/" . $epl->id;
+        // dd($epl->id);
+        return  FieUploadController::BASE_PATH . "/" . $epl->client_id . "/epl/" . $epl->id;
     }
     public static function getEPLSiteClearanceFoldersPath(SiteClearenceSession $site)
     {
-        return  FieUploadController::BASE_PATH . "/" . $site->client_id . "/" . $site->id;
+        return  FieUploadController::BASE_PATH . "/" . $site->client_id . "/site_clearance" . $site->id;
     }
     public static function getOldFilePath(Client $client)
     {
@@ -38,7 +39,7 @@ class FieUploadController extends Controller
     }
     public static function getSiteClearanceAPPLICATIONFilePath(SiteClearenceSession $site)
     {
-        return  FieUploadController::getEPLSiteClearanceFoldersPath($site->id) . "/applications";
+        return  FieUploadController::getEPLSiteClearanceFoldersPath($site) . "/applications";
     }
     public static function getEPLCertificateFilePath(EPL $epl)
     {

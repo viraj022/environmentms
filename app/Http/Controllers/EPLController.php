@@ -571,15 +571,14 @@ class EPLController extends Controller
             $epl->status = 1;
             $epl->count = \request('count');
             $epl->submitted_date = \request('submitted_date');
-
-            // save old data file
+            $msg = $epl->save();
             if ($msg) {
                 if ($request->file('file') != null) {
                     $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                    $fileUrl = '/uploads/industry_files/' . FieUploadController::getEPLApplicationFilePath($epl);
+                    $fileUrl = '/uploads/' . FieUploadController::getEPLApplicationFilePath($epl);
                     $storePath = 'public' . $fileUrl;
                     $path = $request->file('file')->storeAs($storePath, $file_name);
-                    $epl->path = "storage/" . $fileUrl . "/" . $file_name;
+                    $epl->path = "storage" . $fileUrl . "/" . $file_name;
                     $msg = $epl->save();
                     LogActivity::fileLog($client->id, 'OldFile', "Save Old Data", 1);
                 } else {
@@ -655,7 +654,7 @@ class EPLController extends Controller
             if ($msg) {
                 if ($request->file('file') != null) {
                     $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                    $fileUrl = '/uploads/industry_files/' . $epl->client_id . '/application';
+                    $fileUrl = '/uploads/' . FieUploadController::getEPLApplicationFilePath($epl);
                     $storePath = 'public' . $fileUrl;
                     $path = $request->file('file')->storeAs($storePath, $file_name);
                     $epl->path = "storage/" . $fileUrl . "/" . $file_name;
