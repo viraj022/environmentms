@@ -190,7 +190,7 @@
         });
         $(document).on('click', '#rejectFile', function () { // reject file btn
             var fileData = JSON.parse(unescape($(this).val()));
-            if (confirm('Are you sure you want to approve?')) {
+            if (confirm('Are you sure you want to reject?')) {
                 fileRejectApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
                     show_mesege(resp);
                     if (resp.id == 1) {

@@ -140,8 +140,8 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
                     tbl += '</tr>';
                 }
             });
-            $('#tblAllFiles tbody').html(tbl);
         }
+            $('#tblAllFiles tbody').html(tbl);
     });
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
         callBack();

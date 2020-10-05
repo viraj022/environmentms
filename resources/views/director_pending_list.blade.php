@@ -116,6 +116,7 @@
             $('#modal-x2').modal();
             $('#prepareCertificate').val($(this).val()); //<-- Share this button value to this button
             $('#rejectCertificate').val($(this).val()); //<-- Share this button value to this button
+            $('#holdCertificate').val($(this).val()); //<-- Share this button value to this button
             $('#modalTitlex2').html(fileData.file_no);
             $('#viewCertificate,#prepareCertificate,#holdCertificate,#rejectCertificate').addClass('d-none');
             if (f_Status == 4) {
@@ -135,7 +136,7 @@
         $(document).on('click', '#prepareCertificate', function () {
             var fileData = JSON.parse(unescape($(this).val()));
             if (confirm('Are you sure you want to approve?')) {
-                preCertificateApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
+                preCertificateApi(fileData.id, minute(), 1, function (resp) {
                     show_mesege(resp);
                     if (resp.id == 1) {
                         loadDirectorPendingListTable();
@@ -147,8 +148,20 @@
 
         $(document).on('click', '#rejectCertificate', function () {
             var fileData = JSON.parse(unescape($(this).val()));
-            if (confirm('Are you sure you want to approve?')) {
-                preCertificateApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
+            if (confirm('Are you sure you want to reject?')) {
+                preCertificateApi(fileData.id, minute(), 2, function (resp) {
+                    show_mesege(resp);
+                    if (resp.id == 1) {
+                        loadDirectorPendingListTable();
+                        $('#modal-x2').modal('hide');
+                    }
+                });
+            }
+        });
+        $(document).on('click', '#holdCertificate', function () {
+            var fileData = JSON.parse(unescape($(this).val()));
+            if (confirm('Are you sure you want to hold?')) {
+                preCertificateApi(fileData.id, minute(), 3, function (resp) {
                     show_mesege(resp);
                     if (resp.id == 1) {
                         loadDirectorPendingListTable();

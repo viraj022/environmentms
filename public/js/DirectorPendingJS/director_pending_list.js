@@ -34,11 +34,20 @@ function loadDirectorPendingListTable() {
     });
 }
 
-function preCertificateApi(file_id, assDir_id, DATA, callBack) {
+function preCertificateApi(file_id, DATA, met, callBack) {
+    if (met === 1) {
+        met = 'approve_certificate';
+    } else if (met === 2) {
+        met = 'reject';
+    } else if (met === 3) {
+        met = 'hold';
+    } else {
+        return false;
+    }
     if (file_id.length == 0) {
         return false;
     }
-    var url = "/api/assistant_director/approve/" + assDir_id + "/" + file_id;
+    var url = "/api/director/" + met + "/" + file_id;
     ajaxRequest('PATCH', url, DATA, function (result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);

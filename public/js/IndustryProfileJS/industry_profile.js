@@ -210,6 +210,33 @@ function loadAllEPLTable(dataSet, callBack) {
         callBack(dataSet);
     }
 }
+function loadAllSiteClearTable(dataSet, callBack) {
+    //SiteClears as dataSet
+    var tbl = "";
+    var i = 0;
+    if (dataSet.length == 0) {
+        tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
+    } else {
+        $.each(dataSet, function (index, row) {
+            tbl += "<tr>";
+            tbl += "<td>" + ++index + "</td>";
+            tbl +=
+                    '<td><a type="button" href="/site_clearance/client/' +
+                    PROFILE_ID +
+                    "/profile/" +
+                    row.id +
+                    '" class="btn btn-primary">' +
+                    row.code +
+                    "</a></td>";
+            tbl += "<td>" + row.remark + "</td>";
+            tbl += "</tr>";
+        });
+    }
+    $("#clientSiteclearList tbody").html(tbl);
+    if (typeof callBack !== "undefined" && callBack != null && typeof callBack === "function") {
+        callBack(dataSet);
+    }
+}
 
 function setupInspectionUI(need_inspection_status) {
     if (need_inspection_status === null) {
@@ -313,7 +340,7 @@ function reportFileIssueAPI(id, data, callBack) {
 //Remove Client File API
 function removeClientFileAPI(id, callBack) {
     if (isNaN(id)) {
-       return false;
+        return false;
     }
     ajaxRequest("DELETE", "/api/client/id/" + id, null, function (dataSet) {
         if (
@@ -329,7 +356,7 @@ function removeClientFileAPI(id, callBack) {
 //Remove EPL Payment API
 function removeEPLPaymentAPI(id, callBack) {
     if (isNaN(id)) {
-       return false;
+        return false;
     }
     ajaxRequest("DELETE", "/api/epl/regPayment/id/" + id, null, function (
             dataSet
