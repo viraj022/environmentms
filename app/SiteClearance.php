@@ -13,4 +13,8 @@ class SiteClearance extends Model
     public const SITE_SCHEDULE_WASTE = 'Schedule Waste';
     public const EIA_POSS_FEE = 'EIA Processing Fee';
     public const IEE_POSS_FEE = 'IEE Processing Fee';
+
+    protected $casts = [
+        'content_paths' => 'array',
+    ];
 }

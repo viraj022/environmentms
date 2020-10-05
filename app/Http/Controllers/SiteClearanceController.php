@@ -60,7 +60,7 @@ class SiteClearanceController extends Controller
             if (count($siteSessions) > 0) { // checking for a already existing record
                 return response(array("id" => 2, "message" => 'Record Already Exist Please Update the existing record'), 403);
             }
-//            $client->is_working = 1;
+            //            $client->is_working = 1;
             $msg = $client->save();
             $siteSessions = new SiteClearenceSession();
             $siteSessions->client_id = $client->id;
@@ -260,6 +260,30 @@ class SiteClearanceController extends Controller
             return response(array("id" => 1, "message" => "ok"));
         } else {
             return response(array("id" => 0, "message" => "fail"));
+        }
+    }
+
+    public function uploadTor(Request $request, SiteClearenceSession $siteClearenceSession)
+    {
+
+        request()->validate([
+            'expire_date' => 'required|date',
+            'valid_date' => 'required|date',
+            'file' => 'required|mimes:jpeg,jpg,png,pdf',
+        ]);
+        if ($request->file('file') != null) {
+            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+            $fileUrl = '/uploads/' . FieUploadController::torPath($siteClearenceSession);
+            $storePath = 'public' . $fileUrl;
+            $path = $request->file('file')->storeAs($storePath, $file_name);
+            $siteClearenceSession->content_paths = ["tor" => ["path" => $path, "expire_date" => $request->expire_date, "valid_date" => $request->valid_date]];
+            if ($siteClearenceSession->save()) {
+                return response(array("id" => 1, "message" => "ok"));
+            } else {
+                return response(array("id" => 0, "message" => "fail"));
+            }
+        } else {
+            abort(422, "FIle Not Found");
         }
     }
 }

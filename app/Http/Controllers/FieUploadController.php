@@ -19,7 +19,7 @@ class FieUploadController extends Controller
     }
     public static function getEPLSiteClearanceFoldersPath(SiteClearenceSession $site)
     {
-        return  FieUploadController::BASE_PATH . "/" . $site->client_id . "/site_clearance" . $site->id;
+        return  FieUploadController::BASE_PATH . "/" . $site->client_id . "/site_clearance/" . $site->id;
     }
     public static function getOldFilePath(Client $client)
     {
@@ -65,5 +65,10 @@ class FieUploadController extends Controller
     public static function getEPLAttachmentPath(EPL $epl)
     {
         return  FieUploadController::getEPLApplicationFilePath($epl) . "/attachments";
+    }
+
+    public static function torPath(SiteClearenceSession $site)
+    {
+        return  FieUploadController::getEPLSiteClearanceFoldersPath($site) . "/tor";
     }
 }
