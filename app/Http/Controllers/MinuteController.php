@@ -23,31 +23,8 @@ class MinuteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index()
     {
-        return $this->minutesRepository->all($id);
-        return array(
-            array(
-                "type" => "EPL",
-                "date" => "2020-01-01",
-                "minute_object" =>  array(
-                    "minute_description" => "Text minutes",
-                    "situation" => "situvation",
-                    "user" => array(Auth::user())
-                )
-
-            ),
-            array(
-                "type" => "EPL",
-                "date" => "2020-01-01",
-                "minute_object" =>  array(
-                    "minute_description" => "Text minutes",
-                    "situation" => "situvation",
-                    "user" => array(Auth::user())
-                )
-
-            )
-        );
     }
 
     /**
@@ -77,9 +54,30 @@ class MinuteController extends Controller
      * @param  \App\Minute  $minute
      * @return \Illuminate\Http\Response
      */
-    public function show(Minute $minute)
+    public function show($id)
     {
-        //
+        return $this->minutesRepository->all($id);
+        return array(
+            array(
+                "type" => "EPL",
+                "date" => "2020-01-01",
+                "minute_object" =>  array(
+                    "minute_description" => "Text minutes",
+                    "situation" => "situvation",
+                    "user" => array(Auth::user())
+                )
+            ),
+            array(
+                "type" => "EPL",
+                "date" => "2020-01-01",
+                "minute_object" =>  array(
+                    "minute_description" => "Text minutes",
+                    "situation" => "situvation",
+                    "user" => array(Auth::user())
+                )
+
+            )
+        );
     }
 
     /**
