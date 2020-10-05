@@ -116,7 +116,7 @@ function fromValues() {
         issue_date: $('#issue_date').val(),
         expire_date: $('#expire_date').val(),
         count: $('#getPreRenew').val(),
-        submitted_date: $('#getsubmitDate').val(),
+        submit_date: $('#getsubmitDate').val(),
         file: $('#last_certificate')[0].files[0]
     };
     switch (applicationType) {
