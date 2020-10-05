@@ -1,4 +1,4 @@
-var situations_arr = {ENV_OFF_APP_FILE: 'Environment Officer Approved', ENV_OFF_REJECT_FILE: 'Environment Officer File Rejected', ASSI_OFF_REJECT_FILE: 'Assistent Director File Rejected', ASSI_OFF_APPROVE_FILE: 'Assistent Director File Approved', ENV_OFF_APP__CERTIFICATE: 'Environment Officer Certificate Approved', ENV_OFF_REJECT__CERTIFICATE: 'Environment Officer Certificate Rejected', ASSI_OFF_REJECT__CERTIFICATE: 'Assistant Director Certificate Rejected', ASSI_OFF_APPROVE__CERTIFICATE: 'Assistant Director Certificate Approved', ENV_OFF_APP__CERTIFICATE:'Environment Officer Certificate Approved',ENV_OFF_REJECT__CERTIFICATE:'Environment Officer Certificate Rejected',ASSI_OFF_REJECT__CERTIFICATE:'Assistant Director Certificate Rejected'};
+var situations_arr = {ENV_OFF_APP_FILE: 'Environment Officer Approved', ENV_OFF_REJECT_FILE: 'Environment Officer File Rejected', ASSI_OFF_REJECT_FILE: 'Assistent Director File Rejected', ASSI_OFF_APPROVE_FILE: 'Assistent Director File Approved', ENV_OFF_APP__CERTIFICATE: 'Environment Officer Certificate Approved', ENV_OFF_REJECT__CERTIFICATE: 'Environment Officer Certificate Rejected', ASSI_OFF_REJECT__CERTIFICATE: 'Assistant Director Certificate Rejected', ASSI_OFF_APPROVE__CERTIFICATE: 'Assistant Director Certificate Approved', ENV_OFF_APP__CERTIFICATE: 'Environment Officer Certificate Approved', ENV_OFF_REJECT__CERTIFICATE: 'Environment Officer Certificate Rejected', ASSI_OFF_REJECT__CERTIFICATE: 'Assistant Director Certificate Rejected'};
 
 //Method API
 function methodMinuteAPI(data, method, id, callBack) {
@@ -17,7 +17,7 @@ function methodMinuteAPI(data, method, id, callBack) {
         URL = '/api/file_minutes/' + id;
     } else if (method === 4) {
         DATA_METHOD = 'GET';
-        URL = '/api/file_minutes';
+        URL = '/api/file_minutes/' + id;
     } else {
         return false;
     }
@@ -32,7 +32,7 @@ function methodMinuteAPI(data, method, id, callBack) {
 function getCardOfTableUI(callBack) {
     var card = "";
     var id = 1;
-    methodMinuteAPI(null, 4, null, function (dataSet) {
+    methodMinuteAPI(null, 4, PROFILE_ID, function (dataSet) {
         if (dataSet) {
             $.each(dataSet, function (index, set) {
                 card += '<div class="card card-success">';
