@@ -22,7 +22,7 @@
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
                 <!--<h1>(<a href="/industry_profile/id/{file_id}">{file_no}</a>) {inspec_date} Committee Comments</h1>-->
-                <h1>File No: (<a href="/industry_profile/id/{{$client}}">{{$file_no}}</a>) - Committee Comments</h1>
+                <h1>File No: (<a href="/industry_profile/id/{{$client}}">{{$file_no}}</a>) - Committee Comments(<a href="/committee/id/{{$ses_id}}">{{$name}}</a>)</h1>
             </div>
         </div>
     </div>

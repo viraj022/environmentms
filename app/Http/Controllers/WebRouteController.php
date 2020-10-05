@@ -27,7 +27,7 @@ class WebRouteController extends Controller {
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $commetteu = Committee::findOrFail($id);
         $client = Client::find($commetteu->client_id);
-        return view('committee_remarks', ['pageAuth' => $pageAuth, 'id' => $id, 'client' => $commetteu->client_id, 'file_no' => $client->file_no]);
+        return view('committee_remarks', ['pageAuth' => $pageAuth, 'id' => $id, 'client' => $commetteu->client_id, 'file_no' => $client->file_no,'name' => $commetteu->name,'ses_id' => $commetteu->site_clearence_session_id]);
     }
 
 }
