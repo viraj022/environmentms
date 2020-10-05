@@ -672,7 +672,9 @@
                                                 setProfileDetails(parameters);
                                                 setIndustryAndClientDb(parameters);
                                                 updateAttachmentData(parameters);
-                                                loadAllOldAttachments(parameters.old_files, function () {});
+                                                $(document).on('click', '.oldAttachTab', function () {
+                                                    loadAllOldAttachments(parameters.old_files, function () {});
+                                                });
                                                 oldFileConfirmSection(parameters.is_old);
                                                 checkEPLstatus(parameters.epls);
                                                 loadAllEPLTable(parameters.epls);
