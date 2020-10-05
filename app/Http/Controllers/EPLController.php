@@ -549,7 +549,7 @@ class EPLController extends Controller
             'expire_date' => 'required|date',
             'certificate_no' => 'required|string',
             'count' => 'required|integer',
-            'submitted_date' => 'required|date',
+            'submit_date' => 'required|date',
             'file' => 'required|mimes:jpeg,jpg,png,pdf'
         ]);
         // save epl main file      
@@ -570,7 +570,7 @@ class EPLController extends Controller
             $epl->certificate_no = \request('certificate_no');
             $epl->status = 1;
             $epl->count = \request('count');
-            $epl->submitted_date = \request('submitted_date');
+            $epl->submitted_date = \request('submit_date');
 
             // save old data file
             if ($msg) {
