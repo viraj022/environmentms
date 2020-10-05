@@ -60,7 +60,7 @@ class SiteClearanceController extends Controller
             if (count($siteSessions) > 0) { // checking for a already existing record
                 return response(array("id" => 2, "message" => 'Record Already Exist Please Update the existing record'), 403);
             }
-            $client->is_working = 1;
+//            $client->is_working = 1;
             $msg = $client->save();
             $siteSessions = new SiteClearenceSession();
             $siteSessions->client_id = $client->id;
