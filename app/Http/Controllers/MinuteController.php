@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use App\Minute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,29 +25,6 @@ class MinuteController extends Controller
      */
     public function index()
     {
-        return $this->minutesRepository->all();
-        return array(
-            array(
-                "type" => "EPL",
-                "date" => "2020-01-01",
-                "minute_object" =>  array(
-                    "minute_description" => "Text minutes",
-                    "situation" => "situvation",
-                    "user" => array(Auth::user())
-                )
-
-            ),
-            array(
-                "type" => "EPL",
-                "date" => "2020-01-01",
-                "minute_object" =>  array(
-                    "minute_description" => "Text minutes",
-                    "situation" => "situvation",
-                    "user" => array(Auth::user())
-                )
-
-            )
-        );
     }
 
     /**
@@ -76,9 +54,30 @@ class MinuteController extends Controller
      * @param  \App\Minute  $minute
      * @return \Illuminate\Http\Response
      */
-    public function show(Minute $minute)
+    public function show($id)
     {
-        //
+        return $this->minutesRepository->all($id);
+        return array(
+            array(
+                "type" => "EPL",
+                "date" => "2020-01-01",
+                "minute_object" =>  array(
+                    "minute_description" => "Text minutes",
+                    "situation" => "situvation",
+                    "user" => array(Auth::user())
+                )
+            ),
+            array(
+                "type" => "EPL",
+                "date" => "2020-01-01",
+                "minute_object" =>  array(
+                    "minute_description" => "Text minutes",
+                    "situation" => "situvation",
+                    "user" => array(Auth::user())
+                )
+
+            )
+        );
     }
 
     /**

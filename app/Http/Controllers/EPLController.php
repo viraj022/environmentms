@@ -224,6 +224,8 @@ class EPLController extends Controller
         }
     }
 
+
+
     public function renew(Request $request)
     {
         $user = Auth::user();
@@ -408,7 +410,11 @@ class EPLController extends Controller
      */
     public function destroy(EPL $ePL)
     {
-        //
+        if ($ePL->delete) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
     }
 
     private function generateCode($client)
