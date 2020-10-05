@@ -269,8 +269,10 @@ Route::middleware('auth:api')->post('/epl/upload/epl/{epl}/file/{file}', 'EPLCon
 
 /* /// file types: file, file1 , file2 ,file3
 } // responce
-   id : 1,
-  "message" : true
+id : 1,
+"message" : true
 }
 
 */
+
+Route::middleware('auth:api')->delete('/epl/{epl}', 'EPLController@destroy');  // delete a epl
