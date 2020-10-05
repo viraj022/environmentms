@@ -48,9 +48,9 @@
                 <li class="nav-item">
                     <a class="nav-link siteInspectionTab" id="custom-tabs-three-siteInspectionTab-tab" data-toggle="pill" href="#custom-tabs-three-siteInspectionTab" role="tab" aria-controls="custom-tabs-three-siteInspectionTab" aria-selected="false">Site Inspection</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
-                </li>
+                <!--                <li class="nav-item">
+                                    <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
+                                </li>-->
                 <li class="nav-item">
                     <a class="nav-link paymentsTab" id="custom-tabs-three-paymentsTab-tab" data-toggle="pill" href="#custom-tabs-three-paymentsTab" role="tab" aria-controls="custom-tabs-three-paymentsTab" aria-selected="false">Payments</a>
                 </li>
@@ -457,6 +457,9 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div id="map" style="width: 100%; height: 400px;"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -672,6 +675,7 @@
                                                 loadAllSiteClearTable(parameters.site_clearence_sessions);
                                                 setupInspectionUI(parameters.need_inspection);
                                                 checkFileIssueStatus(parameters);
+                                                checkCompletedStatus(parameters.file_status, parameters.epls, parameters.site_clearence_sessions);
                                                 $(".loadingRenderUI").remove(); //<--Check Loading Status
                                             });
                                             $('#newEPL').click(function () {

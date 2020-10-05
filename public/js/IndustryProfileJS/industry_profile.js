@@ -442,3 +442,17 @@ function checkFileIssueStatus(is_exist) {
         $(".showReportInfoUi").addClass("d-none");
     }
 }
+
+
+function checkCompletedStatus(file_status, epl_status, siteclear_status) {
+    if (file_status != 5) {
+        if (epl_status.length != 0) {
+            $(".newSiteClear").remove();
+        }
+        if (siteclear_status.length != 0) {
+            $(".newEPL").remove();
+        }
+    } else {
+
+    }
+}
