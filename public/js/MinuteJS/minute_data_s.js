@@ -50,6 +50,7 @@ function getCardOfTableUI(callBack) {
                 card += '       <th style="width: 10px">#</th>';
                 card += '        <th>Description</th>';
                 card += '        <th>Situation</th>';
+                card += '        <th>Updated At</th>';
                 card += '    </tr>';
                 card += '  </thead>';
                 card += ' <tbody>';
@@ -58,6 +59,7 @@ function getCardOfTableUI(callBack) {
                     card += '<td>' + ++index + '</td>';
                     card += '<td>' + e.minute_description + '</td>';
                     card += '<td>' + situations_arr[e.situation] + '</td>';
+                    card += '<td>' + e.updated_at + '</td>';
                     card += '</tr>';
                 });
                 card += '  </tbody>';
