@@ -197,11 +197,15 @@
         });
         $("#getAsDirect").change(function () {
             loadEnvOfficerCombo($('#getAsDirect').val(), function (rest) {
-                forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+                if (rest.length == 0) {
+                    return false;
+                } else {
+                    forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+                }
             });
         });
         $("#getEnvOfficer").change(function () {
-            forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+            forTypeFiles_table($(this).val(), $('#getFileType').val(), file_status);
         });
         $("#getFileType").change(function () {
             forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);

@@ -1,3 +1,5 @@
+var situations_arr = {ENV_OFF_APP_FILE: 'Environment Officer Approved', ENV_OFF_REJECT_FILE: 'Environment Officer File Rejected', ASSI_OFF_REJECT_FILE: 'Assistent Director File Rejected', ASSI_OFF_APPROVE_FILE: 'Assistent Director File Approved', ENV_OFF_APP__CERTIFICATE: 'Environment Officer Certificate Approved', ENV_OFF_REJECT__CERTIFICATE: 'Environment Officer Certificate Rejected', ASSI_OFF_REJECT__CERTIFICATE: 'Assistant Director Certificate Rejected', ASSI_OFF_APPROVE__CERTIFICATE: 'Assistant Director Certificate Approved', ENV_OFF_APP__CERTIFICATE:'Environment Officer Certificate Approved',ENV_OFF_REJECT__CERTIFICATE:'Environment Officer Certificate Rejected',ASSI_OFF_REJECT__CERTIFICATE:'Assistant Director Certificate Rejected'};
+
 //Method API
 function methodMinuteAPI(data, method, id, callBack) {
     //Current Usage Explained - POST/1 , PUT/2 , DELETE/3 , GET/4
@@ -55,7 +57,7 @@ function getCardOfTableUI(callBack) {
                     card += '<tr>';
                     card += '<td>' + ++index + '</td>';
                     card += '<td>' + e.minute_description + '</td>';
-                    card += '<td>' + e.situation + '</td>';
+                    card += '<td>' + situations_arr[e.situation] + '</td>';
                     card += '</tr>';
                 });
                 card += '  </tbody>';
