@@ -335,7 +335,17 @@
                                         </div>
                                     </div>
                                     <div class="card-body" style="display: block;">
-                                        No data found
+                                        <table class="table table-active" id="clientSiteclearList">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Site Clearance Code</th>
+                                                    <th>Remark</th>
+                                                    <!--<th>Action</th>-->
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -574,7 +584,7 @@
                 <div class="tab-pane fade" id="custom-tabs-three-minutesTab" role="tabpanel" aria-labelledby="custom-tabs-three-minutesTab-tab">
                     <div class="col-md-12">
                         <div class="col-md-12 loadMinCard">
-     
+
                         </div>
                         <!--                        <div class="col-md-12">
                                                     <div class="card card-success">
@@ -659,6 +669,7 @@
                                                 oldFileConfirmSection(parameters.is_old);
                                                 checkEPLstatus(parameters.epls);
                                                 loadAllEPLTable(parameters.epls);
+                                                loadAllSiteClearTable(parameters.site_clearence_sessions);
                                                 setupInspectionUI(parameters.need_inspection);
                                                 checkFileIssueStatus(parameters);
                                                 $(".loadingRenderUI").remove(); //<--Check Loading Status
