@@ -18,3 +18,4 @@ Route::apiResource('/file_minutes', 'MinuteController');
 
 
 Route::post('/tor/{site_clearence_session}', 'SiteClearanceController@uploadTor');
+Route::post('/client_report/{site_clearence_session}', 'SiteClearanceController@clientReport');

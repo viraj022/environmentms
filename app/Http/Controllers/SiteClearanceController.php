@@ -265,6 +265,7 @@ class SiteClearanceController extends Controller
 
     public function uploadTor(Request $request, SiteClearenceSession $siteClearenceSession)
     {
+        // return $siteClearenceSession;
 
         request()->validate([
             'expire_date' => 'required|date',
@@ -276,7 +277,32 @@ class SiteClearanceController extends Controller
             $fileUrl = '/uploads/' . FieUploadController::torPath($siteClearenceSession);
             $storePath = 'public' . $fileUrl;
             $path = $request->file('file')->storeAs($storePath, $file_name);
-            $siteClearenceSession->content_paths = ["tor" => ["path" => $path, "expire_date" => $request->expire_date, "valid_date" => $request->valid_date]];
+            $db_path  = "storage" . $fileUrl . "/" . $file_name;
+            $siteClearenceSession->content_paths = array_merge($siteClearenceSession->content_paths, ["tor" => ["path" => $db_path, "expire_date" => $request->expire_date, "valid_date" => $request->valid_date]]);
+            if ($siteClearenceSession->save()) {
+                return response(array("id" => 1, "message" => "ok"));
+            } else {
+                return response(array("id" => 0, "message" => "fail"));
+            }
+        } else {
+            abort(422, "FIle Not Found");
+        }
+    }
+    public function clientReport(Request $request, SiteClearenceSession $siteClearenceSession)
+    {
+        // return $siteClearenceSession;
+
+        request()->validate([
+            'expire_date' => 'required|date',
+            'file' => 'required|mimes:jpeg,jpg,png,pdf',
+        ]);
+        if ($request->file('file') != null) {
+            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+            $fileUrl = '/uploads/' . FieUploadController::torPath($siteClearenceSession);
+            $storePath = 'public' . $fileUrl;
+            $path = $request->file('file')->storeAs($storePath, $file_name);
+            $db_path  = "storage" . $fileUrl . "/" . $file_name;
+            $siteClearenceSession->content_paths = array_merge($siteClearenceSession->content_paths, ["client_report" => ["path" => $db_path, "expire_date" => $request->expire_date]]);
             if ($siteClearenceSession->save()) {
                 return response(array("id" => 1, "message" => "ok"));
             } else {
