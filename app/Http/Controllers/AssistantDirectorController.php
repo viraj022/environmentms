@@ -349,7 +349,7 @@ class AssistantDirectorController extends Controller {
     }
 
 // hansana
-    public function directorRejectCertificate($file_id) {
+    public function directorRejectCertificate(Request $request ,MinutesRepository $minutesRepository,$file_id) {
         return DB::transaction(function () use ($request, $minutesRepository, $file_id) {
                     request()->validate([
                         'minutes' => 'sometimes|required|string',
@@ -419,8 +419,8 @@ class AssistantDirectorController extends Controller {
                     }
                 });
     }
-
-    public function directorHoldCertificate($file_id) {
+  
+    public function directorHoldCertificate(Request $request ,MinutesRepository $minutesRepository,$file_id) {
         return DB::transaction(function () use ($request, $minutesRepository, $file_id) {
                     request()->validate([
                         'minutes' => 'sometimes|required|string',
@@ -443,7 +443,7 @@ class AssistantDirectorController extends Controller {
                 });
     }
 
-    public function derectorApproveCertificate($file_id) {
+    public function derectorApproveCertificate(Request $request ,MinutesRepository $minutesRepository, $file_id) {
         return DB::transaction(function () use ($request, $minutesRepository, $file_id) {
                     request()->validate([
                         'minutes' => 'sometimes|required|string',
