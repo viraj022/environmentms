@@ -23,7 +23,7 @@ class Minute extends Model
     public const DESCRIPTION_Dire_REJECT_CERTIFICATE = 'ENV_OFF_REJECT__CERTIFICATE'; // director reject certificate
     public const DESCRIPTION_Dire_Hold_CERTIFICATE = 'ASSI_OFF_REJECT__CERTIFICATE'; // director hold certificate
 
-    protected $fillable = ['file_type', 'file_type_id', 'user_id', 'minute_description', 'situation'];
+    protected $fillable = ['file_type', 'file_type_id', 'user_id', 'minute_description', 'situation','file_id'];
     public function user()
     {
         return $this->belongsTo(User::class);

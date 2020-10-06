@@ -661,14 +661,20 @@
 <script>
                                         PROFILE_ID = '{{$id}}';
                                         $(function () {
-                                            getCardOfTableUI();
-                                            pendingPaymentsTable(PROFILE_ID); //<-- Load pending payment table
+                                            $('.minutesTab').click(function () { //<--load min when click on min tab
+                                                getCardOfTableUI();
+                                            });
+                                            $('.paymentsTab').click(function () { //<--load min when click on payment tab
+                                                pendingPaymentsTable(PROFILE_ID); //<-- Load pending payment table
+                                            });
                                             deedList(PROFILE_ID, function () {});
                                             getaProfilebyId(PROFILE_ID, function (parameters) {
                                                 setProfileDetails(parameters);
                                                 setIndustryAndClientDb(parameters);
                                                 updateAttachmentData(parameters);
-                                                loadAllOldAttachments(parameters.old_files, function () {});
+                                                $(document).on('click', '.oldAttachTab', function () {
+                                                    loadAllOldAttachments(parameters.old_files, function () {});
+                                                });
                                                 oldFileConfirmSection(parameters.is_old);
                                                 checkEPLstatus(parameters.epls);
                                                 loadAllEPLTable(parameters.epls);
