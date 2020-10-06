@@ -215,7 +215,7 @@ class AttachemntsController extends Controller
             $e = EPL::findOrFail($epl);
             $type = $request->file->extension();
             $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-            $fileUrl = "/uploads/industry_files/" . $e->client_id  . "/attachments/" . $attachment;
+            $fileUrl = "/uploads/" . FieUploadController::getEPLAttachmentPath($e);
             $storePath = 'public' . $fileUrl;
             $path = 'storage' . $fileUrl . "/" . $file_name;
             $request->file('file')->storeAs($storePath, $file_name);
@@ -269,31 +269,5 @@ WHERE application_types.`name` = '" . ApplicationTypeController::EPL . "') AS a
 FROM attachemnt_e_p_l
 WHERE attachemnt_e_p_l.e_p_l_id = '{$epl}') AS b
 	ON a.att_id=b.attachemnt_id"));
-    }
-
-    private function makeApplicationPath($id, $attachemntId)
-    {
-        if (!is_dir("uploads")) {
-            //Create our directory if it does not exist
-            mkdir("uploads");
-        }
-        if (!is_dir("uploads/EPL")) {
-            //Create our directory if it does not exist
-            mkdir("uploads/EPL");
-        }
-        if (!is_dir("uploads/EPL/" . $id)) {
-            //Create our directory if it does not exist
-            mkdir("uploads/EPL/" . $id);
-        }
-        if (!is_dir("uploads/EPL/" . $id . "/attachments")) {
-            //Create our directory if it does not exist
-            mkdir("uploads/EPL/" . $id . "/attachments");
-        }
-        if (!is_dir("uploads/EPL/" . $id . "/attachments/" . $attachemntId)) {
-            //Create our directory if it does not exist
-            mkdir("uploads/EPL/" . $id . "/attachments/" . $attachemntId);
-        }
-
-        return "uploads/EPL/" . $id . "/attachments/" . $attachemntId . "/";
     }
 }

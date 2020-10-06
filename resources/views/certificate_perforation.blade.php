@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Certificate Perforation (<a id="cer_status"></a>)</h1>
+                <h1>Certificate Preparation (<a id="cer_status"></a>)</h1>
             </div>
         </div>
     </div>
@@ -361,7 +361,7 @@
     });
 
     $('.complCertificate').click(function () {
-        if (confirm('Are you sure you want to cimplete this certificate?')) {
+        if (confirm('Are you sure you want to complete this certificate?')) {
             var data = {
                 issue_date: $('#issue_date').val(),
                 expire_date: $('#expire_date').val()

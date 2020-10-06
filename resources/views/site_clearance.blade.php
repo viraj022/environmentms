@@ -75,7 +75,7 @@
                     <!-- /.card-header -->
                     <div class="card-body" style="height: 350px; overflow-y: scroll;">
                         <div class="callout callout-danger">
-                            <h6><a id="disPaylink" href="/epl_payments/id/{{$profile}}" class="text-success isOld2">Payments</a></h6>
+                            <h6><a id="disPaylink" href="/epl_payments/id/{{$profile}}/type/site_clearance" class="text-success isOld2">Payments</a></h6>
                             <p>All Payment (EPL, Fine,Inspection Fee, Certificate)</p>
                         </div>
                         <div class="callout callout-danger">

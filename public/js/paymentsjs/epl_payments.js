@@ -38,6 +38,50 @@ function loadEPL_details(epl_id, callBack) {
         }
     });
 }
+function loadSiteClear_details(site_id, callBack) {
+    ajaxRequest('GET', "/api/siteClearance/pay/id/" + site_id, null, function (dataSet) {
+        if (dataSet.inspection.status == "not_payed") {
+//            $('#fineDev').removeClass('d-none');
+            $('#fine_amt').prop('readonly', false);
+            $('#fine_payBtn').prop('disabled', false);
+        } else if (dataSet.inspection.status == "not_available") {
+            $('#fineDev').addClass('d-none');
+        } else {
+//            $('#fineDev').removeClass('d-none');
+            $('#fine_amt').prop('readonly', true);
+            $('#fine_payBtn').prop('disabled', true);
+        }
+        $('#applicationtype_lbl').text(dataSet.processing_fee.processing_fee_type + ' Amount');
+        if (dataSet.processing_fee.status == 'not_payed') {
+            $('.eiApaySection').removeClass('d-none');
+        } else {
+        }
+        if (dataSet.inspection.status == "not_payed") {
+            $('#epl_methodCombo').prop('disabled', false);
+            $('#paymnt_amount').prop('readonly', false);
+            $('#inspection_payBtn').prop('disabled', false);
+            $('#paymnt_amount').val('');
+        } else {
+            $('#epl_methodCombo').prop('disabled', true);
+            $('#paymnt_amount').prop('readonly', true);
+            $('#inspection_payBtn').prop('disabled', true);
+            $('#paymnt_amount').val(dataSet.inspection.object.amount);
+        }
+        if (dataSet.license_fee.status == "not_payed") {
+            $('#certificate_list').prop('disabled', false);
+            $('#certificate_payBtn').prop('disabled', false);
+            $('#cert_amt').val('');
+        } else {
+            $('#certificate_list').prop('disabled', true);
+            $('#certificate_payBtn').prop('disabled', true);
+            $('#cert_amt').val(dataSet.license_fee.object.amount);
+        }
+
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(dataSet);
+        }
+    });
+}
 function loadFine_amount(epl_id, epl_amt, callBack) {
     if (isNaN(epl_amt)) {
         epl_amt = 0;
@@ -158,6 +202,24 @@ function savePayment(data, epl_id, callBack) {
         return false;
     }
     ajaxRequest("POST", "/api/epl/pay/id/" + epl_id, {items: data}, function (resp) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(resp);
+        }
+    });
+}
+function processingFeeList(callBack) {
+    ajaxRequest("GET", "/api/processing_list", null, function (resp) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(resp);
+        }
+    });
+}
+function saveSiteClearPayment(data, site_id, callBack) {
+    if (!data || data.length == 0) {
+        alert('Please Add Payments Before Complete!');
+        return false;
+    }
+    ajaxRequest("POST", "/api/siteClearance/pay/id/" + site_id, {items: data}, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
         }

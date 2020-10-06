@@ -48,11 +48,14 @@
                 <li class="nav-item">
                     <a class="nav-link siteInspectionTab" id="custom-tabs-three-siteInspectionTab-tab" data-toggle="pill" href="#custom-tabs-three-siteInspectionTab" role="tab" aria-controls="custom-tabs-three-siteInspectionTab" aria-selected="false">Site Inspection</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
-                </li>
+                <!--                <li class="nav-item">
+                                    <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
+                                </li>-->
                 <li class="nav-item">
                     <a class="nav-link paymentsTab" id="custom-tabs-three-paymentsTab-tab" data-toggle="pill" href="#custom-tabs-three-paymentsTab" role="tab" aria-controls="custom-tabs-three-paymentsTab" aria-selected="false">Payments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link minutesTab" id="custom-tabs-three-minutesTab-tab" data-toggle="pill" href="#custom-tabs-three-minutesTab" role="tab" aria-controls="custom-tabs-three-minutesTab" aria-selected="false">Minutes</a>
                 </li>
             </ul>
         </div>
@@ -332,7 +335,17 @@
                                         </div>
                                     </div>
                                     <div class="card-body" style="display: block;">
-                                        No data found
+                                        <table class="table table-active" id="clientSiteclearList">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Site Clearance Code</th>
+                                                    <th>Remark</th>
+                                                    <!--<th>Action</th>-->
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -443,6 +456,9 @@
                                         </ul>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div id="map" style="width: 100%; height: 400px;"></div>
                             </div>
                         </div>
                     </div>
@@ -567,6 +583,44 @@
                         </div>
                     </div>
                 </div>
+                <!--//minutesTab Open//-->
+                <div class="tab-pane fade" id="custom-tabs-three-minutesTab" role="tabpanel" aria-labelledby="custom-tabs-three-minutesTab-tab">
+                    <div class="col-md-12">
+                        <div class="col-md-12 loadMinCard">
+
+                        </div>
+                        <!--                        <div class="col-md-12">
+                                                    <div class="card card-success">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">Site Clearance</h3>
+                        
+                                                            <div class="card-tools">
+                                                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                             /.card-tools 
+                                                        </div>
+                                                         /.card-header 
+                                                        <div class="card-body" style="display: block;">
+                                                            <table class="table table-condensed" id="tblSiteClearMins">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th style="width: 10px">#</th>
+                                                                        <th>Description</th>
+                                                                        <th>Situation</th>
+                                                                        <th>Minute Date</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                         /.card-body 
+                                                    </div>
+                                                     /.card 
+                                                </div>-->
+                    </div>
+                </div>
             </div>
         </div>
         <div class="overlay dark loadingRenderUI">
@@ -601,23 +655,33 @@
 <script src="../../js/commonFunctions/file_upload.js" type="text/javascript"></script>
 <script src="../../js/IndustryProfileJS/industry_profile.js" type="text/javascript"></script>
 <script src="../../js/IndustryProfileJS/upload_old_attachment.js" type="text/javascript"></script>
+<script src="../../js/MinuteJS/minute_data_s.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
 <script>
                                         PROFILE_ID = '{{$id}}';
                                         $(function () {
-                                            pendingPaymentsTable(PROFILE_ID); //<-- Load pending payment table
+                                            $('.minutesTab').click(function () { //<--load min when click on min tab
+                                                getCardOfTableUI();
+                                            });
+                                            $('.paymentsTab').click(function () { //<--load min when click on payment tab
+                                                pendingPaymentsTable(PROFILE_ID); //<-- Load pending payment table
+                                            });
                                             deedList(PROFILE_ID, function () {});
                                             getaProfilebyId(PROFILE_ID, function (parameters) {
                                                 setProfileDetails(parameters);
                                                 setIndustryAndClientDb(parameters);
                                                 updateAttachmentData(parameters);
-                                                loadAllOldAttachments(parameters.old_files, function () {});
+                                                $(document).on('click', '.oldAttachTab', function () {
+                                                    loadAllOldAttachments(parameters.old_files, function () {});
+                                                });
                                                 oldFileConfirmSection(parameters.is_old);
                                                 checkEPLstatus(parameters.epls);
                                                 loadAllEPLTable(parameters.epls);
+                                                loadAllSiteClearTable(parameters.site_clearence_sessions);
                                                 setupInspectionUI(parameters.need_inspection);
                                                 checkFileIssueStatus(parameters);
+                                                checkCompletedStatus(parameters.file_status, parameters.epls, parameters.site_clearence_sessions);
                                                 $(".loadingRenderUI").remove(); //<--Check Loading Status
                                             });
                                             $('#newEPL').click(function () {

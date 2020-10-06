@@ -38,13 +38,13 @@ function setProfileDetails(obj) {
         $(".newSiteClear").removeClass("d-none");
     } else {
         $(".setSiteClear").removeClass("d-none");
-        if (obj.epls.length != 0) {
+        if (obj.site_clearence_sessions.length != 0) {
             $("#setSiteClear").attr(
                     "href",
                     "/site_clearance/client/" +
                     PROFILE_ID +
                     "/profile/" +
-                    obj.epls[obj.epls.length - 1].id
+                    obj.site_clearence_sessions[obj.site_clearence_sessions.length - 1].id
                     );
         }
 
@@ -210,6 +210,33 @@ function loadAllEPLTable(dataSet, callBack) {
         callBack(dataSet);
     }
 }
+function loadAllSiteClearTable(dataSet, callBack) {
+    //SiteClears as dataSet
+    var tbl = "";
+    var i = 0;
+    if (dataSet.length == 0) {
+        tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
+    } else {
+        $.each(dataSet, function (index, row) {
+            tbl += "<tr>";
+            tbl += "<td>" + ++index + "</td>";
+            tbl +=
+                    '<td><a type="button" href="/site_clearance/client/' +
+                    PROFILE_ID +
+                    "/profile/" +
+                    row.id +
+                    '" class="btn btn-primary">' +
+                    row.code +
+                    "</a></td>";
+            tbl += "<td>" + row.remark + "</td>";
+            tbl += "</tr>";
+        });
+    }
+    $("#clientSiteclearList tbody").html(tbl);
+    if (typeof callBack !== "undefined" && callBack != null && typeof callBack === "function") {
+        callBack(dataSet);
+    }
+}
 
 function setupInspectionUI(need_inspection_status) {
     if (need_inspection_status === null) {
@@ -313,7 +340,7 @@ function reportFileIssueAPI(id, data, callBack) {
 //Remove Client File API
 function removeClientFileAPI(id, callBack) {
     if (isNaN(id)) {
-       return false;
+        return false;
     }
     ajaxRequest("DELETE", "/api/client/id/" + id, null, function (dataSet) {
         if (
@@ -329,7 +356,7 @@ function removeClientFileAPI(id, callBack) {
 //Remove EPL Payment API
 function removeEPLPaymentAPI(id, callBack) {
     if (isNaN(id)) {
-       return false;
+        return false;
     }
     ajaxRequest("DELETE", "/api/epl/regPayment/id/" + id, null, function (
             dataSet
@@ -413,5 +440,19 @@ function checkFileIssueStatus(is_exist) {
     } else {
         $(".markIssueClean").addClass("d-none"); //<-- Hide Issue Cleared
         $(".showReportInfoUi").addClass("d-none");
+    }
+}
+
+
+function checkCompletedStatus(file_status, epl_status, siteclear_status) {
+    if (file_status != 5) {
+        if (epl_status.length != 0) {
+            $(".newSiteClear").remove();
+        }
+        if (siteclear_status.length != 0) {
+            $(".newEPL").remove();
+        }
+    } else {
+
     }
 }

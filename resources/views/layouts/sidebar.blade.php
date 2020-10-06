@@ -319,6 +319,24 @@
                 @endforeach
             </ul>
         </li>
+        <li class="nav-item has-treeview {{ Request::is('expired_certificates') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-user-tie"></i>
+                <p>Report <i class="right fas fa-angle-left"></i></p>
+            </a>
+            <ul class="nav nav-treeview">
+                @foreach((auth()->user()->privileges) as $indexKey=>$pre)
+                @if($pre['id']===config('auth.privileges.clientSpace'))
+                <li class="nav-item">
+                    <a href="{{ url('/expired_certificates') }}" class="nav-link {{ Request::is('expired_certificates') ? 'active' : '' }}">
+                        <i class="fas fa-clock nav-icon"></i>
+                        <p>Expired List</p>
+                    </a>
+                </li>
+                @endif
+                @endforeach
+            </ul>
+        </li>
 
     </ul>
 </nav>

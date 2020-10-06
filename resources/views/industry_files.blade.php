@@ -123,6 +123,13 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div class="form-group">
+                        <label>Minute</label>
+                        <textarea id="getMinutes" maxlength="55" type="text" class="form-control form-control-sm" placeholder="Enter Minute..." value=""></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" id="setInspectionVal2" class="btn btn-primary d-none"><i class="fa fa-check"></i> Set Inspection</button>
                     <button type="button" id="needApproval" class="btn btn-primary d-none"><i class="fa fa-check"></i> AD Approval</button>
                     <button type="button" id="submitAdCerApproval" class="btn btn-primary d-none"><i class="fa fa-check"></i> Submit For AD Certificate Approval</button>
@@ -130,9 +137,6 @@
                     <div class="btn btn-group-lg">
                         <button type="button" id="viewCertificateBtn" class="btn btn-info d-none"><i class="fa fa-file"></i> View Certificate</button>
                     </div>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -170,6 +174,12 @@
 <!-- AdminLTE App -->
 <script>
     var file_status = {0: 'pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Prenidng Approval', 4: 'D Certificate Approval Prenidng', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold'};
+    function minute() {
+        var data = {
+            minutes: $('#getMinutes').val()
+        };
+        return data;
+    }
     fileStatusCombo(file_status);
     function fileStatusCombo(file_status) {
         var options = $('#getFileType');
@@ -187,11 +197,15 @@
         });
         $("#getAsDirect").change(function () {
             loadEnvOfficerCombo($('#getAsDirect').val(), function (rest) {
-                forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+                if (rest.length == 0) {
+                    return false;
+                } else {
+                    forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+                }
             });
         });
         $("#getEnvOfficer").change(function () {
-            forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+            forTypeFiles_table($(this).val(), $('#getFileType').val(), file_status);
         });
         $("#getFileType").change(function () {
             forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
@@ -255,7 +269,7 @@
     $(document).on('click', '#needApproval', function () {
         var fileData = JSON.parse(unescape($(this).val()));
         if (confirm('Are you sure you want to approve?')) {
-            approvalApi(fileData.id, fileData.environment_officer_id, function (resp) {
+            approvalApi(fileData.id, fileData.environment_officer_id, minute(), function (resp) {
                 show_mesege(resp);
                 if (resp.id == 1) {
                     $('#modal-x2').modal('hide');
@@ -268,7 +282,7 @@
     $(document).on('click', '#submitAdCerApproval', function () {
         var fileData = JSON.parse(unescape($(this).val()));
         if (confirm('Are you sure you want to approve?')) {
-            adCertificateApproval(fileData.id, fileData.environment_officer_id, function (resp) {
+            adCertificateApproval(fileData.id, fileData.environment_officer_id, minute(), function (resp) {
                 show_mesege(resp);
                 if (resp.id == 1) {
                     $('#modal-x2').modal('hide');
@@ -280,7 +294,7 @@
     $(document).on('click', '#rejectAdCerApproval', function () {
         var fileData = JSON.parse(unescape($(this).val()));
         if (confirm('Are you sure you want to approve?')) {
-            rejectCertificateApproval(fileData.id, fileData.environment_officer_id, function (resp) {
+            rejectCertificateApproval(fileData.id, fileData.environment_officer_id, minute(), function (resp) {
                 show_mesege(resp);
                 if (resp.id == 1) {
                     $('#modal-x2').modal('hide');

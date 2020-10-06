@@ -501,7 +501,7 @@ Route::middleware('auth:api')->get('/siteClearance/pay/id/{id}', 'EPLPaymentCont
  *  payed structure
  * {
  "inspection": {
-   "status": "not_payed",
+   "status": "payed",
    "object": {
      "id": 32,
      "transaction_id": 45,
@@ -612,17 +612,29 @@ Route::middleware('auth:api')->post('/siteClearance/pay/id/{id}', 'EPLPaymentCon
 Route::middleware('auth:api')->get('/processing_list', 'EPLPaymentController@getProcessingFeeList'); //get processing payment list
 /**
  * {
-    "EIA": {
-        "id": 6,
-        "name": "EIA Processing fee",
-        "created_at": "2020-03-13 15:26:05",
-        "updated_at": "2020-03-13 15:26:05"
-    },
-    "IEE": {
-        "id": 7,
-        "name": "IEE Processing Fee",
-        "created_at": "2020-03-13 15:26:45",
-        "updated_at": "2020-03-13 15:26:45"
-    }
+    "EIA": [
+        {
+            "id": 71,
+            "payment_type_id": 6,
+            "name": "EIA Processing Fee",
+            "type": "regular",
+            "amount": "500000.00",
+            "created_at": "2020-03-18 14:49:05",
+            "updated_at": "2020-03-18 14:49:05",
+            "payment_ranges": []
+        }
+    ],
+    "IEE": [
+        {
+            "id": 72,
+            "payment_type_id": 7,
+            "name": "IEE Processing Fee",
+            "type": "regular",
+            "amount": "200000.00",
+            "created_at": "2020-03-18 14:49:44",
+            "updated_at": "2020-03-18 14:49:44",
+            "payment_ranges": []
+        }
+    ]
 }
  */

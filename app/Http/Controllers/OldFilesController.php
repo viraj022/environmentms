@@ -14,28 +14,28 @@ class OldFilesController extends Controller
 
     public function create($id, Request $request)
     {
-       request()->validate([
+        request()->validate([
             'file' => 'required|mimes:jpeg,jpg,png,pdf'
         ]);
         $client = Client::findOrFail($id);
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-        $fileUrl = '/uploads/industry_files/' . $client->id . '/old';
+        $fileUrl = '/uploads/' . FieUploadController::getOldFilePath($client);
         $storePath = 'public' . $fileUrl;
         $path = $request->file('file')->storeAs($storePath, $file_name);
         $oldFiles = new OldFiles();
-        $oldFiles->path = "storage/" . $fileUrl . "/" . $file_name;
+        $oldFiles->path = "storage" . $fileUrl . "/" . $file_name;
         $oldFiles->type = $request->file->extension();
         $oldFiles->client_id = $client->id;
-             $msg =$oldFiles->save();
+        $msg = $oldFiles->save();
         LogActivity::fileLog($oldFiles->client_id, 'OldFile', "OldFileCreate", 1);
 
         if ($msg) {
-            LogActivity::addToLog('OldFileCreate Created',$oldFiles);            
+            LogActivity::addToLog('OldFileCreate Created', $oldFiles);
             return array('id' => 1, 'message' => 'true');
         } else {
-            LogActivity::addToLog('Fail to create OldFile ',$oldFiles);
+            LogActivity::addToLog('Fail to create OldFile ', $oldFiles);
             return array('id' => 0, 'message' => 'false');
         }
     }
@@ -45,15 +45,15 @@ class OldFilesController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $oldFiles = OldFiles::findOrFail($id);
-        $msg=$oldFiles->delete();
+        $msg = $oldFiles->delete();
 
         LogActivity::fileLog($oldFiles->client_id, 'OldFile', "OldFileDelate", 1);
 
         if ($msg) {
-            LogActivity::addToLog('OldFileCreate Deleted',$oldFiles);            
+            LogActivity::addToLog('OldFileCreate Deleted', $oldFiles);
             return array('id' => 1, 'message' => 'true');
         } else {
-            LogActivity::addToLog('Fail to delete OldFile ',$oldFiles);
+            LogActivity::addToLog('Fail to delete OldFile ', $oldFiles);
             return array('id' => 0, 'message' => 'false');
         }
     }

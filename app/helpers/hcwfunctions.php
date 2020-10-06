@@ -60,14 +60,14 @@ function fileLog($id, $code, $description,  $authlevel)
 function prepareMinutesArray($file, $description, $situation, $user_id)
 {
     // dd($file);
-    if ($file->file_status == 1 || $file->file_status == 2) {
+    if ($file->cer_type_status == 1 || $file->cer_type_status == 2) {
         $type = Minute::EPL;
         $type_id = $file->epls->last()->id;
-    } else if ($file->file_status == 3 || $file->file_status == 4) {
+    } else if ($file->cer_type_status == 3 || $file->cer_type_status == 4) {
         $type = Minute::SITE_CLEARANCE;
-        $type_id = $file->epls->last()->id;
+        $type_id = $file->siteClearenceSessions->last()->id;
     } else {
-        abort(501, "hcw error code");
+        abort(501, "Invalid File Status - hcw error code");
     }
     return [
         "file_id" => $file->id,
