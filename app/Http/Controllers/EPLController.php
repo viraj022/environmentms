@@ -549,7 +549,7 @@ class EPLController extends Controller
             'expire_date' => 'required|date',
             'certificate_no' => 'required|string',
             'count' => 'required|integer',
-            'submit_date' => 'required|date',
+              'submit_date' => 'required|date',
             'file' => 'required|mimes:jpeg,jpg,png,pdf'
         ]);
         // save epl main file      
