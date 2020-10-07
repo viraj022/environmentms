@@ -68,7 +68,7 @@
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <a id="viewCertificate" href="" class="btn btn-info d-none"><i class="fa fa-check"></i> View Certificate</a>
-                    <button id="prepareCertificate" class="btn btn-success d-none"><i class="fa fa-check"></i> Approve Certificate</button>
+                    <!--<button id="prepareCertificate" class="btn btn-success d-none"><i class="fa fa-check"></i> Approve Certificate</button>-->
                     <button type="button" id="holdCertificate" class="btn btn-warning d-none"><i class="fa fa-warning"></i> Hold Certificate</button>
                     <button type="button" id="rejectCertificate" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject Certificate</button>
                 </div>
