@@ -26,6 +26,15 @@ Route::middleware('auth:api')->get('/user/Privileges/{id}', 'UserController@prev
 Route::middleware('auth:api')->get('/rolls/privilege/add', 'RollController@PrevilagesAdd')->name('Previlages_add');
 Route::middleware('auth:api')->get('/user/privilege/add/{id}', 'UserController@PrevilagesAddById');
 Route::middleware('auth:api')->get('/user/activity/{id}', 'UserController@activeStatus');
+Route::middleware('auth:api')->get('/user/deleted', 'UserController@getDeletedUser');
+Route::middleware('auth:api')->put('/user/active/{id}', 'UserController@activeDeletedUser'); //restore deleted users
+/*
+{
+    "id": 1,
+    "message": "true"
+}
+*/
+
 Route::middleware('auth:api')->get('/level/institutes/id/{id}', 'LevelController@instituteById')->name('level_institues_by_id');
 
 //attachment_api

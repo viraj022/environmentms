@@ -153,3 +153,27 @@ function updateRole(id, data, callBack) {
         }
     });
 }
+
+function activeDeletedUser(id, callBack) {
+    $.ajax({
+        type: "PUT",
+        headers: {
+            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            "Accept": "application/json"
+        },
+
+        url: "/api/user/active/" + id,
+        cache: false,
+        success: function (result) {
+            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+                callBack(result);
+            }
+
+            if (result.id == 1) {
+                location.reload();
+            }
+
+
+        }
+    });
+}
