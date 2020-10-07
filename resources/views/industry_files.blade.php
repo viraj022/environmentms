@@ -197,7 +197,7 @@
         });
         $("#getAsDirect").change(function () {
             loadEnvOfficerCombo($('#getAsDirect').val(), function (rest) {
-                if (rest.length == 0) {
+                if (rest === null) {
                     return false;
                 } else {
                     forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
