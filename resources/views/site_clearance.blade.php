@@ -115,7 +115,7 @@
                                 <option value="0">Pending</option>
                                 <option value="1">Site Clearance</option>
                                 <option value="2">EIA</option>
-                                <option value="3">IEA</option>
+                                <option value="3">IEE</option>
                             </select>
                         </div>
                         <button id="changeProcessingBtn" class="btn btn-dark">Change</button>
