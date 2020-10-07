@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SiteClearenceSession extends Model
 {
+    protected $casts = [
+        'content_paths' => 'array',
+    ];
     use SoftDeletes;
     public function siteClearances()
     {

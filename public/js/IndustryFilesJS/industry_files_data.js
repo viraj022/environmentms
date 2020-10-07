@@ -94,7 +94,7 @@ function checkInspectionStatus(id, combo_val, callBack) {
 function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
     var tbl = "";
     loadAllFilesApi(env_id, function (resp) {
-        if (resp.length == 0) {
+        if (resp === null) {
             tbl = "<tr><td colspan='5'>No Data Found</td></tr>";
         } else {
             $.each(resp, function (index, row) {
