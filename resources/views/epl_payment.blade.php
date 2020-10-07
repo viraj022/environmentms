@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>(<a href="/epl_profile/client/{{$client}}/profile/{{$id}}">{{$epl_no}}</a>) <b class="siteDataType">...</b></h1>
+                <h1>(<a href="/{{$type_title}}/client/{{$client}}/profile/{{$id}}">{{$epl_no}}</a>) <b class="siteDataType">...</b></h1>
             </div>
         </div>
     </div>
