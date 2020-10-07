@@ -14,7 +14,7 @@ class AddExtraDataColumnToSiteClearenceSessionsTable extends Migration
     public function up()
     {
         Schema::table('site_clearence_sessions', function (Blueprint $table) {
-            $table->json('content_paths');
+            $table->json('content_paths')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddExtraDataColumnToSiteClearenceSessionsTable extends Migration
     public function down()
     {
         Schema::table('site_clearence_sessions', function (Blueprint $table) {
-            $table->dropColumn('content_paths');
+            $table->dropColumn('content_paths')->nullable();
         });
     }
 }
