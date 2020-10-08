@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use App\Minute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Repositories\MinutesRepository;
+use App\Repositories\CommitteeRepository;
 
 class MinuteController extends Controller
 {
-    public function __construct()
+    private  $minutesRepository;
+
+    public function __construct(MinutesRepository $minutesRepository)
     {
-        $this->middleware('auth:api');
+        $this->middleware(['auth:api']);
+        $this->minutesRepository = $minutesRepository;
     }
     /**
      * Display a listing of the resource.
@@ -19,28 +25,6 @@ class MinuteController extends Controller
      */
     public function index()
     {
-        return array(
-            array(
-                "type" => "EPL",
-                "date" => "2020-01-01",
-                "minute_object" =>  array(
-                    "minute_description" => "Text minutes",
-                    "situation" => "situvation",
-                    "user" => array(Auth::user())
-                )
-
-            ),
-            array(
-                "type" => "EPL",
-                "date" => "2020-01-01",
-                "minute_object" =>  array(
-                    "minute_description" => "Text minutes",
-                    "situation" => "situvation",
-                    "user" => array(Auth::user())
-                )
-
-            )
-        );
     }
 
     /**
@@ -70,9 +54,30 @@ class MinuteController extends Controller
      * @param  \App\Minute  $minute
      * @return \Illuminate\Http\Response
      */
-    public function show(Minute $minute)
+    public function show($id)
     {
-        //
+        return $this->minutesRepository->all($id);
+        return array(
+            array(
+                "type" => "EPL",
+                "date" => "2020-01-01",
+                "minute_object" =>  array(
+                    "minute_description" => "Text minutes",
+                    "situation" => "situvation",
+                    "user" => array(Auth::user())
+                )
+            ),
+            array(
+                "type" => "EPL",
+                "date" => "2020-01-01",
+                "minute_object" =>  array(
+                    "minute_description" => "Text minutes",
+                    "situation" => "situvation",
+                    "user" => array(Auth::user())
+                )
+
+            )
+        );
     }
 
     /**

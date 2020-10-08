@@ -52,7 +52,7 @@ class InspectionSessionAttachmentController extends Controller
                 $e = Client::findOrFail($inspection->client_id);
                 $type = $request->file->extension();
                 $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                $fileUrl = "/uploads/industry_files/" . $e->id . "/inspections/" . $inspection->id;
+                $fileUrl = "/uploads/" . FieUploadController::getInspectionFilePath($inspection);
                 $storePath = 'public' . $fileUrl;
                 $path = 'storage' . $fileUrl . "/" . $file_name;
                 $request->file('file')->storeAs($storePath, $file_name);

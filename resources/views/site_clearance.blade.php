@@ -75,7 +75,7 @@
                     <!-- /.card-header -->
                     <div class="card-body" style="height: 350px; overflow-y: scroll;">
                         <div class="callout callout-danger">
-                            <h6><a id="disPaylink" href="/epl_payments/id/{{$profile}}" class="text-success isOld2">Payments</a></h6>
+                            <h6><a id="disPaylink" href="/epl_payments/id/{{$profile}}/type/site_clearance" class="text-success isOld2">Payments</a></h6>
                             <p>All Payment (EPL, Fine,Inspection Fee, Certificate)</p>
                         </div>
                         <div class="callout callout-danger">
@@ -115,25 +115,12 @@
                                 <option value="0">Pending</option>
                                 <option value="1">Site Clearance</option>
                                 <option value="2">EIA</option>
-                                <option value="3">IEA</option>
+                                <option value="3">IEE</option>
                             </select>
                         </div>
                         <button id="changeProcessingBtn" class="btn btn-dark">Change</button>
                         <hr>
-                        <dt>Download Application :</dt>
                         <a href="" class="btn btn-dark navTodownload" target="_blank">View Application</a>
-
-                        <button type="button" class="btn btn-success d-none" data-upload_file="EPL" id="upld_application">Upload Application</button>
-                        <div class="form-group d-none" id="fileUpDiv">
-                            <hr>
-                            <label id="uploadLabel">File Upload </label>
-                            <input id="fileUploadInput" type="file" class=""  accept="image/*, .pdf">
-                            <div class="progress d-none">
-                                <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                                    <!--<span class="sr-only">40% Complete (success)</span>-->
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <!-- /.card-body -->
                 </div>     
@@ -154,6 +141,19 @@
                             <label>Valid Date*</label>
                             <input id="validDateTor" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">
                         </div>
+                        <div class="form-group sectionActiveTor d-none">
+                            <a id="viewActiveTor" href="#" target="_blank" class="btn btn-dark"><i class="fas fa-search"></i> View Current File</a>
+                        </div>
+                        <div class="form-group" id="fileUpDiv">
+                            <hr>
+                            <label id="uploadLabel">File Upload :</label>
+                            <input id="fileUploadTor" type="file" class=""  accept="image/*, .pdf">
+                            <div class="progress d-none">
+                                <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                    <!--<span class="sr-only">40% Complete (success)</span>-->
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <button id="uploadTOR" type="submit" class="btn btn-success"><i class="fas fa-check"></i> Upload TOR</button>
                         </div>
@@ -173,9 +173,12 @@
                             <label>Expire Date*</label>
                             <input id="expireClientReport" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">
                         </div>
+                        <div class="form-group sectionActiveClientRep d-none">
+                            <a id="viewActiveClientRep" target="_blank" href="#" class="btn btn-dark"><i class="fas fa-search"></i> View Current File</a>
+                        </div>
                         <div class="form-group" id="fileUpDiv">
                             <hr>
-                            <input id="fileUploadInput" type="file" class="" accept="image/*, .pdf">
+                            <input id="fileUploadClient" type="file" class="" accept="image/*, .pdf">
                             <div class="progress d-none">
                                 <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
                                     <!--<span class="sr-only">40% Complete (success)</span>-->
@@ -258,6 +261,7 @@
 $(function () {
     var CLIENT = '{{$client}}';
     var PROFILE = '{{$profile}}';
+//    var PATH_CONTENT = [];
     $('#currentProStatus').val(PROFILE);
 //    console.log('cli: ' + CLIENT + ', prof: ' + PROFILE);
     getaClientbyId(CLIENT, function (result) {
@@ -276,6 +280,10 @@ $(function () {
 
     var SITE_CLEARANCE_STATUS = {0: 'pending', 1: 'site clearance', 2: 'EIA', 3: 'IEA'};
     getSiteClearanceAPI(PROFILE, function (resp) {
+        if (resp.content_paths != null) {
+//            PATH_CONTENT = [resp.content_paths];
+            viewUploadContentData(resp.content_paths);
+        }
         if (resp.site_clearances.length != 0) {
             let cleareance = resp.site_clearances[(resp.site_clearances.length) - 1];
             $('.processingMethod').html('Processing Method:' + SITE_CLEARANCE_STATUS[resp.processing_status]);
@@ -321,6 +329,41 @@ $(function () {
                 });
             });
         }
+    });
+//Tor Upload Event
+    $("#uploadTOR").click(function () {
+        let data = {
+            expire_date: $('#expireDateTor').val(),
+            valid_date: $('#validDateTor').val(),
+            file: $('#fileUploadTor')[0].files[0]
+        };
+        setUploadTorAPI(PROFILE, data, function (rest) {
+            show_mesege(rest);
+            if (rest.id == 1) {
+                getSiteClearanceAPI(PROFILE, function (resp) {
+                    if (resp.content_paths != null) {
+                        viewUploadContentData(resp.content_paths);
+                    }
+                });
+            }
+        });
+    });
+//Client Report Upload Event
+    $("#uploadClReport").click(function () {
+        let data = {
+            expire_date: $('#expireClientReport').val(),
+            file: $('#fileUploadClient')[0].files[0]
+        };
+        setUploadClientAPI(PROFILE, data, function (rest) {
+            show_mesege(rest);
+            if (rest.id == 1) {
+                getSiteClearanceAPI(PROFILE, function (resp) {
+                    if (resp.content_paths != null) {
+                        viewUploadContentData(resp.content_paths);
+                    }
+                });
+            }
+        });
     });
 
 });

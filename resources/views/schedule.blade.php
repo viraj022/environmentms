@@ -201,6 +201,7 @@
         //Function when change Assist Dir Combo
         $(document).on('change', '#getAsDirect', function () {
             loadEnvOfficerCombo($('#getAsDirect').val(), function () {
+                setInspectionNeededApi($('#getEnvOfficer').val(), false);
                 loadCalenderApi($('#getEnvOfficer').val(), function (event) {//get all events from db
                     if ($('#getEnvOfficer').val() == '4A616B65') {
                         calendar.getEventSources()[0].remove();

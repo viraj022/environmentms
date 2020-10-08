@@ -94,7 +94,7 @@ function checkInspectionStatus(id, combo_val, callBack) {
 function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
     var tbl = "";
     loadAllFilesApi(env_id, function (resp) {
-        if (resp.length == 0) {
+        if (resp === null) {
             tbl = "<tr><td colspan='5'>No Data Found</td></tr>";
         } else {
             $.each(resp, function (index, row) {
@@ -140,8 +140,8 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
                     tbl += '</tr>';
                 }
             });
-            $('#tblAllFiles tbody').html(tbl);
         }
+            $('#tblAllFiles tbody').html(tbl);
     });
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
         callBack();
@@ -150,11 +150,11 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
 
 
 //Approval API Btn
-function approvalApi(file_id, env_offi, callBack) {
+function approvalApi(file_id, env_offi, DATA, callBack) {
     if (isNaN(file_id)) {
         return false;
     }
-    ajaxRequest('PATCH', "/api/environment_officer/approve/" + env_offi + "/" + file_id, null, function (dataSet) {
+    ajaxRequest('PATCH', "/api/environment_officer/approve/" + env_offi + "/" + file_id, DATA, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
@@ -162,22 +162,22 @@ function approvalApi(file_id, env_offi, callBack) {
 }
 
 //Sumbit For AD Certificate Approval Btn
-function adCertificateApproval(file_id, env_offi, callBack) {
+function adCertificateApproval(file_id, env_offi, DATA, callBack) {
     if (isNaN(file_id)) {
         return false;
     }
-    ajaxRequest('PATCH', "/api/environment_officer/approve_certificate/" + env_offi + "/" + file_id, null, function (dataSet) {
+    ajaxRequest('PATCH', "/api/environment_officer/approve_certificate/" + env_offi + "/" + file_id, DATA, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
     });
 }
 //Rejection For AD Certificate Btn
-function rejectCertificateApproval(file_id, env_offi, callBack) {
+function rejectCertificateApproval(file_id, env_offi, DATA, callBack) {
     if (isNaN(file_id)) {
         return false;
     }
-    ajaxRequest('PATCH', "/api/environment_officer/reject_certificate/" + env_offi + "/" + file_id, null, function (dataSet) {
+    ajaxRequest('PATCH', "/api/environment_officer/reject_certificate/" + env_offi + "/" + file_id, DATA, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
