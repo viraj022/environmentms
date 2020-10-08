@@ -41,9 +41,9 @@
                                         <th style="width: 10px">#</th>
                                         <th>BR</th>
                                         <th>File No</th>
-                                        <th>Industry Name</th>
-                                        <th >EPL</th>
-                                        <th >Old Files</th>
+                                        <th >Industry Name</th>
+                                        <th style="width: 8px">EPL</th>
+                                        <th style="width: 8px">Old Files</th>
                                         <th >Action</th>                                                        
                                     </tr>
                                 </thead>
