@@ -12,7 +12,7 @@ function getAllOldFilesApi(callBack) {
                 tbl += '<td>' + row.industry_name + '</td>';
                 (row.epls.length == 0) ? tbl += '<td>-</td>' : tbl += '<td><i class="fa fa-check"></i></td>';
                 (row.old_files.length == 0) ? tbl += '<td>-</td>' : tbl += '<td><i class="fa fa-check"></i></td>';
-                tbl += '<td><a href="/industry_profile/id/' + row.id + '" type="button" class="btn btn-sm btn-dark">View Profile</a>&nbsp<a href="/register_old_data/id/' + row.id + '" type="button" class="btn btn-sm btn-success">Add Data</a></td>';
+                tbl += '<td><a href="/industry_profile/id/' + row.id + '" type="button" class="btn btn-xs btn-dark">View Profile</a>&nbsp<a href="/register_old_data/id/' + row.id + '" type="button" class="btn btn-xs btn-success">Add Data</a></td>';
                 tbl += '</tr>';
             });
         }
