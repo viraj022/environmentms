@@ -78,6 +78,7 @@
                     <button type="button" id="prepareCertificate" class="btn btn-primary d-none"><i class="fa fa-check"></i> Approve For Prepare Certificate</button>
                     <button type="button" id="approveCertificate" class="btn btn-primary d-none"><i class="fa fa-check"></i> Approve Certificate</button>
                     <button type="button" id="rejectCertificate" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject Certificate</button>
+                    <button type="button" id="approveFile" class="btn btn-primary d-none"><i class="fa fa-times"></i> Approve File</button>
                     <button type="button" id="rejectFile" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject File</button>
                 </div>
             </div>
@@ -139,10 +140,11 @@
             $('#prepareCertificate').val($(this).val()); //<-- Share this button value to this button
             $('#approveCertificate').val($(this).val()); //<-- Share this button value to this button
             $('#rejectCertificate').val($(this).val()); //<-- Share this button value to this button
+            $('#approveFile').val($(this).val()); //<-- Share this button value to this button
             $('#rejectFile').val($(this).val()); //<-- Share this button value to this button
-            $('#prepareCertificate,#rejectFile,#approveCertificate,#rejectCertificate').addClass('d-none');
+            $('#prepareCertificate,#approveFile,#rejectFile,#approveCertificate,#rejectCertificate').addClass('d-none');
             if (f_Status == 1) {
-                $('#prepareCertificate').removeClass('d-none');
+                $('#approveFile').removeClass('d-none');
                 $('#rejectFile').removeClass('d-none');
             } else if (f_Status == 3) {
                 $('#approveCertificate').removeClass('d-none');
@@ -178,8 +180,20 @@
         });
         $(document).on('click', '#rejectCertificate', function () { // reject certificate btn
             var fileData = JSON.parse(unescape($(this).val()));
-            if (confirm('Are you sure you want to approve?')) {
+            if (confirm('Are you sure you want to reject?')) {
                 certificateRejectApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
+                    show_mesege(resp);
+                    if (resp.id == 1) {
+                        loadAdPendingListTable($('#getAssistantDirector').val());
+                        $('#modal-x2').modal('hide');
+                    }
+                });
+            }
+        });
+        $(document).on('click', '#approveFile', function () { // approveFile btn
+            var fileData = JSON.parse(unescape($(this).val()));
+            if (confirm('Are you sure you want to approve?')) {
+                fileApproveApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
                     show_mesege(resp);
                     if (resp.id == 1) {
                         loadAdPendingListTable($('#getAssistantDirector').val());

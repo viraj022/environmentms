@@ -10,6 +10,12 @@
 <link rel="stylesheet" href="../plugins/fullcalendar-daygrid/main.min.css">
 <link rel="stylesheet" href="../plugins/fullcalendar-timegrid/main.min.css">
 <link rel="stylesheet" href="../plugins/fullcalendar-bootstrap/main.min.css">
+<style>
+    /* SHADE DAYS IN THE PAST */
+    td.fc-day.fc-past {
+        background-color: #EEEEEE;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -259,6 +265,11 @@
             drop: function (info) {
                 // is the "remove after drop" checkbox checked?
                 info.draggedEl.parentNode.removeChild(info.draggedEl);
+            },
+            /* This constrains it to today or later */
+            eventConstraint: {
+                start: moment().format('YYYY-MM-DD'),
+                end: '2100-01-01' // hard coded goodness unfortunately
             },
             eventReceive: function (info) {
                 var env_officer_id = $('#getEnvOfficer').val(); //Env Officer ID
