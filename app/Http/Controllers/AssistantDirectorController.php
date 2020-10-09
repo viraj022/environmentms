@@ -14,26 +14,30 @@ use Illuminate\Support\Facades\DB;
 use App\Repositories\MinutesRepository;
 use Illuminate\Support\Facades\Auth;
 
-class AssistantDirectorController extends Controller {
+class AssistantDirectorController extends Controller
+{
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
         return view('assistant_director', ['pageAuth' => $pageAuth]);
     }
 
-    public function adPendingIndex() {
+    public function adPendingIndex()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
         return view('ad_pending_list', ['pageAuth' => $pageAuth]);
     }
 
-    public function directorPendingListIndex() {
+    public function directorPendingListIndex()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
         return view('director_pending_list', ['pageAuth' => $pageAuth]);
@@ -44,7 +48,8 @@ class AssistantDirectorController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
 
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
@@ -83,7 +88,8 @@ class AssistantDirectorController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($id) {
+    public function store($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
         request()->validate([
@@ -107,13 +113,14 @@ class AssistantDirectorController extends Controller {
         }
     }
 
-    public function UnActiveAssistantDirector($id) {
+    public function UnActiveAssistantDirector($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
-//  request()->validate([
-//     'user_id' => 'required',
-//     'zone_id' => 'required',
-// ]);
+        //  request()->validate([
+        //     'user_id' => 'required',
+        //     'zone_id' => 'required',
+        // ]);
         if ($pageAuth['is_update']) {
             $assistantdirector = AssistantDirector::findOrFail($id);
             $assistantdirector->active_status = '0';
@@ -136,8 +143,9 @@ class AssistantDirectorController extends Controller {
      * @param  \App\AssistantDirector  $assistantDirector
      * @return \Illuminate\Http\Response
      */
-    public function show(AssistantDirector $assistantDirector) {
-//
+    public function show(AssistantDirector $assistantDirector)
+    {
+        //
     }
 
     /**
@@ -146,8 +154,9 @@ class AssistantDirectorController extends Controller {
      * @param  \App\AssistantDirector  $assistantDirector
      * @return \Illuminate\Http\Response
      */
-    public function edit(AssistantDirector $assistantDirector) {
-//
+    public function edit(AssistantDirector $assistantDirector)
+    {
+        //
     }
 
     /**
@@ -157,8 +166,9 @@ class AssistantDirectorController extends Controller {
      * @param  \App\AssistantDirector  $assistantDirector
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AssistantDirector $assistantDirector) {
-//
+    public function update(Request $request, AssistantDirector $assistantDirector)
+    {
+        //
     }
 
     /**
@@ -167,13 +177,14 @@ class AssistantDirectorController extends Controller {
      * @param  \App\AssistantDirector  $assistantDirector
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
-//  request()->validate([
-//     'user_id' => 'required',
-//     'zone_id' => 'required',
-// ]);
+        //  request()->validate([
+        //     'user_id' => 'required',
+        //     'zone_id' => 'required',
+        // ]);
         if ($pageAuth['is_update']) {
             $assistantdirector = AssistantDirector::findOrFail($id);
             $assistantdirector->active_status = '0';
@@ -190,84 +201,89 @@ class AssistantDirectorController extends Controller {
         }
     }
 
-//get allUser not in 
-    public function getAllUsersNotInAssistantDirector() {
+    //get allUser not in 
+    public function getAllUsersNotInAssistantDirector()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
         if ($pageAuth['is_read']) {
             $assistantDirectors = AssistantDirector::where('active_status', '1')->select('user_id')->get();
             $environmentOfficers = EnvironmentOfficer::where('active_status', '1')->select('user_id as id')->get();
-// LogActivity::addToLog('Request to Get all users not in assistantDirector',$assistantDirectors);
-//return $allAssistantDerectors;
+            // LogActivity::addToLog('Request to Get all users not in assistantDirector',$assistantDirectors);
+            //return $allAssistantDerectors;
             return User::whereHas('roll.level', function ($queary) {
-                        $queary->where('name', Level::ASSI_DIRECTOR);
-                    })->wherenotin('id', $assistantDirectors)->wherenotin('id', $environmentOfficers)->get();
+                $queary->where('name', Level::ASSI_DIRECTOR);
+            })->wherenotin('id', $assistantDirectors)->wherenotin('id', $environmentOfficers)->get();
 
-//return AssistantDirector::get(); 
+            //return AssistantDirector::get(); 
         } else {
-//  LogActivity::addToLog('Fails to Get all users not in assistantDirector',null);
+            //  LogActivity::addToLog('Fails to Get all users not in assistantDirector',null);
             abort(401);
         }
     }
 
-//end get allUser not in 
-//get all active_AssistantDirector
-    public function getAll_active_AssistantDirector() {
+    //end get allUser not in 
+    //get all active_AssistantDirector
+    public function getAll_active_AssistantDirector()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
         if ($pageAuth['is_read']) {
 
-//        LogActivity::addToLog('Request to Get all active assistantDirector',null);
-//    PaymentType::get();
+            //        LogActivity::addToLog('Request to Get all active assistantDirector',null);
+            //    PaymentType::get();
             return AssistantDirector::join('users', 'assistant_directors.user_id', '=', 'users.id')
-                            ->join('zones', 'assistant_directors.zone_id', '=', 'zones.id')
-                            ->where('assistant_directors.active_status', '=', '1')
-                            ->select('assistant_directors.id', 'users.first_name as first_name', 'users.last_name as last_name', 'users.user_name as user_name', 'users.id as user_id', 'zones.id as zone_id', 'zones.name as zone_name')
-                            ->get();
+                ->join('zones', 'assistant_directors.zone_id', '=', 'zones.id')
+                ->where('assistant_directors.active_status', '=', '1')
+                ->select('assistant_directors.id', 'users.first_name as first_name', 'users.last_name as last_name', 'users.user_name as user_name', 'users.id as user_id', 'zones.id as zone_id', 'zones.name as zone_name')
+                ->get();
         } else {
-// LogActivity::addToLog('Fails to Get all active assistantDirector',null);
+            // LogActivity::addToLog('Fails to Get all active assistantDirector',null);
             abort(401);
         }
     }
 
-    public function assistantDirectorByZone($id) {
+    public function assistantDirectorByZone($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
         if ($pageAuth['is_read']) {
 
             return AssistantDirector::join('users', 'assistant_directors.user_id', '=', 'users.id')
-                            ->join('zones', 'assistant_directors.zone_id', '=', 'zones.id')
-                            ->where('assistant_directors.active_status', '=', '1')
-                            ->where('zones.id', '=', $id)
-                            ->select('users.first_name as first_name', 'users.last_name as last_name', 'users.user_name as user_name', 'users.id as user_id', 'zones.id as zone_id', 'zones.name as zone_name')
-                            ->get();
+                ->join('zones', 'assistant_directors.zone_id', '=', 'zones.id')
+                ->where('assistant_directors.active_status', '=', '1')
+                ->where('zones.id', '=', $id)
+                ->select('users.first_name as first_name', 'users.last_name as last_name', 'users.user_name as user_name', 'users.id as user_id', 'zones.id as zone_id', 'zones.name as zone_name')
+                ->get();
         } else {
             abort(401);
         }
     }
 
-//get a AssistantDirector
-    public function get_a_AssistantDirector($id) {
+    //get a AssistantDirector
+    public function get_a_AssistantDirector($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
         if ($pageAuth['is_read']) {
 
-//    PaymentType::get();
+            //    PaymentType::get();
             return AssistantDirector::join('users', 'assistant_directors.user_id', '=', 'users.id')
-                            ->join('zones', 'assistant_directors.zone_id', '=', 'zones.id')
-                            ->where('assistant_directors.id', '=', $id)
-                            ->select('assistant_directors.id', 'users.first_name as first_name', 'users.last_name as last_name', 'users.user_name as user_name', 'users.id as user_id', 'zones.id as zone_id', 'zones.name as zone_name', 'assistant_directors.active_status as active_status')
-                            ->first();
+                ->join('zones', 'assistant_directors.zone_id', '=', 'zones.id')
+                ->where('assistant_directors.id', '=', $id)
+                ->select('assistant_directors.id', 'users.first_name as first_name', 'users.last_name as last_name', 'users.user_name as user_name', 'users.id as user_id', 'zones.id as zone_id', 'zones.name as zone_name', 'assistant_directors.active_status as active_status')
+                ->first();
         } else {
             abort(401);
         }
     }
 
-//end get a AssistantDirector
+    //end get a AssistantDirector
 
-    public function checkAssistantDirector($id) {
+    public function checkAssistantDirector($id)
+    {
         $assistantDirector = AssistantDirector::where('user_id', '=', $id)
-                        ->where('active_status', '=', 1)->first();
+            ->where('active_status', '=', 1)->first();
         if ($assistantDirector === null) {
             return true;
         } else {
@@ -275,196 +291,202 @@ class AssistantDirectorController extends Controller {
         }
     }
 
-    public function getAssistanceDirectorsByLevel() {
+    public function getAssistanceDirectorsByLevel()
+    {
         $data = array();
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($user->roll->level->name == Level::DIRECTOR) {
             $data = AssistantDirector::with('user')->where('active_status', 1)->get();
-// dd($data->toArray());
+            // dd($data->toArray());
         } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
             $data = AssistantDirector::with('user')->where('user_id', $user->id)->where('active_status', 1)->get();
-// dd($data);
+            // dd($data);
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
             $data = AssistantDirector::with('user')->where('id', EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first()->assistant_director_id)->get();
         }
         return $data;
     }
 
-    public function getAssistanceDirectorFile() {
+    public function getAssistanceDirectorFile()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
     }
 
-    public function approveFile(Request $request, MinutesRepository $minutesRepository, $adId, $file_id) {
+    public function approveFile(Request $request, MinutesRepository $minutesRepository, $adId, $file_id)
+    {
         return DB::transaction(function () use ($request, $minutesRepository, $adId, $file_id) {
-                    request()->validate([
-                        'minutes' => 'sometimes|required|string',
-                    ]);
-                    $data = array();
-                    $user = Auth::user();
-                    $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-                    $file = Client::findOrFail($file_id);
-                    $assistantDirector = AssistantDirector::with('user')->findOrFail($adId);
-// dd($assistantDirector->user);
-                    $msg = setFileStatus($file_id, 'file_status', 2);
-                    $msg = setFileStatus($file_id, 'cer_status', 0);
+            request()->validate([
+                'minutes' => 'sometimes|required|string',
+            ]);
+            $data = array();
+            $user = Auth::user();
+            $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+            $file = Client::findOrFail($file_id);
+            $assistantDirector = AssistantDirector::with('user')->findOrFail($adId);
+            // dd($assistantDirector->user);
+            $msg = setFileStatus($file_id, 'file_status', 2);
+            $msg = setFileStatus($file_id, 'cer_status', 0);
 
-                    fileLog($file->id, 'FileStatus', 'Asistant Director (' . $assistantDirector->user->user_name . ') Approve the file and forward to certificate drafting.', 0);
-                    if ($request->has('minutes')) {
-                        $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ASSI_APPROVE_FILE, $user->id));
-                    }
-                    if ($msg) {
-                        return array('id' => 1, 'message' => 'true');
-                    } else {
-                        return array('id' => 0, 'message' => 'false');
-                    }
-                });
+            fileLog($file->id, 'FileStatus', 'Asistant Director (' . $assistantDirector->user->user_name . ') Approve the file and forward to certificate drafting.', 0);
+            if ($request->has('minutes')) {
+                $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ASSI_APPROVE_FILE, $user->id));
+            }
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        });
     }
 
-    public function rejectFile(Request $request, MinutesRepository $minutesRepository, $adId, $file_id) {
+    public function rejectFile(Request $request, MinutesRepository $minutesRepository, $adId, $file_id)
+    {
         return DB::transaction(function () use ($request, $minutesRepository, $adId, $file_id) {
-                    request()->validate([
-                        'minutes' => 'sometimes|required|string',
-                    ]);
-                    $data = array();
-                    $user = Auth::user();
-                    $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-                    $file = Client::findOrFail($file_id);
-                    $assistantDirector = AssistantDirector::with('user')->findOrFail($adId);
-// dd($assistantDirector->user);
-                    $msg = setFileStatus($file_id, 'file_status', -1);
-// $msg = setFileStatus($file_id, 'cer_status', 0);
+            request()->validate([
+                'minutes' => 'sometimes|required|string',
+            ]);
+            $data = array();
+            $user = Auth::user();
+            $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+            $file = Client::findOrFail($file_id);
+            $assistantDirector = AssistantDirector::with('user')->findOrFail($adId);
+            $msg = setFileStatus($file_id, 'file_status', -1);
 
-                    fileLog($file->id, 'FileStatus', 'Asistant Director (' . $assistantDirector->user->user_name . ') Rejected the file.', 0);
-                    if ($request->has('minutes')) {
-                        $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ASSI_REJECT_FILE, $user->id));
-                    }
-                    if ($msg) {
-                        return array('id' => 1, 'message' => 'true');
-                    } else {
-                        return array('id' => 0, 'message' => 'false');
-                    }
-                });
+            fileLog($file->id, 'FileStatus', 'Asistant Director (' . $assistantDirector->user->user_name . ') Rejected the file.', 0);
+            if ($request->has('minutes')) {
+                $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ASSI_REJECT_FILE, $user->id));
+            }
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        });
     }
 
-// hansana
-    public function directorRejectCertificate(Request $request ,MinutesRepository $minutesRepository,$file_id) {
+    // hansana
+    public function directorRejectCertificate(Request $request, MinutesRepository $minutesRepository, $file_id)
+    {
         return DB::transaction(function () use ($request, $minutesRepository, $file_id) {
-                    request()->validate([
-                        'minutes' => 'sometimes|required|string',
-                    ]);
-                    $user = Auth::user();
-                    $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-                    $file = Client::findOrFail($file_id);
-                    $msg = setFileStatus($file_id, 'file_status', 2);
-                    $msg = setFileStatus($file_id, 'cer_status', 1);
-                    fileLog($file->id, 'FileStatus', 'Director (' . $user->user_name . ') Rejected the certificate.', 0);
-                    if ($request->has('minutes')) {
-                        $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_Dire_REJECT_CERTIFICATE, $user->id));
-                    }
-                    if ($msg) {
-                        return array('id' => 1, 'message' => 'true');
-                    } else {
-                        return array('id' => 0, 'message' => 'false');
-                    }
-                });
+            request()->validate([
+                'minutes' => 'sometimes|required|string',
+            ]);
+            $user = Auth::user();
+            $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+            $file = Client::findOrFail($file_id);
+            $msg = setFileStatus($file_id, 'file_status', 2);
+            $msg = setFileStatus($file_id, 'cer_status', 1);
+            fileLog($file->id, 'FileStatus', 'Director (' . $user->user_name . ') Rejected the certificate.', 0);
+            if ($request->has('minutes')) {
+                $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_Dire_REJECT_CERTIFICATE, $user->id));
+            }
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        });
     }
 
-    public function approveCertificate(Request $request, MinutesRepository $minutesRepository, $adId, $file_id) {
+    public function approveCertificate(Request $request, MinutesRepository $minutesRepository, $adId, $file_id)
+    {
         return DB::transaction(function () use ($request, $minutesRepository, $adId, $file_id) {
-                    request()->validate([
-                        'minutes' => 'sometimes|required|string',
-                    ]);
-                    $user = Auth::user();
-                    $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-                    $file = Client::findOrFail($file_id);
-                    $assistantDirector = AssistantDirector::with('user')->findOrFail($adId);
-                    $msg = setFileStatus($file_id, 'file_status', 4);
-                    $msg = setFileStatus($file_id, 'cer_status', 4);
+            request()->validate([
+                'minutes' => 'sometimes|required|string',
+            ]);
+            $user = Auth::user();
+            $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+            $file = Client::findOrFail($file_id);
+            $assistantDirector = AssistantDirector::with('user')->findOrFail($adId);
+            $msg = setFileStatus($file_id, 'file_status', 4);
+            $msg = setFileStatus($file_id, 'cer_status', 4);
 
-                    fileLog($file->id, 'FileStatus', 'Assistant Director (' . $assistantDirector->user->user_name . ') Approve the Certificate and forward.', 0);
-                    if ($request->has('minutes')) {
-                        $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ASSI_APPROVE_CERTIFICATE, $user->id));
-                    }
-                    if ($msg) {
-                        return array('id' => 1, 'message' => 'true');
-                    } else {
-                        return array('id' => 0, 'message' => 'false');
-                    }
-                });
+            fileLog($file->id, 'FileStatus', 'Assistant Director (' . $assistantDirector->user->user_name . ') Approve the Certificate and forward.', 0);
+            if ($request->has('minutes')) {
+                $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ASSI_APPROVE_CERTIFICATE, $user->id));
+            }
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        });
     }
 
-    public function rejectCertificate(Request $request, MinutesRepository $minutesRepository, $adId, $file_id) {
+    public function rejectCertificate(Request $request, MinutesRepository $minutesRepository, $adId, $file_id)
+    {
         return DB::transaction(function () use ($request, $minutesRepository, $adId, $file_id) {
-                    request()->validate([
-                        'minutes' => 'sometimes|required|string',
-                    ]);
-                    $data = array();
-                    $user = Auth::user();
-                    $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-                    $file = Client::findOrFail($file_id);
-                    $assistantDirector = AssistantDirector::with('user')->findOrFail($adId);
-                    $msg = setFileStatus($file_id, 'file_status', 2);
-                    $msg = setFileStatus($file_id, 'cer_status', 1);
+            request()->validate([
+                'minutes' => 'sometimes|required|string',
+            ]);
+            $data = array();
+            $user = Auth::user();
+            $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+            $file = Client::findOrFail($file_id);
+            $assistantDirector = AssistantDirector::with('user')->findOrFail($adId);
+            $msg = setFileStatus($file_id, 'file_status', 2);
+            $msg = setFileStatus($file_id, 'cer_status', 1);
 
-                    fileLog($file->id, 'FileStatus', 'Asistant Director (' . $assistantDirector->user->user_name . ') Rejected the Certificate and forward to drafting.', 0);
-                    if ($request->has('minutes')) {
-                        $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ASSI_REJECT_CERTIFICATE, $user->id));
-                    }
-                    if ($msg) {
-                        return array('id' => 1, 'message' => 'true');
-                    } else {
-                        return array('id' => 0, 'message' => 'false');
-                    }
-                });
+            fileLog($file->id, 'FileStatus', 'Asistant Director (' . $assistantDirector->user->user_name . ') Rejected the Certificate and forward to drafting.', 0);
+            if ($request->has('minutes')) {
+                $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ASSI_REJECT_CERTIFICATE, $user->id));
+            }
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        });
     }
-  
-    public function directorHoldCertificate(Request $request ,MinutesRepository $minutesRepository,$file_id) {
+
+    public function directorHoldCertificate(Request $request, MinutesRepository $minutesRepository, $file_id)
+    {
         return DB::transaction(function () use ($request, $minutesRepository, $file_id) {
-                    request()->validate([
-                        'minutes' => 'sometimes|required|string',
-                    ]);
-                    $user = Auth::user();
-                    $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-                    $file = Client::findOrFail($file_id);
+            request()->validate([
+                'minutes' => 'sometimes|required|string',
+            ]);
+            $user = Auth::user();
+            $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+            $file = Client::findOrFail($file_id);
 
-                    $msg = setFileStatus($file_id, 'file_status', -2);
-                    $msg = setFileStatus($file_id, 'cer_status', -1);
-                    fileLog($file->id, 'FileStatus', 'Director (' . $user->user_name . ') hold the certificate.', 3);
-                    if ($request->has('minutes')) {
-                        $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_Dire_Hold_CERTIFICATE, $user->id));
-                    }
-                    if ($msg) {
-                        return array('id' => 1, 'message' => 'true');
-                    } else {
-                        return array('id' => 0, 'message' => 'false');
-                    }
-                });
+            $msg = setFileStatus($file_id, 'file_status', -2);
+            $msg = setFileStatus($file_id, 'cer_status', -1);
+            fileLog($file->id, 'FileStatus', 'Director (' . $user->user_name . ') hold the certificate.', 3);
+            if ($request->has('minutes')) {
+                $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_Dire_Hold_CERTIFICATE, $user->id));
+            }
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        });
     }
 
-    public function derectorApproveCertificate(Request $request ,MinutesRepository $minutesRepository, $file_id) {
+    public function derectorApproveCertificate(Request $request, MinutesRepository $minutesRepository, $file_id)
+    {
         return DB::transaction(function () use ($request, $minutesRepository, $file_id) {
-                    request()->validate([
-                        'minutes' => 'sometimes|required|string',
-                    ]);
-                    $user = Auth::user();
-                    $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-                    $file = Client::findOrFail($file_id);
-                    $msg = setFileStatus($file_id, 'file_status', 5);
-                    $msg = setFileStatus($file_id, 'cer_status', 5);
-                    fileLog($file->id, 'FileStatus', 'Director (' . $user->user_name . ') Approve the Certificate and forward.', 0);
-                    if ($request->has('minutes')) {
-                        $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_Dire_APPROVE_CERTIFICATE, $user->id));
-                    }
-                    if ($msg) {
-                        return array('id' => 1, 'message' => 'true');
-                    } else {
-                        return array('id' => 0, 'message' => 'false');
-                    }
-                });
+            request()->validate([
+                'minutes' => 'sometimes|required|string',
+            ]);
+            $user = Auth::user();
+            $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+            $file = Client::findOrFail($file_id);
+            $msg = setFileStatus($file_id, 'file_status', 5);
+            $msg = setFileStatus($file_id, 'cer_status', 5);
+            fileLog($file->id, 'FileStatus', 'Director (' . $user->user_name . ') Approve the Certificate and forward.', 0);
+            if ($request->has('minutes')) {
+                $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_Dire_APPROVE_CERTIFICATE, $user->id));
+            }
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        });
     }
-
 }
 
 //end calss
