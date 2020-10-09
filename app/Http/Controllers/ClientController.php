@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Helpers\LogActivity;
 use Illuminate\Database\Eloquent\Builder;
 use App\EPL;
+use App\SiteClearenceSession;
 
 class ClientController extends Controller
 {
@@ -760,13 +761,26 @@ class ClientController extends Controller
         $certificate->issue_status = 1;
         $certificate->user_id = $user->id;
         $msg = $msg && $certificate->save();
-        $epl = EPL::where('client_id', $certificate->client_id)
-            ->whereNull('issue_date')->first();
-        $epl->issue_date = $certificate->issue_date;
-        $epl->expire_date = $certificate->expire_date;
-        $epl->certificate_no = $certificate->id;
-        $epl->status  = 1;
-        $msg = $msg && $epl->save();
+        $file = $certificate->client;
+        if ($file->cer_type_status == 1 || $file->cer_type_status == 2) {
+            $epl = EPL::where('client_id', $certificate->client_id)
+                ->whereNull('issue_date')->first();
+            $epl->issue_date = $certificate->issue_date;
+            $epl->expire_date = $certificate->expire_date;
+            $epl->certificate_no = $certificate->cetificate_number;
+            $epl->status  = 1;
+            $msg = $msg && $epl->save();
+        } else if ($file->cer_type_status == 3 || $file->cer_type_status == 4) {
+            $site = SiteClearenceSession::where('client_id', $certificate->client_id)->whereNull('issue_date')->first();
+            $site->issue_date =  $certificate->issue_date;
+            $site->expire_date = $certificate->expire_date;
+            $site->licence_no =  $certificate->cetificate_number;
+            $site->status = 1;
+            $msg = $msg && $site->save();
+        } else {
+            abort(501, "Invalid File Status - hcw error code");
+        }
+
 
 
 
@@ -800,8 +814,8 @@ class ClientController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $certificate = Certificate::findOrFail($id);
-        $certificate->issue_status = 1;
-        $certificate->save();
+        // $certificate->issue_status = 1;
+        // $certificate->save();
         $file = Client::findOrFail($certificate->client_id);
         $msg = setFileStatus($certificate->client_id, 'file_status', 5);
         // $msg = setFileStatus($certificate->client_id, 'cer_status', 5);
