@@ -197,7 +197,7 @@
         });
         $("#getAsDirect").change(function () {
             loadEnvOfficerCombo($('#getAsDirect').val(), function (rest) {
-                if (rest.length == 0) {
+                if (rest === null) {
                     return false;
                 } else {
                     forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
@@ -245,13 +245,13 @@
 
         $('#needApproval,#submitAdCerApproval,#rejectAdCerApproval,#setInspectionVal2,#viewCertificateBtn').addClass('d-none');
 
-        if (f_Status == 0) {
-            if (fileData.need_inspection == null) {
+        if (f_Status === 0) {
+            if (fileData.need_inspection === null) {
                 $('#setInspectionVal2').removeClass('d-none');
-            } else if (fileData.need_inspection == 'Completed') {
+            } else if (fileData.need_inspection === 'Completed') {
                 $('#needApproval').removeClass('d-none');
             } else {
-                $('#needApproval').removeClass('d-none');
+                $('#needApproval').addClass('d-none');
             }
         } else if (f_Status == 2) {
             if (fileData.cer_status == 2) {
@@ -260,9 +260,9 @@
                 $('#viewCertificateBtn').removeClass('d-none');
             }
         } else if (f_Status == -1) {
-            $('#needApproval').removeClass('d-none');
+            $('#needApproval').addClass('d-none');
         } else {
-            $('#setInspectionVal2').addClass('d-none');
+            $('#setInspectionVal2').removeClass('d-none');
         }
     });
 

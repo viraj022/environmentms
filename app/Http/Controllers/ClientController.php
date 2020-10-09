@@ -481,7 +481,9 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        return Client::where('is_old', 0)->with('epls')->with('oldFiles')->get();
+        return Client::where('is_old', 0)->with('epls')->with('oldFiles')->orderBy('id','desc')->get();
+
+
     }
 
     public function markOldFinish($id)

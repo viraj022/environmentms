@@ -219,10 +219,71 @@
 
                                     </div>
                                 </div>
+                                <div>
+                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-lg">Deleted Users </button>
+
+                </div>
                             </div>
                         </div>
                     </div>
                     </div>
+                    <div class="modal fade" id="modal-lg" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Deleted Users</h3>
+
+                                <div class="card-tools">
+                                    <!-- <div class="input-group input-group-sm" style="width: 150px;">
+                                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive p-0" style="height:300px;">
+                                <table class="table table-head-fixed" id="tbl_deleted_users">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>User</th>
+                                            <th>Deleted at</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+
+
+
+                </div>
+                <div class="modal-footer justify-content-right">
+
+                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
                     </div>
                 </section>
                 @endif
@@ -252,6 +313,8 @@
                 <script src="../../dist/js/adminlte.min.js"></script>
                 <!-- AdminLTE for demo purposes -->
                 <script src="../../dist/js/demo.js"></script>
+                <script src="../../js/userjs/get.js"></script>
+<script src="../../js/userjs/submit.js"></script>
                 <script>
             $(function () {
 
@@ -282,6 +345,13 @@
                 $('.levelCombo').change(function () {
                     loadRolls(this.value, 'rollCombo');
                 });
+                load_deleted_user_table();
+        $(document).on('click', '.btnAction', function() {
+            //var row = JSON.parse(decodeURIComponent($(this).data('row')));
+            if (confirm('Are you sure you want to restore this user ?')) {
+                activeDeletedUser($(this).val());
+            }
+        });
 
 
             })

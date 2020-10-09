@@ -316,4 +316,29 @@ class UserController extends Controller
                 ->with('error', 'Error');
         }
     }
+
+    public function getDeletedUser()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.userCreate'));
+        return User::onlyTrashed()->get();
+    }
+
+    public function activeDeletedUser($id)
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.userCreate'));
+
+        $msg = User::withTrashed()->find($id)->restore();
+
+        if ($msg) {
+            return array('id' => 1, 'mgs' => 'true');
+        } else {
+            return array('id' => 0, 'mgs' => 'false');
+        }
+    }
+
+
+
+
 }
