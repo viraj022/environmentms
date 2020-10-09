@@ -210,7 +210,7 @@ class EPLController extends Controller
 
                     setFileStatus($epl->client_id, 'file_status', 0);  // set file status to zero 
                     setFileStatus($epl->client_id, 'inspection', null);  //  set inspection pending status to 'null'
-                    setFileStatus($epl->client_id, 'cer_type_status', 3);  // setificate type state to epl 
+                    setFileStatus($epl->client_id, 'cer_type_status', 1);  // setificate type state to epl 
                     setFileStatus($epl->client_id, 'cer_status', 0);  // set certificate status to 0
                     setFileStatus($epl->client_id, 'file_problem', 0); // set file problem status to 0
 
