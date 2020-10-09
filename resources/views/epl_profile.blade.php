@@ -116,7 +116,7 @@
                             </div> 
                             <div class="col-md-6 cerInfoBtn d-none">
                                 <dt>Certificate Information :</dt>
-                                <a href="/issue_certificate/id/{{$profile}}" class="btn btn-primary" target="_blank">Issue EPL</a>
+                                <a href="/issue_certificate/id/{{$profile}}" class="btn btn-primary" target="_blank">EPL Renewal</a>
                             </div> 
                         </div>
                         <button type="button" class="btn btn-success d-none" data-upload_file="EPL" id="upld_application">Upload Application</button>
@@ -210,7 +210,7 @@ $(function () {
             if (confirm("Details Not Found! Try Again!")) {
             }
         } else {
-            if (result.status === 0) {
+            if (result.status === 1) {
                 $('.cerInfoBtn').removeClass('d-none');
             } else {
                 $('.cerInfoBtn').addClass('d-none');
