@@ -254,6 +254,12 @@ class EPLController extends Controller
                 $epl->submitted_date = \request('created_date');
                 $epl->count = $epl->getRenewCount() + 1;
                 $msg = $epl->save();
+                setFileStatus($epl->client_id, 'file_status', 0);  // set file status to zero 
+                setFileStatus($epl->client_id, 'inspection', null);  //  set inspection pending status to 'null'
+                setFileStatus($epl->client_id, 'cer_type_status', 2);  // setificate type state to epl  renew
+                setFileStatus($epl->client_id, 'cer_status', 0);  // set certificate status to 0
+                setFileStatus($epl->client_id, 'file_problem', 0); // set file problem status to 0
+
                 if ($msg) {
                     $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
                     $fileUrl = '/uploads/industry_files/' . $client->id . '/application';
