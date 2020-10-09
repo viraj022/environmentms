@@ -132,7 +132,8 @@ function completeCertificateAPI(certificate_id, FILE_STATUS, data, callBack) {
     if (FILE_STATUS == 2) {
         url = "/api/certificate/drafted/";
     } else if (FILE_STATUS == 4) {
-        url = "/api/certificate/complete/";
+        url = "/api/certificate/issue/";
+//        url = "/api/certificate/complete/";
     }
 
     url += certificate_id;

@@ -210,7 +210,7 @@ $(function () {
             if (confirm("Details Not Found! Try Again!")) {
             }
         } else {
-            if (result.status === 1) {
+            if (result.status === 0) {
                 $('.cerInfoBtn').removeClass('d-none');
             } else {
                 $('.cerInfoBtn').addClass('d-none');
