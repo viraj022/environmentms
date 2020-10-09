@@ -76,10 +76,10 @@
                             <h6><a href="/remarks/epl/{{$profile}}" class="text-success isOld2">Remarks</a></h6>
                             <p>Add Comments</p>
                         </div>
-                        <div class="callout callout-danger">
+<!--                        <div class="callout callout-danger">
                             <h6><a href="/issue_certificate/id/{{$profile}}" class="text-success ">Certificate Information</a></h6>
                             <p>Issue Certificate / Certificate Information</p>
-                        </div>
+                        </div>-->
                     </div>
                     <!-- /.card-body -->
 
@@ -109,9 +109,16 @@
                             </div>
                             <div id="map" style="width: 100%; height: 400px;"></div>
                         </dl>
-                        <dt>Download Application :</dt>
-                        <a href="" class="btn btn-dark navTodownload" target="_blank">View Application</a>
-
+                        <div class="row">
+                            <div class="col-md-6">
+                                <dt>Download Application :</dt>
+                                <a href="" class="btn btn-dark navTodownload" target="_blank">View Application</a>   
+                            </div> 
+                            <div class="col-md-6 cerInfoBtn d-none">
+                                <dt>Certificate Information :</dt>
+                                <a href="/issue_certificate/id/{{$profile}}" class="btn btn-primary" target="_blank">Issue EPL</a>
+                            </div> 
+                        </div>
                         <button type="button" class="btn btn-success d-none" data-upload_file="EPL" id="upld_application">Upload Application</button>
                         <div class="form-group d-none" id="fileUpDiv">
                             <hr>

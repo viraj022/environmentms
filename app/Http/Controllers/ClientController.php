@@ -800,6 +800,8 @@ class ClientController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $certificate = Certificate::findOrFail($id);
+        $certificate->issue_status = 1;
+        $certificate->save();
         $file = Client::findOrFail($certificate->client_id);
         $msg = setFileStatus($certificate->client_id, 'file_status', 5);
         // $msg = setFileStatus($certificate->client_id, 'cer_status', 5);
