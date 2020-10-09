@@ -196,7 +196,7 @@
                                     <div class="card">
                                         <div class="card-header">
                                             <h3 class="card-title">
-                                                <i class="fas fa-address-card"></i> EPL Details
+                                                <i class="fas fa-address-card"></i> Industry Details
                                             </h3>
                                         </div>
                                         <!-- /.card-header -->
