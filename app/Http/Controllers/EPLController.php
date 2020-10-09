@@ -207,7 +207,13 @@ class EPLController extends Controller
                     // $client->is_working = 1;
                     $client->save();
                     $epl->save();
-                    setFileStatus($client->id, 'cer_type_status', 1);
+
+                    setFileStatus($epl->client_id, 'file_status', 0);  // set file status to zero 
+                    setFileStatus($epl->client_id, 'inspection', null);  //  set inspection pending status to 'null'
+                    setFileStatus($epl->client_id, 'cer_type_status', 1);  // setificate type state to epl 
+                    setFileStatus($epl->client_id, 'cer_status', 0);  // set certificate status to 0
+                    setFileStatus($epl->client_id, 'file_problem', 0); // set file problem status to 0
+
                     LogActivity::addToLog('New EPL created', $epl);
                     LogActivity::fileLog($epl->client_id, 'FileOP', "EPL creted and application path updated", 1);
 
@@ -556,7 +562,7 @@ class EPLController extends Controller
             'expire_date' => 'required|date',
             'certificate_no' => 'required|string',
             'count' => 'required|integer',
-              'submit_date' => 'required|date',
+            'submitted_date' => 'required|date',
             'file' => 'required|mimes:jpeg,jpg,png,pdf'
         ]);
         // save epl main file      
@@ -577,9 +583,8 @@ class EPLController extends Controller
             $epl->certificate_no = \request('certificate_no');
             $epl->status = 1;
             $epl->count = \request('count');
-            $epl->submitted_date = \request('submit_date');
-
-            // save old data file
+            $epl->submitted_date = \request('submitted_date');
+            $msg = $epl->save();
             if ($msg) {
                 if ($request->file('file') != null) {
                     $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
@@ -643,7 +648,7 @@ class EPLController extends Controller
             'expire_date' => 'required|date',
             'certificate_no' => 'required|string',
             'count' => 'required|integer',
-            'submit_date' => 'required|date',
+            'submitted_date' => 'required|date',
             'file' => 'sometimes|nullable|mimes:jpeg,jpg,png,pdf'
         ]);
         // save epl main file      
@@ -656,7 +661,7 @@ class EPLController extends Controller
             $epl->expire_date = \request('expire_date');
             $epl->certificate_no = \request('certificate_no');
             $epl->count = \request('count');
-            $epl->submitted_date = \request('submit_date');
+            $epl->submitted_date = \request('submitted_date');
             $msg = $msg && $epl->save();
             // save old data file
             if ($msg) {
