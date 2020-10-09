@@ -98,3 +98,14 @@ function fileRejectApi(file_id, assDir_id, DATA, callBack) {
         }
     });
 }
+function fileApproveApi(file_id, assDir_id, DATA, callBack) {
+    if (file_id.length == 0) {
+        return false;
+    }
+    var url = "/api/assistant_director/approve/" + assDir_id + "/" + file_id;
+    ajaxRequest('PATCH', url, DATA, function (result) {
+        if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
+            callBack(result);
+        }
+    });
+}
