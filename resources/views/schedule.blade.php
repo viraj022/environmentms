@@ -269,7 +269,7 @@
             /* This constrains it to today or later */
             eventConstraint: {
                 start: moment().format('YYYY-MM-DD'),
-                end: '2100-01-01' // hard coded goodness unfortunately
+                end: '2200-01-01' // hard coded goodness unfortunately
             },
             eventReceive: function (info) {
                 var env_officer_id = $('#getEnvOfficer').val(); //Env Officer ID
