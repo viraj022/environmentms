@@ -160,7 +160,7 @@
                                                             <button class="btn btn-lg btn-default" id="scheduleWaste"><i class="fa fa-plus"></i></button></span>
 
                                                         <div class="info-box-content">
-                                                            <span class="info-box-text">Create new schedule waste management certificate</span>
+                                                            <span class="info-box-text">Create new schedule waste management <br> certificate</span>
                                                             <span class="info-box-number">Schedule Waste</span>
                                                         </div>
                                                         <!-- /.info-box-content -->
