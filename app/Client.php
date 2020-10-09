@@ -2,9 +2,10 @@
 
 namespace App;
 
+use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Carbon\Carbon;
 
 class Client extends Model
 {
@@ -101,31 +102,22 @@ class Client extends Model
                         case 1: //new epl
                                 $cerNo = Setting::Where('name', 'certificate_ai')->sum('value');
                                 $cerNo++;
-                                // return array('nextNumber' => str_pad($cerNo, 6, "0", STR_PAD_LEFT));
-                                return  str_pad($cerNo, 6, "0", STR_PAD_LEFT);
+                                $data =  str_pad($cerNo, 6, "0", STR_PAD_LEFT);
+                                return $data . "/" . date("Y");
                         case 2: //epl renewal
-                                $certificate = Certificate::Where('client_id', $this->id)->first();
-                                $certificate_count = Certificate::Where('client_id', $this->id)->count();
-
-                                $certificate_count = Certificate::Where('client_id', $this->id)->count();
-
-                                //  $cerNo = Setting::Where('name', 'certificate_ai')->sum('value');
-                                //  dd($certificate);
-
-                                // return array('nextNumber' => str_pad($certificate->cetificate_number, 6, "0", STR_PAD_LEFT) . "\r" . $certificate_count);
-                                return  str_pad($certificate->cetificate_number, 6, "0", STR_PAD_LEFT);
+                                $epl = EPL::Where('client_id', $this->id)->orderBy('id', 'desc')->first();
+                                $serial_no =  Str::substr($epl->certificate_no, 0, strpos($epl->certificate_no, '/'));
+                                $data = str_pad($serial_no, 6, "0", STR_PAD_LEFT);
+                                return  $data . "/r" . $epl->count . "/" . date("Y");
                         case 3; //site_new
                                 $client = Client::findOrFail($this->id);
                                 //return array('nextNumber' => $client->file_no);
                                 return $client->file_no;
-
-
                         case 4: //site_clearance_extetion
                                 $client = Client::findOrFail($this->id);
                                 // return array('nextNumber' => $client->file_no);
                                 return $client->file_no;
                                 break;
-
                         default:
                 }
         }
