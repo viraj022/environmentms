@@ -207,9 +207,14 @@ class EPLController extends Controller
                     // $client->is_working = 1;
                     $client->save();
                     $epl->save();
+                    setFileStatus($epl->client_id, 'file_status', 0);  // set file status to zero 
+                    setFileStatus($epl->client_id, 'inspection', null);  //  set inspection pending status to 'null'
+                    setFileStatus($epl->client_id, 'cer_type_status', 3);  // set inspection pending status to 3
+                    setFileStatus($epl->client_id, 'cer_status', 0);  // set certificate status to 0
+                    setFileStatus($epl->client_id, 'file_problem', 0); // set file problem status to 0
                     setFileStatus($client->id, 'cer_type_status', 1);
                     LogActivity::addToLog('New EPL created', $epl);
-                    LogActivity::fileLog($epl->client_id, 'FileOP', "EPL creted and application path updated", 1);
+                    LogActivity::fileLog($epl->client_id, 'FileOP', "EPL created and application path updated", 1);
 
 
                     return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
