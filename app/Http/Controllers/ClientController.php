@@ -348,7 +348,7 @@ class ClientController extends Controller
 
     public function getAllFiles($id)
     {
-//        dd('ffff');
+        //        dd('ffff');
         $data = array();
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
@@ -368,10 +368,11 @@ class ClientController extends Controller
         }
         return $data;
     }
-    
-    public function certificatePath($id) {
-           $client = Client::findOrFail($id);
-         return  Certificate::where('client_id', $client->id)->orderBy('id', 'desc')->first();
+
+    public function certificatePath($id)
+    {
+        $client = Client::findOrFail($id);
+        return  Certificate::where('client_id', $client->id)->orderBy('id', 'desc')->first();
     }
 
     public function workingFiles($id)
@@ -481,9 +482,7 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        return Client::where('is_old', 0)->with('epls')->with('oldFiles')->orderBy('id','desc')->get();
-
-
+        return Client::where('is_old', 0)->with('epls')->with('oldFiles')->get();
     }
 
     public function markOldFinish($id)
@@ -758,20 +757,15 @@ class ClientController extends Controller
         $file = Client::findOrFail($certificate->client_id);
         $msg = setFileStatus($file->id, 'file_status', 6);
         $msg = $msg && setFileStatus($file->id, 'cer_status', 6);
-        // $certificate->issue_date = Carbon::now();
         $certificate->issue_status = 1;
         $certificate->user_id = $user->id;
         $msg = $msg && $certificate->save();
-        // $certificate = Certificate::findOrFail($cer_id);
-        // dd($certificate);
         $epl = EPL::where('client_id', $certificate->client_id)
             ->whereNull('issue_date')->first();
-        // dd($epl);
         $epl->issue_date = $certificate->issue_date;
-        // dd($epl->issue_date);
         $epl->expire_date = $certificate->expire_date;
         $epl->certificate_no = $certificate->id;
-        // dd($epl);
+        $epl->status  = 1;
         $msg = $msg && $epl->save();
 
 
