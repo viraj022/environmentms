@@ -177,12 +177,6 @@ class SiteClearanceController extends Controller
     public function extendSiteClearence(Request $request, SiteClearenceSession $siteClearanceSession)
     {
         // return \DB::transaction(function () use ($request, $client) {
-
-
-
-
-
-
         //     if ($msg) {
         //         LogActivity::addToLog('deleteOldData done : SiteClearanceController', $siteClearance);
         //         return array('id' => 1, 'message' => 'true');
