@@ -53,10 +53,11 @@
                         </div>
                         <div class="form-group">
                             <label>Code*</label>
-                            <input id="getCode" type="text" class="form-control form-control-sm"
+                            <input maxlength="10" id="getCode" type="text" class="form-control form-control-sm"
                                    placeholder="Enter Code..."
                                    value="">
                             <div id="valCode" class="d-none"><p class="text-danger">Code is required</p></div>
+                            <div id="valCodeLen" class="d-none"><p class="text-danger">Code Maximum Character Must Be 10</p></div>
                             <div id="valcodeUnique" class="d-none"><p class="text-danger">Code already taken!</p></div>
                         </div>
                     </div>

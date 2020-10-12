@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Contact Number</label>
-                                    <input id="getContact" type="text" class="form-control form-control-sm"
+                                    <input id="getContact" maxlength="10" type="text" class="form-control form-control-sm"
                                            placeholder="Enter Contact Number..."
                                            value="">
                                     <div id="valConName" class="d-none"><p class="text-danger">Contact Number is required</p></div>
@@ -94,7 +94,7 @@
                                     <input id="getNicSave" type="text" class="form-control form-control-sm"
                                            placeholder="Enter NIC..."
                                            value="">
-                                    <div id="valnicName" class="d-none"><p class="text-danger">NIC is required</p></div>
+                                    <div id="valnicName" maxlength="12" class="d-none"><p class="text-danger">NIC is required</p></div>
                                 </div>
                                 <hr>
                                 <div class="card-header">
@@ -160,7 +160,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Contact No</label>
-                                    <input id="getContactn" type="text" class="form-control form-control-sm" placeholder="Enter Contact Info..." value="">
+                                    <input id="getContactn" type="text" maxlength="10" class="form-control form-control-sm" placeholder="Enter Contact Info..." value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Email</label>

@@ -32,5 +32,9 @@ function Validiteinsert(data){
         $('#valCode').removeClass('d-none');
         response = false;
     }
+        if(data.code.length > 10){
+        $('#valCodeLen').removeClass('d-none');
+        response = false;
+    }
     return response;
 }
