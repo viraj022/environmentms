@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
   |
  */
 
-Route::middleware('auth:api')->get('/files/old', 'ClientController@getOldFiles'); //   get old files 
+Route::middleware('auth:api')->get('/files/old/{count}', 'ClientController@getOldFiles'); //   get old files 
 /*
 [
     {
