@@ -28,7 +28,7 @@ function setProfileDetails(obj) {
     $('#obj_name').html(obj.industry_name);
     $('#obj_regno').html(obj.industry_registration_no);
     $('#obj_invest').html(obj.industry_investment);
-    $('#cer_status').html(certificate_Status[obj.cer_type_status]);
+    $('#cer_status').text(certificate_Status[obj.cer_type_status]);
 }
 
 
@@ -132,7 +132,8 @@ function completeCertificateAPI(certificate_id, FILE_STATUS, data, callBack) {
     if (FILE_STATUS == 2) {
         url = "/api/certificate/drafted/";
     } else if (FILE_STATUS == 4) {
-        url = "/api/certificate/complete/";
+        url = "/api/certificate/issue/";
+//        url = "/api/certificate/complete/";
     }
 
     url += certificate_id;

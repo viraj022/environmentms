@@ -368,6 +368,9 @@
             }
             completeCertificateAPI(CERTIFICATE_ID, FILE_STATUS, data, function (resp) {
                 show_mesege(resp);
+                if (resp.id === 1) {
+                    location.reload();
+                }
                 getCertificateDetails(PROFILE_ID, function (resp) {
                     CERTIFICATE_ID = parseInt(resp.id);
                     FILE_STATUS = parseInt(resp.client.file_status);

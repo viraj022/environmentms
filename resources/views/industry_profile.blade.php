@@ -160,7 +160,7 @@
                                                             <button class="btn btn-lg btn-default" id="scheduleWaste"><i class="fa fa-plus"></i></button></span>
 
                                                         <div class="info-box-content">
-                                                            <span class="info-box-text">Create new schedule waste management certificate</span>
+                                                            <span class="info-box-text">Create new schedule waste management <br> certificate</span>
                                                             <span class="info-box-number">Schedule Waste</span>
                                                         </div>
                                                         <!-- /.info-box-content -->
@@ -196,7 +196,7 @@
                                     <div class="card">
                                         <div class="card-header">
                                             <h3 class="card-title">
-                                                <i class="fas fa-address-card"></i> EPL Details
+                                                <i class="fas fa-address-card"></i> Industry Details
                                             </h3>
                                         </div>
                                         <!-- /.card-header -->
@@ -589,36 +589,7 @@
                         <div class="col-md-12 loadMinCard">
 
                         </div>
-                        <!--                        <div class="col-md-12">
-                                                    <div class="card card-success">
-                                                        <div class="card-header">
-                                                            <h3 class="card-title">Site Clearance</h3>
-                        
-                                                            <div class="card-tools">
-                                                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                                                                </button>
-                                                            </div>
-                                                             /.card-tools 
-                                                        </div>
-                                                         /.card-header 
-                                                        <div class="card-body" style="display: block;">
-                                                            <table class="table table-condensed" id="tblSiteClearMins">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th style="width: 10px">#</th>
-                                                                        <th>Description</th>
-                                                                        <th>Situation</th>
-                                                                        <th>Minute Date</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                         /.card-body 
-                                                    </div>
-                                                     /.card 
-                                                </div>-->
+                     
                     </div>
                 </div>
             </div>

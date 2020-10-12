@@ -76,11 +76,11 @@
                     <div class="card-body" style="height: 350px; overflow-y: scroll;">
                         <div class="callout callout-danger">
                             <h6><a id="disPaylink" href="/epl_payments/id/{{$profile}}/type/site_clearance" class="text-success isOld2">Payments</a></h6>
-                            <p>All Payment (EPL, Fine,Inspection Fee, Certificate)</p>
+                            <p>All Payment (Site Clearance, Fine,Inspection Fee, Certificate)</p>
                         </div>
                         <div class="callout callout-danger">
                             <h6><a href="/epl_profile/atachments/{{$profile}}" class="text-success isOld2">Attachments</a></h6>
-                            <p>Upload EPL Attachments</p>
+                            <p>Upload Site Clearance Attachments</p>
                         </div>
                         <div class="callout callout-danger">
                             <h6><a href="/remarks/epl/{{$profile}}" class="text-success isOld2">Remarks</a></h6>
@@ -103,7 +103,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">
-                            <i class="fas fa-address-card"></i> EPL Data
+                            <i class="fas fa-address-card"></i> Site Clearance Data
                         </h3>
                     </div>
                     <!-- /.card-header -->
