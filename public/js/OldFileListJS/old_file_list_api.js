@@ -17,6 +17,7 @@ function getAllOldFilesApi(callBack) {
             });
         }
         $('#tblOldFiles tbody').html(tbl);
+        $('#tblOldFiles').DataTable();
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
