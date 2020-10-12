@@ -29,42 +29,83 @@ function methodMinuteAPI(data, method, id, callBack) {
 }
 
 
+//function getCardOfTableUI(callBack) {
+//    var card = "";
+//    var id = 1;
+//    methodMinuteAPI(null, 4, PROFILE_ID, function (dataSet) {
+//        if (dataSet) {
+//            $.each(dataSet, function (index, set) {
+//                card += '<div class="card card-success">';
+//                card += '<div class="card-header">';
+//                card += ' <h3 class="card-title">' + set.type + '(' + set.Date + ')' + '</h3>';
+//                card += ' <div class="card-tools">';
+//                card += ' <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>';
+//                card += '  </button>';
+//                card += ' </div>';
+//                card += ' </div>';
+//                card += ' <div class="card-body" style="display: block;">';
+//                card += '<table class="table table-condensed">';
+//                card += ' <thead>';
+//                card += '    <tr>';
+//                card += '       <th style="width: 10px">#</th>';
+//                card += '        <th>Description</th>';
+//                card += '        <th>Situation</th>';
+//                card += '        <th>Updated At</th>';
+//                card += '    </tr>';
+//                card += '  </thead>';
+//                card += ' <tbody>';
+//                $.each(set.minute_object, function (index, e) {
+//                    card += '<tr>';
+//                    card += '<td>' + ++index + '</td>';
+//                    card += '<td>' + e.minute_description + '</td>';
+//                    card += '<td>' + situations_arr[e.situation] + '</td>';
+//                    card += '<td>' + e.updated_at + '</td>';
+//                    card += '</tr>';
+//                });
+//                card += '  </tbody>';
+//                card += ' </table>';
+//                card += ' </div>';
+//                card += '</div>';
+//            });
+//        } else {
+//            card = "<td>No Data Found</td>";
+//        }
+//        $('.loadMinCard').html(card);
+////        $('.loadMinCard').html(table);
+//        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+//            callBack();
+//        }
+//    });
+//
+//}
 function getCardOfTableUI(callBack) {
     var card = "";
     var id = 1;
     methodMinuteAPI(null, 4, PROFILE_ID, function (dataSet) {
         if (dataSet) {
             $.each(dataSet, function (index, set) {
-                card += '<div class="card card-success">';
+                card += '<div class="card card-widget">';
                 card += '<div class="card-header">';
-                card += ' <h3 class="card-title">' + set.type + '(' + set.Date + ')' + '</h3>';
+                card += ' <b class="username">' + set.type + '(' + set.Date + ')' + '</b>';
                 card += ' <div class="card-tools">';
                 card += ' <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>';
                 card += '  </button>';
                 card += ' </div>';
                 card += ' </div>';
-                card += ' <div class="card-body" style="display: block;">';
-                card += '<table class="table table-condensed">';
-                card += ' <thead>';
-                card += '    <tr>';
-                card += '       <th style="width: 10px">#</th>';
-                card += '        <th>Description</th>';
-                card += '        <th>Situation</th>';
-                card += '        <th>Updated At</th>';
-                card += '    </tr>';
-                card += '  </thead>';
-                card += ' <tbody>';
+                card += ' <div class="card-footer card-comments" style="display: block;">';
                 $.each(set.minute_object, function (index, e) {
-                    card += '<tr>';
-                    card += '<td>' + ++index + '</td>';
-                    card += '<td>' + e.minute_description + '</td>';
-                    card += '<td>' + situations_arr[e.situation] + '</td>';
-                    card += '<td>' + e.updated_at + '</td>';
-                    card += '</tr>';
+                    card += '<div class="card-comment">';
+                    card += ' <img class="img-circle img-sm" src="../../dist/img/user1-128x128.jpg" alt="User Image">';
+                    card += '<div class="comment-text">';
+                    card += '<span class="username">';
+                    card += situations_arr[e.situation];
+                    card += ' <span class="text-muted float-right">' + e.updated_at + '</span>';
+                    card += '</span>';
+                    card += e.minute_description;
+                    card += '</div>';
+                    card += '</div>';
                 });
-                card += '  </tbody>';
-                card += ' </table>';
-                card += ' </div>';
+                card += '</div>';
                 card += '</div>';
             });
         } else {

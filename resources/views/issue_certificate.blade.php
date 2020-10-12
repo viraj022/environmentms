@@ -37,17 +37,20 @@
                                 <h3 class="card-title">Issue EPL</h3>
                             </div>
                             <div class="card-body">
-                                <div class="form-group">
-                                    <label>Issue Date *</label>
-                                    <input id="issueDate" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="" value="">
+                                <div class="form-group d-none">
+                                    <input id="client_id" type="text" class="form-control form-control-sm" placeholder="" value="">
                                 </div>
                                 <div class="form-group">
-                                    <label>Expire Date *</label>
-                                    <input id="expireDate" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="" value="">
+                                    <label>Remark *</label>
+                                    <input id="remark" type="text" class="form-control form-control-sm" placeholder="" value="Enter Text">
                                 </div>
                                 <div class="form-group">
-                                    <label>Certificate Number *</label>
-                                    <input id="certificateNo" type="text" class="form-control form-control-sm" placeholder="Enter Number" value="">
+                                    <label>Created Date *</label>
+                                    <input id="createdDate" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Upload Certificate *</label>
+                                    <input id="fileUploadC" class="form-control form-control-sm" type="file" value="">
                                 </div>
                                 <button type="button" class="btn btn-lg btn-success" id="issueBtn"><i class="fas fa-check"></i> Issue EPL Certificate</button>
                             </div>
@@ -55,6 +58,32 @@
                     </div>
                 </div>
             </div>
+            <!--            <div class="col-md-12">
+                            <div class="row d-none" id="showUiDb">
+                                <div class="col-md-8">
+                                    <div class="card card-outline card-success">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Issue EPL</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label>Issue Date *</label>
+                                                <input id="issueDate" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="" value="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Expire Date *</label>
+                                                <input id="expireDate" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="" value="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Certificate Number *</label>
+                                                <input id="certificateNo" type="text" class="form-control form-control-sm" placeholder="Enter Number" value="">
+                                            </div>
+                                            <button type="button" class="btn btn-lg btn-success" id="issueBtn"><i class="fas fa-check"></i> Issue EPL Certificate</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
             <div class="col-md-12">
                 <div class="row d-none" id="showData">
                     <div class="col-md-8">
@@ -161,6 +190,7 @@
 var EPL = "{{$id}}";
 $(function () {
     getEplCertificateDetails(EPL, function (parameters) {
+        $('#client_id').val(parameters.client_id);
         if (parameters.status == 1) {
             $('#showUiDb').addClass('d-none');
             $('#showData').removeClass('d-none');
@@ -172,7 +202,7 @@ $(function () {
             var currentDate = new Date().toISOString().split('T')[0];
             if (currentDate >= parameters.expire_date) {
                 $('#eplexpireuiSetup').html('Passed Away');
-            }else{               
+            } else {
                 $('#eplexpireuiSetup').html('Dates To Expire');
             }
 //Date Filtering End            
@@ -197,8 +227,11 @@ $(function () {
     });
     $("#issueBtn").click(function () {
         if (confirm('Are you sure you want to issue?')) {
-            IssueEpl(EPL, formData(), function (p) {
-
+            IssueCertificateEPL($('#client_id').val(), formData(), function (p) {
+                show_mesege(p);
+                if (p.id === 1) {
+                    window.location.href = p.rout;
+                }
             });
         } else {
             return false;
@@ -206,14 +239,15 @@ $(function () {
     });
     function formData() {
         let data = {
-            issue_date: $("#issueDate").val().trim(),
-            expire_date: $("#expireDate").val().trim(),
-            certificate_no: $("#certificateNo").val().trim()
-        }
-        if (data.issue_date.length == 0 || data.expire_date.length == 0 || data.certificate_no.length == 0) {
-            alert("Please Fill Correct Values !");
-            return false;
-        }
+            client_id: $("#client_id").val().trim(),
+            remark: $("#remark").val().trim(),
+            created_date: $("#createdDate").val().trim(),
+            file: $('#fileUploadC')[0].files[0]
+        };
+//        if (data.issue_date.length == 0 || data.expire_date.length == 0 || data.certificate_no.length == 0) {
+//            alert("Please Fill Correct Values !");
+//            return false;
+//        }
         return data;
     }
     $('.btnRenewal').click(function () {

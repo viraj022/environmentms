@@ -76,10 +76,10 @@
                             <h6><a href="/remarks/epl/{{$profile}}" class="text-success isOld2">Remarks</a></h6>
                             <p>Add Comments</p>
                         </div>
-<!--                        <div class="callout callout-danger">
-                            <h6><a href="/issue_certificate/id/{{$profile}}" class="text-success ">Certificate Information</a></h6>
-                            <p>Issue Certificate / Certificate Information</p>
-                        </div>-->
+                        <!--                        <div class="callout callout-danger">
+                                                    <h6><a href="/issue_certificate/id/{{$profile}}" class="text-success ">Certificate Information</a></h6>
+                                                    <p>Issue Certificate / Certificate Information</p>
+                                                </div>-->
                     </div>
                     <!-- /.card-body -->
 
@@ -116,7 +116,7 @@
                             </div> 
                             <div class="col-md-6 cerInfoBtn d-none">
                                 <dt>Certificate Information :</dt>
-                                <a href="/issue_certificate/id/{{$profile}}" class="btn btn-primary" target="_blank">Issue EPL</a>
+                                <a href="/issue_certificate/id/{{$profile}}" class="btn btn-primary" target="_blank">EPL Renewal</a>
                             </div> 
                         </div>
                         <button type="button" class="btn btn-success d-none" data-upload_file="EPL" id="upld_application">Upload Application</button>
@@ -210,6 +210,11 @@ $(function () {
             if (confirm("Details Not Found! Try Again!")) {
             }
         } else {
+            if (result.status === 1) {
+                $('.cerInfoBtn').removeClass('d-none');
+            } else {
+                $('.cerInfoBtn').addClass('d-none');
+            }
             setClearanceData(result);
             $('.eplCodeAfileNo').html(result.epl_instantNumber);
             $(".navTodownload").attr("href", '/' + result.path);
