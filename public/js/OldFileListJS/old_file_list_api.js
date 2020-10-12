@@ -1,5 +1,5 @@
-function getAllOldFilesApi(callBack) {
-    ajaxRequest('GET', "/api/files/old", null, function (dataSet) {
+function getAllOldFilesApi(count, callBack) {
+    ajaxRequest('GET', "/api/files/old/" + count, null, function (dataSet) {
         var tbl = "";
         if (dataSet.length == 0) {
             tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
