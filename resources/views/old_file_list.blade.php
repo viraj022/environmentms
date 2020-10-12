@@ -110,7 +110,7 @@
 <script>
     $(function () {
 //Load table
-        getAllOldFilesApi(function () {
+        getAllOldFilesApi(100,function () {
             var colCount = $("#tblOldFiles tr").length - 1;
             $('.oldFilesCount').html(colCount);
         });

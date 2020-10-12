@@ -452,10 +452,14 @@ class ClientController extends Controller {
         return $data;
     }
 
-    public function getOldFiles() {
+    public function getOldFiles($count) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        return Client::where('is_old', 0)->with('epls')->with('oldFiles')->orderBy('id', 'desc')->get();
+        if ($count == -1) {
+            return Client::where('is_old', 0)->with('epls')->with('oldFiles')->orderBy('id', 'desc')->get();
+        } else {
+            return Client::where('is_old', 0)->with('epls')->with('oldFiles')->take($count)->orderBy('id', 'desc')->get();
+        }
 //        return Client::where('is_old', 0)->with('epls')->with('oldFiles')->orderBy('id', 'desc')->get();
     }
 
