@@ -32,6 +32,9 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">All Old Files</h3>
+                    <div class="card-tools">
+                        <button id="btnGetAll" class="btn btn-primary">Get All</button>
+                    </div>
                     </div>
                     <div class="card-body p-0">
                         <div class="card-body table-responsive" style="height: 450px;">
@@ -110,10 +113,18 @@
 <script>
     $(function () {
 //Load table
-        getAllOldFilesApi(100,function () {
+        getAllOldFilesApi(100, function () {
             var colCount = $("#tblOldFiles tr").length - 1;
             $('.oldFilesCount').html(colCount);
         });
+
+        $('#btnGetAll').click(function () {
+            getAllOldFilesApi(-1, function () {
+                var colCount = $("#tblOldFiles tr").length - 1;
+                $('.oldFilesCount').html(colCount);
+            });
+        });
+
 //click save button
         $('#btnSave').click(function () {
             var data = fromValues();
