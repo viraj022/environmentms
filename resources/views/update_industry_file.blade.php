@@ -134,7 +134,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Investment*</label>
-                                    <input id="inventsment" type="number" class="form-control form-control-sm cutenzReq" placeholder="Enter investment" value="">
+                                    <input id="inventsment"  pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==12) return false;" class="form-control form-control-sm cutenzReq" placeholder="Enter investment" value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Address*</label>

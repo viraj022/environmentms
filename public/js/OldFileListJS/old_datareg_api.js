@@ -196,7 +196,7 @@ function sectionIfSiteClears(industry_type) {
         $('.showCertificateNo').addClass('d-none');
 
         var option = '';
-        for (var i = 0; i < 20; i++) { //Loop Combo Box Values For EPL
+        for (var i = 0; i < 51; i++) { //Loop Combo Box Values For EPL
             option += '<option value="' + i + '">' + i + '</option>';
         }
         $('#getPreRenew').html(option);
@@ -204,7 +204,7 @@ function sectionIfSiteClears(industry_type) {
         $('.txtCodeCn').html('EPL Code*');
         $('.showCertificateNo').removeClass('d-none');
 
-        for (var i = 0; i < 20; i++) { //Loop Combo Box Values For Other
+        for (var i = 0; i < 51; i++) { //Loop Combo Box Values For Other
             option += '<option value="' + i + '">R ' + i + '</option>';
         }
         $('#getPreRenew').html(option);

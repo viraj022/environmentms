@@ -43,7 +43,7 @@
                     <a class="nav-link userDataTab" id="custom-tabs-three-userDataTab-tab" data-toggle="pill" href="#custom-tabs-three-userDataTab" role="tab" aria-controls="custom-tabs-three-userDataTab" aria-selected="false">Profile Details</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link profileSettingsTab" id="custom-tabs-three-profileSettingsTab-tab" data-toggle="pill" href="#custom-tabs-three-profileSettingsTab" role="tab" aria-controls="custom-tabs-three-userDataTab" aria-selected="false">Profile Settings</a>
+                    <a class="nav-link profileSettingsTab" id="custom-tabs-three-profileSettingsTab-tab" data-toggle="pill" href="#custom-tabs-three-profileSettingsTab" role="tab" aria-controls="custom-tabs-three-profileSettingsTab" aria-selected="false">Profile Settings</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link siteInspectionTab" id="custom-tabs-three-siteInspectionTab-tab" data-toggle="pill" href="#custom-tabs-three-siteInspectionTab" role="tab" aria-controls="custom-tabs-three-siteInspectionTab" aria-selected="false">Site Inspection</a>
@@ -397,19 +397,19 @@
                                                 <b>File No</b> <a class="float-right file_no"></a>
                                             </li>
                                             <li class="list-group-item">
-                                                <b>Assign Date</b> <a class="float-right assign_date"></a>
+                                                <b>Assign Date</b> <a class="float-right assign_date">-</a>
                                             </li>
                                             <li class="list-group-item">
-                                                <b>Address</b> <a class="float-right cl_address"></a>
+                                                <b>Address</b> <a class="float-right cl_address">-</a>
                                             </li>
                                             <li class="list-group-item">
-                                                <b>Email</b> <a class="float-right cl_email"></a>
+                                                <b>Email</b> <a class="float-right cl_email">-</a>
                                             </li>
                                             <li class="list-group-item">
-                                                <b>Contact No</b> <a class="float-right cl_contact_no"></a>
+                                                <b>Contact No</b> <a class="float-right cl_contact_no">-</a>
                                             </li>
                                             <li class="list-group-item">
-                                                <b>NIC</b> <a class="float-right cl_nic"></a>
+                                                <b>NIC</b> <a class="float-right cl_nic">-</a>
                                             </li>
                                         </ul>
                                     </div>
