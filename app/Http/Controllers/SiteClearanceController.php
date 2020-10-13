@@ -252,7 +252,7 @@ class SiteClearanceController extends Controller
         $industryCode = $industry->code;
         $scale = BusinessScale::find($client->business_scale_id);
         $scaleCode = $scale->code;
-        $e = SiteClearance::orderBy('id', 'desc')->first();
+        $e = SiteClearenceSession::orderBy('id', 'desc')->first();
         if ($e === null) {
             $serial = 1;
         } else {
