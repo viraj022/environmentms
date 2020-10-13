@@ -250,6 +250,8 @@
                 $('#setInspectionVal2').removeClass('d-none');
             } else if (fileData.need_inspection === 'Completed') {
                 $('#needApproval').removeClass('d-none');
+            } else if (fileData.need_inspection === 'Inspection Not Needed') {
+                $('#needApproval').removeClass('d-none');
             } else {
                 $('#needApproval').addClass('d-none');
             }
