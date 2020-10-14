@@ -193,7 +193,7 @@ class EPLController extends Controller
                 $epl = new EPL();
                 $epl->client_id = \request('client_id');
                 $epl->remark = \request('remark');
-                $epl->code = $this->generateCode($client);
+                $epl->code = $this->generateCode($client, 'new');
                 $client->application_path = "";
                 $epl->submitted_date = \request('created_date');
                 $epl->count = 0;
@@ -250,7 +250,7 @@ class EPLController extends Controller
                 $epl->client_id = \request('client_id');
                 $epl->remark = \request('remark');
                 //$epl->is_working = 1;
-                $epl->code = $this->generateCode($client);
+                $epl->code = $this->generateCode($client, 'renew');
                 $client->application_path = "";
                 $epl->submitted_date = \request('created_date');
                 $epl->count = $epl->getRenewCount() + 1;
@@ -430,9 +430,9 @@ class EPLController extends Controller
         }
     }
 
-    private function generateCode($client)
+    private function generateCode($client, $status)
     {
-        if ($client->cer_type_status == 1) {
+        if ($status == 'new') {
             /**
              * For New Epl
              */
@@ -446,7 +446,7 @@ class EPLController extends Controller
             $serial =   getSerialNumber(Setting::EPL_AI);
             $serial = sprintf('%02d', $serial);
             return "PEA/" . $lsCOde . "/EPL/" . $industryCode . "/" . $scaleCode . "/" . $serial . "/" . date("Y");
-        } else if ($client->cer_type_status == 2) {
+        } else if ($status == 'renew') {
             /**
              * For renew epl
              */

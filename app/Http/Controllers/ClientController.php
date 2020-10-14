@@ -650,7 +650,9 @@ class ClientController extends Controller
         $certificate->issue_status = 0;
         $certificate->user_id = $user->id;
         $msg = $certificate->save();
-        incrementSerial(Setting::CERTIFICATE_AI);
+        if ($client->cer_type_status == 1 || $client->cer_type_status == 2) {
+            incrementSerial(Setting::CERTIFICATE_AI);
+        }
         setFileStatus($client->id, 'cer_status', 1);
         fileLog($client->id, 'StartDrafting', 'User (' . $user->user_name . ')  Start certificate drafting', 0);
         if ($msg) {
