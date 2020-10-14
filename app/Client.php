@@ -110,10 +110,11 @@ class Client extends Model
                                 return  $data . "/" . date("Y") . "/r" . $epl->count;
                         case 3; //site_new
                                 $client = Client::findOrFail($this->id);
-                                return $client->siteClearenceSessions->reverse()[0];
+                                // dd($client->siteClearenceSessions->reverse()[0]->code);
+                                return $client->siteClearenceSessions->reverse()[0]->code;
                         case 4: //site_clearance_extetion
                                 $client = Client::findOrFail($this->id);
-                                return $client->siteClearenceSessions->reverse()[0];
+                                return $client->siteClearenceSessions->reverse()[0]->code;
                                 break;
                         default:
                 }
