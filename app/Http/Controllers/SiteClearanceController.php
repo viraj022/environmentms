@@ -205,7 +205,7 @@ class SiteClearanceController extends Controller
             $siteSessions->remark = $request->remark;
             $siteSessions->site_clearance_type = $request->type;
             $msg = $siteSessions->save();
-
+            dd("ok");
             //  save site clearance
             $siteClearance = new SiteClearance();
             $siteClearance->submit_date = $request->submit_date;
