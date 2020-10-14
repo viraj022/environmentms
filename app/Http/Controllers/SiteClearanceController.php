@@ -10,6 +10,7 @@ use App\SiteClearance;
 use App\Pradesheeyasaba;
 use App\IndustryCategory;
 use App\Helpers\LogActivity;
+use App\Setting;
 use Illuminate\Http\Request;
 use App\SiteClearenceSession;
 use Illuminate\Support\Facades\DB;
@@ -244,21 +245,38 @@ class SiteClearanceController extends Controller
 
     private function generateCode($client)
     {
+
         $client = Client::findOrFail($client);
-        $la = Pradesheeyasaba::find($client->pradesheeyasaba_id);
-        // print_r($la);
-        $lsCOde = $la->code;
-        $industry = IndustryCategory::find($client->industry_category_id);
-        $industryCode = $industry->code;
-        $scale = BusinessScale::find($client->business_scale_id);
-        $scaleCode = $scale->code;
-        $e = SiteClearenceSession::orderBy('id', 'desc')->first();
-        if ($e === null) {
-            $serial = 1;
+        if ($client->cer_type_status == 3) {
+            /**
+             * For New Epl
+             */
+            $la = Pradesheeyasaba::find($client->pradesheeyasaba_id);
+            $lsCOde = $la->code;
+            $industry = IndustryCategory::find($client->industry_category_id);
+            $industryCode = $industry->code;
+            $scale = BusinessScale::find($client->business_scale_id);
+            $scaleCode = $scale->code;
+            $e = SiteClearenceSession::orderBy('id', 'desc')->first();
+            $serialValue =  Setting::where('name', Setting::SITE_AI)->select('value')->first();
+            if ($serialValue) {
+                $serial = $serialValue->value;
+            } else {
+                abort('Site Clearence Serial no not found in db-HCW Code');
+            }
+            $serial = sprintf('%02d', $serial);
+        } else if ($client->cer_type_status == 4) {
+            /**
+             * For Extend Site Clearence
+             */
+            $siteClearanceSession = $client->siteClearenceSessions[0];
         } else {
-            $serial = ($e->id) + 1;
+            /**
+             * when file is in other status than new epl or epl renewal
+             */
+            abort(501, 'Invalid certificate type statues (1 / 2) - hcw error code');
         }
-        $serial = sprintf('%02d', $serial);
+
         return "PEA/" . $lsCOde . "/SC/" . $industryCode . "/" . $scaleCode . "/" . $serial . "/" . date("Y");
     }
 
