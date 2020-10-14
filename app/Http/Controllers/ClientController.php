@@ -635,6 +635,7 @@ class ClientController extends Controller
 
     public function nextCertificateNumber($id)
     {
+
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $client = Client::findOrFail($id);

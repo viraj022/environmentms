@@ -105,6 +105,7 @@ class Client extends Model
                                 return $data . "/" . date("Y");
                         case 2: //epl renewal
                                 $epl = EPL::Where('client_id', $this->id)->orderBy('id', 'desc')->first();
+                                dd($epl->toAray());
                                 $serial_no =  Str::substr($epl->certificate_no, 0, strpos($epl->certificate_no, '/'));
                                 $data = str_pad($serial_no, 6, "0", STR_PAD_LEFT);
                                 return  $data . "/" . date("Y") . "/r" . $epl->count;
