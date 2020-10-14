@@ -10,6 +10,7 @@ use App\SiteClearance;
 use App\Pradesheeyasaba;
 use App\IndustryCategory;
 use App\Helpers\LogActivity;
+use App\Setting;
 use Illuminate\Http\Request;
 use App\SiteClearenceSession;
 use Illuminate\Support\Facades\DB;
@@ -221,6 +222,10 @@ class SiteClearanceController extends Controller
             } else {
                 return response(array('id' => 1, 'message' => 'certificate not found'), 422);
             }
+            /**
+             * increment serial number
+             */
+            incrementSerial(Setting::SITE_AI);
             // change file status        
             setFileStatus($siteSessions->client_id, 'file_status', 0);  // set file status to zero 
             setFileStatus($siteSessions->client_id, 'inspection', null);  //  set inspection pending status to 'null'
@@ -228,7 +233,7 @@ class SiteClearanceController extends Controller
             setFileStatus($siteSessions->client_id, 'cer_status', 0);  // set certificate status to 0
             setFileStatus($siteSessions->client_id, 'file_problem', 0); // set file problem status to 0
             // $file = #ssiteClearenceSession->client;
-            LogActivity::addToLog('create new site clearence ', $siteSessions);
+            LogActivity::addToLog('create new site clearance ', $siteSessions);
             if ($siteSessions) {
                 return response(array("id" => 1, "message" => "ok", 'rout' => "/site_clearance/client/" . $siteSessions->client_id . "/profile/" . $siteSessions->id));
             } else {
@@ -244,20 +249,20 @@ class SiteClearanceController extends Controller
 
     private function generateCode($client)
     {
+
         $client = Client::findOrFail($client);
+
+        /**
+         * For Site Clearence
+         */
         $la = Pradesheeyasaba::find($client->pradesheeyasaba_id);
-        // print_r($la);
         $lsCOde = $la->code;
         $industry = IndustryCategory::find($client->industry_category_id);
         $industryCode = $industry->code;
         $scale = BusinessScale::find($client->business_scale_id);
         $scaleCode = $scale->code;
-        $e = EPL::orderBy('id', 'desc')->first();
-        if ($e === null) {
-            $serial = 1;
-        } else {
-            $serial = $e->id;
-        }
+        $e = SiteClearenceSession::orderBy('id', 'desc')->first();
+        $serial = getSerialNumber(Setting::SITE_AI);
         $serial = sprintf('%02d', $serial);
         return "PEA/" . $lsCOde . "/SC/" . $industryCode . "/" . $scaleCode . "/" . $serial . "/" . date("Y");
     }

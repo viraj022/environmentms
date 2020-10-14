@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\EPL;
 use App\Client;
 use App\Payment;
+use App\Setting;
 use App\IssueLog;
 use Carbon\Carbon;
 use App\BusinessScale;
@@ -192,7 +193,7 @@ class EPLController extends Controller
                 $epl = new EPL();
                 $epl->client_id = \request('client_id');
                 $epl->remark = \request('remark');
-                $epl->code = $this->generateCode($client);
+                $epl->code = $this->generateCode($client, 'new');
                 $client->application_path = "";
                 $epl->submitted_date = \request('created_date');
                 $epl->count = 0;
@@ -207,7 +208,7 @@ class EPLController extends Controller
                     // $client->is_working = 1;
                     $client->save();
                     $epl->save();
-
+                    incrementSerial(Setting::EPL_AI);
                     setFileStatus($epl->client_id, 'file_status', 0);  // set file status to zero 
                     setFileStatus($epl->client_id, 'inspection', null);  //  set inspection pending status to 'null'
                     setFileStatus($epl->client_id, 'cer_type_status', 1);  // setificate type state to epl 
@@ -249,7 +250,7 @@ class EPLController extends Controller
                 $epl->client_id = \request('client_id');
                 $epl->remark = \request('remark');
                 //$epl->is_working = 1;
-                $epl->code = $this->generateCode($client);
+                $epl->code = $this->generateCode($client, 'renew');
                 $client->application_path = "";
                 $epl->submitted_date = \request('created_date');
                 $epl->count = $epl->getRenewCount() + 1;
@@ -429,23 +430,34 @@ class EPLController extends Controller
         }
     }
 
-    private function generateCode($client)
+    private function generateCode($client, $status)
     {
-        $la = Pradesheeyasaba::find($client->pradesheeyasaba_id);
-        // print_r($la);
-        $lsCOde = $la->code;
-        $industry = IndustryCategory::find($client->industry_category_id);
-        $industryCode = $industry->code;
-        $scale = BusinessScale::find($client->business_scale_id);
-        $scaleCode = $scale->code;
-        $e = EPL::orderBy('id', 'desc')->first();
-        if ($e === null) {
-            $serial = 1;
+        if ($status == 'new') {
+            /**
+             * For New Epl
+             */
+            $la = Pradesheeyasaba::find($client->pradesheeyasaba_id);
+            $lsCOde = $la->code;
+            $industry = IndustryCategory::find($client->industry_category_id);
+            $industryCode = $industry->code;
+            $scale = BusinessScale::find($client->business_scale_id);
+            $scaleCode = $scale->code;
+            $e = EPL::orderBy('id', 'desc')->first();
+            $serial =   getSerialNumber(Setting::EPL_AI);
+            $serial = sprintf('%02d', $serial);
+            return "PEA/" . $lsCOde . "/EPL/" . $industryCode . "/" . $scaleCode . "/" . $serial . "/" . date("Y");
+        } else if ($status == 'renew') {
+            /**
+             * For renew epl
+             */
+            $epl = $client->epls[0];
+            return $epl->code;
         } else {
-            $serial = $e->id;
+            /**
+             * when file is in other status than new epl or epl renewal
+             */
+            abort(501, 'Invalid certificate type statues (1 / 2) - hcw error code');
         }
-        $serial = sprintf('%02d', $serial);
-        return "PEA/" . $lsCOde . "/EPL/" . $industryCode . "/" . $scaleCode . "/" . $serial . "/" . date("Y");
     }
 
     private function makeApplicationPath($id)
