@@ -150,7 +150,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Investment*</label>
+                                    <label>Investment(Rs)*</label>
                                     <input id="inventsment"  pattern="/^-?\d+\.?\d*$/" onKeyPress="if (this.value.length == 12)
                                                 return false;" class="form-control form-control-sm cutenzReq" placeholder="Enter investment" value="">
                                 </div>
