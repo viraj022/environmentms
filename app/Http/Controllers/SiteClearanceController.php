@@ -251,26 +251,20 @@ class SiteClearanceController extends Controller
     {
 
         $client = Client::findOrFail($client);
-        if ($client->cer_type_status == 3) {
-            /**
-             * For Site Clearence
-             */
-            $la = Pradesheeyasaba::find($client->pradesheeyasaba_id);
-            $lsCOde = $la->code;
-            $industry = IndustryCategory::find($client->industry_category_id);
-            $industryCode = $industry->code;
-            $scale = BusinessScale::find($client->business_scale_id);
-            $scaleCode = $scale->code;
-            $e = SiteClearenceSession::orderBy('id', 'desc')->first();
-            $serial = getSerialNumber(Setting::SITE_AI);
-            $serial = sprintf('%02d', $serial);
-            return "PEA/" . $lsCOde . "/SC/" . $industryCode . "/" . $scaleCode . "/" . $serial . "/" . date("Y");
-        } else {
-            /**
-             * when file is in other status than new epl or epl renewal
-             */
-            abort(501, 'Invalid certificate type statues (3) - hcw error code');
-        }
+
+        /**
+         * For Site Clearence
+         */
+        $la = Pradesheeyasaba::find($client->pradesheeyasaba_id);
+        $lsCOde = $la->code;
+        $industry = IndustryCategory::find($client->industry_category_id);
+        $industryCode = $industry->code;
+        $scale = BusinessScale::find($client->business_scale_id);
+        $scaleCode = $scale->code;
+        $e = SiteClearenceSession::orderBy('id', 'desc')->first();
+        $serial = getSerialNumber(Setting::SITE_AI);
+        $serial = sprintf('%02d', $serial);
+        return "PEA/" . $lsCOde . "/SC/" . $industryCode . "/" . $scaleCode . "/" . $serial . "/" . date("Y");
     }
 
     public function setProcessingStatus(Request $request, SiteClearenceSession $siteClearanceSession)
