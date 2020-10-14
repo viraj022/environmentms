@@ -497,6 +497,8 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $client = Client::find($id);
         $client->is_old = 2; // inspected state
+        $client->file_status = 5; // set file status
+        $client->cer_status = 6; // set certificate status
 
         if ($client->save()) {
             LogActivity::addToLog("markOldFinish done " . $id, $client);
