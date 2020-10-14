@@ -225,7 +225,7 @@ class SiteClearanceController extends Controller
             /**
              * increment serial number
              */
-            incrementSerial(Setting::EPL_AI);
+            incrementSerial(Setting::SITE_AI);
             // change file status        
             setFileStatus($siteSessions->client_id, 'file_status', 0);  // set file status to zero 
             setFileStatus($siteSessions->client_id, 'inspection', null);  //  set inspection pending status to 'null'
