@@ -233,7 +233,7 @@ class SiteClearanceController extends Controller
             setFileStatus($siteSessions->client_id, 'cer_status', 0);  // set certificate status to 0
             setFileStatus($siteSessions->client_id, 'file_problem', 0); // set file problem status to 0
             // $file = #ssiteClearenceSession->client;
-            LogActivity::addToLog('create new site clearence ', $siteSessions);
+            LogActivity::addToLog('create new site clearance ', $siteSessions);
             if ($siteSessions) {
                 return response(array("id" => 1, "message" => "ok", 'rout' => "/site_clearance/client/" . $siteSessions->client_id . "/profile/" . $siteSessions->id));
             } else {
