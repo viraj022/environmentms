@@ -253,7 +253,7 @@ class EPLController extends Controller
                 $epl->code = $this->generateCode($client, 'renew');
                 $client->application_path = "";
                 $epl->submitted_date = \request('created_date');
-                $epl->count = $epl->getEPLCount();
+                $epl->count =  $this->getEPLCount($epl->client_id);
                 $msg = $epl->save();
                 setFileStatus($epl->client_id, 'file_status', 0);  // set file status to zero 
                 setFileStatus($epl->client_id, 'inspection', null);  //  set inspection pending status to 'null'
