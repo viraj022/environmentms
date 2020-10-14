@@ -755,7 +755,7 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $certificate = Certificate::findOrFail($cer_id);
         $file = Client::findOrFail($certificate->client_id);
-        $msg = setFileStatus($file->id, 'file_status', 6);
+        $msg = setFileStatus($file->id, 'file_status', 5);
         $msg = $msg && setFileStatus($file->id, 'cer_status', 6);
         $certificate->issue_status = 1;
         $certificate->user_id = $user->id;
