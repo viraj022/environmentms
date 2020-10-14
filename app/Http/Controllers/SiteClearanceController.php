@@ -222,6 +222,10 @@ class SiteClearanceController extends Controller
             } else {
                 return response(array('id' => 1, 'message' => 'certificate not found'), 422);
             }
+            /**
+             * increment serial number
+             */
+            incrementSerial(Setting::EPL_AI);
             // change file status        
             setFileStatus($siteSessions->client_id, 'file_status', 0);  // set file status to zero 
             setFileStatus($siteSessions->client_id, 'inspection', null);  //  set inspection pending status to 'null'
@@ -249,7 +253,7 @@ class SiteClearanceController extends Controller
         $client = Client::findOrFail($client);
         if ($client->cer_type_status == 3) {
             /**
-             * For New Epl
+             * For Site Clearence
              */
             $la = Pradesheeyasaba::find($client->pradesheeyasaba_id);
             $lsCOde = $la->code;
@@ -258,26 +262,15 @@ class SiteClearanceController extends Controller
             $scale = BusinessScale::find($client->business_scale_id);
             $scaleCode = $scale->code;
             $e = SiteClearenceSession::orderBy('id', 'desc')->first();
-            $serialValue =  Setting::where('name', Setting::SITE_AI)->select('value')->first();
-            if ($serialValue) {
-                $serial = $serialValue->value;
-            } else {
-                abort('Site Clearence Serial no not found in db-HCW Code');
-            }
+            $serial = getSerialNumber(Setting::SITE_AI);
             $serial = sprintf('%02d', $serial);
-        } else if ($client->cer_type_status == 4) {
-            /**
-             * For Extend Site Clearence
-             */
-            $siteClearanceSession = $client->siteClearenceSessions[0];
+            return "PEA/" . $lsCOde . "/SC/" . $industryCode . "/" . $scaleCode . "/" . $serial . "/" . date("Y");
         } else {
             /**
              * when file is in other status than new epl or epl renewal
              */
-            abort(501, 'Invalid certificate type statues (1 / 2) - hcw error code');
+            abort(501, 'Invalid certificate type statues (3) - hcw error code');
         }
-
-        return "PEA/" . $lsCOde . "/SC/" . $industryCode . "/" . $scaleCode . "/" . $serial . "/" . date("Y");
     }
 
     public function setProcessingStatus(Request $request, SiteClearenceSession $siteClearanceSession)
