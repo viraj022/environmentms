@@ -649,11 +649,7 @@ class ClientController extends Controller
         $certificate->client_id = $client->id;
         $certificate->issue_status = 0;
         $certificate->user_id = $user->id;
-
-        // $certificate->save();
-
         $msg = $certificate->save();
-
         incrementSerial(Setting::CERTIFICATE_AI);
         setFileStatus($client->id, 'cer_status', 1);
         fileLog($client->id, 'StartDrafting', 'User (' . $user->user_name . ')  Start certificate drafting', 0);
