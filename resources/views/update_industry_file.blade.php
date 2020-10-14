@@ -130,7 +130,7 @@
                                     </div>
                                     <div class="form-group">
                                         <button id="btnSaveFileCode" type="submit" class="btn btn-success"><i class="fas fa-check"></i> Change File Code</button>
-                                        <button onClick="location.href=location.href" type="submit" class="btn btn-info"><i class="fas fa-times"></i> Cancel</button>
+                                        <button onClick="location.href = location.href" type="submit" class="btn btn-info"><i class="fas fa-times"></i> Cancel</button>
                                     </div>
                                     <hr>
                                 </div>
@@ -342,6 +342,12 @@
                                                 $("#prsdeshiySb").focus();
                                             });
                                         });
+                                        $('#btnSaveFileCode').click(function () {
+                                            if (confirm('Are you sure you want to modify this file coe?')) {
+                                                alert('..');
+                                                location.reload();
+                                            }
+                                        });
 
                                         function createNewFileCodeJ(e, callBack) {
                                             var c = $('#file_code_active').val();
@@ -365,9 +371,10 @@
                                         });
                                         $('#businesScale').on('change', function () {
                                             let sData = $(this).find("option:selected").text().split('-');
-                                            fCODER[3] = sData[1].trim().split('(');
-                                            
-//                                            fCODER[3] = sData[1].trim();
+                                            let String = sData[0].trim();
+                                            String.split('-');
+                                            fCODER[3] = String[0].trim();
+
                                             CUTE = fCODER[0] + '/' + fCODER[1] + '/' + fCODER[2] + '/' + fCODER[3] + '/' + fCODER[4] + '/' + fCODER[5];
                                             $('#file_code_change').val(CUTE);
                                         });
