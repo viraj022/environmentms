@@ -110,12 +110,10 @@ class Client extends Model
                                 return  $data . "/" . date("Y") . "/r" . $epl->count;
                         case 3; //site_new
                                 $client = Client::findOrFail($this->id);
-                                //return array('nextNumber' => $client->file_no);
-                                return $client->file_no;
+                                return $client->siteClearenceSessions()->orderBy('id', 'ASC')->last()->code;
                         case 4: //site_clearance_extetion
                                 $client = Client::findOrFail($this->id);
-                                // return array('nextNumber' => $client->file_no);
-                                return $client->file_no;
+                                return $client->siteClearenceSessions()->orderBy('id', 'ASC')->last()->code;
                                 break;
                         default:
                 }
