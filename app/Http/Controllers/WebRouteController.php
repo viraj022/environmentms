@@ -30,4 +30,9 @@ class WebRouteController extends Controller {
         return view('committee_remarks', ['pageAuth' => $pageAuth, 'id' => $id, 'client' => $commetteu->client_id, 'file_no' => $client->file_no,'name' => $commetteu->name,'ses_id' => $commetteu->site_clearence_session_id]);
     }
 
+    public function actStatus() {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('act_status', ['pageAuth' => $pageAuth]);
+    }
 }

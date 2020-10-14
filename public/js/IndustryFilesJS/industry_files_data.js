@@ -104,7 +104,10 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
                 } else if (row.file_status == 0) {
                     if (row.need_inspection == null) {
                         status_Lable = '(Set Inspction Status)';
-                    } else {
+                    }else if (row.need_inspection == 'Pending') {
+                        status_Lable = '(Inpection Result Pending)';
+                    } 
+                    else {
                         status_Lable = '(' + row.need_inspection + ')';
                     }
 

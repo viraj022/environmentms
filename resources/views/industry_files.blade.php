@@ -192,7 +192,9 @@
         //Load AssDir Combo
         loadAssDirCombo(function () {
             loadEnvOfficerCombo($('#getAsDirect').val(), function (rest) {
-                forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+                if (rest.length !== 0) {
+                    forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+                }
             });
         });
         $("#getAsDirect").change(function () {

@@ -60,6 +60,7 @@ Route::get('/site_clearance/client/{client}/profile/{profile}', 'SiteClearanceCo
 Route::get('/expired_certificates', 'ClientController@expireCertificatesUi');
 Route::get('/committee/id/{id}', 'WebRouteController@indexCommittee');
 Route::get('/committee_remarks/id/{id}', 'WebRouteController@indexCommitteeRemarks');
+Route::get('/act_status', 'WebRouteController@actStatus');
 //ui routs
 //dashboard
 Route::get('/dashboard', function () {
