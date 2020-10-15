@@ -295,13 +295,21 @@
 <script>
     var PROFILE_ID = '{{$id}}';
     var FILE_STATUS = '';
+    var CER_STATUS = '';
     var CERTIFICATE_ID = '';
     $(function () {
 //Load table
         getaProfilebyId(PROFILE_ID, function (parameters) {
+            FILE_STATUS = parseInt(parameters.file_status);
+            CER_STATUS = parseInt(parameters.cer_status);
             setProfileDetails(parameters);
             setIndustryAndClientDb(parameters);
             $(".loadingRenderUI").remove(); //<--Check Loading Status
+            //Control Gen Certificate Btn View
+            if (FILE_STATUS === 6 && CER_STATUS === 6) {
+                $(".genCertificateNum").remove();
+            } else {
+            }
         });
 
 //select button action 
@@ -311,8 +319,10 @@
 
 //Show Certificate Details
     getCertificateDetails(PROFILE_ID, function (resp) {
-        FILE_STATUS = parseInt(resp.client.file_status);
-        CERTIFICATE_ID = parseInt(resp.id);
+        if (resp.length != 0) {
+            FILE_STATUS = parseInt(resp.client.file_status);
+            CERTIFICATE_ID = parseInt(resp.id);
+        }
     });
 //Gen Certificate Number
     $('.genCertificateNum').click(function () {

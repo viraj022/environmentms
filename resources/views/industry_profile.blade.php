@@ -493,10 +493,10 @@
                                     <button type="button" value="no_needed" class="btn btn-warning noNeedInspect d-none"><i class="fa fa-exclamation"></i>&nbsp No Need Inspection</button>
                                 </div>
                                 <div class="callout callout-info">
-                                    <dt>Upload Application :</dt>
-                                    <button type="button" class="btn btn-success upld_roadMap" data-upload_file="Road Map">Update Road Map</button>
-                                    <button type="button" class="btn btn-success upld_deed" data-upload_file="Deed Of The Land">Update Deed of the land </button>
-                                    <button type="button" class="btn btn-success upld_SurveyPlan" data-upload_file="Survey Plan">Update Survey Plan</button>
+                                    <dt>Update Uploaded Applications :</dt>
+                                    <button type="button" class="btn btn-warning upld_roadMap" data-upload_file="Road Map">Update Road Map</button>
+                                    <button type="button" class="btn btn-warning upld_deed" data-upload_file="Deed Of The Land">Update Deed of the land </button>
+                                    <button type="button" class="btn btn-warning upld_SurveyPlan" data-upload_file="Survey Plan">Update Survey Plan</button>
                                     <div class="form-group fileUpDiv d-none">
                                         <hr>
                                         <label class="uploadLabel">File Upload </label>

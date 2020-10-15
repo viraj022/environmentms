@@ -3,7 +3,7 @@ function loadPradeshiyaSabha(callBack) {
     ajaxRequest('GET', "/api/pradesheeyasabas",null, function (dataSet) {
         if (dataSet) {
             $.each(dataSet, function (index, row) {
-                cbo += '<option value="' + row.id + '">' + row.code + ' - ' + row.name + '</option>';
+                cbo += '<option data-ps_code="'+ row.code +'" value="' + row.id + '">' + row.code + ' - ' + row.name + '</option>';
             });
         } else {
             cbo = "<option value=''>No Data Found</option>";
@@ -19,7 +19,7 @@ function IndustryCategoryCombo(callBack) {
     ajaxRequest('GET', "/api/industrycategories",null, function (dataSet) {
         if (dataSet) {
             $.each(dataSet, function (index, row) {
-                cbo += '<option value="' + row.id + '">' + row.name + '</option>';
+                cbo += '<option data-cat_code="'+row.code +'" value="' + row.id + '">' + row.name + '</option>';
             });
         } else {
             cbo = "<option value=''>No Data Found</option>";
@@ -35,7 +35,7 @@ function BusinessScaleCombo(callBack) {
     ajaxRequest('GET', "/api/business_scale",null, function (dataSet) {
         if (dataSet) {
             $.each(dataSet, function (index, row) {
-                cbo += '<option value="' + row.id + '">' + row.name + '</option>';
+                cbo += '<option data-bc_code="'+row.code +'" value="' + row.id + '">' + row.name + '</option>';
             });
         } else {
             cbo = "<option value=''>No Data Found</option>";
