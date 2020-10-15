@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Helpers\LogActivity;
 use Illuminate\Database\Eloquent\Builder;
 use App\EPL;
+use App\InspectionSession;
 use App\SiteClearenceSession;
 
 class ClientController extends Controller
@@ -167,6 +168,9 @@ class ClientController extends Controller
             $client->industry_registration_no = \request('industry_registration_no');
             $client->industry_sub_category = \request('industry_sub_category');
             $client->is_old = \request('is_old');
+            if ($client->is_old == 0) {
+                $client->need_inspection = 'Inspection Not Needed';
+            }
 
             $msg = $client->save();
             $client->file_no = $this->generateCode($client);
