@@ -260,7 +260,6 @@ class EPLController extends Controller
                 setFileStatus($epl->client_id, 'cer_type_status', 2);  // certificate type state to epl  renew
                 setFileStatus($epl->client_id, 'cer_status', 0);  // set certificate status to 0
                 setFileStatus($epl->client_id, 'file_problem', 0); // set file problem status to 0
-
                 if ($msg) {
                     $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
                     $fileUrl = '/uploads/industry_files/' . $client->id . '/application';

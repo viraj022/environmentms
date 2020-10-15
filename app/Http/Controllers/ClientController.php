@@ -746,8 +746,7 @@ class ClientController extends Controller
             abort(422, "file key not found , ctech validation");
         }
         $msg = Certificate::where('id', $id)->update($req);
-        // $certificate->signed_certificate_path = $path;
-        // $certificate->user_id_certificate_upload =  $user->id;
+
         fileLog($certificate->client_id, 'certificate', 'User (' . $user->user_name . ')  uploaded the original certificate', 0);
         if ($msg) {
             return array('id' => 1, 'message' => 'true');
