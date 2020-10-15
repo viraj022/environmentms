@@ -803,10 +803,7 @@ class ClientController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $certificate = Certificate::findOrFail($id);
-
-        // $msg = setFileStatus($certificate->client_id, 'file_status', 2);
         $msg = setFileStatus($certificate->client_id, 'cer_status', 2);
-
         fileLog($certificate->client_id, 'FileStatus', 'User (' . $user->user_name . ') Finish drafting the certificate', 0);
         if ($msg) {
             return array('id' => 1, 'message' => 'true');
