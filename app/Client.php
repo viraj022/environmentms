@@ -104,10 +104,12 @@ class Client extends Model
                                 $data =  str_pad($cerNo, 6, "0", STR_PAD_LEFT);
                                 return $data . "/" . date("Y");
                         case 2: //epl renewal
-                                $epl = EPL::Where('client_id', $this->id)->orderBy('id', 'desc')->first();
+                                $epl = EPL::Where('client_id', $this->id)->first();
+                                $curEpl = EPL::Where('client_id', $this->id)->orderBy('id', 'desc')->first();
+                                // dd($epl->toArray());
                                 $serial_no =  Str::substr($epl->certificate_no, 0, strpos($epl->certificate_no, '/'));
-                                $data = str_pad($serial_no, 6, "0", STR_PAD_LEFT);
-                                return  $data . "/" . date("Y") . "/r" . $epl->count;
+                                $data = str_pad(($serial_no), 6, "0", STR_PAD_LEFT);
+                                return  $data . "/" . date("Y") . "/r" . $curEpl->count;
                         case 3; //site_new
                                 $client = Client::findOrFail($this->id);
                                 // dd($client->siteClearenceSessions->reverse()[0]->code);

@@ -497,6 +497,8 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $client = Client::find($id);
         $client->is_old = 2; // inspected state
+        $client->file_status = 5; // set file status
+        $client->cer_status = 6; // set certificate status
 
         if ($client->save()) {
             LogActivity::addToLog("markOldFinish done " . $id, $client);
@@ -633,6 +635,7 @@ class ClientController extends Controller
 
     public function nextCertificateNumber($id)
     {
+
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $client = Client::findOrFail($id);
@@ -650,7 +653,7 @@ class ClientController extends Controller
         $certificate->issue_status = 0;
         $certificate->user_id = $user->id;
         $msg = $certificate->save();
-        if ($client->cer_type_status == 1 || $client->cer_type_status == 2) {
+        if ($client->cer_type_status == 1) {
             incrementSerial(Setting::CERTIFICATE_AI);
         }
         setFileStatus($client->id, 'cer_status', 1);
@@ -755,7 +758,7 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $certificate = Certificate::findOrFail($cer_id);
         $file = Client::findOrFail($certificate->client_id);
-        $msg = setFileStatus($file->id, 'file_status', 6);
+        $msg = setFileStatus($file->id, 'file_status', 5);
         $msg = $msg && setFileStatus($file->id, 'cer_status', 6);
         $certificate->issue_status = 1;
         $certificate->user_id = $user->id;
