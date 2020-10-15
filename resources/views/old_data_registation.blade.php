@@ -23,11 +23,6 @@
                 <h1>Old Data Registration</h1>
             </div>
         </div>
-        <div class="progress d-none">
-            <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                <!--<span class="sr-only">40% Complete (success)</span>-->
-            </div>
-        </div>
     </div>
 </section>
 <section class="content-header">
@@ -181,6 +176,11 @@
                                 <label>Last Issued Certificate: </label>
                                 <input id="last_certificate" type="file" accept="image/*,application/pdf">
                             </div>
+                            <div class="progress d-none">
+                                <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                    <!--<span class="sr-only">40% Complete (success)</span>-->
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -315,242 +315,242 @@
 <script src="../../js/OldFileListJS/assign-epl-combo-set.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
-            let PROFILE = '{{$id}}';
-            $(function () {
+    let PROFILE = '{{$id}}';
+    $(function () {
 //Load Combo Sets
-            loadAssistantDirectorCombo(function () {
+        loadAssistantDirectorCombo(function () {
             loadEnvOfficers_combo(parseInt($('#ass_dir_combo').val()), function () {
 
             });
-            });
-                    $('#ass_dir_combo').change(function () {
+        });
+        $('#ass_dir_combo').change(function () {
             loadEnvOfficers_combo(parseInt($('#ass_dir_combo').val()), function () {
             });
-            });
+        });
 //click save button
-                    $('#btnSave').click(function () {
+        $('#btnSave').click(function () {
             let TYPE = $('#getIndustryType').val();
-                    var data = fromValues();
-                    if (Validiteinsert(data)) {
-            saveEPLOldFiles(PROFILE, data, TYPE, function (result) {
-            show_mesege(result);
+            var data = fromValues();
+            if (Validiteinsert(data)) {
+                saveEPLOldFiles(PROFILE, data, TYPE, function (result) {
+                    show_mesege(result);
                     visibleUploads(result);
                     regenCLientData(PROFILE);
                     resetinputFields();
                     hideAllErrors();
                     $("#btnLoadAc").click();
-            });
+                });
             }
-            });
-                    //Load Sections Button
-                    $('#btnLoadAc').click(function () {
+        });
+        //Load Sections Button
+        $('#btnLoadAc').click(function () {
             //EPL Section
             var load_val = $('#getIndustryType').val();
-                    sectionIfSiteClears(load_val);
-                    if (load_val === '01') {
-            checkEPLExist(PROFILE, function (result) {
+            sectionIfSiteClears(load_val);
+            if (load_val === '01') {
+                checkEPLExist(PROFILE, function (result) {
 //                    visibleUploads(result);
-            if (result.length === 0) {
-            $('.eplSection').removeClass('d-none');
-                    showSave();
-            } else {
-            var trackSubmitDate = new Date(result.created_at);
-                    var submitDate = trackSubmitDate.toISOString().split('T')[0];
-                    $('#getEPLCode').val(result.code);
-                    $('#getRemark').val(result.remark);
-                    $('#issue_date').val(result.issue_date_only);
-                    $('#expire_date').val(result.expire_date_only);
-                    $('#getcertifateNo').val(result.certificate_no);
-                    $('#getPreRenew').val(result.count);
-                    $('#getsubmitDate').val(result.submit_date_only);
-                    $('#btnUpdate').val(result.id);
-                    $('#btnshowDelete').val(result.id);
-                    $('.lastCertificatePath').attr('src', '/' + result.path);
-                    $('#addCertificateURL').attr('href', '/' + result.path);
-                    if (result.path !== null && result.path.length > 0) {
-            $('.lastIssuedCer').removeClass('d-none');
-            }
-            showUpdate();
-                    $('.eplSection').removeClass('d-none');
-            }
-            });
+                    if (result.length === 0) {
+                        $('.eplSection').removeClass('d-none');
+                        showSave();
+                    } else {
+                        var trackSubmitDate = new Date(result.created_at);
+                        var submitDate = trackSubmitDate.toISOString().split('T')[0];
+                        $('#getEPLCode').val(result.code);
+                        $('#getRemark').val(result.remark);
+                        $('#issue_date').val(result.issue_date_only);
+                        $('#expire_date').val(result.expire_date_only);
+                        $('#getcertifateNo').val(result.certificate_no);
+                        $('#getPreRenew').val(result.count);
+                        $('#getsubmitDate').val(result.submit_date_only);
+                        $('#btnUpdate').val(result.id);
+                        $('#btnshowDelete').val(result.id);
+                        $('.lastCertificatePath').attr('src', '/' + result.path);
+                        $('#addCertificateURL').attr('href', '/' + result.path);
+                        if (result.path !== null && result.path.length > 0) {
+                            $('.lastIssuedCer').removeClass('d-none');
+                        }
+                        showUpdate();
+                        $('.eplSection').removeClass('d-none');
+                    }
+                });
             }
             //Site Clearance Section
             if (load_val === '02') {
-            checkSiteClearExist(PROFILE, function (result) {
-            if (result.length === 0) {
-            $('.eplSection').removeClass('d-none');
-                    showSave();
-            } else {
-            var trackIssueDate = new Date(result.site_clearances[0].issue_date);
-                    var issueDate = trackIssueDate.toISOString().split('T')[0];
-                    var trackExpireDate = new Date(result.site_clearances[0].expire_date);
-                    var expireDate = trackExpireDate.toISOString().split('T')[0];
-                    var trackSubmitDate = new Date(result.created_at);
-                    var submitDate = trackSubmitDate.toISOString().split('T')[0];
-                    $('#issue_date').val(issueDate);
-                    $('#expire_date').val(expireDate);
-                    $('#getsubmitDate').val(submitDate);
-                    $('#getEPLCode').val(result.code);
-                    $('#getRemark').val(result.remark);
-                    $('#getPreRenew').val(result.count);
-                    //Required
-                    $('#btnUpdate').val(result.id);
-                    $('#btnshowDelete').val(result.id);
-                    showUpdate();
-                    $('.eplSection').removeClass('d-none');
-            }
-            });
-                    //Telecomminication Section   
-            } else if (load_val === '03') {
-            checkSiteClearExist(PROFILE, function (result) {
-            if (result.length === 0) {
-            $('.eplSection').removeClass('d-none');
-                    showSave();
-            } else {
-            $('.txtCodeCn').html('Code*');
-                    $('.showCertificateNo').addClass('d-none');
-                    var trackIssueDate = new Date(result.site_clearances[0].issue_date);
-                    var issueDate = trackIssueDate.toISOString().split('T')[0];
-                    var trackExpireDate = new Date(result.site_clearances[0].expire_date);
-                    var expireDate = trackExpireDate.toISOString().split('T')[0];
-                    var trackSubmitDate = new Date(result.created_at);
-                    var submitDate = trackSubmitDate.toISOString().split('T')[0];
-                    $('#issue_date').val(issueDate);
-                    $('#expire_date').val(expireDate);
-                    $('#getsubmitDate').val(submitDate);
-                    $('#getEPLCode').val(result.code);
-                    $('#getRemark').val(result.remark);
-                    $('#getPreRenew').val(result.count);
-                    //Required
-                    $('#btnUpdate').val(result.id);
-                    $('#btnshowDelete').val(result.id);
-                    showUpdate();
-                    $('.eplSection').removeClass('d-none');
-            }
-            });
-            } else if (load_val === '04') {
-            checkSiteClearExist(PROFILE, function (result) {
-            if (result.length === 0) {
-            $('.eplSection').removeClass('d-none');
-                    showSave();
-            } else {
-            $('.txtCodeCn').html('Code*');
-                    $('.showCertificateNo').addClass('d-none');
-                    var trackIssueDate = new Date(result.site_clearances[0].issue_date);
-                    var issueDate = trackIssueDate.toISOString().split('T')[0];
-                    var trackExpireDate = new Date(result.site_clearances[0].expire_date);
-                    var expireDate = trackExpireDate.toISOString().split('T')[0];
-                    var trackSubmitDate = new Date(result.created_at);
-                    var submitDate = trackSubmitDate.toISOString().split('T')[0];
-                    $('#issue_date').val(issueDate);
-                    $('#expire_date').val(expireDate);
-                    $('#getsubmitDate').val(submitDate);
-                    $('#getEPLCode').val(result.code);
-                    $('#getRemark').val(result.remark);
-                    $('#getPreRenew').val(result.count);
-                    //Required
-                    $('#btnUpdate').val(result.id);
-                    $('#btnshowDelete').val(result.id);
-                    showUpdate();
-                    $('.eplSection').removeClass('d-none');
-            }
-            });
-            }
-            });
-                    //Load Sections Button END
-                    $('#getIndustryType').on('change', function () {
-            resetCurrentFormVals();
-                    $('.legitSection').addClass('d-none');
-            });
-                    $('#issue_date').on('change', function () { //<--On change issue date configer expire date
-            var issueDate = new Date($('#issue_date').val());
-                    var year = issueDate.getFullYear() + 1;
-                    var month = issueDate.getMonth() + 1;
-                    var date = issueDate.getDate();
-                    var expireDate = year + "-" + ('0' + month).slice( - 2) + "-" + ('0' + date).slice( - 2);
-                    console.log(expireDate);
-                    $('#expire_date').val(expireDate);
-            });
-//click update button
-                    $('#btnUpdate').click(function () {
-            var load_val = $('#getIndustryType').val();
-                    //get form data
-                    var data = fromValues();
-                    delete data["file"];
-                    if (Validiteinsert(data)) {
-            updateEPLOldFiles($(this).val(), data, load_val, function (result) {
-            show_mesege(result);
-                    hideAllErrors();
-                    resetinputFields();
-                    $("#btnLoadAc").click();
-            });
-            }
-            });
-//click delete button
-                    $('#btnshowDelete').click(function () {
-            var load_val = $('#getIndustryType').val();
-                    if (confirm("Are you sure you want to delete this?")) {
-            deleteEPLOldFiles(PROFILE, load_val, function (result) {
-            show_mesege(result);
-                    showSave();
-                    hideAllErrors();
-                    resetinputFields();
-                    $("#btnLoadAc").click();
-            });
-            }
-            });
-//Remove Old Attachments
-                    $(document).on('click', '.removeAttachs', function () {
-            if (confirm("Are you sure you want to delete this?")) {
-            var getRemoveId = $(this).attr('id');
-                    deleteOldAttachments(getRemoveId, function (result) {
-                    show_mesege(result);
-                            regenCLientData(PROFILE);
-                    });
-            }
-            });
-                    getAsetClientData(PROFILE, function (result) {
-                    setProfileDetails(result);
-                            loadAllOldAttachments(result, function () {
-                            });
-                    });
-                    $('input[name="datepickerUi"]').daterangepicker({
-            singleDatePicker: true,
-                    locale: {
-                    format: 'YYYY-MM-DD'
+                checkSiteClearExist(PROFILE, function (result) {
+                    if (result.length === 0) {
+                        $('.eplSection').removeClass('d-none');
+                        showSave();
+                    } else {
+                        var trackIssueDate = new Date(result.site_clearances[0].issue_date);
+                        var issueDate = trackIssueDate.toISOString().split('T')[0];
+                        var trackExpireDate = new Date(result.site_clearances[0].expire_date);
+                        var expireDate = trackExpireDate.toISOString().split('T')[0];
+                        var trackSubmitDate = new Date(result.created_at);
+                        var submitDate = trackSubmitDate.toISOString().split('T')[0];
+                        $('#issue_date').val(issueDate);
+                        $('#expire_date').val(expireDate);
+                        $('#getsubmitDate').val(submitDate);
+                        $('#getEPLCode').val(result.code);
+                        $('#getRemark').val(result.remark);
+                        $('#getPreRenew').val(result.count);
+                        //Required
+                        $('#btnUpdate').val(result.id);
+                        $('#btnshowDelete').val(result.id);
+                        showUpdate();
+                        $('.eplSection').removeClass('d-none');
                     }
-            });
-            });
-            $('#btnAssignEnv').click(function () {
-    let obj = {environment_officer_id: parseInt($("#env_officer_combo").val()), epl_id: PROFILE};
-            assign_epl_to_officer(obj, function (respo) {
-            if (respo.id == 1) {
-            Toast.fire({
-            type: 'success',
-                    title: 'Enviremontal MS</br>Saved!'
-            });
-            } else {
-            Toast.fire({
-            type: 'error',
-                    title: 'Enviremontal MS</br>Error'
-            });
+                });
+                //Telecomminication Section   
+            } else if (load_val === '03') {
+                checkSiteClearExist(PROFILE, function (result) {
+                    if (result.length === 0) {
+                        $('.eplSection').removeClass('d-none');
+                        showSave();
+                    } else {
+                        $('.txtCodeCn').html('Code*');
+                        $('.showCertificateNo').addClass('d-none');
+                        var trackIssueDate = new Date(result.site_clearances[0].issue_date);
+                        var issueDate = trackIssueDate.toISOString().split('T')[0];
+                        var trackExpireDate = new Date(result.site_clearances[0].expire_date);
+                        var expireDate = trackExpireDate.toISOString().split('T')[0];
+                        var trackSubmitDate = new Date(result.created_at);
+                        var submitDate = trackSubmitDate.toISOString().split('T')[0];
+                        $('#issue_date').val(issueDate);
+                        $('#expire_date').val(expireDate);
+                        $('#getsubmitDate').val(submitDate);
+                        $('#getEPLCode').val(result.code);
+                        $('#getRemark').val(result.remark);
+                        $('#getPreRenew').val(result.count);
+                        //Required
+                        $('#btnUpdate').val(result.id);
+                        $('#btnshowDelete').val(result.id);
+                        showUpdate();
+                        $('.eplSection').removeClass('d-none');
+                    }
+                });
+            } else if (load_val === '04') {
+                checkSiteClearExist(PROFILE, function (result) {
+                    if (result.length === 0) {
+                        $('.eplSection').removeClass('d-none');
+                        showSave();
+                    } else {
+                        $('.txtCodeCn').html('Code*');
+                        $('.showCertificateNo').addClass('d-none');
+                        var trackIssueDate = new Date(result.site_clearances[0].issue_date);
+                        var issueDate = trackIssueDate.toISOString().split('T')[0];
+                        var trackExpireDate = new Date(result.site_clearances[0].expire_date);
+                        var expireDate = trackExpireDate.toISOString().split('T')[0];
+                        var trackSubmitDate = new Date(result.created_at);
+                        var submitDate = trackSubmitDate.toISOString().split('T')[0];
+                        $('#issue_date').val(issueDate);
+                        $('#expire_date').val(expireDate);
+                        $('#getsubmitDate').val(submitDate);
+                        $('#getEPLCode').val(result.code);
+                        $('#getRemark').val(result.remark);
+                        $('#getPreRenew').val(result.count);
+                        //Required
+                        $('#btnUpdate').val(result.id);
+                        $('#btnshowDelete').val(result.id);
+                        showUpdate();
+                        $('.eplSection').removeClass('d-none');
+                    }
+                });
             }
-            });
-    });
-            $(document).ready(function () {
-    $('#btnUpload').click(function () {
-    var file = $('#otherFiles')[0].files[0];
-            uploadOldAttacments(PROFILE, 'file', file, function (result) {
-            show_mesege(result);
-                    regenCLientData(PROFILE);
+        });
+        //Load Sections Button END
+        $('#getIndustryType').on('change', function () {
+            resetCurrentFormVals();
+            $('.legitSection').addClass('d-none');
+        });
+        $('#issue_date').on('change', function () { //<--On change issue date configer expire date
+            var issueDate = new Date($('#issue_date').val());
+            var year = issueDate.getFullYear() + 1;
+            var month = issueDate.getMonth() + 1;
+            var date = issueDate.getDate();
+            var expireDate = year + "-" + ('0' + month).slice(-2) + "-" + ('0' + date).slice(-2);
+            console.log(expireDate);
+            $('#expire_date').val(expireDate);
+        });
+//click update button
+        $('#btnUpdate').click(function () {
+            var load_val = $('#getIndustryType').val();
+            //get form data
+            var data = fromValues();
+            delete data["file"];
+            if (Validiteinsert(data)) {
+                updateEPLOldFiles($(this).val(), data, load_val, function (result) {
+                    show_mesege(result);
+                    hideAllErrors();
                     resetinputFields();
-                    uploadButtonHandler($('#otherFiles').val());
+                    $("#btnLoadAc").click();
+                });
+            }
+        });
+//click delete button
+        $('#btnshowDelete').click(function () {
+            var load_val = $('#getIndustryType').val();
+            if (confirm("Are you sure you want to delete this?")) {
+                deleteEPLOldFiles(PROFILE, load_val, function (result) {
+                    show_mesege(result);
+                    showSave();
+                    hideAllErrors();
+                    resetinputFields();
+                    $("#btnLoadAc").click();
+                });
+            }
+        });
+//Remove Old Attachments
+        $(document).on('click', '.removeAttachs', function () {
+            if (confirm("Are you sure you want to delete this?")) {
+                var getRemoveId = $(this).attr('id');
+                deleteOldAttachments(getRemoveId, function (result) {
+                    show_mesege(result);
+                    regenCLientData(PROFILE);
+                });
+            }
+        });
+        getAsetClientData(PROFILE, function (result) {
+            setProfileDetails(result);
+            loadAllOldAttachments(result, function () {
             });
+        });
+        $('input[name="datepickerUi"]').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
+        });
     });
-            $('#otherFiles').bind('change', function () {
-    uploadButtonHandler($('#otherFiles').val());
+    $('#btnAssignEnv').click(function () {
+        let obj = {environment_officer_id: parseInt($("#env_officer_combo").val()), epl_id: PROFILE};
+        assign_epl_to_officer(obj, function (respo) {
+            if (respo.id == 1) {
+                Toast.fire({
+                    type: 'success',
+                    title: 'Enviremontal MS</br>Saved!'
+                });
+            } else {
+                Toast.fire({
+                    type: 'error',
+                    title: 'Enviremontal MS</br>Error'
+                });
+            }
+        });
     });
+    $(document).ready(function () {
+        $('#btnUpload').click(function () {
+            var file = $('#otherFiles')[0].files[0];
+            uploadOldAttacments(PROFILE, 'file', file, function (result) {
+                show_mesege(result);
+                regenCLientData(PROFILE);
+                resetinputFields();
+                uploadButtonHandler($('#otherFiles').val());
+            });
+        });
+        $('#otherFiles').bind('change', function () {
+            uploadButtonHandler($('#otherFiles').val());
+        });
     });
 </script>
 @endsection

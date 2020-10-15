@@ -43,7 +43,7 @@
                                                     <div id="valPayType" class="d-none"><p class="text-danger">Field is required</p></div>
                                                 </div>-->
                         <div class="form-group">
-                            <label>Remark*</label>
+                            <label>Remark</label>
                             <input id="getRemarkVal" type="text" class="form-control form-control-sm"
                                    placeholder="Enter Remark..."
                                    value="">

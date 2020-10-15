@@ -45,10 +45,10 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <dt class="">Name : <a id="client_name"></a></dt>            
-<!--                        <dt class="">Address : <a id="client_address"></a></dt>
-                        <dt class="">Contact Number : <a id="client_cont"></a></dt>
-                        <dt class="">Contact Email : <a id="client_amil"></a></dt>
-                        <dt class="">NIC : <a id="client_nic"> </a></dt>-->
+                        <!--                        <dt class="">Address : <a id="client_address"></a></dt>
+                                                <dt class="">Contact Number : <a id="client_cont"></a></dt>
+                                                <dt class="">Contact Email : <a id="client_amil"></a></dt>
+                                                <dt class="">NIC : <a id="client_nic"> </a></dt>-->
                     </div>
                     <!-- /.card-body -->
                 </div>                                                                        
@@ -188,29 +188,25 @@ $(function () {
     var CLIENT = '{{$client}}';
     var PROFILE = '{{$profile}}';
 //    console.log('cli: ' + CLIENT + ', prof: ' + PROFILE);
-    getaClientbyId(CLIENT, function (result) {
+    getDetailsbyId(PROFILE, function (result) {
         if (result.length == 0 || result == undefined) {
             if (confirm("Client Not Found! Try Again!")) {
-
             }
         } else {
-            setClientDetails(result);
-            disableLinkSection(result.is_old);
-            checkIsOldTwo(result.is_old);
-            $('.setFileNoTitile').html(result.file_no);
+            setClientDetails(result.client);
+            disableLinkSection(result.client.is_old);
+            checkIsOldTwo(result.client.is_old);
+            $('.setFileNoTitile').html(result.client.file_no);
             $(".setFileNoTitile").attr("href", "/industry_profile/id/" + CLIENT);
         }
-        initMap(parseFloat(result.industry_coordinate_x), parseFloat(result.industry_coordinate_y));
-    });
-    getDetailsbyId(PROFILE, function (result) {
+        initMap(parseFloat(result.client.industry_coordinate_x), parseFloat(result.client.industry_coordinate_y));
+        $('.cerInfoBtn').addClass('d-none');
         if (result.length == 0 || result == undefined) {
             if (confirm("Details Not Found! Try Again!")) {
             }
         } else {
-            if (result.status === 1) {
+            if (result.client.file_status == 5) {
                 $('.cerInfoBtn').removeClass('d-none');
-            } else {
-                $('.cerInfoBtn').addClass('d-none');
             }
             setClearanceData(result);
             $('#obj_remark').text(result.remark);
