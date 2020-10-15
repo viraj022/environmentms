@@ -126,4 +126,8 @@ class Client extends Model
         {
                 return $this->hasMany(Minute::class);
         }
+
+        public function resetFile()
+        {
+        }
 }

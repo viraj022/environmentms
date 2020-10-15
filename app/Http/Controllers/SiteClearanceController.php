@@ -161,15 +161,22 @@ class SiteClearanceController extends Controller
     public function deleteOldData($id)
     {
         return \DB::transaction(function () use ($id) {
-            $siteClearanceSession = SiteClearenceSession::findOrFail($id);
-            $msg = $siteClearanceSession->delete();
-            $siteClearance = SiteClearance::findOrFail($siteClearanceSession->siteClearances[0]->id);
-            $msg = $msg && $siteClearance->delete();
-            if ($msg) {
-                LogActivity::addToLog('deleteOldData done : SiteClearanceController', $siteClearance);
-                return array('id' => 1, 'message' => 'true');
+            $client = Client::findOrFail($id);
+            $sites = $client->siteClearenceSessions;
+            if (count($sites) == 0) {
+                abort(404);
+            } else if (count($sites) == 1) {
+                $sites[0]->delete();
+                $siteClearance = SiteClearance::findOrFail($sites[0]->siteClearances[0]->id);
+                $msg =  $siteClearance->delete();
+                if ($msg) {
+                    LogActivity::addToLog('deleteOldData done : SiteClearanceController', $siteClearance);
+                    return array('id' => 1, 'message' => 'true');
+                } else {
+                    LogActivity::addToLog('deleteOldData Fail : SiteClearanceController', $siteClearance);
+                    return array('id' => 0, 'message' => 'false');
+                }
             } else {
-                LogActivity::addToLog('deleteOldData Fail : SiteClearanceController', $siteClearance);
                 return array('id' => 0, 'message' => 'false');
             }
         });
