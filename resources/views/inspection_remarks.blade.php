@@ -160,6 +160,7 @@ $(function () {
             $('.inspectConfStatus').removeClass('d-none'); //<-- Show Complete Inspection Btn
             $('.disInspection').removeClass('overlay');
         } else {
+            $('.removeComm').remove();
             $('.inspectConfStatus').addClass('d-none'); //<-- Hide Complete Inspection Btn
             $('.compDoneUi').removeClass('d-none'); //<-- Show Completed UI
         }
@@ -195,9 +196,11 @@ $(function () {
                         $('.inspectConfStatus').removeClass('d-none'); //<-- Show Complete Inspection Btn
                         $('.disInspection').removeClass('overlay');
                     } else {
+                        $('.removeComm').remove();
                         $('.inspectConfStatus').addClass('d-none'); //<-- Hide Complete Inspection Btn
                         $('.compDoneUi').removeClass('d-none'); //<-- Show Completed UI
                     }
+                    location.reload();
                 });
             });
         } else {

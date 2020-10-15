@@ -126,26 +126,10 @@
                                         <li class="list-group-item">
                                             <b>Remarks</b> <a class="float-right eplRemark" >-</a>
                                         </li>
+                                        <li class="list-group-item">
+                                           <button id="" type="button" class="btn btn-block btn-success btn-xs btnRenewal">Renew Certificate</button>
+                                        </li>
                                     </ul>
-                                </div>
-                                <div class="info-box bg-light">
-                                    <div class="info-box-content">
-                                        <span class="info-box-text text-center text-muted">Industry Information</span>
-                                        <dl>
-                                            <dt>Name</dt>
-                                            <dd class="eplClientName"></dd>
-                                            <dt>NIC</dt>
-                                            <dd class="eplClientNic"></dd>
-                                            <dt>Contact No</dt>
-                                            <dd class="eplClientConNo"></dd>
-                                            <dt>Address</dt>
-                                            <dd class="eplClientAdress"></dd>
-                                            <dt>Email</dt>
-                                            <dd class="eplClientMail"></dd>
-                                            <dt>Renewal</dt>
-                                            <button id="" type="button" class="btn btn-block btn-success btn-xs btnRenewal">Renew</button>
-                                        </dl>
-                                    </div>
                                 </div>
                             </div>
                         </div>

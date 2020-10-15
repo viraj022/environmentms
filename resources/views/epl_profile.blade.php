@@ -45,10 +45,10 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <dt class="">Name : <a id="client_name"></a></dt>            
-                        <dt class="">Address : <a id="client_address"></a></dt>
+<!--                        <dt class="">Address : <a id="client_address"></a></dt>
                         <dt class="">Contact Number : <a id="client_cont"></a></dt>
                         <dt class="">Contact Email : <a id="client_amil"></a></dt>
-                        <dt class="">NIC : <a id="client_nic"> </a></dt>
+                        <dt class="">NIC : <a id="client_nic"> </a></dt>-->
                     </div>
                     <!-- /.card-body -->
                 </div>                                                                        
@@ -93,7 +93,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">
-                            <i class="fas fa-address-card"></i> EPL Data
+                            <i class="fas fa-address-card"></i> Industry Data
                         </h3>
                     </div>
                     <!-- /.card-header -->
@@ -101,9 +101,6 @@
                         <dl class="row ">
                             <div class="col-md-8">
                                 <dt >Name : <a id="obj_name"></a></dt>
-                                <dt >Registration No : <a id="obj_regno"></a></dt>
-                                <dt >Code : <a id="obj_code"></a></dt>
-                                <dt >Investment :  <a  id="obj_invest"></a></dt>
                                 <dt >Remark : <a  id="obj_remark"></a></dt>
                                 <dt >Location :---</dt>
                             </div>
@@ -216,6 +213,7 @@ $(function () {
                 $('.cerInfoBtn').addClass('d-none');
             }
             setClearanceData(result);
+            $('#obj_remark').text(result.remark);
             $('.eplCodeAfileNo').html(result.epl_instantNumber);
             $(".navTodownload").attr("href", '/' + result.path);
         }
