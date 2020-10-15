@@ -192,7 +192,7 @@
                             <div class="card-footer">
                                 @if($pageAuth['is_create']==1 || false)
                                 <button id="btnUpdate" type="submit" class="btn btn-success"><i class="fas fa-check"></i> Update</button>
-                                <button id="btnGenNewFileCode" type="submit" class="btn float-right btn-warning"><i class="fas fa-exclamation-triangle"></i> Generate New File Code</button>
+                                <button id="btnGenNewFileCode" type="submit" class="btn float-right btn-warning"><i class="fas fa-exclamation-triangle"></i> Change File Category</button>
                                 @endif
                             </div>
                             <div class="overlay dark loadingRenderUI">
@@ -335,6 +335,10 @@
                                         });
 
                                         $('#btnGenNewFileCode').click(function () {
+                                            if (!confirm('Are you sure you want to change this categories?,it will change EPL,File,Site Clearance codes')) {
+                                                return false;
+                                            }
+                                            gen_fileCode();
                                             createNewFileCodeJ(null, function (set) {
                                                 $('.genNewFileCodeAcc').removeClass('d-none');
                                                 $('.editingDetectedFCode').addClass('bg-gradient-secondary');
@@ -348,6 +352,14 @@
                                                 location.reload();
                                             }
                                         });
+
+                                        function gen_fileCode(parameters) {
+                                            let ps_code = $('#prsdeshiySb :selected').data('ps_code');
+                                            let cat_code = $('#industryCat :selected').data('cat_code');
+                                            let bc_code = $('#businesScale :selected').data('bc_code');
+                                            let code = 'PEA/' + ps_code + '/' + cat_code + '/' + bc_code;
+                                            console.log(code);
+                                        }
 
                                         function createNewFileCodeJ(e, callBack) {
                                             var c = $('#file_code_active').val();

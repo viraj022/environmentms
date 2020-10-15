@@ -186,6 +186,7 @@
                             type: 'success',
                             title: 'Enviremontal MS</br>Saved'
                         });
+                        window.location.href = ""+result.rout;
                     } else {
                         Toast.fire({
                             type: 'error',
