@@ -425,6 +425,8 @@ function pendingPaymentsTable(id) {
                             '" class="btn btn-primary printBarcode"><i class="fas fa-barcode"></i>  Re-Print BarCode </button> <button type="button" value="' +
                             row.id +
                             '" class="btn btn-danger removeBarcode"><i class="fas fa-times"></i> Remove </button></td>';
+                }else{
+                    tbl += "<td><i class='fas fa-check text-success'></i></td>";
                 }
                 tbl += "</tr>";
             });

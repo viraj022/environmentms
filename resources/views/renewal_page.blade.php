@@ -55,7 +55,7 @@
                         </div>
                         <div class="form-group">
                             <label>Renewal Application*</label>
-                            <input id="inp" type="file">
+                            <input id="inp" accept="image/*,application/pdf" type="file">
                         </div>
                         <div class="progress d-none">
                             <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
