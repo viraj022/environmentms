@@ -1,3 +1,5 @@
+var cer_status = {0: 'Pending', 1: 'Drafting', 2: 'Drafted', 3: 'AD Approval Pending', 4: 'Director Approval pending', 5: 'Director Approved', 6: 'Certificate Issued', '-1': 'Certificate Director Holded'};
+var file_status_list = {0: 'Pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Prenidng Approval', 4: 'D Certificate Approval Prenidng', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold'};
 let PROFILE_ID = "";
 function getaProfilebyId(id, callBack) {
     if (id.length == 0) {
@@ -425,6 +427,8 @@ function pendingPaymentsTable(id) {
                             '" class="btn btn-primary printBarcode"><i class="fas fa-barcode"></i>  Re-Print BarCode </button> <button type="button" value="' +
                             row.id +
                             '" class="btn btn-danger removeBarcode"><i class="fas fa-times"></i> Remove </button></td>';
+                } else {
+                    tbl += "<td><i class='fas fa-check text-success'></i></td>";
                 }
                 tbl += "</tr>";
             });
@@ -457,4 +461,20 @@ function checkCompletedStatus(file_status, epl_status, siteclear_status) {
     } else {
 
     }
+}
+
+function setCurrentFileStatus(api_result) {
+    let status_Lable = '';
+    if (api_result.file_status == 2) {
+        status_Lable = '(' + cer_status[api_result.cer_status] + ')';
+    } else if (api_result.file_status == 0) {
+        if (api_result.need_inspection == null) {
+            status_Lable = '(Set Inspction Status)';
+        } else if (api_result.need_inspection == 'Pending') {
+            status_Lable = '(Inpection Result Pending)';
+        } else {
+            status_Lable = '(' + api_result.need_inspection + ')';
+        }
+    }
+    $('.setCurrentFstatus').text(file_status_list[api_result.file_status] + status_Lable);
 }

@@ -123,7 +123,7 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
                     } else if (row.file_status == -1) {
                         tr_style = '    background-color: #f3dcdc75;';
                     }
-                    if (row.is_old === 1) {
+                    if (row.is_old != 0) {
                         tbl += '<tr style="' + tr_style + '">';
                         tbl += '<td>' + ++index + '</td>';
                         tbl += '<td>' + row.industry_name + '</td>';

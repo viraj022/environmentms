@@ -70,31 +70,7 @@
                                 <div class="col-md-4">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <h3 class="card-title">
-                                                        <i class="fas fa-user"></i> Client Details
-
-                                                    </h3>
-                                                </div>
-                                                <!-- /.card-header -->
-                                                <div class="card-body">
-                                                    <dl class="row">
-                                                        <dt class="col-sm-4">Name:</dt>
-                                                        <dd class="col-sm-6" id="client_name"></dd>
-                                                        <dt class="col-sm-4">Address:</dt>
-                                                        <dd class="col-sm-6" id="client_address"></dd>
-                                                        <dt class="col-sm-4">Contact No:</dt>
-                                                        <dd class="col-sm-6" id="client_cont"></dd>
-                                                        <dt class="col-sm-4">Contact Email:</dt>
-                                                        <dd class="col-sm-6" id="client_amil"></dd>
-                                                    </dl>
-                                                </div>
-                                                <!-- /.card-body -->
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="card">
+                                            <div class="card card-gray">
                                                 <div class="card-header">
                                                     <h3 class="card-title"><i class="fas fa-address-card"></i> Services</h3>
                                                 </div>
@@ -193,7 +169,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card">
+                                    <div class="card card-gray">
                                         <div class="card-header">
                                             <h3 class="card-title">
                                                 <i class="fas fa-address-card"></i> Industry Details
@@ -201,11 +177,23 @@
                                         </div>
                                         <!-- /.card-header -->
                                         <div class="card-body">
+                                            <h5 class="text-success">File Status:<b class="setCurrentFstatus"></b></h5>
                                             <h6 id="env_firstname">Environment Officer: <a class="text-danger">Not Assigned</a></h6>
                                             <dt>Name : <a id="obj_name"></a></dt>
                                             <dt>BR No : <a id="obj_regno"></a></dt>
                                             <dt>Investment : Rs <a id="obj_invest"></a>.00</dt>
                                             <dt>Industry Sub-Category :<a id="obj_industrySub"></a></dt>
+                                            <hr>
+                                            <dl class="row">
+                                                <dt class="col-sm-4">Client Name:</dt>
+                                                <dd class="col-sm-6" id="client_name"></dd>
+                                                <dt class="col-sm-4">Client Address:</dt>
+                                                <dd class="col-sm-6" id="client_address"></dd>
+                                                <dt class="col-sm-4">Client Contact No:</dt>
+                                                <dd class="col-sm-6" id="client_cont"></dd>
+                                                <dt class="col-sm-4">Client Contact Email:</dt>
+                                                <dd class="col-sm-6" id="client_amil"></dd>
+                                            </dl>
                                             <hr>
                                             <dt>Download & Upload Application :</dt>
 
@@ -262,7 +250,7 @@
                 <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab">
                     <!--//Old Attachments Start//-->
                     <div class="col-md-12">
-                        <div class="card">
+                        <div class="card card-gray">
                             <div class="card-header">
                                 <h3 class="card-title">Attachments</h3>
                             </div>
@@ -524,7 +512,7 @@
                 <!--//All User Site Inspection Open//-->
                 <div class="tab-pane fade" id="custom-tabs-three-siteInspectionTab" role="tabpanel" aria-labelledby="custom-tabs-three-siteInspectionTab-tab">
                     <div class="col-md-12">
-                        <div class="card">
+                        <div class="card card-gray">
                             <div class="card-header">
                                 <h3 class="card-title">All Site Inspections</h3>
                             </div>
@@ -558,7 +546,7 @@
                 <!--//Payments Open//-->
                 <div class="tab-pane fade" id="custom-tabs-three-paymentsTab" role="tabpanel" aria-labelledby="custom-tabs-three-paymentsTab-tab">
                     <div class="col-md-12">
-                        <div class="card">
+                        <div class="card card-gray">
                             <div class="card-header">
                                 <h3 class="card-title">All Payment Details</h3>
                             </div>
@@ -589,7 +577,7 @@
                         <div class="col-md-12 loadMinCard">
 
                         </div>
-                     
+
                     </div>
                 </div>
             </div>
@@ -631,6 +619,7 @@
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
 <script>
                                         PROFILE_ID = '{{$id}}';
+                                        var FILE_DETAILS = null;
                                         $(function () {
                                             $('.minutesTab').click(function () { //<--load min when click on min tab
                                                 getCardOfTableUI();
@@ -640,6 +629,8 @@
                                             });
                                             deedList(PROFILE_ID, function () {});
                                             getaProfilebyId(PROFILE_ID, function (parameters) {
+                                                FILE_DETAILS = parameters;
+                                                setCurrentFileStatus(parameters);
                                                 setProfileDetails(parameters);
                                                 setIndustryAndClientDb(parameters);
                                                 updateAttachmentData(parameters);
@@ -749,13 +740,15 @@
                                         });
                                         //Confirm Button
                                         $('#btnConfirm').click(function () {
+                                            if (FILE_DETAILS.epls.length == 0 && FILE_DETAILS.site_clearence_sessions.length == 0) {
+                                                alert('Please enter EPL or Site Clearance Details First!');
+                                                return false;
+                                            }
                                             if (confirm("Not able to be reversed! Are you sure?")) {
                                                 ConfirmUploadingAttachs(PROFILE_ID, function (respo) {
                                                     show_mesege(respo);
                                                     location.reload();
                                                 });
-                                            } else {
-                                                return false;
                                             }
                                         });
                                         //Handle Upload Button

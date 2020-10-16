@@ -15,9 +15,9 @@ function saveRenew(id, data, callBack) {
 function Validiteinsert(data) {
     var response = true;
     if (data.remark.length == 0) {
-        toastr.error('Remark is required')
-        $('#getRemarkVal').addClass('is-invalid');
-        response = false;
+//        toastr.error('Remark is required')
+//        $('#getRemarkVal').addClass('is-invalid');
+        response = true;
     } else {
         $('#getRemarkVal').removeClass('is-invalid');
     }
