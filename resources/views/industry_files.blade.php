@@ -221,7 +221,7 @@
         $(document).on('click', '#setInspectionVal2', function () {
             $('#setInspectionVal').val($(this).val());
         });
-        $('#setInspectionVal').on('click', function () {
+        $(document).on('click', '#setInspectionVal', function () {
             var fileData = JSON.parse(unescape($(this).val()));
             let f_id = fileData.id;
 
@@ -271,7 +271,7 @@
         } else {
             if (fileData.need_inspection == 'Inspection Not Needed') {
                 $('#setInspectionVal2').addClass('d-none');
-            }else{
+            } else {
                 $('#setInspectionVal2').removeClass('d-none');
             }
         }
