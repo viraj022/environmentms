@@ -35,4 +35,9 @@ class WebRouteController extends Controller {
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('act_status', ['pageAuth' => $pageAuth]);
     }
+    public function oldDataSummary() {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('old_data_summary', ['pageAuth' => $pageAuth]);
+    }
 }
