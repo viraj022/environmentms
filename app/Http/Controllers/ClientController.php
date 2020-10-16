@@ -271,7 +271,7 @@ class ClientController extends Controller {
             $oldFilesList =  Client::selectRaw("COUNT(*) count, DATE_FORMAT(created_at, '%Y %m %e') date")
                   ->where('is_old', '0')
                     ->groupBy('date')
-                    ->orderBy('date','ASC')
+                    ->orderBy('created_at','ASC')
                     ->get();
 
             return $oldFilesList;
