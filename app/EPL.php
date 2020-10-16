@@ -89,7 +89,7 @@ class EPL extends Model
     }
     public  function getRenewCount()
     {
-        return EPLRenew::where('e_p_l_id', $this->id)->count();
+        abort(404, "Method removed-hcw code");
     }
 
     public function certificateInfo()

@@ -143,8 +143,8 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Investment*</label>
-                                    <input id="inventsment" type="number" class="form-control form-control-sm cutenzReq" placeholder="Enter investment" value="">
+                                    <label>Investment(Rs)*</label>
+                                    <input id="inventsment" pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==12) return false;" type="number" class="form-control form-control-sm cutenzReq" placeholder="Enter investment Rs" value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Address*</label>

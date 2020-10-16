@@ -192,7 +192,11 @@
         //Load AssDir Combo
         loadAssDirCombo(function () {
             loadEnvOfficerCombo($('#getAsDirect').val(), function (rest) {
-                forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+                if (rest === null) {
+                    return false;
+                } else {
+                    forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+                }
             });
         });
         $("#getAsDirect").change(function () {
@@ -217,7 +221,7 @@
         $(document).on('click', '#setInspectionVal2', function () {
             $('#setInspectionVal').val($(this).val());
         });
-        $('#setInspectionVal').on('click', function () {
+        $(document).on('click', '#setInspectionVal', function () {
             var fileData = JSON.parse(unescape($(this).val()));
             let f_id = fileData.id;
 
@@ -225,6 +229,7 @@
                 show_mesege(rep);
                 $('#modal-xl').modal('hide');
                 checkFileType();
+                forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
             });
         });
     });
@@ -246,11 +251,11 @@
         $('#needApproval,#submitAdCerApproval,#rejectAdCerApproval,#setInspectionVal2,#viewCertificateBtn').addClass('d-none');
 
         if (f_Status === 0) {
-            if (fileData.need_inspection === null) {
+            if (fileData.need_inspection == null) {
                 $('#setInspectionVal2').removeClass('d-none');
-            } else if (fileData.need_inspection === 'Completed') {
+            } else if (fileData.need_inspection == 'Completed') {
                 $('#needApproval').removeClass('d-none');
-            } else if (fileData.need_inspection === 'Inspection Not Needed') {
+            } else if (fileData.need_inspection == 'Inspection Not Needed') {
                 $('#needApproval').removeClass('d-none');
             } else {
                 $('#needApproval').addClass('d-none');
@@ -264,7 +269,11 @@
         } else if (f_Status == -1) {
             $('#needApproval').addClass('d-none');
         } else {
-            $('#setInspectionVal2').removeClass('d-none');
+            if (fileData.need_inspection == 'Inspection Not Needed') {
+                $('#setInspectionVal2').addClass('d-none');
+            } else {
+                $('#setInspectionVal2').removeClass('d-none');
+            }
         }
     });
 

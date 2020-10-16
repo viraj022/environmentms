@@ -104,6 +104,8 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
                 } else if (row.file_status == 0) {
                     if (row.need_inspection == null) {
                         status_Lable = '(Set Inspction Status)';
+                    } else if (row.need_inspection == 'Pending') {
+                        status_Lable = '(Inpection Result Pending)';
                     } else {
                         status_Lable = '(' + row.need_inspection + ')';
                     }
@@ -121,27 +123,29 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
                     } else if (row.file_status == -1) {
                         tr_style = '    background-color: #f3dcdc75;';
                     }
-                    tbl += '<tr style="' + tr_style + '">';
-                    tbl += '<td>' + ++index + '</td>';
-                    tbl += '<td>' + row.industry_name + '</td>';
-                    tbl += '<td><a href="/industry_profile/id/' + row.id + '" class="btn btn-dark" target="_blank">' + row.file_no + '</a></td>';
-                    tbl += '<td class="">' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
-                    tbl += '<td>' + file_status_list[row.file_status] + status_Lable + '</td>';
+                    if (row.is_old != 0) {
+                        tbl += '<tr style="' + tr_style + '">';
+                        tbl += '<td>' + ++index + '</td>';
+                        tbl += '<td>' + row.industry_name + '</td>';
+                        tbl += '<td><a href="/industry_profile/id/' + row.id + '" class="btn btn-dark" target="_blank">' + row.file_no + '</a></td>';
+                        tbl += '<td class="">' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
+                        tbl += '<td>' + file_status_list[row.file_status] + status_Lable + '</td>';
 //                    if ((row.file_status == 0) && (row.need_inspection == null)) {
 //                        tbl += '<td><button type="button" value="' + row.id + '" data-toggle="modal" data-target="#modal-xl" class="btn btn-success setInspeBtn">Set Inspection</button></td>';
 //                    } else {
 //                        tbl += '<td>' + row.need_inspection + '</td>';
 //                    }
-                    if (row.file_status != 5) {
-                        tbl += '<td class="text-center"><button type="button" value="' + escape(JSON.stringify(row)) + '" class="btn btn-info detailsData">Details</button></td>';
-                    } else {
-                        tbl += '<td class="text-center"><i class="fa fa-check fa-lg text-success"></i></td>';
+                        if (row.file_status != 5) {
+                            tbl += '<td class="text-center"><button type="button" value="' + escape(JSON.stringify(row)) + '" class="btn btn-info detailsData">Details</button></td>';
+                        } else {
+                            tbl += '<td class="text-center"><i class="fa fa-check fa-lg text-success"></i></td>';
+                        }
+                        tbl += '</tr>';
                     }
-                    tbl += '</tr>';
                 }
             });
         }
-            $('#tblAllFiles tbody').html(tbl);
+        $('#tblAllFiles tbody').html(tbl);
     });
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
         callBack();

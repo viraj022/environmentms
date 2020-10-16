@@ -75,7 +75,7 @@
 
             </ul>
         </li>
-        <li class="nav-item has-treeview menu-open">
+        <li class="nav-item has-treeview {{ Request::is('attachments','attachment_map','pradesheyasaba','industry_category','payment_type','payments','payment_range','zone','assistant_director','environment_officer','committee_pool') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-pencil-ruler"></i>
                 <p>
@@ -175,7 +175,7 @@
 
             </ul>
         </li>
-        <li class="nav-item has-treeview menu-open">
+        <li class="nav-item has-treeview {{ Request::is('client_space','industry_files','epl_assign','old_file_list','env_officer') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-user-shield"></i>
                 <p>
@@ -319,7 +319,7 @@
                 @endforeach
             </ul>
         </li>
-        <li class="nav-item has-treeview {{ Request::is('expired_certificates') ? 'menu-open' : '' }}">
+        <li class="nav-item has-treeview {{ Request::is('expired_certificates','act_status') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-user-tie"></i>
                 <p>Report <i class="right fas fa-angle-left"></i></p>
@@ -331,6 +331,14 @@
                     <a href="{{ url('/expired_certificates') }}" class="nav-link {{ Request::is('expired_certificates') ? 'active' : '' }}">
                         <i class="fas fa-clock nav-icon"></i>
                         <p>Expired List</p>
+                    </a>
+                </li>
+                @endif
+                @if($pre['id']===config('auth.privileges.clientSpace'))
+                <li class="nav-item">
+                    <a href="{{ url('/act_status') }}" class="nav-link {{ Request::is('act_status') ? 'active' : '' }}">
+                        <i class="fas fa-clock nav-icon"></i>
+                        <p>Activity Status</p>
                     </a>
                 </li>
                 @endif

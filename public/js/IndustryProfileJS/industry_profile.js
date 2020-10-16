@@ -1,3 +1,5 @@
+var cer_status = {0: 'Pending', 1: 'Drafting', 2: 'Drafted', 3: 'AD Approval Pending', 4: 'Director Approval pending', 5: 'Director Approved', 6: 'Certificate Issued', '-1': 'Certificate Director Holded'};
+var file_status_list = {0: 'Pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Prenidng Approval', 4: 'D Certificate Approval Prenidng', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold'};
 let PROFILE_ID = "";
 function getaProfilebyId(id, callBack) {
     if (id.length == 0) {
@@ -52,14 +54,14 @@ function setProfileDetails(obj) {
     obj.last_name == null
             ? $("#client_name").html(obj.first_name)
             : $("#client_name").html(obj.first_name + " " + obj.last_name);
-    $("#client_address").html(obj.address);
-    $("#client_cont").html(obj.contact_no);
-    $("#client_amil").html(obj.email);
+    (obj.address != null) ? $("#client_address").html(obj.address) : $("#client_address").html('--');
+    (obj.contact_no != null) ? $("#client_cont").html(obj.contact_no) : $("#client_cont").html('--');
+    (obj.email != null) ? $("#client_amil").html(obj.email) : $("#client_amil").html('--');
     $("#client_nic").html(obj.nic);
     $("#obj_name").html(obj.industry_name);
-    $("#obj_regno").html(obj.industry_registration_no);
+    (obj.industry_registration_no != null) ? $("#obj_regno").html(obj.industry_registration_no) : $("#obj_regno").html('--');
     $("#obj_invest").html(obj.industry_investment);
-    $("#obj_industrySub").html(obj.industry_sub_category);
+    (obj.industry_sub_category != null) ? $("#obj_industrySub").html(obj.industry_sub_category) : $("#obj_industrySub").html('--');
     initMap(
             parseFloat(obj.industry_coordinate_x),
             parseFloat(obj.industry_coordinate_y)
@@ -154,21 +156,21 @@ function setIndustryAndClientDb(get) {
     var or_assign_Date = new Date(get.assign_date);
     var con_assign_Date = or_assign_Date.toISOString().split("T")[0];
     $(".assign_date").html(con_assign_Date);
-    $(".cl_address").html(get.address);
-    $(".cl_email").html(get.email);
-    $(".cl_contact_no").html(get.contact_no);
-    $(".cl_nic").html(get.nic);
+    (get.address != null) ? $(".cl_address").html(get.address) : $(".cl_address").html('--');
+    (get.email != null) ? $(".cl_email").html(get.email) : $(".cl_email").html('--');
+    (get.contact_no != null) ? $(".cl_contact_no").html(get.contact_no) : $(".cl_contact_no").html('--');
+    (get.nic != null) ? $(".cl_nic").html(get.nic) : $(".cl_nic").html('--');
     //Industry
     $(".tabf_industry_name").html(get.industry_name);
     $(".tabf_industry_cat_name").html(get.industry_category.name);
     $(".tabf_business_scale").html(get.business_scale.name);
     $(".tabf_pradesheeyasaba").html(get.pradesheeyasaba.name);
-    $(".tabf_industry_registration_no").html(get.industry_registration_no);
+    (get.industry_registration_no != null) ? $(".tabf_industry_registration_no").html(get.industry_registration_no) : $(".tabf_industry_registration_no").html('--');
     $(".tabf_industry_start_date").html(get.start_date_only);
     $(".tabf_industry_investment").html(get.industry_investment);
     $(".tabf_industry_address").html(get.industry_address);
-    $(".tabf_industry_contact_no").html(get.industry_contact_no);
-    $(".tabf_industry_email").html(get.industry_email);
+    (get.industry_email != null) ? $(".tabf_industry_email").html(get.industry_email) : $(".tabf_industry_email").html('--');
+    (get.industry_contact_no != null) ? $(".tabf_industry_contact_no").html(get.industry_contact_no) : $(".tabf_industry_contact_no").html('--');
     let env_officer = "Not Assinged";
     if (!(get.environment_officer == null)) {
         if (get.environment_officer.user != null) {
@@ -199,7 +201,11 @@ function loadAllEPLTable(dataSet, callBack) {
                     '" class="btn btn-primary">' +
                     row.code +
                     "</a></td>";
-            tbl += "<td>" + row.certificate_no + "</td>";
+            if (row.certificate_no == null) {
+                tbl += "<td>In Progress.</td>";
+            } else {
+                tbl += "<td>" + row.certificate_no + "</td>";
+            }
             tbl += "<td>" + row.issue_date_only + "</td>";
             tbl += "<td>" + row.expire_date_only + "</td>";
             tbl += "</tr>";
@@ -240,7 +246,7 @@ function loadAllSiteClearTable(dataSet, callBack) {
 
 function setupInspectionUI(need_inspection_status) {
     if (need_inspection_status === null) {
-        $(".setupInspectStatus").html("NEW");
+        $(".setupInspectStatus").html("Pending");
         $(".setInspectUI").removeClass("d-none");
         $(".noNeedInspect").removeClass("d-none");
     } else if (need_inspection_status === "Inspection Needed") {
@@ -249,6 +255,8 @@ function setupInspectionUI(need_inspection_status) {
     } else if (need_inspection_status === "Inspection Not Needed") {
         $(".setupInspectStatus").html("Inspection Not Needed");
         $(".setInspectUI").removeClass("d-none");
+    } else if (need_inspection_status === "Pending") {
+        $(".setupInspectStatus").html("Inspection Pending");
     } else if (need_inspection_status === "Completed") {
         $(".setupInspectStatus").html("Completed");
         $(".setInspectUI").removeClass("d-none");
@@ -423,6 +431,8 @@ function pendingPaymentsTable(id) {
                             '" class="btn btn-primary printBarcode"><i class="fas fa-barcode"></i>  Re-Print BarCode </button> <button type="button" value="' +
                             row.id +
                             '" class="btn btn-danger removeBarcode"><i class="fas fa-times"></i> Remove </button></td>';
+                } else {
+                    tbl += "<td><i class='fas fa-check text-success'></i></td>";
                 }
                 tbl += "</tr>";
             });
@@ -455,4 +465,20 @@ function checkCompletedStatus(file_status, epl_status, siteclear_status) {
     } else {
 
     }
+}
+
+function setCurrentFileStatus(api_result) {
+    let status_Lable = '';
+    if (api_result.file_status == 2) {
+        status_Lable = '(' + cer_status[api_result.cer_status] + ')';
+    } else if (api_result.file_status == 0) {
+        if (api_result.need_inspection == null) {
+            status_Lable = '(Set Inspction Status)';
+        } else if (api_result.need_inspection == 'Pending') {
+            status_Lable = '(Inpection Result Pending)';
+        } else {
+            status_Lable = '(' + api_result.need_inspection + ')';
+        }
+    }
+    $('.setCurrentFstatus').text(file_status_list[api_result.file_status] + status_Lable);
 }

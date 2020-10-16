@@ -295,13 +295,21 @@
 <script>
     var PROFILE_ID = '{{$id}}';
     var FILE_STATUS = '';
+    var CER_STATUS = '';
     var CERTIFICATE_ID = '';
     $(function () {
 //Load table
         getaProfilebyId(PROFILE_ID, function (parameters) {
+            FILE_STATUS = parseInt(parameters.file_status);
+            CER_STATUS = parseInt(parameters.cer_status);
             setProfileDetails(parameters);
             setIndustryAndClientDb(parameters);
             $(".loadingRenderUI").remove(); //<--Check Loading Status
+            //Control Gen Certificate Btn View
+            if (FILE_STATUS === 6 && CER_STATUS === 6) {
+                $(".genCertificateNum").remove();
+            } else {
+            }
         });
 
 //select button action 
@@ -311,8 +319,10 @@
 
 //Show Certificate Details
     getCertificateDetails(PROFILE_ID, function (resp) {
-        FILE_STATUS = parseInt(resp.client.file_status);
-        CERTIFICATE_ID = parseInt(resp.id);
+        if (resp.length != 0) {
+            FILE_STATUS = parseInt(resp.client.file_status);
+            CERTIFICATE_ID = parseInt(resp.id);
+        }
     });
 //Gen Certificate Number
     $('.genCertificateNum').click(function () {
@@ -339,17 +349,24 @@
             return false;
         }
         let file = $('#fileUploadInput')[0].files[0];
+        let DATA = {file: file}
         if ($('#fileUploadInput')[0].files.length === 0) {
             alert('No File Selected!');
             return false;
         }
         if (FILE_STATUS == 4) {
             url_upload = '/api/certificate/original/';
+            DATA['issue_date'] = $('#issue_date').val().trim();
+            DATA['expire_date'] = $('#expire_date').val().trim();
+            if (DATA.issue_date.length == 0 || DATA.expire_date.length == 0) {
+                alert('Invalid Date !');
+                return false
+            }
         } else if (FILE_STATUS == 2) {
             url_upload = '/api/certificate/draft/';
         }
         console.log(FILE_STATUS);
-        submitDataWithFile(url_upload + CERTIFICATE_ID, {file: file}, function (resp) {
+        submitDataWithFile(url_upload + CERTIFICATE_ID, DATA, function (resp) {
             show_mesege(resp);
             if (resp.id == 1) {
                 getCertificateDetails(PROFILE_ID, function (resp) {
@@ -369,7 +386,7 @@
             completeCertificateAPI(CERTIFICATE_ID, FILE_STATUS, data, function (resp) {
                 show_mesege(resp);
                 if (resp.id === 1) {
-                    location.reload();
+                    window.location.href = "/industry_profile/id/" + PROFILE_ID;
                 }
                 getCertificateDetails(PROFILE_ID, function (resp) {
                     CERTIFICATE_ID = parseInt(resp.id);

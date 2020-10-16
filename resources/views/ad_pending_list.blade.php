@@ -75,10 +75,10 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" id="prepareCertificate" class="btn btn-primary d-none"><i class="fa fa-check"></i> Approve For Prepare Certificate</button>
-                    <button type="button" id="approveCertificate" class="btn btn-primary d-none"><i class="fa fa-check"></i> Approve Certificate</button>
+                    <button type="button" id="prepareCertificate" class="btn btn-success d-none"><i class="fa fa-check"></i> Approve For Prepare Certificate</button>
+                    <button type="button" id="approveCertificate" class="btn btn-success d-none"><i class="fa fa-check"></i> Approve Certificate</button>
                     <button type="button" id="rejectCertificate" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject Certificate</button>
-                    <button type="button" id="approveFile" class="btn btn-primary d-none"><i class="fa fa-times"></i> Approve File</button>
+                    <button type="button" id="approveFile" class="btn btn-success d-none"><i class="fa fa-check"></i> Approve File</button>
                     <button type="button" id="rejectFile" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject File</button>
                 </div>
             </div>

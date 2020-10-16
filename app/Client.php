@@ -100,23 +100,23 @@ class Client extends Model
         {
                 switch ($this->cer_type_status) {
                         case 1: //new epl
-                                $cerNo = Setting::Where('name', 'certificate_ai')->sum('value');
-                                $cerNo++;
+                                $cerNo = getSerialNumber(Setting::CERTIFICATE_AI);
                                 $data =  str_pad($cerNo, 6, "0", STR_PAD_LEFT);
                                 return $data . "/" . date("Y");
                         case 2: //epl renewal
-                                $epl = EPL::Where('client_id', $this->id)->orderBy('id', 'desc')->first();
+                                $epl = EPL::Where('client_id', $this->id)->first();
+                                $curEpl = EPL::Where('client_id', $this->id)->orderBy('id', 'desc')->first();
+                                // dd($epl->toArray());
                                 $serial_no =  Str::substr($epl->certificate_no, 0, strpos($epl->certificate_no, '/'));
-                                $data = str_pad($serial_no, 6, "0", STR_PAD_LEFT);
-                                return  $data . "/r" . $epl->count . "/" . date("Y");
+                                $data = str_pad(($serial_no), 4, "0", STR_PAD_LEFT);
+                                return  $data . "/" . date("Y") . "/r" . $curEpl->count;
                         case 3; //site_new
                                 $client = Client::findOrFail($this->id);
-                                //return array('nextNumber' => $client->file_no);
-                                return $client->file_no;
+                                // dd($client->siteClearenceSessions->reverse()[0]->code);
+                                return $client->siteClearenceSessions->reverse()[0]->code;
                         case 4: //site_clearance_extetion
                                 $client = Client::findOrFail($this->id);
-                                // return array('nextNumber' => $client->file_no);
-                                return $client->file_no;
+                                return $client->siteClearenceSessions->reverse()[0]->code;
                                 break;
                         default:
                 }
@@ -125,5 +125,9 @@ class Client extends Model
         public function minutes()
         {
                 return $this->hasMany(Minute::class);
+        }
+
+        public function resetFile()
+        {
         }
 }

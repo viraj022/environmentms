@@ -3,6 +3,7 @@
 use App\Client;
 use App\Minute;
 use App\FileLog;
+use App\Setting;
 
 function changeDateFormate()
 {
@@ -77,4 +78,30 @@ function prepareMinutesArray($file, $description, $situation, $user_id)
         "file_type_id" => $type_id,
         "user_id" => $user_id
     ];
+}
+
+function getSerialNumber($name)
+{
+    /**
+     * get serial number in the database
+     * not considered the year reset
+     */
+    $value = Setting::where('name', $name)->first();
+    if (!$value) {
+        abort('Serial no not found in db-HCW Code');
+    }
+    return $value->value;
+}
+
+function incrementSerial($name)
+{
+    /**
+     * set increment serial number
+     * not considered the year reset
+     */
+    $value = Setting::where('name', $name)->first();
+    if (!$value) {
+        abort('Serial no not found in db-HCW Code');
+    }
+    $value->increment('value');
 }

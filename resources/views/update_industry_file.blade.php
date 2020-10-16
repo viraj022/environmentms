@@ -40,7 +40,7 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Is New*</label>
-                                    <select id="getisOld" class="form-control form-control-sm cutenzReq" style="width: 100%;">
+                                    <select disabled id="getisOld" class="form-control form-control-sm cutenzReq" style="width: 100%;">
                                         <option value="1">New</option>
                                         <option value="0">Old</option>
                                     </select>
@@ -105,17 +105,34 @@
                                 <label id="lblTitle">Industry details</label>
                             </div>
                             <div class="card-body">
-                                <div class="form-group">
-                                    <label>Pradeshiya Sabha*</label>
-                                    <select id="prsdeshiySb" class="form-control form-control-sm select2 select2-purple cutenzReq prsdeshiySb" style="width: 100%;"></select>
+                                <div class="col-12 editingDetectedFCode">
+                                    <hr>
+                                    <div class="form-group">
+                                        <label>Pradeshiya Sabha*</label>
+                                        <select id="prsdeshiySb" disabled class="form-control form-control-sm select2 select2-purple cutenzReq prsdeshiySb" style="width: 100%;"></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Industry Category*</label>
+                                        <select id="industryCat" disabled class="form-control form-control-sm select2 select2-purple cutenzReq" style="width: 100%;"></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Business Scale*</label>
+                                        <select id="businesScale" disabled class="form-control form-control-sm  select2 select2-purple cutenzReq" style="width: 100%;"></select>
+                                    </div>
+                                    <hr>
                                 </div>
-                                <div class="form-group">
-                                    <label>Industry Category*</label>
-                                    <select id="industryCat" class="form-control form-control-sm select2 select2-purple cutenzReq" style="width: 100%;"></select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Business Scale*</label>
-                                    <select id="businesScale" class="form-control form-control-sm  select2 select2-purple cutenzReq" style="width: 100%;"></select>
+                                <div class="col-12 genNewFileCodeAcc d-none bg-gradient-dark">
+                                    <hr>
+                                    <div class="form-group">
+                                        <label>File Code*</label>
+                                        <input disabled id="file_code_active" type="text" class="form-control form-control-sm cutenzReq d-none" placeholder="" value="">
+                                        <input disabled id="file_code_change" type="text" class="form-control form-control-sm cutenzReq" placeholder="" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <button id="btnSaveFileCode" type="submit" class="btn btn-success"><i class="fas fa-check"></i> Change File Code</button>
+                                        <button onClick="location.href = location.href" type="submit" class="btn btn-info"><i class="fas fa-times"></i> Cancel</button>
+                                    </div>
+                                    <hr>
                                 </div>
                                 <div class="form-group">
                                     <label>Business Registration Number</label>
@@ -133,8 +150,9 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Investment*</label>
-                                    <input id="inventsment"  pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==12) return false;" class="form-control form-control-sm cutenzReq" placeholder="Enter investment" value="">
+                                    <label>Investment(Rs)*</label>
+                                    <input id="inventsment"  pattern="/^-?\d+\.?\d*$/" onKeyPress="if (this.value.length == 12)
+                                                return false;" class="form-control form-control-sm cutenzReq" placeholder="Enter investment" value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Address*</label>
@@ -174,6 +192,7 @@
                             <div class="card-footer">
                                 @if($pageAuth['is_create']==1 || false)
                                 <button id="btnUpdate" type="submit" class="btn btn-success"><i class="fas fa-check"></i> Update</button>
+                                <button id="btnGenNewFileCode" type="submit" class="btn float-right btn-warning"><i class="fas fa-exclamation-triangle"></i> Change File Category</button>
                                 @endif
                             </div>
                             <div class="overlay dark loadingRenderUI">
@@ -213,104 +232,164 @@
 <!-- AdminLTE for demo purposes -->
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
 <script>
-    var _Latitude = 7.489050;
-    var _Longitude = 80.349985;
-    var PROFILE = '{{$id}}';
+                                        var _Latitude = 7.489050;
+                                        var _Longitude = 80.349985;
+                                        var PROFILE = '{{$id}}';
+                                        var fCODER = '';
+                                        var CUTE = '';
 // Initialize and add the map
-    function initMap() {
-        // The location of CeyTech
-        var defaultLocation = {lat: 7.489050, lng: 80.349985}; //default Location for load map
-        // The map, centered at Uluru
-        var map = new google.maps.Map(
-                document.getElementById('map'), {zoom: 14, center: defaultLocation});
-        // The marker, positioned at Uluru
-        var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: true,
-            title: "Drag me!"});
-        google.maps.event.addListener(marker, 'dragend', function (evt) {
-            _Latitude = evt.latLng.lat().toFixed(6); //change  decimal point if have problam with location accuracy
-            _Longitude = evt.latLng.lng().toFixed(6); //change  decimal point if have problam with location accuracy
-        });
-    }
+                                        function initMap() {
+                                            // The location of CeyTech
+                                            var defaultLocation = {lat: 7.489050, lng: 80.349985}; //default Location for load map
+                                            // The map, centered at Uluru
+                                            var map = new google.maps.Map(
+                                                    document.getElementById('map'), {zoom: 14, center: defaultLocation});
+                                            // The marker, positioned at Uluru
+                                            var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: true,
+                                                title: "Drag me!"});
+                                            google.maps.event.addListener(marker, 'dragend', function (evt) {
+                                                _Latitude = evt.latLng.lat().toFixed(6); //change  decimal point if have problam with location accuracy
+                                                _Longitude = evt.latLng.lng().toFixed(6); //change  decimal point if have problam with location accuracy
+                                            });
+                                        }
 
-    $(function () {
-        loadPradeshiyaSabha();
-        IndustryCategoryCombo();
-        BusinessScaleCombo();
+                                        $(function () {
+                                            loadPradeshiyaSabha();
+                                            IndustryCategoryCombo();
+                                            BusinessScaleCombo();
 
-        getaClientbyId(PROFILE, function (set) {
-            //Client
-            $(".fileNoDbzz").html(set.file_no);
-            $("#getisOld").val(set.is_old);
-            $('#getfName').val(set.first_name);
-            $('#getlName').val(set.last_name);
-            $('#getAddress').val(set.address);
-            $('#getContact').val(set.contact_no);
-            $('#getEmail').val(set.email);
-            $('#getNicSave').val(set.nic);
-            //Industry
-            $('#prsdeshiySb').val(set.pradesheeyasaba_id);
-            $('#industryCat').val(set.industry_category_id);
-            $('#businesScale').val(set.business_scale_id);
-            $('#business_regno').val(set.industry_registration_no);
-            $('#business_name').val(set.industry_name);
-            $('#getZone').val(set.industry_is_industry);
-            $('#getAddressT').val(set.industry_address);
-            $('#inventsment').val(set.industry_investment);
-            $('#startDate').val(set.industry_start_date);
+                                            getaClientbyId(PROFILE, function (set) {
+                                                //Client
+                                                $(".fileNoDbzz").html(set.file_no);
+                                                $("#file_code_active").val(set.file_no);
+                                                $("#getisOld").val(set.is_old);
+                                                $('#getfName').val(set.first_name);
+                                                $('#getlName').val(set.last_name);
+                                                $('#getAddress').val(set.address);
+                                                $('#getContact').val(set.contact_no);
+                                                $('#getEmail').val(set.email);
+                                                $('#getNicSave').val(set.nic);
+                                                //Industry
+                                                $('#prsdeshiySb').val(set.pradesheeyasaba_id);
+                                                $('#industryCat').val(set.industry_category_id);
+                                                $('#businesScale').val(set.business_scale_id);
+                                                $('#business_regno').val(set.industry_registration_no);
+                                                $('#business_name').val(set.industry_name);
+                                                $('#getZone').val(set.industry_is_industry);
+                                                $('#getAddressT').val(set.industry_address);
+                                                $('#inventsment').val(set.industry_investment);
+                                                $('#startDate').val(set.industry_start_date);
 //            $('#submittedDate').val(set.industry_start_date);
-            $('#getContactn').val(set.industry_contact_no);
-            $('#getEmailI').val(set.industry_email);
-            $('#btnUpdate').val(set.id);
-            _Latitude = parseFloat(set.industry_coordinate_x);
-            _Longitude = parseFloat(set.industry_coordinate_y);
-            initMap();
-            $(".loadingRenderUI").remove(); //<--Check Loading Status
-        });
+                                                $('#getContactn').val(set.industry_contact_no);
+                                                $('#getEmailI').val(set.industry_email);
+                                                $('#btnUpdate').val(set.id);
+                                                _Latitude = parseFloat(set.industry_coordinate_x);
+                                                _Longitude = parseFloat(set.industry_coordinate_y);
+                                                initMap();
+                                                $(".loadingRenderUI").remove(); //<--Check Loading Status
+                                            });
 
-        $('input[name="datepickerUi"]').daterangepicker({
-            singleDatePicker: true,
-            locale: {
-                format: 'YYYY-MM-DD'
-            }
-        });
+                                            $('input[name="datepickerUi"]').daterangepicker({
+                                                singleDatePicker: true,
+                                                locale: {
+                                                    format: 'YYYY-MM-DD'
+                                                }
+                                            });
 
-    });
+                                        });
 
 
-    $('#btnUpdate').click(function () {
-        var dataz = {
-            is_old: $('#getisOld').val(),
-            first_name: $('#getfName').val(),
-            last_name: $('#getlName').val(),
-            address: $('#getAddress').val(),
-            contact_no: $('#getContact').val(),
-            email: $('#getEmail').val(),
-            nic: $('#getNicSave').val(),
-            industry_name: $('#business_name').val().trim(),
-            industry_category_id: $('#industryCat').val(),
-            business_scale_id: $('#businesScale').val(),
-            industry_contact_no: $('#getContactn').val().trim(),
-            industry_address: $('#getAddressT').val().trim(),
-            industry_email: $('#getEmailI').val(),
-            pradesheeyasaba_id: $('#prsdeshiySb').val(),
-            industry_is_industry: $('#getZone').val(),
-            industry_investment: $('#inventsment').val(),
-            industry_start_date: $('#startDate').val(),
-            industry_registration_no: $('#business_regno').val().trim(),
-            industry_coordinate_x: _Latitude,
-            industry_coordinate_y: _Longitude,
-            assign_date: $('#submittedDate').val()
-        };
-        if (requiredFieldHandler(dataz, ".cutenzReq")) {
-            updateClientFileAPI($(this).val(), dataz, function (resp) {
-                show_mesege(resp);
-                if (resp.id === 1) {
-                    //Do redirect to indust profile if u want...
-                    window.location = '/industry_profile/id/' + PROFILE;
-                }
-            });
-        }
-    });
+                                        $('#btnUpdate').click(function () {
+                                            var dataz = {
+                                                is_old: $('#getisOld').val(),
+                                                first_name: $('#getfName').val(),
+                                                last_name: $('#getlName').val(),
+                                                address: $('#getAddress').val(),
+                                                contact_no: $('#getContact').val(),
+                                                email: $('#getEmail').val(),
+                                                nic: $('#getNicSave').val(),
+                                                industry_name: $('#business_name').val().trim(),
+                                                industry_category_id: $('#industryCat').val(),
+                                                business_scale_id: $('#businesScale').val(),
+                                                industry_contact_no: $('#getContactn').val().trim(),
+                                                industry_address: $('#getAddressT').val().trim(),
+                                                industry_email: $('#getEmailI').val(),
+                                                pradesheeyasaba_id: $('#prsdeshiySb').val(),
+                                                industry_is_industry: $('#getZone').val(),
+                                                industry_investment: $('#inventsment').val(),
+                                                industry_start_date: $('#startDate').val(),
+                                                industry_registration_no: $('#business_regno').val().trim(),
+                                                industry_coordinate_x: _Latitude,
+                                                industry_coordinate_y: _Longitude,
+                                                assign_date: $('#submittedDate').val()
+                                            };
+                                            if (requiredFieldHandler(dataz, ".cutenzReq")) {
+                                                updateClientFileAPI($(this).val(), dataz, function (resp) {
+                                                    show_mesege(resp);
+                                                    if (resp.id === 1) {
+                                                        //Do redirect to indust profile if u want...
+                                                        window.location = '/industry_profile/id/' + PROFILE;
+                                                    }
+                                                });
+                                            }
+                                        });
+
+                                        $('#btnGenNewFileCode').click(function () {
+                                            if (!confirm('Are you sure you want to change this categories?,it will change EPL,File,Site Clearance codes')) {
+                                                return false;
+                                            }
+                                            gen_fileCode();
+                                            createNewFileCodeJ(null, function (set) {
+                                                $('.genNewFileCodeAcc').removeClass('d-none');
+                                                $('.editingDetectedFCode').addClass('bg-gradient-secondary');
+                                                $("#prsdeshiySb,#industryCat,#businesScale").removeAttr('disabled');
+                                                $("#prsdeshiySb").focus();
+                                            });
+                                        });
+                                        $('#btnSaveFileCode').click(function () {
+                                            if (confirm('Are you sure you want to modify this file coe?')) {
+                                                alert('..');
+                                                location.reload();
+                                            }
+                                        });
+
+                                        function gen_fileCode(parameters) {
+                                            let ps_code = $('#prsdeshiySb :selected').data('ps_code');
+                                            let cat_code = $('#industryCat :selected').data('cat_code');
+                                            let bc_code = $('#businesScale :selected').data('bc_code');
+                                            let code = 'PEA/' + ps_code + '/' + cat_code + '/' + bc_code;
+                                            console.log(code);
+                                        }
+
+                                        function createNewFileCodeJ(e, callBack) {
+                                            var c = $('#file_code_active').val();
+                                            fCODER = c.split('/');
+                                            CUTE = fCODER[0] + '/' + fCODER[1] + '/' + fCODER[2] + '/' + fCODER[3] + '/' + fCODER[4] + '/' + fCODER[5];
+                                            $('#file_code_change').val(CUTE);
+                                            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+                                                callBack();
+                                            }
+                                        }
+                                        $('#prsdeshiySb').on('change', function () {
+                                            let sData = $(this).find("option:selected").text().split('-');
+                                            fCODER[1] = sData[0].trim();
+                                            CUTE = fCODER[0] + '/' + fCODER[1] + '/' + fCODER[2] + '/' + fCODER[3] + '/' + fCODER[4] + '/' + fCODER[5];
+                                            $('#file_code_change').val(CUTE);
+                                        });
+                                        $('#industryCat').on('change', function () {
+                                            fCODER[2] = $(this).find("option:selected").text();
+                                            CUTE = fCODER[0] + '/' + fCODER[1] + '/' + fCODER[2] + '/' + fCODER[3] + '/' + fCODER[4] + '/' + fCODER[5];
+                                            $('#file_code_change').val(CUTE);
+                                        });
+                                        $('#businesScale').on('change', function () {
+                                            let sData = $(this).find("option:selected").text().split('-');
+                                            let String = sData[0].trim();
+                                            String.split('-');
+                                            fCODER[3] = String[0].trim();
+
+                                            CUTE = fCODER[0] + '/' + fCODER[1] + '/' + fCODER[2] + '/' + fCODER[3] + '/' + fCODER[4] + '/' + fCODER[5];
+                                            $('#file_code_change').val(CUTE);
+                                        });
 
 </script>
 @endsection
