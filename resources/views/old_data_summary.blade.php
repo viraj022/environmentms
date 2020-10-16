@@ -36,7 +36,7 @@
             <div class="tab-pane fade active show" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
                 <div class="col-md-12">
                     <!-- solid sales graph -->
-                    <div class="card bg-gradient-info">
+                    <div class="card bg-gradient-dark">
                         <div class="card-header border-0">
                             <h3 class="card-title">
                                 <i class="fas fa-th mr-1"></i>
@@ -44,10 +44,10 @@
                             </h3>
 
                             <div class="card-tools">
-                                <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
+                                <button type="button" class="btn bg-dark btn-sm" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>
                                 </button>
-                                <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
+                                <button type="button" class="btn bg-danger btn-sm" data-card-widget="remove">
                                     <i class="fas fa-times"></i>
                                 </button>
                             </div>
