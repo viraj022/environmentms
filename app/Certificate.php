@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Certificate extends Model
 {
     use SoftDeletes;
-    
+
     public function client()
     {
-            return $this->belongsTo(Client::class);
+        return $this->belongsTo(Client::class);
     }
 }

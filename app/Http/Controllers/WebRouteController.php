@@ -27,17 +27,19 @@ class WebRouteController extends Controller {
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $commetteu = Committee::findOrFail($id);
         $client = Client::find($commetteu->client_id);
-        return view('committee_remarks', ['pageAuth' => $pageAuth, 'id' => $id, 'client' => $commetteu->client_id, 'file_no' => $client->file_no,'name' => $commetteu->name,'ses_id' => $commetteu->site_clearence_session_id]);
+        return view('committee_remarks', ['pageAuth' => $pageAuth, 'id' => $id, 'client' => $commetteu->client_id, 'file_no' => $client->file_no, 'name' => $commetteu->name, 'ses_id' => $commetteu->site_clearence_session_id]);
     }
 
-    public function actStatus() {
+    public function actStatus($file_id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        return view('act_status', ['pageAuth' => $pageAuth]);
+        return view('act_status', ['pageAuth' => $pageAuth, 'file_id' => $file_id]);
     }
+
     public function oldDataSummary() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('old_data_summary', ['pageAuth' => $pageAuth]);
     }
+
 }
