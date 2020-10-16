@@ -60,24 +60,9 @@ class UserController extends Controller
             $user->roll_id = request('roll');
             $user->password = Hash::make(request('password'));
             $user->api_token = Str::random(80);
-            // if (request('level') == '1') {
-            //     // set institute id to null
-            // } else {
-            //     $user->institute_id = request('institute');
-            // }
-
             $msg = $user->save();
-
-            if ($msg) {
-                LogActivity::addToLog('Save User : UserController',$user);            
-                return array('id' => 1, 'message' => 'true');
-            } else {
-                LogActivity::addToLog('Save User Fail : UserController',$user);
-                return array('id' => 0, 'message' => 'false');
-            }
-      
-            //         ($user);
             UserController::PrevilagesAdd($user);
+            LogActivity::addToLog('Save User : UserController',$user);            
         });
         return redirect()
             ->back()
