@@ -201,7 +201,11 @@ function loadAllEPLTable(dataSet, callBack) {
                     '" class="btn btn-primary">' +
                     row.code +
                     "</a></td>";
-            tbl += "<td>" + row.certificate_no + "</td>";
+            if (row.certificate_no == null) {
+                tbl += "<td>In Progress.</td>";
+            } else {
+                tbl += "<td>" + row.certificate_no + "</td>";
+            }
             tbl += "<td>" + row.issue_date_only + "</td>";
             tbl += "<td>" + row.expire_date_only + "</td>";
             tbl += "</tr>";

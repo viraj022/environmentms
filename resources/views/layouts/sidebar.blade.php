@@ -75,7 +75,7 @@
 
             </ul>
         </li>
-        <li class="nav-item has-treeview menu-open">
+        <li class="nav-item has-treeview {{ Request::is('attachments','attachment_map','pradesheyasaba','industry_category','payment_type','payments','payment_range','zone','assistant_director','environment_officer','committee_pool') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-pencil-ruler"></i>
                 <p>
@@ -175,7 +175,7 @@
 
             </ul>
         </li>
-        <li class="nav-item has-treeview menu-open">
+        <li class="nav-item has-treeview {{ Request::is('client_space','industry_files','epl_assign','old_file_list','env_officer') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-user-shield"></i>
                 <p>
