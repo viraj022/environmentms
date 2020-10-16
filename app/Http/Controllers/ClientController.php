@@ -709,10 +709,7 @@ class ClientController extends Controller
             abort(422, "file key not found , ctech validation");
         }
         $msg = Certificate::where('id', $id)->update($req);
-        // $certificate
-        // $certificate->certificate_path = $path;
-        // $certificate->user_id_certificate_upload =  $user->id;
-        // $certificate->certificate_upload_date = Carbon::now()->toDateString();
+
         fileLog($certificate->client_id, 'certificate', 'User (' . $user->user_name . ')  uploaded the draft certificate', 0);
         if ($msg) {
             return array('id' => 1, 'message' => 'true');
@@ -760,32 +757,35 @@ class ClientController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $certificate = Certificate::findOrFail($cer_id);
-        $file = Client::findOrFail($certificate->client_id);
-        $msg = setFileStatus($file->id, 'file_status', 5);
-        $msg = $msg && setFileStatus($file->id, 'cer_status', 6);
-        $certificate->issue_status = 1;
-        $certificate->user_id = $user->id;
-        $msg = $msg && $certificate->save();
-        $file = $certificate->client;
-        if ($file->cer_type_status == 1 || $file->cer_type_status == 2) {
-            $epl = EPL::where('client_id', $certificate->client_id)
-                ->whereNull('issue_date')->first();
-            $epl->issue_date = $certificate->issue_date;
-            $epl->expire_date = $certificate->expire_date;
-            $epl->certificate_no = $certificate->cetificate_number;
-            $epl->status = 1;
-            $msg = $msg && $epl->save();
-        } else if ($file->cer_type_status == 3 || $file->cer_type_status == 4) {
-            $site = SiteClearenceSession::where('client_id', $certificate->client_id)->whereNull('issue_date')->first();
-            $site->issue_date = $certificate->issue_date;
-            $site->expire_date = $certificate->expire_date;
-            $site->licence_no = $certificate->cetificate_number;
-            $site->status = 1;
-            $msg = $msg && $site->save();
+        if ($certificate->issue_status == 0) {
+            $file = Client::findOrFail($certificate->client_id);
+            $msg = setFileStatus($file->id, 'file_status', 5);
+            $msg = $msg && setFileStatus($file->id, 'cer_status', 6);
+            $certificate->issue_status = 1;
+            $certificate->user_id = $user->id;
+            $msg = $msg && $certificate->save();
+            $file = $certificate->client;
+            if ($file->cer_type_status == 1 || $file->cer_type_status == 2) {
+                $epl = EPL::where('client_id', $certificate->client_id)
+                    ->whereNull('issue_date')->status(0)->first();
+                $epl->issue_date = $certificate->issue_date;
+                $epl->expire_date = $certificate->expire_date;
+                $epl->certificate_no = $certificate->cetificate_number;
+                $epl->status = 1;
+                $msg = $msg && $epl->save();
+            } else if ($file->cer_type_status == 3 || $file->cer_type_status == 4) {
+                $site = SiteClearenceSession::where('client_id', $certificate->client_id)->whereNull('issue_date')->first();
+                $site->issue_date = $certificate->issue_date;
+                $site->expire_date = $certificate->expire_date;
+                $site->licence_no = $certificate->cetificate_number;
+                $site->status = 1;
+                $msg = $msg && $site->save();
+            } else {
+                abort(501, "Invalid File Status - hcw error code");
+            }
         } else {
-            abort(501, "Invalid File Status - hcw error code");
+            abort(422, "Certificate Already Issued -hcw error code");
         }
-
 
 
 
