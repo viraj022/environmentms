@@ -146,7 +146,7 @@
                 labels: dates,
                 datasets: [
                     {
-                        label: 'Digital Goods',
+                        label: 'Files',
                         fill: false,
                         borderWidth: 2,
                         lineTension: 0,
