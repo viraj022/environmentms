@@ -13,20 +13,5 @@ use Illuminate\Http\Request;
   |
  */
 
-Route::middleware('auth:api')->get('/file_log/{file_id}', 'ReportController@getFileLog'); // 
-
-/*
-{
-    "value":"xcvxc"
-}
-types
-* name  // like function show clients (multiple)
-* id  (single)
-* epl  (single)
-* license  (single)
-* business_reg  (single)
-* business_name like function show business (multiple)
-
-*/
 
 // Route::middleware('auth:api')->get('/testReport', 'ReportController@siteClearanceApplicationReport');

@@ -66,4 +66,9 @@ Route::get('/act_status', 'WebRouteController@actStatus');
 Route::get('/dashboard', function () {
   return view('welcome');
 });
+
+
+
+
+Route::get('/testReport', 'ReportController@siteClearanceApplicationReport');
 //dashboard
