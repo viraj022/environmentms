@@ -14,4 +14,4 @@ use Illuminate\Http\Request;
  */
 
 
-// Route::middleware('auth:api')->get('/testReport', 'ReportController@siteClearanceApplicationReport');
+Route::get('/testReport', 'ReportController@siteClearanceApplicationReport');

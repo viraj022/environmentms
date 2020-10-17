@@ -71,5 +71,5 @@ Route::get('/dashboard', function () {
 
 
 
-Route::get('/testReport', 'ReportController@siteClearanceApplicationReport');
+
 //dashboard
