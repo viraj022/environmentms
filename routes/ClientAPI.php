@@ -424,3 +424,4 @@ Route::middleware('auth:api')->patch('/certificate/issue/{id}', 'ClientControlle
 Route::middleware('auth:api')->patch('/certificate/complete/{id}', 'ClientController@completeCertificate'); //  complete certificate
 Route::middleware('auth:api')->get('/certificate/expiredCertificates', 'ClientController@getExpiredCertificates'); //  get all Expired Certificates and certificate that expired within  a month by environment
 Route::middleware('auth:api')->get('/certificate/expiredCertificates/id/{id}', 'ClientController@getExpiredCertificatesByEnvOfficer'); //  get Expired Certificates and certificate that expired within  a month by environment officer id
+Route::middleware('auth:api')->get('/old_files/count_by_date', 'ClientController@oldFilesCountByDate'); 

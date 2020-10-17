@@ -32,9 +32,9 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">All Old Files</h3>
-                    <div class="card-tools">
-                        <button id="btnGetAll" class="btn btn-primary">Get All</button>
-                    </div>
+                        <div class="card-tools">
+                            <button id="btnGetAll" class="btn btn-primary">Get All</button>
+                        </div>
                     </div>
                     <div class="card-body p-0">
                         <div class="card-body table-responsive" style="height: 450px;">

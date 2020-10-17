@@ -123,8 +123,10 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
 <script src="../../js/AdPendingJS/ad_pending_list.js" type="text/javascript"></script>
+<script src="../../js/ReportsJS/file_log_reports.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
+    var FILE_ID = '{{$file_id}}';
     function minute() {
         var data = {
             minutes: $('#getMinutes').val()
@@ -133,18 +135,9 @@
     }
     $(function () {
 //Load table
-        $('#getAssistantDirector').change(function () {
-            loadAdPendingListTable($('#getAssistantDirector').val());
-        });
-//select button action 
-        $(document).on('click', '.btnAction', function () {
-        });
-
-
-        $(document).on('click', '.actionDetails', function () {
+        activityStatusGetData(null, 4, FILE_ID, function (e) {
 
         });
-
     });
 
 </script>

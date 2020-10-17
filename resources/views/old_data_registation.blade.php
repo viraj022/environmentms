@@ -365,7 +365,11 @@
                         $('#getsubmitDate').val(result.submit_date_only);
                         $('#btnUpdate').val(result.id);
                         $('#btnshowDelete').val(result.id);
-                        $('.lastCertificatePath').attr('src', '/' + result.path);
+                        if (result.path.split('.')[1] == 'pdf') {
+                            $('.lastCertificatePath').attr('src', '/dist/img/pdf-view.png');
+                        } else {
+                            $('.lastCertificatePath').attr('src', '/' + result.path);
+                        }
                         $('#addCertificateURL').attr('href', '/' + result.path);
                         if (result.path !== null && result.path.length > 0) {
                             $('.lastIssuedCer').removeClass('d-none');
