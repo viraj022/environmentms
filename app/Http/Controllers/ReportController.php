@@ -81,4 +81,24 @@ class ReportController extends Controller
         }
         $pdf->Output();
     }
+    public function siteClearanceApplicationReportTest()
+    {
+        $site =   new SiteClearenceRepository();
+        $result = $site->getSiteClearenceReport('2010-01-01', '2021-01-01', 'All')->toArray();
+        $data = [];
+        $num = 0;
+        foreach ($result as $row) {
+            $array = [];
+            $array[] = ++$num;
+            $array[] = Carbon::parse($row['submit_date'])->format('d-m-Y');
+            $array[] = $row['code'];
+            $array[] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'] . "\n" . $row['address'];
+            $array[] = $row['category_name'];
+            $array[] = $row['industry_address'];
+            $array[] = 'Fee : ' . $row['amount'] . ' ' . "\nInvoice No : " . $row['invoice_no'] . "\nDate : " . Carbon::parse($row['billed_at'])->format('Y-m-d');
+            $array[] = $row['issue_date'];
+            array_push($data, $array);
+        }
+        return view('Reports.site_clearence_report', ['data' => $data]);
+    }
 }
