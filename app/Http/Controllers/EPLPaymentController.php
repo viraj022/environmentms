@@ -30,14 +30,14 @@ class EPLPaymentController extends Controller
             if ($type == 'epl') {
                 $epl = EPL::find($id);
                 if ($epl) {
-                    return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id, "epl_no" => $epl->code, "client" => $epl->client_id, 'type' => $type,'type_title'=>'epl_profile']);
+                    return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id, "epl_no" => $epl->code, "client" => $epl->client_id, 'type' => $type, 'type_title' => 'epl_profile']);
                 } else {
                     abort(404);
                 }
             } else if ($type == 'site_clearance') {
                 $site = SiteClearenceSession::find($id);
                 if ($site) {
-                    return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id, "epl_no" => $site->code, "client" => $site->client_id, 'type' => $type,'type_title'=>'site_clearance']);
+                    return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id, "epl_no" => $site->code, "client" => $site->client_id, 'type' => $type, 'type_title' => 'site_clearance']);
                 } else {
                     abort(404);
                 }
@@ -323,7 +323,7 @@ class EPLPaymentController extends Controller
                             $transactionItem->payment_id = $payment->id;
                             $transactionItem->client_id = $site->id;
                             $transactionItem->qty = 1;
-                            $transactionItem->transaction_type = Transaction::TRANS_TYPE_EPL;
+                            $transactionItem->transaction_type = Transaction::TRANS_SITE_CLEARANCE;
                             $transactionItem->transaction_type_id = $site->id;
                             $transactionItem->amount = $item['amount'];
                             $msg = $msg && $transactionItem->save();

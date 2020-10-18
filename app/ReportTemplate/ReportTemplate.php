@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Reports;
+namespace App\ReportTemplate;
 
 use Codedge\Fpdf\Fpdf\Fpdf as Fpdf;
 use Carbon\Carbon;
@@ -9,6 +9,10 @@ class ReportTemplate extends FPDF
 {
     private $reportTitle;
     private $currentPage;
+    public $headers;
+    public $widths;
+    public $data;
+
     function __construct($oriantation, $unit, $size, $reportTitle)
     {
         parent::__construct($oriantation, $unit, $size);
@@ -37,7 +41,7 @@ class ReportTemplate extends FPDF
         // Page number
         $this->Cell($this->GetPageWidth() - 30, 10, 'Page ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
         $mytime = Carbon::now();
-        $this->Cell(0, 10, 'printed on ' . $mytime->format('d-m-Y'), 0, 0, 'C');
+        $this->Cell(0, 10, 'Printed On : ' . $mytime->format('d-m-Y'), 0, 0, 'C');
     }
     function AcceptPageBreak()
     {
@@ -45,30 +49,30 @@ class ReportTemplate extends FPDF
         // $this->Cell(0, 5, 'Page Break Condition Met', '0', '1', 'C');
         return true;
     }
-    function ImprovedTable($header, $data)
+    function ImprovedTable()
     {
         $this->Ln(30);
         // Column widths
-        $w = array(100, 100, 100, 100);
+
         // Header
-        // for ($i = 0; $i < count($header); $i++)
-        //     $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C');
-        // $this->Ln();
+        $i = 0;
+        foreach ($this->headers as $header)
+            $this->Cell($this->widths[$i++], 10, $header, 1, 0, 'C');
+        $this->Ln();
         // Data
-        foreach ($data as $row) {
-            if ($this->currentPage <  $this->PageNo()) {
-                for ($i = 0; $i < count($header); $i++)
-                    $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C');
-                $this->Ln();
-                ++$this->currentPage;
+        foreach ($this->data as $row) {
+            $j = 0;
+            foreach ($row as $cell) {
+                // dd($cell);
+                $this->Cell($this->widths[$j++], 20, $cell, 'LRB');
             }
-            $this->Cell($w[0], 12, $row['last_name'], 'LR');
-            $this->Cell($w[1], 12, $row['industry_name'], 'LR');
-            $this->Cell($w[2], 12, $this->PageNo(), 'LR', 0, 'R');
-            $this->Cell($w[3], 12, $this->GetY(), 'LR', 0, 'R');
+            // $this->Cell($w[0], 12, $row['last_name'], 'LRB');
+            // $this->Cell($w[1], 12, $row['industry_name'], 'LRB');
+            // $this->Cell($w[2], 12, $this->PageNo(), 'LRB', 0, 'R');
+            // $this->Cell($w[3], 12, $this->GetY(), 'LRB', 0, 'R');
             $this->Ln();
         }
         // Closing line
-        $this->Cell(array_sum($w), 0, '', 'T');
+        $this->Cell(array_sum($this->widths), 0, '', 'T');
     }
 }
