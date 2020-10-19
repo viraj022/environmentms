@@ -37,7 +37,7 @@
             <div class="col-md-5">
                 <div class="card card-success">
                     <div class="card-header">
-                        <label id="lblTitle">Register New EPL</label>
+                        <label id="lblTitle">Register New Site Clearance</label>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
@@ -58,7 +58,7 @@
                         <input hidden id="client_id" type="text" class="form-control form-control-sm" placeholder="" value="{{$id ?? ''}}">
                         <div class="form-group">
                             <label>Upload Application: </label>
-                            <input id="inp" type='file'>
+                            <input id="inp" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" type='file'>
                         </div>
                         <div class="progress d-none">
                             <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
