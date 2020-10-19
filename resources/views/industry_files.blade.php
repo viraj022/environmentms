@@ -304,7 +304,7 @@
     });
     $(document).on('click', '#rejectAdCerApproval', function () {
         var fileData = JSON.parse(unescape($(this).val()));
-        if (confirm('Are you sure you want to approve?')) {
+        if (confirm('Are you sure you want to reject?')) {
             rejectCertificateApproval(fileData.id, fileData.environment_officer_id, minute(), function (resp) {
                 show_mesege(resp);
                 if (resp.id == 1) {

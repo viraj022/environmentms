@@ -41,7 +41,7 @@
                                 <option>Loading...</option>
                             </select>
                         </div>
-                        <label>Amount </label>
+                        <label>Amount <b class="text-success ifPaidRaid"></b></label>
                         <div class="input-group mb-3">
                             <input id="paymnt_amount" type="number" class="form-control form-control-sm" placeholder="" value="">
                             <div class="input-group-prepend">
@@ -63,7 +63,7 @@
                                 </select>
                             </div>
 
-                            <label>Fine </label>
+                            <label>Fine <b class="text-success ifPaidFine"></b></label>
                             <div class="input-group mb-3">
                                 <input id="fine_amt" type="number" class="form-control form-control-sm" placeholder="" value="">
                                 <div class="input-group-prepend">
@@ -82,7 +82,7 @@
                             </select>
                         </div>
 
-                        <label>Certificate Amount *</label>
+                        <label>Certificate Amount *<b class="text-success ifPaidLicFee"></b></label>
                         <div class="input-group mb-3">
                             <input id="cert_amt" type="number" class="form-control form-control-sm" placeholder="" readonly="" value="">
                             <div class="input-group-prepend">
@@ -175,11 +175,22 @@ $(function () {
             loadEPL_methodCombo(function () {
                 if (parameters.inspection.status == "not_payed") {
                     calc_amount();
+                } else {
+                    $('.ifPaidRaid').text('(Paid)');
+                }
+                if (parameters.fine.status == "payed") {
+                    $('.ifPaidFine').text('(Paid)');
+                    $('#fine_amt').val(parameters.fine.object.amount);
+                }
+                if (parameters.license_fee.status == "payed") {
+                    $('.ifPaidLicFee').text('(Paid)');
+                    $('#fine_amt').val(parameters.license_fee.object.amount);
                 }
             });
         });
         fineList_Combo(function () {
-            loadFine_amount(EPL_ID, parseFloat($('#paymnt_amount').val()));
+//            loadFine_amount(EPL_ID, parseFloat($('#paymnt_amount').val()), function (e) {
+//            });
         });//fine combo
     } else if (TYPE == 'site_clearance') {
         $('.siteDataType').html('Site Clearance Payment');
@@ -187,6 +198,8 @@ $(function () {
             loadEPL_methodCombo(function () {
                 if (parameters.inspection.status == "not_payed") {
                     calc_amount();
+                } else {
+                    $('.ifPaidRaid').text('(Paid)');
                 }
             });
         });
