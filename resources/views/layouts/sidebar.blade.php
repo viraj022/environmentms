@@ -25,7 +25,7 @@
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="./index.html" class="nav-link active">
+                    <a href="{{ url('/dashboard2') }}" class="nav-link active">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Dashboard v1</p>
                     </a>
