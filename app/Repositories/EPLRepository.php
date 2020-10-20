@@ -6,6 +6,7 @@ use App\EPL;
 use App\Client;
 use App\FileLog;
 use App\Committee;
+use App\EPLNew;
 use App\EPLRenew;
 use Carbon\Carbon;
 use App\PaymentType;
@@ -33,17 +34,16 @@ class EPLRepository
      */
     public function getEPLReport($from, $to, $instance)
     {
-        dd(EPLRenew::all());
         $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
-        $query =
-            Client::join('e_p_l_s', 'clients.id', 'e_p_l_s.client_id')
+        $query = EPLNew::with('epl_renews')
+            ->join('clients', 'view_e_p_l_s_new.client_id', 'clients.id')
             ->leftJoin('site_clearence_sessions', 'clients.id', 'site_clearence_sessions.client_id')
             ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
-            ->leftJoin('transactions', 'e_p_l_s.id', 'transactions.type_id')
+            ->leftJoin('transactions', 'view_e_p_l_s_new.id', 'transactions.type_id')
             ->join('transaction_items', 'transactions.id', 'transaction_items.transaction_id')
             ->select(
-                'e_p_l_s.submitted_date',
-                'e_p_l_s.code',
+                'view_e_p_l_s_new.submitted_date',
+                'view_e_p_l_s_new.code',
                 'clients.name_title',
                 'clients.first_name',
                 'clients.last_name',
@@ -54,11 +54,35 @@ class EPLRepository
                 'transactions.invoice_no',
                 'transactions.billed_at',
                 'site_clearence_sessions.issue_date',
-                'site_clearence_sessions.code as site_clearence_code'
-            )
-            ->where('transactions.type', Transaction::TRANS_TYPE_EPL)
-            ->where('transaction_items.payment_type_id', $inspectionTypes->id)
-            ->orderBy('e_p_l_s.submitted_date', 'DESC');
+                'site_clearence_sessions.code as site_clearence_code',
+
+            );
+        dd($query->first()->toArray());
+
+        // Client::join('e_p_l_s', 'clients.id', 'e_p_l_s.client_id')
+        // ->leftJoin('site_clearence_sessions', 'clients.id', 'site_clearence_sessions.client_id')
+        // ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+        // ->leftJoin('transactions', 'e_p_l_s.id', 'transactions.type_id')
+        // ->join('transaction_items', 'transactions.id', 'transaction_items.transaction_id')
+        // ->select(
+        //     'e_p_l_s.submitted_date',
+        //     'e_p_l_s.code',
+        //     'clients.name_title',
+        //     'clients.first_name',
+        //     'clients.last_name',
+        //     'clients.address',
+        //     'industry_categories.name as category_name',
+        //     'clients.industry_address',
+        //     'transaction_items.amount',
+        //     'transactions.invoice_no',
+        //     'transactions.billed_at',
+        //     'site_clearence_sessions.issue_date',
+        //     'site_clearence_sessions.code as site_clearence_code'
+        //     ''
+        // )
+        // ->where('transactions.type', Transaction::TRANS_TYPE_EPL)
+        // ->where('transaction_items.payment_type_id', $inspectionTypes->id)
+        // ->orderBy('e_p_l_s.submitted_date', 'DESC');
 
 
         switch ($instance) {
