@@ -35,6 +35,10 @@ class Client extends Model
         {
                 return $this->hasMany(SiteClearenceSession::class);
         }
+        public function transactions()
+        {
+                return $this->hasMany(Transaction::class);
+        }
         public function inspectionSessions()
         {
                 return $this->hasMany(InspectionSession::class);

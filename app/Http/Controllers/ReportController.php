@@ -105,23 +105,41 @@ class ReportController extends Controller
 
     public function eplApplicationReport()
     {
-        $epl =   new EPLRepository();
-        dd($epl->getEPLReport('2010-01-01', '2021-01-01', 'All')->toArray());
-        // $result = $site->getSiteClearenceReport('2010-01-01', '2021-01-01', 'All')->toArray();
-        // $data = [];
-        // $num = 0;
-        // foreach ($result as $row) {
-        //     $array = [];
-        //     $array[] = ++$num;
-        //     $array[] = Carbon::parse($row['submit_date'])->format('d-m-Y');
-        //     $array[] = $row['code'];
-        //     $array[] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'] . "\n" . $row['address'];
-        //     $array[] = $row['category_name'];
-        //     $array[] = $row['industry_address'];
-        //     $array[] = 'Fee : ' . $row['amount'] . ' ' . "\nInvoice No : " . $row['invoice_no'] . "\nDate : " . Carbon::parse($row['billed_at'])->format('Y-m-d');
-        //     $array[] = $row['issue_date'];
-        //     array_push($data, $array);
-        // }
-        // return view('Reports.site_clearence_report', ['data' => $data]);
+        $epls =   new EPLRepository();
+        $result =  $epls->getEPLReport('2010-01-01', '2021-01-01')->toArray();
+        // dd($epls->getEPLReport('2010-01-01', '2021-01-01')->toArray()[0]);
+        $data = [];
+        $data['header_count'] = 0;
+        $data['results'] = [];
+        $num = 0;
+        foreach ($result as $row) {
+            // dd($row['epls']);
+            $array = [];
+            $array['#'] = ++$num;
+            $array['submitted_date'] = Carbon::parse($row['epls'][0]['submitted_date'])->format('d-m-Y');
+            $array['code'] = $row['epls'][0]['code'];
+            $array['name_title'] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'] . "\n" . $row['address'];
+            $array['category_name'] = $row['category_name'];
+            $array['industry_address'] = $row['industry_address'];
+            if (count($row['transactions']) > 0 && count($row['transactions'][0]['transaction_items']) > 0) {
+                $array['inspection_fee'] = $row['transactions'][0]['transaction_items'][0]['amount'];
+                $array['inspection_pay_date'] = Carbon::parse($row['transactions'][0]['billed_at'])->format('d-m-Y');
+            } else {
+                $array['inspection_fee'] = "N/A";
+                $array['inspection_pay_date'] = "N/A";
+            }
+            if (count($row['site_clearence_sessions']) > 0) {
+                $array['site_code'] = $row['site_clearence_sessions'][0]['code'];
+            } else {
+                $array['site_code'] = "N/A";
+            }
+            $array['epls'] = $row['epls'];
+            if ($data['header_count'] < count($row['epls'])) {
+                $data['header_count'] = count($row['epls']);
+            }
+            array_push($data['results'], $array);
+        }
+        // dd($data);
+        return view('Reports.epl_report', ['data' => $data]);
     }
 }
