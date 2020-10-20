@@ -19,7 +19,7 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
-            <div class="col-12 col-sm-6">
+            <div class="col-12">
                 <h1>(<a href="/{{$type_title}}/client/{{$client}}/profile/{{$id}}">{{$epl_no}}</a>) <b class="siteDataType">...</b></h1>
             </div>
         </div>
@@ -30,9 +30,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-5">
-                <div class="card card-success">
+                <div class="card card-secondary">
                     <div class="card-header">
-                        <label>Application Details</label>
+                        <h3 class="card-title">Application Details</h3>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
@@ -102,11 +102,9 @@
 
             <div class="col-md-7">
                 <div class="row">
-
                     <div class="col-md-12">
                         <div class="card card-secondary">
                             <div class="card-header">
-
                                 <h3 class="card-title">Pending Payment List</h3>
                             </div>
                             <!-- /.card-header -->
