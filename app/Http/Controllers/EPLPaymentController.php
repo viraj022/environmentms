@@ -24,7 +24,7 @@ class EPLPaymentController extends Controller
 
     public function index($id, $type)
     {
-        abort(503);
+        //        abort(503);
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
@@ -322,9 +322,9 @@ class EPLPaymentController extends Controller
                             $transactionItem->transaction_id = $transaction->id;
                             $transactionItem->payment_type_id = $payment->payment_type_id;
                             $transactionItem->payment_id = $payment->id;
-                            $transactionItem->client_id = $site->id;
+                            $transactionItem->client_id = $site->client_id;
                             $transactionItem->qty = 1;
-                            $transactionItem->transaction_type = Transaction::TRANS_TYPE_EPL;
+                            $transactionItem->transaction_type = Transaction::TRANS_SITE_CLEARANCE;
                             $transactionItem->transaction_type_id = $site->id;
                             $transactionItem->amount = $item['amount'];
                             $msg = $msg && $transactionItem->save();
@@ -357,7 +357,7 @@ class EPLPaymentController extends Controller
                 ->where('transaction_type_id', $id)
                 ->where('payment_type_id', $inspectionTypes->id)
                 ->first();
-
+            // dd($inspection);
             $license_fee = PaymentType::getpaymentByTypeName(PaymentType::LICENCE_FEE);
             $certificate_fee = TransactionItem::with('transaction')
                 ->where('transaction_type', Transaction::TRANS_TYPE_EPL)
