@@ -31,7 +31,7 @@
         </div>
     </div>
 </section>
-<section class="conte        nt-header">
+<section class="content">
     <div class="container-fluid view-Profile">
         <div class="row">
             <div class="col-md-6">

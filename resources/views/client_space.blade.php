@@ -26,7 +26,7 @@
         </div>
     </div>
 </section>
-<section class="content-header">
+<section class="content">
     <!--    Register New Client START-->
     <div class="container-fluid reg-newClient d-none">
         <div class="row">
@@ -36,7 +36,7 @@
                     <div class="col-md-6">
                         <div class="card card-success">
                             <div class="card-header">
-                                <label id="lblTitle">Register New Client</label>
+                                <h3 id="lblTitle" class="card-title">Register New Client</h3>
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
@@ -108,7 +108,7 @@
                     <div class="col-md-6">
                         <div class="card card-success">
                             <div class="card-header">
-                                <label id="lblTitle">Industry details</label>
+                                <h3 class="card-title" id="lblTitle">Industry details</h3>
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
@@ -197,7 +197,7 @@
                 <div class="col-md-9">
                     <div class="card card-success">
                         <div class="card-header">
-                            <label id="lblTitle">Search Client</label>
+                            <h3 id="lblTitle" class="card-title">Search Client</h3>
                         </div>
                         <div class="card-body">
                             <div class="form-group">

@@ -19,20 +19,19 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
-            <div class="col-12 col-sm-6">
+            <div class="col-12">
                 <h1>(<a href="/{{$type_title}}/client/{{$client}}/profile/{{$id}}">{{$epl_no}}</a>) <b class="siteDataType">...</b></h1>
             </div>
         </div>
     </div>
 </section>
-<section class="content-header">
-
+<section class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-5">
-                <div class="card card-success">
+                <div class="card card-secondary">
                     <div class="card-header">
-                        <label>Application Details</label>
+                        <h3 class="card-title">Application Details</h3>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
@@ -102,11 +101,9 @@
 
             <div class="col-md-7">
                 <div class="row">
-
                     <div class="col-md-12">
                         <div class="card card-secondary">
                             <div class="card-header">
-
                                 <h3 class="card-title">Pending Payment List</h3>
                             </div>
                             <!-- /.card-header -->
@@ -162,170 +159,170 @@
 <script src="/../../js/paymentsjs/epl_payments.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
-$(function () {
-    // alert("123");
-    var ITEM_LIST = [];
-    var EPL_ID = "{{$id}}";
-    var TYPE = '{{$type}}';
+    $(function () {
+        // alert("123");
+        var ITEM_LIST = [];
+        var EPL_ID = "{{$id}}";
+        var TYPE = '{{$type}}';
 
-    processingFeeList();
-    if (TYPE == 'epl') {
-        $('.siteDataType').html('EPL Payment');
-        loadEPL_details(EPL_ID, function (parameters) {
-            loadEPL_methodCombo(function () {
-                if (parameters.inspection.status == "not_payed") {
-                    calc_amount();
-                } else {
-                    $('.ifPaidRaid').text('(Paid)');
-                }
-                if (parameters.fine.status == "payed") {
-                    $('.ifPaidFine').text('(Paid)');
-                    $('#fine_amt').val(parameters.fine.object.amount);
-                }
-                if (parameters.license_fee.status == "payed") {
-                    $('.ifPaidLicFee').text('(Paid)');
-                    $('#fine_amt').val(parameters.license_fee.object.amount);
-                }
+        processingFeeList();
+        if (TYPE == 'epl') {
+            $('.siteDataType').html('EPL Payment');
+            loadEPL_details(EPL_ID, function (parameters) {
+                loadEPL_methodCombo(function () {
+                    if (parameters.inspection.status == "not_payed") {
+                        calc_amount();
+                    } else {
+                        $('.ifPaidRaid').text('(Paid)');
+                    }
+                    if (parameters.fine.status == "payed") {
+                        $('.ifPaidFine').text('(Paid)');
+                        $('#fine_amt').val(parameters.fine.object.amount);
+                    }
+                    if (parameters.license_fee.status == "payed") {
+                        $('.ifPaidLicFee').text('(Paid)');
+                        $('#fine_amt').val(parameters.license_fee.object.amount);
+                    }
+                });
             });
-        });
-        fineList_Combo(function () {
+            fineList_Combo(function () {
 //            loadFine_amount(EPL_ID, parseFloat($('#paymnt_amount').val()), function (e) {
 //            });
-        });//fine combo
-    } else if (TYPE == 'site_clearance') {
-        $('.siteDataType').html('Site Clearance Payment');
-        loadSiteClear_details(EPL_ID, function (parameters) {
-            loadEPL_methodCombo(function () {
-                if (parameters.inspection.status == "not_payed") {
-                    calc_amount();
-                } else {
-                    $('.ifPaidRaid').text('(Paid)');
-                }
-            });
-        });
-    } else {
-        return false;
-    }
-
-    certificateList_Combo(function () {
-        certificate_amount();
-    });
-
-    $('#paymnt_amount').blur(function () {
-        loadFine_amount(EPL_ID, parseFloat($('#paymnt_amount').val()));
-    });
-    $('#fine_amt').focus(function () {
-        loadFine_amount(EPL_ID, parseFloat($('#paymnt_amount').val()));
-    });
-    $('#certificate_list').change(function () {
-        certificate_amount();
-    });
-    $('#epl_methodCombo').change(function () {
-        calc_amount();
-    });
-
-    $('#inspection_payBtn').click(function () {// add inspection Amount
-        addItemsToArray($('#epl_methodCombo').val(), "Inspection Amount", $('#paymnt_amount').val());
-    });
-    $('#fine_payBtn').click(function () {// add fine
-        addItemsToArray($('#fine_list').val(), "Fine Amount", $('#fine_amt').val());
-    });
-    $('#certificate_payBtn').click(function () {// add certificate Amount
-        addItemsToArray($('#certificate_list').val(), "Certificate Amount", $('#cert_amt').val());
-    });
-    function addItemsToArray(id, name, amount) {
-        if (isValueExsist(id)) {
-            alert('"' + name + '" already added !');
-            return false;
-        }
-        if (isNaN(parseInt(id))) {
-            alert('Invalid Inspection Type');
-            return false;
-        }
-        if (isNaN(parseFloat(amount))) {
-            alert('Invalid Amount');
-            return false;
-        }
-        if (amount <= 0) {
-            alert('Please Add Positive value');
-            return false;
-
-        }
-        amount = parseFloat(amount).toFixed(2);
-        ITEM_LIST.push({id: id, name: name, amount: amount});
-        console.log(ITEM_LIST);
-        selectedPayments_table(ITEM_LIST);
-    }
-    $(document).on('click', '.app_removeBtn', function (parameters) {
-        remove_itemFrom_bill($(this).val());
-    });
-    $('#btnSave').click(function () {
-        if (TYPE == 'epl') {
-            savePayment(ITEM_LIST, EPL_ID, function (r) {
-                show_mesege(r);
-                // alert(r.name);
-                if (r.id == 1) {
-                    ITEM_LIST = [];
-                    selectedPayments_table(ITEM_LIST);
-                    $.ajax({
-                        url: 'http://127.0.0.1:8081/hansana',
-                        data: {code: r.code, name: r.name},
-                        success: function (result) {
-                        }
-                    });
-                    loadEPL_details(EPL_ID, function (parameters) {
-                        loadEPL_methodCombo(function () {
-                            if (parameters.inspection.status == "not_payed") {
-                                calc_amount();
-                            }
-                        });
-                    });
-                }
-            });
+            });//fine combo
         } else if (TYPE == 'site_clearance') {
-            saveSiteClearPayment(ITEM_LIST, EPL_ID, function (r) {
-                show_mesege(r);
-                // alert(r.name);
-                if (r.id == 1) {
-                    ITEM_LIST = [];
-                    selectedPayments_table(ITEM_LIST);
-                    $.ajax({
-                        url: 'http://127.0.0.1:8081/hansana',
-                        data: {code: r.code, name: r.name},
-                        success: function (result) {
-                        }
-                    });
-                    loadSiteClear_details(EPL_ID, function (parameters) {
-                        loadEPL_methodCombo(function () {
-                            if (parameters.inspection.status == "not_payed") {
-                                calc_amount();
-                            }
-                        });
-                    });
-                }
+            $('.siteDataType').html('Site Clearance Payment');
+            loadSiteClear_details(EPL_ID, function (parameters) {
+                loadEPL_methodCombo(function () {
+                    if (parameters.inspection.status == "not_payed") {
+                        calc_amount();
+                    } else {
+                        $('.ifPaidRaid').text('(Paid)');
+                    }
+                });
             });
         } else {
             return false;
         }
-    });
-    function remove_itemFrom_bill(rem_val) {
-// get index of object with id:37
-        var removeIndex = ITEM_LIST.map(function (item) {
-            return item.id;
-        }).indexOf(rem_val);
-// remove object
-        ITEM_LIST.splice(removeIndex, 1);
-        selectedPayments_table(ITEM_LIST);
-    }
-    function isValueExsist(value) {
-        let ret = false;
-        $.map(ITEM_LIST, function (val) {
-            if (val.id == value) {
-                ret = true;
+
+        certificateList_Combo(function () {
+            certificate_amount();
+        });
+
+        $('#paymnt_amount').blur(function () {
+            loadFine_amount(EPL_ID, parseFloat($('#paymnt_amount').val()));
+        });
+        $('#fine_amt').focus(function () {
+            loadFine_amount(EPL_ID, parseFloat($('#paymnt_amount').val()));
+        });
+        $('#certificate_list').change(function () {
+            certificate_amount();
+        });
+        $('#epl_methodCombo').change(function () {
+            calc_amount();
+        });
+
+        $('#inspection_payBtn').click(function () {// add inspection Amount
+            addItemsToArray($('#epl_methodCombo').val(), "Inspection Amount", $('#paymnt_amount').val());
+        });
+        $('#fine_payBtn').click(function () {// add fine
+            addItemsToArray($('#fine_list').val(), "Fine Amount", $('#fine_amt').val());
+        });
+        $('#certificate_payBtn').click(function () {// add certificate Amount
+            addItemsToArray($('#certificate_list').val(), "Certificate Amount", $('#cert_amt').val());
+        });
+        function addItemsToArray(id, name, amount) {
+            if (isValueExsist(id)) {
+                alert('"' + name + '" already added !');
+                return false;
+            }
+            if (isNaN(parseInt(id))) {
+                alert('Invalid Inspection Type');
+                return false;
+            }
+            if (isNaN(parseFloat(amount))) {
+                alert('Invalid Amount');
+                return false;
+            }
+            if (amount <= 0) {
+                alert('Please Add Positive value');
+                return false;
+
+            }
+            amount = parseFloat(amount).toFixed(2);
+            ITEM_LIST.push({id: id, name: name, amount: amount});
+            console.log(ITEM_LIST);
+            selectedPayments_table(ITEM_LIST);
+        }
+        $(document).on('click', '.app_removeBtn', function (parameters) {
+            remove_itemFrom_bill($(this).val());
+        });
+        $('#btnSave').click(function () {
+            if (TYPE == 'epl') {
+                savePayment(ITEM_LIST, EPL_ID, function (r) {
+                    show_mesege(r);
+                    // alert(r.name);
+                    if (r.id == 1) {
+                        ITEM_LIST = [];
+                        selectedPayments_table(ITEM_LIST);
+                        $.ajax({
+                            url: 'http://127.0.0.1:8081/hansana',
+                            data: {code: r.code, name: r.name},
+                            success: function (result) {
+                            }
+                        });
+                        loadEPL_details(EPL_ID, function (parameters) {
+                            loadEPL_methodCombo(function () {
+                                if (parameters.inspection.status == "not_payed") {
+                                    calc_amount();
+                                }
+                            });
+                        });
+                    }
+                });
+            } else if (TYPE == 'site_clearance') {
+                saveSiteClearPayment(ITEM_LIST, EPL_ID, function (r) {
+                    show_mesege(r);
+                    // alert(r.name);
+                    if (r.id == 1) {
+                        ITEM_LIST = [];
+                        selectedPayments_table(ITEM_LIST);
+                        $.ajax({
+                            url: 'http://127.0.0.1:8081/hansana',
+                            data: {code: r.code, name: r.name},
+                            success: function (result) {
+                            }
+                        });
+                        loadSiteClear_details(EPL_ID, function (parameters) {
+                            loadEPL_methodCombo(function () {
+                                if (parameters.inspection.status == "not_payed") {
+                                    calc_amount();
+                                }
+                            });
+                        });
+                    }
+                });
+            } else {
+                return false;
             }
         });
-        return ret;
-    }
-});
+        function remove_itemFrom_bill(rem_val) {
+// get index of object with id:37
+            var removeIndex = ITEM_LIST.map(function (item) {
+                return item.id;
+            }).indexOf(rem_val);
+// remove object
+            ITEM_LIST.splice(removeIndex, 1);
+            selectedPayments_table(ITEM_LIST);
+        }
+        function isValueExsist(value) {
+            let ret = false;
+            $.map(ITEM_LIST, function (val) {
+                if (val.id == value) {
+                    ret = true;
+                }
+            });
+            return ret;
+        }
+    });
 </script>
 @endsection
