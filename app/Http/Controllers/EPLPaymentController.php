@@ -24,20 +24,21 @@ class EPLPaymentController extends Controller
 
     public function index($id, $type)
     {
+        abort(503);
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
             if ($type == 'epl') {
                 $epl = EPL::find($id);
                 if ($epl) {
-                    return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id, "epl_no" => $epl->code, "client" => $epl->client_id, 'type' => $type,'type_title'=>'epl_profile']);
+                    return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id, "epl_no" => $epl->code, "client" => $epl->client_id, 'type' => $type, 'type_title' => 'epl_profile']);
                 } else {
                     abort(404);
                 }
             } else if ($type == 'site_clearance') {
                 $site = SiteClearenceSession::find($id);
                 if ($site) {
-                    return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id, "epl_no" => $site->code, "client" => $site->client_id, 'type' => $type,'type_title'=>'site_clearance']);
+                    return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id, "epl_no" => $site->code, "client" => $site->client_id, 'type' => $type, 'type_title' => 'site_clearance']);
                 } else {
                     abort(404);
                 }
