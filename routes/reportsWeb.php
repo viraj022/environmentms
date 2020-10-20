@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
  */
 
 
-Route::get('/site_clearance_report', 'ReportController@siteClearanceApplicationReport');
-Route::get('/site_clearance_report_test', 'ReportController@siteClearanceApplicationReportTest');
+Route::get('/site_clearance_report_alfa', 'ReportController@siteClearanceApplicationReport');
+Route::get('/site_clearance_report', 'ReportController@siteClearanceApplicationReportBeta');
+Route::get('/epl_report', 'ReportController@eplApplicationReport');
 // Route::get('/testReportMul', 'ReportController@test');

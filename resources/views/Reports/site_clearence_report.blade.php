@@ -11,7 +11,7 @@
     </head>
     <body class="hold-transition sidebar-mini layout-fixed text-sm">
      {{-- @dump($data); --}}
-<table class="table">
+<table class="table cell-border compact stripe">
                                             <thead>
                                                 <tr>
                                                     <th style="width: 10px">#</th>
@@ -41,11 +41,34 @@
                                         </table>
     <script src="/plugins/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/dataTable/datatables.min.js"></script>
+    <script type="text/javascript" src="/js/image.js"></script>
     <script>
+        // var img = 
         // $('.table').DataTable();
         $(document).ready( function () {
-            alert(123);
-    $('.table').DataTable();
+            // alert(123);
+    $('.table').DataTable({
+        colReorder: true,
+         responsive: true,
+         select: true,
+        dom: "Bfrtip",
+        // buttons: ["csv", "excel", "print",],
+        buttons: [{
+                extend: 'print',
+                title : '',
+                customize: function ( win ) {                  
+                    $(win.document.body)
+                        .css( 'font-size', '10pt' )
+                        .prepend(
+                            '<center><H1>Site Clearence Report</h1></center><img src='+img+' style="position:absolute; filter: grayscale(100%); opacity: 0.5; top:0; left:0;" />'
+                        ); 
+                    $(win.document.body).find( 'table' )
+                        .addClass( 'compact' )
+                        .css( 'font-size', 'inherit' );
+                }
+            },"excel","csv"],
+        
+    });
 } );
     </script>
     </body>
