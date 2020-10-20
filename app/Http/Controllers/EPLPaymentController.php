@@ -24,6 +24,7 @@ class EPLPaymentController extends Controller
 
     public function index($id, $type)
     {
+        abort(503);
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {

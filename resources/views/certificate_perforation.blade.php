@@ -382,7 +382,7 @@
             var data = {
                 issue_date: $('#issue_date').val(),
                 expire_date: $('#expire_date').val()
-            }
+            };
             completeCertificateAPI(CERTIFICATE_ID, FILE_STATUS, data, function (resp) {
                 show_mesege(resp);
                 if (resp.id === 1) {
