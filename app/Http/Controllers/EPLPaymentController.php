@@ -384,7 +384,7 @@ class EPLPaymentController extends Controller
                 $rtn['license_fee']['status'] = "not_payed";
             }
 
-            if ($epl->client->siteClearenceSessions->count() > 0) {
+            if ($epl->client->siteClearenceSessions->count() < 0) {
                 if ($fine) {
                     $rtn['fine']['status'] = "payed";
                     $rtn['fine']['object'] = $fine;
