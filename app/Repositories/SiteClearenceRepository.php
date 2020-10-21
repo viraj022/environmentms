@@ -71,4 +71,27 @@ class SiteClearenceRepository
                 abort('404', 'Report Instance Not Defined - Ceytech internal error log');
         }
     }
+
+    public function ReceivedSiteCount($from, $to, $isNew)
+    {
+        $query = SiteClearance::whereBetween('submit_date', [$from, $to])
+            ->join('site_clearence_sessions', 'site_clearances.site_clearence_session_id', 'site_clearence_sessions.id')
+            ->join('clients', 'site_clearence_sessions.client_id', 'clients.id')
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
+            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
+            ->join('users', 'assistant_directors.user_id', 'users.id')
+            ->where('assistant_directors.active_status', 1)
+            ->select('users.first_name', 'users.last_name', DB::raw('count(site_clearances.id) as total'))
+            ->groupBy('zones.id')
+            ->orderBy('zones.name');
+        switch ($isNew) {
+            case 1:
+                return   $query->where('count', 1)->get();
+            case 0:
+                return   $query->where('count', '>', 1)->get();
+            default:
+                abort(422, "invalid Argument for the if HCE-log");
+        }
+    }
 }

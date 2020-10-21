@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\ReportTemplate\ReportTemplateMultiCell;
+use App\Repositories\AssistanceDirectorRepository;
 use App\Repositories\EPLRepository;
 use App\Repositories\FileLogRepository;
 use App\Repositories\SiteClearenceRepository;
@@ -173,7 +174,43 @@ class ReportController extends Controller
     public function monthlyProgress()
     {
         $epl =   new EPLRepository();
-        $NewEpls = $epl->ReceivedPLCount('2019-01-01', '2022-01-01', 1);
-        dd($count->toArray());
+        $site = new SiteClearenceRepository();
+        $ass = new AssistanceDirectorRepository();
+        $newEplCount = $epl->ReceivedPLCount('2019-01-01', '2022-01-01', 1);
+        $renewEplCount = $epl->ReceivedPLCount('2019-01-01', '2022-01-01', 0);
+        $siteNewCount = $site->ReceivedSiteCount('2019-01-01', '2022-01-01', 1);
+        $siteExtendCount = $site->ReceivedSiteCount('2019-01-01', '2022-01-01', 0);
+        $assistanceDirectors = $ass->getAssistanceDirectorWithZones();
+        // dd($siteNewCount->toArray());
+        $result = [];
+        $result[] = array('type' => 'received', 'name' => 'SC(New)', 'application' => '5', 'object' => $this->prepareCount($siteNewCount->toArray(), $assistanceDirectors->count()));
+        $result[] = array('type' => 'received', 'name' => 'SC(R)', 'application' => '5', 'object' => $this->prepareCount($siteExtendCount->toArray(), $assistanceDirectors->count()));
+        $result[] = array('type' => 'received', 'name' => 'EPL(New)', 'application' => '5', 'object' => $this->prepareCount($newEplCount->toArray(), $assistanceDirectors->count()));
+        $result[] = array('type' => 'received', 'name' => 'EPL(R)', 'application' => '5', 'object' => $this->prepareCount($renewEplCount->toArray(), $assistanceDirectors->count()));
+        $result[] = array('type' => 'received', 'name' => 'Agrarian Services', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors->count(), 0));
+        $result[] = array('type' => 'received', 'name' => 'Land Lease Out', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors->count(), 0));
+        $result[] = array('type' => 'received', 'name' => 'Court Case', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors->count(), 0));
+        $result[] = array('type' => 'received', 'name' => 'Complaints', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors->count(), 0));
+        $result[] = array('type' => 'received', 'name' => 'Other', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors->count(), 0));
+        // dd($result);
+        // dd($assistanceDirectors->toArray());
+        return view('Reports.monthly_progress_report', compact('result', 'assistanceDirectors'));
+    }
+
+    public function prepareCount($array, $count, $flag = true)
+    {
+        if (count($array) == 0) {
+            for ($i = 0; $i < $count; $i++) {
+                if ($flag) {
+
+                    array_push($array, array('total' => 0));
+                } else {
+                    array_push($array, array('total' => ''));
+                }
+            }
+        } else {
+        }
+
+        return $array;
     }
 }
