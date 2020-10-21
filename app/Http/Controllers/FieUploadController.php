@@ -17,7 +17,7 @@ class FieUploadController extends Controller
         // dd($epl->id);
         return  FieUploadController::BASE_PATH . "/" . $epl->client_id . "/epl/" . $epl->id;
     }
-    public static function getEPLSiteClearanceFoldersPath(SiteClearenceSession $site)
+    public static function getSiteClearanceFoldersPath(SiteClearenceSession $site)
     {
         return  FieUploadController::BASE_PATH . "/" . $site->client_id . "/site_clearance/" . $site->id;
     }
@@ -36,7 +36,7 @@ class FieUploadController extends Controller
     }
     public static function getSiteClearanceAPPLICATIONFilePath(SiteClearenceSession $site)
     {
-        return  FieUploadController::getEPLSiteClearanceFoldersPath($site) . "/application";
+        return  FieUploadController::getSiteClearanceFoldersPath($site) . "/application";
     }
     public static function getEPLCertificateFilePath(EPL $epl)
     {
