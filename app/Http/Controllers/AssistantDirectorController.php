@@ -16,7 +16,10 @@ use Illuminate\Support\Facades\Auth;
 
 class AssistantDirectorController extends Controller
 {
-
+public function __construct()
+    {
+        $this->middleware(['auth']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -228,7 +231,7 @@ class AssistantDirectorController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
-        if ($pageAuth['is_read']) {
+       
 
             //        LogActivity::addToLog('Request to Get all active assistantDirector',null);
             //    PaymentType::get();
@@ -237,10 +240,7 @@ class AssistantDirectorController extends Controller
                 ->where('assistant_directors.active_status', '=', '1')
                 ->select('assistant_directors.id', 'users.first_name as first_name', 'users.last_name as last_name', 'users.user_name as user_name', 'users.id as user_id', 'zones.id as zone_id', 'zones.name as zone_name')
                 ->get();
-        } else {
-            // LogActivity::addToLog('Fails to Get all active assistantDirector',null);
-            abort(401);
-        }
+        
     }
 
     public function assistantDirectorByZone($id)
