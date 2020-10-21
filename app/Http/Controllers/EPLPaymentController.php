@@ -111,8 +111,7 @@ class EPLPaymentController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_delete']) {
-            $transaction = Transaction::where('type', Transaction::APPLICATION_FEE)
-                ->where('id', $id)->first();
+            $transaction = Transaction::where('id', $id)->first();
             if ($transaction) {
                 LogActivity::addToLog('EPL Payment Added : addRegistrationPayment', $transaction);
                 if ($transaction->delete()) {
