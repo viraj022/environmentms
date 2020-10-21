@@ -62,6 +62,7 @@ Route::get('/committee/id/{id}', 'WebRouteController@indexCommittee');
 Route::get('/committee_remarks/id/{id}', 'WebRouteController@indexCommitteeRemarks');
 Route::get('/act_status/id/{file_id}', 'WebRouteController@actStatus');
 Route::get('/old_data_summary', 'WebRouteController@oldDataSummary');
+Route::get('/dashboard2', 'DashboardController@index');
 //ui routs
 //dashboard
 Route::get('/dashboard', function () {

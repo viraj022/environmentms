@@ -4,16 +4,17 @@ namespace App\Http\Controllers;
 
 use App\EPL;
 use App\Payment;
-use App\Helpers\LogActivity;
 use App\PaymentType;
 use App\Transaction;
+use App\SiteClearance;
 use App\Rules\contactNo;
 use App\TransactionItem;
 use App\Rules\nationalID;
 use App\ApplicationCliten;
-use App\SiteClearance;
-use App\SiteClearenceSession;
 use App\Transactioncounter;
+use App\Helpers\LogActivity;
+use App\SiteClearenceSession;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class EPLPaymentController extends Controller
@@ -111,18 +112,19 @@ class EPLPaymentController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_delete']) {
-            $transaction = Transaction::where('type', Transaction::APPLICATION_FEE)
-                ->where('id', $id)->first();
-            if ($transaction) {
-                LogActivity::addToLog('EPL Payment Added : addRegistrationPayment', $transaction);
-                if ($transaction->delete()) {
-                    return array('id' => 1, 'message' => 'true');
+            return   DB::transaction(function () use ($id) {
+                $transaction = Transaction::where('id', $id)->first();
+                if ($transaction) {
+                    LogActivity::addToLog('EPL Payment Added : addRegistrationPayment', $transaction);
+                    if ($transaction->transactionItems()->delete() && $transaction->delete()) {
+                        return array('id' => 1, 'message' => 'true');
+                    } else {
+                        return array('id' => 0, 'message' => 'false');
+                    }
                 } else {
-                    return array('id' => 0, 'message' => 'false');
+                    abort(404);
                 }
-            } else {
-                abort(404);
-            }
+            });
         } else {
             abort(401);
         }
@@ -383,7 +385,8 @@ class EPLPaymentController extends Controller
             } else {
                 $rtn['license_fee']['status'] = "not_payed";
             }
-            if ($epl->site_clearance_file == null) {
+            dd($fine);
+            if ($epl->client->siteClearenceSessions->count() == 0) {
                 if ($fine) {
                     $rtn['fine']['status'] = "payed";
                     $rtn['fine']['object'] = $fine;

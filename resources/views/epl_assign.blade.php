@@ -25,13 +25,13 @@
         </div>
     </div>
 </section>
-<section class="content-header">
+<section class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
                 <div class="card card-success">
                     <div class="card-header">
-                        <label id="lblTitle">Un-assigned File</label>
+                        <h3 class="card-title" id="lblTitle">Un-assigned File</h3>
                     </div>
                     <div class="card-body">
                         <label>Assistant Director</label>
@@ -53,9 +53,11 @@
 
 
             <div class="col-md-6">
-                <div class="card card-success">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title">Environment Officer</h3>
+                    </div>
                     <div class="card-body">
-                        <label>Environment Officer</label>
                         <select class="form-control combo_envOfficer" id="env_officer_combo"></select>
                         <div class="card-body p-0">
                             <div class="card-body table-responsive" style="height: 550px;">
