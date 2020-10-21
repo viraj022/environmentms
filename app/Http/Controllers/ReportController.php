@@ -142,4 +142,38 @@ class ReportController extends Controller
         // dd($data);
         return view('Reports.epl_report', ['data' => $data]);
     }
+
+    public function eplApplicationLog()
+    {
+        $epls =   new EPLRepository();
+        $result =  $epls->getEPLReport('2010-01-01', '2021-01-01')->toArray();
+        $data = [];
+        $num = 0;
+        foreach ($result as $row) {
+            // dd($row['epls']);
+            $array = [];
+            $array['#'] = ++$num;
+            $array['submitted_date'] = Carbon::parse($row['epls'][0]['submitted_date'])->format('d-m-Y');
+            $array['code'] = $row['epls'][0]['code'];
+            $array['name_title'] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'] . "\n" . $row['address'];
+            $array['category_name'] = $row['category_name'];
+            $array['industry_address'] = $row['industry_address'];
+            if (count($row['site_clearence_sessions']) > 0) {
+                $array['nature'] = "SC -> EPL";
+            } else {
+                $array['nature'] = "EPL";
+            }
+
+            array_push($data, $array);
+        }
+        // dd($data);
+        return view('Reports.epl_application_log_report', ['data' => $data]);
+    }
+
+    public function monthlyProgress()
+    {
+        $epl =   new EPLRepository();
+        $count = $epl->ReceivedPLCount('2019-01-01', '2022-01-01', 1);
+        dd($count->toArray());
+    }
 }

@@ -54,4 +54,26 @@ class EPLRepository
 
         return $query->get();
     }
+
+
+    public function ReceivedPLCount($from, $to, $isNew)
+    {
+        switch ($isNew) {
+            case 1:
+                return EPL::whereBetween('submitted_date', [$from, $to])->where('count', 0)
+                    ->join('clients', 'e_p_l_s.client_id', 'clients.id')
+                    ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+                    ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
+                    ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
+                    ->join('users', 'assistant_directors.user_id', 'users.id')
+                    ->where('assistant_directors.active_status', 1)
+                    ->select('users.first_name', 'users.last_name', DB::raw('count(e_p_l_s.id) as total'))
+                    ->groupBy('zones.id')
+                    ->get();
+            case 0:
+                return EPL::whereBetween('submitted_date', [$from, $to])->where('count', '>', 0)->count();
+            default:
+                abort(422, "invalid Argument for the if HCE-log");
+        }
+    }
 }
