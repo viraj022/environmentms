@@ -173,7 +173,7 @@ class ReportController extends Controller
     public function monthlyProgress()
     {
         $epl =   new EPLRepository();
-        $count = $epl->ReceivedPLCount('2019-01-01', '2022-01-01', 1);
+        $NewEpls = $epl->ReceivedPLCount('2019-01-01', '2022-01-01', 1);
         dd($count->toArray());
     }
 }
