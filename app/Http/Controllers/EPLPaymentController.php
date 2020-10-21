@@ -116,7 +116,7 @@ class EPLPaymentController extends Controller
                 $transaction = Transaction::where('id', $id)->first();
                 if ($transaction) {
                     LogActivity::addToLog('EPL Payment Added : addRegistrationPayment', $transaction);
-                    if ($transaction->transactionItems->delete() && $transaction->delete()) {
+                    if ($transaction->transactionItems()->delete() && $transaction->delete()) {
                         return array('id' => 1, 'message' => 'true');
                     } else {
                         return array('id' => 0, 'message' => 'false');
