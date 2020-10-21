@@ -3,10 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TransactionItem extends Model
 {
-
+    use SoftDeletes;
     public function payment()
     {
         return $this->belongsTo(Payment::class);
