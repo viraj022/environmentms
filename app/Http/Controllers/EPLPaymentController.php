@@ -4,16 +4,17 @@ namespace App\Http\Controllers;
 
 use App\EPL;
 use App\Payment;
-use App\Helpers\LogActivity;
 use App\PaymentType;
 use App\Transaction;
+use App\SiteClearance;
 use App\Rules\contactNo;
 use App\TransactionItem;
 use App\Rules\nationalID;
 use App\ApplicationCliten;
-use App\SiteClearance;
-use App\SiteClearenceSession;
 use App\Transactioncounter;
+use App\Helpers\LogActivity;
+use App\SiteClearenceSession;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class EPLPaymentController extends Controller
