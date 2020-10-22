@@ -31,11 +31,16 @@ class TransactionRepository
      * To date
      * Instance => All , New , Extensions
      */
-    public function getApplicationCount($from, $to, $type)
+    public function getApplicationCount($from, $to)
     {
-        return TransactionItem::with('transactionItems')
-            ->where('type', Transaction::APPLICATION_FEE)
-            ->select()
+        $data = TransactionItem::join('transactions', 'transaction_items.transaction_id', 'transactions.id')
+            ->join('payments', 'transaction_items.payment_id', 'payments.id')
+            ->where('transactions.type', Transaction::APPLICATION_FEE)
+            ->whereBetween('billed_at', [$from, $to])
+            ->select(DB::raw('sum(qty) as qty'), 'payments.name')
+            ->groupBy('payment_id')
             ->get();
+        // dd($data->toArray());
+        return $data;
     }
 }
