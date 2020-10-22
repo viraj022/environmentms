@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AssistantDirectorController extends Controller
 {
-public function __construct()
+    public function __construct()
     {
         $this->middleware(['auth']);
     }
@@ -231,16 +231,15 @@ public function __construct()
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
-       
 
-            //        LogActivity::addToLog('Request to Get all active assistantDirector',null);
-            //    PaymentType::get();
-            return AssistantDirector::join('users', 'assistant_directors.user_id', '=', 'users.id')
-                ->join('zones', 'assistant_directors.zone_id', '=', 'zones.id')
-                ->where('assistant_directors.active_status', '=', '1')
-                ->select('assistant_directors.id', 'users.first_name as first_name', 'users.last_name as last_name', 'users.user_name as user_name', 'users.id as user_id', 'zones.id as zone_id', 'zones.name as zone_name')
-                ->get();
-        
+
+        //        LogActivity::addToLog('Request to Get all active assistantDirector',null);
+        //    PaymentType::get();
+        return AssistantDirector::join('users', 'assistant_directors.user_id', '=', 'users.id')
+            ->join('zones', 'assistant_directors.zone_id', '=', 'zones.id')
+            ->where('assistant_directors.active_status', '=', '1')
+            ->select('assistant_directors.id', 'users.first_name as first_name', 'users.last_name as last_name', 'users.user_name as user_name', 'users.id as user_id', 'zones.id as zone_id', 'zones.name as zone_name')
+            ->get();
     }
 
     public function assistantDirectorByZone($id)
@@ -454,6 +453,29 @@ public function __construct()
             $msg = setFileStatus($file_id, 'file_status', -2);
             $msg = setFileStatus($file_id, 'cer_status', -1);
             fileLog($file->id, 'FileStatus', 'Director (' . $user->user_name . ') hold the certificate.', 3);
+            if ($request->has('minutes')) {
+                $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_Dire_Hold_CERTIFICATE, $user->id));
+            }
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        });
+    }
+    public function directorUnHoldCertificate(Request $request, MinutesRepository $minutesRepository, $file_id)
+    {
+        return DB::transaction(function () use ($request, $minutesRepository, $file_id) {
+            request()->validate([
+                'minutes' => 'sometimes|required|string',
+            ]);
+            $user = Auth::user();
+            $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+            $file = Client::findOrFail($file_id);
+
+            $msg = setFileStatus($file_id, 'file_status', 4);
+            $msg = setFileStatus($file_id, 'cer_status', 4);
+            fileLog($file->id, 'FileStatus', 'Director (' . $user->user_name . ') un hold the certificate.', 4);
             if ($request->has('minutes')) {
                 $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_Dire_Hold_CERTIFICATE, $user->id));
             }
