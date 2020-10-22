@@ -221,7 +221,7 @@ class SiteClearanceController extends Controller
             // upload file
             if ($request->file('file') != null) {
                 $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                $fileUrl = '/uploads/industry_files/' . $siteSessions->client_id . '/site_clearance/application/' . $siteSessions->id;
+                $fileUrl = '/uploads/' . FieUploadController::getSiteClearanceAPPLICATIONFilePath($siteSessions);
                 $storePath = 'public' . $fileUrl;
                 $path = $request->file('file')->storeAs($storePath, $file_name);
                 $siteClearance->application_path = "storage" . $fileUrl . "/" . $file_name;

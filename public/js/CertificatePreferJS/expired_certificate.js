@@ -25,14 +25,14 @@ function getaProfilebyId(callBack) {
 
 var cer_status = {0: 'pending', 1: 'Drafting', 2: 'Drafted', 3: 'AD Approval Pending', 4: 'Director Approval pending', 5: 'Director Approved', 6: 'Certificate Issued', '-1': 'Certificate Director Holded'};
 function loadAssDirCombo(callBack) {
-    var url = '/api/assistant_directors/level';
+    var url = '/api/AssistantDirector/active';
     let cbo = '';
     ajaxRequest('GET', url, null, function (dataSet) {
         if (dataSet.length == 0) {
             cbo = "<option value=''>No Data Found</option>";
         } else {
             $.each(dataSet, function (index, row) {
-                cbo += '<option value="' + row.id + '">' + row.user.first_name + " " + row.user.last_name + '</option>';
+                cbo += '<option value="' + row.id + '">' + row.first_name + " " + row.last_name + '</option>';
             });
         }
         $('#getAsDirect').html(cbo);
