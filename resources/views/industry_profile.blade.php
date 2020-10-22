@@ -328,7 +328,7 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Site Clearance Code</th>
-                                                    <th>Remark</th>
+                                                    <th>Expire Date</th>
                                                     <!--<th>Action</th>-->
                                                 </tr>
                                             </thead>

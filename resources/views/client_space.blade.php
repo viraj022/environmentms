@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Contact Number</label>
-                                    <input id="getContact" maxlength="10" type="text" class="form-control form-control-sm"
+                                    <input id="getContact" maxlength="10" type="number" class="form-control form-control-sm"
                                            placeholder="Enter Contact Number..."
                                            value="">
                                     <div id="valConName" class="d-none"><p class="text-danger">Contact Number is required</p></div>
@@ -161,7 +161,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Contact No</label>
-                                    <input id="getContactn" type="text" maxlength="10" class="form-control form-control-sm" placeholder="Enter Contact Info..." value="">
+                                    <input id="getContactn" type="number" maxlength="10" class="form-control form-control-sm" placeholder="Enter Contact Info..." value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Email</label>

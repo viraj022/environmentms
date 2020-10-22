@@ -234,7 +234,7 @@ function loadAllSiteClearTable(dataSet, callBack) {
                     '" class="btn btn-primary">' +
                     row.code +
                     "</a></td>";
-            tbl += "<td>" + row.remark + "</td>";
+            tbl += "<td>" + row.expire_date + "</td>";
             tbl += "</tr>";
         });
     }
