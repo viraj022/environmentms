@@ -201,10 +201,12 @@ class EPLController extends Controller
                 if ($msg) {
                     $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
                     $fileUrl = '/uploads/industry_files/' . $client->id . '/application';
+                    $fileUrl = '/uploads/'
+                        . FieUploadController::getEPLApplicationFilePath($epl);
                     $storePath = 'public' . $fileUrl;
                     $path = $request->file('file')->storeAs($storePath, $file_name);
                     $client->application_path = "storage/" . $fileUrl . "/" . $file_name;
-                    $epl->path = "storage/" . $fileUrl . "/" . $file_name;
+                    $epl->application_path = "storage/" . $fileUrl . "/" . $file_name;
                     // $client->is_working = 1;
                     $client->save();
                     $epl->save();
@@ -262,10 +264,11 @@ class EPLController extends Controller
                 setFileStatus($epl->client_id, 'file_problem', 0); // set file problem status to 0
                 if ($msg) {
                     $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                    $fileUrl = '/uploads/industry_files/' . $client->id . '/application';
+                    $fileUrl = '/uploads/'
+                        . FieUploadController::getEPLApplicationFilePath($epl);
                     $storePath = 'public' . $fileUrl;
                     $path = $request->file('file')->storeAs($storePath, $file_name);
-                    $epl->path = "storage/" . $fileUrl . "/" . $file_name;
+                    $epl->application_path = "storage/" . $fileUrl . "/" . $file_name;
                     //   $client->is_working = 1;
                     $client->save();
                     $epl->save();

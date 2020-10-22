@@ -130,7 +130,7 @@
                                                             <i class="far fa-calendar-alt"></i>
                                                         </span>
                                                     </div>
-                                                    <input id="issue_date" name="datepickerUi" type="text" data-date="" data-date-format="YYYY MM DD" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Issue Date..." value="" autocomplete="off">
+                                                    <input id="issue_date" name="datepickerUi" type="text"  max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Issue Date..." value="" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -141,7 +141,7 @@
                                                             <i class="far fa-calendar-alt"></i>
                                                         </span>
                                                     </div>
-                                                    <input id="expire_date" name="datepickerUi" max="2999-12-31" class="form-control form-control-sm " placeholder="Enter Expire Date..." value="">
+                                                    <input id="expire_date" name="datepickerUi" type="text" max="2999-12-31" class="form-control form-control-sm " placeholder="Enter Expire Date..." value="">
                                                 </div>
                                             </div>
                                             <h4 class="text-success d-none" id="certificateSubmittedLable">Certificate Submitted</h4>
@@ -397,13 +397,19 @@
     });
 
     $('#issue_date').on('change', function () { //<--On change issue date configer expire date
-        var issueDate = new Date($('#issue_date').val());
+        var issueDate = new Date($(this).val());
+        console.log(issueDate);
         var year = issueDate.getFullYear() + 1;
         var month = issueDate.getMonth() + 1;
         var date = issueDate.getDate();
         var expireDate = year + "-" + ('0' + month).slice(-2) + "-" + ('0' + date).slice(-2);
         console.log(expireDate);
         $('#expire_date').val(expireDate);
+    });
+    
+    $('#expire_date').on('change', function () {
+         console.log($(this).val());
+         console.log($('#issue_date').val());
     });
 
     $('input[name="datepickerUi"]').daterangepicker({
