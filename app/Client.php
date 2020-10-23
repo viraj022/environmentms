@@ -134,4 +134,43 @@ class Client extends Model
         public function resetFile()
         {
         }
+        /**
+         * return woring file type and id and its model
+         */
+        public function getActiveWorkingFileType()
+        {
+                $rtn = [];
+                switch ($this->cer_type_status) {
+                        case  1:
+                                $epl =   EPL::where('client_id', $this->id)->orderBy('id', 'DESC')->first();
+                                $rtn['type'] = 'EPL';
+                                $rtn['id'] = $epl->id;
+                                $rtn['model'] = $epl;
+
+                        case  2:
+                                $epl =   EPL::where('client_id', $this->id)->orderBy('id', 'DESC')->first();
+                                $rtn['type'] = 'EPL';
+                                $rtn['id'] = $epl->id;
+                                $rtn['model'] = $epl;
+                                break;
+                        case  3:
+                                $siteSession =   SiteClearenceSession::where('client_id', $this->id)->orderBy('id', 'DESC')->first();
+                                $site = $siteSession->siteClearances->last();
+                                $rtn['type'] = 'SITE';
+                                $rtn['id'] = $site->id;
+                                $rtn['model'] = $site;
+
+                        case  4:
+                                $siteSession =   SiteClearenceSession::where('client_id', $this->id)->orderBy('id', 'DESC')->first();
+                                $site = $siteSession->siteClearances->last();
+                                $rtn['type'] = 'SITE';
+                                $rtn['id'] = $site->id;
+                                $rtn['model'] = $site;
+                                break;
+                        default:
+                                // $rtn = [];
+                }
+
+                return $rtn;
+        }
 }

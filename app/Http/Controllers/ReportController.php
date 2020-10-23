@@ -8,6 +8,7 @@ use App\ReportTemplate\ReportTemplateMultiCell;
 use App\Repositories\AssistanceDirectorRepository;
 use App\Repositories\EPLRepository;
 use App\Repositories\FileLogRepository;
+use App\Repositories\InspectionSessionRepository;
 use App\Repositories\SiteClearenceRepository;
 use App\Repositories\TransactionRepository;
 use App\Transaction;
@@ -175,10 +176,12 @@ class ReportController extends Controller
 
     public function monthlyProgress()
     {
+        $start = microtime(true);
         $result = [];
         $epl =   new EPLRepository();
         $site = new SiteClearenceRepository();
         $ass = new AssistanceDirectorRepository();
+        $inspection = new InspectionSessionRepository();
         // $trans = new TransactionRepository();
 
         $assistanceDirectors = $ass->getAssistanceDirectorWithZones();
@@ -189,67 +192,127 @@ class ReportController extends Controller
         $renewEplCount = $epl->ReceivedPLCount('2019-01-01', '2022-01-01', 0);
         $siteNewCount = $site->ReceivedSiteCount('2019-01-01', '2022-01-01', 1);
         $siteExtendCount = $site->ReceivedSiteCount('2019-01-01', '2022-01-01', 0);
-        // $applications = $trans->getApplicationCount('2019-01-01', '2022-01-01');
-        // dd($siteNewCount->toArray());
-        // dd($this->prepareApplicationTotal($siteNewCount->toArray()), false);
-        $result[] = array('type' => 'received', 'name' => 'SC(New)', 'application' => $this->prepareApplicationTotal($siteNewCount->toArray()), 'object' => $this->prepareCount($siteNewCount->toArray(), $assistanceDirectors->count()));
-        $result[] = array('type' => 'received', 'name' => 'SC(R)', 'application' => $this->prepareApplicationTotal($siteExtendCount->toArray()), 'object' => $this->prepareCount($siteExtendCount->toArray(), $assistanceDirectors->count()));
-        $result[] = array('type' => 'received', 'name' => 'EPL(New)', 'application' => $this->prepareApplicationTotal($newEplCount->toArray()), 'object' => $this->prepareCount($newEplCount->toArray(), $assistanceDirectors->count()));
-        $result[] = array('type' => 'received', 'name' => 'EPL(R)', 'application' => $this->prepareApplicationTotal($renewEplCount->toArray()), 'object' => $this->prepareCount($renewEplCount->toArray(), $assistanceDirectors->count()));
-        $result[] = array('type' => 'received', 'name' => 'Agrarian Services', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors->count(), false));
-        $result[] = array('type' => 'received', 'name' => 'Land Lease Out', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors->count(), false));
-        $result[] = array('type' => 'received', 'name' => 'Court Case', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors->count(), false));
-        $result[] = array('type' => 'received', 'name' => 'Complaints', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors->count(), false));
-        $result[] = array('type' => 'received', 'name' => 'Other', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors->count(), false));
+
+
+
+
+
+
+        $result[] = array('type' => 'received', 'name' => 'SC(New)', 'application' => $this->prepareApplicationTotal($siteNewCount->toArray()), 'object' => $this->prepareCount($siteNewCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => 'received', 'name' => 'SC(R)', 'application' => $this->prepareApplicationTotal($siteExtendCount->toArray()), 'object' => $this->prepareCount($siteExtendCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => 'received', 'name' => 'EPL(New)', 'application' => $this->prepareApplicationTotal($newEplCount->toArray()), 'object' => $this->prepareCount($newEplCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => 'received', 'name' => 'EPL(R)', 'application' => $this->prepareApplicationTotal($renewEplCount->toArray()), 'object' => $this->prepareCount($renewEplCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => 'received', 'name' => 'Agrarian Services', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+        $result[] = array('type' => 'received', 'name' => 'Land Lease Out', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+        $result[] = array('type' => 'received', 'name' => 'Court Case', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+        $result[] = array('type' => 'received', 'name' => 'Complaints', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+        $result[] = array('type' => 'received', 'name' => 'Other', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+
+        /**
+         * Inspection Section
+         */
+        $eplInspectionNewCount = $inspection->getEPLInspection('2019-01-01', '2022-01-01', 1);
+        $eplInspectionRenewCount = $inspection->getEPLInspection('2019-01-01', '2022-01-01', 0);
+        $siteInspectionNewCount = $inspection->getSiteInspection('2019-01-01', '2022-01-01', 1);
+        $siteInspectionRenewCount = $inspection->getSiteInspection('2019-01-01', '2022-01-01', 0);
+        // dd($siteInspectionNewCount->toArray(), $siteInspectionRenewCount->toArray());
+
+        $result[] = array('type' => 'Inspection', 'name' => 'SC(New)', 'application' => "", 'object' => $this->prepareCount($siteInspectionNewCount->toArray(), $assistanceDirectors));
+
+        $result[] = array('type' => 'Inspection', 'name' => 'SC(R)', 'application' => "", 'object' => $this->prepareCount($siteInspectionRenewCount->toArray(), $assistanceDirectors));
+
+        $result[] = array('type' => 'Inspection', 'name' => 'EPL(New)', 'application' => "", 'object' => $this->prepareCount($eplInspectionNewCount->toArray(), $assistanceDirectors));
+
+        $result[] = array('type' => 'Inspection', 'name' => 'EPL(R)', 'application' => '', 'object' => $this->prepareCount($eplInspectionRenewCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => 'Inspection', 'name' => 'Agrarian Services', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+        $result[] = array('type' => 'Inspection', 'name' => 'Land Lease Out', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+        $result[] = array('type' => 'Inspection', 'name' => 'Monitoring', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+        $result[] = array('type' => 'Inspection', 'name' => 'Court Case', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+        $result[] = array('type' => 'Inspection', 'name' => 'Complaints', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+        $result[] = array('type' => 'Inspection', 'name' => 'Other', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+        $result[] = array('type' => 'Inspection', 'name' => 'UnAuthorized', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+
 
         /**
          * Completed Section
          */
 
-        $completedNewEplCount =   $newEplCount = $epl->IssuedPLCount('2019-01-01', '2022-01-01', 1);
-        $completedReNewEplCount =   $newEplCount = $epl->IssuedPLCount('2019-01-01', '2022-01-01', 0);
-        $completedNewSiteCount =   $newEplCount = $site->IssuedSiteCount('2019-01-01', '2022-01-01', 1);
-        $completedRenewSiteCount =   $newEplCount = $site->IssuedSiteCount('2019-01-01', '2022-01-01', 0);
-        // dd($completedNewSiteCount->toArray());
-        // dd($this->prepareCount($completedNewSiteCount->toArray(), $assistanceDirectors->count()));
-        $result[] = array('type' => 'Issued', 'name' => 'SC(New)', 'application' => $this->prepareApplicationTotal($completedNewSiteCount->toArray()), 'object' => $this->prepareCount($completedNewSiteCount->toArray(), $assistanceDirectors->count()));
+        $completedNewEplCount =   $epl->IssuedPLCount('2019-01-01', '2022-01-01', 1);
+        $completedReNewEplCount =  $epl->IssuedPLCount('2019-01-01', '2022-01-01', 0);
+        $completedNewSiteCount =   $site->IssuedSiteCount('2019-01-01', '2022-01-01', 1);
+        $completedRenewSiteCount =    $site->IssuedSiteCount('2019-01-01', '2022-01-01', 0);
 
-        $result[] = array('type' => 'Issued', 'name' => 'SC(R)', 'application' => $this->prepareApplicationTotal($completedRenewSiteCount->toArray()), 'object' => $this->prepareCount($completedRenewSiteCount->toArray(), $assistanceDirectors->count()));
+        $result[] = array('type' => 'Issued', 'name' => 'SC(New)', 'application' => "", 'object' => $this->prepareCount($completedNewSiteCount->toArray(), $assistanceDirectors));
 
-        $result[] = array('type' => 'Issued', 'name' => 'EPL(New)', 'application' => $this->prepareApplicationTotal($completedNewEplCount->toArray()), 'object' => $this->prepareCount($completedNewEplCount->toArray(), $assistanceDirectors->count()));
+        $result[] = array('type' => 'Issued', 'name' => 'SC(R)', 'application' => "", 'object' => $this->prepareCount($completedRenewSiteCount->toArray(), $assistanceDirectors));
 
-        $result[] = array('type' => 'Issued', 'name' => 'EPL(R)', 'application' => $this->prepareApplicationTotal($completedReNewEplCount->toArray()), 'object' => $this->prepareCount($completedReNewEplCount->toArray(), $assistanceDirectors->count()));
+        $result[] = array('type' => 'Issued', 'name' => 'EPL(New)', 'application' => "", 'object' => $this->prepareCount($completedNewEplCount->toArray(), $assistanceDirectors));
 
-        $result[] = array('type' => 'Issued', 'name' => 'Agrarian Services', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors->count(), false));
+        $result[] = array('type' => 'Issued', 'name' => 'EPL(R)', 'application' => '', 'object' => $this->prepareCount($completedReNewEplCount->toArray(), $assistanceDirectors));
 
-        $result[] = array('type' => 'Issued', 'name' => 'Land Lease Out', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors->count(), false));
+        $result[] = array('type' => 'Issued', 'name' => 'Agrarian Services', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
 
-        $result[] = array('type' => 'Issued', 'name' => 'Respond for Court Case', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors->count(), false));
+        $result[] = array('type' => 'Issued', 'name' => 'Land Lease Out', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+
+        $result[] = array('type' => 'Issued', 'name' => 'Respond for Court Case', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
 
 
-        $result[] = array('type' => 'Issued', 'name' => 'Other Letters', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors->count(), false));
+        $result[] = array('type' => 'Issued', 'name' => 'Other Letters', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+
+
+        /**
+         * Rejected Section
+         */
+
+        $rejectedEplCount =    $epl->EPlPLCount('2019-01-01', '2022-01-01', 0, 2);
+        $rejectedNewSiteCount =    $site->SiteCount('2019-01-01', '2022-01-01', 0, 2);
+
+        // dd($rejectedNewSiteCount->toArray());
+
+        $result[] = array('type' => 'Rejected', 'name' => 'SC', 'application' => "", 'object' => $this->prepareCount($rejectedNewSiteCount->toArray(), $assistanceDirectors));
+
+        $result[] = array('type' => 'Rejected', 'name' => 'EPL', 'application' => "", 'object' => $this->prepareCount($rejectedEplCount->toArray(), $assistanceDirectors));
 
         // dd($result);
         // dd($assistanceDirectors->toArray());
-        return view('Reports.monthly_progress_report', compact('result', 'assistanceDirectors'));
+        $time_elapsed_secs = round(microtime(true) - $start, 5);
+        // dd($time_elapsed_secs);
+        return view('Reports.monthly_progress_report', compact('result', 'assistanceDirectors', 'time_elapsed_secs'));
     }
 
-    private function prepareCount($array, $count, $flag = true)
+    private function prepareCount($array, $assistanceDirectors, $flag = true)
     {
-        dd($array);
-        if (count($array) == 0) {
-            for ($i = 0; $i < $count; $i++) {
-                if ($flag) {
-
-                    array_push($array, array('total' => 0));
-                } else {
-                    array_push($array, array('total' => ''));
+        $rtn = [];
+        // dd($array);
+        // dd($assistanceDirectors->toArray());
+        foreach ($assistanceDirectors as $assistanceDirector) {
+            if ($flag) {
+                $data =  array('total' => 0);
+            } else {
+                $data =  array('total' => '');
+            }
+            foreach ($array as $a) {
+                if ($assistanceDirector->id == $a['ass_id']) {
+                    $data['total'] = $a['total'];
                 }
             }
-        } else {
+            array_push($rtn, $data);
         }
 
-        return $array;
+        // dd($array);
+        // if (count($array) == 0) {
+        //     for ($i = 0; $i < $count; $i++) {
+        //         if ($flag) {
+
+        //             array_push($array, array('total' => 0));
+        //         } else {
+        //             array_push($array, array('total' => ''));
+        //         }
+        //     }
+        // } else {
+        // }
+        // dd($rtn);
+        return $rtn;
     }
     private function prepareApplicationTotal($array, $flag = true)
     {

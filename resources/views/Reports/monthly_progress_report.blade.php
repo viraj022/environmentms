@@ -10,6 +10,7 @@
         <link rel="stylesheet" type="text/css" href="/dataTable/datatables.min.css"/>
     </head>
     <body class="hold-transition sidebar-mini layout-fixed text-sm">
+        <h4>Report Genaration Time :{{$time_elapsed_secs}} seconds</h4>
      {{-- @dump($newEplCount); --}}
 <table class="table cell-border compact stripe">
                                             <thead>
@@ -23,6 +24,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>   
+                                                {{-- @dump($result); --}}
                                                @foreach ($result as $row)
                                                        <tr>
                                                          <th>{{$row['type']}}</th>  
@@ -120,6 +122,8 @@
         colReorder: true,
          responsive: true,
          select: true,
+          ordering: false,
+          paging: false,
         dom: "Bfrtip",
         // buttons: ["csv", "excel", "print",],
         buttons: [{

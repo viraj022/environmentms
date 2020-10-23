@@ -36,7 +36,7 @@ class AssistanceDirectorRepository
         return AssistantDirector::join('zones', 'assistant_directors.zone_id', 'zones.id')
             ->join('users', 'assistant_directors.user_id', 'users.id')
             ->where('assistant_directors.active_status', 1)
-            ->select('users.first_name', 'users.last_name', 'zones.name', 'zones.code')
+            ->select('assistant_directors.id', 'users.first_name', 'users.last_name', 'zones.name', 'zones.code')
             ->orderBy('zones.name')
             ->get();
     }

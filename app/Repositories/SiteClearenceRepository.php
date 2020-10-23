@@ -82,7 +82,7 @@ class SiteClearenceRepository
             ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
             ->join('users', 'assistant_directors.user_id', 'users.id')
             ->where('assistant_directors.active_status', 1)
-            ->select('users.first_name', 'users.last_name', DB::raw('count(site_clearances.id) as total'))
+            ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(site_clearances.id) as total'))
             ->groupBy('zones.id')
             ->orderBy('zones.name');
         switch ($isNew) {
@@ -105,7 +105,7 @@ class SiteClearenceRepository
             ->where('assistant_directors.active_status', 1)
             // ->whereNotNull('site_clearances.issue_date')
             ->whereBetween('site_clearances.issue_date', [$from, $to])
-            ->select('users.first_name', 'users.last_name', DB::raw('count(site_clearances.id) as total'))
+            ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(site_clearances.id) as total'))
             ->groupBy('zones.id')
             ->orderBy('zones.name');
         switch ($isNew) {
@@ -116,5 +116,44 @@ class SiteClearenceRepository
             default:
                 abort(422, "invalid Argument for the if HCE-log");
         }
+    }
+    public function SiteCount($from, $to, $isNew, $issueStatus = 0)
+    {
+        $query = SiteClearance::join('site_clearence_sessions', 'site_clearances.site_clearence_session_id', 'site_clearence_sessions.id')
+            ->join('clients', 'site_clearence_sessions.client_id', 'clients.id')
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
+            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
+            ->join('users', 'assistant_directors.user_id', 'users.id')
+            ->where('assistant_directors.active_status', 1)
+            // ->whereNotNull('site_clearances.issue_date')
+            ->whereBetween('site_clearances.issue_date', [$from, $to])
+            ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(site_clearances.id) as total'))
+            ->groupBy('zones.id')
+            ->orderBy('zones.name');
+        switch ($isNew) {
+            case 1:
+                $query =   $query->where('count', 1);
+            case 0:
+                $query =   $query->where('count', '>', 1);
+            default:
+        }
+
+        switch ($issueStatus) {
+            case 0: // received
+                $query = $query->whereBetween('submit_date', [$from, $to]);
+                break;
+            case 1: // issued
+                $query =  $query->where('site_clearances.status', 1)
+                    ->whereBetween('site_clearances.issue_date', [$from, $to]);
+                break;
+            case 2: // rejected
+                $query =  $query->where('site_clearances.status', -1)
+                    ->whereBetween('site_clearances.rejected_date', [$from, $to]);
+                break;
+            default:
+                abort(422, "invalid Argument for the isIssueStatus HCE-log");
+        }
+        return $query->get();
     }
 }
