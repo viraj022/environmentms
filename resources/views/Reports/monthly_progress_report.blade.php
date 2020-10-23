@@ -133,7 +133,7 @@
                     $(win.document.body)
                         .css( 'font-size', '10pt' )
                         .prepend(
-                            '<center><H1>Site Clearence Report</h1></center><img src='+img+' style="position:absolute; filter: grayscale(100%); opacity: 0.5; top:0; left:0;" />'
+                            '<center><H1>Monthly Progress</h1></center><img src='+img+' style="position:absolute; filter: grayscale(100%); opacity: 0.5; top:0; left:0;" />'
                         ); 
                     $(win.document.body).find( 'table' )
                         .addClass( 'compact' )

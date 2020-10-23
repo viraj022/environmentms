@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\ReportTemplate\ReportTemplateMultiCell;
 use App\Repositories\AssistanceDirectorRepository;
+use App\Repositories\CommitteeRepository;
 use App\Repositories\EPLRepository;
 use App\Repositories\FileLogRepository;
 use App\Repositories\InspectionSessionRepository;
@@ -182,8 +183,7 @@ class ReportController extends Controller
         $site = new SiteClearenceRepository();
         $ass = new AssistanceDirectorRepository();
         $inspection = new InspectionSessionRepository();
-        // $trans = new TransactionRepository();
-
+        $committee = new CommitteeRepository();
         $assistanceDirectors = $ass->getAssistanceDirectorWithZones();
         /**
          * Received Section
@@ -267,12 +267,27 @@ class ReportController extends Controller
         $rejectedEplCount =    $epl->EPlPLCount('2019-01-01', '2022-01-01', 0, 2);
         $rejectedNewSiteCount =    $site->SiteCount('2019-01-01', '2022-01-01', 0, 2);
 
-        // dd($rejectedNewSiteCount->toArray());
-
         $result[] = array('type' => 'Rejected', 'name' => 'SC', 'application' => "", 'object' => $this->prepareCount($rejectedNewSiteCount->toArray(), $assistanceDirectors));
-
         $result[] = array('type' => 'Rejected', 'name' => 'EPL', 'application' => "", 'object' => $this->prepareCount($rejectedEplCount->toArray(), $assistanceDirectors));
+        /**
+         * Committee
+         */
 
+        $committeeCount = $committee->getCommitteeCount('2019-01-01', '2022-01-01');
+        $result[] = array('type' => 'Technical Committee', 'name' => 'Meetings', 'application' => "", 'object' => $this->prepareCount($committeeCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => 'Technical Committee', 'name' => 'TOR Preparations', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
+        $result[] = array('type' => 'Technical Committee', 'name' => 'Letters', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
+        /**
+         * Others
+         */
+        $result[] = array('type' => '', 'name' => 'Meeting/Test Blast', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
+        $result[] = array('type' => '', 'name' => 'Joint Inspection', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
+        $result[] = array('type' => '', 'name' => 'Trainings', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
+        $result[] = array('type' => '', 'name' => 'SWML', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
+        $result[] = array('type' => '', 'name' => 'Tower (EPL (R))', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
+        $result[] = array('type' => '', 'name' => 'Tower (EPL (N))', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
+        $result[] = array('type' => '', 'name' => 'Tower SC', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
+        $result[] = array('type' => '', 'name' => 'Expert Committee Meetings', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
         // dd($result);
         // dd($assistanceDirectors->toArray());
         $time_elapsed_secs = round(microtime(true) - $start, 5);
