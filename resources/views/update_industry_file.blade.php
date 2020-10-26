@@ -135,6 +135,10 @@
                                     <hr>
                                 </div>
                                 <div class="form-group">
+                                    <label>Industry Sub-Category</label>
+                                    <input id="industry_sub_cat" type="text" class="form-control form-control-sm " placeholder="Enter Text." value="">
+                                </div>
+                                <div class="form-group">
                                     <label>Business Registration Number</label>
                                     <input id="business_regno" type="text" class="form-control form-control-sm" placeholder="Enter Number" value="">
                                 </div>
@@ -277,6 +281,7 @@
                                                 $('#business_name').val(set.industry_name);
                                                 $('#getZone').val(set.industry_is_industry);
                                                 $('#getAddressT').val(set.industry_address);
+                                                $('#industry_sub_cat').val(set.industry_sub_category);
                                                 $('#inventsment').val(set.industry_investment);
                                                 $('#startDate').val(set.industry_start_date);
 //            $('#submittedDate').val(set.industry_start_date);
@@ -310,6 +315,7 @@
                                                 nic: $('#getNicSave').val(),
                                                 industry_name: $('#business_name').val().trim(),
                                                 industry_category_id: $('#industryCat').val(),
+                                                industry_sub_category: $('#industry_sub_cat').val(),
                                                 business_scale_id: $('#businesScale').val(),
                                                 industry_contact_no: $('#getContactn').val().trim(),
                                                 industry_address: $('#getAddressT').val().trim(),

@@ -385,7 +385,7 @@
                                                 <b>File No</b> <a class="float-right file_no"></a>
                                             </li>
                                             <li class="list-group-item">
-                                                <b>Assign Date</b> <a class="float-right assign_date">-</a>
+                                                <b>Started Date</b> <a class="float-right assign_date">-</a>
                                             </li>
                                             <li class="list-group-item">
                                                 <b>Address</b> <a class="float-right cl_address">-</a>
@@ -416,6 +416,9 @@
                                             </li>
                                             <li class="list-group-item">
                                                 <b>Industry Category</b> <a class="float-right tabf_industry_cat_name"></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Industry Sub-Category</b> <a class="float-right tabf_subindustry_cat"></a>
                                             </li>
                                             <li class="list-group-item">
                                                 <b>Business Scale</b> <a class="float-right tabf_business_scale"></a>
