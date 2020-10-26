@@ -8,6 +8,7 @@ use App\FileLog;
 use App\Committee;
 use Carbon\Carbon;
 use App\PaymentType;
+use App\SiteClearance;
 use App\Transaction;
 
 use Illuminate\Support\Facades\DB;
@@ -107,6 +108,49 @@ class EPLRepository
             ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
             ->join('users', 'assistant_directors.user_id', 'users.id')
             ->where('assistant_directors.active_status', 1)
+            ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(e_p_l_s.id) as total'))
+            ->groupBy('zones.id')
+            ->orderBy('zones.name');
+        switch ($isNew) {
+            case 1:
+                $query =   $query->where('count', 0);
+                break;
+            case 0:
+                $query =  $query->where('count', '>', 0);
+                break;
+            default:
+        }
+        switch ($issueStatus) {
+            case 0: // received
+                $query = $query->whereBetween('e_p_l_s.submitted_date', [$from, $to]);
+                break;
+            case 1: // issued
+                $query =  $query->where('e_p_l_s.status', 1)
+                    ->whereBetween('e_p_l_s.issue_date', [$from, $to]);
+                break;
+            case 2: // rejected
+                $query =  $query->where('e_p_l_s.status', -1)
+                    ->whereBetween('e_p_l_s.rejected_date', [$from, $to]);
+                break;
+            default:
+                abort(422, "invalid Argument for the isIssueStatus HCE-log");
+        }
+
+        return $query->get();
+    }
+    /**
+     * 
+     */
+    public function TowerEPlPLCount($from, $to, $isNew, $issueStatus = 0)
+    {
+        $query = EPL::join('clients', 'e_p_l_s.client_id', 'clients.id')
+            ->join('site_clearence_sessions', 'clients.id', 'site_clearence_sessions.client_id')
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
+            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
+            ->join('users', 'assistant_directors.user_id', 'users.id')
+            ->where('assistant_directors.active_status', 1)
+            ->where('site_clearence_sessions.site_clearance_type', SiteClearance::SITE_TELECOMMUNICATION)
             ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(e_p_l_s.id) as total'))
             ->groupBy('zones.id')
             ->orderBy('zones.name');
