@@ -747,7 +747,9 @@
                                             if (confirm("Not able to be reversed! Are you sure?")) {
                                                 ConfirmUploadingAttachs(PROFILE_ID, function (respo) {
                                                     show_mesege(respo);
-                                                    location.reload();
+                                                    if (respo.id == 1) {
+                                                        location.reload();
+                                                    }
                                                 });
                                             }
                                         });
