@@ -540,7 +540,6 @@ class ClientController extends Controller
     {
         $epls = $client->epls;
         $siteClearances = $client->siteClearenceSessions;
-        dd($siteClearances);
         foreach ($epls as $epl) {
             $certificate = new Certificate();
             $certificate->client_id = $epl->client_id;
