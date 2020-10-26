@@ -83,4 +83,51 @@ class InspectionSessionRepository
         }
         return $query->get();
     }
+    public function getSiteInspectionDetails($from, $to, $eo_id = -1)
+    {
+
+        $querySite =
+            InspectionSession::join('clients', 'inspection_sessions.client_id', 'clients.id')
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('environment_officers', 'inspection_sessions.environment_officer_id', 'environment_officers.id')
+            ->join('users', 'environment_officers.user_id', 'users.id')
+            /**
+             * special join to get one one record from siteclearence table
+             */
+            ->join('site_clearence_sessions', function ($join) {
+                $join->on('site_clearence_sessions.id', '=', DB::raw('(select id FROM site_clearence_sessions WHERE site_clearence_sessions.id = inspection_sessions.profile_id Limit 1)'));
+            })
+            ->select('completed_at', 'users.first_name', 'users.last_name', 'clients.industry_address', 'clients.file_no', 'inspection_sessions.application_type', 'site_clearence_sessions.code', 'pradesheeyasabas.name as pradesheeyasaba name', 'environment_officers.id')
+            ->where('environment_officers.active_status', 1)
+            ->whereBetween('completed_at', [$from, $to])
+            ->where('application_type', InspectionSession::SITE_CLEARANCE)
+            ->orderBy('completed_at');
+        if ($eo_id > 0) {
+            $querySite = $querySite->where('inspection_sessions.environment_officer_id', $eo_id);
+        }
+        $queryEPL =
+            InspectionSession::join('clients', 'inspection_sessions.client_id', 'clients.id')
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('environment_officers', 'inspection_sessions.environment_officer_id', 'environment_officers.id')
+            ->join('users', 'environment_officers.user_id', 'users.id')
+            /**
+             * special join to get one one record from e_p_l_s table
+             */
+            ->join('e_p_l_s', function ($join) {
+                $join->on('e_p_l_s.id', '=', DB::raw('(select id FROM e_p_l_s WHERE e_p_l_s.id = inspection_sessions.profile_id Limit 1)'));
+            })
+            ->union($querySite)
+            ->select('completed_at', 'users.first_name', 'users.last_name', 'clients.industry_address', 'clients.file_no', 'inspection_sessions.application_type', 'e_p_l_s.code', 'pradesheeyasabas.name as pradesheeyasaba name', 'environment_officers.id')
+            ->where('environment_officers.active_status', 1)
+            ->whereBetween('completed_at', [$from, $to])
+            ->where('application_type', InspectionSession::TYPE_EPL)
+            ->orderBy('completed_at');
+        if ($eo_id > 0) {
+            $queryEPL = $queryEPL->where('inspection_sessions.environment_officer_id', $eo_id);
+        }
+        // dd($querySite->get()->toArray());
+
+        // echo $query->toSql();
+        return $queryEPL->get();
+    }
 }

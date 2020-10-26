@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Transaction;
+use App\SiteClearance;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
-use App\ReportTemplate\ReportTemplateMultiCell;
-use App\Repositories\AssistanceDirectorRepository;
-use App\Repositories\CommitteeRepository;
 use App\Repositories\EPLRepository;
 use App\Repositories\FileLogRepository;
-use App\Repositories\InspectionSessionRepository;
-use App\Repositories\SiteClearenceRepository;
+use App\Repositories\CommitteeRepository;
 use App\Repositories\TransactionRepository;
-use App\SiteClearance;
-use App\Transaction;
+use App\Repositories\SiteClearenceRepository;
+use App\ReportTemplate\ReportTemplateMultiCell;
+use App\Repositories\InspectionSessionRepository;
+use App\Repositories\AssistanceDirectorRepository;
 
 class ReportController extends Controller
 {
@@ -368,5 +369,35 @@ class ReportController extends Controller
         } else {
             return '';
         }
+    }
+    public function eoInspectionReport()
+    {
+        $rows = [];
+        $inspection = new InspectionSessionRepository();
+        $data =  $inspection->getSiteInspectionDetails('2019-01-01', '2022-01-01', 25);
+        // dd($data->toArray());
+
+        $period = CarbonPeriod::create('2019-01-01', '2022-01-01');
+
+        foreach ($period as $date) {
+            $dateFormatted = $date->format('Y-m-d');
+            $row = array(
+                "Date" =>  $dateFormatted,
+                "location" => [],
+                "pradesheeyasaba" => [],
+                "file_no" => [],
+                "distance" => '',
+            );
+
+            foreach ($data  as $d) {
+                if ($d['completed_at'] == $dateFormatted) {
+                }
+            }
+            array_push($rows, $row);
+        }
+
+        // Convert the period to an array of dates
+        // $dates = $period->toArray();
+        dd($rows);
     }
 }

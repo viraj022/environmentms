@@ -19,4 +19,5 @@ Route::get('/site_clearance_report', 'ReportController@siteClearanceApplicationR
 Route::get('/epl_report', 'ReportController@eplApplicationReport');
 Route::get('/epl_application_log', 'ReportController@eplApplicationLog');
 Route::get('/monthly_progress', 'ReportController@monthlyProgress');
+Route::get('/ep_inspection_report', 'ReportController@eoInspectionReport');
 // Route::get('/testReportMul', 'ReportController@test');
