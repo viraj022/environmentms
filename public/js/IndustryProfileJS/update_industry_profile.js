@@ -63,10 +63,10 @@ function updateClientFileAPI(id, data, callBack) {
 //Required Field
 function requiredFieldHandler(frm_data, required_class) {
     var response = true;
-    if (frm_data.is_old.length == 0) {
-        toastr.error('Is Old Required!');
-        response = false;
-    }
+//    if (frm_data.is_old.length == 0) {
+//        toastr.error('Is Old Required!');
+//        response = false;
+//    }
     if (frm_data.first_name.length == 0) {
         toastr.error('First Name Required!');
         response = false;
