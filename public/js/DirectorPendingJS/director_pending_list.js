@@ -41,6 +41,8 @@ function preCertificateApi(file_id, DATA, met, callBack) {
         met = 'reject';
     } else if (met === 3) {
         met = 'hold';
+    } else if (met === 4) {
+        met = 'un_hold';
     } else {
         return false;
     }
