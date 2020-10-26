@@ -168,6 +168,7 @@ function setIndustryAndClientDb(get) {
     (get.industry_registration_no != null) ? $(".tabf_industry_registration_no").html(get.industry_registration_no) : $(".tabf_industry_registration_no").html('--');
     $(".tabf_industry_start_date").html(get.start_date_only);
     $(".tabf_industry_investment").html(get.industry_investment);
+    $(".tabf_subindustry_cat").html(get.industry_sub_category);
     $(".tabf_industry_address").html(get.industry_address);
     (get.industry_email != null) ? $(".tabf_industry_email").html(get.industry_email) : $(".tabf_industry_email").html('--');
     (get.industry_contact_no != null) ? $(".tabf_industry_contact_no").html(get.industry_contact_no) : $(".tabf_industry_contact_no").html('--');
