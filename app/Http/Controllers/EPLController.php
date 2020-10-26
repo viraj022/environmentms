@@ -708,7 +708,7 @@ class EPLController extends Controller
                 LogActivity::addToLog('Update old data done' . $epl->client_id, $epl);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to update old data' . $client->id, $client);
+                // LogActivity::addToLog('Fail to update old data' . $client->id, $client);
                 return array('id' => 0, 'message' => 'false');
             }
         });
