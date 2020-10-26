@@ -40,7 +40,7 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Is New*</label>
-                                    <select disabled id="getisOld" class="form-control form-control-sm cutenzReq" style="width: 100%;">
+                                    <select disabled id="getisOld" class="form-control form-control-sm" style="width: 100%;">
                                         <option value="1">New</option>
                                         <option value="0">Old</option>
                                     </select>
@@ -306,7 +306,7 @@
 
                                         $('#btnUpdate').click(function () {
                                             var dataz = {
-                                                is_old: $('#getisOld').val(),
+//                                                is_old: $('#getisOld').val(),
                                                 first_name: $('#getfName').val(),
                                                 last_name: $('#getlName').val(),
                                                 address: $('#getAddress').val(),
