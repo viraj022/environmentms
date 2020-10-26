@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\EnvironmentOfficer;
+use App\EnvOfficer;
 use Carbon\Carbon;
 use App\Transaction;
 use App\SiteClearance;
@@ -15,6 +17,7 @@ use App\Repositories\SiteClearenceRepository;
 use App\ReportTemplate\ReportTemplateMultiCell;
 use App\Repositories\InspectionSessionRepository;
 use App\Repositories\AssistanceDirectorRepository;
+use App\Repositories\EnvironmentOfficerRepository;
 
 class ReportController extends Controller
 {
@@ -372,12 +375,17 @@ class ReportController extends Controller
     }
     public function eoInspectionReport()
     {
-        $rows = [];
         $inspection = new InspectionSessionRepository();
-        $data =  $inspection->getSiteInspectionDetails('2019-01-01', '2022-01-01', 25);
+        $env = new EnvironmentOfficerRepository();
+        $from = '2020-10-01';
+        $to = '2020-10-30';
+        $start = microtime(true);
+        $rows = [];
+        $environmentOfficer = $env->getOfficerDetails(25);
+        $data =  $inspection->getSiteInspectionDetails($from, $to, $environmentOfficer->id);
         // dd($data->toArray());
 
-        $period = CarbonPeriod::create('2019-01-01', '2022-01-01');
+        $period = CarbonPeriod::create($from, $to);
 
         foreach ($period as $date) {
             $dateFormatted = $date->format('Y-m-d');
@@ -389,15 +397,29 @@ class ReportController extends Controller
                 "distance" => '',
             );
 
-            foreach ($data  as $d) {
+            foreach ($data->toArray()  as $d) {
+                // echo $d['completed_at'] . " " . $dateFormatted . "<br>";
                 if ($d['completed_at'] == $dateFormatted) {
+                    array_push($row['location'], $d['industry_address']);
+                    array_push($row['pradesheeyasaba'], $d['pradesheeyasaba_name']);
+                    array_push($row['file_no'], $d['code']);
                 }
             }
+            $row['location'] =    array_unique($row['location'], SORT_STRING);
+            $row['pradesheeyasaba'] =  array_unique($row['pradesheeyasaba'], SORT_STRING);
+            $row['file_no'] =   array_unique($row['file_no'], SORT_STRING);
+
+            $row['location'] =    implode(".\r\n", $row['location']);
+            $row['pradesheeyasaba'] =  implode(",\r\n", $row['pradesheeyasaba']);
+            $row['file_no'] =   implode(",\r\n", $row['file_no']);
+
             array_push($rows, $row);
         }
 
         // Convert the period to an array of dates
         // $dates = $period->toArray();
-        dd($rows);
+        $time_elapsed_secs = round(microtime(true) - $start, 5);
+        // dd($rows, $time_elapsed_secs);
+        return view('Reports.eo_inspection_monthly_report', compact('rows', 'environmentOfficer', 'time_elapsed_secs', 'from', 'to'));
     }
 }

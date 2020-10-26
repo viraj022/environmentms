@@ -117,7 +117,7 @@ class InspectionSessionRepository
                 $join->on('e_p_l_s.id', '=', DB::raw('(select id FROM e_p_l_s WHERE e_p_l_s.id = inspection_sessions.profile_id Limit 1)'));
             })
             ->union($querySite)
-            ->select('completed_at', 'users.first_name', 'users.last_name', 'clients.industry_address', 'clients.file_no', 'inspection_sessions.application_type', 'e_p_l_s.code', 'pradesheeyasabas.name as pradesheeyasaba name', 'environment_officers.id')
+            ->select('completed_at', 'users.first_name', 'users.last_name', 'clients.industry_address', 'clients.file_no', 'inspection_sessions.application_type', 'e_p_l_s.code', 'pradesheeyasabas.name as pradesheeyasaba_name', 'environment_officers.id')
             ->where('environment_officers.active_status', 1)
             ->whereBetween('completed_at', [$from, $to])
             ->where('application_type', InspectionSession::TYPE_EPL)
