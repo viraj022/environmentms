@@ -117,7 +117,7 @@ class SiteClearenceRepository
                 abort(422, "invalid Argument for the if HCE-log");
         }
     }
-    public function SiteCount($from, $to, $isNew, $issueStatus = 0)
+    public function SiteCount($from, $to, $isNew = -1, $issueStatus = 0, $SiteType = 0)
     {
         $query = SiteClearance::join('site_clearence_sessions', 'site_clearances.site_clearence_session_id', 'site_clearence_sessions.id')
             ->join('clients', 'site_clearence_sessions.client_id', 'clients.id')
@@ -126,16 +126,16 @@ class SiteClearenceRepository
             ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
             ->join('users', 'assistant_directors.user_id', 'users.id')
             ->where('assistant_directors.active_status', 1)
-            // ->whereNotNull('site_clearances.issue_date')
-            ->whereBetween('site_clearances.issue_date', [$from, $to])
             ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(site_clearances.id) as total'))
             ->groupBy('zones.id')
             ->orderBy('zones.name');
         switch ($isNew) {
             case 1:
                 $query =   $query->where('count', 1);
+                break;
             case 0:
                 $query =   $query->where('count', '>', 1);
+                break;
             default:
         }
 
@@ -152,7 +152,9 @@ class SiteClearenceRepository
                     ->whereBetween('site_clearances.rejected_date', [$from, $to]);
                 break;
             default:
-                abort(422, "invalid Argument for the isIssueStatus HCE-log");
+        }
+        if ($SiteType !== 0) {
+            $query = $query->where('site_clearance_type', $SiteType);
         }
         return $query->get();
     }

@@ -12,6 +12,7 @@ use App\Repositories\FileLogRepository;
 use App\Repositories\InspectionSessionRepository;
 use App\Repositories\SiteClearenceRepository;
 use App\Repositories\TransactionRepository;
+use App\SiteClearance;
 use App\Transaction;
 
 class ReportController extends Controller
@@ -280,13 +281,16 @@ class ReportController extends Controller
         /**
          * Others
          */
+        $telecommunicationCount =    $site->SiteCount('2019-01-01', '2022-01-01', -1, 0, SiteClearance::SITE_TELECOMMUNICATION);
+        // dd($telecommunicationCount);
+
         $result[] = array('type' => '', 'name' => 'Meeting/Test Blast', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
         $result[] = array('type' => '', 'name' => 'Joint Inspection', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
         $result[] = array('type' => '', 'name' => 'Trainings', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
         $result[] = array('type' => '', 'name' => 'SWML', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
-        $result[] = array('type' => '', 'name' => 'Tower (EPL (R))', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
-        $result[] = array('type' => '', 'name' => 'Tower (EPL (N))', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
-        $result[] = array('type' => '', 'name' => 'Tower SC', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
+        $result[] = array('type' => '', 'name' => 'Tower (EPL R)', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
+        $result[] = array('type' => '', 'name' => 'Tower (EPL N)', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
+        $result[] = array('type' => '', 'name' => 'Tower SC', 'application' => $this->prepareApplicationTotal($telecommunicationCount->toArray()), 'object' => $this->prepareCount($telecommunicationCount, $assistanceDirectors));
         $result[] = array('type' => '', 'name' => 'Expert Committee Meetings', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
         // dd($result);
         // dd($assistanceDirectors->toArray());
