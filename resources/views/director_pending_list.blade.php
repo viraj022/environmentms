@@ -70,6 +70,7 @@
                     <a id="viewCertificate" href="" class="btn btn-success d-none"><i class="fa fa-check"></i> View Certificate</a>
                     <!--<button id="prepareCertificate" class="btn btn-success d-none"><i class="fa fa-check"></i> Approve Certificate</button>-->
                     <button type="button" id="holdCertificate" class="btn btn-warning d-none"><i class="fa fa-warning"></i> Hold Certificate</button>
+                    <button type="button" id="uNholdCertificate" class="btn btn-warning d-none"><i class="fa fa-warning"></i> Un-Hold Certificate</button>
                     <button type="button" id="rejectCertificate" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject Certificate</button>
                 </div>
             </div>
@@ -118,14 +119,17 @@
             $('#prepareCertificate').val($(this).val()); //<-- Share this button value to this button
             $('#rejectCertificate').val($(this).val()); //<-- Share this button value to this button
             $('#holdCertificate').val($(this).val()); //<-- Share this button value to this button
+            $('#uNholdCertificate').val($(this).val()); //<-- Share this button value to this button
             $('#modalTitlex2').html(fileData.file_no);
-            $('#viewCertificate,#prepareCertificate,#holdCertificate,#rejectCertificate').addClass('d-none');
-            if (f_Status == 4 || f_Status == -2) {
+            $('#viewCertificate,#prepareCertificate,#holdCertificate,#uNholdCertificate,#rejectCertificate').addClass('d-none');
+            if (f_Status == 4) {
 //                $("#viewCertificate").attr("href", "https://www.w3schools.com/jquery/");
                 $('#prepareCertificate').removeClass('d-none');
                 $('#viewCertificate').removeClass('d-none').attr("href", "/certificate_perforation/id/" + fileData.id);
                 $('#holdCertificate').removeClass('d-none');
                 $('#rejectCertificate').removeClass('d-none');
+            } else if (f_Status == -2) {
+                $('#uNholdCertificate').removeClass('d-none');
             } else {
                 $('#prepareCertificate').addClass('d-none');
                 $('#viewCertificate').addClass('d-none');
@@ -163,6 +167,18 @@
             var fileData = JSON.parse(unescape($(this).val()));
             if (confirm('Are you sure you want to hold?')) {
                 preCertificateApi(fileData.id, minute(), 3, function (resp) {
+                    show_mesege(resp);
+                    if (resp.id == 1) {
+                        loadDirectorPendingListTable();
+                        $('#modal-x2').modal('hide');
+                    }
+                });
+            }
+        });
+        $(document).on('click', '#uNholdCertificate', function () {
+            var fileData = JSON.parse(unescape($(this).val()));
+            if (confirm('Are you sure you want to un-hold?')) {
+                preCertificateApi(fileData.id, minute(), 4, function (resp) {
                     show_mesege(resp);
                     if (resp.id == 1) {
                         loadDirectorPendingListTable();

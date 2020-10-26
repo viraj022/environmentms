@@ -328,7 +328,7 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Site Clearance Code</th>
-                                                    <th>Remark</th>
+                                                    <th>Expire Date</th>
                                                     <!--<th>Action</th>-->
                                                 </tr>
                                             </thead>
@@ -747,7 +747,9 @@
                                             if (confirm("Not able to be reversed! Are you sure?")) {
                                                 ConfirmUploadingAttachs(PROFILE_ID, function (respo) {
                                                     show_mesege(respo);
-                                                    location.reload();
+                                                    if (respo.id == 1) {
+                                                        location.reload();
+                                                    }
                                                 });
                                             }
                                         });
