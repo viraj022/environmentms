@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Contact Number</label>
-                                    <input id="getContact" maxlength="10" type="text" class="form-control form-control-sm"
+                                    <input id="getContact" onKeyDown="if(this.value.length==10 && event.keyCode!=8) return false;" type="number" class="form-control form-control-sm"
                                            placeholder="Enter Contact Number..."
                                            value="">
                                     <div id="valConName" class="d-none"><p class="text-danger">Contact Number is required</p></div>
@@ -91,10 +91,10 @@
                                 </div>
                                 <div class="form-group">
                                     <label>NIC</label>
-                                    <input id="getNicSave" type="text" class="form-control form-control-sm"
+                                    <input id="getNicSave" onKeyDown="if(this.value.length==12 && event.keyCode!=8) return false;" type="text" class="form-control form-control-sm"
                                            placeholder="Enter NIC..."
                                            value="">
-                                    <div id="valnicName" maxlength="12" class="d-none"><p class="text-danger">NIC is required</p></div>
+                                    <div id="valnicName" class="d-none"><p class="text-danger">NIC is required</p></div>
                                 </div>
                                 <hr>
                                 <div class="card-header">
@@ -144,7 +144,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Investment(Rs)*</label>
-                                    <input id="inventsment" pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==12) return false;" type="number" class="form-control form-control-sm cutenzReq" placeholder="Enter investment Rs" value="">
+                                    <input id="inventsment" pattern="/^-?\d+\.?\d*$/" onkeypress="if (this.value.length == 12)
+                                                return false;" type="number" class="form-control form-control-sm cutenzReq" placeholder="Enter investment Rs" value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Address*</label>
@@ -160,7 +161,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Contact No</label>
-                                    <input id="getContactn" type="text" maxlength="10" class="form-control form-control-sm" placeholder="Enter Contact Info..." value="">
+                                    <input id="getContactn" type="number" onKeyDown="if(this.value.length==10 && event.keyCode!=8) return false;" class="form-control form-control-sm" placeholder="Enter Contact Info..." value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Email</label>
@@ -326,119 +327,119 @@
 <!-- AdminLTE App -->
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
 <script>
-    var _Latitude = 7.489050;
-    var _Longitude = 80.349985;
+                                        var _Latitude = 7.489050;
+                                        var _Longitude = 80.349985;
 // Initialize and add the map
-    function initMap() {
-        // The location of CeyTech
-        var defaultLocation = {lat: 7.489050, lng: 80.349985}; //default Location for load map
+                                        function initMap() {
+                                            // The location of CeyTech
+                                            var defaultLocation = {lat: 7.489050, lng: 80.349985}; //default Location for load map
 
-        // The map, centered at Uluru
-        var map = new google.maps.Map(
-                document.getElementById('map'), {zoom: 13, center: defaultLocation});
-        // The marker, positioned at Uluru
-        var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: true,
-            title: "Drag me!"});
-        google.maps.event.addListener(marker, 'dragend', function (evt) {
-            _Latitude = evt.latLng.lat().toFixed(6); //change  decimal point if have problam with location accuracy
-            _Longitude = evt.latLng.lng().toFixed(6); //change  decimal point if have problam with location accuracy
-        });
-    }
+                                            // The map, centered at Uluru
+                                            var map = new google.maps.Map(
+                                                    document.getElementById('map'), {zoom: 13, center: defaultLocation});
+                                            // The marker, positioned at Uluru
+                                            var marker = new google.maps.Marker({position: defaultLocation, map: map, draggable: true,
+                                                title: "Drag me!"});
+                                            google.maps.event.addListener(marker, 'dragend', function (evt) {
+                                                _Latitude = evt.latLng.lat().toFixed(6); //change  decimal point if have problam with location accuracy
+                                                _Longitude = evt.latLng.lng().toFixed(6); //change  decimal point if have problam with location accuracy
+                                            });
+                                        }
 
 
-    $(function () {
+                                        $(function () {
 //Load table
-        loadTable();
-        loadPradeshiyaSabha();
-        IndustryCategoryCombo();
-        BusinessScaleCombo();
+                                            loadTable();
+                                            loadPradeshiyaSabha();
+                                            IndustryCategoryCombo();
+                                            BusinessScaleCombo();
 //Register Button
-        $('#btnSave').click(function () {
-            var data = fromValues();
-            if (requiredFieldHandler(data, ".cutenzReq")) {
-                // if validiated
-                AddClient(data, function (result) {
-                    if (result.message == 'true') {
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Enviremontal MS</br>Saved'
-                        });
-                        getaClientbyId(result.id, function (result) {
-                            window.location = "/industry_profile/id/" + result.id;
-                        });
-                    } else {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Enviremontal MS</br>Error'
-                        });
-                    }
-                    loadTable();
-                    resetinputFields();
-                    hideAllErrors();
-                });
-            }
-        });
+                                            $('#btnSave').click(function () {
+                                                var data = fromValues();
+                                                if (requiredFieldHandler(data, ".cutenzReq")) {
+                                                    // if validiated
+                                                    AddClient(data, function (result) {
+                                                        if (result.message == 'true') {
+                                                            Toast.fire({
+                                                                type: 'success',
+                                                                title: 'Enviremontal MS</br>Saved'
+                                                            });
+                                                            getaClientbyId(result.id, function (result) {
+                                                                window.location = "/industry_profile/id/" + result.id;
+                                                            });
+                                                        } else {
+                                                            Toast.fire({
+                                                                type: 'error',
+                                                                title: 'Enviremontal MS</br>Error'
+                                                            });
+                                                        }
+                                                        loadTable();
+                                                        resetinputFields();
+                                                        hideAllErrors();
+                                                    });
+                                                }
+                                            });
 //click update button
-        $('#btnUpdate').click(function () {
-            //get form data
-            var data = fromValues();
-            if (Validiteupdate(data)) {
-                updatePaymentCat($('#btnUpdate').val(), data, function (result) {
-                    if (result.id == 1) {
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Enviremontal MS</br>Updated'
-                        });
-                    } else {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Enviremontal MS</br>Error'
-                        });
-                    }
-                    loadTable();
-                    showSave();
-                    resetinputFields();
-                    hideAllErrors();
-                });
-            }
-        });
+                                            $('#btnUpdate').click(function () {
+                                                //get form data
+                                                var data = fromValues();
+                                                if (Validiteupdate(data)) {
+                                                    updatePaymentCat($('#btnUpdate').val(), data, function (result) {
+                                                        if (result.id == 1) {
+                                                            Toast.fire({
+                                                                type: 'success',
+                                                                title: 'Enviremontal MS</br>Updated'
+                                                            });
+                                                        } else {
+                                                            Toast.fire({
+                                                                type: 'error',
+                                                                title: 'Enviremontal MS</br>Error'
+                                                            });
+                                                        }
+                                                        loadTable();
+                                                        showSave();
+                                                        resetinputFields();
+                                                        hideAllErrors();
+                                                    });
+                                                }
+                                            });
 //click delete button
-        $('#btnDelete').click(function () {
-            deletePaymentCat($('#btnDelete').val(), function (result) {
-                if (result.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Enviremontal MS</br>Removed!'
-                    });
-                } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Enviremontal MS</br>Error'
-                    });
-                }
-                loadTable();
-                showSave();
-                resetinputFields();
-                hideAllErrors();
-            });
-        });
+                                            $('#btnDelete').click(function () {
+                                                deletePaymentCat($('#btnDelete').val(), function (result) {
+                                                    if (result.id == 1) {
+                                                        Toast.fire({
+                                                            type: 'success',
+                                                            title: 'Enviremontal MS</br>Removed!'
+                                                        });
+                                                    } else {
+                                                        Toast.fire({
+                                                            type: 'error',
+                                                            title: 'Enviremontal MS</br>Error'
+                                                        });
+                                                    }
+                                                    loadTable();
+                                                    showSave();
+                                                    resetinputFields();
+                                                    hideAllErrors();
+                                                });
+                                            });
 //select button action 
-        $(document).on('click', '.btnAction', function () {
-            getaPaymentCatbyId(this.id, function (result) {
-                $('#getName').val(result.name);
-                showUpdate();
-                $('#btnUpdate').val(result.id);
-                $('#btnDelete').val(result.id);
-            });
-            hideAllErrors();
-        });
+                                            $(document).on('click', '.btnAction', function () {
+                                                getaPaymentCatbyId(this.id, function (result) {
+                                                    $('#getName').val(result.name);
+                                                    showUpdate();
+                                                    $('#btnUpdate').val(result.id);
+                                                    $('#btnDelete').val(result.id);
+                                                });
+                                                hideAllErrors();
+                                            });
 //Search NIC Button 
-        $(document).on('click', '#btnSearch', function () {
-            var data2 = {
-                value: $('#getNic').val()
-            };
-            if (data2.value.length != 0 && data2.value != null) {
-                getClientbyNic($('#getDtaType').val(), data2, function (result) {
+                                            $(document).on('click', '#btnSearch', function () {
+                                                var data2 = {
+                                                    value: $('#getNic').val()
+                                                };
+                                                if (data2.value.length != 0 && data2.value != null) {
+                                                    getClientbyNic($('#getDtaType').val(), data2, function (result) {
 //                if (result.length == 0 || result == undefined) {
 //                    if (confirm("Client Not Found, Do you want to register New Client?")) {
 //                        setSectionVisible('reg-newClient');
@@ -446,104 +447,112 @@
 //                } else {
 //                }             
 //                $('#getName').val(result.name);
-                    switch ($('#getDtaType').val()) {
-                        case 'name':
-                            if (result != 0) {
-                                showCustomerDetails(result);
-                                $('.view-Customer').removeClass('d-none');
-                            } else {
-                                if (confirm('Client Not Found!Do You Want Create New Client?')) {
-                                    setSectionVisible('reg-newClient');
-                                } else {
-                                    return false;
-                                }
-                            }
-                            break;
-                        case 'id':
-                            if (result != 0) {
-                                window.location = "/industry_profile/id/" + result.id;
-                            } else {
-                                if (confirm('Client Not Found!Do You Want Create New Client?')) {
-                                    setSectionVisible('reg-newClient');
-                                } else {
-                                    return false;
-                                }
-                            }
-                            break;
-                        case 'license':
-                            if (result != 0) {
-                                window.location = "/industry_profile/id/" + result.id;
-                            } else {
-                                if (confirm('Client Not Found!Do You Want Create New Client?')) {
-                                    setSectionVisible('reg-newClient');
-                                } else {
-                                    return false;
-                                }
-                            }
-                            break;
-                        case 'epl':
-                            if (result != 0) {
-                                window.location = "/industry_profile/id/" + result.id;
-                            } else {
-                                if (confirm('Client Not Found!Do You Want Create New Client?')) {
-                                    setSectionVisible('reg-newClient');
-                                } else {
-                                    return false;
-                                }
-                            }
-                            break;
-                        case 'business_reg':
-                            if (result != 0) {
-                                window.location = "/industry_profile/id/" + result.id;
-                            } else {
-                                if (confirm('Client Not Found!Do You Want Create New Client?')) {
-                                    setSectionVisible('reg-newClient');
-                                } else {
-                                    return false;
-                                }
-                            }
-                            break;
-                        default:
-                            alert('Invalid Data');
-                    }
-                });
-            } else {
-                alert('Please Enter Client Information!');
-                $('#getNic').focus();
-            }
-            hideAllErrors();
-        });
+                                                        switch ($('#getDtaType').val()) {
+                                                            case 'name':
+                                                                if (result != 0) {
+                                                                    showCustomerDetails(result);
+                                                                    $('.view-Customer').removeClass('d-none');
+                                                                } else {
+                                                                    if (confirm('Client Not Found!Do You Want Create New Client?')) {
+                                                                        setSectionVisible('reg-newClient');
+                                                                    } else {
+                                                                        return false;
+                                                                    }
+                                                                }
+                                                                break;
+                                                            case 'id':
+                                                                if (result != 0) {
+                                                                    window.location = "/industry_profile/id/" + result.id;
+                                                                } else {
+                                                                    if (confirm('Client Not Found!Do You Want Create New Client?')) {
+                                                                        setSectionVisible('reg-newClient');
+                                                                    } else {
+                                                                        return false;
+                                                                    }
+                                                                }
+                                                                break;
+                                                            case 'license':
+                                                                if (result != 0) {
+                                                                    window.location = "/industry_profile/id/" + result.id;
+                                                                } else {
+                                                                    if (confirm('Client Not Found!Do You Want Create New Client?')) {
+                                                                        setSectionVisible('reg-newClient');
+                                                                    } else {
+                                                                        return false;
+                                                                    }
+                                                                }
+                                                                break;
+                                                            case 'epl':
+                                                                if (result != 0) {
+                                                                    window.location = "/industry_profile/id/" + result.id;
+                                                                } else {
+                                                                    if (confirm('Client Not Found!Do You Want Create New Client?')) {
+                                                                        setSectionVisible('reg-newClient');
+                                                                    } else {
+                                                                        return false;
+                                                                    }
+                                                                }
+                                                                break;
+                                                            case 'business_reg':
+                                                                if (result != 0) {
+                                                                    window.location = "/industry_profile/id/" + result.id;
+                                                                } else {
+                                                                    if (confirm('Client Not Found!Do You Want Create New Client?')) {
+                                                                        setSectionVisible('reg-newClient');
+                                                                    } else {
+                                                                        return false;
+                                                                    }
+                                                                }
+                                                                break;
+                                                            default:
+                                                                alert('Invalid Data');
+                                                        }
+                                                    });
+                                                } else {
+                                                    alert('Please Enter Client Information!');
+                                                    $('#getNic').focus();
+                                                }
+                                                hideAllErrors();
+                                            });
 
-        $('#getNic').keyup(function (e) {
-            if (e.which == 13) {
-                $("#btnSearch").click();
-            }
-        });
-        $('#newEPL').click(function () {
-            if (isNaN(parseInt($(this).val()))) {
-                return false;
-            }
-            window.location = "epl_register/id/" + $(this).val();
-        });
-        $('.resetAll').click(function () {
-            setSectionVisible('');
-        });
-        $('#btnRegister').click(function () {
-            setSectionVisible('reg-newClient');
-        });
-    });
+                                            $('#getNic').keyup(function (e) {
+                                                if (e.which == 13) {
+                                                    $("#btnSearch").click();
+                                                }
+                                            });
+                                            $('#newEPL').click(function () {
+                                                if (isNaN(parseInt($(this).val()))) {
+                                                    return false;
+                                                }
+                                                window.location = "epl_register/id/" + $(this).val();
+                                            });
+                                            $('.resetAll').click(function () {
+                                                setSectionVisible('');
+                                            });
+                                            $('#btnRegister').click(function () {
+                                                setSectionVisible('reg-newClient');
+                                            });
+                                        });
 
 //btnCustomerVa button action 
-    $(document).on('click', '.btnCustomerVa', function () {
-        var row = JSON.parse(decodeURIComponent($(this).data('row')));
-        window.location = "/industry_profile/id/" + row.id;
-    });
+                                        $(document).on('click', '.btnCustomerVa', function () {
+                                            var row = JSON.parse(decodeURIComponent($(this).data('row')));
+                                            window.location = "/industry_profile/id/" + row.id;
+                                        });
 
-    $('#getfName,#getlName').on('change', function () {
-        let frName = $('#getfName').val();
-        let lName = $('#getlName').val();
-        $('#business_name').val(frName + ' ' + lName);
-    });
+                                        $('#getfName,#getlName').on('change', function () {
+                                            let frName = $('#getfName').val();
+                                            let lName = $('#getlName').val();
+                                            $('#business_name').val(frName + ' ' + lName);
+                                        });
+                                        $('#getContact,#getEmail').on('change', function () {
+                                            if ($('#getisOld').val() == 0) {
+                                                let setContact = $('#getContact').val();
+                                                let setEmail = $('#getEmail').val();
+                                                $('#getContactn').val(setContact);
+                                                $('#getEmailI').val(setEmail);
+                                            }
+                                        });
 
 </script>
 @endsection

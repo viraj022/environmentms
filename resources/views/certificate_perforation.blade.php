@@ -111,17 +111,6 @@
                                                 <button class="btn btn-dark navToFile1"><i class="fas fa-file-upload"></i> Upload Certificate/Application</button>   
                                             </div>
                                             <hr>
-                                            <div class="form-group d-none" id="fileUpDiv">
-                                                <hr>
-                                                <label id="uploadLabel">File Upload </label>
-                                                <input id="fileUploadInput" type="file" class=""  accept="application/pdf">
-                                                <button id="uploadCerfile" class="btn btn-success"><i class="fas fa-file-upload"></i> Upload</button>
-                                                <div class="progress d-none">
-                                                    <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                                                        <!--<span class="sr-only">40% Complete (success)</span>-->
-                                                    </div>
-                                                </div>
-                                            </div>
                                             <div class="form-group">
                                                 <label>Issue Date*</label>
                                                 <div class="input-group">
@@ -142,6 +131,17 @@
                                                         </span>
                                                     </div>
                                                     <input id="expire_date" name="datepickerUi" type="text" max="2999-12-31" class="form-control form-control-sm " placeholder="Enter Expire Date..." value="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group d-none" id="fileUpDiv">
+                                                <hr>
+                                                <label id="uploadLabel">File Upload </label>
+                                                <input id="fileUploadInput" type="file" class=""  accept="application/pdf">
+                                                <button id="uploadCerfile" class="btn btn-success"><i class="fas fa-file-upload"></i> Upload</button>
+                                                <div class="progress d-none">
+                                                    <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                                        <!--<span class="sr-only">40% Complete (success)</span>-->
+                                                    </div>
                                                 </div>
                                             </div>
                                             <h4 class="text-success d-none" id="certificateSubmittedLable">Certificate Submitted</h4>
@@ -340,6 +340,8 @@
     });
     $('.navToFile1').click(function () {
         $('#fileUpDiv').removeClass('d-none');
+        $('#issue_date','#expire_date').val('');
+        daterangepicker.setValue(null);
     });
 
     $('#uploadCerfile').click(function () {
@@ -379,11 +381,11 @@
 
     $('.complCertificate').click(function () {
         if (confirm('Are you sure you want to complete this certificate?')) {
-            var data = {
-                issue_date: $('#issue_date').val(),
-                expire_date: $('#expire_date').val()
+            var dataB = {
+                issue_date: $('#issue_date').val().trim(),
+                expire_date: $('#expire_date').val().trim()
             };
-            completeCertificateAPI(CERTIFICATE_ID, FILE_STATUS, data, function (resp) {
+            completeCertificateAPI(CERTIFICATE_ID, FILE_STATUS, dataB, function (resp) {
                 show_mesege(resp);
                 if (resp.id === 1) {
                     window.location.href = "/industry_profile/id/" + PROFILE_ID;
@@ -406,10 +408,10 @@
         console.log(expireDate);
         $('#expire_date').val(expireDate);
     });
-    
+
     $('#expire_date').on('change', function () {
-         console.log($(this).val());
-         console.log($('#issue_date').val());
+        console.log($(this).val());
+        console.log($('#issue_date').val());
     });
 
     $('input[name="datepickerUi"]').daterangepicker({

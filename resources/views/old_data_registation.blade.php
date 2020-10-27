@@ -74,7 +74,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Remark</label>
-                                <input id="getRemark" type="text" class="form-control form-control-sm" placeholder="Enter Remark..." value="">
+                                <input id="getRemark" type="text" class="form-control form-control-sm" placeholder="Enter Remark..." value="Limited">
                                 <div id="valRemark" class="d-none"><p class="text-danger">Remark is required</p></div>
                             </div>
                             <div class="form-group">
