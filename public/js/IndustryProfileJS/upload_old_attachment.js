@@ -5,7 +5,7 @@ function loadAllOldAttachments(result, callBack) {
     $.each(result, function (index, row) {
         obj += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;">';
         if (row.type === 'pdf') {
-            obj += '<a href="/' + row.path + '" target="_blank"><img class="rounded" alt="PDF" style="width: 100%; height: 80%;" src="/dist/img/pdf-view.png" data-holder-rendered="true"></a>';
+            obj += '<a href="/' + row.path + '" target="_blank"><img class="rounded" alt="PDF" style="width: auto; height: auto;" src="/dist/img/pdf-view.png" data-holder-rendered="true"></a>';
         } else {
             obj += '<a href="/' + row.path + '" target="_blank"><img class="rounded" alt="Attachment" style="width: 100%; height: 80%;" src="/' + row.path + '" data-holder-rendered="true"></a>';
         }

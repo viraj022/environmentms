@@ -121,7 +121,7 @@
             $('#holdCertificate').val($(this).val()); //<-- Share this button value to this button
             $('#uNholdCertificate').val($(this).val()); //<-- Share this button value to this button
             $('#modalTitlex2').html(fileData.file_no);
-            $('#viewCertificate,#prepareCertificate,#holdCertificate,#rejectCertificate').addClass('d-none');
+            $('#viewCertificate,#prepareCertificate,#holdCertificate,#uNholdCertificate,#rejectCertificate').addClass('d-none');
             if (f_Status == 4) {
 //                $("#viewCertificate").attr("href", "https://www.w3schools.com/jquery/");
                 $('#prepareCertificate').removeClass('d-none');

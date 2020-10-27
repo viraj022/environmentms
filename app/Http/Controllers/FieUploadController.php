@@ -44,7 +44,7 @@ class FieUploadController extends Controller
     }
     public static function getSiteClearanceCertificateFilePath(SiteClearenceSession $site)
     {
-        return  FieUploadController::getEPLSiteClearanceFoldersPath($site) . "/certificates";
+        return  FieUploadController::getSiteClearanceFoldersPath($site) . "/certificates";
     }
     public static function getInspectionFilePath(InspectionSession $inspection)
     {
@@ -69,6 +69,6 @@ class FieUploadController extends Controller
 
     public static function torPath(SiteClearenceSession $site)
     {
-        return  FieUploadController::getEPLSiteClearanceFoldersPath($site) . "/tor";
+        return  FieUploadController::getSiteClearanceFoldersPath($site) . "/tor";
     }
 }

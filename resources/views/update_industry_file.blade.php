@@ -40,7 +40,7 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Is New*</label>
-                                    <select disabled id="getisOld" class="form-control form-control-sm cutenzReq" style="width: 100%;">
+                                    <select disabled id="getisOld" class="form-control form-control-sm" style="width: 100%;">
                                         <option value="1">New</option>
                                         <option value="0">Old</option>
                                     </select>
@@ -133,6 +133,10 @@
                                         <button onClick="location.href = location.href" type="submit" class="btn btn-info"><i class="fas fa-times"></i> Cancel</button>
                                     </div>
                                     <hr>
+                                </div>
+                                <div class="form-group">
+                                    <label>Industry Sub-Category</label>
+                                    <input id="industry_sub_cat" type="text" class="form-control form-control-sm " placeholder="Enter Text." value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Business Registration Number</label>
@@ -277,6 +281,7 @@
                                                 $('#business_name').val(set.industry_name);
                                                 $('#getZone').val(set.industry_is_industry);
                                                 $('#getAddressT').val(set.industry_address);
+                                                $('#industry_sub_cat').val(set.industry_sub_category);
                                                 $('#inventsment').val(set.industry_investment);
                                                 $('#startDate').val(set.industry_start_date);
 //            $('#submittedDate').val(set.industry_start_date);
@@ -301,7 +306,7 @@
 
                                         $('#btnUpdate').click(function () {
                                             var dataz = {
-                                                is_old: $('#getisOld').val(),
+//                                                is_old: $('#getisOld').val(),
                                                 first_name: $('#getfName').val(),
                                                 last_name: $('#getlName').val(),
                                                 address: $('#getAddress').val(),
@@ -310,6 +315,7 @@
                                                 nic: $('#getNicSave').val(),
                                                 industry_name: $('#business_name').val().trim(),
                                                 industry_category_id: $('#industryCat').val(),
+                                                industry_sub_category: $('#industry_sub_cat').val(),
                                                 business_scale_id: $('#businesScale').val(),
                                                 industry_contact_no: $('#getContactn').val().trim(),
                                                 industry_address: $('#getAddressT').val().trim(),
