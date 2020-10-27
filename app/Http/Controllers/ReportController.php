@@ -17,6 +17,7 @@ use App\Repositories\SiteClearenceRepository;
 use App\ReportTemplate\ReportTemplateMultiCell;
 use App\Repositories\InspectionSessionRepository;
 use App\Repositories\AssistanceDirectorRepository;
+use App\Repositories\ClientRepository;
 use App\Repositories\EnvironmentOfficerRepository;
 
 class ReportController extends Controller
@@ -291,7 +292,6 @@ class ReportController extends Controller
         /**
          * Committee
          */
-
         $committeeCount = $committee->getCommitteeCount('2019-01-01', '2022-01-01');
         $result[] = array('type' => 'Technical Committee', 'name' => 'Meetings', 'application' => "", 'object' => $this->prepareCount($committeeCount->toArray(), $assistanceDirectors));
         $result[] = array('type' => 'Technical Committee', 'name' => 'TOR Preparations', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
@@ -375,11 +375,11 @@ class ReportController extends Controller
     }
     public function eoInspectionReport()
     {
+        $start = microtime(true);
         $inspection = new InspectionSessionRepository();
         $env = new EnvironmentOfficerRepository();
         $from = '2020-10-01';
         $to = '2020-10-30';
-        $start = microtime(true);
         $rows = [];
         $environmentOfficer = $env->getOfficerDetails(25);
         $data =  $inspection->getSiteInspectionDetails($from, $to, $environmentOfficer->id);
@@ -421,5 +421,15 @@ class ReportController extends Controller
         $time_elapsed_secs = round(microtime(true) - $start, 5);
         // dd($rows, $time_elapsed_secs);
         return view('Reports.eo_inspection_monthly_report', compact('rows', 'environmentOfficer', 'time_elapsed_secs', 'from', 'to'));
+    }
+    public function categoryWiseCountReport()
+    {
+        $start = microtime(true);
+        $from = '2019-10-01';
+        $to = '2021-10-30';
+        $client = new ClientRepository();
+        $data = $client->allPlain();
+        $time_elapsed_secs = round(microtime(true) - $start, 5);
+        dd($data->toArray(), $time_elapsed_secs);
     }
 }

@@ -20,6 +20,11 @@ class Client extends Model
         public const IS_WORKING_FINISH = 2;
         protected $appends = ['start_date_only'];
 
+
+        protected $hidden = [
+                'password', 'api_token',
+        ];
+
         public function getStartDateOnlyAttribute()
         {
                 //return strtotime($this->schedule_date)->toDateString();

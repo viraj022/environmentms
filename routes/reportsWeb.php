@@ -20,4 +20,5 @@ Route::get('/epl_report', 'ReportController@eplApplicationReport');
 Route::get('/epl_application_log', 'ReportController@eplApplicationLog');
 Route::get('/monthly_progress', 'ReportController@monthlyProgress');
 Route::get('/ep_inspection_report', 'ReportController@eoInspectionReport');
+Route::get('/category_count_report', 'ReportController@categoryWiseCountReport');
 // Route::get('/testReportMul', 'ReportController@test');
