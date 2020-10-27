@@ -10,6 +10,10 @@
         <link rel="stylesheet" type="text/css" href="/dataTable/datatables.min.css"/>
     </head>
     <body class="hold-transition sidebar-mini layout-fixed text-sm">
+          <center>
+         <h1>Progress Report </h1>
+           <h5>From: {{$from}} - To: {{$to}}</h5>
+          </center>
         <h4>Report Genaration Time :{{$time_elapsed_secs}} seconds</h4>
      {{-- @dump($newEplCount); --}}
 <table class="table cell-border compact stripe">

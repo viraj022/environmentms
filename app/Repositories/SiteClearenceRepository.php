@@ -61,9 +61,9 @@ class SiteClearenceRepository
 
 
         switch ($instance) {
-            case  'All':
+            case  'all':
                 return $query->get();
-            case 'New':
+            case 'new':
                 return $query->where('site_clearances.count', 1)->get();
             case 'extend':
                 return $query->where('site_clearances.count', '>', 1)->get();
