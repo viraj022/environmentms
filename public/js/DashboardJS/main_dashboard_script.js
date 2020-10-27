@@ -213,3 +213,63 @@ function newJobsChart(newJobs_lable, newJobs_data) {
 //-----------------
 //- newJobs END -
 //-----------------
+
+
+///
+function pradeshiyasabaFileCount(data, callBack) {
+    var tbl = "";
+    if (data.length == 0) {
+        tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
+    } else {
+        $.each(data, function (index, row) {
+            tbl += '<tr>';
+            tbl += '<td>' + ++index + '</td>';
+            tbl += '<td>' + row.date + '</td>';
+            tbl += '<td>' + row.count + '</td>';
+            tbl += '</tr>';
+        });
+    }
+    $('#tblloadOldDataSummer tbody').html(tbl);
+    if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        callBack();
+    }
+
+}
+function environmentOfficersFileCount(data, callBack) {
+    var tbl = "";
+    if (data.length == 0) {
+        tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
+    } else {
+        $.each(data, function (index, row) {
+            tbl += '<tr>';
+            tbl += '<td>' + ++index + '</td>';
+            tbl += '<td>' + row.date + '</td>';
+            tbl += '<td>' + row.count + '</td>';
+            tbl += '</tr>';
+        });
+    }
+    $('#tblloadOldDataSummer tbody').html(tbl);
+    if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        callBack();
+    }
+
+}
+function industryCategoryCount(data, callBack) {
+    var tbl = "";
+    if (data.length == 0) {
+        tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
+    } else {
+        $.each(data, function (index, row) {
+            tbl += '<tr>';
+            tbl += '<td>' + ++index + '</td>';
+            tbl += '<td>' + row.date + '</td>';
+            tbl += '<td>' + row.count + '</td>';
+            tbl += '</tr>';
+        });
+    }
+    $('#tblloadOldDataSummer tbody').html(tbl);
+    if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        callBack();
+    }
+
+}
