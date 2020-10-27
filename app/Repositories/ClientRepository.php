@@ -47,9 +47,9 @@ class ClientRepository
         }
     }
 
-    public function allPlain()
+    public function all()
     {
-        $client = Client::Join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+        return Client::Join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
             ->join('business_scales', 'clients.business_scale_id', 'business_scales.id')
             ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
             ->leftJoin('environment_officers', 'clients.environment_officer_id', 'environment_officers.id')
@@ -118,8 +118,22 @@ class ClientRepository
 
             )
             ->get();
+    }
+
+    public function allPlain($from, $to)
+    {
+
         // echo $client;
-        dd(FileView::all()->toArray());
-        return $client;
+        $file = FileView::orWhereBetween('epl_issue_date', [$from, $to])
+            ->orWhereBetween('epl_expire_date', [$from, $to])
+            ->orWhereBetween('epl_submitted_date', [$from, $to])
+            ->orWhereBetween('epl_rejected_date', [$from, $to])
+            ->orWhereBetween('site_submit_date', [$from, $to])
+            ->orWhereBetween('site_issue_date', [$from, $to])
+            ->orWhereBetween('site_expire_date', [$from, $to])
+            ->orWhereBetween('site_rejected_date', [$from, $to]);
+        // dd(FileView::all());
+        // echo $file->toSql();
+        return $file->get();
     }
 }

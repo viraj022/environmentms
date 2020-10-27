@@ -19,6 +19,7 @@ use App\Repositories\InspectionSessionRepository;
 use App\Repositories\AssistanceDirectorRepository;
 use App\Repositories\ClientRepository;
 use App\Repositories\EnvironmentOfficerRepository;
+use App\Repositories\IndustryCategoryRepository;
 
 class ReportController extends Controller
 {
@@ -425,11 +426,48 @@ class ReportController extends Controller
     public function categoryWiseCountReport()
     {
         $start = microtime(true);
+        $rows = [];
         $from = '2019-10-01';
         $to = '2021-10-30';
         $client = new ClientRepository();
-        $data = $client->allPlain();
+        $categoryRepo = new IndustryCategoryRepository();
+        $data = $client->allPlain($from, $to);
+        foreach ($categoryRepo->all() as $category) {
+            $row = array(
+                "name" => $category->name,
+                "sc_new" => 0,
+                "sc_extend" => 0,
+                "epl_new" => 0,
+                "epl_renew" => 0,
+                "certificates" => 0,
+            );
+            $siteNew =  $data->where('industry_category_id', $category->id)
+                ->whereBetween('site_submit_date', [$from, $to])
+                ->where('site_count', 0)->count();
+            $siteExtend =  $data->where('industry_category_id', $category->id)
+                ->whereBetween('site_submit_date', [$from, $to])
+                ->where('site_count', '>', 0)->count();
+            $eplNew = $data->where('industry_category_id', $category->id)
+                ->whereBetween('epl_submitted_date', [$from, $to])
+                ->where('epl_count', 0)->count();
+            $eplRenew = $data->where('industry_category_id', $category->id)
+                ->whereBetween('epl_submitted_date', [$from, $to])
+                ->where('epl_count', '>', 0)->count();
+
+            $eplCertificate = $data->where('industry_category_id', $category->id)
+                ->whereBetween('epl_issue_date', [$from, $to])->count();
+            $siteCertificate = $data->where('industry_category_id', $category->id)
+                ->whereBetween('site_issue_date', [$from, $to])->count();
+
+            $row['sc_new'] = $siteNew;
+            $row['sc_extend'] = $siteExtend;
+            $row['epl_new'] = $eplNew;
+            $row['epl_renew'] = $eplRenew;
+            $row['certificates'] = $eplCertificate + $siteCertificate;
+            array_push($rows, $row);
+        }
         $time_elapsed_secs = round(microtime(true) - $start, 5);
-        dd($data->toArray(), $time_elapsed_secs);
+        // dd($rows, $time_elapsed_secs);
+        return view('Reports.category_wise_count_report', compact('rows', 'time_elapsed_secs', 'from', 'to'));
     }
 }
