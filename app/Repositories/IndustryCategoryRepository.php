@@ -27,6 +27,6 @@ class IndustryCategoryRepository
 
     public function all()
     {
-        return IndustryCategory::all();
+        return IndustryCategory::orderBy('name')->get();
     }
 }

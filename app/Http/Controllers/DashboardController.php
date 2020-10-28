@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\ApplicationType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\ClientRepository;
+use App\Repositories\IndustryCategoryRepository;
 
 class DashboardController extends Controller
 {
@@ -24,16 +26,16 @@ class DashboardController extends Controller
 
     public function renewalChart($from, $to)
     {
-        $rtn = [];
         $start = microtime(true);
+        $rtn = [];
         $client = new ClientRepository();
         $data = $client->allPlain($from, $to);
-        $eplCount = $this->getEPlCountGroupMonth($data->whereBetween('epl_submitted_date', [$from, $to]));
-        $siteCount = $this->getSiteCountGroupMonth($data->whereBetween('site_submit_date', [$from, $to]));
+        $eplCount = $this->getEPlCountGroupMonth($data->whereBetween('epl_submitted_date', [$from, $to])->where('epl_count', '>', '0'));
+        $siteCount = $this->getSiteCountGroupMonth($data->whereBetween('site_submit_date', [$from, $to])->where('epl_count', '>', '0'));
         $newCount = getArraySum($eplCount, $siteCount);
 
-        $expireEPL = $this->getEPLExpireGroupMonth($data->whereBetween('site_expire_date', [$from, $to]));
-        $expireSITE = $this->getSiteExpireGroupMonth($data->whereBetween('epl_expire_date', [$from, $to]));
+        $expireEPL = $this->getEPLExpireGroupMonth($data->whereBetween('epl_expire_date', [$from, $to]));
+        $expireSITE = $this->getSiteExpireGroupMonth($data->whereBetween('site_expire_date', [$from, $to]));
         $expireCount =   getArraySum($expireEPL, $expireSITE);
         $time_elapsed_secs = round(microtime(true) - $start, 5);
         // dd($siteCount, $eplCount, $newCount);
@@ -45,10 +47,63 @@ class DashboardController extends Controller
     }
     public function newFIleChart($from, $to)
     {
+        $start = microtime(true);
+        $rtn = [];
+        $client = new ClientRepository();
+        $data = $client->allPlain($from, $to);
+        $eplCount = $this->getEPlCountGroupMonth($data->whereBetween('epl_submitted_date', [$from, $to])->where('epl_count', '0'));
+        $siteCount = $this->getSiteCountGroupMonth($data->whereBetween('site_submit_date', [$from, $to])->where('epl_count', '0'));
+        $newCount = getArraySum($eplCount, $siteCount);
+        $time_elapsed_secs = round(microtime(true) - $start, 5);
+        $rtn["new"] = $newCount;
+        $rtn["time"] = $time_elapsed_secs;
+
+        return $rtn;
+    }
+    public function IssueFileCategory($from, $to)
+    {
+        $start = microtime(true);
+        $rtn = [];
+        $client = new ClientRepository();
+        $categoryRepo = new IndustryCategoryRepository();
+        // dd($categories->toArray());
+        $data = $client->allPlain($from, $to);
+        $categories = [];
+        $count = [];
+        foreach ($categoryRepo->all()->toArray() as $category) {
+            $eplCertificate = $data->where('industry_category_id', $category['id'])
+                ->whereBetween('epl_issue_date', [$from, $to])->count();
+            $siteCertificate = $data->where('industry_category_id', $category['id'])
+                ->whereBetween('site_issue_date', [$from, $to])->count();
+            array_push($count, $eplCertificate + $siteCertificate);
+            array_push($categories, $category['name']);
+        }
+        $time_elapsed_secs = round(microtime(true) - $start, 5);
+        $rtn["categories"] = $categories;
+        $rtn["count"] = $count;
+        $rtn["time"] = $time_elapsed_secs;
+        return $rtn;
+    }
+
+    public function getNewJobsByType($from, $to)
+    {
+        $start = microtime(true);
+        $rtn = [];
+        $client = new ClientRepository();
+        $data = $client->allPlain($from, $to);
+        $types = ApplicationType::select('name')->get();
+
+        $time_elapsed_secs = round(microtime(true) - $start, 5);
+        $rtn["types"] = $types;
+        $rtn["time"] = $time_elapsed_secs;
+        return $rtn;
     }
 
     public function getDashboardData(Request $request)
     {
+        return  $this->getNewJobsByType('2020-01-01', '2020-12-30');
+        return  $this->IssueFileCategory('2020-01-01', '2020-12-30');
+        return  $this->newFIleChart('2020-01-01', '2020-12-30');
         return  $this->renewalChart('2020-01-01', '2020-12-30');
         $rtn = [];
         if ($request->type = 'renewal_chart') {
@@ -94,6 +149,8 @@ class DashboardController extends Controller
     }
     private function getEPLExpireGroupMonth($data)
     {
+
+        // dd($data->toArray());
         $group =  $data->groupBy(function ($d) {
             return Carbon::parse($d->epl_expire_date)->format('m');
         });
@@ -105,6 +162,7 @@ class DashboardController extends Controller
         ksort($count);
 
         $count = array_values($count);
+        // dd($count);
         // dd($d, $time_elapsed_secs);
         return $count;
     }
@@ -122,6 +180,7 @@ class DashboardController extends Controller
 
         $count = array_values($count);
         // dd($d, $time_elapsed_secs);
+        // dd($count);
         return $count;
     }
 }
