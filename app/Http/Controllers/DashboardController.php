@@ -155,20 +155,49 @@ class DashboardController extends Controller
 
     public function getDashboardData(Request $request)
     {
-        // $client = new ClientRepository();
-        // return $client->all()->whereNotNull('site_code');
-        return  $this->FileStatusFileCount();
-        return  $this->industryCategoryFileCount();
-        return  $this->environmentOfficerFileCount();
-        return  $this->pradesheyasabaFileCount();
-        return  $this->getNewJobsByType('2020-01-01', '2020-12-30');
-        return  $this->IssueFileCategory('2020-01-01', '2020-12-30');
-        return  $this->newFIleChart('2020-01-01', '2020-12-30');
-        return  $this->renewalChart('2020-01-01', '2020-12-30');
+        $start = microtime(true);
         $rtn = [];
-        if ($request->type = 'renewal_chart') {
+        if ($request->has('renew_chart')) {
+
+            $from = $request->renew_chart['from'];
+            $to = $request->renew_chart['to'];
+            $rtn['renew_chart'] = $this->renewalChart($from, $to);
+        }
+        if ($request->has('new_file_chart')) {
+            $from = $request->renew_chart['from'];
+            $to = $request->renew_chart['to'];
+            $rtn['new_file_chart'] =  $this->newFIleChart($from, $to);
         }
 
+        if ($request->has('file_category_chart')) {
+            $from = $request->renew_chart['from'];
+            $to = $request->renew_chart['to'];
+            $rtn['file_category_chart'] = $this->IssueFileCategory($from, $to);
+        }
+        if ($request->has('new_job_chart')) {
+            $from = $request->renew_chart['from'];
+            $to = $request->renew_chart['to'];
+            $rtn['new_job_chart'] =  $this->getNewJobsByType($from, $to);
+        }
+        if ($request->has('pra_table')) {
+
+            $rtn['pra_table'] = $this->pradesheyasabaFileCount();
+        }
+        if ($request->has('env_officer_table')) {
+
+            $rtn['env_officer_table'] =  $this->environmentOfficerFileCount();
+        }
+        if ($request->has('industry_category_table')) {
+            $from = $request->renew_chart['from'];
+            $to = $request->renew_chart['to'];
+            $rtn['industry_category_table'] = $this->environmentOfficerFileCount();
+        }
+        if ($request->has('file_status_lable')) {
+
+            $rtn['file_status_lable'] = $this->FileStatusFileCount();
+        }
+        $time_elapsed_secs = round(microtime(true) - $start, 5);
+        $rtn["time"] = $time_elapsed_secs;
         return $rtn;
     }
 
