@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\ClientRepository;
 use App\Repositories\IndustryCategoryRepository;
+use App\SiteClearance;
+use App\SiteClearenceSession;
 
 class DashboardController extends Controller
 {
@@ -91,16 +93,25 @@ class DashboardController extends Controller
         $rtn = [];
         $client = new ClientRepository();
         $data = $client->allPlain($from, $to);
-        $types = ApplicationType::select('name')->get();
-
+        $types = array("EPL", "Site Clearance", "Schedule Waste", "Tele Communication", "Tele Communication");
+        $eplCount = $data->whereBetween('epl_submitted_date', [$from, $to])->count();
+        $siteCount = $data->whereBetween('site_submit_date', [$from, $to])
+            ->where('site_clearance_type', SiteClearance::SITE_CLEARANCE)
+            ->count();
+        $siteTeleCount = $data->whereBetween('site_submit_date', [$from, $to])
+            ->where('site_clearance_type', SiteClearance::SITE_TELECOMMUNICATION)
+            ->count();
         $time_elapsed_secs = round(microtime(true) - $start, 5);
         $rtn["types"] = $types;
+        $rtn["count"] = array($eplCount, $siteCount);
         $rtn["time"] = $time_elapsed_secs;
         return $rtn;
     }
 
     public function getDashboardData(Request $request)
     {
+        // $client = new ClientRepository();
+        // return $client->all()->whereNotNull('site_code');
         return  $this->getNewJobsByType('2020-01-01', '2020-12-30');
         return  $this->IssueFileCategory('2020-01-01', '2020-12-30');
         return  $this->newFIleChart('2020-01-01', '2020-12-30');
