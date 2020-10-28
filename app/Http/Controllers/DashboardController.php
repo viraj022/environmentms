@@ -93,7 +93,7 @@ class DashboardController extends Controller
         $rtn = [];
         $client = new ClientRepository();
         $data = $client->allPlain($from, $to);
-        $types = array("EPL", "Site Clearance", "Schedule Waste", "Tele Communication", "Tele Communication");
+        $types = array("EPL", "Site Clearance", "Tele Communication", "Schedule Waste");
         $eplCount = $data->whereBetween('epl_submitted_date', [$from, $to])->count();
         $siteCount = $data->whereBetween('site_submit_date', [$from, $to])
             ->where('site_clearance_type', SiteClearance::SITE_CLEARANCE)
@@ -101,9 +101,54 @@ class DashboardController extends Controller
         $siteTeleCount = $data->whereBetween('site_submit_date', [$from, $to])
             ->where('site_clearance_type', SiteClearance::SITE_TELECOMMUNICATION)
             ->count();
+        $scheduleWaste = 0;
         $time_elapsed_secs = round(microtime(true) - $start, 5);
         $rtn["types"] = $types;
-        $rtn["count"] = array($eplCount, $siteCount);
+        $rtn["count"] = array($eplCount, $siteCount, $siteTeleCount, $scheduleWaste);
+        $rtn["time"] = $time_elapsed_secs;
+        return $rtn;
+    }
+    private function pradesheyasabaFileCount()
+    {
+        $start = microtime(true);
+        $rtn = [];
+        $client = new ClientRepository();
+        $data = $client->fileCountByPradesheeyaSaba();
+        $time_elapsed_secs = round(microtime(true) - $start, 5);
+        $rtn["data"] = $data;
+        $rtn["time"] = $time_elapsed_secs;
+        return $rtn;
+    }
+    private function environmentOfficerFileCount()
+    {
+        $start = microtime(true);
+        $rtn = [];
+        $client = new ClientRepository();
+        $data = $client->fileCountByEnvironmentOfficer();
+        $time_elapsed_secs = round(microtime(true) - $start, 5);
+        $rtn["data"] = $data;
+        $rtn["time"] = $time_elapsed_secs;
+        return $rtn;
+    }
+    private function industryCategoryFileCount()
+    {
+        $start = microtime(true);
+        $rtn = [];
+        $client = new ClientRepository();
+        $data = $client->fileCountByIndustryCategory();
+        $time_elapsed_secs = round(microtime(true) - $start, 5);
+        $rtn["data"] = $data;
+        $rtn["time"] = $time_elapsed_secs;
+        return $rtn;
+    }
+    private function FileStatusFileCount()
+    {
+        $start = microtime(true);
+        $rtn = [];
+        $client = new ClientRepository();
+        $data = $client->fileCountByFileStatus();
+        $time_elapsed_secs = round(microtime(true) - $start, 5);
+        $rtn["data"] = $data;
         $rtn["time"] = $time_elapsed_secs;
         return $rtn;
     }
@@ -112,6 +157,10 @@ class DashboardController extends Controller
     {
         // $client = new ClientRepository();
         // return $client->all()->whereNotNull('site_code');
+        return  $this->FileStatusFileCount();
+        return  $this->industryCategoryFileCount();
+        return  $this->environmentOfficerFileCount();
+        return  $this->pradesheyasabaFileCount();
         return  $this->getNewJobsByType('2020-01-01', '2020-12-30');
         return  $this->IssueFileCategory('2020-01-01', '2020-12-30');
         return  $this->newFIleChart('2020-01-01', '2020-12-30');
