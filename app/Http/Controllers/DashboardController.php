@@ -40,6 +40,7 @@ class DashboardController extends Controller
         $rtn["renew"] = $newCount;
         $rtn["expire"] = $expireCount;
         $rtn["time"] = $time_elapsed_secs;
+
         return $rtn;
     }
     public function newFIleChart($from, $to)
