@@ -36,16 +36,18 @@
                     <div class="card-body">
                         <label>Assistant Director</label>
                         <select class="form-control combo_AssistantDirector" id="ass_dir_combo"></select>
-                        <table class="table table-condensed" id="pending_epl_table">
-                            <thead>
-                                <tr>
-                                    <th style="width: 10px">#</th>
-                                    <th>File</th>
-                                    <th style="width: 5%;">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                        <div class="card-body table-responsive" style="height: 550px;">
+                            <table class="table table-condensed" id="pending_epl_table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th>File</th>
+                                        <th style="width: 5%;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
 
                 </div>
@@ -140,13 +142,15 @@
 //select button action 
         $(document).on('click', '.selPendingEpl', function () {
             let obj = {environment_officer_id: parseInt($("#env_officer_combo").val()), epl_id: parseInt($(this).val())};
-            assign_epl_to_officer(obj, function (parameters) {
-                show_mesege(parameters);
-                if (parameters.id == 1) {
-                    assigned_EPL_table(parseInt($('#env_officer_combo').val()));
-                    pending_EPL_table(parseInt($('#ass_dir_combo').val()));
-                }
-            });
+            if (confirm('Are you sure you want to assign this file to '+ $('#env_officer_combo :selected').text())) {
+                assign_epl_to_officer(obj, function (parameters) {
+                    show_mesege(parameters);
+                    if (parameters.id == 1) {
+                        assigned_EPL_table(parseInt($('#env_officer_combo').val()));
+                        pending_EPL_table(parseInt($('#ass_dir_combo').val()));
+                    }
+                });
+            }
         });
         $(document).on('click', '.removePendingEpl', function () {
             if (confirm('Are you sure you want to remove this?')) {

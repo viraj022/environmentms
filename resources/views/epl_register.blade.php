@@ -45,7 +45,7 @@
                             <input id="startDate" type="date"  max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">
                         </div>
                         <div class="form-group">
-                            <label>Remark*</label>
+                            <label>Remark</label>
                             <input id="getRemark" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
                         </div>
                         <div class="form-group disType d-none">

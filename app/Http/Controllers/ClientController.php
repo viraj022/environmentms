@@ -169,6 +169,7 @@ class ClientController extends Controller
             $client->industry_start_date = \request('industry_start_date');
             $client->industry_registration_no = \request('industry_registration_no');
             $client->industry_sub_category = \request('industry_sub_category');
+            $client->created_user = $user->id;
             $client->is_old = \request('is_old');
             if ($client->is_old == 0) {
                 $client->need_inspection = 'Inspection Not Needed';
