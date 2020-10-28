@@ -28,25 +28,28 @@ class DashboardController extends Controller
         $start = microtime(true);
         $client = new ClientRepository();
         $data = $client->allPlain($from, $to);
-        $eplCount = $this->getEPlCountGroupMonth($data);
-        $siteCount = $this->getSiteCountGroupMonth($data);
+        $eplCount = $this->getEPlCountGroupMonth($data->whereBetween('epl_submitted_date', [$from, $to]));
+        $siteCount = $this->getSiteCountGroupMonth($data->whereBetween('site_submit_date', [$from, $to]));
         $newCount = getArraySum($eplCount, $siteCount);
 
-        $expireEPL = $this->getEPLExpireGroupMonth($data);
-        $expireSITE = $this->getSiteExpireGroupMonth($data);
+        $expireEPL = $this->getEPLExpireGroupMonth($data->whereBetween('site_expire_date', [$from, $to]));
+        $expireSITE = $this->getSiteExpireGroupMonth($data->whereBetween('epl_expire_date', [$from, $to]));
         $expireCount =   getArraySum($expireEPL, $expireSITE);
         $time_elapsed_secs = round(microtime(true) - $start, 5);
         // dd($siteCount, $eplCount, $newCount);
         $rtn["renew"] = $newCount;
         $rtn["expire"] = $expireCount;
         $rtn["time"] = $time_elapsed_secs;
+
         return $rtn;
     }
-
+    public function newFIleChart($from, $to)
+    {
+    }
 
     public function getDashboardData(Request $request)
     {
-        return  $this->renewalChart('2020-10-01', '2020-10-30');
+        return  $this->renewalChart('2020-01-01', '2020-12-30');
         $rtn = [];
         if ($request->type = 'renewal_chart') {
         }
@@ -56,18 +59,21 @@ class DashboardController extends Controller
 
     private function getEPlCountGroupMonth($data)
     {
-        $group =  $data->groupBy(function ($d) {
-            return Carbon::parse($d->epl_submitted_date)->format('m');
+        // dd($data->toArray());
+        $group =  $data->groupBy(function ($item, $key) {
+            // dd($item);
+            // dd(Carbon::parse($item['epl_submitted_date'])->format('m'));
+            return Carbon::parse($item['epl_submitted_date'])->format('m');
         });
         $groupCount = $group->map(function ($item, $key) {
             return collect($item)->count();
         });
         $count = $groupCount->toArray();
-        ksort($count);
         $count = refineArrayMonth($count);
+        ksort($count);
 
         $count = array_values($count);
-        // dd($d, $time_elapsed_secs);
+        // dd($count);
         return $count;
     }
     private function getSiteCountGroupMonth($data)
@@ -79,8 +85,8 @@ class DashboardController extends Controller
             return collect($item)->count();
         });
         $count = $groupCount->toArray();
-        ksort($count);
         $count = refineArrayMonth($count);
+        ksort($count);
 
         $count = array_values($count);
         // dd($d, $time_elapsed_secs);
@@ -95,8 +101,8 @@ class DashboardController extends Controller
             return collect($item)->count();
         });
         $count = $groupCount->toArray();
-        ksort($count);
         $count = refineArrayMonth($count);
+        ksort($count);
 
         $count = array_values($count);
         // dd($d, $time_elapsed_secs);
@@ -111,8 +117,8 @@ class DashboardController extends Controller
             return collect($item)->count();
         });
         $count = $groupCount->toArray();
-        ksort($count);
         $count = refineArrayMonth($count);
+        ksort($count);
 
         $count = array_values($count);
         // dd($d, $time_elapsed_secs);
