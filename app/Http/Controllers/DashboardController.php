@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\ApplicationType;
+use DateTime;
+use DatePeriod;
+use DateInterval;
 use Carbon\Carbon;
+use App\SiteClearance;
+use App\ApplicationType;
 use Illuminate\Http\Request;
+use App\SiteClearenceSession;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\ClientRepository;
 use App\Repositories\IndustryCategoryRepository;
-use App\SiteClearance;
-use App\SiteClearenceSession;
 
 class DashboardController extends Controller
 {
@@ -43,6 +46,7 @@ class DashboardController extends Controller
         // dd($siteCount, $eplCount, $newCount);
         $rtn["renew"] = $newCount;
         $rtn["expire"] = $expireCount;
+        $rtn["months"] = $this->getMonths($from, $to);
         $rtn["time"] = $time_elapsed_secs;
 
         return $rtn;
@@ -58,6 +62,7 @@ class DashboardController extends Controller
         $newCount = getArraySum($eplCount, $siteCount);
         $time_elapsed_secs = round(microtime(true) - $start, 5);
         $rtn["new"] = $newCount;
+        $rtn["months"] = $this->getMonths($from, $to);
         $rtn["time"] = $time_elapsed_secs;
 
         return $rtn;
@@ -271,5 +276,19 @@ class DashboardController extends Controller
         // dd($d, $time_elapsed_secs);
         // dd($count);
         return $count;
+    }
+    private function getMonths($from, $to)
+    {
+        $rtn = [];
+        $start    = (new DateTime($from))->modify('first day of this month');
+        $end      = (new DateTime($to))->modify('first day of next month');
+        $interval = DateInterval::createFromDateString('1 month');
+        $period   = new DatePeriod($start, $interval, $end);
+
+        foreach ($period as $dt) {
+            array_push($rtn, $dt->format("M"));
+            // echo $dt->format("M") . "<br>\n";
+        }
+        return $rtn;
     }
 }
