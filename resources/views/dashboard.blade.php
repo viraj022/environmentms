@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.dashadmin')
 @extends('layouts.styles')
 @extends('layouts.scripts')
 @extends('layouts.navbar')
