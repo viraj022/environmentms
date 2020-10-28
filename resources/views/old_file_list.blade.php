@@ -47,6 +47,7 @@
                                         <th >Industry Name</th>
                                         <th style="width: 8px">EPL</th>
                                         <th style="width: 8px">Old Files</th>
+                                        <th style="width: 8px">Env Officer</th>
                                         <th >Action</th>                                                        
                                     </tr>
                                 </thead>
