@@ -31,10 +31,10 @@
                             <select id="report_type_cmbo" class="form-control form-control-sm">
                                 <option value="1">Site Clearance</option>
                                 <option value="2">EPL Report</option>
-                                <option value="3">epl_application_log</option>
-                                <option value="4">monthly_progress</option>
-                                <option value="5">ep_inspection_report</option>
-                                <option value="6">category_count_report</option>
+                                <option value="3">EPL Application Log</option>
+                                <option value="4">Progress Report</option>
+                                <option value="5">EO Inspection Report</option>
+                                <option value="6">File Count By Category</option>
                             </select>
                         </div>
                         <div class="form-group" id="generateBy_section">
