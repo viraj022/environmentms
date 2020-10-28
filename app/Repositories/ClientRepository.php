@@ -136,4 +136,41 @@ class ClientRepository
         // echo $file->toSql();
         return $file->get();
     }
+    public function allPlainWithoutDates()
+    {
+        $file = FileView::all();
+    }
+
+    public function fileCountByPradesheeyaSaba()
+    {
+        return Client::join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->select('pradesheeyasabas.name', DB::raw('count(clients.id) as total'))
+            ->groupBy('pradesheeyasaba_id')
+            ->orderBy('pradesheeyasabas.name')
+            ->get();
+    }
+    public function fileCountByEnvironmentOfficer()
+    {
+        return Client::join('environment_officers', 'clients.environment_officer_id', 'environment_officers.id')
+            ->select('users.first_name', 'users.last_name', DB::raw('count(clients.id) as total'))
+            ->join('users', 'environment_officers.user_id', 'users.id')
+            ->groupBy('environment_officer_id')
+            ->orderBy('users.first_name')
+            ->get();
+    }
+    public function fileCountByIndustryCategory()
+    {
+        return Client::Join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+            ->select('industry_categories.name', DB::raw('count(clients.id) as total'))
+            ->groupBy('industry_category_id')
+            ->orderBy('industry_categories.name')
+            ->get();
+    }
+    public function fileCountByFileStatus()
+    {
+        return Client::select('file_status', DB::raw('count(clients.id) as total'))
+            ->groupBy('file_status')
+            ->orderBy('file_status')
+            ->get();
+    }
 }
