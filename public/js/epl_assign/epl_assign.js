@@ -72,9 +72,16 @@ function assigned_EPL_table(officer_id, callBack) {
         success: function (result) {
             var tbl = "";
             $.each(result, function (index, value) {
+                let CODE = value.code_epl;
+                if (CODE == 'N/A') {
+                    CODE = value.code_site;
+                    if (CODE == 'N/A') {
+                        CODE = value.file_no;
+                    }
+                }
                 tbl += "<tr>";
                 tbl += "<td>" + ++index + "</td>";
-                tbl += "<td>" + value.industry_name +"&nbsp&nbsp<a href='/industry_profile/id/" + value.id + "'  target='_blank'>("+ value.file_no + ")</a></td>";
+                tbl += "<td>" + value.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + value.id + "'  target='_blank'>(" + CODE + ")</a></td>";
                 tbl += '<td><button type="button" class="btn btn-danger removePendingEpl" value="' + value.id + '">Remove</button></td>';
                 tbl += "</tr>";
             });
@@ -106,9 +113,16 @@ function pending_EPL_table(director_id, callBack) {
         success: function (result) {
             var tbl = "";
             $.each(result, function (index, value) {
+                let CODE = value.code_epl;
+                if (CODE == 'N/A') {
+                    CODE = value.code_site;
+                    if (CODE == 'N/A') {
+                        CODE = value.file_no;
+                    }
+                }
                 tbl += "<tr>";
                 tbl += "<td>" + ++index + "</td>";
-                tbl += "<td>" + value.industry_name +"&nbsp&nbsp<a href='/industry_profile/id/" + value.id + "'  target='_blank'>("+ value.file_no + ")</a></td>";
+                tbl += "<td>" + value.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + value.id + "'  target='_blank'>(" + CODE + ")</a></td>";
                 tbl += '<td><button type="button" class="btn btn-success selPendingEpl" value="' + value.id + '">Add</button></td>';
                 tbl += "</tr>";
             });
