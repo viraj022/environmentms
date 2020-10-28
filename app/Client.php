@@ -18,7 +18,7 @@ class Client extends Model
         public const IS_WORKING_NEW = 0;
         public const IS_WORKING_WORKING = 1;
         public const IS_WORKING_FINISH = 2;
-        protected $appends = ['start_date_only'];
+        protected $appends = ['start_date_only', 'code_epl', 'code_site'];
 
 
         protected $hidden = [
@@ -177,5 +177,23 @@ class Client extends Model
                 }
 
                 return $rtn;
+        }
+        public function getCodeEplAttribute()
+        {
+                $epl = EPL::where('client_id', $this->id)->first();
+                if ($epl) {
+                        return $epl->code;
+                } else {
+                        return "N/A";
+                }
+        }
+        public function getCodeSiteAttribute()
+        {
+                $site = SiteClearenceSession::where('client_id', $this->id)->first();
+                if ($site) {
+                        return $site->code;
+                } else {
+                        return "N/A";
+                }
         }
 }

@@ -111,7 +111,7 @@
 <!-- AdminLTE App -->
 <script>
     $(function () {
-
+        $('.mainBodyClass').addClass('sidebar-collapse');
 //Load table
         loadAssistantDirectorCombo(function () {
             loadEnvOfficers_combo(parseInt($('#ass_dir_combo').val()), function () {
@@ -142,7 +142,7 @@
 //select button action 
         $(document).on('click', '.selPendingEpl', function () {
             let obj = {environment_officer_id: parseInt($("#env_officer_combo").val()), epl_id: parseInt($(this).val())};
-            if (confirm('Are you sure you want to assign this file to '+ $('#env_officer_combo :selected').text())) {
+            if (confirm('Are you sure you want to assign this file to ' + $('#env_officer_combo :selected').text())) {
                 assign_epl_to_officer(obj, function (parameters) {
                     show_mesege(parameters);
                     if (parameters.id == 1) {
