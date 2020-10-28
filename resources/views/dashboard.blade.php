@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.dashadmin')
 @extends('layouts.styles')
 @extends('layouts.scripts')
 @extends('layouts.navbar')
@@ -117,7 +117,7 @@
                         <!-- /.d-flex -->
 
                         <div class="position-relative mb-4">
-                            <canvas id="visitors-chart" height="200"></canvas>
+                            <canvas id="epl-renewal-chart" height="200"></canvas>
                         </div>
 
                         <div class="d-flex flex-row justify-content-end">
@@ -150,7 +150,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <canvas class="chart" id="line-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        <canvas class="chart" id="new-files-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -162,7 +162,7 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><b>File Category</b></h3>
+                            <h3 class="card-title"><b>File Category(Month)</b></h3>
 
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
@@ -176,7 +176,7 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="chart-responsive">
-                                        <canvas id="pieChart" height="150"></canvas>
+                                        <canvas id="fileCategorypieChart" height="150"></canvas>
                                     </div>
                                     <!-- ./chart-responsive -->
                                 </div>
@@ -201,7 +201,7 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><b>File Category</b></h3>
+                            <h3 class="card-title"><b>New Jobs(Day)</b></h3>
 
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
@@ -215,7 +215,7 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="chart-responsive">
-                                        <canvas id="pieChart3" height="150"></canvas>
+                                        <canvas id="newJobspieChart" height="150"></canvas>
                                     </div>
                                     <!-- ./chart-responsive -->
                                 </div>
@@ -257,7 +257,7 @@
                     <!-- /.card-header -->
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table m-0">
+                            <table id="pradeshiyasabaFileCount_table" class="table m-0">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
@@ -266,43 +266,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Call of Duty IV</td>
-                                        <td>
-                                            <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Samsung Smart TV</td>
-                                        <td>
-                                            <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>iPhone 6 Plus</td>
-                                        <td>
-                                            <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Samsung Smart TV</td>
-                                        <td>
-                                            <div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Samsung Smart TV</td>
-                                        <td>
-                                            <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>iPhone 6 Plus</td>
-                                        <td>
-                                            <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Call of Duty IV</td>
+                                        <td>Sample File</td>
                                         <td>
                                             <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
                                         </td>
@@ -314,7 +278,6 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer clearfix">
-                        <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>
                         <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
                     </div>
                     <!-- /.card-footer -->
@@ -339,7 +302,7 @@
                     <!-- /.card-header -->
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table m-0">
+                            <table id="envOfficeFileCount_table" class="table m-0">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
@@ -353,42 +316,6 @@
                                             <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>Samsung Smart TV</td>
-                                        <td>
-                                            <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>iPhone 6 Plus</td>
-                                        <td>
-                                            <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Samsung Smart TV</td>
-                                        <td>
-                                            <div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Samsung Smart TV</td>
-                                        <td>
-                                            <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>iPhone 6 Plus</td>
-                                        <td>
-                                            <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Call of Duty IV</td>
-                                        <td>
-                                            <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -396,7 +323,6 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer clearfix">
-                        <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>
                         <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
                     </div>
                     <!-- /.card-footer -->
@@ -432,7 +358,7 @@
                             <!-- /.card-header -->
                             <div class="card-body p-0">
                                 <div class="table-responsive">
-                                    <table class="table m-0">
+                                    <table id="industryCatCount_table" class="table m-0">
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
@@ -446,42 +372,6 @@
                                                     <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>Samsung Smart TV</td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>iPhone 6 Plus</td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Samsung Smart TV</td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Samsung Smart TV</td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>iPhone 6 Plus</td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Call of Duty IV</td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                                                </td>
-                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -489,7 +379,6 @@
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer clearfix">
-                                <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>
                                 <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
                             </div>
                             <!-- /.card-footer -->
@@ -503,41 +392,41 @@
                 </div>
                 <!-- /.row -->
 
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title"><b>File Category</b></h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="chart-responsive">
-                                    <canvas id="pieChart2" height="150"></canvas>
-                                </div>
-                                <!-- ./chart-responsive -->
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-md-4">
-                                <ul class="chart-legend clearfix">
-                                    <li><i class="far fa-circle text-danger"></i> EPL</li>
-                                    <li><i class="far fa-circle text-success"></i> Site Clearance</li>
-                                    <li><i class="far fa-circle text-warning"></i> Telecommunication</li>
-                                    <li><i class="far fa-circle text-info"></i> Schedule Waste</li>
-                                </ul>
-                            </div>
-                            <!-- /.col -->
-                        </div>
-                        <!-- /.row -->
-                    </div>
-                    <!-- /.card-body -->
-                </div>
+                <!--                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title"><b>File Category</b></h3>
+                
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                     /.card-header 
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="chart-responsive">
+                                                    <canvas id="pieChart2" height="150"></canvas>
+                                                </div>
+                                                 ./chart-responsive 
+                                            </div>
+                                             /.col 
+                                            <div class="col-md-4">
+                                                <ul class="chart-legend clearfix">
+                                                    <li><i class="far fa-circle text-danger"></i> EPL</li>
+                                                    <li><i class="far fa-circle text-success"></i> Site Clearance</li>
+                                                    <li><i class="far fa-circle text-warning"></i> Telecommunication</li>
+                                                    <li><i class="far fa-circle text-info"></i> Schedule Waste</li>
+                                                </ul>
+                                            </div>
+                                             /.col 
+                                        </div>
+                                         /.row 
+                                    </div>
+                                     /.card-body 
+                                </div>-->
                 <!-- /.card -->
             </div>
             <!-- /.col -->
@@ -640,188 +529,54 @@
 <script src="plugins/jquery-mapael/maps/usa_states.min.js"></script>
 <!-- ChartJS -->
 <script src="plugins/chart.js/Chart.min.js"></script>
-
 <!-- PAGE SCRIPTS -->
 <script src="dist/js/pages/dashboard3.js"></script>
+<script src="../../js/DashboardJS/main_dashboard_script.js" type="text/javascript"></script>
 
 
 <script>
-    //-------------
-    //- PIE CHART -
-    //-------------
-    // Get context with jQuery - using jQuery's .get() method.
-    var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-    var pieData = {
-        labels: [
-            'Chrome',
-            'IE',
-            'FireFox',
-            'Safari',
-            'Opera',
-            'Navigator',
-        ],
-        datasets: [
-            {
-                data: [700, 500, 400, 600, 300, 100],
-                backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
-            }
-        ]
-    }
-    var pieOptions = {
-        legend: {
-            display: false
-        }
-    }
-    //Create pie or douhnut chart
-    // You can switch between pie and douhnut using the method below.
-    var pieChart = new Chart(pieChartCanvas, {
-        type: 'doughnut',
-        data: pieData,
-        options: pieOptions
-    })
 
-    //-----------------
-    //- END PIE CHART -
-    //-----------------
+    //--EPL Renewal Chart Open--//
+    var lable = ['18th', '20th', '22nd', '24th', '26th', '28th', '30th'];
+    var line1 = [100, 120, 170, 167, 180, 177, 160];
+    var line2 = [60, 80, 70, 67, 80, 77, 100];
+    eplRenewalChart(lable, line1, line2);
+    //--EPL Renewal Chart END--//
+
+//--NEW FILES Chart Open--//
+    var newfile_lable = ['2011 Q1', '2011 Q2', '2011 Q3', '2011 Q4', '2012 Q1', '2012 Q2', '2012 Q3', '2012 Q4', '2013 Q1', '2013 Q2'];
+    var newfile_data = [2666, 2778, 4912, 3767, 6810, 5670, 4820, 15073, 10687, 8432];
+    newFilesChart(newfile_lable, newfile_data);
+    //--NEW FILES Chart END--//
+
+//--File Category Chart Open--//
+    var fileCat_lable = [
+        'Chrome',
+        'IE',
+        'FireFox',
+        'Safari',
+        'Opera',
+        'Navigator',
+    ];
+    var fileCat_data = [700, 500, 400, 600, 300, 100];
+    fileCategoryChart(fileCat_lable, fileCat_data);
+    //--File Category Chart END--//
+
+//--New Jobs Chart Open--//
+    var newJobs_lable = [
+        'Chrome',
+        'IE',
+        'FireFox',
+        'Safari',
+        'Opera',
+        'Navigator',
+    ];
+    var newJobs_data = [700, 500, 400, 600, 300, 100];
+    newJobsChart(newJobs_lable, newJobs_data);
+//--New Jobs Chart END--//
 
 
-    //-------------
-    //- PIE CHART -
-    //-------------
-    // Get context with jQuery - using jQuery's .get() method.
-    var pieChartCanvas = $('#pieChart2').get(0).getContext('2d')
-    var pieData = {
-        labels: [
-            'Chrome',
-            'IE',
-            'FireFox',
-            'Safari',
-            'Opera',
-            'Navigator',
-        ],
-        datasets: [
-            {
-                data: [700, 500, 400, 600, 300, 100],
-                backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
-            }
-        ]
-    }
-    var pieOptions = {
-        legend: {
-            display: false
-        }
-    }
-    //Create pie or douhnut chart
-    // You can switch between pie and douhnut using the method below.
-    var pieChart = new Chart(pieChartCanvas, {
-        type: 'doughnut',
-        data: pieData,
-        options: pieOptions
-    })
 
-    //-----------------
-    //- END PIE CHART -
-    //-----------------
-    //-------------
-    //- PIE CHART -
-    //-------------
-    // Get context with jQuery - using jQuery's .get() method.
-    var pieChartCanvas = $('#pieChart3').get(0).getContext('2d')
-    var pieData = {
-        labels: [
-            'Chrome',
-            'IE',
-            'FireFox',
-            'Safari',
-            'Opera',
-            'Navigator',
-        ],
-        datasets: [
-            {
-                data: [700, 500, 400, 600, 300, 100],
-                backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
-            }
-        ]
-    }
-    var pieOptions = {
-        legend: {
-            display: false
-        }
-    }
-    //Create pie or douhnut chart
-    // You can switch between pie and douhnut using the method below.
-    var pieChart = new Chart(pieChartCanvas, {
-        type: 'doughnut',
-        data: pieData,
-        options: pieOptions
-    })
-
-    //-----------------
-    //- END PIE CHART -
-    //-----------------
-    
-    
-      // Sales graph chart
-  var salesGraphChartCanvas = $('#line-chart').get(0).getContext('2d');
-  //$('#revenue-chart').get(0).getContext('2d');
-
-  var salesGraphChartData = {
-    labels  : ['2011 Q1', '2011 Q2', '2011 Q3', '2011 Q4', '2012 Q1', '2012 Q2', '2012 Q3', '2012 Q4', '2013 Q1', '2013 Q2'],
-    datasets: [
-      {
-        label               : 'Digital Goods',
-        fill                : false,
-        borderWidth         : 2,
-        lineTension         : 0,
-        spanGaps : true,
-        borderColor         : '#efefef',
-        pointRadius         : 3,
-        pointHoverRadius    : 7,
-        pointColor          : '#efefef',
-        pointBackgroundColor: '#efefef',
-        data                : [2666, 2778, 4912, 3767, 6810, 5670, 4820, 15073, 10687, 8432]
-      }
-    ]
-  }
-
-  var salesGraphChartOptions = {
-    maintainAspectRatio : false,
-    responsive : true,
-    legend: {
-      display: false,
-    },
-    scales: {
-      xAxes: [{
-        ticks : {
-          fontColor: '#efefef',
-        },
-        gridLines : {
-          display : false,
-          color: '#efefef',
-          drawBorder: false,
-        }
-      }],
-      yAxes: [{
-        ticks : {
-          stepSize: 5000,
-          fontColor: '#efefef',
-        },
-        gridLines : {
-          display : true,
-          color: '#efefef',
-          drawBorder: false,
-        }
-      }]
-    }
-  }
-
-  // This will get the first returned node in the jQuery collection.
-  var salesGraphChart = new Chart(salesGraphChartCanvas, { 
-      type: 'line', 
-      data: salesGraphChartData, 
-      options: salesGraphChartOptions
-    }
-  )
 
 </script>
 

@@ -17,6 +17,7 @@ use App\InspectionSession;
 use App\EnvironmentOfficer;
 use Illuminate\Support\Str;
 use App\Helpers\LogActivity;
+use App\SiteClearance;
 use Illuminate\Http\Request;
 use App\SiteClearenceSession;
 use Illuminate\Support\Facades\DB;
@@ -168,6 +169,7 @@ class ClientController extends Controller
             $client->industry_start_date = \request('industry_start_date');
             $client->industry_registration_no = \request('industry_registration_no');
             $client->industry_sub_category = \request('industry_sub_category');
+            $client->created_user = $user->id;
             $client->is_old = \request('is_old');
             if ($client->is_old == 0) {
                 $client->need_inspection = 'Inspection Not Needed';
@@ -830,13 +832,19 @@ class ClientController extends Controller
                     $epl->certificate_no = $certificate->cetificate_number;
                     $epl->status = 1;
                     $msg = $msg && $epl->save();
-                } else if ($file->cer_type_status == 3 || $file->cer_type_status == 4) {
+                } else if ($file->cer_type_status == 3) {
                     $site = SiteClearenceSession::where('client_id', $certificate->client_id)->whereNull('issue_date')->first();
                     $site->issue_date = $certificate->issue_date;
                     $site->expire_date = $certificate->expire_date;
                     $site->licence_no = $certificate->cetificate_number;
                     $site->status = 1;
+
+                    $s = SiteClearance::where('site_clearence_session_id', $site->id)->where('status', 0)->first();
+                    $s->status = 1;
+                    $msg = $msg && $s->save();
                     $msg = $msg && $site->save();
+                } else if ($file->cer_type_status == 4) {
+                    abort(501, "Method not implemented - hcw error code");
                 } else {
                     abort(501, "Invalid File Status - hcw error code");
                 }

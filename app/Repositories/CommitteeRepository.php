@@ -110,4 +110,19 @@ class CommitteeRepository
             return "storage" . $fileUrl . "/" . $file_name;
         }
     }
+
+    public function getCommitteeCount($from, $to)
+    {
+        $query = Committee::join('clients', 'committees.client_id', 'clients.id')
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
+            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
+            ->join('users', 'assistant_directors.user_id', 'users.id')
+            ->where('assistant_directors.active_status', 1)
+            ->whereBetween('schedule_date', [$from, $to])
+            ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(committees.id) as total'))
+            ->groupBy('zones.id')
+            ->orderBy('zones.name');
+        return $query->get();
+    }
 }
