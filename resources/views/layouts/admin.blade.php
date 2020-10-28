@@ -10,7 +10,7 @@
         @yield('styles')
         @yield('pageStyles')
     </head>
-    <body class="hold-transition sidebar-mini layout-fixed text-sm">
+    <body class="hold-transition sidebar-mini layout-fixed text-sm mainBodyClass">
         <div class="wrapper">
 
             <!-- Navbar -->
