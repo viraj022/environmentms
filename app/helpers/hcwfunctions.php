@@ -4,6 +4,7 @@ use App\Client;
 use App\Minute;
 use App\FileLog;
 use App\Setting;
+use PhpParser\Node\Expr\Cast\Array_;
 
 function changeDateFormate()
 {
@@ -104,4 +105,73 @@ function incrementSerial($name)
         abort('Serial no not found in db-HCW Code');
     }
     $value->increment('value');
+}
+
+function monthNames()
+{
+    return [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+    ];
+}
+function refineArrayMonth($array)
+{
+    $rtn = $array;
+    if (!array_key_exists('01', $rtn)) {
+        $rtn['01'] = 0;
+    }
+    if (!array_key_exists('02', $rtn)) {
+        $rtn['02'] = 0;
+    }
+    if (!array_key_exists('03', $rtn)) {
+        $rtn['03'] = 0;
+    }
+    if (!array_key_exists('04', $rtn)) {
+        $rtn['04'] = 0;
+    }
+    if (!array_key_exists('05', $rtn)) {
+        $rtn['05'] = 0;
+    }
+    if (!array_key_exists('06', $rtn)) {
+        $rtn['06'] = 0;
+    }
+    if (!array_key_exists('07', $rtn)) {
+        $rtn['07'] = 0;
+    }
+    if (!array_key_exists('08', $rtn)) {
+        $rtn['08'] = 0;
+    }
+    if (!array_key_exists('09', $rtn)) {
+        $rtn['09'] = 0;
+    }
+    if (!array_key_exists(10, $rtn)) {
+        $rtn[10] = 0;
+    }
+    if (!array_key_exists(11, $rtn)) {
+        $rtn[11] = 0;
+    }
+    if (!array_key_exists(12, $rtn)) {
+        $rtn[12] = 0;
+    }
+    return $rtn;
+}
+
+function getArraySum($array1, $array2)
+{
+    $rtn = [];
+    $i = 0;
+    foreach ($array1 as $a) {
+        array_push($rtn, $a + $array2[$i++]);
+    }
+    return $rtn;
 }

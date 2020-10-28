@@ -30,3 +30,9 @@ types
 */
 
 // Route::middleware('auth:api')->get('/testReport', 'ReportController@siteClearanceApplicationReport');
+
+/**
+ * Dashboard
+ */
+
+Route::middleware('auth:api')->get('/dashboard', 'DashboardController@getDashboardData');
