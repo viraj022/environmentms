@@ -28,3 +28,5 @@ types
 * business_name like function show business (multiple)
 
 */
+
+// Route::middleware('auth:api')->get('/testReport', 'ReportController@siteClearanceApplicationReport');

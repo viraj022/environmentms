@@ -68,4 +68,9 @@ Route::get('/dashboard2', 'DashboardController@index');
 Route::get('/dashboard', function () {
   return view('welcome');
 });
+
+
+
+
+
 //dashboard

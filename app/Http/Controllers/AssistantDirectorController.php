@@ -9,6 +9,7 @@ use App\AssistantDirector;
 use App\EnvironmentOfficer;
 use App\Level;
 use App\Helpers\LogActivity;
+use App\Repositories\ClientRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\MinutesRepository;
@@ -364,6 +365,36 @@ class AssistantDirectorController extends Controller
             }
         });
     }
+    public function rejectFileAll(Request $request, MinutesRepository $minutesRepository, $file_id)
+    {
+        return DB::transaction(function () use ($request, $minutesRepository, $file_id) {
+            request()->validate([
+                'minutes' => 'sometimes|required|string',
+            ]);
+            $data = array();
+            $user = Auth::user();
+            $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+            $file = Client::findOrFail($file_id);
+            $msg = setFileStatus($file_id, 'file_status', -1);
+            $c = new ClientRepository();
+            $c->rejectionWorkingFileType($file);
+            fileLog($file->id, 'FileStatus', 'Asistant Director (' . $user->user_name . ') Rejected the file.', 0);
+            if ($request->has('minutes')) {
+                $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ASSI_REJECT_FILE, $user->id));
+            }
+            if ($msg) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        });
+    }
+
+
+
+
+
+
 
     // hansana
     public function directorRejectCertificate(Request $request, MinutesRepository $minutesRepository, $file_id)

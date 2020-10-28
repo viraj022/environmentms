@@ -56,10 +56,9 @@ class InspectionSessionController extends Controller
             $file = Client::find($id);
             if ($file) {
                 $inspectionSession = new InspectionSession();
-//                $autoData = $this->getAutomaticInspectionPlacementData($id);
-//                                dd($autoData);
-                $inspectionSession->application_type = 'File';
-               // $inspectionSession->profile_id = $autoData['id'];
+                $autoData = $this->getAutomaticInspectionPlacementData($id);
+                $inspectionSession->application_type = $autoData['type'];
+                $inspectionSession->profile_id = $autoData['id'];
                 $inspectionSession->client_id = $file->id;
                 $inspectionSession->schedule_date = request('schedule_date');
                 $inspectionSession->remark = request('remark');
@@ -71,18 +70,17 @@ class InspectionSessionController extends Controller
                 $dLog->inspection_session_id = $inspectionSession->id;
                 $msg = $msg &&  $dLog->save();
 
-                $file->need_inspection = Client::STATUS_PENDING;               
+                $file->need_inspection = Client::STATUS_PENDING;
                 $msg = $msg && $file->save();
- 
+
 
                 if ($msg) {
-                    LogActivity::addToLog('Inspection Session Created',$inspectionSession);            
+                    LogActivity::addToLog('Inspection Session Created', $inspectionSession);
                     return array('id' => 1, 'message' => 'true');
                 } else {
-                    LogActivity::addToLog('Fail to create Inspection Session  ',$inspectionSession);
+                    LogActivity::addToLog('Fail to create Inspection Session  ', $inspectionSession);
                     return array('id' => 0, 'message' => 'false');
                 }
-
             } else {
                 abort(404);
             }
@@ -98,10 +96,10 @@ class InspectionSessionController extends Controller
         $siteClearance = $client->siteClearenceSessions;
         // dd(count($epls));
         if (count($epls) > 0 && count($siteClearance) > 0) {
-            abort (422,'Can not resolve whether file belong to a inspection or a site clearance');
+            abort(422, 'Can not resolve whether file belong to a inspection or a site clearance');
         }
         if (count($epls) > 1 && count($siteClearance) > 1) {
-             abort(422,'Can not resolve whether file belong to a inspection or a site clearance. more than one epls or site clearances found');
+            abort(422, 'Can not resolve whether file belong to a inspection or a site clearance. more than one epls or site clearances found');
         }
 
         if (count($epls) > 0) {
@@ -109,7 +107,7 @@ class InspectionSessionController extends Controller
         } else if (count($siteClearance) > 0) {
             return array('type' => InspectionSession::SITE_CLEARANCE, 'id' => $siteClearance[0]->id);
         } else {
-             abort( 422,'Can not resolve whether file belong to a inspection or a site clearance. No epls or site clearances found');
+            abort(422, 'Can not resolve whether file belong to a inspection or a site clearance. No epls or site clearances found');
         }
     }
 
@@ -145,7 +143,7 @@ class InspectionSessionController extends Controller
         return InspectionSession::with('inspectionRemarks')
             ->with('inspectionSessionAttachments')
             ->with('inspectionPersonals')
-            ->with('client')          
+            ->with('client')
             ->whereDate('schedule_date', $date)
             ->whereHas('client', function ($sql) use ($id) {
                 return $sql->where('clients.environment_officer_id', '=', $id);
@@ -217,15 +215,15 @@ class InspectionSessionController extends Controller
             $inspectionSession = InspectionSession::findOrFail($sessionId);
             $file = $inspectionSession->client;
             $msg = $inspectionSession->delete();
-            $file->need_inspection = Client::STATUS_INSPECTION_NEEDED;         
+            $file->need_inspection = Client::STATUS_INSPECTION_NEEDED;
             $msg = $msg && $file->save();
-    
+
 
             if ($msg) {
-                LogActivity::addToLog('Inspection Session Deleted',$inspectionSession);            
+                LogActivity::addToLog('Inspection Session Deleted', $inspectionSession);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to Delete Inspection Session  ',$inspectionSession);
+                LogActivity::addToLog('Fail to Delete Inspection Session  ', $inspectionSession);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -250,19 +248,19 @@ class InspectionSessionController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
 
         $inspectionSession = InspectionSession::findOrFail($sessionId);
-        $inspectionSession->completed_at = Carbon::now()->format('Y-m-d H:i:s') ;
+        $inspectionSession->completed_at = Carbon::now()->format('Y-m-d H:i:s');
         $inspectionSession->status = 1;
         $msg = $inspectionSession->save();
         $file = $inspectionSession->client;
         $file->need_inspection = Client::STATUS_COMPLETED;
         $msg = $msg && $file->save();
-  
+
 
         if ($msg) {
-            LogActivity::addToLog('Inspection Session Mark as complete',$inspectionSession);            
+            LogActivity::addToLog('Inspection Session Mark as complete', $inspectionSession);
             return array('id' => 1, 'message' => 'true');
         } else {
-            LogActivity::addToLog('Fail to Mark as complete Inspection Session  ',$inspectionSession);
+            LogActivity::addToLog('Fail to Mark as complete Inspection Session  ', $inspectionSession);
             return array('id' => 0, 'message' => 'false');
         }
     }
@@ -278,12 +276,12 @@ class InspectionSessionController extends Controller
         $file = $inspectionSession->client;
         $file->need_inspection = Client::STATUS_COMPLETED;
         $msg = $msg && $file->save();
-      
+
         if ($msg) {
-            LogActivity::addToLog('Inspection Session Mark as pending',$inspectionSession);            
+            LogActivity::addToLog('Inspection Session Mark as pending', $inspectionSession);
             return array('id' => 1, 'message' => 'true');
         } else {
-            LogActivity::addToLog('Fail to Mark as pending Inspection Session  ',$inspectionSession);
+            LogActivity::addToLog('Fail to Mark as pending Inspection Session  ', $inspectionSession);
             return array('id' => 0, 'message' => 'false');
         }
     }
