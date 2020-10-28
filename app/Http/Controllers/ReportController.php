@@ -15,18 +15,25 @@ use App\Repositories\AssistanceDirectorRepository;
 use App\Repositories\ClientRepository;
 use App\Repositories\EnvironmentOfficerRepository;
 use App\Repositories\IndustryCategoryRepository;
+use Illuminate\Support\Facades\Auth;
 
-class ReportController extends Controller
-{
-    public function __construct()
-    {
+class ReportController extends Controller {
+
+    public function __construct() {
         $this->middleware(['auth']);
     }
-    public function getFileLog($client_id)
-    {
-        $fileLogRepository  = new FileLogRepository();
+
+    public function index() {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('report_dashboard', ['pageAuth' => $pageAuth]);
+    }
+
+    public function getFileLog($client_id) {
+        $fileLogRepository = new FileLogRepository();
         return $fileLogRepository->getFIleLogById($client_id);
     }
+
     /**
      * DO NOT DELETE
      * fpdf multi cell report don not delete
@@ -36,7 +43,6 @@ class ReportController extends Controller
     //     $site =   new SiteClearenceRepository();
     //     $result = $site->getSiteClearenceReport('2010-01-01', '2021-01-01', 'All')->toArray();
     //     // dd($result);
-
     //     $data = [];
     //     $num = 0;
     //     foreach ($result as $row) {
@@ -52,11 +58,9 @@ class ReportController extends Controller
     //         array_push($data, $array);
     //     }
     //     // dd($data);
-
     //     $fpdf =  new ReportTemplate('l', 'mm', 'A3', 'Site Clearence Application');
     //     $fpdf->AddPage();
     //     $fpdf->SetFont('Times', '', 12);
-
     //     if ($result) {
     //         $fpdf->headers =  ['#', 'Date', 'File Number', 'Applications Name and Address', 'Industry', "Location", 'Inspection Feee', "SC Certificate Issued Date"];
     //         $fpdf->widths =  [10, 30, 60, 70,  50,  50, 50,  50];
@@ -71,17 +75,15 @@ class ReportController extends Controller
      * DO NOT DELETE
      * fpdf multi cell report don not delete
      */
-
-    public function siteClearanceApplicationReport()
-    {
+    public function siteClearanceApplicationReport() {
         $start = microtime(true);
-        $headers =  ['#', 'Date', 'File Number', 'Applications Name and Address', 'Industry', "Location", 'Inspection Feee', "Letter Issued Date"];
-        $width = ([10, 30, 60, 70,  50,  50, 50,  50]);
+        $headers = ['#', 'Date', 'File Number', 'Applications Name and Address', 'Industry', "Location", 'Inspection Feee', "Letter Issued Date"];
+        $width = ([10, 30, 60, 70, 50, 50, 50, 50]);
         $pdf = new ReportTemplateMultiCell('l', 'mm', 'A3', 'Site Clearence Application', $headers, $width);
         $pdf->AddPage();
         $pdf->SetFont('Arial', '', 14);
         //Table with 20 rows and 4 columns
-        $site =   new SiteClearenceRepository();
+        $site = new SiteClearenceRepository();
         $result = $site->getSiteClearenceReport('2010-01-01', '2021-01-01', 'All')->toArray();
         $num = 0;
         foreach ($result as $row) {
@@ -98,10 +100,10 @@ class ReportController extends Controller
         }
         $pdf->Output();
     }
-    public function siteClearanceApplicationReportBeta($from, $to, $type)
-    {
+
+    public function siteClearanceApplicationReportBeta($from, $to, $type) {
         $start = microtime(true);
-        $site =   new SiteClearenceRepository();
+        $site = new SiteClearenceRepository();
         $result = $site->getSiteClearenceReport($from, $to, $type)->toArray();
         $data = [];
         $num = 0;
@@ -118,7 +120,7 @@ class ReportController extends Controller
             array_push($data, $array);
         }
         switch ($type) {
-            case  'all':
+            case 'all':
                 $title = "Site Clearence Report (All)";
                 break;
             case 'new':
@@ -134,11 +136,10 @@ class ReportController extends Controller
         return view('Reports.site_clearence_report', ['data' => $data, 'time_elapsed_secs' => $time_elapsed_secs, 'title' => $title, 'from' => $from, 'to' => $to]);
     }
 
-    public function eplApplicationReport($from, $to)
-    {
+    public function eplApplicationReport($from, $to) {
         $start = microtime(true);
-        $epls =   new EPLRepository();
-        $result =  $epls->getEPLReport('2010-01-01', '2021-01-01')->toArray();
+        $epls = new EPLRepository();
+        $result = $epls->getEPLReport('2010-01-01', '2021-01-01')->toArray();
         $data = [];
         $data['header_count'] = 0;
         $data['results'] = [];
@@ -175,11 +176,10 @@ class ReportController extends Controller
         return view('Reports.epl_report', ['data' => $data, 'time_elapsed_secs' => $time_elapsed_secs, 'from' => $from, 'to' => $to]);
     }
 
-    public function eplApplicationLog($from, $to)
-    {
+    public function eplApplicationLog($from, $to) {
         $start = microtime(true);
-        $epls =   new EPLRepository();
-        $result =  $epls->getEPLReport($from, $to)->toArray();
+        $epls = new EPLRepository();
+        $result = $epls->getEPLReport($from, $to)->toArray();
         $data = [];
         $num = 0;
         foreach ($result as $row) {
@@ -203,13 +203,12 @@ class ReportController extends Controller
         return view('Reports.epl_application_log_report', ['data' => $data, 'time_elapsed_secs' => $time_elapsed_secs, 'from' => $from, 'to' => $to]);
     }
 
-    public function monthlyProgress($from, $to)
-    {
+    public function monthlyProgress($from, $to) {
         // $from = $from;
         // $to = $to;
         $start = microtime(true);
         $result = [];
-        $epl =   new EPLRepository();
+        $epl = new EPLRepository();
         $site = new SiteClearenceRepository();
         $ass = new AssistanceDirectorRepository();
         $inspection = new InspectionSessionRepository();
@@ -245,7 +244,7 @@ class ReportController extends Controller
             $eplInspectionNewCount,
             $eplInspectionRenewCount,
             $siteInspectionNewCount, $siteInspectionRenewCount
-        ), $assistanceDirectors);
+                ), $assistanceDirectors);
         // dd($siteInspectionNewCount->toArray(), $siteInspectionRenewCount->toArray());
 
         $result[] = array('type' => 'Inspection', 'name' => 'SC(New)', 'application' => "", 'object' => $this->prepareCount($siteInspectionNewCount->toArray(), $assistanceDirectors));
@@ -268,16 +267,15 @@ class ReportController extends Controller
         /**
          * Completed Section
          */
-
-        $completedNewEplCount =   $epl->IssuedPLCount($from, $to, 1);
-        $completedReNewEplCount =  $epl->IssuedPLCount($from, $to, 0);
-        $completedNewSiteCount =   $site->IssuedSiteCount($from, $to, 1);
-        $completedRenewSiteCount =    $site->IssuedSiteCount($from, $to, 0);
+        $completedNewEplCount = $epl->IssuedPLCount($from, $to, 1);
+        $completedReNewEplCount = $epl->IssuedPLCount($from, $to, 0);
+        $completedNewSiteCount = $site->IssuedSiteCount($from, $to, 1);
+        $completedRenewSiteCount = $site->IssuedSiteCount($from, $to, 0);
         $totalIssuedCount = $this->generateTotalField(array(
             $completedNewEplCount,
             $completedReNewEplCount,
             $completedNewSiteCount, $completedRenewSiteCount
-        ), $assistanceDirectors);
+                ), $assistanceDirectors);
 
         $result[] = array('type' => 'Issued', 'name' => 'SC(New)', 'application' => "", 'object' => $this->prepareCount($completedNewSiteCount->toArray(), $assistanceDirectors));
 
@@ -302,9 +300,8 @@ class ReportController extends Controller
         /**
          * Rejected Section
          */
-
-        $rejectedEplCount =    $epl->EPlPLCount($from, $to, 0, 2);
-        $rejectedNewSiteCount =    $site->SiteCount($from, $to, 0, 2);
+        $rejectedEplCount = $epl->EPlPLCount($from, $to, 0, 2);
+        $rejectedNewSiteCount = $site->SiteCount($from, $to, 0, 2);
 
         $result[] = array('type' => 'Rejected', 'name' => 'SC', 'application' => "", 'object' => $this->prepareCount($rejectedNewSiteCount->toArray(), $assistanceDirectors));
         $result[] = array('type' => 'Rejected', 'name' => 'EPL', 'application' => "", 'object' => $this->prepareCount($rejectedEplCount->toArray(), $assistanceDirectors));
@@ -318,7 +315,7 @@ class ReportController extends Controller
         /**
          * Others
          */
-        $telecommunicationCount =    $site->SiteCount($from, $to, -1, 0, SiteClearance::SITE_TELECOMMUNICATION);
+        $telecommunicationCount = $site->SiteCount($from, $to, -1, 0, SiteClearance::SITE_TELECOMMUNICATION);
         $towerEplNewCount = $epl->TowerEPlPLCount($from, $to, 1, 0);
         $towerEplRenewCount = $epl->TowerEPlPLCount($from, $to, 0, 0);
         // dd($towerEplNewCount);
@@ -327,8 +324,8 @@ class ReportController extends Controller
         $result[] = array('type' => '', 'name' => 'Joint Inspection', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
         $result[] = array('type' => '', 'name' => 'Trainings', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
         $result[] = array('type' => '', 'name' => 'SWML', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
-        $result[] = array('type' => '', 'name' => 'Tower (EPL R)', 'application'  => $this->prepareApplicationTotal($towerEplRenewCount->toArray()), 'object' => $this->prepareCount($towerEplRenewCount->toArray(), $assistanceDirectors));
-        $result[] = array('type' => '', 'name' => 'Tower (EPL N)', 'application'  => $this->prepareApplicationTotal($telecommunicationCount->toArray()), 'object' => $this->prepareCount($towerEplNewCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => '', 'name' => 'Tower (EPL R)', 'application' => $this->prepareApplicationTotal($towerEplRenewCount->toArray()), 'object' => $this->prepareCount($towerEplRenewCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => '', 'name' => 'Tower (EPL N)', 'application' => $this->prepareApplicationTotal($telecommunicationCount->toArray()), 'object' => $this->prepareCount($towerEplNewCount->toArray(), $assistanceDirectors));
         $result[] = array('type' => '', 'name' => 'Tower SC', 'application' => $this->prepareApplicationTotal($telecommunicationCount->toArray()), 'object' => $this->prepareCount($telecommunicationCount->toArray(), $assistanceDirectors));
         $result[] = array('type' => '', 'name' => 'Expert Committee Meetings', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
         // dd($result);
@@ -338,16 +335,15 @@ class ReportController extends Controller
         return view('Reports.monthly_progress_report', compact('result', 'assistanceDirectors', 'time_elapsed_secs', 'from', 'to'));
     }
 
-    private function prepareCount($array, $assistanceDirectors, $flag = true)
-    {
+    private function prepareCount($array, $assistanceDirectors, $flag = true) {
         $rtn = [];
         // dd($array);
         // dd($assistanceDirectors->toArray());
         foreach ($assistanceDirectors as $assistanceDirector) {
             if ($flag) {
-                $data =  array('total' => 0);
+                $data = array('total' => 0);
             } else {
-                $data =  array('total' => '');
+                $data = array('total' => '');
             }
             foreach ($array as $a) {
                 if ($assistanceDirector->id == $a['ass_id']) {
@@ -358,8 +354,8 @@ class ReportController extends Controller
         }
         return $rtn;
     }
-    private function generateTotalField($array, $assistanceDirectors)
-    {
+
+    private function generateTotalField($array, $assistanceDirectors) {
         $rtn = [];
         // dd($array);
         // dd($assistanceDirectors->toArray());
@@ -376,8 +372,8 @@ class ReportController extends Controller
         }
         return $rtn;
     }
-    private function prepareApplicationTotal($array, $flag = true)
-    {
+
+    private function prepareApplicationTotal($array, $flag = true) {
         $rtn = 0;
         if (count($array) > 0) {
 
@@ -392,14 +388,14 @@ class ReportController extends Controller
             return '';
         }
     }
-    public function eoInspectionReport($eo_id, $from, $to)
-    {
+
+    public function eoInspectionReport($eo_id, $from, $to) {
         $start = microtime(true);
         $inspection = new InspectionSessionRepository();
         $env = new EnvironmentOfficerRepository();
         $rows = [];
         $environmentOfficer = $env->getOfficerDetails($eo_id);
-        $data =  $inspection->getSiteInspectionDetails($from, $to, $environmentOfficer->id);
+        $data = $inspection->getSiteInspectionDetails($from, $to, $environmentOfficer->id);
         // dd($data->toArray());
 
         $period = CarbonPeriod::create($from, $to);
@@ -407,14 +403,14 @@ class ReportController extends Controller
         foreach ($period as $date) {
             $dateFormatted = $date->format('Y-m-d');
             $row = array(
-                "Date" =>  $dateFormatted,
+                "Date" => $dateFormatted,
                 "location" => [],
                 "pradesheeyasaba" => [],
                 "file_no" => [],
                 "distance" => '',
             );
 
-            foreach ($data->toArray()  as $d) {
+            foreach ($data->toArray() as $d) {
                 // echo $d['completed_at'] . " " . $dateFormatted . "<br>";
                 if ($d['completed_at'] == $dateFormatted) {
                     array_push($row['location'], $d['industry_address']);
@@ -422,13 +418,13 @@ class ReportController extends Controller
                     array_push($row['file_no'], $d['code']);
                 }
             }
-            $row['location'] =    array_unique($row['location'], SORT_STRING);
-            $row['pradesheeyasaba'] =  array_unique($row['pradesheeyasaba'], SORT_STRING);
-            $row['file_no'] =   array_unique($row['file_no'], SORT_STRING);
+            $row['location'] = array_unique($row['location'], SORT_STRING);
+            $row['pradesheeyasaba'] = array_unique($row['pradesheeyasaba'], SORT_STRING);
+            $row['file_no'] = array_unique($row['file_no'], SORT_STRING);
 
-            $row['location'] =    implode(".\r\n", $row['location']);
-            $row['pradesheeyasaba'] =  implode(",\r\n", $row['pradesheeyasaba']);
-            $row['file_no'] =   implode(",\r\n", $row['file_no']);
+            $row['location'] = implode(".\r\n", $row['location']);
+            $row['pradesheeyasaba'] = implode(",\r\n", $row['pradesheeyasaba']);
+            $row['file_no'] = implode(",\r\n", $row['file_no']);
 
             array_push($rows, $row);
         }
@@ -439,8 +435,8 @@ class ReportController extends Controller
         // dd($rows, $time_elapsed_secs);
         return view('Reports.eo_inspection_monthly_report', compact('rows', 'environmentOfficer', 'time_elapsed_secs', 'from', 'to'));
     }
-    public function categoryWiseCountReport($from, $to)
-    {
+
+    public function categoryWiseCountReport($from, $to) {
         $start = microtime(true);
         $rows = [];
         $client = new ClientRepository();
@@ -455,23 +451,23 @@ class ReportController extends Controller
                 "epl_renew" => 0,
                 "certificates" => 0,
             );
-            $siteNew =  $data->where('industry_category_id', $category->id)
-                ->whereBetween('site_submit_date', [$from, $to])
-                ->where('site_count', 0)->count();
-            $siteExtend =  $data->where('industry_category_id', $category->id)
-                ->whereBetween('site_submit_date', [$from, $to])
-                ->where('site_count', '>', 0)->count();
+            $siteNew = $data->where('industry_category_id', $category->id)
+                            ->whereBetween('site_submit_date', [$from, $to])
+                            ->where('site_count', 0)->count();
+            $siteExtend = $data->where('industry_category_id', $category->id)
+                            ->whereBetween('site_submit_date', [$from, $to])
+                            ->where('site_count', '>', 0)->count();
             $eplNew = $data->where('industry_category_id', $category->id)
-                ->whereBetween('epl_submitted_date', [$from, $to])
-                ->where('epl_count', 0)->count();
+                            ->whereBetween('epl_submitted_date', [$from, $to])
+                            ->where('epl_count', 0)->count();
             $eplRenew = $data->where('industry_category_id', $category->id)
-                ->whereBetween('epl_submitted_date', [$from, $to])
-                ->where('epl_count', '>', 0)->count();
+                            ->whereBetween('epl_submitted_date', [$from, $to])
+                            ->where('epl_count', '>', 0)->count();
 
             $eplCertificate = $data->where('industry_category_id', $category->id)
-                ->whereBetween('epl_issue_date', [$from, $to])->count();
+                            ->whereBetween('epl_issue_date', [$from, $to])->count();
             $siteCertificate = $data->where('industry_category_id', $category->id)
-                ->whereBetween('site_issue_date', [$from, $to])->count();
+                            ->whereBetween('site_issue_date', [$from, $to])->count();
 
             $row['sc_new'] = $siteNew;
             $row['sc_extend'] = $siteExtend;
@@ -484,4 +480,5 @@ class ReportController extends Controller
         // dd($rows, $time_elapsed_secs);
         return view('Reports.category_wise_count_report', compact('rows', 'time_elapsed_secs', 'from', 'to'));
     }
+
 }
