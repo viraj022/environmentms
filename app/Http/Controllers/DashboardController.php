@@ -14,23 +14,19 @@ use Illuminate\Support\Facades\Auth;
 use App\Repositories\ClientRepository;
 use App\Repositories\IndustryCategoryRepository;
 
-class DashboardController extends Controller
-{
+class DashboardController extends Controller {
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware(['auth']);
     }
 
-    public function index()
-    {
+    public function index() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         return view('dashboard', ['pageAuth' => $pageAuth]);
     }
 
-    public function renewalChart($from, $to)
-    {
+    public function renewalChart($from, $to) {
         $start = microtime(true);
         $rtn = [];
         $client = new ClientRepository();
@@ -41,7 +37,7 @@ class DashboardController extends Controller
 
         $expireEPL = $this->getEPLExpireGroupMonth($data->whereBetween('epl_expire_date', [$from, $to]));
         $expireSITE = $this->getSiteExpireGroupMonth($data->whereBetween('site_expire_date', [$from, $to]));
-        $expireCount =   getArraySum($expireEPL, $expireSITE);
+        $expireCount = getArraySum($expireEPL, $expireSITE);
         $time_elapsed_secs = round(microtime(true) - $start, 5);
         // dd($siteCount, $eplCount, $newCount);
         $rtn["renew"] = $newCount;
@@ -51,8 +47,8 @@ class DashboardController extends Controller
 
         return $rtn;
     }
-    public function newFIleChart($from, $to)
-    {
+
+    public function newFIleChart($from, $to) {
         $start = microtime(true);
         $rtn = [];
         $client = new ClientRepository();
@@ -67,8 +63,8 @@ class DashboardController extends Controller
 
         return $rtn;
     }
-    public function IssueFileCategory($from, $to)
-    {
+
+    public function IssueFileCategory($from, $to) {
         $start = microtime(true);
         $rtn = [];
         $client = new ClientRepository();
@@ -79,9 +75,9 @@ class DashboardController extends Controller
         $count = [];
         foreach ($categoryRepo->all()->toArray() as $category) {
             $eplCertificate = $data->where('industry_category_id', $category['id'])
-                ->whereBetween('epl_issue_date', [$from, $to])->count();
+                            ->whereBetween('epl_issue_date', [$from, $to])->count();
             $siteCertificate = $data->where('industry_category_id', $category['id'])
-                ->whereBetween('site_issue_date', [$from, $to])->count();
+                            ->whereBetween('site_issue_date', [$from, $to])->count();
             array_push($count, $eplCertificate + $siteCertificate);
             array_push($categories, $category['name']);
         }
@@ -92,8 +88,7 @@ class DashboardController extends Controller
         return $rtn;
     }
 
-    public function getNewJobsByType($from, $to)
-    {
+    public function getNewJobsByType($from, $to) {
         $start = microtime(true);
         $rtn = [];
         $client = new ClientRepository();
@@ -101,11 +96,11 @@ class DashboardController extends Controller
         $types = array("EPL", "Site Clearance", "Tele Communication", "Schedule Waste");
         $eplCount = $data->whereBetween('epl_submitted_date', [$from, $to])->count();
         $siteCount = $data->whereBetween('site_submit_date', [$from, $to])
-            ->where('site_clearance_type', SiteClearance::SITE_CLEARANCE)
-            ->count();
+                ->where('site_clearance_type', SiteClearance::SITE_CLEARANCE)
+                ->count();
         $siteTeleCount = $data->whereBetween('site_submit_date', [$from, $to])
-            ->where('site_clearance_type', SiteClearance::SITE_TELECOMMUNICATION)
-            ->count();
+                ->where('site_clearance_type', SiteClearance::SITE_TELECOMMUNICATION)
+                ->count();
         $scheduleWaste = 0;
         $time_elapsed_secs = round(microtime(true) - $start, 5);
         $rtn["types"] = $types;
@@ -113,8 +108,8 @@ class DashboardController extends Controller
         $rtn["time"] = $time_elapsed_secs;
         return $rtn;
     }
-    private function pradesheyasabaFileCount()
-    {
+
+    private function pradesheyasabaFileCount() {
         $start = microtime(true);
         $rtn = [];
         $client = new ClientRepository();
@@ -124,8 +119,8 @@ class DashboardController extends Controller
         $rtn["time"] = $time_elapsed_secs;
         return $rtn;
     }
-    private function environmentOfficerFileCount()
-    {
+
+    private function environmentOfficerFileCount() {
         $start = microtime(true);
         $rtn = [];
         $client = new ClientRepository();
@@ -135,8 +130,8 @@ class DashboardController extends Controller
         $rtn["time"] = $time_elapsed_secs;
         return $rtn;
     }
-    private function industryCategoryFileCount()
-    {
+
+    private function industryCategoryFileCount() {
         $start = microtime(true);
         $rtn = [];
         $client = new ClientRepository();
@@ -146,8 +141,8 @@ class DashboardController extends Controller
         $rtn["time"] = $time_elapsed_secs;
         return $rtn;
     }
-    private function FileStatusFileCount()
-    {
+
+    private function FileStatusFileCount() {
         $start = microtime(true);
         $rtn = [];
         $client = new ClientRepository();
@@ -158,8 +153,8 @@ class DashboardController extends Controller
         return $rtn;
     }
 
-    public function getDashboardData(Request $request)
-    {
+    public function getDashboardData(Request $request) {
+//        print_r($request);
         $start = microtime(true);
         $rtn = [];
         if ($request->has('renew_chart')) {
@@ -171,7 +166,7 @@ class DashboardController extends Controller
         if ($request->has('new_file_chart')) {
             $from = $request->renew_chart['from'];
             $to = $request->renew_chart['to'];
-            $rtn['new_file_chart'] =  $this->newFIleChart($from, $to);
+            $rtn['new_file_chart'] = $this->newFIleChart($from, $to);
         }
 
         if ($request->has('file_category_chart')) {
@@ -182,7 +177,7 @@ class DashboardController extends Controller
         if ($request->has('new_job_chart')) {
             $from = $request->renew_chart['from'];
             $to = $request->renew_chart['to'];
-            $rtn['new_job_chart'] =  $this->getNewJobsByType($from, $to);
+            $rtn['new_job_chart'] = $this->getNewJobsByType($from, $to);
         }
         if ($request->has('pra_table')) {
 
@@ -190,7 +185,7 @@ class DashboardController extends Controller
         }
         if ($request->has('env_officer_table')) {
 
-            $rtn['env_officer_table'] =  $this->environmentOfficerFileCount();
+            $rtn['env_officer_table'] = $this->environmentOfficerFileCount();
         }
         if ($request->has('industry_category_table')) {
             $from = $request->renew_chart['from'];
@@ -208,10 +203,9 @@ class DashboardController extends Controller
         return $rtn;
     }
 
-    private function getEPlCountGroupMonth($data)
-    {
+    private function getEPlCountGroupMonth($data) {
         // dd($data->toArray());
-        $group =  $data->groupBy(function ($item, $key) {
+        $group = $data->groupBy(function ($item, $key) {
             // dd($item);
             // dd(Carbon::parse($item['epl_submitted_date'])->format('m'));
             return Carbon::parse($item['epl_submitted_date'])->format('m');
@@ -227,9 +221,9 @@ class DashboardController extends Controller
         // dd($count);
         return $count;
     }
-    private function getSiteCountGroupMonth($data)
-    {
-        $group =  $data->groupBy(function ($d) {
+
+    private function getSiteCountGroupMonth($data) {
+        $group = $data->groupBy(function ($d) {
             return Carbon::parse($d->site_submit_date)->format('m');
         });
         $groupCount = $group->map(function ($item, $key) {
@@ -243,11 +237,11 @@ class DashboardController extends Controller
         // dd($d, $time_elapsed_secs);
         return $count;
     }
-    private function getEPLExpireGroupMonth($data)
-    {
+
+    private function getEPLExpireGroupMonth($data) {
 
         // dd($data->toArray());
-        $group =  $data->groupBy(function ($d) {
+        $group = $data->groupBy(function ($d) {
             return Carbon::parse($d->epl_expire_date)->format('m');
         });
         $groupCount = $group->map(function ($item, $key) {
@@ -262,9 +256,9 @@ class DashboardController extends Controller
         // dd($d, $time_elapsed_secs);
         return $count;
     }
-    private function getSiteExpireGroupMonth($data)
-    {
-        $group =  $data->groupBy(function ($d) {
+
+    private function getSiteExpireGroupMonth($data) {
+        $group = $data->groupBy(function ($d) {
             return Carbon::parse($d->site_expire_date)->format('m');
         });
         $groupCount = $group->map(function ($item, $key) {
@@ -279,13 +273,13 @@ class DashboardController extends Controller
         // dd($count);
         return $count;
     }
-    private function getMonths($from, $to)
-    {
+
+    private function getMonths($from, $to) {
         $rtn = [];
-        $start    = (new DateTime($from))->modify('first day of this month');
-        $end      = (new DateTime($to))->modify('first day of next month');
+        $start = (new DateTime($from))->modify('first day of this month');
+        $end = (new DateTime($to))->modify('first day of next month');
         $interval = DateInterval::createFromDateString('1 month');
-        $period   = new DatePeriod($start, $interval, $end);
+        $period = new DatePeriod($start, $interval, $end);
 
         foreach ($period as $dt) {
             array_push($rtn, $dt->format("M"));
@@ -293,4 +287,5 @@ class DashboardController extends Controller
         }
         return $rtn;
     }
+
 }
