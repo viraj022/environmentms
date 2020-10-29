@@ -92,7 +92,7 @@ function newFilesChart(newfile_lable, newfile_data) {
         labels: newfile_lable,
         datasets: [
             {
-                label: 'Digital Goods',
+                label: 'New Files',
                 fill: false,
                 borderWidth: 2,
                 lineTension: 0,
@@ -190,12 +190,12 @@ function newJobsChart(newJobs_lable, newJobs_data) {
     var pieChartCanvas = $('#newJobspieChart').get(0).getContext('2d')
     var pieData = {
         labels: newJobs_lable,
-                datasets: [
-                    {
-                        data: newJobs_data,
-                        backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
-                    }
-                ]
+        datasets: [
+            {
+                data: newJobs_data,
+                backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+            }
+        ]
     }
     var pieOptions = {
         legend: {
@@ -223,13 +223,13 @@ function pradeshiyasabaFileCount(data, callBack) {
     } else {
         $.each(data, function (index, row) {
             tbl += '<tr>';
-            tbl += '<td>' + ++index + '</td>';
-            tbl += '<td>' + row.date + '</td>';
-            tbl += '<td>' + row.count + '</td>';
+//            tbl += '<td>' + ++index + '</td>';
+            tbl += '<td>' + row.name + '</td>';
+            tbl += '<td>' + row.total + '</td>';
             tbl += '</tr>';
         });
     }
-    $('#tblloadOldDataSummer tbody').html(tbl);
+    $('#pradeshiyasabaFileCount_table tbody').html(tbl);
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
         callBack();
     }
@@ -242,13 +242,13 @@ function environmentOfficersFileCount(data, callBack) {
     } else {
         $.each(data, function (index, row) {
             tbl += '<tr>';
-            tbl += '<td>' + ++index + '</td>';
-            tbl += '<td>' + row.date + '</td>';
-            tbl += '<td>' + row.count + '</td>';
+//            tbl += '<td>' + ++index + '</td>';
+            tbl += '<td>' + row.first_name + ' ' + row.last_name + '</td>';
+            tbl += '<td>' + row.total + '</td>';
             tbl += '</tr>';
         });
     }
-    $('#tblloadOldDataSummer tbody').html(tbl);
+    $('#envOfficeFileCount_table tbody').html(tbl);
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
         callBack();
     }
@@ -261,15 +261,29 @@ function industryCategoryCount(data, callBack) {
     } else {
         $.each(data, function (index, row) {
             tbl += '<tr>';
-            tbl += '<td>' + ++index + '</td>';
-            tbl += '<td>' + row.date + '</td>';
-            tbl += '<td>' + row.count + '</td>';
+//            tbl += '<td>' + ++index + '</td>';
+            tbl += '<td>' + row.name + '</td>';
+            tbl += '<td>' + row.total + '</td>';
             tbl += '</tr>';
         });
     }
-    $('#tblloadOldDataSummer tbody').html(tbl);
+    $('#industryCatCount_table tbody').html(tbl);
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
         callBack();
     }
 
+}
+
+function getDashboardData(rep_list, from_to, callBack) {
+    let data = {};
+    $.each(rep_list, function (index, r) {
+        data[r] = {'from': from_to.from, 'to': from_to.to};
+    });
+//    console.log(data);
+//    return false;   
+    ajaxRequest("GET", "api/dashboard", data, function (parameters) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(parameters);
+        }
+    });
 }
