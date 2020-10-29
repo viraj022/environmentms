@@ -114,6 +114,8 @@ class ClientRepository
                  */
                 'eo_users.first_name as officer_first_name',
                 'eo_users.last_name as officer_last_name'
+
+
             )
             ->get();
     }
@@ -141,7 +143,7 @@ class ClientRepository
 
     public function getRowFiles()
     {
-        return FileView::select(
+        $query = FileView::select(
             'name_title as title',
             'first_name as First Name',
             'last_name as Last Name',
@@ -154,40 +156,62 @@ class ClientRepository
             'industry_email as Industry Email',
             'industry_coordinate_x as GPS coordinate(X)',
             'industry_coordinate_y as GPS coordinate(Y) ',
-            '(CASE 
-            WHEN industry_is_industry = "0" THEN "Industry Zone"            
+            \DB::raw(
+                '(CASE 
+            WHEN industry_is_industry = "1" THEN "Industry Zone"            
             ELSE "Normal Zone" 
-            END) as Industry Zone',
-            'industry_is_industry',
-            'industry_investment',
-            'industry_start_date',
-            'industry_registration_no',
-            'industry_sub_category',
-            'business_scale_name',
-            'pradesheeyasaba_name',
-            'zone_name',
-            'epl_code',
-            'epl_issue_date',
-            'epl_expire_date',
-            'epl_submitted_date',
-            'epl_certificate_no',
-            'epl_count',
+            END) as `Industry Zone`'
+            ),
+            'industry_investment as Industry Investment',
+            'industry_start_date  as business Start Date',
+            'industry_registration_no as Business Registration No',
+            'industry_sub_category as Sub Category',
+            'business_scale_name as Scale',
+            'pradesheeyasaba_name as Pradesheeyasaba Name',
+            'zone_name as Zone name',
+            'assistance_first_name as AD First Name',
+            'assistance_last_name as AD Last Name',
+            'officer_first_name as EO First Name',
+            'officer_last_name as EO Last Name',
+            'epl_code as EPL code',
+            \DB::raw(
+                '(CASE 
+            WHEN epl_count = "0" THEN "New"            
+            ELSE "Renew" 
+            END) as `EPL Status`'
+            ),
+            'epl_issue_date as Issue Date',
+            'epl_expire_date as Expire Date',
+            'epl_submitted_date as EPL Submitted Date',
+            'epl_certificate_no as EPL Certificate No',
+            'epl_count as Renew Count',
             'epl_rejected_date',
             'site_code',
-            'site_site_clearance_type',
-            'site_processing_status', //need to convert
-            'site_licence_no',
-            'site_submit_date',
-            'site_issue_date',
-            'site_expire_date',
-            'site_rejected_date',
-            'site_count',
-            'assistance_first_name',
-            'assistance_last_name',
-            'officer_first_name',
-            'officer_last_name'
-        )
-            ->get();
+            \DB::raw(
+                '(CASE 
+            WHEN site_count = "0" THEN "New"            
+            ELSE "Extend" 
+            END) as `Site Status`'
+            ),
+            'site_site_clearance_type as Site Clearance Type',
+            \DB::raw(
+                '(CASE 
+            WHEN site_processing_status = "0" THEN "Pending"  
+            WHEN site_processing_status = "1" THEN "Site Clearance"
+            WHEN site_processing_status = "2" THEN "EIA"   
+            WHEN site_processing_status = "2" THEN "IEE"       
+            ELSE null 
+            END) as `SC Processing Status`'
+            ),
+            'site_submit_date as SC Submit Date',
+            'site_issue_date as SC Issue Date',
+            'site_expire_date as SC Expire Date',
+            'site_rejected_date as SC Rejected Date',
+            'site_count as SC Count'
+
+        );
+        // echo $query->toSql();
+        return  $query->get();
     }
 
     public function fileCountByPradesheeyaSaba()

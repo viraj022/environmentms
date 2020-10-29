@@ -497,9 +497,12 @@ class ReportController extends Controller
 
     public function RowReport()
     {
-
+        $start = microtime(true);
         $client = new ClientRepository();
-        $data = $client->getRowFiles();
-        dd($data->toArray());
+        $rows = $client->getRowFiles()->toArray();
+        $headings = array_keys($rows[0]);
+        $time_elapsed_secs = round(microtime(true) - $start, 5);
+        // dd($headings);
+        return view('Reports.row_file_report', compact('rows', 'time_elapsed_secs', 'headings'));
     }
 }
