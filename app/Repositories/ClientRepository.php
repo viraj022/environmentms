@@ -141,6 +141,57 @@ class ClientRepository
         $file = FileView::all();
     }
 
+    public function getRowFiles()
+    {
+        return FileView::select(
+            'name_title as title',
+            'first_name as First Name',
+            'last_name as Last Name',
+            'address as Address',
+            'contact_no as Contact No',
+            'email as Email',
+            'nic as National ID',
+            'industry_name as Industry Name',
+            'industry_address as Industry Address',
+            'industry_email as Industry Email',
+            'industry_coordinate_x as GPS coordinate(X)',
+            'industry_coordinate_y as GPS coordinate(Y) ',
+            '(CASE 
+            WHEN industry_is_industry = "0" THEN "Industry Zone"            
+            ELSE "Normal Zone" 
+            END) as Industry Zone',
+            'industry_is_industry',
+            'industry_investment',
+            'industry_start_date',
+            'industry_registration_no',
+            'industry_sub_category',
+            'business_scale_name',
+            'pradesheeyasaba_name',
+            'zone_name',
+            'epl_code',
+            'epl_issue_date',
+            'epl_expire_date',
+            'epl_submitted_date',
+            'epl_certificate_no',
+            'epl_count',
+            'epl_rejected_date',
+            'site_code',
+            'site_site_clearance_type',
+            'site_processing_status', //need to convert
+            'site_licence_no',
+            'site_submit_date',
+            'site_issue_date',
+            'site_expire_date',
+            'site_rejected_date',
+            'site_count',
+            'assistance_first_name',
+            'assistance_last_name',
+            'officer_first_name',
+            'officer_last_name'
+        )
+            ->get();
+    }
+
     public function fileCountByPradesheeyaSaba()
     {
         return Client::join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')

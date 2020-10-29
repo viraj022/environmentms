@@ -195,13 +195,15 @@ class DashboardController extends Controller
         if ($request->has('industry_category_table')) {
             $from = $request->renew_chart['from'];
             $to = $request->renew_chart['to'];
-            $rtn['industry_category_table'] = $this->environmentOfficerFileCount();
+            $rtn['industry_category_table'] = $this->industryCategoryFileCount();
         }
         if ($request->has('file_status_lable')) {
 
             $rtn['file_status_lable'] = $this->FileStatusFileCount();
         }
         $time_elapsed_secs = round(microtime(true) - $start, 5);
+        $mytime = Carbon::now();
+        $rtn["request_time"] = $mytime->toDateTimeString();
         $rtn["time"] = $time_elapsed_secs;
         return $rtn;
     }

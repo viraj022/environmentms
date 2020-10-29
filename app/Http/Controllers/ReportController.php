@@ -484,4 +484,12 @@ class ReportController extends Controller
         // dd($rows, $time_elapsed_secs);
         return view('Reports.category_wise_count_report', compact('rows', 'time_elapsed_secs', 'from', 'to'));
     }
+
+    public function RowReport()
+    {
+
+        $client = new ClientRepository();
+        $data = $client->getRowFiles();
+        dd($data->toArray());
+    }
 }

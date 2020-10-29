@@ -54,4 +54,9 @@ Route::get('/ep_inspection_report/{eo_id}/{from}/{to}', 'ReportController@eoInsp
  * to : to date 2020-05-05
  */
 Route::get('/category_count_report/{from}/{to}', 'ReportController@categoryWiseCountReport');
+
+
+
+
+Route::get('/row_report', 'ReportController@RowReport');
 // Route::get('/testReportMul', 'ReportController@test');
