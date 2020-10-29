@@ -23,7 +23,7 @@
     </div> /.container-fluid 
 </div>-->
 <!-- /.content-header -->
-
+<link href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
@@ -255,7 +255,7 @@
                         </div>
                     </div>
                     <!-- /.card-header -->
-                    <div class="card-body p-0">
+                    <div class="card-body">
                         <div class="table-responsive">
                             <table id="pradeshiyasabaFileCount_table" class="table m-0">
                                 <thead>
@@ -300,7 +300,7 @@
                         </div>
                     </div>
                     <!-- /.card-header -->
-                    <div class="card-body p-0">
+                    <div class="card-body">
                         <div class="table-responsive">
                             <table id="envOfficeFileCount_table" class="table m-0">
                                 <thead>
@@ -356,7 +356,7 @@
                                 </div>
                             </div>
                             <!-- /.card-header -->
-                            <div class="card-body p-0">
+                            <div class="card-body">
                                 <div class="table-responsive">
                                     <table id="industryCatCount_table" class="table m-0">
                                         <thead>
@@ -510,7 +510,8 @@
 <!-- PAGE SCRIPTS -->
 <script src="dist/js/pages/dashboard3.js"></script>
 <script src="../../js/DashboardJS/main_dashboard_script.js" type="text/javascript"></script>
-
+<script src="plugins/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
 
 <script>
 //    renew_chart, new_file_chart, file_category_chart, new_job_chart, pra_table, env_officer_table, industry_category_table, file_status_lable
