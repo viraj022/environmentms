@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Repositories\ClientRepository;
 use App\ReportTemplate\SummaryTemplate;
 use App\Repositories\FileLogRepository;
+use Illuminate\Support\Facades\Storage;
 use App\Repositories\CommitteeRepository;
 use App\Repositories\SiteClearenceRepository;
 use App\ReportTemplate\ReportTemplateMultiCell;
@@ -816,5 +817,35 @@ class ReportController extends Controller
         }
         $fpdf->Output();
         exit;
+    }
+
+    public function downloadContents(Client $client)
+    {
+        // dd($client);
+        $zip_file = 'environment_authority/attachments_of_' . $client->industry_name . 'zip';
+        $zip = new \ZipArchive();
+        $zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+
+        // $path = storage_path(FieUploadController::getClientFolderPath($client));
+        $path =  "storage/uploads/" . FieUploadController::getClientFolderPath($client);
+        // dd($path);
+        $files = Storage::allFiles("public/uploads/industry_files/" . $client->id);
+        // $files = Storage::allFiles("uploads/" . FieUploadController::getClientFolderPath($client));
+        // dd($files);
+        $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
+        foreach ($files as $name => $file) {
+            // dd($file->getPath());
+            // We're skipping all subfolders
+            if (file_exists($file) && is_file($file)) {
+                $filePath     = $file->getRealPath();
+                // dd($filePath);
+                $relativePath =  substr($file->getPath(), strlen("storage/uploads/industry_files/"));
+                // dd($relativePath);
+
+                $zip->addFile($filePath, $relativePath);
+            }
+        }
+        $zip->close();
+        return response()->download($zip_file);
     }
 }

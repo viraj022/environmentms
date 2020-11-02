@@ -56,9 +56,17 @@ Route::get('/ep_inspection_report/{eo_id}/{from}/{to}', 'ReportController@eoInsp
 Route::get('/category_count_report/{from}/{to}', 'ReportController@categoryWiseCountReport');
 
 
-
+/**
+ * Field Officer Inspection Log 
+ */
 
 Route::get('/get_row_data', 'ReportController@RowReport');
 
+/**
+ * Field Officer Inspection Log 
+ * id file_id/client id
+ */
 Route::get('/file_summary/{id}', 'ReportController@fileSummary');
 // Route::get('/testReportMul', 'ReportController@test');
+
+Route::get('/attachments/{client}', 'ReportController@downloadContents');
