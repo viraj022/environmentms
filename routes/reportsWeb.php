@@ -58,5 +58,7 @@ Route::get('/category_count_report/{from}/{to}', 'ReportController@categoryWiseC
 
 
 
-Route::get('/row_report', 'ReportController@RowReport');
+Route::get('/get_row_data', 'ReportController@RowReport');
+
+Route::get('/file_summary/{id}', 'ReportController@fileSummary');
 // Route::get('/testReportMul', 'ReportController@test');

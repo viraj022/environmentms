@@ -40,6 +40,10 @@ class Client extends Model
         {
                 return $this->hasMany(SiteClearenceSession::class);
         }
+        public function committees()
+        {
+                return $this->hasMany(Committee::class);
+        }
         public function transactions()
         {
                 return $this->hasMany(Transaction::class);
@@ -47,6 +51,10 @@ class Client extends Model
         public function inspectionSessions()
         {
                 return $this->hasMany(InspectionSession::class);
+        }
+        public function fileLogs()
+        {
+                return $this->hasMany(FileLog::class);
         }
         public function oldFiles()
         {
@@ -133,7 +141,7 @@ class Client extends Model
 
         public function minutes()
         {
-                return $this->hasMany(Minute::class);
+                return $this->hasMany(Minute::class, 'file_id');
         }
 
         public function resetFile()

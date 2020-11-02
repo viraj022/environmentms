@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use Carbon\Carbon;
 use App\SiteClearance;
 use Carbon\CarbonPeriod;
 use App\Repositories\EPLRepository;
+use Illuminate\Support\Facades\Auth;
+use App\Repositories\ClientRepository;
+use App\ReportTemplate\SummaryTemplate;
 use App\Repositories\FileLogRepository;
 use App\Repositories\CommitteeRepository;
 use App\Repositories\SiteClearenceRepository;
 use App\ReportTemplate\ReportTemplateMultiCell;
+use App\Repositories\IndustryCategoryRepository;
 use App\Repositories\InspectionSessionRepository;
 use App\Repositories\AssistanceDirectorRepository;
-use App\Repositories\ClientRepository;
 use App\Repositories\EnvironmentOfficerRepository;
-use App\Repositories\IndustryCategoryRepository;
-use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
@@ -504,5 +506,315 @@ class ReportController extends Controller
         $time_elapsed_secs = round(microtime(true) - $start, 5);
         // dd($headings);
         return view('Reports.row_file_report', compact('rows', 'time_elapsed_secs', 'headings'));
+    }
+
+
+    public function fileSummary($id)
+    {
+        $clientRepo = new ClientRepository();
+        $file = $clientRepo->find($id);
+        // dd($file->fileLogs->toArray());
+        // dd($file->toArray());
+        // dd($file->businessScale['name']);
+
+        // $data = [];
+        // $num = 0;
+
+        // dd($data);
+        $fpdf =  new SummaryTemplate('p', 'mm', 'A4', 'File Summary');
+        $splitSize = $fpdf->GetPageWidth() / 2 - 10;
+        $fpdf->AddPage();
+        $fpdf->SetFont('Times', '', 12);
+        $fpdf->Cell(0, 7, "Site Code: " . $file->code_site, 0, 2);
+        $fpdf->Cell(0, 7, "EPL Code: " . $file->code_epl, 0, 2);
+        $fpdf->SetFont('Times', 'B', 14);
+        $fpdf->Cell($splitSize, 10, "Client Details"); // client
+        $fpdf->Cell($splitSize, 10, " Industry Details", 'L'); // industry
+        $fpdf->SetFont('Times', '', 12);
+        $fpdf->ln();
+        $fpdf->Cell($splitSize, 7, "Name: " . $file->name_title . " " . $file->first_name . " " . $file->last_name); // client
+        $fpdf->Cell($splitSize, 7, " Name : " . $file->industry_name, 'L'); // industry
+        $fpdf->ln();
+        $fpdf->Cell($splitSize, 7, "Contact No: " . $file->contact_no); // client
+        $fpdf->Cell($splitSize, 7, " Contact No: " . $file->industry_contact_no, 'L'); // industry
+        $fpdf->ln();
+        $fpdf->Cell($splitSize, 7, "Email: " . $file->email); // client
+        $fpdf->Cell($splitSize, 7, " Email" . $file->industry_email, 'L'); // industry
+        $fpdf->ln();
+        $fpdf->Cell($splitSize, 7, "NIC: " . $file->nic); // client
+        $fpdf->Cell($splitSize, 7, " GPS (X) : " . $file->industry_coordinate_x, 'L'); // industry
+        $fpdf->ln();
+        $fpdf->Cell($splitSize, 7, "Address: " . $file->address); // client
+        $fpdf->Cell($splitSize, 7, " GPS (Y) : " . $file->industry_coordinate_y, 'L'); // industry
+        $fpdf->ln();
+        $fpdf->Cell($splitSize, 7, ""); // client
+        $fpdf->Cell($splitSize, 7, " Address: " . $file->industry_address, 'L'); // industry
+        $fpdf->ln(15);
+        $fpdf->SetFont('Times', 'B', 14);
+        $fpdf->Cell(null, 10, "Other Details", 0, 2);
+        $fpdf->SetFont('Times', '', 12);
+        $fpdf->Cell(null, 7, "Business Scale : " . $file->businessScale['name'], 0, 2);
+        $fpdf->Cell(null, 7, "Industry Category : " . $file->industryCategory['name'], 0, 2);
+        $fpdf->Cell(null, 7, "Sub Category : " . $file->industry_sub_category, 0, 2);
+        $fpdf->Cell(null, 7, "Pradesheeyasaba : " . $file->pradesheeyasaba['name'], 0, 2);
+        $fpdf->Cell(null, 7, "Zone : " . $file->pradesheeyasaba['zone']['name'], 0, 2);
+        $fpdf->Cell(null, 7, "Environment Officer : " . $file->environmentOfficer['user']['first_name'] . " " . $file->environmentOfficer['user']['last_name'], 0, 2);
+        $fpdf->Cell(null, 7, "Assistance Director : " . $file->environmentOfficer['assistantDirector']['user']['first_name'] . " " . $file->environmentOfficer['user']['last_name'], 0, 2);
+        $fpdf->SetFont('Times', 'B', 14);
+        $fpdf->Cell(null, 10, "Site Clearence", 0, 2);
+        $fpdf->SetFont('Times', '', 12);
+        $j = 1;
+        if (count($file->siteClearenceSessions) > 0) {
+            foreach ($file->siteClearenceSessions as $sc) {
+                $fpdf->Cell(null, 7, $j++ . ")", 0, 2);
+                $fpdf->Cell(null, 7, "Site Clearence Code : " . $sc['code'], 0, 2);
+                $fpdf->Cell(null, 7, "Site Clearence Type : " . $sc['site_clearance_type'], 0, 2);
+                switch ($sc['processing_status']) {
+                    case 1:
+                        $pStatus = "Site Clearence";
+                        break;
+                    case 2:
+                        $pStatus = "EIA";
+                        break;
+                    case 2:
+                        $pStatus = "IEE";
+                        break;
+                    default:
+                        $pStatus = "N/A";
+                }
+                $fpdf->Cell(null, 7, "Site Clearence Processing Type : " .  $pStatus, 0, 2);
+                if (count($sc->siteClearances) > 0) {
+                    $fpdf->SetFont('Times', 'B', 11);
+                    $fpdf->Cell(10, 7, "#", 1, 0, 'C');
+                    $fpdf->Cell(20, 7, "Extension", 1, 0, 'C');
+                    $fpdf->Cell(30, 7, "Extension Count", 1, 0, 'C');
+                    $fpdf->Cell(25, 7, "Status", 1, 0, 'C');
+                    $fpdf->Cell(25, 7, "Submit Date", 1, 0, 'C');
+                    $fpdf->Cell(25, 7, "Issue Date", 1, 0, 'C');
+                    $fpdf->Cell(25, 7, "Expire Date", 1, 0, 'C');
+                    $fpdf->Cell(25, 7, "Rejected Date", 1, 0, 'C');
+                    $fpdf->ln();
+                    $fpdf->SetFont('Times', '', 11);
+                    $i = 1;
+
+                    foreach ($sc->siteClearances as $s) {
+                        if ($s['count'] == 1) {
+                            $extension = "New";
+                        } else {
+                            $extension = "Extend";
+                        }
+                        switch ($s['status']) {
+                            case 0:
+                                $status = "Pending";
+                                break;
+                            case 1:
+                                $status = "Issued";
+                                break;
+                            case -1:
+                                $status = "Rejected";
+                                break;
+                            default:
+                                $status = "N/A";
+                        }
+                        $fpdf->Cell(10, 7, $i++, 1, 0, 'C');
+                        $fpdf->Cell(20, 7, $extension, 1, 0, 'C');
+                        $fpdf->Cell(30, 7, $s['count'], 1, 0, 'C');
+                        $fpdf->Cell(25, 7, $status, 1, 0, 'C');
+                        $fpdf->Cell(25, 7, Carbon::parse($s['submit_date'])->format('Y-m-d'), 1, 0, 'C');
+                        $fpdf->Cell(25, 7, Carbon::parse($s['issue_date'])->format('Y-m-d'), 1, 0, 'C');
+                        $fpdf->Cell(25, 7, Carbon::parse($s['expire_date'])->format('Y-m-d'), 1, 0, 'C');
+                        $fpdf->Cell(25, 7, Carbon::parse($s['rejected_date'])->format('Y-m-d'), 1, 0, 'C');
+                        $fpdf->ln();
+                    }
+                }
+                $fpdf->ln(5);
+            }
+        } else {
+            $fpdf->SetFont('Times', 'B', 14);
+            $fpdf->Cell(null, 10, "No Site Clearances Found For this File", 0, 2);
+        }
+        $fpdf->AddPage();
+        $fpdf->SetFont('Times', 'B', 14);
+        $fpdf->Cell(null, 10, "Environment Protection License", 0, 2);
+        if (count($file->epls) > 0) {
+            $fpdf->SetFont('Times', '', 12);
+            $fpdf->Cell(null, 10, "EPL Code : " . $file->epls[0]['code'], 0, 2);
+            $j = 1;
+            $fpdf->SetFont('Times', 'B', 11);
+            $fpdf->Cell(10, 7, "#", 1, 0, 'C');
+            $fpdf->Cell(25, 7, "Certificate No", 1, 0, 'C');
+            $fpdf->Cell(30, 7, "Renewal Count", 1, 0, 'C');
+            $fpdf->Cell(25, 7, "Status", 1, 0, 'C');
+            $fpdf->Cell(25, 7, "Submit Date", 1, 0, 'C');
+            $fpdf->Cell(25, 7, "Issue Date", 1, 0, 'C');
+            $fpdf->Cell(25, 7, "Expire Date", 1, 0, 'C');
+            $fpdf->Cell(25, 7, "Rejected Date", 1, 0, 'C');
+            $fpdf->ln();
+            $fpdf->SetFont('Times', '', 11);
+            $i = 1;
+            foreach ($file->epls as  $epl) {
+                if ($epl['count'] == 0) {
+                    $count = "New";
+                } else {
+                    $count = "R" . $epl['count'];
+                }
+                switch ($epl['status']) {
+                    case 0:
+                        $status = "Pending";
+                        break;
+                    case 1:
+                        $status = "Issued";
+                        break;
+                    case -1:
+                        $status = "Rejected";
+                        break;
+                    default:
+                        $status = "N/A";
+                }
+                $fpdf->Cell(10, 7, $i++, 1, 0, 'C');
+                $fpdf->Cell(25, 7, $epl['certificate_no'], 1, 0, 'C');
+                $fpdf->Cell(30, 7, $count, 1, 0, 'C');
+                $fpdf->Cell(25, 7, $status, 1, 0, 'C');
+                $fpdf->Cell(25, 7, Carbon::parse($epl['submitted_date'])->format('Y-m-d'), 1, 0, 'C');
+                $fpdf->Cell(25, 7, Carbon::parse($epl['issue_date'])->format('Y-m-d'), 1, 0, 'C');
+                $fpdf->Cell(25, 7, Carbon::parse($epl['expire_date'])->format('Y-m-d'), 1, 0, 'C');
+                $fpdf->Cell(25, 7, Carbon::parse($epl['rejected_date'])->format('Y-m-d'), 1, 0, 'C');
+                $fpdf->ln();
+            }
+        } else {
+            $fpdf->SetFont('Times', 'B', 14);
+            $fpdf->Cell(null, 10, "No Environment Protection License Found For this File", 0, 2);
+        }
+        $fpdf->ln(10);
+        $fpdf->SetFont('Times', 'B', 14);
+        $fpdf->Cell(null, 10, "Transactions", 0, 2);
+        if (count($file->transactions) > 0) {
+            $p = 1;
+            $fpdf->SetFont('Times', '', 12);
+            foreach ($file->transactions as  $transaction) {
+                if ($transaction['status'] > 0) {
+                    $fpdf->Cell(null, 7, $p++ . ")", 0, 2);
+                    $fpdf->Cell(null, 7, "Invoice No : " . $transaction['invoice_no'], 0, 2);
+                    $fpdf->Cell(null, 7, "Billed At : " . Carbon::parse($transaction['billed_at'])->format('Y-m-d'), 0, 2);
+                    if ($transaction['status'] == 3) {
+                        $fpdf->Cell(null, 7, "Cancelled At : " . Carbon::parse($transaction['canceled_at'])->format('Y-m-d'), 0, 2);
+                    }
+                    $fpdf->Cell(null, 7, "Net Amount : " .  number_format($transaction['net_total']), 0, 2);
+                    $fpdf->Cell(null, 7, "Cashier Name : " . $transaction['cashier_name'], 0, 2);
+                    $fpdf->SetFont('Times', '', 12);
+
+                    $fpdf->SetFont('Times', 'B', 11);
+                    $fpdf->Cell(25, 7, "#", 1, 0, 'C');
+                    $fpdf->Cell(100, 7, "Payment Type", 1, 0, 'C');
+                    $fpdf->Cell(50, 7, "Amount", 1, 0, 'C');
+                    $fpdf->ln();
+                    $fpdf->SetFont('Times', '', 11);
+                    $i = 1;
+                    foreach ($transaction->transactionItems as  $items) {
+                        $fpdf->Cell(25, 7, $i++, 1, 0, 'C');
+                        // dd($items['payment']['paymentType']);
+                        $fpdf->Cell(100, 7, $items['payment']['paymentType']['name'], 1, 0, 'L');
+                        $fpdf->Cell(50, 7, number_format($items['amount'], 2), 1, 0, 'R');
+                        $fpdf->ln();
+                    }
+                }
+            }
+        } else {
+            $fpdf->SetFont('Times', 'B', 14);
+            $fpdf->Cell(null, 10, "No Transactions Found For this File", 0, 2);
+        }
+        $fpdf->ln(10);
+        $fpdf->SetFont('Times', 'B', 14);
+        $fpdf->Cell(null, 10, "Inspections", 0, 2);
+        if (count($file->inspectionSessions) > 0) {
+            $fpdf->SetFont('Times', 'B', 11);
+            $fpdf->Cell(10, 7, "#", 1, 0, 'C');
+            $fpdf->Cell(50, 7, "Schedule Date", 1, 0, 'C');
+            $fpdf->Cell(50, 7, "Completed Date", 1, 0, 'C');
+            $fpdf->Cell(70, 7, "Environment Officer", 1, 0, 'C');
+            $fpdf->ln();
+            $fpdf->SetFont('Times', '', 11);
+            $i = 1;
+            foreach ($file->inspectionSessions as  $inspection) {
+                $fpdf->Cell(10, 7, $i++, 1, 0, 'C');
+                $fpdf->Cell(50, 7, Carbon::parse($inspection->schedule_date)->format('Y-m-d'), 1, 0, 'C');
+                $fpdf->Cell(50, 7, Carbon::parse($inspection->completed_at)->format('Y-m-d'), 1, 0, 'C');
+                // dd($inspection->environmentOfficer->user->first_name);
+                $fpdf->Cell(70, 7, $inspection->environmentOfficer->user->first_name . " " . $inspection->environmentOfficer->user->last_name, 1, 0, 'L');
+                $fpdf->ln();
+            }
+        } else {
+            $fpdf->SetFont('Times', 'B', 14);
+            $fpdf->Cell(null, 10, "No Inspections Found For this File", 0, 2);
+        }
+        $fpdf->ln(10);
+        $fpdf->SetFont('Times', 'B', 14);
+        $fpdf->Cell(null, 10, "Committees", 0, 2);
+        if (count($file->inspectionSessions) > 0) {
+            $fpdf->SetFont('Times', '', 12);
+            $j = 1;
+            foreach ($file->committees as  $committees) {
+                $fpdf->Cell(null, 7, $j++ . ")", 0, 2);
+                $fpdf->Cell(null, 5, "Schedule Date : " . $committees->schedule_date, 0, 2);
+                $fpdf->Cell(null, 7, "Description : " . $committees->remark, 0, 2);
+                $fpdf->SetFont('Times', 'B', 11);
+                $fpdf->Cell(null, 5, "Members : ", 0, 2);
+                $fpdf->SetFont('Times', '', 11);
+                foreach ($committees->commetyPool as  $pool) {
+                    $fpdf->Cell(null, 5, $pool->first_name . " " . $pool->last_name, 0, 2);
+                }
+                $fpdf->ln(5);
+            }
+        } else {
+            $fpdf->SetFont('Times', 'B', 14);
+            $fpdf->Cell(null, 10, "No Committees Found For this File", 0, 2);
+        }
+        $fpdf->ln(5);
+        $fpdf->SetFont('Times', 'B', 14);
+        $fpdf->Cell(null, 10, "Minutes", 0, 2);
+        if (count($file->minutes) > 0) {
+
+            foreach ($file->minutes as  $minutes) {
+                $fpdf->SetFont('Times', '', 12);
+                $fpdf->Cell($splitSize - 5, 5, "Name : " . $minutes->user->first_name . " " . $minutes->user->last_name, 0, 0);
+                $fpdf->Cell($splitSize, 5, "Minute Date : " . Carbon::parse($minutes['created_at'])->format('Y-m-d'), 0, 0);
+                $fpdf->ln();
+                $fpdf->Cell(null, 1, '', 'B', 2);
+                $fpdf->ln();
+                $fpdf->SetFont('Times', 'B', 11);
+                $fpdf->Cell(null, 5, "Description : ", 0, 2);
+                $fpdf->SetFont('Times', '', 11);
+                $fpdf->MultiCell(null, 10, $minutes->minute_description, 0, 2);
+            }
+        } else {
+            $fpdf->SetFont('Times', 'B', 14);
+            $fpdf->Cell(null, 10, "No Committees Found For this File", 0, 2);
+        }
+        $fpdf->AddPage();
+        $fpdf->SetFont('Times', 'B', 14);
+        $fpdf->Cell(null, 10, "File Activity Log (System Log)", 0, 2);
+        $fpdf->SetFont('Times', 'B', 11);
+        $fpdf->Cell(10, 7, "#", 1, 0, 'C');
+        $fpdf->Cell(30, 7, "Date", 1, 0, 'C');
+        $fpdf->Cell(50, 7, "User", 1, 0, 'C');
+        $fpdf->Cell(90, 7, "Description", 1, 0, 'C');
+        $fpdf->ln();
+        $fpdf->SetFont('Times', '', 11);
+        $i = 1;
+        foreach ($file->fileLogs as $fileLog) {
+            $fpdf->Cell(10, 7, $i++, 1, 0, 'C');
+            $fpdf->Cell(30, 7, Carbon::parse($fileLog['created_at'])->format('Y-m-d'), 1, 0, 'C');
+            // dd($fileLog->user->last_name);
+            if ($fileLog->user) {
+
+                $fpdf->Cell(50, 7, $fileLog->user->first_name . " " . $fileLog->user->last_name, 1, 0, 'L');
+            } else {
+                $fpdf->Cell(50, 7, "N/A", 1, 0, 'L');
+            }
+            $fpdf->Cell(90, 7, $fileLog->description, 1, 0, 'L');
+            $fpdf->ln();
+        }
+        $fpdf->Output();
+        exit;
     }
 }

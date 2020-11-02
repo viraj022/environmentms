@@ -75,6 +75,7 @@ class ClientRepository
                 'clients.*',
                 'business_scales.name as business_scale_name',
                 'pradesheeyasabas.name as pradesheeyasaba_name',
+                'industry_categories.name as category_name',
                 'zones.name as zone_name',
                 /**
                  * epl set
@@ -166,6 +167,7 @@ class ClientRepository
             'industry_start_date  as business Start Date',
             'industry_registration_no as Business Registration No',
             'industry_sub_category as Sub Category',
+            'category_name as Category',
             'business_scale_name as Scale',
             'pradesheeyasaba_name as Pradesheeyasaba Name',
             'zone_name as Zone name',
@@ -245,5 +247,22 @@ class ClientRepository
             ->groupBy('file_status')
             ->orderBy('file_status')
             ->get();
+    }
+
+    public function find($id)
+    {
+        return Client::with('businessScale')
+            ->with('industryCategory')
+            ->with('pradesheeyasaba.zone')
+            ->with('environmentOfficer.user')
+            ->with('environmentOfficer.assistantDirector.user')
+            ->with('siteClearenceSessions.siteClearances')
+            ->with('epls')
+            ->with('transactions.transactionItems.payment.paymentType')
+            ->with('inspectionSessions.environmentOfficer.user')
+            ->with('committees.commetyPool')
+            ->with('minutes.user')
+            ->with('fileLogs.user')
+            ->findOrFail($id);
     }
 }
