@@ -599,7 +599,7 @@ class ReportController extends Controller
                     $i = 1;
 
                     foreach ($sc->siteClearances as $s) {
-                        if ($s['count'] == 1) {
+                        if ($s['count'] == 0) {
                             $extension = "New";
                         } else {
                             $extension = "Extend";
