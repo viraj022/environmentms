@@ -230,6 +230,7 @@ function pradeshiyasabaFileCount(data, callBack) {
         });
     }
     $('#pradeshiyasabaFileCount_table tbody').html(tbl);
+    $('#pradeshiyasabaFileCount_table').DataTable();
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
         callBack();
     }
@@ -249,6 +250,7 @@ function environmentOfficersFileCount(data, callBack) {
         });
     }
     $('#envOfficeFileCount_table tbody').html(tbl);
+    $('#envOfficeFileCount_table').DataTable();
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
         callBack();
     }
@@ -268,6 +270,7 @@ function industryCategoryCount(data, callBack) {
         });
     }
     $('#industryCatCount_table tbody').html(tbl);
+     $('#industryCatCount_table').DataTable();
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
         callBack();
     }
