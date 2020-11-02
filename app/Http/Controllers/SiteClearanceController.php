@@ -217,7 +217,7 @@ class SiteClearanceController extends Controller
             $siteClearance = new SiteClearance();
             $siteClearance->submit_date = $request->submit_date;
             $siteClearance->site_clearence_session_id = $siteSessions->id;
-            $siteClearance->count = 1;
+            $siteClearance->count = 0;
             // upload file
             if ($request->file('file') != null) {
                 $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
