@@ -57,7 +57,7 @@ Route::get('/category_count_report/{from}/{to}', 'ReportController@categoryWiseC
 
 
 /**
- * Field Officer Inspection Log 
+ * get row data set of all files
  */
 
 Route::get('/get_row_data', 'ReportController@RowReport');
@@ -67,6 +67,11 @@ Route::get('/get_row_data', 'ReportController@RowReport');
  * id file_id/client id
  */
 Route::get('/file_summary/{id}', 'ReportController@fileSummary');
+
 // Route::get('/testReportMul', 'ReportController@test');
+/**
+ * download all attachments of a file to a zip drive
+ * client: client_id
+ */
 
 Route::get('/attachments/{client}', 'ReportController@downloadContents');
