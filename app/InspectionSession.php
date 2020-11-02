@@ -29,7 +29,10 @@ class InspectionSession extends Model
     {
         return $this->hasMany(InspectionPersonal::class);
     }
-
+    public function environmentOfficer()
+    {
+        return $this->belongsTo(EnvironmentOfficer::class);
+    }
 
     public function client()
     {

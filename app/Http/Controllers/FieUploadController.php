@@ -17,6 +17,11 @@ class FieUploadController extends Controller
         // dd($epl->id);
         return  FieUploadController::BASE_PATH . "/" . $epl->client_id . "/epl/" . $epl->id;
     }
+    public static function getClientFolderPath(Client $client)
+    {
+        // dd($epl->id);
+        return  FieUploadController::BASE_PATH . "/" . $client->id;
+    }
     public static function getSiteClearanceFoldersPath(SiteClearenceSession $site)
     {
         return  FieUploadController::BASE_PATH . "/" . $site->client_id . "/site_clearance/" . $site->id;

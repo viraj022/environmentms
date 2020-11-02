@@ -23,7 +23,7 @@
     </div> /.container-fluid 
 </div>-->
 <!-- /.content-header -->
-
+<link href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
@@ -35,8 +35,8 @@
                     <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
 
                     <div class="info-box-content">
-                        <span class="info-box-text">New Files</span>
-                        <span class="info-box-number">
+                        <span class="info-box-text pending">New Files</span>
+                        <span class="info-box-number pending_count">
                             22
                             <small></small>
                         </span>
@@ -51,8 +51,8 @@
                     <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
 
                     <div class="info-box-content">
-                        <span class="info-box-text">Old Files</span>
-                        <span class="info-box-number">41,410</span>
+                        <span class="info-box-text ad_approve">Old Files</span>
+                        <span class="info-box-number ad_approve_count">41,410</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -68,8 +68,8 @@
                     <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
 
                     <div class="info-box-content">
-                        <span class="info-box-text">Total Inspections</span>
-                        <span class="info-box-number">760</span>
+                        <span class="info-box-text ad_approval">Total Inspections</span>
+                        <span class="info-box-number ad_approval_count">760</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -133,7 +133,7 @@
                 </div>
 
                 <!-- solid sales graph -->
-                <div class="card bg-gradient-info">
+                <div class="card bg-gradient-dark">
                     <div class="card-header border-0">
                         <h3 class="card-title">
                             <i class="fas fa-th mr-1"></i>
@@ -255,7 +255,7 @@
                         </div>
                     </div>
                     <!-- /.card-header -->
-                    <div class="card-body p-0">
+                    <div class="card-body">
                         <div class="table-responsive">
                             <table id="pradeshiyasabaFileCount_table" class="table m-0">
                                 <thead>
@@ -300,7 +300,7 @@
                         </div>
                     </div>
                     <!-- /.card-header -->
-                    <div class="card-body p-0">
+                    <div class="card-body">
                         <div class="table-responsive">
                             <table id="envOfficeFileCount_table" class="table m-0">
                                 <thead>
@@ -356,7 +356,7 @@
                                 </div>
                             </div>
                             <!-- /.card-header -->
-                            <div class="card-body p-0">
+                            <div class="card-body">
                                 <div class="table-responsive">
                                     <table id="industryCatCount_table" class="table m-0">
                                         <thead>
@@ -484,28 +484,6 @@
 @endsection
 
 @section('pageScripts')
-<!-- ChartJS -->
-<!--<script src="/plugins/chart.js/Chart.min.js"></script>-->
-<!-- Sparkline -->
-<!--<script src="/plugins/sparklines/sparkline.js"></script>
- JQVMap 
-<script src="/plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
- jQuery Knob Chart 
-<script src="/plugins/jquery-knob/jquery.knob.min.js"></script>
- daterangepicker 
-<script src="/plugins/moment/moment.min.js"></script>
-<script src="/plugins/daterangepicker/daterangepicker.js"></script>
- Tempusdominus Bootstrap 4 
-<script src="/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
- Summernote 
-<script src="/plugins/summernote/summernote-bs4.min.js"></script>
- overlayScrollbars 
-<script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
- AdminLTE App 
-<script src="/dist/js/adminlte.js"></script>
- AdminLTE dashboard demo (This is only for demo purposes) 
-<script src="dist/js/pages/dashboard2.js"></script>-->
 
 
 <!-- REQUIRED SCRIPTS -->
@@ -532,35 +510,64 @@
 <!-- PAGE SCRIPTS -->
 <script src="dist/js/pages/dashboard3.js"></script>
 <script src="../../js/DashboardJS/main_dashboard_script.js" type="text/javascript"></script>
-
+<script src="plugins/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
 
 <script>
-
-    //--EPL Renewal Chart Open--//
-    var lable = ['18th', '20th', '22nd', '24th', '26th', '28th', '30th'];
-    var line1 = [100, 120, 170, 167, 180, 177, 160];
-    var line2 = [60, 80, 70, 67, 80, 77, 100];
-    eplRenewalChart(lable, line1, line2);
-    //--EPL Renewal Chart END--//
+//    renew_chart, new_file_chart, file_category_chart, new_job_chart, pra_table, env_officer_table, industry_category_table, file_status_lable
+    getDashboardData(['renew_chart', 'new_file_chart', 'pra_table', 'industry_category_table', 'env_officer_table'], {from: '2020-01-01', to: '2020-12-31'}, function (p) {
+        //--EPL Renewal Chart Open--//
+        eplRenewalChart(p.renew_chart.months, p.renew_chart.renew, p.renew_chart.expire);
+        //--EPL Renewal Chart END--//
 
 //--NEW FILES Chart Open--//
-    var newfile_lable = ['2011 Q1', '2011 Q2', '2011 Q3', '2011 Q4', '2012 Q1', '2012 Q2', '2012 Q3', '2012 Q4', '2013 Q1', '2013 Q2'];
-    var newfile_data = [2666, 2778, 4912, 3767, 6810, 5670, 4820, 15073, 10687, 8432];
-    newFilesChart(newfile_lable, newfile_data);
-    //--NEW FILES Chart END--//
+        newFilesChart(p.new_file_chart.months, p.new_file_chart.new);
+        //--NEW FILES Chart END--//
 
-//--File Category Chart Open--//
-    var fileCat_lable = [
-        'Chrome',
-        'IE',
-        'FireFox',
-        'Safari',
-        'Opera',
-        'Navigator',
-    ];
-    var fileCat_data = [700, 500, 400, 600, 300, 100];
-    fileCategoryChart(fileCat_lable, fileCat_data);
-    //--File Category Chart END--//
+        /* -- pradeshiya sabha file count--*/
+        pradeshiyasabaFileCount(p.pra_table.data);
+        /* -- industry category file count--*/
+        industryCategoryCount(p.industry_category_table.data);
+        /* -- env officer file count--*/
+        environmentOfficersFileCount(p.env_officer_table.data);
+    });
+
+    /* file categoyr chart monthly*/
+//    getDashboardData(['file_category_chart'], {from: '2020-10-01', to: '2020-10-31'}, function (p) {
+//console.log(p);
+////--File Category Chart Open--//
+//        var fileCat_lable = [
+//            'Chrome',
+//            'IE',
+//            'FireFox',
+//            'Safari',
+//            'Opera',
+//            'Navigator',
+//        ];
+//        var fileCat_data = [700, 500, 400, 600, 300, 100];
+//        fileCategoryChart(fileCat_lable, fileCat_data);
+//        //--File Category Chart END--//
+//    });
+
+    var FILE_STATUS = {0: 'Pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Prenidng Approval', 4: 'D Certificate Approval Prenidng', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold'};
+    var FILE_CLASS = {0: 'pending', 1: 'ad_approve', 2: 'cer_preparation', 3: 'ad_approval', 4: 'd_penidng', 5: 'complete', 6: 'issued', '-1': 'rejected', '-2': 'hold'};
+    var COUNT_CLASS = {0: 'pending_count', 1: 'ad_approve_count', 2: 'cer_preparation_count', 3: 'ad_approval_count', 4: 'd_penidng_count', 5: 'complete_count', 6: 'issued_count', '-1': 'rejected_count', '-2': 'hold_count'};
+    getDashboardData(['file_status_lable'], {from: '2020-10-29', to: '2020-12-31'}, function (e) {
+        var lable = '';
+        var count = '';
+        var clz = '';
+        var count_clz = '';
+        $.each(e.file_status_lable.data, function (index, row) {
+            lable = FILE_STATUS[row.file_status];
+            clz = FILE_CLASS[row.file_status];
+            count_clz = COUNT_CLASS[row.file_status];
+            count = row.total;
+            console.log(row);
+
+            $('.' + clz).html(lable);
+            $('.' + count_clz).html(count);
+        });
+    });
 
 //--New Jobs Chart Open--//
     var newJobs_lable = [

@@ -344,6 +344,12 @@
                 @endif
                 @if($pre['id']===config('auth.privileges.clientSpace'))
                 <li class="nav-item">
+                    <a href="{{ url('/report_dashboard') }}" class="nav-link {{ Request::is('old_data_summary') ? 'active' : '' }}">
+                        <i class="fas fa-clock nav-icon"></i>
+                        <p>Report Dashboard</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ url('/old_data_summary') }}" class="nav-link {{ Request::is('old_data_summary') ? 'active' : '' }}">
                         <i class="fas fa-clock nav-icon"></i>
                         <p>Old Data Summary</p>

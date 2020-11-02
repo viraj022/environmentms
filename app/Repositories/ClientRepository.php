@@ -75,6 +75,7 @@ class ClientRepository
                 'clients.*',
                 'business_scales.name as business_scale_name',
                 'pradesheeyasabas.name as pradesheeyasaba_name',
+                'industry_categories.name as category_name',
                 'zones.name as zone_name',
                 /**
                  * epl set
@@ -113,7 +114,7 @@ class ClientRepository
                  * eo
                  */
                 'eo_users.first_name as officer_first_name',
-                'eo_users.last_name as officer_last_name',
+                'eo_users.last_name as officer_last_name'
 
 
             )
@@ -135,5 +136,133 @@ class ClientRepository
         // dd(FileView::all());
         // echo $file->toSql();
         return $file->get();
+    }
+    public function allPlainWithoutDates()
+    {
+        $file = FileView::all();
+    }
+
+    public function getRowFiles()
+    {
+        $query = FileView::select(
+            'name_title as title',
+            'first_name as First Name',
+            'last_name as Last Name',
+            'address as Address',
+            'contact_no as Contact No',
+            'email as Email',
+            'nic as National ID',
+            'industry_name as Industry Name',
+            'industry_address as Industry Address',
+            'industry_email as Industry Email',
+            'industry_coordinate_x as GPS coordinate(X)',
+            'industry_coordinate_y as GPS coordinate(Y) ',
+            \DB::raw(
+                '(CASE 
+            WHEN industry_is_industry = "1" THEN "Industry Zone"            
+            ELSE "Normal Zone" 
+            END) as `Industry Zone`'
+            ),
+            'industry_investment as Industry Investment',
+            'industry_start_date  as business Start Date',
+            'industry_registration_no as Business Registration No',
+            'industry_sub_category as Sub Category',
+            'category_name as Category',
+            'business_scale_name as Scale',
+            'pradesheeyasaba_name as Pradesheeyasaba Name',
+            'zone_name as Zone name',
+            'assistance_first_name as AD First Name',
+            'assistance_last_name as AD Last Name',
+            'officer_first_name as EO First Name',
+            'officer_last_name as EO Last Name',
+            'epl_code as EPL code',
+            \DB::raw(
+                '(CASE 
+            WHEN epl_count = "0" THEN "New"            
+            ELSE "Renew" 
+            END) as `EPL Status`'
+            ),
+            'epl_issue_date as Issue Date',
+            'epl_expire_date as Expire Date',
+            'epl_submitted_date as EPL Submitted Date',
+            'epl_certificate_no as EPL Certificate No',
+            'epl_count as Renew Count',
+            'epl_rejected_date',
+            'site_code',
+            \DB::raw(
+                '(CASE 
+            WHEN site_count = "0" THEN "New"            
+            ELSE "Extend" 
+            END) as `Site Status`'
+            ),
+            'site_site_clearance_type as Site Clearance Type',
+            \DB::raw(
+                '(CASE 
+            WHEN site_processing_status = "0" THEN "Pending"  
+            WHEN site_processing_status = "1" THEN "Site Clearance"
+            WHEN site_processing_status = "2" THEN "EIA"   
+            WHEN site_processing_status = "2" THEN "IEE"       
+            ELSE null 
+            END) as `SC Processing Status`'
+            ),
+            'site_submit_date as SC Submit Date',
+            'site_issue_date as SC Issue Date',
+            'site_expire_date as SC Expire Date',
+            'site_rejected_date as SC Rejected Date',
+            'site_count as SC Count'
+
+        );
+        // echo $query->toSql();
+        return  $query->get();
+    }
+
+    public function fileCountByPradesheeyaSaba()
+    {
+        return Client::join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->select('pradesheeyasabas.name', DB::raw('count(clients.id) as total'))
+            ->groupBy('pradesheeyasaba_id')
+            ->orderBy('pradesheeyasabas.name')
+            ->get();
+    }
+    public function fileCountByEnvironmentOfficer()
+    {
+        return Client::join('environment_officers', 'clients.environment_officer_id', 'environment_officers.id')
+            ->select('users.first_name', 'users.last_name', DB::raw('count(clients.id) as total'))
+            ->join('users', 'environment_officers.user_id', 'users.id')
+            ->groupBy('environment_officer_id')
+            ->orderBy('users.first_name')
+            ->get();
+    }
+    public function fileCountByIndustryCategory()
+    {
+        return Client::Join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+            ->select('industry_categories.name', DB::raw('count(clients.id) as total'))
+            ->groupBy('industry_category_id')
+            ->orderBy('industry_categories.name')
+            ->get();
+    }
+    public function fileCountByFileStatus()
+    {
+        return Client::select('file_status', DB::raw('count(clients.id) as total'))
+            ->groupBy('file_status')
+            ->orderBy('file_status')
+            ->get();
+    }
+
+    public function find($id)
+    {
+        return Client::with('businessScale')
+            ->with('industryCategory')
+            ->with('pradesheeyasaba.zone')
+            ->with('environmentOfficer.user')
+            ->with('environmentOfficer.assistantDirector.user')
+            ->with('siteClearenceSessions.siteClearances')
+            ->with('epls')
+            ->with('transactions.transactionItems.payment.paymentType')
+            ->with('inspectionSessions.environmentOfficer.user')
+            ->with('committees.commetyPool')
+            ->with('minutes.user')
+            ->with('fileLogs.user')
+            ->findOrFail($id);
     }
 }

@@ -54,4 +54,24 @@ Route::get('/ep_inspection_report/{eo_id}/{from}/{to}', 'ReportController@eoInsp
  * to : to date 2020-05-05
  */
 Route::get('/category_count_report/{from}/{to}', 'ReportController@categoryWiseCountReport');
+
+
+/**
+ * get row data set of all files
+ */
+
+Route::get('/get_row_data', 'ReportController@RowReport');
+
+/**
+ * Field Officer Inspection Log 
+ * id file_id/client id
+ */
+Route::get('/file_summary/{id}', 'ReportController@fileSummary');
+
 // Route::get('/testReportMul', 'ReportController@test');
+/**
+ * download all attachments of a file to a zip drive
+ * client: client_id
+ */
+
+Route::get('/attachments/{client}', 'ReportController@downloadContents');
