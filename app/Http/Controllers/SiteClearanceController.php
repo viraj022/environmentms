@@ -4,20 +4,28 @@ namespace App\Http\Controllers;
 
 use App\EPL;
 use App\Client;
+use App\Setting;
 use Carbon\Carbon;
 use App\BusinessScale;
 use App\SiteClearance;
 use App\Pradesheeyasaba;
 use App\IndustryCategory;
 use App\Helpers\LogActivity;
-use App\Setting;
 use Illuminate\Http\Request;
 use App\SiteClearenceSession;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Repositories\SiteClearenceRepository;
 
 class SiteClearanceController extends Controller
 {
+
+    private $siteClearenceRepository;
+    public function __construct(SiteClearenceRepository $siteClearenceRepository)
+    {
+        $this->middleware(['auth']);
+        $this->siteClearenceRepository = $siteClearenceRepository;
+    }
 
     /**
      * Display a listing of the resource.
@@ -182,17 +190,18 @@ class SiteClearanceController extends Controller
         });
     }
 
-    public function extendSiteClearence(Request $request, SiteClearenceSession $siteClearanceSession)
+    public function extendSiteClearence(Request $request, SiteClearance $siteClearance)
     {
-        // return \DB::transaction(function () use ($request, $client) {
-        //     if ($msg) {
-        //         LogActivity::addToLog('deleteOldData done : SiteClearanceController', $siteClearance);
-        //         return array('id' => 1, 'message' => 'true');
-        //     } else {
-        //         LogActivity::addToLog('deleteOldData Fail : SiteClearanceController', $siteClearance);
-        //         return array('id' => 0, 'message' => 'false');
-        //     }
-        // });
+        // dd($this->siteClearenceRepository->getLastSiteClearanceBySiteClearenceSessionId($siteClearance->siteClearenceSession)->status == 1);
+        if ($this->siteClearenceRepository->getLastSiteClearanceBySiteClearenceSessionId($siteClearance->siteClearenceSession)->status == 1) {
+            if ($this->siteClearenceRepository->extendSiteClearance($request, $siteClearance)) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            return response(array('id' => 2, 'message' => 'Can\'t create a new site clearanc when last site clearance is not issued'), 422);
+        }
     }
 
     public function create(Request $request)

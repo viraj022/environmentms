@@ -13,6 +13,7 @@ use App\SiteClearance;
 use App\CommitteeRemark;
 use App\SiteClearenceSession;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\FieUploadController;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -157,5 +158,42 @@ class SiteClearenceRepository
             $query = $query->where('site_clearance_type', $SiteType);
         }
         return $query->get();
+    }
+    public function extendSiteClearance($request, $siteClearence)
+    {
+        $site =  new SiteClearance();
+        $site->site_clearence_session_id = $siteClearence->site_clearence_session_id;
+        if ($request->file('file') != null) {
+            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+            $fileUrl = '/uploads/' . FieUploadController::getSiteClearanceAPPLICATIONFilePath($site->siteClearenceSession);
+            $storePath = 'public' . $fileUrl;
+            $path = $request->file('file')->storeAs($storePath, $file_name);
+        } else {
+            return response(array('id' => 1, 'message' => 'Application not found'), 422);
+        }
+        $site->submit_date = $request->submit_date;
+        $site->application_path = "storage/" . $fileUrl . "/" . $file_name;
+        $site->status = 0;
+        $site->count = $this->getLastSiteClearance($site->siteClearenceSession->client_id)->count + 1;
+
+        return $site->save();
+    }
+
+    public function getLastSiteClearance($client_id)
+    {
+        $siteClearanceSession =  SiteClearenceSession::where('client_id', $client_id)
+            ->orderBy('id', 'DESC')
+            ->first();
+        $rtn = $siteClearance = $siteClearanceSession->siteClearances->last();
+        // dd($rtn);
+        return $rtn;
+    }
+    public function getLastSiteClearanceBySiteClearenceSessionId($id)
+    {
+        $siteClearanceSession =  SiteClearenceSession::findOrFail($id)
+            ->first();
+        $rtn = $siteClearance = $siteClearanceSession->siteClearances->last();
+        // dd($rtn);
+        return $rtn;
     }
 }
