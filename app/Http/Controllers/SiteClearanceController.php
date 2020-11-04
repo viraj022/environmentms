@@ -192,7 +192,10 @@ class SiteClearanceController extends Controller
 
     public function extendSiteClearence(Request $request, SiteClearance $siteClearance)
     {
-        // dd($this->siteClearenceRepository->getLastSiteClearanceBySiteClearenceSessionId($siteClearance->siteClearenceSession)->status == 1);
+        request()->validate([
+            'submit_date' => 'required|date',
+            'file' => 'required|mimes:jpeg,jpg,png,pdf'
+        ]);
         if ($this->siteClearenceRepository->getLastSiteClearanceBySiteClearenceSessionId($siteClearance->siteClearenceSession)->status == 1) {
             if ($this->siteClearenceRepository->extendSiteClearance($request, $siteClearance)) {
                 return array('id' => 1, 'message' => 'true');
