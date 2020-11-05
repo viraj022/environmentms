@@ -51,8 +51,8 @@
                     <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
 
                     <div class="info-box-content">
-                        <span class="info-box-text ad_approve">Old Files</span>
-                        <span class="info-box-number ad_approve_count">41,410</span>
+                        <span class="info-box-text complete">Old Files</span>
+                        <span class="info-box-number complete_count">41,410</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -68,8 +68,8 @@
                     <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
 
                     <div class="info-box-content">
-                        <span class="info-box-text ad_approval">Total Inspections</span>
-                        <span class="info-box-number ad_approval_count">760</span>
+                        <span class="info-box-text d_penidng">Total Inspections</span>
+                        <span class="info-box-number d_penidng_count">760</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -81,8 +81,8 @@
                     <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
 
                     <div class="info-box-content">
-                        <span class="info-box-text">Total Files</span>
-                        <span class="info-box-number">2,000</span>
+                        <span class="info-box-text cer_preparation">Total Files</span>
+                        <span class="info-box-number cer_preparation_count">2,000</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -549,6 +549,7 @@
 //        //--File Category Chart END--//
 //    });
 
+    //Add Spesific "File Status" Classes To Any Elements If Your Wants To Show Count And File Status Name// (Example Line 38 & 39)
     var FILE_STATUS = {0: 'Pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Prenidng Approval', 4: 'D Certificate Approval Prenidng', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold'};
     var FILE_CLASS = {0: 'pending', 1: 'ad_approve', 2: 'cer_preparation', 3: 'ad_approval', 4: 'd_penidng', 5: 'complete', 6: 'issued', '-1': 'rejected', '-2': 'hold'};
     var COUNT_CLASS = {0: 'pending_count', 1: 'ad_approve_count', 2: 'cer_preparation_count', 3: 'ad_approval_count', 4: 'd_penidng_count', 5: 'complete_count', 6: 'issued_count', '-1': 'rejected_count', '-2': 'hold_count'};
@@ -563,7 +564,6 @@
             count_clz = COUNT_CLASS[row.file_status];
             count = row.total;
             console.log(row);
-
             $('.' + clz).html(lable);
             $('.' + count_clz).html(count);
         });
