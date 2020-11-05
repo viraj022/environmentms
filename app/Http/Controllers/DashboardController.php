@@ -162,7 +162,19 @@ class DashboardController extends Controller
         $client = new ClientRepository();
         $data = $client->fileCountByFileStatus();
         $time_elapsed_secs = round(microtime(true) - $start, 5);
-        $rtn["data"] = $data;
+        // dd($data->toArray());
+        $r = [];
+        for ($i = 0; $i < 7; $i++) {
+            $a = array('file_status' => $i, 'total' => 0);
+            foreach ($data as $d) {
+                if ($d->file_status == $i) {
+                    $a['total'] =  $d->total;
+                }
+            }
+            array_push($r, $a);
+        }
+        // dd($r);
+        $rtn["data"] = $r;
         $rtn["time"] = $time_elapsed_secs;
         return $rtn;
     }
