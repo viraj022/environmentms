@@ -51,8 +51,8 @@
                     <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
 
                     <div class="info-box-content">
-                        <span class="info-box-text ad_approve">Old Files</span>
-                        <span class="info-box-number ad_approve_count">41,410</span>
+                        <span class="info-box-text complete">Old Files</span>
+                        <span class="info-box-number complete_count">41,410</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -68,8 +68,8 @@
                     <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
 
                     <div class="info-box-content">
-                        <span class="info-box-text ad_approval">Total Inspections</span>
-                        <span class="info-box-number ad_approval_count">760</span>
+                        <span class="info-box-text d_penidng">Total Inspections</span>
+                        <span class="info-box-number d_penidng_count">760</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -81,8 +81,8 @@
                     <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
 
                     <div class="info-box-content">
-                        <span class="info-box-text">Total Files</span>
-                        <span class="info-box-number">2,000</span>
+                        <span class="info-box-text cer_preparation">Total Files</span>
+                        <span class="info-box-number cer_preparation_count">2,000</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -563,7 +563,6 @@
             count_clz = COUNT_CLASS[row.file_status];
             count = row.total;
             console.log(row);
-
             $('.' + clz).html(lable);
             $('.' + count_clz).html(count);
         });
