@@ -549,6 +549,7 @@
 //        //--File Category Chart END--//
 //    });
 
+    //Add Spesific "File Status" Classes To Any Elements If Your Wants To Show Count And File Status Name// (Example Line 38 & 39)
     var FILE_STATUS = {0: 'Pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Prenidng Approval', 4: 'D Certificate Approval Prenidng', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold'};
     var FILE_CLASS = {0: 'pending', 1: 'ad_approve', 2: 'cer_preparation', 3: 'ad_approval', 4: 'd_penidng', 5: 'complete', 6: 'issued', '-1': 'rejected', '-2': 'hold'};
     var COUNT_CLASS = {0: 'pending_count', 1: 'ad_approve_count', 2: 'cer_preparation_count', 3: 'ad_approval_count', 4: 'd_penidng_count', 5: 'complete_count', 6: 'issued_count', '-1': 'rejected_count', '-2': 'hold_count'};
