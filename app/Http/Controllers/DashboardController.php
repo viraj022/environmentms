@@ -62,7 +62,7 @@ class DashboardController extends Controller
         $eplCount = $this->getEPlCountGroupMonth($data->whereBetween('epl_submitted_date', [$from, $to])->where('epl_count', '0'));
         $siteCount = $this->getSiteCountGroupMonth($data->whereBetween('site_submit_date', [$from, $to])->where('site_count', '0'));
         // dd($data->whereBetween('epl_submitted_date', [$from, $to])->where('epl_count', '0'));
-        dd($eplCount, $siteCount);
+        // dd($eplCount, $siteCount);
         $newCount = getArraySum($eplCount, $siteCount);
         $time_elapsed_secs = round(microtime(true) - $start, 5);
         $rtn["new"] = $newCount;
