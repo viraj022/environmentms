@@ -199,7 +199,7 @@ class DashboardController extends Controller
         if ($request->has('file_category_chart')) {
             $from = $request->renew_chart['from'];
             $to = $request->renew_chart['to'];
-            $rtn['file_category_chart'] = $this->IssueFileCategory($from, $to);
+            $rtn['new_job_chart'] = $this->getNewJobsByType($from, $to);
         }
         if ($request->has('new_job_chart')) {
             $from = $request->renew_chart['from'];
