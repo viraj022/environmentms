@@ -515,7 +515,7 @@
 
 <script>
 //    renew_chart, new_file_chart, file_category_chart, new_job_chart, pra_table, env_officer_table, industry_category_table, file_status_lable
-    getDashboardData(['renew_chart', 'new_file_chart', 'pra_table', 'industry_category_table', 'env_officer_table'], {from: '2020-01-01', to: '2020-12-31'}, function (p) {
+    getDashboardData(['renew_chart', 'new_file_chart', 'pra_table', 'industry_category_table', 'env_officer_table', 'file_category_chart','new_job_chart'], {from: '2020-01-01', to: '2020-12-31'}, function (p) {
         //--EPL Renewal Chart Open--//
         eplRenewalChart(p.renew_chart.months, p.renew_chart.renew, p.renew_chart.expire);
         //--EPL Renewal Chart END--//
@@ -530,12 +530,16 @@
         industryCategoryCount(p.industry_category_table.data);
         /* -- env officer file count--*/
         environmentOfficersFileCount(p.env_officer_table.data);
+        /* file categoyr chart monthly*/
+        fileCategoryChart(p.industry_category_table.data);
+        /* new jobs chart*/
+        newJobsChart(p.new_job_chart.count);
     });
 
-    /* file categoyr chart monthly*/
+
 //    getDashboardData(['file_category_chart'], {from: '2020-10-01', to: '2020-10-31'}, function (p) {
-//console.log(p);
-////--File Category Chart Open--//
+//        console.log(p);
+//////--File Category Chart Open--//
 //        var fileCat_lable = [
 //            'Chrome',
 //            'IE',
@@ -546,7 +550,7 @@
 //        ];
 //        var fileCat_data = [700, 500, 400, 600, 300, 100];
 //        fileCategoryChart(fileCat_lable, fileCat_data);
-//        //--File Category Chart END--//
+////        //--File Category Chart END--//
 //    });
 
     //Add Spesific "File Status" Classes To Any Elements If Your Wants To Show Count And File Status Name// (Example Line 38 & 39)
