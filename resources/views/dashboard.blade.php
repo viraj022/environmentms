@@ -531,9 +531,9 @@
         /* -- env officer file count--*/
         environmentOfficersFileCount(p.env_officer_table.data);
         /* file categoyr chart monthly*/
-        fileCategoryChart(p.industry_category_table.data);
+        fileCategoryChart(p.file_category_chart.data);
         /* new jobs chart*/
-        newJobsChart(p.new_job_chart.count);
+        newJobsChart(p.new_job_chart.types,p.new_job_chart.count);
     });
 
 
@@ -572,20 +572,6 @@
             $('.' + count_clz).html(count);
         });
     });
-
-//--New Jobs Chart Open--//
-    var newJobs_lable = [
-        'Chrome',
-        'IE',
-        'FireFox',
-        'Safari',
-        'Opera',
-        'Navigator',
-    ];
-    var newJobs_data = [700, 500, 400, 600, 300, 100];
-    newJobsChart(newJobs_lable, newJobs_data);
-//--New Jobs Chart END--//
-
 
 
 
