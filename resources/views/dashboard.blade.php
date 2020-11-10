@@ -516,6 +516,7 @@
 <script>
 //    renew_chart, new_file_chart, file_category_chart, new_job_chart, pra_table, env_officer_table, industry_category_table, file_status_lable
     getDashboardData(['renew_chart', 'new_file_chart', 'pra_table', 'industry_category_table', 'env_officer_table', 'file_category_chart', 'new_job_chart'], {from: '2020-01-01', to: '2020-12-31'}, function (p) {
+        console.log(p);
         //--EPL Renewal Chart Open--//
         eplRenewalChart(p.renew_chart.months, p.renew_chart.renew, p.renew_chart.expire);
         //--EPL Renewal Chart END--//
@@ -533,12 +534,11 @@
         /* new jobs chart*/
         newJobsChart(p.new_job_chart.types, p.new_job_chart.count);
         /* file categoyr chart monthly*/
-        fileCategoryChart(p.file_category_chart.data);
+        fileCategoryChart(p.file_category_chart);
     });
 
 
 //    getDashboardData(['file_category_chart'], {from: '2020-10-01', to: '2020-10-31'}, function (p) {
-//        console.log(p);
 //////--File Category Chart Open--//
 //        var fileCat_lable = [
 //            'Chrome',
@@ -567,7 +567,6 @@
             clz = FILE_CLASS[row.file_status];
             count_clz = COUNT_CLASS[row.file_status];
             count = row.total;
-            console.log(row);
             $('.' + clz).html(lable);
             $('.' + count_clz).html(count);
         });

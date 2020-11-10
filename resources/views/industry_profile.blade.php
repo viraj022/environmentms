@@ -400,6 +400,8 @@
                                                 <b>NIC</b> <a class="float-right cl_nic">-</a>
                                             </li>
                                         </ul>
+                                        <a href="/file_summary/{{$id}}" target="_blank" class="btn btn-dark"><i class="fa fa-print"></i> Print File Summary</a>
+                                        <a href="/attachments/{{$id}}" target="_blank" class="btn btn-dark">Download All Attachments</a>
                                     </div>
                                 </div>
                             </div>
