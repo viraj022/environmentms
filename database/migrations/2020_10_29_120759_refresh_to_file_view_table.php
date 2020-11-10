@@ -31,8 +31,5 @@ class RefreshToFileViewTable extends Migration
      */
     public function down()
     {
-        Schema::table('file_view', function (Blueprint $table) {
-            //
-        });
     }
 }

@@ -154,13 +154,13 @@ function newFilesChart(newfile_lable, newfile_data) {
 //-------------
 // Get context with jQuery - using jQuery's .get() method.
 
-function fileCategoryChart(fileCat_lable, fileCat_data) {
+function fileCategoryChart(fileCat) {
     var pieChartCanvas = $('#fileCategorypieChart').get(0).getContext('2d')
     var pieData = {
-        labels: fileCat_lable,
+        labels: fileCat.types,
         datasets: [
             {
-                data: fileCat_data,
+                data: fileCat.count,
                 backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
             }
         ]
@@ -176,7 +176,7 @@ function fileCategoryChart(fileCat_lable, fileCat_data) {
         type: 'doughnut',
         data: pieData,
         options: pieOptions
-    })
+    });
 }
 //-----------------
 //- fileCategory END -
@@ -278,6 +278,7 @@ function industryCategoryCount(data, callBack) {
 }
 
 function getDashboardData(rep_list, from_to, callBack) {
+    console.log(rep_list);
     let data = {};
     $.each(rep_list, function (index, r) {
         data[r] = {'from': from_to.from, 'to': from_to.to};
