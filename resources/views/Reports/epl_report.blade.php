@@ -15,7 +15,7 @@
            <h5>From: {{$from}} .To: {{$to}}</h5>
           </center>
               <h4>Report Genaration Time :{{$time_elapsed_secs}} seconds</h4>
-     {{-- @dump($data); --}}
+     {{-- @dump($data['results'][2]); --}}
 <table class="table cell-border compact stripe">
                                             <thead>
                                                 <tr>
@@ -45,7 +45,7 @@
                                                     <td>{{$row['industry_address']}}</td>                                                 
                                                     <td>{{$row['inspection_fee']}}</td>                                                 
                                                     <td>{{$row['inspection_pay_date']}}</td>                                                 
-                                                    <td>{{$row['site_code']}}</td>   
+                                                    <td>{{$row['site_code']}}</td>                                                       
                                                     @if($row['epls'][0]['count']==0)
                                                     <td>{{$row['epls'][0]['certificate_no']}} - {{date('d-m-Y', strtotime($row['epls'][0]['issue_date']))}}</td>  
                                                      @for ($i = 1; $i < $data['header_count']; $i++)
@@ -56,6 +56,7 @@
                                                      @endif
                                                            <td>N/A</td>                   
                                                      @endfor   
+                                                      <td>N/A</td> 
                                                      @else
                                                      <td>N/A</td>
                                                      @for ($i = 0; $i < $data['header_count']; $i++)

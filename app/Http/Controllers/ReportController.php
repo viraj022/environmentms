@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Pradesheeyasaba;
 use Carbon\Carbon;
 use App\SiteClearance;
 use Carbon\CarbonPeriod;
@@ -452,6 +453,59 @@ class ReportController extends Controller
         return view('Reports.eo_inspection_monthly_report', compact('rows', 'environmentOfficer', 'time_elapsed_secs', 'from', 'to'));
     }
 
+    public function categoryLocalAuthorityWiseCountReport($from, $to)
+    {
+        $start = microtime(true);
+        $rows = [];
+        $client = new ClientRepository();
+        $categoryRepo = new IndustryCategoryRepository();
+        $pradesheyasabas = new Pradesheeyasaba();
+        $data = $client->allPlain($from, $to);
+        foreach ($pradesheyasabas->all() as $pradesheyasaba) {
+            foreach ($categoryRepo->all() as $category) {
+                $row = array(
+                    "la_name" => $pradesheyasaba->name,
+                    "name" => $category->name,
+                    "sc_new" => 0,
+                    "sc_extend" => 0,
+                    "epl_new" => 0,
+                    "epl_renew" => 0,
+                    "certificates" => 0,
+                );
+                $siteNew = $data->where('industry_category_id', $category->id)
+                    ->where('pradesheeyasaba_id', $pradesheyasaba->id)
+                    ->whereBetween('site_submit_date', [$from, $to])
+                    ->where('site_count', 0)->count();
+                $siteExtend = $data->where('industry_category_id', $category->id)
+                    ->where('pradesheeyasaba_id', $pradesheyasaba->id)
+                    ->whereBetween('site_submit_date', [$from, $to])
+                    ->where('site_count', '>', 0)->count();
+                $eplNew = $data->where('industry_category_id', $category->id)
+                    ->where('pradesheeyasaba_id', $pradesheyasaba->id)
+                    ->whereBetween('epl_submitted_date', [$from, $to])
+                    ->where('epl_count', 0)->count();
+                $eplRenew = $data->where('industry_category_id', $category->id)
+                    ->where('pradesheeyasaba_id', $pradesheyasaba->id)
+                    ->whereBetween('epl_submitted_date', [$from, $to])
+                    ->where('epl_count', '>', 0)->count();
+
+                $eplCertificate = $data->where('industry_category_id', $category->id)
+                    ->whereBetween('epl_issue_date', [$from, $to])->count();
+                $siteCertificate = $data->where('industry_category_id', $category->id)
+                    ->whereBetween('site_issue_date', [$from, $to])->count();
+
+                $row['sc_new'] = $siteNew;
+                $row['sc_extend'] = $siteExtend;
+                $row['epl_new'] = $eplNew;
+                $row['epl_renew'] = $eplRenew;
+                $row['certificates'] = $eplCertificate + $siteCertificate;
+                array_push($rows, $row);
+            }
+        }
+        $time_elapsed_secs = round(microtime(true) - $start, 5);
+        // dd($rows, $time_elapsed_secs);
+        return view('Reports.category_wise_count_report_two', compact('rows', 'time_elapsed_secs', 'from', 'to'));
+    }
     public function categoryWiseCountReport($from, $to)
     {
         $start = microtime(true);

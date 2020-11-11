@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Client;
 use App\FileView;
+use App\IndustryCategory;
 use Carbon\Carbon;
 use App\SiteClearance;
 use App\InspectionSession;
@@ -264,5 +265,16 @@ class ClientRepository
             ->with('minutes.user')
             ->with('fileLogs.user')
             ->findOrFail($id);
+    }
+
+    public function fileCountByIndustryCategoryAndLocalAuthority($from, $to)
+    {
+        return Client::RightJoin('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+            ->LeftJoin('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->groupBy('industry_categories.id', 'pradesheeyasabas.id')
+            ->select(DB::raw('count(clients.id) as total'), 'industry_categories.name as category_name', 'pradesheeyasabas.name as la_name')
+            ->orderBy('pradesheeyasabas.name')
+            ->orderBy('industry_categories.name')
+            ->get();
     }
 }
