@@ -15,12 +15,12 @@
         <h5>From: {{$from}} .To: {{$to}}</h5>
     </center>
     <h6>Report Genaration Time :{{$time_elapsed_secs}} seconds</h6>
-     {{-- @dump($data); --}}
+     {{-- @dump($req_array["40"]); --}}
 <table class="table cell-border compact stripe">
                                             <thead>
                                                 <tr>
                                                     <th style="width: 10px">#</th>
-                                                    <th>Local Authority</th>
+                                                    <th>Local Authority Name</th>
                                                     <th>Category Name</th>
                                                     <th>SC new</th>
                                                     <th>SC Extend</th>
@@ -30,17 +30,19 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($rows as $indexKey=>$row)
+                                                @foreach($req_array as $array)                                               
+                                                 @foreach($array['cat'] as $row)
                                                 <tr>
-                                                    <td>{{$indexKey+1}}.</td>
-                                                    <td>{{$row['la_name']}}</td>
+                                                    <td>1.</td>       
+                                                    <td>{{$array['name']}}</td>                                           
                                                     <td>{{$row['name']}}</td>
-                                                    <td>{{$row['sc_new']}}</td>                                                 
-                                                    <td>{{$row['sc_extend']}}</td>                                                 
+                                                    <td>{{$row['site_new']}}</td>                                                 
+                                                    <td>{{$row['site_renew']}}</td>                                                 
                                                     <td>{{$row['epl_new']}}</td>                                                 
                                                     <td>{{$row['epl_renew']}}</td>                                           
-                                                    <td>{{$row['certificates']}}</td>                                           
+                                                    <td>{{$row['certificate_issue']}}</td>                                           
                                                 </tr>
+                                                  @endforeach
                                                 @endforeach
                                             </tbody>
                                         </table>

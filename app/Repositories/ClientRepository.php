@@ -125,6 +125,48 @@ class ClientRepository
     public function allPlain($from, $to)
     {
 
+        //         $psArray=array(
+        //             1=>'kurunegala',
+        //             2=>'2',
+        //             10=>'puttlam',
+        //         );
+        //         $eplArray = array(
+        //             'industry_file_id' => 10,
+        //             'new' => 10,
+        //             'renew' => 2,
+        //             'ps' => 2,
+        //             'cat' => 2,
+        //         );
+        //         $SiteArray = array(
+        //             10 => array(
+        //                 'new' => 10,
+        //                 'renew' => 2,
+        //                 'type' => 2,
+        //             )
+        //         );
+        //         $req_st = array(
+        //             10 => array(
+        //                 'clint_id' => 10,
+        //                 'epl_new' => 10,
+        //                 'epl_renew' => 10,
+        //                 'site_new' => 10,
+        //                 'site_renew' => 10,
+        //                 'ps' => 10,
+        //                 'cat' => 10,
+        //             )
+        //         );
+        // foreach($req_st as $ke)
+        // array(
+        //     1=>array(
+        //         'psName'=> $psArray[$ke['ps']],
+        //         'cat'=>array(
+        //             'cat_name'=>'cat 1',
+        //             'epl'=>10,
+        //             'epl_renew'=>10,
+        //         )
+        //         )
+        // )
+
         // echo $client;
         $file = FileView::orWhereBetween('epl_issue_date', [$from, $to])
             ->orWhereBetween('epl_expire_date', [$from, $to])
@@ -269,10 +311,83 @@ class ClientRepository
 
     public function fileCountByIndustryCategoryAndLocalAuthority($from, $to)
     {
-        return Client::RightJoin('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
-            ->LeftJoin('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+        return Client::Join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+            ->Join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
             ->groupBy('industry_categories.id', 'pradesheeyasabas.id')
-            ->select(DB::raw('count(clients.id) as total'), 'industry_categories.name as category_name', 'pradesheeyasabas.name as la_name')
+            ->select(DB::raw('count(clients.id) as total'), 'industry_categories.name as category_name', 'pradesheeyasabas.name as la_name', DB::raw('eplNew as type'))
+            ->orderBy('pradesheeyasabas.name')
+            ->orderBy('industry_categories.name')
+            ->get();
+    }
+    public function fileCountByIndustryCategoryAndLocalAuthorityEPLNew($from, $to)
+    {
+        return Client::Join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+            ->Join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('e_p_l_s', 'clients.id', 'e_p_l_s.client_id')
+            ->groupBy('industry_categories.id', 'pradesheeyasabas.id')
+            ->select(DB::raw('count(clients.id) as total'), 'industry_categories.id as cat_id', 'pradesheeyasabas.id as la_id', DB::raw("'EPL_New' as type"))
+            ->orderBy('pradesheeyasabas.name')
+            ->orderBy('industry_categories.name')
+            ->where('e_p_l_s.count', 0)
+            ->get();
+    }
+    public function fileCountByIndustryCategoryAndLocalAuthorityEPLRevew($from, $to)
+    {
+        return Client::Join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+            ->Join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('e_p_l_s', 'clients.id', 'e_p_l_s.client_id')
+            ->groupBy('industry_categories.id', 'pradesheeyasabas.id')
+            ->select(DB::raw('count(clients.id) as total'), 'industry_categories.id as cat_id', 'pradesheeyasabas.id as la_id', DB::raw("'EPL_Renew' as type"))
+            ->orderBy('pradesheeyasabas.name')
+            ->orderBy('industry_categories.name')
+            ->where('e_p_l_s.count', '>', 0)
+            ->get();
+    }
+    public function fileCountByIndustryCategoryAndLocalAuthorityEPLIssue($from, $to)
+    {
+        return Client::Join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+            ->Join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('e_p_l_s', 'clients.id', 'e_p_l_s.client_id')
+            ->groupBy('industry_categories.id', 'pradesheeyasabas.id')
+            ->select(DB::raw('count(clients.id) as total'), 'industry_categories.id as cat_id', 'pradesheeyasabas.id as la_id', DB::raw("'EPL_Issue' as type"))
+            ->orderBy('pradesheeyasabas.name')
+            ->orderBy('industry_categories.name')
+            ->get();
+    }
+    public function fileCountByIndustryCategoryAndLocalAuthoritySiteNew($from, $to)
+    {
+        return Client::Join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+            ->Join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('site_clearence_sessions', 'clients.id', 'site_clearence_sessions.client_id')
+            ->join('site_clearances', 'site_clearence_sessions.id', 'site_clearances.site_clearence_session_id')
+            ->groupBy('industry_categories.id', 'pradesheeyasabas.id')
+            ->select(DB::raw('count(clients.id) as total'), 'industry_categories.id as cat_id', 'pradesheeyasabas.id as la_id', DB::raw("'Site_New' as type"))
+            ->orderBy('pradesheeyasabas.name')
+            ->orderBy('industry_categories.name')
+            ->where('site_clearances.count', 0)
+            ->get();
+    }
+    public function fileCountByIndustryCategoryAndLocalAuthoritySiteRevew($from, $to)
+    {
+        return Client::Join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+            ->Join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('site_clearence_sessions', 'clients.id', 'site_clearence_sessions.client_id')
+            ->join('site_clearances', 'site_clearence_sessions.id', 'site_clearances.site_clearence_session_id')
+            ->groupBy('industry_categories.id', 'pradesheeyasabas.id')
+            ->select(DB::raw('count(clients.id) as total'), 'industry_categories.id as cat_id', 'pradesheeyasabas.id as la_id', DB::raw("'Site_Renew' as type"))
+            ->orderBy('pradesheeyasabas.name')
+            ->orderBy('industry_categories.name')
+            ->where('site_clearances.count', '>', 0)
+            ->get();
+    }
+    public function fileCountByIndustryCategoryAndLocalAuthoritySiteIssue($from, $to)
+    {
+        return Client::Join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+            ->Join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('site_clearence_sessions', 'clients.id', 'site_clearence_sessions.client_id')
+            ->join('site_clearances', 'site_clearence_sessions.id', 'site_clearances.site_clearence_session_id')
+            ->groupBy('industry_categories.id', 'pradesheeyasabas.id')
+            ->select(DB::raw('count(clients.id) as total'), 'industry_categories.id as cat_id', 'pradesheeyasabas.id as la_id', DB::raw("'Site_Issue' as type"))
             ->orderBy('pradesheeyasabas.name')
             ->orderBy('industry_categories.name')
             ->get();

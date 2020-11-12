@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Client;
-use App\Pradesheeyasaba;
 use Carbon\Carbon;
 use App\SiteClearance;
 use Carbon\CarbonPeriod;
@@ -20,6 +19,8 @@ use App\Repositories\IndustryCategoryRepository;
 use App\Repositories\InspectionSessionRepository;
 use App\Repositories\AssistanceDirectorRepository;
 use App\Repositories\EnvironmentOfficerRepository;
+use App\Repositories\PradesheeyasabaRepository;
+use PhpParser\Node\Expr\Print_;
 
 class ReportController extends Controller
 {
@@ -456,55 +457,79 @@ class ReportController extends Controller
     public function categoryLocalAuthorityWiseCountReport($from, $to)
     {
         $start = microtime(true);
-        $rows = [];
-        $client = new ClientRepository();
         $categoryRepo = new IndustryCategoryRepository();
-        $pradesheyasabas = new Pradesheeyasaba();
-        $data = $client->allPlain($from, $to);
-        foreach ($pradesheyasabas->all() as $pradesheyasaba) {
-            foreach ($categoryRepo->all() as $category) {
-                $row = array(
-                    "la_name" => $pradesheyasaba->name,
-                    "name" => $category->name,
-                    "sc_new" => 0,
-                    "sc_extend" => 0,
-                    "epl_new" => 0,
-                    "epl_renew" => 0,
-                    "certificates" => 0,
-                );
-                $siteNew = $data->where('industry_category_id', $category->id)
-                    ->where('pradesheeyasaba_id', $pradesheyasaba->id)
-                    ->whereBetween('site_submit_date', [$from, $to])
-                    ->where('site_count', 0)->count();
-                $siteExtend = $data->where('industry_category_id', $category->id)
-                    ->where('pradesheeyasaba_id', $pradesheyasaba->id)
-                    ->whereBetween('site_submit_date', [$from, $to])
-                    ->where('site_count', '>', 0)->count();
-                $eplNew = $data->where('industry_category_id', $category->id)
-                    ->where('pradesheeyasaba_id', $pradesheyasaba->id)
-                    ->whereBetween('epl_submitted_date', [$from, $to])
-                    ->where('epl_count', 0)->count();
-                $eplRenew = $data->where('industry_category_id', $category->id)
-                    ->where('pradesheeyasaba_id', $pradesheyasaba->id)
-                    ->whereBetween('epl_submitted_date', [$from, $to])
-                    ->where('epl_count', '>', 0)->count();
+        $pradesheeyaRepo = new PradesheeyasabaRepository();
+        $category = $categoryRepo->all()->keyBy('id')->toArray();
+        $category =    array_map(function ($cat) {
+            return array(
+                "name" => $cat['name'],
+                "epl_new" => 0,
+                "epl_renew" => 0,
+                "site_new" => 0,
+                "site_renew" => 0,
+                "certificate_issue" => 0
+            );
+        }, $category);
 
-                $eplCertificate = $data->where('industry_category_id', $category->id)
-                    ->whereBetween('epl_issue_date', [$from, $to])->count();
-                $siteCertificate = $data->where('industry_category_id', $category->id)
-                    ->whereBetween('site_issue_date', [$from, $to])->count();
+        $la = $pradesheeyaRepo->all()->keyBy('id')->toArray();
 
-                $row['sc_new'] = $siteNew;
-                $row['sc_extend'] = $siteExtend;
-                $row['epl_new'] = $eplNew;
-                $row['epl_renew'] = $eplRenew;
-                $row['certificates'] = $eplCertificate + $siteCertificate;
-                array_push($rows, $row);
+        $la =    array_map(function ($l) {
+            return array(
+                "name" => $l['name']
+            );
+        }, $la);
+        $req_array = $la;
+        // echo '<pre>';
+        // print_r($category);
+        // echo '</pre>';
+        foreach ($req_array as $key => $value) {
+            $req_array[$key]['cat'] = $category;
+        }
+        // echo '<pre>';
+        // print_r($req_array);
+        // echo '</pre>';
+
+        $client = new ClientRepository();
+        $EplNewCount =   $client->fileCountByIndustryCategoryAndLocalAuthorityEPLNew($from, $to)->toArray();
+        $EplRenewCount =   $client->fileCountByIndustryCategoryAndLocalAuthorityEPLRevew($from, $to)->toArray();
+        $EplIssueCount =   $client->fileCountByIndustryCategoryAndLocalAuthorityEPLIssue($from, $to)->toArray();
+        $SiteNewCount =   $client->fileCountByIndustryCategoryAndLocalAuthoritySiteNew($from, $to)->toArray();
+        $SiteRenewCount =   $client->fileCountByIndustryCategoryAndLocalAuthoritySiteRevew($from, $to)->toArray();
+        $SiteIsssueCount =   $client->fileCountByIndustryCategoryAndLocalAuthoritySiteIssue($from, $to)->toArray();
+        $data = array_merge($EplNewCount, $EplRenewCount, $EplIssueCount, $SiteNewCount, $SiteRenewCount, $SiteIsssueCount);
+
+        foreach ($data as $key => $value) {
+
+            switch ($value['type']) {
+                case 'EPL_New':
+
+                    $req_array[$value['la_id']]['cat'][$value['cat_id']]['epl_new'] += $value['total'];
+
+                    break;
+                case 'EPL_Renew':
+                    $req_array[$value['la_id']]['cat'][$value['cat_id']]['epl_renew'] += $value['total'];
+
+                    break;
+                case 'Site_New':
+                    $req_array[$value['la_id']]['cat'][$value['cat_id']]['site_new'] += $value['total'];
+
+                    break;
+                case 'Site_Renew':
+                    $req_array[$value['la_id']]['cat'][$value['cat_id']]['site_renew'] += $value['total'];
+
+                    break;
+                case 'EPL_Issue':
+                    $req_array[$value['la_id']]['cat'][$value['cat_id']]['certificate_issue'] += $value['total'];
+
+                    break;
+                case 'Site_Issue':
+                    $req_array[$value['la_id']]['cat'][$value['cat_id']]['certificate_issue'] += $value['total'];
+
+                    break;
             }
         }
         $time_elapsed_secs = round(microtime(true) - $start, 5);
-        // dd($rows, $time_elapsed_secs);
-        return view('Reports.category_wise_count_report_two', compact('rows', 'time_elapsed_secs', 'from', 'to'));
+        return view('Reports.category_wise_count_report_two', compact('req_array', 'time_elapsed_secs', 'from', 'to'));
     }
     public function categoryWiseCountReport($from, $to)
     {
