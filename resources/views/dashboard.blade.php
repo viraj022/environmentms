@@ -437,8 +437,8 @@
                     <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
 
                     <div class="info-box-content">
-                        <span class="info-box-text">Inspection Pending Count</span>
-                        <span class="info-box-number">760</span>
+                        <span class="info-box-text ad_approval">Inspection Pending Count</span>
+                        <span class="info-box-number ad_approval_count">760</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -447,33 +447,11 @@
                     <span class="info-box-icon bg-success elevation-1"><i class="fas fa-comment"></i></span>
 
                     <div class="info-box-content">
-                        <span class="info-box-text">File Processing Count</span>
-                        <span class="info-box-number">760</span>
+                        <span class="info-box-text ad_approve">File Processing Count</span>
+                        <span class="info-box-number ad_approve_count">760</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
-                <!-- /.info-box -->
-                <div class="info-box mb-3 d-none">
-                    <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
-
-                    <div class="info-box-content">
-                        <span class="info-box-text">tertetetetet</span>
-                        <span class="info-box-number">760</span>
-                    </div>
-                    <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-                <div class="info-box mb-3 d-none">
-                    <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
-
-                    <div class="info-box-content">
-                        <span class="info-box-text">Total Inspections</span>
-                        <span class="info-box-number">760</span>
-                    </div>
-                    <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-
             </div>
             <!-- /.col -->
         </div>
@@ -554,7 +532,7 @@
 //    });
 
     //Add Spesific "File Status" Classes To Any Elements If Your Wants To Show Count And File Status Name// (Example Line 38 & 39)
-    var FILE_STATUS = {0: 'Pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Prenidng Approval', 4: 'D Certificate Approval Prenidng', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold'};
+    var FILE_STATUS = {0: 'In Progress', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Prenidng Approval', 4: 'D Certificate Approval Prenidng', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold'};
     var FILE_CLASS = {0: 'pending', 1: 'ad_approve', 2: 'cer_preparation', 3: 'ad_approval', 4: 'd_penidng', 5: 'complete', 6: 'issued', '-1': 'rejected', '-2': 'hold'};
     var COUNT_CLASS = {0: 'pending_count', 1: 'ad_approve_count', 2: 'cer_preparation_count', 3: 'ad_approval_count', 4: 'd_penidng_count', 5: 'complete_count', 6: 'issued_count', '-1': 'rejected_count', '-2': 'hold_count'};
     getDashboardData(['file_status_lable'], {from: '2020-10-29', to: '2020-12-31'}, function (e) {
