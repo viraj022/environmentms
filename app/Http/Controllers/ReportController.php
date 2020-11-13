@@ -920,6 +920,9 @@ class ReportController extends Controller
             }
         }
         $zip->close();
-        return response()->download($zip_file);
+
+        $rtn =   response()->download($zip_file)->deleteFileAfterSend(true);
+        // unlink($zip_file);
+        return $rtn;
     }
 }
