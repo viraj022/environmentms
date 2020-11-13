@@ -479,15 +479,10 @@ class ReportController extends Controller
             );
         }, $la);
         $req_array = $la;
-        // echo '<pre>';
-        // print_r($category);
-        // echo '</pre>';
+
         foreach ($req_array as $key => $value) {
             $req_array[$key]['cat'] = $category;
         }
-        // echo '<pre>';
-        // print_r($req_array);
-        // echo '</pre>';
 
         $client = new ClientRepository();
         $EplNewCount =   $client->fileCountByIndustryCategoryAndLocalAuthorityEPLNew($from, $to)->toArray();
@@ -901,7 +896,7 @@ class ReportController extends Controller
     public function downloadContents(Client $client)
     {
         // dd($client);
-        $zip_file = 'environment_authority/attachments_of_' . $client->industry_name . 'zip';
+        $zip_file = 'attachments_of_' . $client->industry_name . 'zip';
         $zip = new \ZipArchive();
         $zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
 
