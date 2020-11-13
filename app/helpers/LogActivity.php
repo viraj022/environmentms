@@ -24,8 +24,10 @@ class LogActivity
         $log['url'] = request()->fullUrl();
         $log['ip'] = request()->ip();
         $log['method'] = request()->method();
-        $log['headers'] = json_encode(request()->header());
-        $log['request_data'] = json_encode(request()->all());
+        $log['headers'] = '';
+        // $log['headers'] = json_encode(request()->header());
+        $log['request_data'] = '';
+        // $log['request_data'] = json_encode(request()->all());
         $log['response_code'] = $response['code'];
         $log['response_data'] = $response['data'];
 
