@@ -19,6 +19,8 @@ use App\Repositories\IndustryCategoryRepository;
 use App\Repositories\InspectionSessionRepository;
 use App\Repositories\AssistanceDirectorRepository;
 use App\Repositories\EnvironmentOfficerRepository;
+use App\Repositories\PradesheeyasabaRepository;
+use PhpParser\Node\Expr\Print_;
 
 class ReportController extends Controller
 {
@@ -452,6 +454,78 @@ class ReportController extends Controller
         return view('Reports.eo_inspection_monthly_report', compact('rows', 'environmentOfficer', 'time_elapsed_secs', 'from', 'to'));
     }
 
+    public function categoryLocalAuthorityWiseCountReport($from, $to)
+    {
+        $start = microtime(true);
+        $categoryRepo = new IndustryCategoryRepository();
+        $pradesheeyaRepo = new PradesheeyasabaRepository();
+        $category = $categoryRepo->all()->keyBy('id')->toArray();
+        $category =    array_map(function ($cat) {
+            return array(
+                "name" => $cat['name'],
+                "epl_new" => 0,
+                "epl_renew" => 0,
+                "site_new" => 0,
+                "site_renew" => 0,
+                "certificate_issue" => 0
+            );
+        }, $category);
+
+        $la = $pradesheeyaRepo->all()->keyBy('id')->toArray();
+
+        $la =    array_map(function ($l) {
+            return array(
+                "name" => $l['name']
+            );
+        }, $la);
+        $req_array = $la;
+
+        foreach ($req_array as $key => $value) {
+            $req_array[$key]['cat'] = $category;
+        }
+
+        $client = new ClientRepository();
+        $EplNewCount =   $client->fileCountByIndustryCategoryAndLocalAuthorityEPLNew($from, $to)->toArray();
+        $EplRenewCount =   $client->fileCountByIndustryCategoryAndLocalAuthorityEPLRevew($from, $to)->toArray();
+        $EplIssueCount =   $client->fileCountByIndustryCategoryAndLocalAuthorityEPLIssue($from, $to)->toArray();
+        $SiteNewCount =   $client->fileCountByIndustryCategoryAndLocalAuthoritySiteNew($from, $to)->toArray();
+        $SiteRenewCount =   $client->fileCountByIndustryCategoryAndLocalAuthoritySiteRevew($from, $to)->toArray();
+        $SiteIsssueCount =   $client->fileCountByIndustryCategoryAndLocalAuthoritySiteIssue($from, $to)->toArray();
+        $data = array_merge($EplNewCount, $EplRenewCount, $EplIssueCount, $SiteNewCount, $SiteRenewCount, $SiteIsssueCount);
+
+        foreach ($data as $key => $value) {
+
+            switch ($value['type']) {
+                case 'EPL_New':
+
+                    $req_array[$value['la_id']]['cat'][$value['cat_id']]['epl_new'] += $value['total'];
+
+                    break;
+                case 'EPL_Renew':
+                    $req_array[$value['la_id']]['cat'][$value['cat_id']]['epl_renew'] += $value['total'];
+
+                    break;
+                case 'Site_New':
+                    $req_array[$value['la_id']]['cat'][$value['cat_id']]['site_new'] += $value['total'];
+
+                    break;
+                case 'Site_Renew':
+                    $req_array[$value['la_id']]['cat'][$value['cat_id']]['site_renew'] += $value['total'];
+
+                    break;
+                case 'EPL_Issue':
+                    $req_array[$value['la_id']]['cat'][$value['cat_id']]['certificate_issue'] += $value['total'];
+
+                    break;
+                case 'Site_Issue':
+                    $req_array[$value['la_id']]['cat'][$value['cat_id']]['certificate_issue'] += $value['total'];
+
+                    break;
+            }
+        }
+        $time_elapsed_secs = round(microtime(true) - $start, 5);
+        return view('Reports.category_wise_count_report_two', compact('req_array', 'time_elapsed_secs', 'from', 'to'));
+    }
     public function categoryWiseCountReport($from, $to)
     {
         $start = microtime(true);
@@ -822,7 +896,7 @@ class ReportController extends Controller
     public function downloadContents(Client $client)
     {
         // dd($client);
-        $zip_file = 'environment_authority/attachments_of_' . $client->industry_name . 'zip';
+        $zip_file = 'attachments_of_' . $client->industry_name . 'zip';
         $zip = new \ZipArchive();
         $zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
 
@@ -846,6 +920,9 @@ class ReportController extends Controller
             }
         }
         $zip->close();
-        return response()->download($zip_file);
+
+        $rtn =   response()->download($zip_file)->deleteFileAfterSend(true);
+        // unlink($zip_file);
+        return $rtn;
     }
 }

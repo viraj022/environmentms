@@ -11,33 +11,38 @@
     </head>
     <body class="hold-transition sidebar-mini layout-fixed text-sm">
         <center>
-        <h3>Field Officer Inspection Log</h3>
-        <h4>{{$environmentOfficer->user->first_name ." ".$environmentOfficer->user->last_name}}</h4>
+        <h3>File Count By Category</h3>      
         <h5>From: {{$from}} .To: {{$to}}</h5>
     </center>
     <h6>Report Genaration Time :{{$time_elapsed_secs}} seconds</h6>
-     {{-- @dump($data); --}}
+     {{-- @dump($req_array["40"]); --}}
 <table class="table cell-border compact stripe">
                                             <thead>
                                                 <tr>
                                                     <th style="width: 10px">#</th>
-                                                    <th>Date</th>
-                                                    <th>Local Authority</th>
-                                                    <th>Industry Address</th>
-                                                    <th>File Code</th>
-                                                                            
+                                                    <th>Local Authority Name</th>
+                                                    <th>Category Name</th>
+                                                    <th>SC new</th>
+                                                    <th>SC Extend</th>
+                                                    <th>EPL New</th>
+                                                    <th>EPL Renew</th>                              
+                                                    <th>Certificate Issued</th>                              
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($rows as $indexKey=>$row)
+                                                @foreach($req_array as $array)                                               
+                                                 @foreach($array['cat'] as $row)
                                                 <tr>
-                                                    <td>{{$indexKey+1}}.</td>
-                                                    <td>{{$row['Date']}}</td>
-                                                    <td>{{$row['pradesheeyasaba']}}</td>                                                 
-                                                    <td>{{$row['location']}}</td>                                                 
-                                                    <td>{{$row['file_no']}}</td>                                                 
-                                                                               
+                                                    <td>1.</td>       
+                                                    <td>{{$array['name']}}</td>                                           
+                                                    <td>{{$row['name']}}</td>
+                                                    <td>{{$row['site_new']}}</td>                                                 
+                                                    <td>{{$row['site_renew']}}</td>                                                 
+                                                    <td>{{$row['epl_new']}}</td>                                                 
+                                                    <td>{{$row['epl_renew']}}</td>                                           
+                                                    <td>{{$row['certificate_issue']}}</td>                                           
                                                 </tr>
+                                                  @endforeach
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -46,7 +51,7 @@
     <script type="text/javascript" src="/dataTable/datatables.min.js"></script>
     <script type="text/javascript" src="/js/image.js"></script>
     <script>
-        var officerName = '{{$environmentOfficer->user->first_name ." ".$environmentOfficer->user->last_name}}' ;
+       
         var from = '{{$from}}';
         var to = '{{$to}}';
         // var img = 
@@ -66,7 +71,7 @@
                     $(win.document.body)
                         .css( 'font-size', '10pt' )
                         .prepend(
-                            '<center><H1>Field Officer Inspection Log</h1><h3>'+officerName+'</h3><h4>from: '+from+' to: '+to+'</h4></center><img src='+img+' style="position:absolute; filter: grayscale(100%); opacity: 0.5; top:0; left:0;" />'
+                            '<center><H1>File Count By Category</h1><h4>from: '+from+' to: '+to+'</h4></center><img src='+img+' style="position:absolute; filter: grayscale(100%); opacity: 0.5; top:0; left:0;" />'
                         ); 
                     $(win.document.body).find( 'table' )
                         .addClass( 'compact' )

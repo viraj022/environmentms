@@ -55,6 +55,8 @@ Route::get('/ep_inspection_report/{eo_id}/{from}/{to}', 'ReportController@eoInsp
  */
 Route::get('/category_count_report/{from}/{to}', 'ReportController@categoryWiseCountReport');
 
+Route::get('/category_count_report_two/{from}/{to}', 'ReportController@categoryLocalAuthorityWiseCountReport');
+
 
 /**
  * get row data set of all files

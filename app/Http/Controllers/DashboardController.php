@@ -106,10 +106,12 @@ class DashboardController extends Controller
         $types = array("EPL", "Site Clearance", "Tele Communication", "Schedule Waste");
         $eplCount = $data->whereBetween('epl_submitted_date', [$from, $to])->count();
         $siteCount = $data->whereBetween('site_submit_date', [$from, $to])
-            ->where('site_clearance_type', SiteClearance::SITE_CLEARANCE)
+            ->where('site_site_clearance_type', SiteClearance::SITE_CLEARANCE)
             ->count();
+
+        // dd($siteCount);
         $siteTeleCount = $data->whereBetween('site_submit_date', [$from, $to])
-            ->where('site_clearance_type', SiteClearance::SITE_TELECOMMUNICATION)
+            ->where('site_site_clearance_type', SiteClearance::SITE_TELECOMMUNICATION)
             ->count();
         $scheduleWaste = 0;
         $time_elapsed_secs = round(microtime(true) - $start, 5);
@@ -197,7 +199,7 @@ class DashboardController extends Controller
         }
 
         if ($request->has('file_category_chart')) {
-//            dd('here');
+            //            dd('here');
             $from = $request->renew_chart['from'];
             $to = $request->renew_chart['to'];
             $rtn['file_category_chart'] = $this->getNewJobsByType($from, $to);
