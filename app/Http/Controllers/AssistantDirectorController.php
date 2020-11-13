@@ -509,7 +509,7 @@ class AssistantDirectorController extends Controller
             $msg = setFileStatus($file_id, 'file_status', 5);
             $msg = setFileStatus($file_id, 'cer_status', 5);
             fileLog($file->id, 'Approval', 'Director (' . $user->last_name . ') Approve the Certificate', 0);
-            LogActivity::addToLog('Director Approve certificate', $file);
+            LogActivity::addToLog('Director approve certificate', $file);
             if ($request->has('minutes')) {
                 $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_Dire_APPROVE_CERTIFICATE, $user->id));
             }
