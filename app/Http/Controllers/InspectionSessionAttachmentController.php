@@ -64,10 +64,9 @@ class InspectionSessionAttachmentController extends Controller
 
 
                 if ($msg) {
-                    LogActivity::addToLog('EPL Inspection Created', $inspectionSessionAttachment);
+                    LogActivity::addToLog('Add Inspection attachment', $inspectionSessionAttachment);
                     return array('id' => 1, 'message' => 'true');
                 } else {
-                    LogActivity::addToLog('Fail to create EPL Inspection ', $inspectionSessionAttachment);
                     return array('id' => 0, 'message' => 'false');
                 }
             } else {
@@ -144,10 +143,9 @@ class InspectionSessionAttachmentController extends Controller
             $msg = $inspectionSessionAttachment->delete();
 
             if ($msg) {
-                LogActivity::addToLog('EPL Inspection Deleted : InspectionSessionAttachmentController', $inspectionSessionAttachment);
+                LogActivity::addToLog('Delete inspection attachment', $inspectionSessionAttachment);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to delete EPL Inspection : InspectionSessionAttachmentController ', $inspectionSessionAttachment);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
