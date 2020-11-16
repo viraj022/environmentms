@@ -11,14 +11,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\LogActivity;
 
-class InspectionPersonalController extends Controller {
+class InspectionPersonalController extends Controller
+{
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id) {
+    public function index($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_read']) {
@@ -39,7 +41,8 @@ class InspectionPersonalController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id) {
+    public function create($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         request()->validate([
@@ -52,13 +55,11 @@ class InspectionPersonalController extends Controller {
             $msg = $inspection_personal->save();
 
             if ($msg) {
-                LogActivity::addToLog(' Inspection personal added',$inspection_personal);            
+                LogActivity::addToLog('Add inspection personal', $inspection_personal);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to add Inspection personal ',$inspection_personal);
                 return array('id' => 0, 'message' => 'false');
             }
-
         } else {
             abort(401);
         }
@@ -70,7 +71,8 @@ class InspectionPersonalController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         //
     }
 
@@ -80,17 +82,20 @@ class InspectionPersonalController extends Controller {
      * @param  \App\InspectionPersonal  $inspectionPersonal
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
+    public function show($id)
+    {
         return InspectionPersonal::with('user')->where('inspection_session_id', $id)->get();
     }
 
-    public function find($sessionId) {
+    public function find($sessionId)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         return InspectionPersonal::findOrFail($sessionId);
     }
 
-    public function showInspectionsPersonal($id) {
+    public function showInspectionsPersonal($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         return InspectionPersonal::where('inspection_session_id', $id)->get();
@@ -102,7 +107,8 @@ class InspectionPersonalController extends Controller {
      * @param  \App\InspectionPersonal  $inspectionPersonal
      * @return \Illuminate\Http\Response
      */
-    public function edit(InspectionPersonal $inspectionPersonal) {
+    public function edit(InspectionPersonal $inspectionPersonal)
+    {
         //
     }
 
@@ -113,7 +119,8 @@ class InspectionPersonalController extends Controller {
      * @param  \App\InspectionPersonal  $inspectionPersonal
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, InspectionPersonal $inspectionPersonal) {
+    public function update(Request $request, InspectionPersonal $inspectionPersonal)
+    {
         //
     }
 
@@ -123,27 +130,21 @@ class InspectionPersonalController extends Controller {
      * @param  \App\InspectionPersonal  $inspectionPersonal
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_delete']) {
-            $inspection_personal = InspectionPersonal::findOrFail($id);
-            ;
+            $inspection_personal = InspectionPersonal::findOrFail($id);;
             $msg = $inspection_personal->delete();
-
-
             if ($msg) {
-                LogActivity::addToLog(' Inspection personal deleted',$inspection_personal);            
+                LogActivity::addToLog('Delete inspection personal', $inspection_personal);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to delete Inspection personal ',$inspection_personal);
                 return array('id' => 0, 'message' => 'false');
             }
-
-
         } else {
             abort(401);
         }
     }
-
 }
