@@ -40,10 +40,9 @@ class PaymentTypeController extends Controller
             $msg =  $payment_type->save();
 
             if ($msg) {
-                LogActivity::addToLog('Payment type added',$payment_type);            
+                LogActivity::addToLog('Payment type added', $payment_type);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to add  Payment  type',$payment_type);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -71,13 +70,11 @@ class PaymentTypeController extends Controller
 
 
             if ($msg) {
-                LogActivity::addToLog('Payment type updated',$payment_type);            
+                LogActivity::addToLog('Payment type updated', $payment_type);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to update  Payment  type',$payment_type);
                 return array('id' => 0, 'message' => 'false');
             }
-
         } else {
             abort(401);
         }
@@ -153,17 +150,13 @@ class PaymentTypeController extends Controller
             $msg = $payment_type->delete();
 
             if ($msg) {
-                LogActivity::addToLog('Payment type deleted',$payment_type);            
+                LogActivity::addToLog('Payment type deleted', $payment_type);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to delete  Payment  type',$payment_type);
                 return array('id' => 0, 'message' => 'false');
             }
-
         } else {
             abort(401);
         }
     }
-
-    
 }
