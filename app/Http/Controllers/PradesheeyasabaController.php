@@ -44,13 +44,11 @@ class PradesheeyasabaController extends Controller
             $msg = $pradesheyasaba->save();
 
             if ($msg) {
-                LogActivity::addToLog('pradesheyasaba added',$pradesheyasaba);            
+                LogActivity::addToLog('pradesheyasaba added', $pradesheyasaba);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to add  pradesheyasaba',$pradesheyasaba);
                 return array('id' => 0, 'message' => 'false');
             }
-
         } else {
             abort(401);
         }
@@ -70,11 +68,6 @@ class PradesheeyasabaController extends Controller
         //                'name' => 'required|unique:pradesheeyasabas,name',
         //                'code' => 'required|unique:pradesheeyasabas,code',           
         //            ]);
-
-
-
-
-
         if ($pageAuth['is_update']) {
             $pradesheyasaba = Pradesheeyasaba::findOrFail($id);
             if ($pradesheyasaba->name != \request('name')) {
@@ -96,10 +89,9 @@ class PradesheeyasabaController extends Controller
             $msg = $pradesheyasaba->save();
 
             if ($msg) {
-                LogActivity::addToLog('pradesheyasaba updated',$pradesheyasaba);            
+                LogActivity::addToLog('pradesheyasaba updated', $pradesheyasaba);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to update pradesheyasaba',$pradesheyasaba);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -128,7 +120,7 @@ class PradesheeyasabaController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
         if ($pageAuth['is_read']) {
-            return Pradesheeyasaba::where('zone_id','=',$id)->get();
+            return Pradesheeyasaba::where('zone_id', '=', $id)->get();
         } else {
             abort(401);
         }
@@ -173,10 +165,10 @@ class PradesheeyasabaController extends Controller
             $msg = $pradesheyasaba->delete();
 
             if ($msg) {
-                LogActivity::addToLog('pradesheyasaba deleted',$pradesheyasaba);            
+                LogActivity::addToLog('pradesheyasaba deleted', $pradesheyasaba);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to delete pradesheyasaba',$pradesheyasaba);
+                LogActivity::addToLog('Fail to delete pradesheyasaba', $pradesheyasaba);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
