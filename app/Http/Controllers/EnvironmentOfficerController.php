@@ -301,7 +301,6 @@ class EnvironmentOfficerController extends Controller
                     LogActivity::addToLog('Environment Officer Removed from EPL', $epl);
                     return array('id' => 1, 'message' => 'true');
                 } else {
-                    LogActivity::addToLog('Fail to remove Environment Officer from EPL', $epl);
                     return array('id' => 0, 'message' => 'false');
                 }
             } else {
@@ -380,7 +379,8 @@ class EnvironmentOfficerController extends Controller
             $officer = EnvironmentOfficer::with('user')->findOrFail($officerId);
 
             $msg = setFileStatus($file_id, 'file_status', 1);
-            fileLog($file->id, 'FileStatus', 'Environment Officer (' . $officer->user->user_name . ') Approve the file and forward to the AD', 0);
+            fileLog($file->id, 'Approval', 'EO (' . $officer->user->last_name . ') Approve the file', 0);
+            LogActivity::addToLog('EO approve', $file);
             if ($request->has('minutes')) {
                 $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ENV_APPROVE_FILE, $user->id));
             }
@@ -405,7 +405,8 @@ class EnvironmentOfficerController extends Controller
             $officer = EnvironmentOfficer::with('user')->findOrFail($officerId);
 
             $msg = setFileStatus($file_id, 'file_status', -1);
-            fileLog($file->id, 'FileStatus', 'Environment Officer (' . $officer->user->user_name . ') rejected the file', 0);
+            fileLog($file->id, 'Rejection', 'EO (' . $officer->user->last_name . ') rejected the file', 0);
+            LogActivity::addToLog('EO reject', $file);
             if ($request->has('minutes')) {
                 $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ENV_REJECT_FILE, $user->id));
             }
@@ -428,11 +429,11 @@ class EnvironmentOfficerController extends Controller
             $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
             $file = Client::findOrFail($file_id);
             $officer = EnvironmentOfficer::with('user')->findOrFail($officerId);
-            // dd($assistantDirector->user);
             $msg = setFileStatus($file_id, 'file_status', 3);
             $msg = $msg && setFileStatus($file_id, 'cer_status', 3);
 
-            fileLog($file->id, 'FileStatus', 'Environment Officer (' . $officer->user->user_name . ') Approve the certificate and forward to assistant director.', 0);
+            fileLog($file->id, 'Approval', 'EO (' . $officer->user->last_name . ') Approve the certificate', 0);
+            LogActivity::addToLog('EO approve certificate', $file);
             if ($request->has('minutes')) {
                 $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ENV_APPROVE_CERTIFICATE, $user->id));
             }
@@ -455,11 +456,10 @@ class EnvironmentOfficerController extends Controller
             $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
             $file = Client::findOrFail($file_id);
             $officer = EnvironmentOfficer::with('user')->findOrFail($officerId);
-            // dd($assistantDirector->user);
             $msg = setFileStatus($file_id, 'file_status', 2);
             $msg = $msg && setFileStatus($file_id, 'cer_status', 1);
-
-            fileLog($file->id, 'FileStatus', 'Environment Officer (' . $officer->user->user_name . ') Rejected the certificate forward to drafting.', 0);
+            fileLog($file->id, 'Rejection', 'EO (' . $officer->user->last_name . ') Rejected the certificate', 0);
+            LogActivity::addToLog('EO reject certificate', $file);
             if ($request->has('minutes')) {
                 $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ENV_REJECT_CERTIFICATE, $user->id));
             }
