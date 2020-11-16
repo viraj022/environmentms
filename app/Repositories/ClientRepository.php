@@ -329,6 +329,7 @@ class ClientRepository
             ->orderBy('pradesheeyasabas.name')
             ->orderBy('industry_categories.name')
             ->where('e_p_l_s.count', 0)
+            ->whereBetween('e_p_l_s.submitted_date', [$from, $to])
             ->get();
     }
     public function fileCountByIndustryCategoryAndLocalAuthorityEPLRevew($from, $to)
@@ -341,6 +342,7 @@ class ClientRepository
             ->orderBy('pradesheeyasabas.name')
             ->orderBy('industry_categories.name')
             ->where('e_p_l_s.count', '>', 0)
+            ->whereBetween('e_p_l_s.submitted_date', [$from, $to])
             ->get();
     }
     public function fileCountByIndustryCategoryAndLocalAuthorityEPLIssue($from, $to)
@@ -352,6 +354,7 @@ class ClientRepository
             ->select(DB::raw('count(clients.id) as total'), 'industry_categories.id as cat_id', 'pradesheeyasabas.id as la_id', DB::raw("'EPL_Issue' as type"))
             ->orderBy('pradesheeyasabas.name')
             ->orderBy('industry_categories.name')
+            ->whereBetween('e_p_l_s.issue_date', [$from, $to])
             ->get();
     }
     public function fileCountByIndustryCategoryAndLocalAuthoritySiteNew($from, $to)
@@ -365,6 +368,7 @@ class ClientRepository
             ->orderBy('pradesheeyasabas.name')
             ->orderBy('industry_categories.name')
             ->where('site_clearances.count', 0)
+            ->whereBetween('site_clearances.submit_date', [$from, $to])
             ->get();
     }
     public function fileCountByIndustryCategoryAndLocalAuthoritySiteRevew($from, $to)
@@ -378,6 +382,7 @@ class ClientRepository
             ->orderBy('pradesheeyasabas.name')
             ->orderBy('industry_categories.name')
             ->where('site_clearances.count', '>', 0)
+            ->whereBetween('site_clearances.submit_date', [$from, $to])
             ->get();
     }
     public function fileCountByIndustryCategoryAndLocalAuthoritySiteIssue($from, $to)
@@ -390,6 +395,7 @@ class ClientRepository
             ->select(DB::raw('count(clients.id) as total'), 'industry_categories.id as cat_id', 'pradesheeyasabas.id as la_id', DB::raw("'Site_Issue' as type"))
             ->orderBy('pradesheeyasabas.name')
             ->orderBy('industry_categories.name')
+            ->whereBetween('site_clearances.issue_date', [$from, $to])
             ->get();
     }
 }
