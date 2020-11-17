@@ -84,8 +84,8 @@ class DashboardController extends Controller
         $newCount = getArraySum($eplCount, $siteCount);
         $time_elapsed_secs = round(microtime(true) - $start, 5);
         $rtn["new"] = $newCount;
-        $rtn["epl"] = $newCount;
-        $rtn["site"] = $newCount;
+        $rtn["epl"] = $eplCount;
+        $rtn["site"] = $siteCount;
         $rtn["months"] = $this->getMonths($from, $to);
         $rtn["time"] = $time_elapsed_secs;
         return $rtn;

@@ -84,7 +84,7 @@ function eplRenewalChart(lable, line1, line2) {
 
 
 //NEW FILES Chart OPEN//
-function newFilesChart(newfile_lable, newfile_data) {
+function newFilesChart(newfile_lable, all_data,site,epl) {
     var salesGraphChartCanvas = $('#new-files-chart').get(0).getContext('2d');
 //$('#revenue-chart').get(0).getContext('2d');
 
@@ -92,17 +92,41 @@ function newFilesChart(newfile_lable, newfile_data) {
         labels: newfile_lable,
         datasets: [
             {
-                label: 'New Files',
+                label: 'Total Files',
                 fill: false,
                 borderWidth: 2,
                 lineTension: 0,
                 spanGaps: true,
-                borderColor: '#efefef',
+                borderColor: '#dc3545',
                 pointRadius: 3,
                 pointHoverRadius: 7,
-                pointColor: '#efefef',
-                pointBackgroundColor: '#efefef',
-                data: newfile_data
+                pointColor: '#dc3545',
+                pointBackgroundColor: '#dc3545',
+                data: all_data
+            },{
+                label: 'Site Clearance',
+                fill: false,
+                borderWidth: 2,
+                lineTension: 0,
+                spanGaps: true,
+                borderColor: '#007bff',
+                pointRadius: 3,
+                pointHoverRadius: 7,
+                pointColor: '#007bff',
+                pointBackgroundColor: '#007bff',
+                data: site
+            },{
+                label: 'EPL',
+                fill: false,
+                borderWidth: 2,
+                lineTension: 0,
+                spanGaps: true,
+                borderColor: '#6610f2',
+                pointRadius: 3,
+                pointHoverRadius: 7,
+                pointColor: '#6610f2',
+                pointBackgroundColor: '#6610f2',
+                data: epl
             }
         ]
     }
