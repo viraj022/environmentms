@@ -108,6 +108,15 @@
                     </div>
                 </div>  
             </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-info elevation-1"><i class="fab fa-whmcs"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text font-weight-bold ad_approve">Inspection Pending Count</span>
+                        <span class="info-box-number ad_approve_count">760</span>
+                    </div>
+                </div>  
+            </div>
         </div>
         <!-- /.row -->
 
