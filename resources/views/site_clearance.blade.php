@@ -203,7 +203,41 @@
                         <a href="/committee/id/{{$profile}}" class="btn btn-success navToCommittee" target="_blank">Add Committee</a>
                     </div>
                 </div>
-
+                <!--Site Clearance Extention-->
+                <div class="card card-info  collapsed-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Site Clearance Extention</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body" style="display: none;">
+                        <div class="form-group">
+                            <label>Submit Date*</label>
+                            <input id="submitDateExten" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">
+                        </div>
+                        <div class="form-group">
+                            <label>Remark</label>
+                            <input id="extendRemark" type="text" class="form-control form-control-sm" value="">
+                        </div>
+                        <div class="form-group sectionExtenFile d-none">
+                            <a id="viewApplicationExten" target="_blank" href="#" class="btn btn-dark"><i class="fas fa-search"></i> View Current File</a>
+                        </div>
+                        <div class="form-group" id="fileUpDiv">
+                            <hr>
+                            <input id="fileUploadExten" type="file" class="" accept="image/*, .pdf">
+                            <div class="progress d-none">
+                                <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                    <!--<span class="sr-only">40% Complete (success)</span>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button id="uploadExten" type="submit" class="btn btn-success"><i class="fas fa-check"></i> Upload Application</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -362,6 +396,23 @@ $(function () {
                         viewUploadContentData(resp.content_paths);
                     }
                 });
+            }
+        });
+    });
+//Site Clearance Extention
+    $("#uploadExten").click(function () {
+        let data = {
+            submit_date: $('#submitDateExten').val(),
+            file: $('#fileUploadExten')[0].files[0]
+        };
+        setSiteClearanceExtenAPI(PROFILE, data, function (rest) {
+            show_mesege(rest);
+            if (rest.id == 1) {
+//                getSiteClearanceAPI(PROFILE, function (resp) {
+//                    if (resp.content_paths != null) {
+//                        viewUploadContentData(resp.content_paths);
+//                    }
+//                });
             }
         });
     });
