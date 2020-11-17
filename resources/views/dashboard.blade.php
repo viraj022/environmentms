@@ -500,7 +500,7 @@
         //--EPL Renewal Chart END--//
 
 //--NEW FILES Chart Open--//
-        newFilesChart(p.new_file_chart.months, p.new_file_chart.new);
+        newFilesChart(p.new_file_chart.months, p.new_file_chart.new,p.new_file_chart.site,p.new_file_chart.epl);
         //--NEW FILES Chart END--//
 
         /* -- pradeshiya sabha file count--*/
