@@ -8,20 +8,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\LogActivity;
 
-class EPLRenewController extends Controller {
+class EPLRenewController extends Controller
+{
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id) {
-       
+    public function index($id)
+    {
+
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $epl = EPL::findOrFail($id);
-//         dd($epl->client_id);
-        return view('renewal_page', ['pageAuth' => $pageAuth,'id' => $epl->client_id]);
+        //         dd($epl->client_id);
+        return view('renewal_page', ['pageAuth' => $pageAuth, 'id' => $epl->client_id]);
     }
 
     /**
@@ -29,48 +31,52 @@ class EPLRenewController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id) {
+    /**
+     * Method obsolete
+     */
+    public function create($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
             return \DB::transaction(function () use ($id) {
-                        request()->validate([
-                            'e_p_l_id' => 'required|integer',
-                            'submit_date' => ['required', 'date'],
-                            'remark' => ['sometimes', 'nullable'],
-                            'is_old' => 'required|integer',
-                        ]);
-                        $epl = EPL::find($id);
-                        if ($epl) {
-                            // dd($epl->getRenewCount());
-                            $ePLRenew = new EPLRenew();
-                            $ePLRenew->e_p_l_id = $epl->id;
-                            $ePLRenew->submit_date = request('submit_date');
-                            $ePLRenew->remark = request('remark');
-                            $ePLRenew->is_old = request('is_old');
-                            $ePLRenew->count = $epl->getRenewCount() + 1;
-                            $epl->application_path = "";
-                            $data = \request('file');
-                            $array = explode(';', $data);
-                            $array2 = explode(',', $array[1]);
-                            $array3 = explode('/', $array[0]);
-                            $type = $array3[1];
-                            $data = base64_decode($array2[1]);
-                            file_put_contents($this->makeApplicationPath($epl->id) . $epl->getNextRnumber() . "." . $type, $data);
-                            $ePLRenew->renew_application_path = $this->makeApplicationPath($epl->id) . $epl->getNextRnumber() . "." . $type;
-                            $msg = $ePLRenew->save();
-                            if ($msg) {
-                                LogActivity::fileLog($ePLRenew->id, 'EPLrenew', "EPLRenew Created", 1);
-                                LogActivity::addToLog('EPLRenew Created',$ePLRenew);
-                                return array('id' => 1, 'message' => 'true');
-                            } else {
-                                LogActivity::addToLog('Fail to Create EPLRenew',$ePLRenew);
-                                return array('id' => 0, 'message' => 'false');
-                            }
-                        } else {
-                            abort(404);
-                        }
-                    });
+                request()->validate([
+                    'e_p_l_id' => 'required|integer',
+                    'submit_date' => ['required', 'date'],
+                    'remark' => ['sometimes', 'nullable'],
+                    'is_old' => 'required|integer',
+                ]);
+                $epl = EPL::find($id);
+                if ($epl) {
+                    // dd($epl->getRenewCount());
+                    $ePLRenew = new EPLRenew();
+                    $ePLRenew->e_p_l_id = $epl->id;
+                    $ePLRenew->submit_date = request('submit_date');
+                    $ePLRenew->remark = request('remark');
+                    $ePLRenew->is_old = request('is_old');
+                    $ePLRenew->count = $epl->getRenewCount() + 1;
+                    $epl->application_path = "";
+                    $data = \request('file');
+                    $array = explode(';', $data);
+                    $array2 = explode(',', $array[1]);
+                    $array3 = explode('/', $array[0]);
+                    $type = $array3[1];
+                    $data = base64_decode($array2[1]);
+                    file_put_contents($this->makeApplicationPath($epl->id) . $epl->getNextRnumber() . "." . $type, $data);
+                    $ePLRenew->renew_application_path = $this->makeApplicationPath($epl->id) . $epl->getNextRnumber() . "." . $type;
+                    $msg = $ePLRenew->save();
+                    if ($msg) {
+                        LogActivity::fileLog($ePLRenew->id, 'EPLrenew', "EPLRenew Created", 1);
+                        LogActivity::addToLog('EPLRenew Created', $ePLRenew);
+                        return array('id' => 1, 'message' => 'true');
+                    } else {
+                        LogActivity::addToLog('Fail to Create EPLRenew', $ePLRenew);
+                        return array('id' => 0, 'message' => 'false');
+                    }
+                } else {
+                    abort(404);
+                }
+            });
         } else {
             abort(401);
         }
@@ -82,7 +88,8 @@ class EPLRenewController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         //
     }
 
@@ -92,7 +99,8 @@ class EPLRenewController extends Controller {
      * @param  \App\EPLRenew  $ePLRenew
      * @return \Illuminate\Http\Response
      */
-    public function show(EPLRenew $ePLRenew) {
+    public function show(EPLRenew $ePLRenew)
+    {
         //
     }
 
@@ -102,7 +110,8 @@ class EPLRenewController extends Controller {
      * @param  \App\EPLRenew  $ePLRenew
      * @return \Illuminate\Http\Response
      */
-    public function edit(EPLRenew $ePLRenew) {
+    public function edit(EPLRenew $ePLRenew)
+    {
         //
     }
 
@@ -113,7 +122,8 @@ class EPLRenewController extends Controller {
      * @param  \App\EPLRenew  $ePLRenew
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, EPLRenew $ePLRenew) {
+    public function update(Request $request, EPLRenew $ePLRenew)
+    {
         //
     }
 
@@ -123,11 +133,13 @@ class EPLRenewController extends Controller {
      * @param  \App\EPLRenew  $ePLRenew
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EPLRenew $ePLRenew) {
+    public function destroy(EPLRenew $ePLRenew)
+    {
         //
     }
 
-    private function makeApplicationPath($id) {
+    private function makeApplicationPath($id)
+    {
         if (!is_dir("uploads")) {
             //Create our directory if it does not exist
             mkdir("uploads");
@@ -146,5 +158,4 @@ class EPLRenewController extends Controller {
         }
         return "uploads/EPL/" . $id . "/application/";
     }
-
 }

@@ -29,13 +29,11 @@ class OldFilesController extends Controller
         $oldFiles->type = $request->file->extension();
         $oldFiles->client_id = $client->id;
         $msg = $oldFiles->save();
-        LogActivity::fileLog($oldFiles->client_id, 'OldFile', "OldFileCreate", 1);
-
+        LogActivity::fileLog($oldFiles->client_id, 'old_file', "OldFileCreate", 1);
+        LogActivity::addToLog('OldFileCreate Created', $oldFiles);
         if ($msg) {
-            LogActivity::addToLog('OldFileCreate Created', $oldFiles);
             return array('id' => 1, 'message' => 'true');
         } else {
-            LogActivity::addToLog('Fail to create OldFile ', $oldFiles);
             return array('id' => 0, 'message' => 'false');
         }
     }
@@ -47,13 +45,11 @@ class OldFilesController extends Controller
         $oldFiles = OldFiles::findOrFail($id);
         $msg = $oldFiles->delete();
 
-        LogActivity::fileLog($oldFiles->client_id, 'OldFile', "OldFileDelate", 1);
-
+        LogActivity::fileLog($oldFiles->client_id, 'old_file', "OldFileDelate", 1);
+        LogActivity::addToLog('OldFileCreate Deleted', $oldFiles);
         if ($msg) {
-            LogActivity::addToLog('OldFileCreate Deleted', $oldFiles);
             return array('id' => 1, 'message' => 'true');
         } else {
-            LogActivity::addToLog('Fail to delete OldFile ', $oldFiles);
             return array('id' => 0, 'message' => 'false');
         }
     }

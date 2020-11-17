@@ -90,7 +90,7 @@ class EPLPaymentController extends Controller
                             abort(404);
                         }
                     }
-                    LogActivity::addToLog('EPL Payment Added : addRegistrationPayment', $transaction);
+                    LogActivity::addToLog('Registration Payment', $transaction);
                     if ($msg) {
 
                         return array('id' => 1, 'message' => 'true', 'code' => $transaction->id);
@@ -115,7 +115,7 @@ class EPLPaymentController extends Controller
             return   DB::transaction(function () use ($id) {
                 $transaction = Transaction::where('id', $id)->first();
                 if ($transaction) {
-                    LogActivity::addToLog('EPL Payment Added : addRegistrationPayment', $transaction);
+                    LogActivity::addToLog('Delete Application payment', $transaction);
                     if ($transaction->transactionItems()->delete() && $transaction->delete()) {
                         return array('id' => 1, 'message' => 'true');
                     } else {
@@ -149,7 +149,7 @@ class EPLPaymentController extends Controller
         $transaction = Transactioncounter::findOrFail($id);
         $transaction->payment_status = 1;
         $msg = $transaction->save();
-        LogActivity::addToLog('Registration Payment Marked ', $transaction);
+        LogActivity::addToLog('Application Payment Marked ', $transaction);
         if ($msg) {
             return array('id' => 1, 'message' => 'true');
         } else {
@@ -168,7 +168,7 @@ class EPLPaymentController extends Controller
             if ($transaction) {
                 if ($transaction->status == 1) {
                     $transaction->status = 2;
-                    LogActivity::addToLog('Make payment complete', $transaction);
+                    LogActivity::addToLog('Process application payment', $transaction);
                     if ($transaction->save()) {
                         return array('id' => 1, 'message' => 'true');
                     } else {
@@ -264,6 +264,7 @@ class EPLPaymentController extends Controller
     public function payEPL($eplId)  // payment optimized
     {
         return \DB::transaction(function () use ($eplId) {
+            $user = Auth::user();
             $epl = EPL::find($eplId);
             if ($epl) {
                 $transaction = new Transaction();
@@ -291,7 +292,8 @@ class EPLPaymentController extends Controller
                             abort(404);
                         }
                     }
-                    LogActivity::addToLog('Add EPL Payment', $transaction);
+                    LogActivity::addToLog('Add EPL payment', $transaction);
+                    LogActivity::fileLog($epl->client_id, 'Transaction', $user->last_name . " Add EPL payment", 1);
                     if ($msg) {
                         return array('id' => 1, 'message' => 'true', 'code' => $transaction->id, 'name' => $epl->client->first_name);
                     } else {
@@ -307,6 +309,7 @@ class EPLPaymentController extends Controller
     public function paySiteClearance($id)
     {
         return \DB::transaction(function () use ($id) {
+            $user = Auth::user();
             $site = SiteClearenceSession::find($id);
             if ($site) {
                 $transaction = new Transaction();
@@ -335,6 +338,7 @@ class EPLPaymentController extends Controller
                         }
                     }
                     LogActivity::addToLog('Add site clearance payment', $transaction);
+                    LogActivity::fileLog($site->client_id, 'Transaction', $user->last_name . "Add site clearance payment", 1);
                     if ($msg) {
                         return array('id' => 1, 'message' => 'true', 'code' => $transaction->id, 'name' => $site->client->first_name);
                     } else {

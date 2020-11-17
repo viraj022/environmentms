@@ -26,6 +26,7 @@ class CashierController extends Controller
         $transaction = Transaction::with('transactionItems.payment')
             ->where('id', $id)
             ->first();
+        LogActivity::addToLog('Request Transaction Data', $transaction);
         if (Transaction::APPLICATION_FEE == $transaction->type) {
             $transaction = Transaction::with('transactionItems.payment')->with('applicationClient')
                 ->where('id', $id)
@@ -33,10 +34,7 @@ class CashierController extends Controller
         } else {
             $transaction->application_Client = $transaction->client;
             $transaction->application_Client->name = $transaction->client->first_name;
-            // dd($transaction->client);
         }
-
-
         if ($transaction) {
             return $transaction;
         } else {
@@ -54,11 +52,10 @@ class CashierController extends Controller
         $transaction->cashier_name = request('cashier_name');
         $transaction->invoice_no = request('invoice_no');
         $transaction->billed_at = Carbon::now()->toDateTimeString();
+        LogActivity::addToLog('Payment Completed', $transaction);
         if ($transaction->save()) {
-            //  LogActivity::addToLog($transaction->invoice_no.'payment Added',$transaction);
             return array('id' => 1, 'message' => 'true');
         } else {
-            // LogActivity::addToLog('Fail to Add transaction' . $transaction->invoice_no, $transaction);
             return array('id' => 1, 'message' => 'false');
         }
     }
@@ -67,11 +64,10 @@ class CashierController extends Controller
         $transaction = Transaction::where('invoice_no', $id)->first();
         $transaction->status = 3;
         $transaction->canceled_at = Carbon::now()->toDateTimeString();
+        LogActivity::addToLog('Payment Cancelled', $transaction);
         if ($transaction->save()) {
-            //  LogActivity::addToLog($transaction->invoice_no . 'canceled', $transaction);
             return array('id' => 1, 'message' => 'true');
         } else {
-            //    LogActivity::addToLog('faiL TO cancel' . $transaction->invoice_no, $transaction);
             return array('id' => 1, 'message' => 'false');
         }
     }
@@ -86,8 +82,6 @@ class CashierController extends Controller
     {
         return Transaction::with('transactionItems')->with('client')->where('client_id', $id)->get();
     }
-
-
     public function getPaymentTypes()
     {
         $paymentType = PaymentType::get();

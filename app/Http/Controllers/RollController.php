@@ -37,25 +37,16 @@ class RollController extends Controller
         $roll->level_id = request('level');
         $msg = $roll->save();
         if ($msg) {
-            LogActivity::addToLog('roll added',$roll); 
+            LogActivity::addToLog('roll added', $roll);
             return redirect()
                 ->back()
                 ->with('success', 'Ok');
         } else {
-            LogActivity::addToLog('Fail to add  roll',$roll);
             return redirect()
                 ->back()
                 ->withInput()
                 ->with('error', 'Error');
         }
-
-
-           
-
-    
-  
-     
-        
     }
     public function store($id)
     {
@@ -68,10 +59,9 @@ class RollController extends Controller
         $msg = $roll->save();
 
         if ($msg) {
-            LogActivity::addToLog('roll updated',$roll);            
+            LogActivity::addToLog('roll updated', $roll);
             return array('id' => 1, 'message' => 'true');
         } else {
-            LogActivity::addToLog('Fail to update roll',$roll);
             return array('id' => 0, 'message' => 'false');
         }
     }
@@ -113,13 +103,11 @@ class RollController extends Controller
             $msg = $roll->delete();
 
             if ($msg) {
-                LogActivity::addToLog('roll deleted',$roll);            
+                LogActivity::addToLog('roll deleted', $roll);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to delete roll',$roll);
-                return array('id' => 0, 'message' => 'false');
+                LogActivity::addToLog('Fail to delete roll', $roll);
             }
-
         } catch (\Illuminate\Database\QueryException $e) {
 
             if ($e->errorInfo[0] == 23000) {

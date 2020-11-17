@@ -103,10 +103,10 @@ class SiteClearanceController extends Controller
             }
             // sending response
             if ($msg) {
-                LogActivity::addToLog('saveOldData : SiteClearanceController', $client);
+                LogActivity::addToLog('create old site clearance', $client);
+                LogActivity::fileLog($client->id, 'site_clearance', "create old site clearance", 1);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('saveOldData Fail : SiteClearanceController', $client);
                 return array('id' => 0, 'message' => 'false');
             }
         });
@@ -157,10 +157,10 @@ class SiteClearanceController extends Controller
             }
             // sending response
             if ($msg) {
-                LogActivity::addToLog('updateOldData done : SiteClearanceController', $siteClearance);
+                LogActivity::addToLog('update old site clearance', $siteClearance);
+                LogActivity::fileLog($siteClearanceSession->client_id, 'site_clearance', "update old site clearance", 1);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('updateOldData Fail : SiteClearanceController', $siteClearance);
                 return array('id' => 0, 'message' => 'false');
             }
         });
@@ -178,10 +178,10 @@ class SiteClearanceController extends Controller
                 $siteClearance = SiteClearance::findOrFail($sites[0]->siteClearances[0]->id);
                 $msg =  $siteClearance->delete();
                 if ($msg) {
-                    LogActivity::addToLog('deleteOldData done : SiteClearanceController', $siteClearance);
+                    LogActivity::addToLog('delete old site clearanceer', $siteClearance);
+                    LogActivity::fileLog($sites->client_id, 'site_clearance', "delete old site clearance", 1);
                     return array('id' => 1, 'message' => 'true');
                 } else {
-                    LogActivity::addToLog('deleteOldData Fail : SiteClearanceController', $siteClearance);
                     return array('id' => 0, 'message' => 'false');
                 }
             } else {
@@ -252,7 +252,8 @@ class SiteClearanceController extends Controller
             setFileStatus($siteSessions->client_id, 'cer_status', 0);  // set certificate status to 0
             setFileStatus($siteSessions->client_id, 'file_problem', 0); // set file problem status to 0
             // $file = #ssiteClearenceSession->client;
-            LogActivity::addToLog('create new site clearance ', $siteSessions);
+            LogActivity::addToLog('create new site clearance', $siteSessions);
+            LogActivity::fileLog($siteSessions->client_id, 'site_clearance', "create new site clearance", 1);
             if ($siteSessions) {
                 return response(array("id" => 1, "message" => "ok", 'rout' => "/site_clearance/client/" . $siteSessions->client_id . "/profile/" . $siteSessions->id));
             } else {
@@ -321,6 +322,8 @@ class SiteClearanceController extends Controller
                 $siteClearenceSession->content_paths = ["tor" => ["path" => $db_path, "expire_date" => $request->expire_date, "valid_date" => $request->valid_date]];
             }
             if ($siteClearenceSession->save()) {
+                LogActivity::addToLog('tor uploaded', $siteClearenceSession);
+                LogActivity::fileLog($siteClearenceSession->client_id, 'site_clearance', "tor uploaded", 1);
                 return response(array("id" => 1, "message" => "ok"));
             } else {
                 return response(array("id" => 0, "message" => "fail"));

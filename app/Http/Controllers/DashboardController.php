@@ -68,7 +68,26 @@ class DashboardController extends Controller
         $rtn["new"] = $newCount;
         $rtn["months"] = $this->getMonths($from, $to);
         $rtn["time"] = $time_elapsed_secs;
-
+        return $rtn;
+    }
+    public function newFIleChartV2($from, $to)
+    {
+        $start = microtime(true);
+        $rtn = [];
+        $client = new ClientRepository();
+        $data = $client->allPlain($from, $to);
+        // dd($data->last()->toArray());
+        $eplCount = $this->getEPlCountGroupMonth($data->whereBetween('epl_submitted_date', [$from, $to])->where('epl_count', '0'));
+        $siteCount = $this->getSiteCountGroupMonth($data->whereBetween('site_submit_date', [$from, $to])->where('site_count', '0'));
+        // dd($data->whereBetween('epl_submitted_date', [$from, $to])->where('epl_count', '0'));
+        // dd($eplCount, $siteCount);
+        $newCount = getArraySum($eplCount, $siteCount);
+        $time_elapsed_secs = round(microtime(true) - $start, 5);
+        $rtn["new"] = $newCount;
+        $rtn["epl"] = $newCount;
+        $rtn["site"] = $newCount;
+        $rtn["months"] = $this->getMonths($from, $to);
+        $rtn["time"] = $time_elapsed_secs;
         return $rtn;
     }
 
@@ -195,7 +214,7 @@ class DashboardController extends Controller
         if ($request->has('new_file_chart')) {
             $from = $request->renew_chart['from'];
             $to = $request->renew_chart['to'];
-            $rtn['new_file_chart'] = $this->newFIleChart($from, $to);
+            $rtn['new_file_chart'] = $this->newFIleChartV2($from, $to);
         }
 
         if ($request->has('file_category_chart')) {

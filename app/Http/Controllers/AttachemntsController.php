@@ -65,12 +65,10 @@ class AttachemntsController extends Controller
             $attachment = new Attachemnt();
             $attachment->name = \request('name');
             $msg = $attachment->save();
-
+            LogActivity::addToLog('Add new attachment', $attachment);
             if ($msg) {
-                LogActivity::addToLog('New attachment created', $attachment);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to create new attachment', $attachment);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -96,12 +94,11 @@ class AttachemntsController extends Controller
             $attachment = Attachemnt::findOrFail($id);;
             $attachment->name = \request('name');
             $msg = $attachment->save();
-
+            LogActivity::addToLog('Attachment updated', $attachment);
             if ($msg) {
-                LogActivity::addToLog('Attachment updated', $attachment);
+
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Attachment update fail', $attachment);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -175,12 +172,10 @@ class AttachemntsController extends Controller
             $attachment = Attachemnt::findOrFail($id);;
             //$attachment->name= \request('name');
             $msg = $attachment->delete();
-
+            LogActivity::addToLog('Attachment deleted', $attachment);
             if ($msg) {
-                LogActivity::addToLog('Attachment deleted', $attachment);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to delete attachment', $attachment);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -193,7 +188,6 @@ class AttachemntsController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.attachments'));
         if ($pageAuth['is_read']) {
-            // return Attachemnt::get();
             return Attachemnt::join('application_type_attachemnt', 'application_type_attachemnt.attachemnt_id', '=', 'attachemnts.id')
                 ->join('application_types', 'application_type_attachemnt.application_type_id', '=', 'application_types.id')
                 ->select('attachemnts.*')
@@ -229,13 +223,12 @@ class AttachemntsController extends Controller
                         'created_at' => Carbon::now()->toDateTimeString()
                     ]
                 );
-                LogActivity::addToLog('File attached', $attachment);
-
+                LogActivity::addToLog('attachment added to file', $attachment);
+                LogActivity::fileLog($e->client_id, 'Attachments', "File attached", 1);
                 return array('id' => 1, 'message' => 'true');
             });
-            LogActivity::fileLog($e->client_id, 'FileOP', "File " . $file_name . " attached", 1);
         } else {
-            LogActivity::addToLog('Fail to attach ', $attachment);
+
             abort(401);
         }
     }
@@ -244,8 +237,8 @@ class AttachemntsController extends Controller
     {
         $e = EPL::findOrFail($epl);
         $e->attachemnts()->detach($attachment);
-        LogActivity::addToLog('File deattached', $attachment);
-        LogActivity::fileLog($e->client_id, 'FileOP', "File deattached", 1);
+        LogActivity::addToLog('File detached', $attachment);
+        LogActivity::fileLog($e->client_id, 'Attachments', "File detached", 1);
         return array('id' => 1, 'message' => 'true');
     }
 

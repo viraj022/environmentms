@@ -12,6 +12,9 @@ use App\Helpers\LogActivity;
 
 class ApprovalLogController extends Controller
 {
+    /**
+     * obsolete Controller No longer used by ceytech system solutions for the environment ms project
+     */
 
     /**
      * Display a listing of the resource.
@@ -72,16 +75,14 @@ class ApprovalLogController extends Controller
                     $approvalLog->status = ApprovalLog::APP_APPROVE;
                     $approvalLog->approve_date = Carbon::now()->toDateTimeString();
                     $msg = $approvalLog->save();
-     
+
                     if ($msg) {
-                        LogActivity::addToLog('approveOfficer done : ApprovalLogController',$approvalLog);            
+                        LogActivity::addToLog('approveOfficer done : ApprovalLogController', $approvalLog);
                         return array('id' => 1, 'message' => 'true');
                     } else {
-                        LogActivity::addToLog('approveOfficer Fail : ApprovalLogController',$approvalLog);
+                        LogActivity::addToLog('approveOfficer Fail : ApprovalLogController', $approvalLog);
                         return array('id' => 0, 'message' => 'false');
                     }
-
-
                 } else {
                     return response(array('id' => 0, 'message' => 'Environment Officer Not Found'), 404);
                 }
@@ -121,16 +122,14 @@ class ApprovalLogController extends Controller
                     $approvalLog->status = ApprovalLog::APP_REJECT;
                     $approvalLog->approve_date = Carbon::now()->toDateTimeString();
                     $msg = $approvalLog->save();
-           
+
                     if ($msg) {
-                        LogActivity::addToLog('rejectOfficer done : ApprovalLogController',$approvalLog);            
+                        LogActivity::addToLog('rejectOfficer done : ApprovalLogController', $approvalLog);
                         return array('id' => 1, 'message' => 'true');
                     } else {
-                        LogActivity::addToLog('rejectOfficer Fail : ApprovalLogController',$approvalLog);
+                        LogActivity::addToLog('rejectOfficer Fail : ApprovalLogController', $approvalLog);
                         return array('id' => 0, 'message' => 'false');
                     }
-
-
                 } else {
                     return response(array('id' => 0, 'message' => 'Environment Officer Not Found'), 404);
                 }
@@ -171,15 +170,14 @@ class ApprovalLogController extends Controller
                     $approvalLog->status = ApprovalLog::APP_APPROVE;
                     $approvalLog->approve_date = Carbon::now()->toDateTimeString();
                     $msg = $approvalLog->save();
-                               
+
                     if ($msg) {
-                        LogActivity::addToLog('approveAssitanceDirector done : ApprovalLogController',$approvalLog);            
+                        LogActivity::addToLog('approveAssitanceDirector done : ApprovalLogController', $approvalLog);
                         return array('id' => 1, 'message' => 'true');
                     } else {
-                        LogActivity::addToLog('approveAssitanceDirector Fail : ApprovalLogController',$approvalLog);
+                        LogActivity::addToLog('approveAssitanceDirector Fail : ApprovalLogController', $approvalLog);
                         return array('id' => 0, 'message' => 'false');
                     }
-
                 } else {
                     return response(array('id' => 0, 'message' => 'Environment Officer Not Found'), 404);
                 }
@@ -221,10 +219,10 @@ class ApprovalLogController extends Controller
                     $approvalLog->approve_date = Carbon::now()->toDateTimeString();
                     $msg = $approvalLog->save();
                     if ($msg) {
-                        LogActivity::addToLog('rejectAssitanceDirector done : ApprovalLogController',$approvalLog);            
+                        LogActivity::addToLog('rejectAssitanceDirector done : ApprovalLogController', $approvalLog);
                         return array('id' => 1, 'message' => 'true');
                     } else {
-                        LogActivity::addToLog('rejectAssitanceDirector Fail : ApprovalLogController',$approvalLog);
+                        LogActivity::addToLog('rejectAssitanceDirector Fail : ApprovalLogController', $approvalLog);
                         return array('id' => 0, 'message' => 'false');
                     }
                 } else {
@@ -266,14 +264,12 @@ class ApprovalLogController extends Controller
                     $approvalLog->approve_date = Carbon::now()->toDateTimeString();
                     $msg = $approvalLog->save();
                     if ($msg) {
-                        LogActivity::addToLog('approveDirector done : ApprovalLogController',$approvalLog);            
+                        LogActivity::addToLog('approveDirector done : ApprovalLogController', $approvalLog);
                         return array('id' => 1, 'message' => 'true');
                     } else {
-                        LogActivity::addToLog('approveDirector Fail : ApprovalLogController',$approvalLog);
+                        LogActivity::addToLog('approveDirector Fail : ApprovalLogController', $approvalLog);
                         return array('id' => 0, 'message' => 'false');
                     }
-
-
                 } else {
                     return response(array('id' => 0, 'message' => 'Environment Officer Not Found'), 404);
                 }
@@ -313,10 +309,10 @@ class ApprovalLogController extends Controller
                     $approvalLog->approve_date = Carbon::now()->toDateTimeString();
                     $msg = $approvalLog->save();
                     if ($msg) {
-                        LogActivity::addToLog('rejectDirector done : ApprovalLogController',$approvalLog);            
+                        LogActivity::addToLog('rejectDirector done : ApprovalLogController', $approvalLog);
                         return array('id' => 1, 'message' => 'true');
                     } else {
-                        LogActivity::addToLog('rejectDirector Fail : ApprovalLogController',$approvalLog);
+                        LogActivity::addToLog('rejectDirector Fail : ApprovalLogController', $approvalLog);
                         return array('id' => 0, 'message' => 'false');
                     }
                 } else {

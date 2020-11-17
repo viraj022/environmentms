@@ -9,9 +9,12 @@ use App\Rules\nationalID;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\LogActivity;
-class CommetyPoolController extends Controller {
 
-    public function __construct() {
+class CommetyPoolController extends Controller
+{
+
+    public function __construct()
+    {
         $this->middleware(['auth']);
     }
 
@@ -20,7 +23,8 @@ class CommetyPoolController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.committeePool'));
         return view('comty_pool', ['pageAuth' => $pageAuth]);
@@ -31,7 +35,8 @@ class CommetyPoolController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
         $aUser = Auth::user();
         $pageAuth = $aUser->authentication(config('auth.privileges.committeePool'));
         if ($pageAuth['is_create']) {
@@ -42,7 +47,7 @@ class CommetyPoolController extends Controller {
                 'email' => 'sometimes|nullable',
                 'contact_no' => ['nullable', 'sometimes', new contactNo],
                 'nic' => ['sometimes', 'nullable', 'unique:commety_pools', new nationalID],
-                    // 'password' => 'required',
+                // 'password' => 'required',
             ]);
             $aUser = Auth::user();
             $pageAuth = $aUser->authentication(config('auth.privileges.vehicle'));
@@ -55,15 +60,14 @@ class CommetyPoolController extends Controller {
             $CommetyPool->contact_no = \request('contact_no');
 
             $msg = $CommetyPool->save();
+            LogActivity::addToLog('Create a new committee pool', $CommetyPool);
             if ($msg) {
-                LogActivity::addToLog('Create a new commety pool',$CommetyPool);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to create new commety pool',$CommetyPool);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
-            
+
             abort(401);
         }
     }
@@ -74,7 +78,8 @@ class CommetyPoolController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($id) {
+    public function store($id)
+    {
         $aUser = Auth::user();
         $pageAuth = $aUser->authentication(config('auth.privileges.committeePool'));
         $commetyPool = CommetyPool::find($id);
@@ -97,12 +102,11 @@ class CommetyPoolController extends Controller {
             $commetyPool->email = request('email');
             $commetyPool->contact_no = \request('contact_no');
             $msg = $commetyPool->save();
-
+            LogActivity::addToLog('update commety pool', $commetyPool);
             if ($msg) {
-                LogActivity::addToLog(' commety pool updated',$commetyPool);
+
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to update  commety pool',$commetyPool);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
@@ -116,7 +120,8 @@ class CommetyPoolController extends Controller {
      * @param  \App\CommetyPool  $commetyPool
      * @return \Illuminate\Http\Response
      */
-    public function show(CommetyPool $commetyPool) {
+    public function show(CommetyPool $commetyPool)
+    {
 
         $aUser = Auth::user();
         $pageAuth = $aUser->authentication(config('auth.privileges.committeePool'));
@@ -127,7 +132,8 @@ class CommetyPoolController extends Controller {
         }
     }
 
-    public function find($id) {
+    public function find($id)
+    {
 
         $aUser = Auth::user();
         $pageAuth = $aUser->authentication(config('auth.privileges.committeePool'));
@@ -144,7 +150,8 @@ class CommetyPoolController extends Controller {
      * @param  \App\CommetyPool  $commetyPool
      * @return \Illuminate\Http\Response
      */
-    public function edit(CommetyPool $commetyPool) {
+    public function edit(CommetyPool $commetyPool)
+    {
         //
     }
 
@@ -155,7 +162,8 @@ class CommetyPoolController extends Controller {
      * @param  \App\CommetyPool  $commetyPool
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, CommetyPool $commetyPool) {
+    public function update(Request $request, CommetyPool $commetyPool)
+    {
         //
     }
 
@@ -165,32 +173,33 @@ class CommetyPoolController extends Controller {
      * @param  \App\CommetyPool  $commetyPool
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $aUser = Auth::user();
         $pageAuth = $aUser->authentication(config('auth.privileges.committeePool'));
         if ($pageAuth['is_delete']) {
             $commetyPool = CommetyPool::find($id);
             $msg = $commetyPool->delete();
+            LogActivity::addToLog('Commety pool deleted', $commetyPool);
             if ($msg) {
-                LogActivity::addToLog('Commety pool deleted',$commetyPool);
                 return array('id' => 1, 'message' => 'true');
             } else {
-                LogActivity::addToLog('Fail to delete commety pool',$commetyPool);
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
             abort(401);
         }
     }
-//Check NIC For Commety Pool
-    public function uniqueNic($nic) {
+    //Check NIC For Commety Pool
+    public function uniqueNic($nic)
+    {
         $aUser = Auth::user();
         $pageAuth = $aUser->authentication(config('auth.privileges.committeePool'));
         if ($pageAuth['is_read']) {
             $commetyPool = CommetyPool::where('nic', '=', $nic)
-                    ->first();
+                ->first();
             if ($commetyPool === null) {
-               // LogActivity::addToLog('Fail to delete commety pool',$commetyPool);
+                // LogActivity::addToLog('Fail to delete commety pool',$commetyPool);
                 return array('id' => 0, 'message' => 'true'); // nic not available 
             } else {
                 //LogActivity::addToLog('Fail to delete commety pool',$commetyPool);
@@ -200,5 +209,4 @@ class CommetyPoolController extends Controller {
             return abort(401);
         }
     }
-
 }
