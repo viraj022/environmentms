@@ -78,6 +78,7 @@
                     <button type="button" id="prepareCertificate" class="btn btn-success d-none"><i class="fa fa-check"></i> Approve For Prepare Certificate</button>
                     <button type="button" id="approveCertificate" class="btn btn-success d-none"><i class="fa fa-check"></i> Approve Certificate</button>
                     <button type="button" id="rejectCertificate" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject Certificate</button>
+                    <a id="viewCertificate" href="" class="btn btn-warning d-none"><i class="fa fa-check"></i> View Certificate</a>
                     <button type="button" id="approveFile" class="btn btn-success d-none"><i class="fa fa-check"></i> Approve File</button>
                     <button type="button" id="rejectFile" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject File</button>
                 </div>
@@ -149,6 +150,7 @@
             } else if (f_Status == 3) {
                 $('#approveCertificate').removeClass('d-none');
                 $('#rejectCertificate').removeClass('d-none');
+                $('#viewCertificate').removeClass('d-none').attr("href", "/certificate_perforation/id/" + fileData.id);
             } else {
                 $('#prepareCertificate').addClass('d-none');
             }
