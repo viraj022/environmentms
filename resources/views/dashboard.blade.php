@@ -32,7 +32,7 @@
         <div class="row">
             <div class="col-12 col-sm-6 col-md-3">
                 <div class="info-box">
-                    <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+                    <span class="info-box-icon bg-info elevation-1"><i class="fab fa-whmcs"></i></span>
 
                     <div class="info-box-content">
                         <span class="info-box-text pending">New Files</span>
@@ -89,6 +89,34 @@
                 <!-- /.info-box -->
             </div>
             <!-- /.col -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-audio-description"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text font-weight-bold ad_approval">Inspection Pending Count</span>
+                        <span class="info-box-number ad_approval_count">760</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>   
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-info elevation-1"><i class="fab fa-whmcs"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text font-weight-bold ">Inspection Pending Count</span>
+                        <span class="info-box-number ad_approve_count">760</span>
+                    </div>
+                </div>  
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-info elevation-1"><i class="fab fa-whmcs"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text font-weight-bold ad_approve">Inspection Pending Count</span>
+                        <span class="info-box-number ad_approve_count">760</span>
+                    </div>
+                </div>  
+            </div>
         </div>
         <!-- /.row -->
 
@@ -158,7 +186,7 @@
 
             </div>
 
-            <div class="row">
+            <!--<div class="row">-->
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
@@ -236,7 +264,7 @@
                     </div>
                     <!-- /.card -->  
                 </div>
-            </div>
+            <!--</div>-->
             <!-- /.col -->
 
             <div class="col-md-6">
@@ -278,7 +306,7 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer clearfix">
-                        <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
+                        <!--<a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>-->
                     </div>
                     <!-- /.card-footer -->
                 </div>
@@ -323,7 +351,7 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer clearfix">
-                        <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
+                        <!--<a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>-->
                     </div>
                     <!-- /.card-footer -->
                 </div>
@@ -337,7 +365,7 @@
         <!-- Main row -->
         <div class="row">
             <!-- Left col -->
-            <div class="col-md-8">
+            <div class="col-md-6">
 
                 <!-- /.card -->
                 <div class="row">
@@ -379,7 +407,7 @@
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer clearfix">
-                                <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
+                                <!--<a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>-->
                             </div>
                             <!-- /.card-footer -->
                         </div>
@@ -429,31 +457,6 @@
                                 </div>-->
                 <!-- /.card -->
             </div>
-            <!-- /.col -->
-
-            <div class="col-md-4">
-                <!-- Info Boxes Style 2 -->
-                <div class="info-box mb-3">
-                    <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
-
-                    <div class="info-box-content">
-                        <span class="info-box-text ad_approval">Inspection Pending Count</span>
-                        <span class="info-box-number ad_approval_count">760</span>
-                    </div>
-                    <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-                <div class="info-box mb-3">
-                    <span class="info-box-icon bg-success elevation-1"><i class="fas fa-comment"></i></span>
-
-                    <div class="info-box-content">
-                        <span class="info-box-text ad_approve">File Processing Count</span>
-                        <span class="info-box-number ad_approve_count">760</span>
-                    </div>
-                    <!-- /.info-box-content -->
-                </div>
-            </div>
-            <!-- /.col -->
         </div>
         <!-- /.row -->
     </div><!--/. container-fluid -->
@@ -492,15 +495,30 @@
 <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
 
 <script>
+//Filter Date
+    var today = new Date();
+    var dd = today.getDate();
+
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    if (dd < 10)
+    {
+        dd = '0' + dd;
+    }
+    if (mm < 10)
+    {
+        mm = '0' + mm;
+    }
+
 //    renew_chart, new_file_chart, file_category_chart, new_job_chart, pra_table, env_officer_table, industry_category_table, file_status_lable
-    getDashboardData(['renew_chart', 'new_file_chart', 'pra_table', 'industry_category_table', 'env_officer_table', 'file_category_chart', 'new_job_chart'], {from: '2020-01-01', to: '2020-12-31'}, function (p) {
+    getDashboardData(['renew_chart', 'new_file_chart', 'pra_table', 'industry_category_table', 'env_officer_table', 'file_category_chart'], {from: '2020-01-01', to: '2020-12-31'}, function (p) {
         console.log(p);
         //--EPL Renewal Chart Open--//
         eplRenewalChart(p.renew_chart.months, p.renew_chart.renew, p.renew_chart.expire);
         //--EPL Renewal Chart END--//
 
 //--NEW FILES Chart Open--//
-        newFilesChart(p.new_file_chart.months, p.new_file_chart.new,p.new_file_chart.site,p.new_file_chart.epl);
+        newFilesChart(p.new_file_chart.months, p.new_file_chart.new, p.new_file_chart.site, p.new_file_chart.epl);
         //--NEW FILES Chart END--//
 
         /* -- pradeshiya sabha file count--*/
@@ -509,12 +527,15 @@
         industryCategoryCount(p.industry_category_table.data);
         /* -- env officer file count--*/
         environmentOfficersFileCount(p.env_officer_table.data);
-        /* new jobs chart*/
-        newJobsChart(p.new_job_chart.types, p.new_job_chart.count);
         /* file categoyr chart monthly*/
         fileCategoryChart(p.file_category_chart);
     });
-
+    today = yyyy+'-'+mm+'-'+dd;
+    nextDay = yyyy+'-'+mm+'-'+ dd;
+    getDashboardData(['new_job_chart', 'renew_chart'], {from: today, to: nextDay}, function (p) {
+        /* new jobs chart*/
+        newJobsChart(p.new_job_chart.types, p.new_job_chart.count);
+    });
 
 //    getDashboardData(['file_category_chart'], {from: '2020-10-01', to: '2020-10-31'}, function (p) {
 //////--File Category Chart Open--//
@@ -532,7 +553,7 @@
 //    });
 
     //Add Spesific "File Status" Classes To Any Elements If Your Wants To Show Count And File Status Name// (Example Line 38 & 39)
-    var FILE_STATUS = {0: 'In Progress', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Prenidng Approval', 4: 'D Certificate Approval Prenidng', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold'};
+    var FILE_STATUS = {0: 'In Progress', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Pending Approval', 4: 'D Certificate Approval Pending', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold'};
     var FILE_CLASS = {0: 'pending', 1: 'ad_approve', 2: 'cer_preparation', 3: 'ad_approval', 4: 'd_penidng', 5: 'complete', 6: 'issued', '-1': 'rejected', '-2': 'hold'};
     var COUNT_CLASS = {0: 'pending_count', 1: 'ad_approve_count', 2: 'cer_preparation_count', 3: 'ad_approval_count', 4: 'd_penidng_count', 5: 'complete_count', 6: 'issued_count', '-1': 'rejected_count', '-2': 'hold_count'};
     getDashboardData(['file_status_lable'], {from: '2020-10-29', to: '2020-12-31'}, function (e) {
