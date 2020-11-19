@@ -78,7 +78,7 @@
                     <button type="button" id="prepareCertificate" class="btn btn-success d-none"><i class="fa fa-check"></i> Approve For Prepare Certificate</button>
                     <button type="button" id="approveCertificate" class="btn btn-success d-none"><i class="fa fa-check"></i> Approve Certificate</button>
                     <button type="button" id="rejectCertificate" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject Certificate</button>
-                    <a id="viewCertificate" href="" class="btn btn-warning d-none"><i class="fa fa-check"></i> View Certificate</a>
+                    <button type="button" id="viewCertificateBtn" class="btn btn-info d-none"><i class="fa fa-file"></i> View Certificate</button>
                     <button type="button" id="approveFile" class="btn btn-success d-none"><i class="fa fa-check"></i> Approve File</button>
                     <button type="button" id="rejectFile" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject File</button>
                 </div>
@@ -143,14 +143,15 @@
             $('#rejectCertificate').val($(this).val()); //<-- Share this button value to this button
             $('#approveFile').val($(this).val()); //<-- Share this button value to this button
             $('#rejectFile').val($(this).val()); //<-- Share this button value to this button
-            $('#prepareCertificate,#approveFile,#rejectFile,#approveCertificate,#rejectCertificate').addClass('d-none');
+            $('#viewCertificateBtn').val($(this).val());
+            $('#prepareCertificate,#approveFile,#rejectFile,#approveCertificate,#rejectCertificate,#viewCertificateBtn').addClass('d-none');
             if (f_Status == 1) {
                 $('#approveFile').removeClass('d-none');
                 $('#rejectFile').removeClass('d-none');
             } else if (f_Status == 3) {
+                $('#viewCertificateBtn').removeClass('d-none');
                 $('#approveCertificate').removeClass('d-none');
                 $('#rejectCertificate').removeClass('d-none');
-                $('#viewCertificate').removeClass('d-none').attr("href", "/certificate_perforation/id/" + fileData.id);
             } else {
                 $('#prepareCertificate').addClass('d-none');
             }
@@ -215,6 +216,13 @@
                     }
                 });
             }
+        });
+        //View certificate btn click
+        $(document).on('click', '#viewCertificateBtn', function () {
+            var fileData = JSON.parse(unescape($(this).val()));
+            loadCertificatePathsApi(parseInt(fileData.id), function (set) {
+                window.open(set.certificate_path, '_blank');
+            });
         });
 
     });
