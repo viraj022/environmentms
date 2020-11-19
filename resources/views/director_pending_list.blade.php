@@ -67,11 +67,12 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <a id="viewCertificate" href="" class="btn btn-success d-none"><i class="fa fa-check"></i> View Certificate</a>
+                    <a id="viewCertificate" href="" class="btn btn-success d-none"><i class="fa fa-check"></i> Approve Certificate</a>
                     <!--<button id="prepareCertificate" class="btn btn-success d-none"><i class="fa fa-check"></i> Approve Certificate</button>-->
                     <button type="button" id="holdCertificate" class="btn btn-warning d-none"><i class="fa fa-warning"></i> Hold Certificate</button>
                     <button type="button" id="uNholdCertificate" class="btn btn-warning d-none"><i class="fa fa-warning"></i> Un-Hold Certificate</button>
                     <button type="button" id="rejectCertificate" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject Certificate</button>
+                    <button type="button" id="viewCertificateBtn" class="btn btn-info d-none"><i class="fa fa-file"></i> View Certificate</button>
                 </div>
             </div>
         </div>
@@ -120,6 +121,7 @@
             $('#rejectCertificate').val($(this).val()); //<-- Share this button value to this button
             $('#holdCertificate').val($(this).val()); //<-- Share this button value to this button
             $('#uNholdCertificate').val($(this).val()); //<-- Share this button value to this button
+            $('#viewCertificateBtn').val($(this).val());
             $('#modalTitlex2').html(fileData.file_no);
             $('#viewCertificate,#prepareCertificate,#holdCertificate,#uNholdCertificate,#rejectCertificate').addClass('d-none');
             if (f_Status == 4) {
@@ -128,6 +130,7 @@
                 $('#viewCertificate').removeClass('d-none').attr("href", "/certificate_perforation/id/" + fileData.id);
                 $('#holdCertificate').removeClass('d-none');
                 $('#rejectCertificate').removeClass('d-none');
+                $('#viewCertificateBtn').removeClass('d-none');
             } else if (f_Status == -2) {
                 $('#uNholdCertificate').removeClass('d-none');
             } else {
@@ -186,6 +189,14 @@
                     }
                 });
             }
+        });
+
+        //View certificate btn click
+        $(document).on('click', '#viewCertificateBtn', function () {
+            var fileData = JSON.parse(unescape($(this).val()));
+            loadCertificatePathsApi(parseInt(fileData.id), function (set) {
+                window.open(set.certificate_path, '_blank');
+            });
         });
 
     });

@@ -200,7 +200,6 @@ class SiteClearenceRepository
         $siteClearanceSession =  SiteClearenceSession::findOrFail($id);
 
         $rtn = $siteClearanceSession->siteClearances->last();
-        //         dd($rtn);
         return $rtn;
     }
 }

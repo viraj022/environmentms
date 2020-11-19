@@ -418,6 +418,8 @@ $(function () {
 //                        viewUploadContentData(resp.content_paths);
 //                    }
 //                });
+            }else{
+//                alert(rest.message);
             }
         });
     });
