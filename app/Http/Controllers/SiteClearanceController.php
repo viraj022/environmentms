@@ -196,7 +196,8 @@ class SiteClearanceController extends Controller
             'submit_date' => 'required|date',
             'file' => 'required|mimes:jpeg,jpg,png,pdf'
         ]);
-        if ($this->siteClearenceRepository->getLastSiteClearanceBySiteClearenceSessionId($siteClearance->siteClearenceSession)->status == 1) {
+//        dd($this->siteClearenceRepository->getLastSiteClearanceBySiteClearenceSessionId($siteClearance->siteClearenceSession->id)->status);
+        if ($this->siteClearenceRepository->getLastSiteClearanceBySiteClearenceSessionId($siteClearance->siteClearenceSession->id)->status == 1) {
             if ($this->siteClearenceRepository->extendSiteClearance($request, $siteClearance)) {
                 return array('id' => 1, 'message' => 'true');
             } else {
