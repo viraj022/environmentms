@@ -163,7 +163,7 @@ class SiteClearenceRepository
     }
     public function extendSiteClearance($request, $siteClearence)
     {
-        DB::transaction(function () use ($request, $siteClearence) {
+        return  DB::transaction(function () use ($request, $siteClearence) {
             $site =  new SiteClearance();
             $site->site_clearence_session_id = $siteClearence->site_clearence_session_id;
             if ($request->file('file') != null) {
@@ -198,9 +198,9 @@ class SiteClearenceRepository
     public function getLastSiteClearanceBySiteClearenceSessionId($id)
     {
         $siteClearanceSession =  SiteClearenceSession::findOrFail($id);
-          
+
         $rtn = $siteClearanceSession->siteClearances->last();
-//         dd($rtn);
+        //         dd($rtn);
         return $rtn;
     }
 }
