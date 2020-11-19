@@ -204,9 +204,9 @@
                     </div>
                 </div>
                 <!--Site Clearance Extention-->
-                <div class="card card-info  collapsed-card">
+                <div class="card card-info  collapsed-card siteClearExtend ">
                     <div class="card-header">
-                        <h3 class="card-title">Site Clearance Extention</h3>
+                        <h3 class="card-title">Site Clearance Extension</h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
                             </button>
@@ -325,6 +325,7 @@ $(function () {
                 $('.sectionUploadClReport').removeClass('d-none');
                 $('.sectionUploadTor').removeClass('d-none');
                 $('.sectionArrangeCommittee').removeClass('d-none');
+
             } else {
                 $('.sectionUploadClReport').addClass('d-none');
                 $('.sectionUploadTor').addClass('d-none');
@@ -333,6 +334,9 @@ $(function () {
             $('.navTodownload').attr('href', '/' + cleareance.application_path);
             $('.siteClearType').html(resp.site_clearance_type);
         } else {
+        }
+        if (resp.status == 1) {
+            $('.siteClearExtend').removeClass('d-none');
         }
     });
 

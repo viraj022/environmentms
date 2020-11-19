@@ -109,3 +109,13 @@ function fileApproveApi(file_id, assDir_id, DATA, callBack) {
         }
     });
 }
+function loadCertificatePathsApi(file_id, callBack) {
+    if (isNaN(file_id)) {
+        return false;
+    }
+    ajaxRequest('GET', "/api/files/certificate/officer/id/" + file_id, null, function (dataSet) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(dataSet);
+        }
+    });
+}

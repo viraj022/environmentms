@@ -190,10 +190,10 @@ class SiteClearenceRepository
     }
     public function getLastSiteClearanceBySiteClearenceSessionId($id)
     {
-        $siteClearanceSession =  SiteClearenceSession::findOrFail($id)
-            ->first();
-        $rtn = $siteClearance = $siteClearanceSession->siteClearances->last();
-        // dd($rtn);
+        $siteClearanceSession =  SiteClearenceSession::findOrFail($id);
+          
+        $rtn = $siteClearanceSession->siteClearances->last();
+//         dd($rtn);
         return $rtn;
     }
 }
