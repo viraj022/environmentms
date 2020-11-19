@@ -204,7 +204,7 @@
                     </div>
                 </div>
                 <!--Site Clearance Extention-->
-                <div class="card card-info  collapsed-card siteClearExtend ">
+                <div class="card card-info  collapsed-card siteClearExtend d-none">
                     <div class="card-header">
                         <h3 class="card-title">Site Clearance Extension</h3>
                         <div class="card-tools">
