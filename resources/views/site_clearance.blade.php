@@ -335,7 +335,7 @@ $(function () {
             $('.siteClearType').html(resp.site_clearance_type);
         } else {
         }
-        if (resp.status == 1) {
+        if (resp.client.file_status == 5) {
             $('.siteClearExtend').removeClass('d-none');
         }
     });
@@ -412,11 +412,14 @@ $(function () {
         setSiteClearanceExtenAPI(PROFILE, data, function (rest) {
             show_mesege(rest);
             if (rest.id == 1) {
+                location.reload();
 //                getSiteClearanceAPI(PROFILE, function (resp) {
 //                    if (resp.content_paths != null) {
 //                        viewUploadContentData(resp.content_paths);
 //                    }
 //                });
+            }else{
+//                alert(rest.message);
             }
         });
     });

@@ -179,7 +179,7 @@ class SiteClearenceRepository
             $site->status = 0;
             $site->count = $this->getLastSiteClearance($site->siteClearenceSession->client_id)->count + 1;
             $file = $site->siteClearenceSession->client;
-            $file->status = 0;
+            $file->file_status = 0;
             $file->need_inspection = Client::STATUS_INSPECTION_NEEDED;
             $file->save();
             return $site->save();
@@ -200,7 +200,6 @@ class SiteClearenceRepository
         $siteClearanceSession =  SiteClearenceSession::findOrFail($id);
 
         $rtn = $siteClearanceSession->siteClearances->last();
-        //         dd($rtn);
         return $rtn;
     }
 }
