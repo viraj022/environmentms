@@ -190,15 +190,16 @@ class SiteClearanceController extends Controller
         });
     }
 
-    public function extendSiteClearence(Request $request, SiteClearance $siteClearance)
+    public function extendSiteClearence(Request $request, SiteClearenceSession $siteClearance)
     {
         request()->validate([
             'submit_date' => 'required|date',
             'file' => 'required|mimes:jpeg,jpg,png,pdf'
         ]);
-//        dd($this->siteClearenceRepository->getLastSiteClearanceBySiteClearenceSessionId($siteClearance->siteClearenceSession->id)->status);
-        if ($this->siteClearenceRepository->getLastSiteClearanceBySiteClearenceSessionId($siteClearance->siteClearenceSession->id)->status == 1) {
-            if ($this->siteClearenceRepository->extendSiteClearance($request, $siteClearance)) {
+//        dd($this->siteClearenceRepository->getLastSiteClearanceBySiteClearenceSessionId($siteClearance->id)->status);
+        $site = $this->siteClearenceRepository->getLastSiteClearanceBySiteClearenceSessionId($siteClearance->id);
+        if ($site->status == 1) {
+            if ($this->siteClearenceRepository->extendSiteClearance($request,$site)) {
                 return array('id' => 1, 'message' => 'true');
             } else {
                 return array('id' => 0, 'message' => 'false');
