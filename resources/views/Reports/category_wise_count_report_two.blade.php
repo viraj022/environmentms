@@ -16,7 +16,7 @@
     </center>
     <h6>Report Genaration Time :{{$time_elapsed_secs}} seconds</h6>
      {{-- @dump($req_array["40"]); --}}
-<table class="table cell-border compact stripe">
+<table id="table" class="table cell-border compact stripe">
                                             <thead>
                                                 <tr>
                                                     <th style="width: 10px">#</th>
@@ -57,11 +57,28 @@
         // var img = 
         // $('.table').DataTable();
         $(document).ready( function () {
+
+            $('#table thead tr').clone(true).appendTo( '#table thead' );
+    $('#table thead tr:eq(1) th').each( function (i) {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+ 
+        $( 'input', this ).on( 'keyup change', function () {
+            if ( table.column(i).search() !== this.value ) {
+                table
+                    .column(i)
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    } );
             // alert(123);
     $('.table').DataTable({
         colReorder: true,
          responsive: true,
          select: true,
+        orderCellsTop: true,
+        fixedHeader: true,
         dom: "Bfrtip",
         // buttons: ["csv", "excel", "print",],
         buttons: [{

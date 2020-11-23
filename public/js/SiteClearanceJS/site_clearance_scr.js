@@ -46,6 +46,18 @@ function setUploadClientAPI(site_clear_ses, data, callBack) {
         }
     }, 'POST');
 }
+//Upload Site Clearance Extention
+function setSiteClearanceExtenAPI(site_clear_exten, data, callBack) {
+    if (isNaN(site_clear_exten)) {
+        return false;
+    }
+    var url = "/api/client_clearance/extend/" + site_clear_exten;
+    submitDataWithFile(url, data, function (dataSet) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(dataSet);
+        }
+    }, 'POST');
+}
 
 //View COntent Files
 function viewUploadContentData(content_arr) {

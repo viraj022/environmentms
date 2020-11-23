@@ -4,15 +4,9 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Transaction;
-use App\LogActivity;
-use App\ApplicationCliten;
-use App\Client;
-use App\TransactionItem;
-use App\Rules\nationalID;
-use Illuminate\Http\Request;
-use PhpParser\Node\Expr\Cast\Array_;
 use App\PaymentType;
 use App\Payment;
+use App\Helpers\LogActivity;
 
 class CashierController extends Controller
 {
@@ -26,7 +20,9 @@ class CashierController extends Controller
         $transaction = Transaction::with('transactionItems.payment')
             ->where('id', $id)
             ->first();
-        LogActivity::addToLog('Request Transaction Data', $transaction);
+        // LogActivity::addToLog('Request Transaction Data', $transaction);
+        // dd("dasd");
+        LogActivity::addToLog('Save User : UserController', $transaction);
         if (Transaction::APPLICATION_FEE == $transaction->type) {
             $transaction = Transaction::with('transactionItems.payment')->with('applicationClient')
                 ->where('id', $id)
