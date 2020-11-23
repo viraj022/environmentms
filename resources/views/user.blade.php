@@ -90,7 +90,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Contact No</label>
-                                                <input name="contactNo" type="text" class="form-control form-control-sm"
+                                                <input name="contactNo" maxlength="10" type="text" class="form-control form-control-sm"
                                                        placeholder="Enter Contact No"
                                                        value="{{old('contactNo')}}">
                                                 @error('contactNo')
@@ -109,7 +109,7 @@
 
                                             <div class="form-group">
                                                 <label>NIC</label>
-                                                <input name="nic" type="text" class="form-control form-control-sm" placeholder="Enter NIC"
+                                                <input name="nic" type="text" maxlength="12" class="form-control form-control-sm" placeholder="Enter NIC"
                                                        value="{{old('nic')}}">
                                                 @error('nic')
                                                 <p class="text-danger">{{$errors->first('nic')}}</p>
