@@ -35,7 +35,7 @@
                     </div>
                     <div class="card-body">
                         <label>Attachment*</label>
-                        <input id="getAttachment" type="text" class="form-control form-control-sm"
+                        <input id="getAttachment" maxlength="115" type="text" class="form-control form-control-sm"
                                placeholder="Enter attachment..."
                                value="">
                         <div id="valAttachment" class="d-none"><p class="text-danger">Attachment is required</p></div>
