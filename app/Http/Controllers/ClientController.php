@@ -247,7 +247,7 @@ class ClientController extends Controller
         ]);
         if ($pageAuth['is_update']) {
             $msg = Client::where('id', $id)->update($request->all());
-            LogActivity::fileLog($msg->id, 'File', "Update file", 1);
+            // LogActivity::fileLog($msg->id, 'File', "Update file", 1);
             LogActivity::addToLog('Update file', $msg);
             return array('id' => 1, 'message' => 'true');
         } else {
