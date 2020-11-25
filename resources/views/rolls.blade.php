@@ -141,7 +141,7 @@
                                         </div>
                                         <div class=" col-sm-6 form-check form-inline">
                                             <input id="addAllPriv" class="form-check-input" type="checkbox">
-                                            <label id="txtPriv" class="form-check-label">Check All Privileges</label>
+                                            <label id="txtPriv" class="form-check-label">Assign All Privileges</label>
                                         </div>
                                         <!-- /.card-header -->
                                         <div class="card-body p-0">
@@ -464,10 +464,10 @@ $(document).ready(function () {
 $('#addAllPriv').click(function () {
 if ($(this).prop("checked") === true) {
 $('input:checkbox').not(this).prop('checked', this.checked = true)
-        $("#txtPriv").text("Uncheck All Privileges");
+        $("#txtPriv").text("Un-Assign All Privileges");
 } else if ($(this).prop("checked") === false) {
 $('input:checkbox').not(this).prop('checked', this.checked = false)
-        $("#txtPriv").text("Check All Privileges");
+        $("#txtPriv").text("Assign All Privileges");
 }
 });
 //check checkboxes in a row
