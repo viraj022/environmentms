@@ -87,7 +87,7 @@
                                                         <span class="info-box-icon">
                                                             <button class="btn btn-lg btn-default" id="newEPL"><i class="fa fa-plus"></i></button></span>
                                                         <div class="info-box-content">
-                                                            <span class="info-box-text">Create new environment protection license file</span>
+                                                            <span class="info-box-text">Create new environment protection<br> license file</span>
                                                             <span class="info-box-number">New EPL</span>
                                                         </div>
                                                         <!-- /.info-box-content -->
@@ -96,7 +96,7 @@
                                                         <span class="info-box-icon">
                                                             <a class="btn btn-lg btn-default" href="" id="setEPlLink"><i class="fa fa-plus"></i></a></span>
                                                         <div class="info-box-content">
-                                                            <span class="info-box-text">Environment protection license file</span>
+                                                            <span class="info-box-text">Environment protection<br> license file</span>
                                                             <span class="info-box-number">View <a id="setEPLCode"></a></span>
                                                         </div>
                                                         <!-- /.info-box-content -->
@@ -136,7 +136,7 @@
                                                             <button class="btn btn-lg btn-default" id="scheduleWaste"><i class="fa fa-plus"></i></button></span>
 
                                                         <div class="info-box-content">
-                                                            <span class="info-box-text">Create new schedule waste management <br> certificate</span>
+                                                            <span class="info-box-text">Create new schedule waste<br> management certificate</span>
                                                             <span class="info-box-number">Schedule Waste</span>
                                                         </div>
                                                         <!-- /.info-box-content -->
