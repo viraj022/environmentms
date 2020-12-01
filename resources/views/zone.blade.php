@@ -36,7 +36,7 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label>Name*</label>
-                            <input id="getName" type="text" class="form-control form-control-sm"
+                            <input id="getName" type="text" maxlength="70" class="form-control form-control-sm"
                                    placeholder="Enter Zone Name..."
                                    value="">
                             <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
@@ -44,7 +44,7 @@
                         </div>
                         <div class="form-group">
                             <label>Code*</label>
-                            <input id="getCode" type="text" class="form-control form-control-sm"
+                            <input id="getCode" type="text" maxlength="10" class="form-control form-control-sm"
                                    placeholder="Enter Zone Code..."
                                    value="">
                             <div id="valCode" class="d-none"><p class="text-danger">Code is required</p></div>

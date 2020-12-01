@@ -35,7 +35,7 @@
                     </div>
                     <div class="card-body">
                         <label>Payment Category Name*</label>
-                        <input id="getName" type="text" class="form-control form-control-sm"
+                        <input id="getName" type="text" maxlength="100" class="form-control form-control-sm"
                                placeholder="Enter Name..."
                                value="">
                         <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
