@@ -211,7 +211,12 @@ $(function () {
             setClearanceData(result);
             $('#obj_remark').text(result.remark);
             $('.eplCodeAfileNo').html(result.epl_instantNumber);
-            $(".navTodownload").attr("href", '/' + result.application_path);
+            if (result.path == null) {
+                $(".navTodownload").attr("href", '/' + result.application_path);
+            } else {
+                $(".navTodownload").attr("href", '/' + result.path);
+            }
+
         }
     });
 });
