@@ -52,19 +52,19 @@
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <label>Name *</label>
-                                                <input id="cus_name" type="text" class="form-control form-control-sm" placeholder="" value="">
+                                                <input id="cus_name" type="text" maxlength="45" class="form-control form-control-sm" placeholder="" value="">
                                             </div>
                                             <div class="form-group">
                                                 <label>NIC </label>
-                                                <input id="cus_nic" type="text" class="form-control form-control-sm" placeholder="" value="">
+                                                <input id="cus_nic" type="text"  maxlength="12" class="form-control form-control-sm" placeholder="" value="">
                                             </div>
                                             <div class="form-group">
                                                 <label>Contact </label>
-                                                <input id="cus_tel" type="text" class="form-control form-control-sm" placeholder="" value="">
+                                                <input id="cus_tel" type="text" maxlength="10" class="form-control form-control-sm" placeholder="" value="">
                                             </div>
                                             <div class="form-group">
                                                 <label>Address </label>
-                                                <input id="cus_address" type="text" class="form-control form-control-sm" placeholder="" value="">
+                                                <input id="cus_address" type="text" maxlength="45" class="form-control form-control-sm" placeholder="" value="">
                                             </div>
                                             <div class="form-group">
                                                 <label>Application Type: </label>

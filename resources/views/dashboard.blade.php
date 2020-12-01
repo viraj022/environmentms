@@ -498,6 +498,7 @@
 //Filter Date
     var today = new Date();
     var dd = today.getDate();
+    var dd2 = today.getDate()+1;
 
     var mm = today.getMonth() + 1;
     var yyyy = today.getFullYear();
@@ -531,7 +532,7 @@
         fileCategoryChart(p.file_category_chart);
     });
     today = yyyy+'-'+mm+'-'+dd;
-    nextDay = yyyy+'-'+mm+'-'+ dd;
+    nextDay = yyyy+'-'+mm+'-'+ dd2;
     getDashboardData(['new_job_chart', 'renew_chart'], {from: today, to: nextDay}, function (p) {
         /* new jobs chart*/
         newJobsChart(p.new_job_chart.types, p.new_job_chart.count);

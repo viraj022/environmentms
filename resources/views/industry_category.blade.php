@@ -35,7 +35,7 @@
                     </div>
                     <div class="card-body">
                         <label>Name*</label>
-                        <input id="getIndustryName" type="text" class="form-control form-control-sm"
+                        <input id="getIndustryName" maxlength="50" type="text" class="form-control form-control-sm"
                                placeholder="Enter Industry Name..."
                                value="">
                         <div id="valIndustryName" class="d-none"><p class="text-danger">Industry Name is required</p></div>
@@ -43,7 +43,7 @@
                     </div>
                     <div class="card-body">
                         <label>Code*</label>
-                        <input id="getIndustryCode" type="text" class="form-control form-control-sm"
+                        <input id="getIndustryCode" maxlength="5" type="text" class="form-control form-control-sm"
                                placeholder="Enter Industry Code..."
                                value="">
                         <div id="valIndustryCode" class="d-none"><p class="text-danger">Industry Code is required</p></div>
