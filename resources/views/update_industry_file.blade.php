@@ -33,7 +33,7 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="card card-success">
+                        <div class="card card-gray">
                             <div class="card-header">
                                 <label id="lblTitle">Update Client</label>
                             </div>
@@ -100,7 +100,7 @@
                     </div>
                     <!--Industry details-->
                     <div class="col-md-6">
-                        <div class="card card-success">
+                        <div class="card card-gray">
                             <div class="card-header">
                                 <label id="lblTitle">Industry details</label>
                             </div>

@@ -29,9 +29,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-5">
-                <div class="card card-success">
+                <div class="card card-gray">
                     <div class="card-header">
-                        <label id="lblTitle">Add New Pradesiyasaba</label>
+                        <label class="card-title" id="lblTitle">Add New Pradesiyasaba</label>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
@@ -78,7 +78,7 @@
 
 
             <div class="col-md-7">
-                <div class="card">
+                <div class="card card-gray">
                     <div class="card-header">
                         <h3 class="card-title">Pradesiyasaba</h3>
                     </div>
