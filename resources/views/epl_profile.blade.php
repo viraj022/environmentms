@@ -211,7 +211,7 @@ $(function () {
             setClearanceData(result);
             $('#obj_remark').text(result.remark);
             $('.eplCodeAfileNo').html(result.epl_instantNumber);
-            $(".navTodownload").attr("href", '/' + result.path);
+            $(".navTodownload").attr("href", '/' + result.application_path);
         }
     });
 });

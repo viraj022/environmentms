@@ -56,21 +56,21 @@
                                 </div>
                                 <div class="form-group">
                                     <label>First Name*</label>
-                                    <input id="getfName" type="text" class="form-control form-control-sm cutenzReq"
+                                    <input id="getfName" type="text" maxlength="45" class="form-control form-control-sm cutenzReq"
                                            placeholder="Enter FirstName..."
                                            value="">
                                     <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
                                 </div>
                                 <div class="form-group">
                                     <label>Last Name</label>
-                                    <input id="getlName" type="text" class="form-control form-control-sm"
+                                    <input id="getlName" type="text" maxlength="45" class="form-control form-control-sm"
                                            placeholder="Enter LastName..."
                                            value="">
                                     <div id="valLName" class="d-none"><p class="text-danger">Last Name is required</p></div>
                                 </div>
                                 <div class="form-group">
                                     <label>Address</label>
-                                    <input id="getAddress" type="text" class="form-control form-control-sm"
+                                    <input id="getAddress" type="text" maxlength="60" class="form-control form-control-sm"
                                            placeholder="Enter Address..."
                                            value="">
                                     <div id="valAddName" class="d-none"><p class="text-danger">Address is required</p></div>
