@@ -30,7 +30,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-9">
-                <div class="card card-success">
+                <div class="card card-gray">
                     <div class="card-header">
                         <label>Roles</label>
                     </div>
@@ -62,7 +62,7 @@
                 </div>
             </div>
             <!--            <div class="col-md-5">
-                            <div class="card card-success">
+                            <div class="card card-gray">
                                 <div class="card-body">
                                     <div class="row">
             

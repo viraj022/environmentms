@@ -42,7 +42,7 @@
                 @endif
                 <div class="row">
                     <div class="col-md-5">
-                        <div class="card card-success">
+                        <div class="card card-gray">
                             <div class="card-header">
                                 <label>Baic Information</label>
                             </div>
@@ -123,7 +123,7 @@
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <div class="card card-success">
+                        <div class="card card-gray">
                             <div class="card-header">
                                 <h3 class="card-title">Privileges</h3>
                             </div>
@@ -199,7 +199,7 @@
                         </div>
                         @if($pageAuth['is_update']==1 || false)
                             <form method="POST" action="/users/password/{{$user['id']}}">
-                                <div class="card card-success">
+                                <div class="card card-gray">
                                     <div class="card-header">
                                         <h3 class="card-title">Credentials</h3>
                                     </div>
@@ -236,7 +236,7 @@
                         @endif
                         @if($pageAuth['is_update']==1 || false)
                             <form method="POST" action="/users/password/{{$user['id']}}">
-                                <div class="card card-success">
+                                <div class="card card-gray">
                                     <div class="card-header">
                                         <h3 class="card-title">User Activity</h3>
                                     </div>

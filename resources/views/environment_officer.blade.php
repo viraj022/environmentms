@@ -28,7 +28,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-5">
-            <div class="card card-success">
+            <div class="card card-gray">
                 <div class="card-header">
                     <label id="lblTitle">Add New Environment Officer</label>
                 </div>
@@ -86,11 +86,11 @@
 
 
         <div class="col-md-7">
-            <div class="card">
+            <div class="card card-gray">
                 <div class="card-header">
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-md-4"><label>Assistant Director</label></div>
+                            <div class=" card-title col-md-4"><label>Assistant Director</label></div>
                             <div class="col-md-8">
                                 <select id="getAssistantDirectorTbl" class="form-control form-control-sm combo_AssistantDirector">
                                     <option>Loading...</option>

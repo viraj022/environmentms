@@ -30,7 +30,7 @@
         <div class="row">
             <div class="col-md-5">
               @if($level->value == 3)
-                <div class="card card-success">
+                <div class="card card-gray">
                     <div class="card-header">
                         <label id="lblTitle">Approve By Environment Officer</label>
                     </div>
@@ -61,7 +61,7 @@
                 </div>
                 @endif
                   @if($level->value == 2)
-                <div class="card card-success">
+                <div class="card card-gray">
                     <div class="card-header">
                         <label id="lblTitle">Approve By Assistant Director</label>
                     </div>
@@ -95,7 +95,7 @@
                 </div>
                 @endif
                 @if($level->value == 1)
-                <div class="card card-success">
+                <div class="card card-gray">
                     <div class="card-header">
                         <label id="lblTitle">Approve By Director</label>
                     </div>
@@ -131,7 +131,7 @@
             </div>
 
             <div class="col-md-7">
-                <div class="card card-success">
+                <div class="card card-gray">
                     <div class="card-body">
                         <div class="row">
 

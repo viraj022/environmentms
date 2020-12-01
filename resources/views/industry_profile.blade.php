@@ -201,9 +201,9 @@
                                             <a href="" class="btn btn-dark navToFile2" target="_blank">View Deed of the land</a>
                                             <a href="" class="btn btn-dark navToFile3" target="_blank">View Survey Plan</a>
 
-                                            <button type="button" class="btn btn-success d-none" data-upload_file="Road Map" id="upld_roadMap">Upload Road Map</button>
-                                            <button type="button" class="btn btn-success d-none" data-upload_file="Deed Of The Land" id="upld_deed">Upload Deed of the land </button>
-                                            <button type="button" class="btn btn-success d-none" data-upload_file="Survey Plan" id="upld_SurveyPlan">Upload Survey Plan</button>
+                                            <button type="button" class="btn btn-primary d-none" data-upload_file="Road Map" id="upld_roadMap">Upload Road Map</button>
+                                            <button type="button" class="btn btn-primary d-none" data-upload_file="Deed Of The Land" id="upld_deed">Upload Deed of the land </button>
+                                            <button type="button" class="btn btn-primary d-none" data-upload_file="Survey Plan" id="upld_SurveyPlan">Upload Survey Plan</button>
                                             <div class="form-group d-none" id="fileUpDiv">
                                                 <hr>
                                                 <label id="uploadLabel">File Upload </label>
@@ -400,8 +400,8 @@
                                                 <b>NIC</b> <a class="float-right cl_nic">-</a>
                                             </li>
                                         </ul>
-                                        <a href="/file_summary/{{$id}}" target="_blank" class="btn btn-dark"><i class="fa fa-print"></i> Print File Summary</a>
-                                        <a href="/attachments/{{$id}}" target="_blank" class="btn btn-dark">Download All Attachments</a>
+                                        <a href="/file_summary/{{$id}}" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i> Print File Summary</a>
+                                        <a href="/attachments/{{$id}}" target="_blank" class="btn btn-primary">Download All Attachments</a>
                                     </div>
                                 </div>
                             </div>

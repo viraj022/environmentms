@@ -63,7 +63,7 @@
             </div>
             <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab">
                 <div class="col-md-12">
-                    <div class="card">
+                    <div class="card card-gray">
                         <div class="card-header">
                             <h3 class="card-title">Old Data Summary</h3>
                         </div>

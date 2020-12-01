@@ -32,7 +32,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-5">
-                <div class="card card-success">
+                <div class="card card-gray">
                     <div class="card-header">
                         <label>Roles</label>
                     </div>
@@ -131,11 +131,11 @@
 
                 </div>
                 <div class="col-md-7">
-                    <div class="card card-success">
+                    <div class="card card-gray">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="card">
+                                    <div class="card card-gray">
                                         <div class="card-header">
                                             <h3 class="card-title">Assigned Privileges</h3>
                                         </div>
@@ -464,7 +464,7 @@ $(document).ready(function () {
 $('#addAllPriv').click(function () {
 if ($(this).prop("checked") === true) {
 $('input:checkbox').not(this).prop('checked', this.checked = true)
-        $("#txtPriv").text("Un-Assign All Privileges");
+        $("#txtPriv").text("Assign All Privileges");
 } else if ($(this).prop("checked") === false) {
 $('input:checkbox').not(this).prop('checked', this.checked = false)
         $("#txtPriv").text("Assign All Privileges");
