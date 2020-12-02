@@ -55,7 +55,7 @@
                         </div>
                         <!-- /.card-body -->
                     </div>
-                    <div class="card">
+                    <div class="card card-gray">
                         <div class="card-header">
                             <h4 class="card-title">Events</h4>
                         </div>
@@ -109,7 +109,7 @@
             </div>
             <!-- /.col -->
             <div class="col-md-9">
-                <div class="card card-success">
+                <div class="card card-gray">
                     <div class="card-body p-0">
                         <!-- THE CALENDAR -->
                         <div id="calendar"></div>

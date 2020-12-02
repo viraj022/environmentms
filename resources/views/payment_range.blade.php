@@ -29,9 +29,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <div class="card card-success">
+                <div class="card card-gray">
                     <div class="card-header">
-                        <label id="lblTitle">Add New Payment Range</label>
+                        <label class="card-title" id="lblTitle">Add New Payment Range</label>
                         <div class="addNewByEnter d-none">
                             <p>(Press Enter To Add New Ranges)</p>
                             <label class="currentSelName"></label>
@@ -69,7 +69,7 @@
 
 
             <div class="col-md-6">
-                <div class="card">
+                <div class="card card-gray">
                     <div class="card-header">
                         <h3 class="card-title">All Payment Ranges</h3>
                     </div>

@@ -29,9 +29,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-5">
-                <div class="card card-success">
+                <div class="card card-gray">
                     <div class="card-header">
-                        <label id="lblTitle">Add New Attachment</label>
+                        <label class="card-title" id="lblTitle">Add New Attachment</label>
                     </div>
                     <div class="card-body">
                         <label>Attachment*</label>
@@ -57,7 +57,7 @@
             </div>
 
             <div class="col-md-7">
-                <div class="card">
+                <div class="card card-gray">
                     <div class="card-header">
                         <h3 class="card-title">Attachments</h3>
                     </div>

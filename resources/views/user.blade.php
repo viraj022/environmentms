@@ -45,7 +45,7 @@
                         <div class="row">
                             @if($pageAuth['is_create']==1 || false)
                             <div class="col-md-5">
-                                <div class="card card-success">
+                                <div class="card card-gray">
                                     <div class="card-header">
                                         <label>User Register</label>
                                     </div>
@@ -184,7 +184,7 @@
                             </div>
                             @endif
                             <div class="col-md-7">
-                                <div class="card card-success">
+                                <div class="card card-gray">
                                     <div class="card-header">
                                         <h3 class="card-title">All Users</h3>
                                     </div>
