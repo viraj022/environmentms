@@ -70,7 +70,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Address</label>
-                                    <input id="getAddress" type="text" maxlength="60" class="form-control form-control-sm"
+                                    <input id="getAddress" type="text" maxlength="75" class="form-control form-control-sm"
                                            placeholder="Enter Address..."
                                            value="">
                                     <div id="valAddName" class="d-none"><p class="text-danger">Address is required</p></div>

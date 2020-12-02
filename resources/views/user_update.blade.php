@@ -53,7 +53,7 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label>First Name</label>
-                                        <input name="firstName" type="text" class="form-control form-control-sm"
+                                        <input name="firstName" maxlength="50" type="text" class="form-control form-control-sm"
                                                placeholder="Enter First Name"
                                                value="{{$user['first_name']}}">
                                         @error('roll')
@@ -62,7 +62,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Last Name</label>
-                                        <input name="lastName" type="text" class="form-control form-control-sm"
+                                        <input name="lastName" maxlength="50" type="text" class="form-control form-control-sm"
                                                placeholder="Enter Last Name"
                                                value="{{$user['last_name']}}">
                                         @error('roll')
@@ -71,7 +71,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>User Name</label>
-                                        <input name="userName" type="text" class="form-control form-control-sm"
+                                        <input name="userName" maxlength="50" type="text" class="form-control form-control-sm"
                                                placeholder="Enter User Name"
                                                value="{{$user['user_name']}}">
                                         @error('roll')
@@ -80,7 +80,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Address</label>
-                                        <textarea class="form-control form-control-sm" rows="3" placeholder="Enter Address"
+                                        <textarea class="form-control form-control-sm" maxlength="75" rows="3" placeholder="Enter Address"
                                                   name="address">{{$user['address']}}</textarea>
                                         @error('address')
                                         <p class="text-danger">{{$errors->first('address')}}</p>
@@ -88,7 +88,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Contact No</label>
-                                        <input name="contactNo" type="text" class="form-control form-control-sm"
+                                        <input name="contactNo" type="text" maxlength="10" class="form-control form-control-sm"
                                                placeholder="Enter Contact No"
                                                value="{{$user['contact_no']}}">
                                         @error('contactNo')
@@ -97,7 +97,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Email</label>
-                                        <input name="email" type="text" class="form-control form-control-sm" placeholder="Enter Email"
+                                        <input name="email" type="text" maxlength="50" class="form-control form-control-sm" placeholder="Enter Email"
                                                value="{{$user['email']}}">
                                         @error('email')
                                         <p class="text-danger">{{$errors->first('email')}}</p>
@@ -106,7 +106,7 @@
 
                                     <div class="form-group">
                                         <label>NIC</label>
-                                        <input name="nic" type="text" class="form-control form-control-sm" placeholder="Enter NIC"
+                                        <input name="nic" type="text" maxlength="12" class="form-control form-control-sm" placeholder="Enter NIC"
                                                value="{{$user['nic']}}">
                                         @error('nic')
                                         <p class="text-danger">{{$errors->first('nic')}}</p>
