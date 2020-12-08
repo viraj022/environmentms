@@ -432,7 +432,7 @@
                                                 <b>Start Date</b> <a class="float-right tabf_industry_start_date"></a>
                                             </li>
                                             <li class="list-group-item">
-                                                <b>Investment</b> <a class="float-right tabf_industry_investment"></a>
+                                                <b>Investment(Rs)</b> <a class="float-right tabf_industry_investment"></a>
                                             </li>
                                             <li class="list-group-item">
                                                 <b>Address</b> <a class="float-right tabf_industry_address"></a>
