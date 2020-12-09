@@ -179,10 +179,16 @@
                                         <div class="card-body">
                                             <h5 class="text-success">File Status:<b class="setCurrentFstatus"></b></h5>
                                             <h6 id="env_firstname">Environment Officer: <a class="text-danger">Not Assigned</a></h6>
-                                            <dt>Name : <a id="obj_name"></a></dt>
-                                            <dt>BR No : <a id="obj_regno"></a></dt>
-                                            <dt>Investment : Rs <a id="obj_invest"></a>.00</dt>
-                                            <dt>Industry Sub-Category :<a id="obj_industrySub"></a></dt>
+											 <dl class="row">
+                                                <dt class="col-sm-4">Name : </dt>
+                                                <dd class="col-sm-6" id="obj_name"></dd>
+                                                <dt class="col-sm-4">BR No:</dt>
+                                                <dd class="col-sm-6" id="obj_regno"></dd>
+                                                <dt class="col-sm-4">Investment :(RS)</dt>
+                                                <dd class="col-sm-6" id="obj_invest"></dd>
+                                                <dt class="col-sm-4">Industry Sub-Category :</dt>
+                                                <dd class="col-sm-6" id="obj_industrySub"></dd>
+                                            </dl>
                                             <hr>
                                             <dl class="row">
                                                 <dt class="col-sm-4">Client Name:</dt>
