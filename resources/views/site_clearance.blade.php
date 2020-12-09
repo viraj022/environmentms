@@ -44,8 +44,8 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <h4 class="siteClearType text-gray"></h4>
-                        <h5 class="processingMethod text-gray"></h5>
+                        <h4 class="siteClearType text-success"></h4>
+                        <h5 class="processingMethod text-success"></h5>
 											<dl class="row">
                                                 <dt class="col-sm-4">Name : </dt>
                                                 <dd class="col-sm-6" id="client_name"></dd>
