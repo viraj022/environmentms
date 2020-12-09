@@ -44,21 +44,33 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <h4 class="siteClearType text-success"></h4>
-                        <h5 class="processingMethod text-success"></h5>
-                        <dt class="">Name : <a id="client_name"></a></dt>            
-                        <dt class="">Address : <a id="client_address"></a></dt>
-                        <dt class="">Contact Number : <a id="client_cont"></a></dt>
-                        <dt class="">Contact Email : <a id="client_amil"></a></dt>
-                        <dt class="">NIC : <a id="client_nic"> </a></dt>
+                        <h4 class="siteClearType text-gray"></h4>
+                        <h5 class="processingMethod text-gray"></h5>
+											<dl class="row">
+                                                <dt class="col-sm-4">Name : </dt>
+                                                <dd class="col-sm-6" id="client_name"></dd>
+                                                <dt class="col-sm-4">Address:</dt>
+                                                <dd class="col-sm-6" id="client_address"></dd>
+                                                <dt class="col-sm-4">Contact Number:</dt>
+                                                <dd class="col-sm-6" id="client_cont"></dd>
+                                                <dt class="col-sm-4">Contact Email:</dt>
+                                                <dd class="col-sm-6" id="client_amil"></dd>
+												 <dt class="col-sm-4">NIC:</dt>
+                                                <dd class="col-sm-6" id="client_nic"></dd>
+                                            </dl>
                         <hr>
-                        <div class="col-md-8">
-                            <dt >Industry Name : <a id="obj_name"></a></dt>
-                            <dt >Industry Registration No : <a id=" obj_regno"></a></dt>
-                            <dt >Industry Code : <a id="obj_code"></a></dt>
-                            <dt >Industry Investment :  <a  id="obj_invest"></a></dt>
-                            <dt >Industry Remark : <a  id="obj_remark"></a></dt>
-                        </div>
+											<dl class="row">
+                                                <dt class="col-sm-4">Industry Name : </dt>
+                                                <dd class="col-sm-6" id="obj_name"></dd>
+                                                <dt class="col-sm-4">Industry Registration No:</dt>
+                                                <dd class="col-sm-6" id="obj_regno"></dd>
+                                                <dt class="col-sm-4">Industry Code:</dt>
+                                                <dd class="col-sm-6" id="obj_code"></dd>
+                                                <dt class="col-sm-4">Industry Investment:</dt>
+                                                <dd class="col-sm-6" id="obj_invest"></dd>
+												 <dt class="col-sm-4">Industry Remark:</dt>
+                                                <dd class="col-sm-6" id="obj_remark"></dd>
+                                            </dl>
                     </div>
                     <!-- /.card-body -->
                 </div>                                                                        
