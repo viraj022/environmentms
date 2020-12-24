@@ -19,3 +19,5 @@ use Illuminate\Http\Request;
 
 //api
 Route::get('/mobile/test', 'MobileController@test');
+Route::get('/mobile/inspection_list', 'MobileController@inspectionFiles');
+Route::get('/mobile/inspection_list/id/{id}', 'MobileController@inspectionFiles');
