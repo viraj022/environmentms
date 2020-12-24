@@ -6,6 +6,7 @@ use App\EPL;
 use App\Client;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
 {
@@ -28,9 +29,13 @@ class SearchController extends Controller
 
     function getClientByEPL($code)
     {
+        DB::enableQueryLog();
         $epl = EPL::where('code', $code)->first();
+       
         if ($epl) {
             $client = Client::with('epls')->find($epl->client_id);
+//            dd($client);
+//      dd(DB::getQueryLog()); 
             if ($client) {
                 return $client;
             } else {
@@ -43,21 +48,25 @@ class SearchController extends Controller
 
     function getClientByLicence($code)
     {
-        $epl = EPL::where('certificate_no', 'like', $code . "%")->first();
-        $serial = Str::substr($epl->certificate_no, 0, strpos($epl->certificate_no, '/'));
-        if ($serial != $code) {
-            return array();
-        }
-        if ($epl) {
-            $client = Client::with('epls')->find($epl->client_id);
+
+//        $epl = EPL::where('certificate_no', 'like', $code . "%")->first();
+        $client = Client::where('file_no', 'like', $code . "%")->first();
+//        dd($epl->toSql());
+//        exit;
+//        $serial = Str::substr($epl->certificate_no, 0, strpos($epl->certificate_no, '/'));
+//        if ($serial != $code) {
+//            return array();
+//        }
+//        if ($client) {
+//            $client = Client::with('epls')->find($epl->client_id);
             if ($client) {
                 return $client;
             } else {
                 return array();
             }
-        } else {
-            return array();
-        }
+//        } else {
+//            return array();
+//        }
     }
 
     function getClientByBusinessRegistration($code)

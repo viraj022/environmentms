@@ -332,9 +332,12 @@ class ClientController extends Controller
         if ($pageAuth['is_delete']) {
             $client = Client::findOrFail($id);
             $msg = $client->delete();
+            if($msg){
+                $msg1=EPL::where('client_id',$id)->delete();
+            }
             LogActivity::addToLog("Delete fIle", $client);
             LogActivity::fileLog($client->id, 'File', "Delete file", 1);
-            if ($msg) {
+            if ($msg1) {
                 return array('id' => 1, 'message' => 'true');
             } else {
                 return array('id' => 0, 'message' => 'false');
