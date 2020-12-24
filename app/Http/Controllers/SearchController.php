@@ -33,7 +33,9 @@ class SearchController extends Controller
         $epl = EPL::where('code', $code)->first();
        
         if ($epl) {
-            $client = Client::with('epls')->find($epl->client_id);
+//            $client = Client::with('epls')->find($epl->client_id);
+             $client = Client::withTrashed()->find($epl->client_id);
+//            $client = Client::withTrashed('epls')->get($epl->client_id);
 //            dd($client);
 //      dd(DB::getQueryLog()); 
             if ($client) {
