@@ -398,4 +398,37 @@ class ClientRepository
             ->whereBetween('site_clearances.issue_date', [$from, $to])
             ->get();
     }
+
+    public function GetInspectionList()
+    {
+        return Client::with('businessScale')
+            ->with('industryCategory')
+            ->with('pradesheeyasaba.zone')
+            ->with('environmentOfficer.user')
+            ->with('environmentOfficer.assistantDirector.user')
+            ->with('siteClearenceSessions.siteClearances')
+            ->with('epls')
+            ->with('transactions.transactionItems.payment.paymentType')
+            ->with('inspectionSessions.environmentOfficer.user')
+            ->with('committees.commetyPool')
+            ->with('minutes.user')
+            ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
+            ->get();
+    }
+    public function GetInspectionListByUser($id)
+    {
+        return Client::with('businessScale')
+            ->with('industryCategory')
+            ->with('pradesheeyasaba.zone')
+            ->with('environmentOfficer.user')
+            ->with('environmentOfficer.assistantDirector.user')
+            ->with('siteClearenceSessions.siteClearances')
+            ->with('epls')
+            ->with('transactions.transactionItems.payment.paymentType')
+            ->with('inspectionSessions.environmentOfficer.user')
+            ->with('committees.commetyPool')
+            ->with('minutes.user')
+            ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
+            ->get();
+    }
 }
