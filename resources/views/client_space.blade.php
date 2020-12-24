@@ -435,6 +435,7 @@
                                             });
 //Search NIC Button 
                                             $(document).on('click', '#btnSearch', function () {
+                                               
                                                 var data2 = {
                                                     value: $('#getNic').val()
                                                 };
