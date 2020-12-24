@@ -35,7 +35,7 @@
     <div class="container-fluid view-Profile">
         <div class="row">
             <div class="col-md-6">
-                <div class="card">
+                <div class="card card-gray">
                     <div class="card-header">
                         <h3 class="card-title">
                             <i class="fas fa-user"></i> Client Details
@@ -211,7 +211,12 @@ $(function () {
             setClearanceData(result);
             $('#obj_remark').text(result.remark);
             $('.eplCodeAfileNo').html(result.epl_instantNumber);
-            $(".navTodownload").attr("href", '/' + result.path);
+            if (result.path == null) {
+                $(".navTodownload").attr("href", '/' + result.application_path);
+            } else {
+                $(".navTodownload").attr("href", '/' + result.path);
+            }
+
         }
     });
 });

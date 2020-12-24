@@ -87,7 +87,7 @@
                                                         <span class="info-box-icon">
                                                             <button class="btn btn-lg btn-default" id="newEPL"><i class="fa fa-plus"></i></button></span>
                                                         <div class="info-box-content">
-                                                            <span class="info-box-text">Create new environment protection license file</span>
+                                                            <span class="info-box-text">Create new environment protection<br> license file</span>
                                                             <span class="info-box-number">New EPL</span>
                                                         </div>
                                                         <!-- /.info-box-content -->
@@ -96,7 +96,7 @@
                                                         <span class="info-box-icon">
                                                             <a class="btn btn-lg btn-default" href="" id="setEPlLink"><i class="fa fa-plus"></i></a></span>
                                                         <div class="info-box-content">
-                                                            <span class="info-box-text">Environment protection license file</span>
+                                                            <span class="info-box-text">Environment protection<br> license file</span>
                                                             <span class="info-box-number">View <a id="setEPLCode"></a></span>
                                                         </div>
                                                         <!-- /.info-box-content -->
@@ -136,7 +136,7 @@
                                                             <button class="btn btn-lg btn-default" id="scheduleWaste"><i class="fa fa-plus"></i></button></span>
 
                                                         <div class="info-box-content">
-                                                            <span class="info-box-text">Create new schedule waste management <br> certificate</span>
+                                                            <span class="info-box-text">Create new schedule waste<br> management certificate</span>
                                                             <span class="info-box-number">Schedule Waste</span>
                                                         </div>
                                                         <!-- /.info-box-content -->
@@ -179,10 +179,16 @@
                                         <div class="card-body">
                                             <h5 class="text-success">File Status:<b class="setCurrentFstatus"></b></h5>
                                             <h6 id="env_firstname">Environment Officer: <a class="text-danger">Not Assigned</a></h6>
-                                            <dt>Name : <a id="obj_name"></a></dt>
-                                            <dt>BR No : <a id="obj_regno"></a></dt>
-                                            <dt>Investment : Rs <a id="obj_invest"></a>.00</dt>
-                                            <dt>Industry Sub-Category :<a id="obj_industrySub"></a></dt>
+											 <dl class="row">
+                                                <dt class="col-sm-4">Name : </dt>
+                                                <dd class="col-sm-6" id="obj_name"></dd>
+                                                <dt class="col-sm-4">BR No:</dt>
+                                                <dd class="col-sm-6" id="obj_regno"></dd>
+                                                <dt class="col-sm-4">Investment :(RS)</dt>
+                                                <dd class="col-sm-6" id="obj_invest"></dd>
+                                                <dt class="col-sm-4">Industry Sub-Category :</dt>
+                                                <dd class="col-sm-6" id="obj_industrySub"></dd>
+                                            </dl>
                                             <hr>
                                             <dl class="row">
                                                 <dt class="col-sm-4">Client Name:</dt>
@@ -201,9 +207,9 @@
                                             <a href="" class="btn btn-dark navToFile2" target="_blank">View Deed of the land</a>
                                             <a href="" class="btn btn-dark navToFile3" target="_blank">View Survey Plan</a>
 
-                                            <button type="button" class="btn btn-success d-none" data-upload_file="Road Map" id="upld_roadMap">Upload Road Map</button>
-                                            <button type="button" class="btn btn-success d-none" data-upload_file="Deed Of The Land" id="upld_deed">Upload Deed of the land </button>
-                                            <button type="button" class="btn btn-success d-none" data-upload_file="Survey Plan" id="upld_SurveyPlan">Upload Survey Plan</button>
+                                            <button type="button" class="btn btn-primary d-none" data-upload_file="Road Map" id="upld_roadMap">Upload Road Map</button>
+                                            <button type="button" class="btn btn-primary d-none" data-upload_file="Deed Of The Land" id="upld_deed">Upload Deed of the land </button>
+                                            <button type="button" class="btn btn-primary d-none" data-upload_file="Survey Plan" id="upld_SurveyPlan">Upload Survey Plan</button>
                                             <div class="form-group d-none" id="fileUpDiv">
                                                 <hr>
                                                 <label id="uploadLabel">File Upload </label>
@@ -400,8 +406,8 @@
                                                 <b>NIC</b> <a class="float-right cl_nic">-</a>
                                             </li>
                                         </ul>
-                                        <a href="/file_summary/{{$id}}" target="_blank" class="btn btn-dark"><i class="fa fa-print"></i> Print File Summary</a>
-                                        <a href="/attachments/{{$id}}" target="_blank" class="btn btn-dark">Download All Attachments</a>
+                                        <a href="/file_summary/{{$id}}" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i> Print File Summary</a>
+                                        <a href="/attachments/{{$id}}" target="_blank" class="btn btn-primary">Download All Attachments</a>
                                     </div>
                                 </div>
                             </div>
@@ -432,7 +438,7 @@
                                                 <b>Start Date</b> <a class="float-right tabf_industry_start_date"></a>
                                             </li>
                                             <li class="list-group-item">
-                                                <b>Investment</b> <a class="float-right tabf_industry_investment"></a>
+                                                <b>Investment(Rs)</b> <a class="float-right tabf_industry_investment"></a>
                                             </li>
                                             <li class="list-group-item">
                                                 <b>Address</b> <a class="float-right tabf_industry_address"></a>

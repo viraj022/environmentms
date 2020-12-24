@@ -29,9 +29,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-5">
-                <div class="card card-success">
+                <div class="card card-gray">
                     <div class="card-header">
-                        <label id="lblTitle">Add New Payment</label>
+                        <label class="card-title" id="lblTitle">Add New Payment</label>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
@@ -43,7 +43,7 @@
                         </div>
                         <div class="form-group">
                             <label>Payment Name*</label>
-                            <input id="getName" type="text" class="form-control form-control-sm"
+                            <input id="getName" maxlength="75" type="text" class="form-control form-control-sm"
                                    placeholder="Enter Name..."
                                    value="">
                             <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
@@ -58,8 +58,8 @@
                             <div id="valPayType" class="d-none"><p class="text-danger">Field is required</p></div>
                         </div>
                         <div class="form-group" id="useToHideAmount">
-                            <label>Amount*</label>
-                            <input id="getPaymentAmount" type="number" class="form-control form-control-sm"
+                            <label>Amount(Rs)*</label>
+                            <input id="getPaymentAmount" maxlength="11" type="number" class="form-control form-control-sm"
                                    placeholder="Amount"
                                    value="">
                             <div id="valAmount" class="d-none"><p class="text-danger">Field is required</p></div>
@@ -81,7 +81,7 @@
             </div>
 
             <div class="col-md-7">
-                <div class="card">
+                <div class="card card-gray">
                     <div class="card-header">
                         <h3 class="card-title">Payments</h3>
                     </div>
@@ -101,7 +101,7 @@
                                         <th style="width: 10px">#</th>
                                         <th>Name</th>
                                         <th>Type</th>
-                                        <th>Amount</th>
+                                        <th>Amount(Rs)</th>
                                         <th style="width: 140px">Action</th>
                                     </tr>
                                 </thead>

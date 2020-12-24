@@ -34,7 +34,7 @@
 
                 </div>
                 <!--Add New Comment Section-->
-                <div class="card card-success">
+                <div class="card card-gray">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">

@@ -29,13 +29,13 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-5">
-                <div class="card card-success">
+                <div class="card card-gray">
                     <div class="card-header">
-                        <label id="lblTitle">Add New Industry Category</label>
+                        <label class="card-title" id="lblTitle">Add New Industry Category</label>
                     </div>
                     <div class="card-body">
                         <label>Name*</label>
-                        <input id="getIndustryName" type="text" class="form-control form-control-sm"
+                        <input id="getIndustryName" maxlength="50" type="text" class="form-control form-control-sm"
                                placeholder="Enter Industry Name..."
                                value="">
                         <div id="valIndustryName" class="d-none"><p class="text-danger">Industry Name is required</p></div>
@@ -43,7 +43,7 @@
                     </div>
                     <div class="card-body">
                         <label>Code*</label>
-                        <input id="getIndustryCode" type="text" class="form-control form-control-sm"
+                        <input id="getIndustryCode" maxlength="5" type="text" class="form-control form-control-sm"
                                placeholder="Enter Industry Code..."
                                value="">
                         <div id="valIndustryCode" class="d-none"><p class="text-danger">Industry Code is required</p></div>
@@ -67,7 +67,7 @@
 
 
             <div class="col-md-7">
-                <div class="card">
+                <div class="card card-gray">
                     <div class="card-header">
                         <h3 class="card-title">Industry Categories</h3>
                     </div>

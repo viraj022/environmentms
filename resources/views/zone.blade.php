@@ -29,14 +29,14 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-5">
-                <div class="card card-success">
+                <div class="card card-gray">
                     <div class="card-header">
-                        <label id="lblTitle">Add New Zone</label>
+                        <label class="card-title" id="lblTitle">Add New Zone</label>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
                             <label>Name*</label>
-                            <input id="getName" type="text" class="form-control form-control-sm"
+                            <input id="getName" type="text" maxlength="70" class="form-control form-control-sm"
                                    placeholder="Enter Zone Name..."
                                    value="">
                             <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
@@ -44,7 +44,7 @@
                         </div>
                         <div class="form-group">
                             <label>Code*</label>
-                            <input id="getCode" type="text" class="form-control form-control-sm"
+                            <input id="getCode" type="text" maxlength="10" class="form-control form-control-sm"
                                    placeholder="Enter Zone Code..."
                                    value="">
                             <div id="valCode" class="d-none"><p class="text-danger">Code is required</p></div>
@@ -68,7 +68,7 @@
 
 
             <div class="col-md-7">
-                <div class="card">
+                <div class="card card-gray">
                     <div class="card-header">
                         <h3 class="card-title">All Zones</h3>
                     </div>

@@ -34,7 +34,7 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="card card-success">
+                        <div class="card card-gray">
                             <div class="card-header">
                                 <h3 id="lblTitle" class="card-title">Register New Client</h3>
                             </div>
@@ -56,21 +56,21 @@
                                 </div>
                                 <div class="form-group">
                                     <label>First Name*</label>
-                                    <input id="getfName" type="text" class="form-control form-control-sm cutenzReq"
+                                    <input id="getfName" type="text" maxlength="45" class="form-control form-control-sm cutenzReq"
                                            placeholder="Enter FirstName..."
                                            value="">
                                     <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
                                 </div>
                                 <div class="form-group">
                                     <label>Last Name</label>
-                                    <input id="getlName" type="text" class="form-control form-control-sm"
+                                    <input id="getlName" type="text" maxlength="45" class="form-control form-control-sm"
                                            placeholder="Enter LastName..."
                                            value="">
                                     <div id="valLName" class="d-none"><p class="text-danger">Last Name is required</p></div>
                                 </div>
                                 <div class="form-group">
                                     <label>Address</label>
-                                    <input id="getAddress" type="text" class="form-control form-control-sm"
+                                    <input id="getAddress" type="text"  class="form-control form-control-sm"
                                            placeholder="Enter Address..."
                                            value="">
                                     <div id="valAddName" class="d-none"><p class="text-danger">Address is required</p></div>
@@ -106,7 +106,7 @@
                     </div>
                     <!--Industry details-->
                     <div class="col-md-6">
-                        <div class="card card-success">
+                        <div class="card card-gray">
                             <div class="card-header">
                                 <h3 class="card-title" id="lblTitle">Industry details</h3>
                             </div>
@@ -196,7 +196,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="col-md-9">
-                    <div class="card card-success">
+                    <div class="card card-gray">
                         <div class="card-header">
                             <h3 id="lblTitle" class="card-title">Search Client</h3>
                         </div>

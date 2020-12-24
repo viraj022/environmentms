@@ -30,10 +30,10 @@
     <div class="container-fluid reg-newClient">
         <div class="row">
             <div class="col-md-12">
-                <div class="card card-success">
+                <div class="card card-gray">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-5">
+                            <div class="col-4">
                                 <div class="form-group">
                                     <label>Assistant Director*</label>
                                     <select id="getAsDirect" class="form-control form-control-sm">
@@ -42,7 +42,7 @@
                                     <div id="valAsDirect" class="d-none"><p class="text-danger">Field is required</p></div>
                                 </div>    
                             </div>
-                            <div class="col-5">
+                            <div class="col-4">
                                 <div class="form-group">
                                     <label>Environment Officer*</label>
                                     <select id="getEnvOfficer" class="form-control form-control-sm">
@@ -51,7 +51,7 @@
                                     <div id="valEnvOfficer" class="d-none"><p class="text-danger">Field is required</p></div>
                                 </div>
                             </div>
-                            <div class="col-2">
+                            <div class="col-4">
                                 <div class="form-group">
                                     <label>File Type*</label>
                                     <select id="getFileType" class="form-control form-control-sm">

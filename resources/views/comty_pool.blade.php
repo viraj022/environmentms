@@ -29,21 +29,21 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-5">
-                <div class="card card-success">
+                <div class="card card-gray">
                     <div class="card-header">
-                        <label id="lblTitle">Create New Committee</label>
+                        <label class="card-title" id="lblTitle">Create New Committee</label>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
                             <label>First Name*</label>
-                            <input id="getFname" type="text" class="form-control form-control-sm"
+                            <input id="getFname" maxlength="45" type="text" class="form-control form-control-sm"
                                    placeholder="Enter attachment..."
                                    value="">
                             <div id="valFname" class="d-none"><p class="text-danger">First Name is required!</p></div>
                         </div>
                         <div class="form-group">
                             <label>Last Name</label>
-                            <input id="getLname" type="text" class="form-control form-control-sm"
+                            <input id="getLname" maxlength="45" type="text" class="form-control form-control-sm"
                                    placeholder="Enter Last Name..."
                                    value="">
                         </div>
@@ -69,7 +69,7 @@
                         </div>
                         <div class="form-group">
                             <label>Contact Number</label>
-                            <input id="getContact" maxlength="10" type="text" class="form-control form-control-sm"
+                            <input id="getContact" maxlength="10" type="number" class="form-control form-control-sm"
                                    placeholder="Enter Contact Number..."
                                    value="">
                             <!--<div id="valContact" class="d-none"><p class="text-danger">Invalid Contact Number!</p></div>-->
@@ -94,7 +94,7 @@
 
 
             <div class="col-md-7">
-                <div class="card">
+                <div class="card card-gray">
                     <div class="card-header">
                         <h3 class="card-title">Committees</h3>
                     </div>

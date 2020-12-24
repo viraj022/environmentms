@@ -45,26 +45,26 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-5">
-                                    <div class="card card-success">
+                                    <div class="card card-gray">
                                         <div class="card-header">
-                                            <label>Application Details</label>
+                                            <label class="card-title">Application Details</label>
                                         </div>
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <label>Name *</label>
-                                                <input id="cus_name" type="text" class="form-control form-control-sm" placeholder="" value="">
+                                                <input id="cus_name" type="text" maxlength="45" class="form-control form-control-sm" placeholder="" value="">
                                             </div>
                                             <div class="form-group">
                                                 <label>NIC </label>
-                                                <input id="cus_nic" type="text" class="form-control form-control-sm" placeholder="" value="">
+                                                <input id="cus_nic" type="text"  maxlength="12" class="form-control form-control-sm" placeholder="" value="">
                                             </div>
                                             <div class="form-group">
                                                 <label>Contact </label>
-                                                <input id="cus_tel" type="text" class="form-control form-control-sm" placeholder="" value="">
+                                                <input id="cus_tel" type="text" maxlength="10" class="form-control form-control-sm" placeholder="" value="">
                                             </div>
                                             <div class="form-group">
                                                 <label>Address </label>
-                                                <input id="cus_address" type="text" class="form-control form-control-sm" placeholder="" value="">
+                                                <input id="cus_address" type="text" maxlength="45" class="form-control form-control-sm" placeholder="" value="">
                                             </div>
                                             <div class="form-group">
                                                 <label>Application Type: </label>
@@ -123,10 +123,10 @@
                     </div>
                     <div class="tab-pane fade" id="custom-tabs-two-profile" role="tabpanel" aria-labelledby="custom-tabs-two-profile-tab">
                         <div class="col-md-12">
-                            <div class="card card-secondary">
+                            <div class="card card-dark">
                                 <div class="card-header">
-                                    <h3 class="card-title">Pending Payments</h3>
-                                    <button class="btn btn-sm btn-dark" id="tblRefresh"><i class="fa fa-refresh"></i> Refresh</button>&nbsp;
+                                    <h3 class="card-title">Pending Payments</h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn-sm btn-primary" id="tblRefresh"><i class="fa fa-refresh"></i> Refresh</button>&nbsp;
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body p-0">

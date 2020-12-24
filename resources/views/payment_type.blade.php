@@ -29,13 +29,13 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-5">
-                <div class="card card-success">
+                <div class="card card-gray">
                     <div class="card-header">
-                        <label id="lblTitle">Add New Payment Category</label>
+                        <label class="card-title" id="lblTitle">Add New Payment Category</label>
                     </div>
                     <div class="card-body">
                         <label>Payment Category Name*</label>
-                        <input id="getName" type="text" class="form-control form-control-sm"
+                        <input id="getName" type="text" maxlength="100" class="form-control form-control-sm"
                                placeholder="Enter Name..."
                                value="">
                         <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
@@ -57,7 +57,7 @@
             </div>
 
             <div class="col-md-7">
-                <div class="card">
+                <div class="card card-gray">
                     <div class="card-header">
                         <h3 class="card-title">Payment Categories</h3>
                     </div>
