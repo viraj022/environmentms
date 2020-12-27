@@ -39,28 +39,27 @@ class MobileController extends Controller
         request()->validate([
             'file' => 'required|mimes:jpeg,jpg,png,pdf'
         ]);
-            if ($inspection) {
-                $e = Client::findOrFail($inspection->client_id);
-                $type = $request->file->extension();
-                $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                $fileUrl = "/uploads/" . FieUploadController::getInspectionFilePath($inspection);
-                $storePath = 'public' . $fileUrl;
-                $path = 'storage' . $fileUrl . "/" . $file_name;
-                $request->file('file')->storeAs($storePath, $file_name);
-                $inspectionSessionAttachment = new InspectionSessionAttachment();
-                $inspectionSessionAttachment->inspection_session_id = $inspection->id;
-                $inspectionSessionAttachment->path = $path;
-                $inspectionSessionAttachment->type = $type;
-                $msg = $inspectionSessionAttachment->save();
-                if ($msg) {
-                    LogActivity::addToLog('Add Inspection attachment', $inspectionSessionAttachment);
-                    return array('id' => 1, 'message' => 'true');
-                } else {
-                    return array('id' => 0, 'message' => 'false');
-                }
+        if ($inspection) {
+            $e = Client::findOrFail($inspection->client_id);
+            $type = $request->file->extension();
+            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+            $fileUrl = "/uploads/" . FieUploadController::getInspectionFilePath($inspection);
+            $storePath = 'public' . $fileUrl;
+            $path = 'storage' . $fileUrl . "/" . $file_name;
+            $request->file('file')->storeAs($storePath, $file_name);
+            $inspectionSessionAttachment = new InspectionSessionAttachment();
+            $inspectionSessionAttachment->inspection_session_id = $inspection->id;
+            $inspectionSessionAttachment->path = $path;
+            $inspectionSessionAttachment->type = $type;
+            $msg = $inspectionSessionAttachment->save();
+            if ($msg) {
+                LogActivity::addToLog('Add Inspection attachment', $inspectionSessionAttachment);
+                return array('id' => 1, 'message' => 'true');
             } else {
-                abort(404);
+                return array('id' => 0, 'message' => 'false');
             }
-        } 
+        } else {
+            abort(404);
+        }
     }
 }
