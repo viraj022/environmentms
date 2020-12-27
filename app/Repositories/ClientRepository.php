@@ -412,7 +412,8 @@ class ClientRepository
             ->with('inspectionSessions.environmentOfficer.user')
             ->with('committees.commetyPool')
             ->with('minutes.user')
-            ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
+            ->OrWhere('need_inspection', Client::STATUS_INSPECTION_NEEDED)
+            ->OrWhere('need_inspection', Client::STATUS_PENDING)
             ->get();
     }
     public function GetInspectionListByUser($id)
@@ -429,6 +430,7 @@ class ClientRepository
             ->with('committees.commetyPool')
             ->with('minutes.user')
             ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
+            ->OrWhere('need_inspection', Client::STATUS_PENDING)
             ->get();
     }
 }
