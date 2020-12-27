@@ -429,8 +429,7 @@ class ClientRepository
             ->with('inspectionSessions.environmentOfficer.user')
             ->with('committees.commetyPool')
             ->with('minutes.user')
-            ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
-            ->OrWhere('need_inspection', Client::STATUS_PENDING)
+            ->Where('need_inspection', Client::STATUS_PENDING)
             ->get();
     }
 }
