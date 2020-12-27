@@ -33,12 +33,13 @@ class MobileController extends Controller
     {
         return $this->clientRepository->GetInspectionListByUser($id);
     }
-    public function uploadImage(Request $request, InspectionSession $inspection)
+    public function uploadImage(Request $request, $id)
     {
         $user = Auth::user();
         request()->validate([
             'file' => 'required|mimes:jpeg,jpg,png,pdf'
         ]);
+        $inspection = InspectionSession::findOrFail($id);
         if ($inspection) {
             // $e = Client::findOrFail($inspection->client_id);
             $type = $request->file->extension();
