@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use App\FileView;
+use App\InspectionSession;
 use App\Repositories\ClientRepository;
 use Illuminate\Http\Request;
 
@@ -27,5 +28,9 @@ class MobileController extends Controller
     public function inspectionFilesById($id)
     {
         return $this->clientRepository->GetInspectionListByUser($id);
+    }
+    public function uploadImage(InspectionSession $inspectionSession)
+    {
+        return array("Ok" => "Ok");
     }
 }
