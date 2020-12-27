@@ -412,6 +412,7 @@ class ClientRepository
             ->with('inspectionSessions.environmentOfficer.user')
             ->with('committees.commetyPool')
             ->with('minutes.user')
+            ->with('inspectionSessions.inspectionSessionAttachments')
             ->Where('need_inspection', Client::STATUS_PENDING)
             ->get();
     }
@@ -428,6 +429,7 @@ class ClientRepository
             ->with('inspectionSessions.environmentOfficer.user')
             ->with('committees.commetyPool')
             ->with('minutes.user')
+            ->with('inspectionSessions.inspectionSessionAttachments')
             ->Where('need_inspection', Client::STATUS_PENDING)
             ->get();
     }
