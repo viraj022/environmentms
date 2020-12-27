@@ -40,7 +40,7 @@ class MobileController extends Controller
             'file' => 'required|mimes:jpeg,jpg,png,pdf'
         ]);
         if ($inspection) {
-            $e = Client::findOrFail($inspection->client_id);
+            // $e = Client::findOrFail($inspection->client_id);
             $type = $request->file->extension();
             $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
             $fileUrl = "/uploads/" . FieUploadController::getInspectionFilePath($inspection);
