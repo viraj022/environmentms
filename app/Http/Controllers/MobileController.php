@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use App\FileView;
-use App\Repositories\ClientRepository;
+use Carbon\Carbon;
+use App\InspectionSession;
+use App\Helpers\LogActivity;
 use Illuminate\Http\Request;
+use App\InspectionSessionAttachment;
+use Illuminate\Support\Facades\Auth;
+use App\Repositories\ClientRepository;
 
 class MobileController extends Controller
 {
@@ -27,5 +32,35 @@ class MobileController extends Controller
     public function inspectionFilesById($id)
     {
         return $this->clientRepository->GetInspectionListByUser($id);
+    }
+    public function uploadImage(Request $request, $id)
+    {
+        $user = Auth::user();
+        request()->validate([
+            'file' => 'required|mimes:jpeg,jpg,png,pdf'
+        ]);
+        $inspection = InspectionSession::findOrFail($id);
+        if ($inspection) {
+            // $e = Client::findOrFail($inspection->client_id);
+            $type = $request->file->extension();
+            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+            $fileUrl = "/uploads/" . FieUploadController::getInspectionFilePath($inspection);
+            $storePath = 'public' . $fileUrl;
+            $path = 'storage' . $fileUrl . "/" . $file_name;
+            $request->file('file')->storeAs($storePath, $file_name);
+            $inspectionSessionAttachment = new InspectionSessionAttachment();
+            $inspectionSessionAttachment->inspection_session_id = $inspection->id;
+            $inspectionSessionAttachment->path = $path;
+            $inspectionSessionAttachment->type = $type;
+            $msg = $inspectionSessionAttachment->save();
+            if ($msg) {
+                LogActivity::addToLog('Add Inspection attachment', $inspectionSessionAttachment);
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } else {
+            abort(404);
+        }
     }
 }

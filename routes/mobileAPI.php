@@ -21,3 +21,4 @@ use Illuminate\Http\Request;
 Route::get('/mobile/test', 'MobileController@test');
 Route::get('/mobile/inspection_list', 'MobileController@inspectionFiles');
 Route::get('/mobile/inspection_list/id/{id}', 'MobileController@inspectionFiles');
+Route::post('/mobile/images/{id}', 'MobileController@uploadImage');
