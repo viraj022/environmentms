@@ -435,6 +435,7 @@
                                             });
 //Search NIC Button 
                                             $(document).on('click', '#btnSearch', function () {
+                                               
                                                 var data2 = {
                                                     value: $('#getNic').val()
                                                 };
@@ -483,6 +484,9 @@
                                                                 }
                                                                 break;
                                                             case 'epl':
+                                                                if(!!result.deleted_at){
+                                                                   alert('Deleted Record!');
+                                                                }else{
                                                                 if (result != 0) {
                                                                     window.location = "/industry_profile/id/" + result.id;
                                                                 } else {
@@ -492,6 +496,7 @@
                                                                         return false;
                                                                     }
                                                                 }
+                                                            }
                                                                 break;
                                                             case 'business_reg':
                                                                 if (result != 0) {

@@ -6,11 +6,13 @@ use App\Roll;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
     use Notifiable;
     use SoftDeletes;
+    use HasApiTokens;
     public const ACTIVE = 'Active';
     public const INACTIVE = 'Inactive';
     public const ARCHIVED = 'Archived';
@@ -66,5 +68,9 @@ class User extends Authenticatable
             }
         }
         return null;
+    }
+    public function findForPassport($username)
+    {
+        return $this->where('user_name', $username)->first();
     }
 }
