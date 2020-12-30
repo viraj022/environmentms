@@ -51,24 +51,25 @@ class SearchController extends Controller
     function getClientByLicence($code)
     {
 
-//        $epl = EPL::where('certificate_no', 'like', $code . "%")->first();
-        $client = Client::where('file_no', 'like', $code . "%")->first();
-//        dd($epl->toSql());
+        $epl = EPL::where('certificate_no', 'like', $code . "%")->first();
+//        $client = Client::where('file_no', 'like', $code . "%")->first();
+        
 //        exit;
-//        $serial = Str::substr($epl->certificate_no, 0, strpos($epl->certificate_no, '/'));
-//        if ($serial != $code) {
-//            return array();
-//        }
-//        if ($client) {
-//            $client = Client::with('epls')->find($epl->client_id);
+        $serial = Str::substr($epl->certificate_no, 0, strpos($epl->certificate_no, '/'));
+//        dd($serial);
+        if ($serial != $code) {
+            return array();
+        }
+        if ($epl) {
+            $client = Client::with('epls')->find($epl->client_id);
             if ($client) {
                 return $client;
             } else {
                 return array();
             }
-//        } else {
-//            return array();
-//        }
+        } else {
+            return array();
+        }
     }
 
     function getClientByBusinessRegistration($code)
