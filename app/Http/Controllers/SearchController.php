@@ -70,22 +70,10 @@ class SearchController extends Controller
     function getClientByLicence($code)
     {
 
-<<<<<<< HEAD
-//        $epl = EPL::where('certificate_no', 'like', $code . "%")->first();
-        $client = Client::where('file_no', 'like', $code . "%")->first();
-//        dd($epl->toSql());
-//        exit;
-//        $serial = Str::substr($epl->certificate_no, 0, strpos($epl->certificate_no, '/'));
-//        if ($serial != $code) {
-//            return array();
-//        }
-//        if ($client) {
-//            $client = Client::with('epls')->find($epl->client_id);
-=======
+
         $epl = EPL::where('certificate_no', 'like', $code . "%")->first();
 //        $client = Client::where('file_no', 'like', $code . "%")->first();
-        
-//        exit;
+
         $serial = Str::substr($epl->certificate_no, 0, strpos($epl->certificate_no, '/'));
 //        dd($serial);
         if ($serial != $code) {
@@ -93,15 +81,15 @@ class SearchController extends Controller
         }
         if ($epl) {
             $client = Client::with('epls')->find($epl->client_id);
->>>>>>> 245ae32b2c8d4c27035e14b9be21ed2e8c31d532
+
             if ($client) {
                 return $client;
             } else {
                 return array();
             }
-//        } else {
-//            return array();
-//        }
+       } else {
+           return array();
+       }
     }
 
     function getClientByBusinessRegistration($code)
