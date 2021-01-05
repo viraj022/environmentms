@@ -100,13 +100,14 @@
     $(function () {
 //Load table
         loadAssDirCombo();
-        getaProfilebyId();
+        getExpireCerByAssDir(null);
 //select button action 
         $(document).on('click', '#getByAssDirGenBtn', function () {
             if ($('#getByAssDir').is(":checked")) {
+//                alert();
                 getExpireCerByAssDir($('#getAsDirect').val());
             } else {
-                getaProfilebyId();
+                getExpireCerByAssDir(null);
             }
         });
     });
