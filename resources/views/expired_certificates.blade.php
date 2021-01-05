@@ -98,14 +98,13 @@
 <!-- AdminLTE App -->
 <script>
     $(function () {
-        var assDirValue = $('#getAsDirect').val();
 //Load table
         loadAssDirCombo();
         getaProfilebyId();
 //select button action 
         $(document).on('click', '#getByAssDirGenBtn', function () {
             if ($('#getByAssDir').is(":checked")) {
-                getExpireCerByAssDir(assDirValue);
+                getExpireCerByAssDir($('#getAsDirect').val());
             } else {
                 getaProfilebyId();
             }

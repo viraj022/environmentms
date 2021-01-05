@@ -900,8 +900,8 @@ class ClientController extends Controller
         if ($pageAuth['is_read']) {
 
             $responses = Certificate::With('Client')->selectRaw('max(id) as id, client_id,expire_date')
-                ->whereHas('Client', function ($query) use ($id) {
-                    $query->where('environment_officer_id', '=', $id);
+                ->whereHas('Client.environmentOfficer.assistantDirector', function ($query) use ($id) {
+                    $query->where('assistant_directors.id', '=', $id);
                 })
                 ->where('expire_date', '<', $date)
                 ->groupBy('client_id')
@@ -910,8 +910,6 @@ class ClientController extends Controller
             $reses = $responses->toArray();
 
             foreach ($reses as $k => $res) {
-
-
                 $origin = date_create(date("Y-m-d"));
                 $target = date_create(date($res['expire_date']));
                 $interval = date_diff($origin, $target);
