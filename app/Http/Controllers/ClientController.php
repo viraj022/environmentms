@@ -89,6 +89,12 @@ class ClientController extends Controller {
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('expired_certificates', ['pageAuth' => $pageAuth]);
     }
+    public function expireCertUi()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('expired_cert', ['pageAuth' => $pageAuth]);
+    }
 
     public function certificatePrefer($id) {
         $user = Auth::user();
