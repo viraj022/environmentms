@@ -94,7 +94,7 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
-<script src="../../js/CertificatePreferJS/expired_certificate.js" type="text/javascript"></script>
+<script src="../../js/CertJS/expired_cert.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
     $(function () {
