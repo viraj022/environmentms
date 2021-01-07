@@ -427,3 +427,7 @@ Route::middleware('auth:api')->get('/certificate/expiredCertificates/id/{id}', '
 Route::middleware('auth:api')->get('/old_files/count_by_date', 'ClientController@oldFilesCountByDate');
 
 Route::middleware('auth:api')->patch('/reject/file/{file_id}', 'AssistantDirectorController@rejectFileAll'); //   reject file and current working file type
+
+
+//report api
+Route::middleware('auth:api')->get('/files/confirmed', 'ClientController@getCofirmedFiles'); //   get confirmed files
