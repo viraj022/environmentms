@@ -928,7 +928,7 @@ class ClientController extends Controller {
     public function getCofirmedFiles() { //to all get all active files
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        $client = Client::where('file_status', 2)->get();
+        $client = Client::where('is_old', 2)->get();
         return $client;
     }
 

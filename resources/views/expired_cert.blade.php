@@ -27,7 +27,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="">
-                            <div class="">
+<!--                            <div class="">
                                 <div class="col-md-4">
                                     <div class="form-check">
                                         <input id="getByAssDir" class="form-check-input" type="checkbox">
@@ -44,7 +44,7 @@
                                 <div class="col-md-2">
                                     <button id="getByAssDirGenBtn" type="button" class="btn btn-block btn-primary btn-xs">Generate</button>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                     <div class="card-body p-0">
