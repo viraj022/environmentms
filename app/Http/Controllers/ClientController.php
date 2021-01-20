@@ -311,7 +311,10 @@ class ClientController extends Controller {
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+
+   
+    public function destroy($id)
+    {
 
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
