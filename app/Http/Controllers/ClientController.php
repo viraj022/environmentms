@@ -311,32 +311,10 @@ class ClientController extends Controller {
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-<<<<<<< HEAD
-    // public function destroy($id)
-    // {
 
-    //     $user = Auth::user();
-    //     $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-    //     if ($pageAuth['is_delete']) {
-    //         $client = Client::findOrFail($id);
-    //         $msg = $client->delete();
-    //         LogActivity::addToLog("Delete fIle", $client);
-    //         LogActivity::fileLog($client->id, 'File', "Delete file", 1);
-    //         if ($msg) {
-    //             return array('id' => 1, 'message' => 'true');
-    //         } else {
-    //             return array('id' => 0, 'message' => 'false');
-    //         }
-    //     } else {
-    //         abort(401);
-    //     }
-    // }
-    
+   
     public function destroy($id)
     {
-=======
-    public function destroy($id) {
->>>>>>> cc946e4195fc07115d096a5935fa9fb865a2b4bb
 
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
