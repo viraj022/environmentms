@@ -16,3 +16,5 @@ Stack trace:
 #4 /home/ceytech/public_html/environmentms/vendor/laravel/framework/src/Illuminate/Foundation/ComposerScripts.php(43): require_once('/home/ceytech/p...')
 #5 phar:///opt/cpanel/composer/bin/ in /home/ceytech/public_html/environmentms/vendor/composer/autoload_real.php on line 66
 [08-Sep-2020 05:34:28 UTC] PHP Fatal error:  composerRequirebf92e04eb9ea8822c08369e2dd5fbfb2(): Failed opening required '/home/ceytech/public_html/environmentms/vendor/composer/../../app/logactivity.php' (include_path='.:/opt/cpanel/ea-php72/root/usr/share/pear') in /home/ceytech/public_html/environmentms/vendor/composer/autoload_real.php on line 66
+[30-Dec-2020 09:53:09 UTC] PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to allocate 4096 bytes) in phar:///opt/cpanel/composer/bin/composer/src/Composer/DependencyResolver/RuleWatchGraph.php on line 52
+[30-Dec-2020 09:55:12 UTC] PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to allocate 4096 bytes) in phar:///opt/cpanel/composer/bin/composer/src/Composer/DependencyResolver/Solver.php on line 223
