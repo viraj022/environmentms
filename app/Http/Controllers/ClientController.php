@@ -902,9 +902,6 @@ class ClientController extends Controller {
                     ->groupBy('client_id')
                     ->get();
 
-            // $posts = App\Post::whereHas('comments', function (Builder $query) {
-            //     $query->where('content', 'like', 'foo%');
-            // })->get();
             $reses = $responses->toArray();
 
             foreach ($reses as $k => $res) {
