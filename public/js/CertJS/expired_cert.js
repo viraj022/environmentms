@@ -53,9 +53,12 @@ function getExpireCerByAssDir(id, callBack) {
     ajaxRequest('GET', url, null, function (result) {
         var tbl = '';
         if (result.length == 0) {
+            tbl += '<tr>';
             tbl += '<td colspan="5">Data Not Found</td>';
+            tbl += '</tr>';
         } else {
             $.each(result, function (index, row) {
+                tbl += '<tr>';
                 tbl += '<td>' + ++index + '</td>';
                 tbl += '<td>' + row.industry_name + '</td>';
                 tbl += '<td>' + row.file_no + '</a></td>';
@@ -64,8 +67,8 @@ function getExpireCerByAssDir(id, callBack) {
                 tbl += '</tr>';
             });
         }
-        $('#tblExpiredCertificate').DataTable();
         $('#tblExpiredCertificate tbody').html(tbl);
+        $('#tblExpiredCertificate').DataTable();
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }
