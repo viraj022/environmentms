@@ -55,7 +55,9 @@ function getExpireCerByAssDir(id, callBack) {
         if (result.length == 0) {
             tbl += '<td colspan="5">Data Not Found</td>';
         } else {
+            console.log(result);
             $.each(result, function (index, row) {
+                tbl += '<tr>';
                 tbl += '<td>' + ++index + '</td>';
                 tbl += '<td>' + row.client.industry_name + '</td>';
                 tbl += '<td><a href="/industry_profile/id/' + row.id + '" target="_blank">' + row.client.file_no + '</a></td>';
