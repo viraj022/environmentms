@@ -55,6 +55,7 @@
                                         <th style="width: 10px">#</th>
                                         <th>Industry Name</th>
                                         <th>File No</th>
+                                        <th>Ps</th>
                                         <th>Status</th>
                                         <th style="width: 140px">Action</th>
                                     </tr>
