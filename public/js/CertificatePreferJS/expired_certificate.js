@@ -60,7 +60,8 @@ function getExpireCerByAssDir(id, callBack) {
                 tbl += '<tr>';
                 tbl += '<td>' + ++index + '</td>';
                 tbl += '<td>' + row.client.industry_name + '</td>';
-                tbl += '<td><a href="/industry_profile/id/' + row.id + '" target="_blank">' + row.client.file_no + '</a></td>';
+                tbl += '<td>' + row.cetificate_number + ' (<a href="/industry_profile/id/' + row.client_id + '" target="_blank">' + row.client.file_no + '</a>)</td>';
+                tbl += '<td>' + row.client.pradesheeyasaba.name + '</td>';
                 tbl += '<td>' + row.due_date + '</td>';
                 tbl += '<td><a href="/certificate_perforation/id/' + row.id + '" class="btn btn-success">Certificate<a></td>';
                 tbl += '</tr>';
