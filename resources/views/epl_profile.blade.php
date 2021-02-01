@@ -44,11 +44,14 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <dt class="">Name : <a id="client_name"></a></dt>            
+                        <dt class="">Name : <a id="client_name"></a></dt> <br>           
                         <!--                        <dt class="">Address : <a id="client_address"></a></dt>
                                                 <dt class="">Contact Number : <a id="client_cont"></a></dt>
                                                 <dt class="">Contact Email : <a id="client_amil"></a></dt>
                                                 <dt class="">NIC : <a id="client_nic"> </a></dt>-->
+                        <div class="">
+                            <a href="#" class="btn btn-primary viewCert" target="_blank">View Certificate</a>
+                        </div>
                     </div>
                     <!-- /.card-body -->
                 </div>                                                                        
@@ -218,6 +221,10 @@ $(function () {
             }
 
         }
+        var cert_num = {cert_no: result.certificate_no};
+        getCertificatebyId(cert_num, function (set) { // get certificate by cert number
+            $('.viewCert').attr('href', set[0].signed_certificate_path);
+        });
     });
 });
 function disWarnPay() {
