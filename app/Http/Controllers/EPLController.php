@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use App\BusinessScale;
 use App\Pradesheeyasaba;
 use App\IndustryCategory;
+use App\Certificate;
 use App\Helpers\LogActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -369,6 +370,10 @@ class EPLController extends Controller
         return $epl;
     }
 
+    public function getCertificateByCertificateNo(Request $req) {
+        $number=$req->cert_no;
+        return Certificate::where('certificates.cetificate_number',$number)->get();
+    }
     /**
      * Display the specified resource.
      *
