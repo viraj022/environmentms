@@ -15,6 +15,7 @@ class SearchController extends Controller {
                         ->orWhere('last_name', 'like', '%' . $name . '%')
                         ->get();
     }
+
     function getClientByAddress($address) {
         return Client::with('epls')->where('address', 'like', '%' . $address . '%')
                         ->orWhere('industry_address', 'like', '%' . $address . '%')
@@ -94,17 +95,20 @@ class SearchController extends Controller {
     }
 
     function getClientByBusinessRegistration($code) {
-        $epl = EPL::where('registration_no', $code)->first();
-        if ($epl) {
-            $client = Client::with('epls')->find($epl->client_id);
-            if ($client) {
-                return $client;
-            } else {
-                return array();
-            }
-        } else {
-            return array();
-        }
+
+        $client_data = Client::where('industry_registration_no', $code)->first()->toArray();
+        return $client_data;
+//        $epl = EPL::where('registration_no', $code)->first();
+//        if ($epl) {
+//            $client = Client::with('epls')->find($epl->client_id);
+//            if ($client) {
+//                return $client;
+//            } else {
+//                return array();
+//            }
+//        } else {
+//            return array();
+//        }
     }
 
     function getBusinessByName($name) {
