@@ -16,12 +16,17 @@ function AddClient(data, callBack) {
             }
         },
         error: function (xhr, textStatus, errorThrown) {
-            alert(textStatus + ':' + errorThrown);
+            console.log(xhr);
+            if (xhr.responseJSON.line == 669) {
+                alert('Already Exist!');
+            } else {
+                alert(textStatus + ':' + errorThrown);
+            }
         }
     });
 }
 
-function requiredFieldHandler(frm_data,required_class) {
+function requiredFieldHandler(frm_data, required_class) {
     var response = true;
     if (frm_data.is_old.length == 0) {
         toastr.error('Is Old Required!');
