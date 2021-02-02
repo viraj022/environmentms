@@ -77,7 +77,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Contact Number</label>
-                                    <input id="getContact" onKeyDown="if(this.value.length==10 && event.keyCode!=8) return false;" type="number" class="form-control form-control-sm"
+                                    <input id="getContact" onKeyDown="if (this.value.length == 10 && event.keyCode != 8)
+                                                return false;" type="number" class="form-control form-control-sm"
                                            placeholder="Enter Contact Number..."
                                            value="">
                                     <div id="valConName" class="d-none"><p class="text-danger">Contact Number is required</p></div>
@@ -91,7 +92,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>NIC</label>
-                                    <input id="getNicSave" onKeyDown="if(this.value.length==12 && event.keyCode!=8) return false;" type="text" class="form-control form-control-sm"
+                                    <input id="getNicSave" onKeyDown="if (this.value.length == 12 && event.keyCode != 8)
+                                                return false;" type="text" class="form-control form-control-sm"
                                            placeholder="Enter NIC..."
                                            value="">
                                     <div id="valnicName" class="d-none"><p class="text-danger">NIC is required</p></div>
@@ -161,7 +163,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Contact No</label>
-                                    <input id="getContactn" type="number" onKeyDown="if(this.value.length==10 && event.keyCode!=8) return false;" class="form-control form-control-sm" placeholder="Enter Contact Info..." value="">
+                                    <input id="getContactn" type="number" onKeyDown="if (this.value.length == 10 && event.keyCode != 8)
+                                                return false;" class="form-control form-control-sm" placeholder="Enter Contact Info..." value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Email</label>
@@ -209,6 +212,7 @@
                                     <option value="license">License Number</option>
                                     <option value="epl">EPL Number</option>
                                     <option value="business_reg">Business Registration Number</option>
+                                    <option value="by_address">Address</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -435,7 +439,7 @@
                                             });
 //Search NIC Button 
                                             $(document).on('click', '#btnSearch', function () {
-                                               
+
                                                 var data2 = {
                                                     value: $('#getNic').val()
                                                 };
@@ -484,9 +488,21 @@
                                                                 }
                                                                 break;
                                                             case 'epl':
-                                                                if(!!result.deleted_at){
-                                                                   alert('Deleted Record!');
-                                                                }else{
+                                                                if (!!result.deleted_at) {
+                                                                    alert('Deleted Record!');
+                                                                } else {
+                                                                    if (result != 0) {
+                                                                        window.location = "/industry_profile/id/" + result.id;
+                                                                    } else {
+                                                                        if (confirm('Client Not Found!Do You Want Create New Client?')) {
+                                                                            setSectionVisible('reg-newClient');
+                                                                        } else {
+                                                                            return false;
+                                                                        }
+                                                                    }
+                                                                }
+                                                                break;
+                                                            case 'business_reg':
                                                                 if (result != 0) {
                                                                     window.location = "/industry_profile/id/" + result.id;
                                                                 } else {
@@ -496,11 +512,11 @@
                                                                         return false;
                                                                     }
                                                                 }
-                                                            }
                                                                 break;
-                                                            case 'business_reg':
+                                                            case 'by_address':
                                                                 if (result != 0) {
-                                                                    window.location = "/industry_profile/id/" + result.id;
+                                                                    showCustomerDetails(result);
+                                                                    $('.view-Customer').removeClass('d-none');
                                                                 } else {
                                                                     if (confirm('Client Not Found!Do You Want Create New Client?')) {
                                                                         setSectionVisible('reg-newClient');
