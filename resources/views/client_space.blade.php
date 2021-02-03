@@ -13,6 +13,56 @@
 <!-- Theme style -->
 <link rel="stylesheet" href="/dist/css/adminlte.min.css">
 <!-- Google Font: Source Sans Pro -->
+<style>
+    .bs-example {
+        font-family: sans-serif;
+        position: relative;
+        margin: 100px;
+    }
+    .typeahead, .tt-query, .tt-hint {
+        border: 2px solid #CCCCCC;
+        border-radius: 8px;
+        font-size: 22px; /* Set input font size */
+        height: 30px;
+        line-height: 30px;
+        outline: medium none;
+        padding: 8px 12px;
+        width: 696px;
+    }
+    .typeahead {
+        background-color: #FFFFFF;
+    }
+    .typeahead:focus {
+        border: 2px solid #0097CF;
+    }
+    .tt-query {
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    }
+    .tt-hint {
+        color: #999999;
+    }
+    .tt-menu {
+        background-color: #FFFFFF;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        margin-top: 12px;
+        padding: 8px 0;
+        width: 582px;
+    }
+    .tt-suggestion {
+        font-size: 22px;  /* Set suggestion dropdown font size */
+        padding: 3px 20px;
+    }
+    .tt-suggestion:hover {
+        cursor: pointer;
+        background-color: #0097CF;
+        color: #FFFFFF;
+    }
+    .tt-suggestion p {
+        margin: 0;
+    }
+</style>
 @endsection
 @section('content')
 @if($pageAuth['is_read']==1 || false)
@@ -216,9 +266,11 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <input id="getNic" type="text" class="form-control form-control-sm"
-                                       placeholder="Enter Here..."
-                                       value="">
+                                <div id="the-basics">
+                                    <input id="getNic" type="text" class="form-control-sm typeahead"
+                                           placeholder="Enter Here..."
+                                           value="">
+                                </div>
                                 <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
                             </div>
                         </div>
@@ -328,6 +380,7 @@
 <script src="../../js/ClientJS/update.js"></script>
 <script src="../../js/ClientJS/delete.js"></script>
 <script src="../../js/ClientJS/viewClientData.js"></script>
+<script src="../../js/ClientJS/typeahead.bundle.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
 <script>
@@ -353,10 +406,12 @@
 
                                         $(function () {
 //Load table
-                                            loadTable();
                                             loadPradeshiyaSabha();
                                             IndustryCategoryCombo();
                                             BusinessScaleCombo();
+                                            getClientSearchDetails('name', function (set) {
+                                                localStorage.setItem('clientData', JSON.stringify(set));
+                                            });
 //Register Button
                                             $('#btnSave').click(function () {
                                                 var data = fromValues();
@@ -377,7 +432,7 @@
                                                                 title: 'Enviremontal MS</br>Error'
                                                             });
                                                         }
-                                                        loadTable();
+//                                                        loadTable();
                                                         resetinputFields();
                                                         hideAllErrors();
                                                     });
@@ -400,7 +455,7 @@
                                                                 title: 'Enviremontal MS</br>Error'
                                                             });
                                                         }
-                                                        loadTable();
+//                                                        loadTable();
                                                         showSave();
                                                         resetinputFields();
                                                         hideAllErrors();
@@ -421,7 +476,7 @@
                                                             title: 'Enviremontal MS</br>Error'
                                                         });
                                                     }
-                                                    loadTable();
+//                                                    loadTable();
                                                     showSave();
                                                     resetinputFields();
                                                     hideAllErrors();
@@ -574,6 +629,36 @@
                                                 $('#getEmailI').val(setEmail);
                                             }
                                         });
+
+</script>
+<script>
+    var clientData = JSON.parse(localStorage.getItem('clientData'));
+
+    $(document).on('change', '#getDtaType', function () {
+        getClientSearchDetails($(this).val(), function (set) {
+            localStorage.setItem('clientData', JSON.stringify(set));
+            states.clear();
+            states.local = JSON.parse(localStorage.getItem('clientData'));
+            states.initialize(true);
+        });
+        $('#getNic').val('');
+    });
+
+    var states = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        // `states` is an array of state names defined in "The Basics"
+        local: clientData
+    });
+
+    $('#the-basics .typeahead').typeahead({
+        hint: true,
+        highlight: true,
+        minLength: 1
+    }, {
+        name: 'myMatches',
+        source: states
+    });
 
 </script>
 @endsection

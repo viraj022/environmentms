@@ -111,6 +111,31 @@ class SearchController extends Controller {
 //        }
     }
 
+    public function getSearchDetails($type) {
+        $column = 'first_name';
+//        $column_2 = 'last_name';
+        switch ($type) {
+            case 'name':
+                $column = 'first_name';
+                break;
+            case 'id':
+                $column = 'nic';
+                break;
+            case 'business_reg':
+                $column = 'industry_registration_no';
+                break;
+            case 'by_address':
+                $column = 'address';
+                break;
+            default :
+                $column = 'first_name';
+                break;
+        }
+        $client_data = Client::pluck($column)->toArray();
+//        $client_data = Client::select('first_name', 'nic', 'industry_registration_no', 'address')->get()->toArray();
+        return $client_data;
+    }
+
     function getBusinessByName($name) {
         return EPL::where('registration_no', 'like', '%' . $name . '%')->get();
     }

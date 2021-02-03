@@ -111,3 +111,25 @@ function getClientbyNic(type, data, callBack) {
     });
 
 }
+
+function getClientSearchDetails(type, callBack) {
+    $.ajax({
+        type: "GET",
+        headers: {
+            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            "Accept": "application/json"
+        },
+        url: "api/search/clients_ditails/type/" + type,
+        data: null,
+        dataType: "json",
+        cache: false,
+        processDaate: false,
+        success: function (result) {
+            callBack(result);
+        },
+        error: function (result) {
+            alert('Error');
+        }
+    });
+
+}
