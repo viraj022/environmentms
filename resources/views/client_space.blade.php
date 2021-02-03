@@ -651,6 +651,7 @@
     var clientData = JSON.parse(localStorage.getItem('clientData'));
 
     $(document).on('change', '#getDtaType', function () {
+        $('.view-Customer').addClass('d-none');
         getClientSearchDetails($(this).val(), function (set) {
             localStorage.setItem('clientData', JSON.stringify(set));
             states.clear();
