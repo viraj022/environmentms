@@ -22,6 +22,11 @@ class SearchController extends Controller {
                         ->get();
     }
 
+    function getClientByIndustryName($industry) {
+        return Client::with('epls')->where('industry_name', 'like', '%' . $industry . '%')
+                        ->get();
+    }
+
     function getClientByID($id) {
         $client = Client::with('epls')->where('nic', $id)->first();
         if ($client) {
@@ -120,6 +125,9 @@ class SearchController extends Controller {
             case 'by_address':
                 $column = 'address';
                 break;
+            case 'by_industry_name':
+                $column = 'industry_name';
+                break;
             default :
                 $column = 'first_name';
                 break;
@@ -153,6 +161,8 @@ class SearchController extends Controller {
                 return $this->getBusinessByName($value);
             case 'by_address':
                 return $this->getClientByAddress($value);
+            case 'by_industry_name':
+                return $this->getClientByIndustryName($value);
             default:
                 abort(422);
                 return response(array('message' => 'Invalid Code', 422));

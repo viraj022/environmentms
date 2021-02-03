@@ -152,7 +152,7 @@
                                 <div class="card-header">
                                     <label id="lblTitle">Map</label>
                                 </div>
-                                <div id="map" style="width: 100%; height: 367px;"></div>
+                                <div id="map" style="width: 100%; height: 385px;"></div>
                             </div>                           
                         </div>
                     </div>
@@ -261,6 +261,7 @@
                                     <option value="id">Client NIC</option>
                                     <option value="license">License Number</option>
                                     <option value="epl">EPL Number</option>
+                                    <option value="by_industry_name">Business Name</option>
                                     <option value="business_reg">Business Registration Number</option>
                                     <option value="by_address">Address</option>
                                 </select>
@@ -411,6 +412,9 @@
                                             BusinessScaleCombo();
                                             getClientSearchDetails('name', function (set) {
                                                 localStorage.setItem('clientData', JSON.stringify(set));
+                                                states.clear();
+                                                states.local = JSON.parse(localStorage.getItem('clientData'));
+                                                states.initialize(true);
                                             });
 //Register Button
                                             $('#btnSave').click(function () {
@@ -569,6 +573,18 @@
                                                                 }
                                                                 break;
                                                             case 'by_address':
+                                                                if (result != 0) {
+                                                                    showCustomerDetails(result);
+                                                                    $('.view-Customer').removeClass('d-none');
+                                                                } else {
+                                                                    if (confirm('Client Not Found!Do You Want Create New Client?')) {
+                                                                        setSectionVisible('reg-newClient');
+                                                                    } else {
+                                                                        return false;
+                                                                    }
+                                                                }
+                                                                break;
+                                                            case 'by_industry_name':
                                                                 if (result != 0) {
                                                                     showCustomerDetails(result);
                                                                     $('.view-Customer').removeClass('d-none');
