@@ -28,3 +28,4 @@ types
 * business_name like function show business (multiple)
 
 */
+Route::middleware('auth:api')->get('/search/clients_ditails/type/{type}', 'SearchController@getSearchDetails'); // 
