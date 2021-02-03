@@ -95,20 +95,13 @@ class SearchController extends Controller {
     }
 
     function getClientByBusinessRegistration($code) {
-
-        $client_data = Client::where('industry_registration_no', $code)->first()->toArray();
+        $client_data = Client::where('industry_registration_no', $code)->first();
+        if ($client_data) {
+            $client_data = $client_data->toArray();
+        } else {
+            return [];
+        }
         return $client_data;
-//        $epl = EPL::where('registration_no', $code)->first();
-//        if ($epl) {
-//            $client = Client::with('epls')->find($epl->client_id);
-//            if ($client) {
-//                return $client;
-//            } else {
-//                return array();
-//            }
-//        } else {
-//            return array();
-//        }
     }
 
     public function getSearchDetails($type) {
