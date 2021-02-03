@@ -27,7 +27,7 @@
         line-height: 30px;
         outline: medium none;
         padding: 8px 12px;
-        width: 696px;
+        width: 686px;
     }
     .typeahead {
         background-color: #FFFFFF;
@@ -48,7 +48,7 @@
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
         margin-top: 12px;
         padding: 8px 0;
-        width: 582px;
+        width: 562px;
     }
     .tt-suggestion {
         font-size: 22px;  /* Set suggestion dropdown font size */
