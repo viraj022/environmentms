@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\EPL;
 use App\Client;
+use App\Certificate;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -128,11 +129,30 @@ class SearchController extends Controller {
             case 'by_industry_name':
                 $column = 'industry_name';
                 break;
+            case 'epl':
+                $column = 'code';
+                break;
+            case 'license':
+                $column = 'cetificate_number';
+                break;
             default :
                 $column = 'first_name';
                 break;
         }
-        $client_data = Client::pluck($column)->toArray();
+        if ($type == 'epl') {
+            $client_data = EPL::pluck($column)->toArray();
+        } else if ($type == 'license') {
+            //get Certificate Number
+//            $client_data = Certificate::pluck($column)->toArray();
+          $client_data = Certificate::pluck($column)->toArray();
+            foreach ($client_data as $key => $value) {
+               $exploded_value = explode("/",$value);
+               $client_data[$key] = $exploded_value[0];
+            }
+           
+        } else {
+            $client_data = Client::pluck($column)->toArray();
+        }
 //        $client_data = Client::select('first_name', 'nic', 'industry_registration_no', 'address')->get()->toArray();
         return $client_data;
     }
