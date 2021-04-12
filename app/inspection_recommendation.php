@@ -1,15 +1,17 @@
 <?php
 
 namespace App;
-use Illuminate\Database\Schema\Blueprint;
+
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class inspection_recommendation extends Model
 {
-    use SoftDeletes;
 
-    public function InspectionSession() {
+    public function InspectionSession()
+    {
         return $this->belongsTo(InspectionSession::class);
     }
 }
