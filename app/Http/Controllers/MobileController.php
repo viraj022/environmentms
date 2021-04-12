@@ -17,7 +17,7 @@ class MobileController extends Controller
     private $clientRepository;
     public function __construct(ClientRepository $clientRepository)
     {
-        $this->middleware('auth:mob');
+        // $this->middleware('auth:mob');
         $this->clientRepository = $clientRepository;
     }
 
