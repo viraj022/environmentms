@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Hash;
 class ClientController extends Controller {
 
     public function __construct() {
-        $this->middleware(['auth']);
+        // $this->middleware(['auth']);
     }
 
     /**
@@ -932,6 +932,15 @@ class ClientController extends Controller {
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $client = Client::where('is_old', 2)->get();
         return $client;
+    }
+
+    public function get_file_cordinates($industry_cat_id, $eo_id){
+        $file_cords = \DB::table('clients')
+        ->select('clients.industry_coordinate_x', 'clients.industry_coordinate_y', 'clients.file_no')
+        ->where('clients.environment_officer_id', '=',$eo_id)
+        ->where('clients.industry_category_id', '=',$industry_cat_id)
+        ->get();
+        return $file_cords;
     }
 
 }
