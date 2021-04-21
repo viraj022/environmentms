@@ -189,14 +189,14 @@
             @if (session('success'))
             Toast.fire({
                 type: 'success',
-                title: 'Waste Management System</br>Roll Saved'
+                title: 'Environment management system</br>Roll Saved'
             });
             @endif
 
             @if (session('error'))
             Toast.fire({
                 type: 'error',
-                title: 'Waste Management System</br>Error'
+                title: 'Environment management system</br>Error'
             });
             @endif            
         });
