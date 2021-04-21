@@ -276,6 +276,7 @@ class ClientController extends Controller {
                     ->Orwhere('is_old', '2')
                     ->groupBy('date')
                     ->orderBy('created_at', 'ASC')
+//                    ->toSql();
                     ->get();
 
             return $oldFilesList;

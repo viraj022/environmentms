@@ -201,7 +201,7 @@
                     </a>
                 </li>
                 @endif
-                @if($pre['id']===config('auth.privileges.clientSpace'))
+                @if($pre['id']===config('auth.privileges.fileAssign'))
                 <li class="nav-item">
                     <a href="{{ url('/epl_assign') }}" class="nav-link {{ Request::is('epl_assign') ? 'active' : '' }}">
                         <i class="far fa-id-badge nav-icon"></i>
@@ -290,7 +290,7 @@
             </a>
             <ul class="nav nav-treeview">
                 @foreach((auth()->user()->privileges) as $indexKey=>$pre)
-                @if($pre['id']===config('auth.privileges.clientSpace'))
+                @if($pre['id']===config('auth.privileges.assistantDirector'))
                 <li class="nav-item">
                     <a href="{{ url('/ad_pending_list') }}" class="nav-link {{ Request::is('ad_pending_list') ? 'active' : '' }}">
                         <i class="fas fa-clock nav-icon"></i>
