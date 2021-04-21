@@ -17,6 +17,14 @@ class InspectionSession extends Model
     protected $casts = [
         'completed_at' => 'datetime:Y-m-d',
     ];
+    public function inspection_recommendation()
+    {
+        return $this->hasMany(inspection_recommendation::class);
+    }
+    public function inspection_interviewers()
+    {
+        return $this->hasMany(inspection_interviewers::class);
+    }
     public function inspectionRemarks()
     {
         return $this->hasMany(InspectionRemarks::class);

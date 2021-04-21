@@ -413,6 +413,9 @@ class ClientRepository
             ->with('committees.commetyPool')
             ->with('minutes.user')
             ->with('inspectionSessions.inspectionSessionAttachments')
+            ->with('inspectionSessions.inspection_interviewers')
+            ->with('inspectionSessions.inspection_recommendation')
+            ->with('inspectionSessions.inspectionRemarks')
             ->Where('need_inspection', Client::STATUS_PENDING)
             ->get();
     }
