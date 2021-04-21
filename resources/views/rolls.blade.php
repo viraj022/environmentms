@@ -284,14 +284,14 @@ $(function () {
 @if (session('success'))
         Toast.fire({
         type: 'success',
-                title: 'Waste Management System</br>Roll Saved'
+                title: 'Environment management system</br>Roll Saved'
         });
 @endif
 
         @if (session('error'))
         Toast.fire({
         type: 'error',
-                title: 'Waste Management System</br>Error'
+                title: 'Environment management system</br>Error'
         });
 @endif
 
@@ -319,7 +319,7 @@ assignPrivilegesToRolls(function (result) {
 if (result.id == 1) {
 Toast.fire({
 type: 'success',
-        title: 'Waste Management System</br>Privileges Saved'
+        title: 'Environment management system</br>Privileges Saved'
         });
 } else {
 Toast.fire({
@@ -402,7 +402,7 @@ deleteRole($('.rollCombo').val(), function(result){
 if (result.id == 1) {
 Toast.fire({
 type: 'success',
-        title: 'Waste Management System</br>User Deleted'
+        title: 'Environment management system</br>User Deleted'
         });
 } else if (result.id == 2) {
 Toast.fire({
@@ -434,7 +434,7 @@ updateRole($('.rollCombo').val(), {"roll":$("#txtupdateRoleName").val()}, functi
 if (result.id == 1) {
 Toast.fire({
 type: 'success',
-        title: 'Waste Management System</br>Role Updated'
+        title: 'Environment management system</br>Role Updated'
         });
 } else if (result.id == 2) {
 Toast.fire({

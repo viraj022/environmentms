@@ -41,7 +41,8 @@ class EnvironmentOfficerController extends Controller
     public function index2()
     {
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $pageAuth = $user->authentication(config('auth.privileges.fileAssign'));
+//        dd($pageAuth);
         return view('epl_assign', ['pageAuth' => $pageAuth]);
     }
 
@@ -156,7 +157,7 @@ class EnvironmentOfficerController extends Controller
     {
         // dd($id);
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+        $pageAuth = $user->authentication(config('auth.privileges.fileAssign'));
         if ($pageAuth['is_read']) {
             return EnvironmentOfficer::where('environment_officers.assistant_director_id', '=', $id)
                 ->where('environment_officers.active_status', '=', 1)

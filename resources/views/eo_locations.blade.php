@@ -48,7 +48,7 @@
                 </div>
                 <div class="form-group">
                     <label>Industry Category</label>
-                    <select class="form-control combo_catIndus">
+                    <select class="form-control combo_catIndus" id="indust_cat">
                         <option>...</option>
                     </select>
                 </div>
@@ -88,55 +88,59 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../../js/EO_LocationJS/eo_location_source.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
-<script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
+<script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=location_array"></script>
 <script>
+    var HT = 'https://gist.githubusercontent.com/mariosmello/d6cce41514d6fa2e8ef6/raw/c6eecd00ed62302ebda36d488334f3ee265b291c/beaches-google.json';
     loadEnvOfficers_combo();
     catIndustry();
+    location_array(HT);
 
     $('#btnLoad').click(function () {
-        alert(111);
-//        updateIndustry($('#btnUpdate').val(), data, function (result) {
-//
-//        });
+        loadLocation($('#indust_cat').val(), $('#env_officer_combo').val(), function (result) {
+            location_array(result);
+        });
     });
 
+    function location_array(htz) {
+        $.get(htz, function (data) {
+            var bounds = new google.maps.LatLngBounds();
+            var mapOptions = {
+                zoom: 15,
+                zoomControl: true,
+                scrollwheel: false
+            };
 
-// Initialize and add the map
-    $.get('https://gist.githubusercontent.com/mariosmello/d6cce41514d6fa2e8ef6/raw/c6eecd00ed62302ebda36d488334f3ee265b291c/beaches-google.json', function (data) {
+            var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+            var infowindow = new google.maps.InfoWindow();
+            var marker;
 
-        var bounds = new google.maps.LatLngBounds();
-        var mapOptions = {
-            zoom: 15,
-            zoomControl: true,
-            scrollwheel: false
-        };
+            $(data.points).each(function (i, o) {
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(o[1], o[2]),
+                    map: map
+                });
 
-        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-        var infowindow = new google.maps.InfoWindow();
-        var marker;
+                bounds.extend(marker.position);
+                google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                    return function () {
+                        infowindow.setContent(o[0]);
+                        infowindow.open(map, marker);
+                    }
+                })(marker, i));
 
-        $(data.points).each(function (i, o) {
-            marker = new google.maps.Marker({
-                position: new google.maps.LatLng(o[1], o[2]),
-                map: map
             });
 
-            bounds.extend(marker.position);
-            google.maps.event.addListener(marker, 'click', (function (marker, i) {
-                return function () {
-                    infowindow.setContent(o[0]);
-                    infowindow.open(map, marker);
-                }
-            })(marker, i));
+            map.fitBounds(bounds);
+            var listener = google.maps.event.addListener(window, 'load', function () {
+                map.setZoom(3);
+                google.maps.event.removeListener(listener);
+            });
 
-        });
+        }, 'json');
+    }
 
-        map.fitBounds(bounds);
-        var listener = google.maps.event.addListener(window, 'load', function () {
-            map.setZoom(3);
-            google.maps.event.removeListener(listener);
-        });
+// Initialize and add the map
+//    $.get('https://gist.githubusercontent.com/mariosmello/d6cce41514d6fa2e8ef6/raw/c6eecd00ed62302ebda36d488334f3ee265b291c/beaches-google.json', function (data) {
 
-    }, 'json');
 </script>
 @endsection

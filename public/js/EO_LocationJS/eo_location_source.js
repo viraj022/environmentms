@@ -59,3 +59,25 @@ function catIndustry(callBack) {
         }
     });
 }
+
+
+function loadLocation(cat_id,eo_id,callBack) {
+    $.ajax({
+        type: "GET",
+        headers: {
+            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            "Accept": "application/json"
+        },
+        url: "api/get_file_cordinates/"+ cat_id +"/"+eo_id,
+        data: null,
+        dataType: "json",
+        cache: false,
+        processDaate: false,
+        success: function (result) {
+
+            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+                callBack(result);
+            }
+        }
+    });
+}
