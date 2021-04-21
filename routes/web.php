@@ -65,6 +65,7 @@ Route::get('/act_status/id/{file_id}', 'WebRouteController@actStatus');
 Route::get('/old_data_summary', 'WebRouteController@oldDataSummary');
 Route::get('/dashboard2', 'DashboardController@index');
 Route::get('/report_dashboard', 'ReportController@index');
+Route::get('/eo_locations', 'ClientController@eo_locations');
 //ui routs
 //dashboard
 Route::get('/dashboard', function () {
