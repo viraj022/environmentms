@@ -345,14 +345,14 @@ $(function () {
 @if (session('success'))
         Toast.fire({
         type: 'success',
-                title: 'Waste Management System</br>User Saved'
+                title: 'Environment management system</br>User Saved'
         });
 @endif
 
         @if (session('error'))
         Toast.fire({
         type: 'error',
-                title: 'Waste Management System</br>Error'
+                title: 'Environment management system</br>Error'
     });
 @endif
 
@@ -500,7 +500,7 @@ changeAciveStatus(userId, data, function () {
 // alert('User Changes to \'' + $(".activityCombo option:selected").html() + '\' status');
 Toast.fire({
 type: 'success',
-        title: 'Waste Management System</br>User Changes to \'' + $(".activityCombo option:selected").html() + '\' status'
+        title: 'Environment management system</br>User Changes to \'' + $(".activityCombo option:selected").html() + '\' status'
     });
 });
 });
@@ -519,7 +519,7 @@ assignPrivilegesToUser(userId, function () {
 rollId = $('.roleCombo').val();
 Toast.fire({
 type: 'success',
-        title: 'Waste Management System</br>Privilege changed successfully'
+        title: 'Environment management system</br>Privilege changed successfully'
 });
 loadUserPrevilages(userId);
 });
