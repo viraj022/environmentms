@@ -49,6 +49,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $with = [
+        'roll.level'
+    ];
+
+
     public function roll()
     {
         return $this->belongsTo(Roll::class);
