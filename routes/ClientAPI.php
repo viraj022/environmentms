@@ -431,3 +431,5 @@ Route::middleware('auth:api')->patch('/reject/file/{file_id}', 'AssistantDirecto
 
 //report api
 Route::middleware('auth:api')->get('/files/confirmed', 'ClientController@getCofirmedFiles'); //   get confirmed files
+
+
