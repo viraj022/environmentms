@@ -22,7 +22,6 @@ use App\SiteClearenceSession;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
 class ClientController extends Controller {
 
     public function __construct() {
@@ -939,8 +938,11 @@ class ClientController extends Controller {
         ->select('clients.industry_coordinate_x', 'clients.industry_coordinate_y', 'clients.file_no')
         ->where('clients.environment_officer_id', '=',$eo_id)
         ->where('clients.industry_category_id', '=',$industry_cat_id)
-        ->get();
+        ->get()->toArray();
+        $file_cords= collect($file_cords)->map(function($name){
+            return array($name->file_no,$name->industry_coordinate_x,$name->industry_coordinate_y);
+        });
+        // dd($file_cords);
         return $file_cords;
     }
-
 }
