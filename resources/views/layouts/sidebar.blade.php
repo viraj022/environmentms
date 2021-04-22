@@ -319,16 +319,16 @@
                 @endforeach
             </ul>
         </li>
-        <li class="nav-item has-treeview {{ Request::is('director_pending_list') ? 'menu-open' : '' }}">
+        <li class="nav-item has-treeview {{ Request::is('eo_locations') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-user-tie"></i>
                 <p>Location <i class="right fas fa-angle-left"></i></p>
             </a>
             <ul class="nav nav-treeview">
                 @foreach((auth()->user()->privileges) as $indexKey=>$pre)
-                @if($pre['id']===config('auth.privileges.clientSpace'))
+                @if($pre['id']===config('auth.privileges.fileLocations'))
                 <li class="nav-item">
-                    <a href="{{ url('/director_pending_list') }}" class="nav-link {{ Request::is('director_pending_list') ? 'active' : '' }}">
+                    <a href="{{ url('/eo_locations') }}" class="nav-link {{ Request::is('eo_locations') ? 'active' : '' }}">
                         <i class="fas fa-clock nav-icon"></i>
                         <p>EO Locations</p>
                     </a>
