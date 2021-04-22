@@ -39,6 +39,11 @@ class ClientController extends Controller {
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('client_space', ['pageAuth' => $pageAuth]);
     }
+    public function eo_locations() {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('eo_locations', ['pageAuth' => $pageAuth]);
+    }
 
     public function indexOldFileList() {
         $user = Auth::user();
