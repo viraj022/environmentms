@@ -39,6 +39,7 @@ class ClientController extends Controller {
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('client_space', ['pageAuth' => $pageAuth]);
     }
+
     public function eo_locations() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
@@ -94,8 +95,8 @@ class ClientController extends Controller {
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('expired_certificates', ['pageAuth' => $pageAuth]);
     }
-    public function expireCertUi()
-    {
+
+    public function expireCertUi() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('expired_cert', ['pageAuth' => $pageAuth]);
@@ -317,10 +318,7 @@ class ClientController extends Controller {
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-
-   
-    public function destroy($id)
-    {
+    public function destroy($id) {
 
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
@@ -939,13 +937,19 @@ class ClientController extends Controller {
         return $client;
     }
 
-    public function get_file_cordinates($industry_cat_id, $eo_id){
+    public function get_file_cordinates($industry_cat_id, $eo_id) {
         $file_cords = \DB::table('clients')
-        ->select('clients.industry_coordinate_x', 'clients.industry_coordinate_y', 'clients.file_no')
-        ->where('clients.environment_officer_id', '=',$eo_id)
-        ->where('clients.industry_category_id', '=',$industry_cat_id)
-        ->get();
-        return $file_cords;
+                ->select('clients.industry_coordinate_x', 'clients.industry_coordinate_y', 'clients.file_no')
+                ->where('clients.environment_officer_id', '=', $eo_id)
+                ->where('clients.industry_category_id', '=', $industry_cat_id)
+                        ->get()->toArray();
+//                ->toSql();
+//        dd($file_cords);
+        $locations = collect($file_cords)->map(function($name) {
+            return array($name->file_no, $name->industry_coordinate_x, $name->industry_coordinate_y);
+        });
+        // dd($file_cords);
+        return $locations;
     }
 
 }
