@@ -30,7 +30,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>EO Locations</h1>
+                <h1>File Locations</h1>
             </div>
         </div>
     </div>
@@ -40,24 +40,30 @@
     <div class="col-md-12">
         <div class="card card-gray">
             <div class="card-body">
-                <div class="form-group">
-                    <label>Environment Officer</label>
-                    <select class="form-control combo_envOfficer" id="env_officer_combo">
-                        <option>...</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Industry Category</label>
-                    <select class="form-control combo_catIndus" id="indust_cat">
-                        <option>...</option>
-                    </select>
+                <div class="row form-inline">
+                    <div class="col-5">
+                        <div class="form-group">
+                            <label>Environment Officer: </label>
+                            <select class="form-control combo_envOfficer" id="env_officer_combo">
+                                <option>...</option>
+                            </select>
+                        </div>  
+                    </div>
+                    <div class="col-5">
+                        <div class="form-group">
+                            <label>Industry Category: </label>
+                            <select class="form-control select2 select2-purple combo_catIndus" data-dropdown-css-class="select2-purple" style="width: 100%;" id="indust_cat">
+                                <option>...</option>
+                            </select>
+                        </div>   
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <button id="btnLoad" class="btn btn-success">Load</button>   
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="card-footer">
-                @if($pageAuth['is_create']==1 || false)
-                <button id="btnLoad" class="btn btn-success">Load</button>
-                @endif
-            </div>                           
         </div>
         <div id="map" style="width: 100%; height: 590px;"></div>
     </div>
@@ -76,7 +82,8 @@
 
 @section('pageScripts')
 <!-- Page script -->
-
+<!-- Select2 -->
+<script src="../../plugins/select2/js/select2.full.min.js"></script>
 <!-- Bootstrap4 Duallistbox 
 <script src="../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>-->
 <!-- InputMask -->
@@ -88,59 +95,53 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../../js/EO_LocationJS/eo_location_source.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
-<script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=location_array"></script>
+<script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
 <script>
-    var HT = 'https://gist.githubusercontent.com/mariosmello/d6cce41514d6fa2e8ef6/raw/c6eecd00ed62302ebda36d488334f3ee265b291c/beaches-google.json';
-    loadEnvOfficers_combo();
-    catIndustry();
-    location_array(HT);
-
-    $('#btnLoad').click(function () {
-        loadLocation($('#indust_cat').val(), $('#env_officer_combo').val(), function (result) {
-            location_array(result);
+    loadEnvOfficers_combo(function () {
+        catIndustry(function () {
+            loadLocation($('#indust_cat').val(), $('#env_officer_combo').val(), function (result) {
+                initMap(result);
+            });
         });
     });
+</script>
+<script type="text/javascript">
+    $('#btnLoad').click(function () {
+        loadLocation($('#indust_cat').val(), $('#env_officer_combo').val(), function (result) {
+            initMap(result);
+        });
+    });
+    $('.select2').select2();
+    function initMap(locations) {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: new google.maps.LatLng(7.500206389772781, 80.30374068438205),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
 
-    function location_array(htz) {
-        $.get(htz, function (data) {
-            var bounds = new google.maps.LatLngBounds();
-            var mapOptions = {
-                zoom: 15,
-                zoomControl: true,
-                scrollwheel: false
-            };
+        var infowindow = new google.maps.InfoWindow;
 
-            var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-            var infowindow = new google.maps.InfoWindow();
-            var marker;
-
-            $(data.points).each(function (i, o) {
+        var marker, i;
+        if (locations != 'undefined' || locations.length > 0) {
+            console.log(locations);
+            for (i = 0; i < locations.length; i++) {
                 marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(o[1], o[2]),
+                    position: new google.maps.LatLng(locations[i][1], locations[i][2]),
                     map: map
                 });
 
-                bounds.extend(marker.position);
                 google.maps.event.addListener(marker, 'click', (function (marker, i) {
                     return function () {
-                        infowindow.setContent(o[0]);
+                        infowindow.setContent(locations[i][0]);
                         infowindow.open(map, marker);
                     }
                 })(marker, i));
-
-            });
-
-            map.fitBounds(bounds);
-            var listener = google.maps.event.addListener(window, 'load', function () {
-                map.setZoom(3);
-                google.maps.event.removeListener(listener);
-            });
-
-        }, 'json');
+            }
+        }
+//        window.onload = function () {
+//            initMap();
+//        };
     }
-
-// Initialize and add the map
-//    $.get('https://gist.githubusercontent.com/mariosmello/d6cce41514d6fa2e8ef6/raw/c6eecd00ed62302ebda36d488334f3ee265b291c/beaches-google.json', function (data) {
 
 </script>
 @endsection
