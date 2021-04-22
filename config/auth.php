@@ -135,6 +135,7 @@ return [
         'committeePool' => 13,
         'industryFile' => 14,
         'fileAssign' => 15,
+        'fileLocations' => 16,
 
     ],
 
