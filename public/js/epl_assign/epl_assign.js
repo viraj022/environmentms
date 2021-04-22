@@ -134,6 +134,7 @@ function pending_EPL_table(director_id, callBack) {
             });
             if (!(result.length == 0 || result == undefined)) {
                 $('#pending_epl_table tbody').html(tbl);
+                $("#pending_epl_table").DataTable();
             }
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);

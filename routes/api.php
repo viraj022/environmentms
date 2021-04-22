@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\ClientController;
 
 /*
   |--------------------------------------------------------------------------
@@ -1051,3 +1052,4 @@ Route::middleware('auth:api')->get('/payment/history/file/{id}', 'CashierControl
 ]
 */
 
+Route::get('/get_file_cordinates/{industry_cat_id}/{eo_id}', [ClientController::class, 'get_file_cordinates']);
