@@ -36,8 +36,8 @@ function fromValues() {
         industry_coordinate_x: _Latitude,
         industry_coordinate_y: _Longitude,
         industry_created_date: $('#submittedDate').val()
-                //password: $('#gefkfg').val(),
-                //conpassword: $('#getfffk').val()
+            //password: $('#gefkfg').val(),
+            //conpassword: $('#getfffk').val()
     };
     return data;
 }
@@ -52,6 +52,7 @@ function showUpdate() {
     $('#btnUpdate').removeClass('d-none');
     $('#btnshowDelete').removeClass('d-none');
 }
+
 function setSectionVisible(sec_id) {
     switch (sec_id) {
         case "search-Client":
@@ -79,6 +80,7 @@ function setSectionVisible(sec_id) {
             break;
     }
 }
+
 function setClientDetails(obj) {
     $('#newEPL').val(obj.id);
     $('#client_amil').html(obj.email);
@@ -91,7 +93,7 @@ function setClientDetails(obj) {
     if (obj.epls.length == 0) {
         tbl += '<tr><td colspan="4">-No EPL Found-</td></tr>';
     } else {
-        $.each(obj.epls, function (index, val) {
+        $.each(obj.epls, function(index, val) {
             tbl += '<tr>';
             tbl += '<td>' + ++index + '</td>';
             tbl += '<td>' + val.name + '</td>';
@@ -102,4 +104,3 @@ function setClientDetails(obj) {
     }
     $('#clientEplList tbody').html(tbl);
 }
-
