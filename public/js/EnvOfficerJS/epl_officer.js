@@ -57,6 +57,7 @@ function assigned_EPL_table(officer_id, callBack) {
                 });
             }
             $('#assigned_epl_table tbody').html(tbl);
+            $("#assigned_epl_table").DataTable();
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
             }

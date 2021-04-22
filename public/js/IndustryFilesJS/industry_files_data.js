@@ -146,6 +146,7 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
             });
         }
         $('#tblAllFiles tbody').html(tbl);
+        $("#tblAllFiles").DataTable();
     });
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
         callBack();
