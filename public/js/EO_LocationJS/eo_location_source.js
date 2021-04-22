@@ -16,7 +16,7 @@ function loadEnvOfficers_combo(callBack) {
                 combo = "<option value=''>-No data Found-</option>";
             } else {
                 $.each(result, function (index, value) {
-                    combo += "<option value='" + value.id + "'>" + value.first_name + ' ' + value.last_name + "</option>";
+                    combo += "<option value='" + value.env_id + "'>" + value.first_name + ' ' + value.last_name + "</option>";
                 });
             }
             $('.combo_envOfficer').html(combo);
