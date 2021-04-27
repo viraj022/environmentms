@@ -69,7 +69,7 @@
                         <div class="eplSection legitSection d-none"> 
                             <div class="form-group">
                                 <label class="txtCodeCn">EPL Code*</label>
-                                <input id="getEPLCode" type="text" class="form-control form-control-sm" placeholder="Enter EPL Code..." value="">
+                                <input id="getEPLCode" type="text" class="form-control form-control-sm" placeholder="Enter Code..." value="">
                                 <div id="valEPL" class="d-none"><p class="text-danger">EPL is required</p></div>
                             </div>
                             <div class="form-group">
