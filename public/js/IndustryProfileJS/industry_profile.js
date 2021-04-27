@@ -153,7 +153,8 @@ function setIndustryAndClientDb(get) {
     //Client
     $(".firstL_name").html(get.first_name + " " + get.last_name);
     $(".file_no").html(get.file_no);
-    var or_assign_Date = new Date(get.assign_date);
+    var or_assign_Date = new Date(get.industry_start_date);
+//    alert(get.industry_start_date); <--someone changed tbl col name
     var con_assign_Date = or_assign_Date.toISOString().split("T")[0];
     $(".assign_date").html(con_assign_Date);
     (get.address != null) ? $(".cl_address").html(get.address) : $(".cl_address").html('--');
