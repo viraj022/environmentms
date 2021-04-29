@@ -317,6 +317,7 @@ class EnvironmentOfficerController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $assistantDirector = AssistantDirector::find($id);
+//        print_r($assistantDirector->zone_id);
         if ($assistantDirector) {
             return Client::join('pradesheeyasabas', 'clients.pradesheeyasaba_id', '=', 'pradesheeyasabas.id')
                 ->whereNull('environment_officer_id')
