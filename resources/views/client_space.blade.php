@@ -27,7 +27,7 @@
     border-radius: 8px;
     font-size: 17px;
     /* Set input font size */
-    height: 30px;
+    height: 33px;
     line-height: 30px;
     outline: medium none;
     padding: 8px 12px;
@@ -36,6 +36,7 @@
 
 .typeahead {
     background-color: #FFFFFF;
+    display:block !important;
 }
 
 .typeahead:focus {
@@ -310,7 +311,7 @@
                             </div>
                             <div class="form-group">
                                 <div id="the-basics">
-                                    <input id="getNic" type="text" class="form-control-sm typeahead"
+                                    <input id="getNic" type="text" class="form-control form-control-sm typeahead"
                                         placeholder="Enter Here..." value="">
                                 </div>
                                 <div id="valName" class="d-none">

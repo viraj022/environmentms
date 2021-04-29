@@ -102,6 +102,7 @@ function pending_EPL_table(director_id, callBack) {
     if (isNaN(director_id)) {
         return false;
     }
+    $('#pending_epl_table').DataTable().destroy();
     $.ajax({
         type: "GET",
         headers: {
