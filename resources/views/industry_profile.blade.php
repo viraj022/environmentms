@@ -179,7 +179,7 @@
                                         <div class="card-body">
                                             <h5 class="text-success">File Status:<b class="setCurrentFstatus"></b></h5>
                                             <h6 id="env_firstname">Environment Officer: <a class="text-danger">Not Assigned</a></h6>
-											 <dl class="row">
+                                            <dl class="row">
                                                 <dt class="col-sm-4">Name : </dt>
                                                 <dd class="col-sm-6" id="obj_name"></dd>
                                                 <dt class="col-sm-4">BR No:</dt>
@@ -261,6 +261,10 @@
                                 <h3 class="card-title">Attachments</h3>
                             </div>
                             <div class="card-body">
+                                <div class="form-group col-4">
+                                    <label>Description: </label>
+                                    <input id="getDesc" type="text" maxlength="45" class="form-control form-control-sm" placeholder="Enter Description..." value="">
+                                </div>
                                 <div class="row">
                                     <div class="form-group uploadAttachments">
                                         <label>Upload: </label>
@@ -473,12 +477,21 @@
                                     <!--<p>There is a problem that we need to</p>-->
                                 </div>
                                 <div class="callout callout-danger">
-                                    <button type="button" class="btn btn-danger reportIssueView"><i class="fa fa-file"></i> Report Issue</button>
-                                    <button type="button" class="btn btn-success markIssueClean d-none"><i class="fa fa-file"></i> Mark Issue Cleared</button>
+                                    <button type="button" class="btn btn-danger reportIssueView"><i class="fa fa-file"></i> Report Problem</button>
+                                    <button type="button" class="btn btn-success markIssueClean d-none"><i class="fa fa-file"></i> Mark Problem Cleared</button>
                                     <div class="reportView d-none">
                                         <div class="form-group">
-                                            <label>Report File Issue</label>
+                                            <label>Report File Problem</label>
                                             <textarea class="form-control" id="reportTxtArea" rows="3" placeholder="Enter ..." autocomplete="off"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <hr>
+                                            <input id="problemFileUpload" type="file" class="" accept="image/*, .pdf">
+                                            <div class="progress d-none">
+                                                <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                                    <!--<span class="sr-only">40% Complete (success)</span>-->
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <button type="button" id="reportSubmit" class="btn btn-success"><i class="fa fa-check"></i> Submit</button>
@@ -732,8 +745,13 @@
                                         //Upload Old Attachments
                                         $('#btnUpload').click(function () {
                                             var file = $('#otherFiles')[0].files[0];
-                                            uploadOldAttacments(PROFILE_ID, 'file', file, function (result) {
+                                            var descrip = $('#getDesc').val();
+                                            uploadOldAttacments(PROFILE_ID, 'file', file, descrip, function (result) {
                                                 show_mesege(result);
+                                                if (result.id == 1) {
+                                                    $('#getDesc').val('');
+                                                    $('#otherFiles')[0].files[null];
+                                                }
                                                 getaProfilebyId(PROFILE_ID, function (parameters) {
                                                     loadAllOldAttachments(parameters.old_files, function () {});
                                                 });
@@ -803,7 +821,9 @@
                                         $('#reportSubmit').on('click', function () { // Report Issue Btn
                                             var data = {
                                                 file_problem_status_description: $('#reportTxtArea').val(),
-                                                file_problem_status: 'problem'
+                                                file_problem_status: 'problem',
+                                                file: $('#problemFileUpload')[0].files[0],
+                                                file_catagory: 'PROBLEM'
                                             };
                                             reportFileIssueAPI(PROFILE_ID, data, function (resp) {
                                                 show_mesege(resp);
@@ -818,7 +838,9 @@
                                         $('.markIssueClean').on('click', function () { // Mark As Cleared Btn
                                             var data = {
                                                 file_problem_status: 'clean',
-                                                file_problem_status_description: 'NO-PROBLEM'
+                                                file_problem_status_description: 'NO-PROBLEM',
+//                                                file: $('#problemFileUpload')[0].files[0],
+                                                file_catagory: 'PROBLEM'
                                             };
                                             reportFileIssueAPI(PROFILE_ID, data, function (resp) {
                                                 show_mesege(resp);

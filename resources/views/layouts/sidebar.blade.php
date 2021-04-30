@@ -175,7 +175,7 @@
 
             </ul>
         </li>
-        <li class="nav-item has-treeview {{ Request::is('client_space','industry_files','epl_assign','old_file_list','env_officer') ? 'menu-open' : '' }}">
+        <li class="nav-item has-treeview {{ Request::is('client_space','industry_files','epl_assign','old_file_list','env_officer', 'search_files') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-user-shield"></i>
                 <p>
@@ -190,6 +190,14 @@
                     <a href="{{ url('/client_space') }}" class="nav-link {{ Request::is('client_space') ? 'active' : '' }}">
                         <i class="fas fa-id-card-alt nav-icon"></i>
                         <p>Industry Registration</p>
+                    </a>
+                </li>
+                @endif
+                @if($pre['id']===config('auth.privileges.searchFiles'))
+                <li class="nav-item">
+                    <a href="{{ url('/search_files') }}" class="nav-link {{ Request::is('search_files') ? 'active' : '' }}">
+                        <i class="fas fa-id-card-alt nav-icon"></i>
+                        <p>Search Files</p>
                     </a>
                 </li>
                 @endif

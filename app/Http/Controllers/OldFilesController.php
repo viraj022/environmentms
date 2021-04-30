@@ -9,13 +9,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\LogActivity;
 
-class OldFilesController extends Controller
-{
+class OldFilesController extends Controller {
 
-    public function create($id, Request $request)
-    {
+    public function create($id, Request $request) {
         request()->validate([
-            'file' => 'required|mimes:jpeg,jpg,png,pdf'
+            'file' => 'required|mimes:jpeg,jpg,png,pdf',
+            'description' => 'sometimes|required|string',
+            'file_catagory' => 'required|string'
         ]);
         $client = Client::findOrFail($id);
         $user = Auth::user();
@@ -28,6 +28,8 @@ class OldFilesController extends Controller
         $oldFiles->path = "storage" . $fileUrl . "/" . $file_name;
         $oldFiles->type = $request->file->extension();
         $oldFiles->client_id = $client->id;
+        $oldFiles->description = \request('description');
+        $oldFiles->file_catagory = \request('file_catagory');
         $msg = $oldFiles->save();
         LogActivity::fileLog($oldFiles->client_id, 'old_file', "OldFileCreate", 1);
         LogActivity::addToLog('OldFileCreate Created', $oldFiles);
@@ -38,8 +40,7 @@ class OldFilesController extends Controller
         }
     }
 
-    public function delete($id)
-    {
+    public function delete($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $oldFiles = OldFiles::findOrFail($id);
@@ -53,4 +54,5 @@ class OldFilesController extends Controller
             return array('id' => 0, 'message' => 'false');
         }
     }
+
 }

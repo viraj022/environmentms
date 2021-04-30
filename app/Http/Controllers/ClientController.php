@@ -8,6 +8,7 @@ use App\Client;
 use App\Setting;
 use Carbon\Carbon;
 use App\Certificate;
+use App\OldFiles;
 use App\BusinessScale;
 use App\Pradesheeyasaba;
 use App\Rules\contactNo;
@@ -38,6 +39,12 @@ class ClientController extends Controller {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('client_space', ['pageAuth' => $pageAuth]);
+    }
+
+    public function search_files() {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('search_files', ['pageAuth' => $pageAuth]);
     }
 
     public function eo_locations() {
@@ -606,15 +613,32 @@ class ClientController extends Controller {
         }
     }
 
-    public function file_problem_status($id) {
+    public function file_problem_status($id, Request $request) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         request()->validate([
             'file_problem_status' => ['required', 'regex:(pending|clean|problem)'],
             'file_problem_status_description' => 'required|string',
+            'file' => 'mimes:jpeg,jpg,png,pdf'
         ]);
-
         $file = Client::findOrFail($id);
+        if (!($request->file == null)) {
+            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+            $fileUrl = '/uploads/' . FieUploadController::getOldFilePath($file);
+            $storePath = 'public' . $fileUrl;
+            $path = $request->file('file')->storeAs($storePath, $file_name);
+            $oldFiles = new OldFiles();
+            $oldFiles->path = "storage" . $fileUrl . "/" . $file_name;
+            $oldFiles->type = $request->file->extension();
+            $oldFiles->client_id = $file->id;
+            $oldFiles->description = \request('description');
+            $oldFiles->file_catagory = \request('file_catagory');
+            $file->complain_attachment = "storage" . $fileUrl . "/" . $file_name;
+            $msg = $oldFiles->save();
+        }
+        if (\request('file_problem_status') == 'clean') {
+            $file->complain_attachment = null;
+        }
         $file->file_problem_status = \request('file_problem_status');
         $file->file_problem_status_description = \request('file_problem_status_description');
         LogActivity::fileLog($file->id, 'File', "set File problem status " . $file->file_problem_status, 1);
@@ -625,6 +649,28 @@ class ClientController extends Controller {
             return array('id' => 0, 'message' => 'false');
         }
     }
+
+//    public function file_problem_status($id) {
+//        $user = Auth::user();
+//        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+//        request()->validate([
+//            'file_problem_status' => ['required', 'regex:(pending|clean|problem)'],
+//            'file_problem_status_description' => 'required|string',
+//            'file' => 'mimes:jpeg,jpg,png,pdf'
+//        ]);
+//
+//        $file = Client::findOrFail($id);
+//        $file->file_problem_status = \request('file_problem_status');
+//        $file->file_problem_status_description = \request('file_problem_status_description');
+//        $file->file = \request('file_problem_status_description');
+//        LogActivity::fileLog($file->id, 'File', "set File problem status " . $file->file_problem_status, 1);
+//        LogActivity::addToLog("Mark file problem status", $file);
+//        if ($file->save()) {
+//            return array('id' => 1, 'message' => 'true');
+//        } else {
+//            return array('id' => 0, 'message' => 'false');
+//        }
+//    }
 
     public function changeFileStatus($id) {
         $user = Auth::user();
@@ -734,6 +780,38 @@ class ClientController extends Controller {
 
         fileLog($certificate->client_id, 'certificate', 'User (' . $user->last_name . ') uploaded draft', 0);
         LogActivity::addToLog("Upload Draft", $certificate);
+        if ($msg) {
+            return array('id' => 1, 'message' => 'true');
+        } else {
+            return array('id' => 0, 'message' => 'false');
+        }
+    }
+    
+    public function uploadCorrectedFile(Request $request, $id) {
+        request()->validate([
+            'file' => 'sometimes|required|mimes:jpeg,jpg,png,pdf'
+        ]);
+        $user = Auth::user();
+        $req = request()->all();
+        unset($req['file']);
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        $certificate = Certificate::findOrFail($id);
+        if ($request->exists('file')) {
+            $type = $request->file->extension();
+            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+            $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/draft/" . $id;
+            $storePath = 'public' . $fileUrl;
+            $path = 'storage' . $fileUrl . "/" . $file_name;
+            $request->file('file')->storeAs($storePath, $file_name);
+            $req['user_id_certificate_upload'] = $user->id;
+            $req['corrected_file'] = $path;
+        } else {
+            abort(422, "file key not found , ctech validation");
+        }
+        $msg = Certificate::where('id', $id)->update($req);
+
+        fileLog($certificate->client_id, 'certificate', 'User (' . $user->last_name . ') uploaded draft', 0);
+        LogActivity::addToLog("Upload Corrected File", $certificate);
         if ($msg) {
             return array('id' => 1, 'message' => 'true');
         } else {
@@ -939,9 +1017,9 @@ class ClientController extends Controller {
 
     public function get_file_cordinates($industry_cat_id, $eo_id) {
         $file_cords = \DB::table('clients')
-                ->select('clients.industry_coordinate_x', 'clients.industry_coordinate_y', 'clients.file_no')
-                ->where('clients.environment_officer_id', '=', $eo_id)
-                ->where('clients.industry_category_id', '=', $industry_cat_id)
+                        ->select('clients.industry_coordinate_x', 'clients.industry_coordinate_y', 'clients.file_no')
+                        ->where('clients.environment_officer_id', '=', $eo_id)
+                        ->where('clients.industry_category_id', '=', $industry_cat_id)
                         ->get()->toArray();
 //                ->toSql();
 //        dd($file_cords);

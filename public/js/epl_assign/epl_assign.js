@@ -58,6 +58,7 @@ function assigned_EPL_table(officer_id, callBack) {
     if (isNaN(officer_id)) {
         return false;
     }
+    $('#assigned_epl_table').DataTable().destroy();
     $.ajax({
         type: "GET",
         headers: {
@@ -90,6 +91,7 @@ function assigned_EPL_table(officer_id, callBack) {
             });
             if (!(result.length == 0 || result == undefined)) {
                 $('#assigned_epl_table tbody').html(tbl);
+                $('#assigned_epl_table').DataTable();
             }
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
