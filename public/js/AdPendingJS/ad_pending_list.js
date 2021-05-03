@@ -33,7 +33,7 @@ function loadAdPendingListTable(id) {
         var tbl = "";
         var id = 1;
         if (result.length == 0) {
-            tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
+            tbl = "<tr><td colspan='5'>No Data Found</td></tr>";
         } else {
             $.each(result, function (index, row) {
                 tbl += '<tr>';
@@ -49,6 +49,7 @@ function loadAdPendingListTable(id) {
                 tbl += '</tr>';
             });
         }
+        $('#tblPendingAdList').DataTable();
         $('#tblPendingAdList tbody').html(tbl);
     });
 }

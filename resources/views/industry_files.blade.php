@@ -129,11 +129,11 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" id="setInspectionVal2" class="btn btn-primary d-none"><i class="fa fa-check"></i> Set Inspection</button>
                     <button type="button" id="needApproval" class="btn btn-primary d-none"><i class="fa fa-check"></i> AD Approval</button>
                     <button type="button" id="submitAdCerApproval" class="btn btn-primary d-none"><i class="fa fa-check"></i> Submit For AD Certificate Approval</button>
                     <button type="button" id="rejectAdCerApproval" class="btn btn-danger d-none"><i class="fa fa-times"></i> Reject Certificate</button>
+                    <button type="button" id="upCertificate" class="btn btn-primary d-none"><i class="fa fa-check"></i>Upload Certificate</button>
                     <div class="btn btn-group-lg">
                         <button type="button" id="viewCertificateBtn" class="btn btn-info d-none"><i class="fa fa-file"></i> View Certificate</button>
                     </div>
@@ -224,13 +224,13 @@
         $(document).on('click', '#setInspectionVal', function () {
             var fileData = JSON.parse(unescape($(this).val()));
             let f_id = fileData.id;
-
             checkInspectionStatus(f_id, $('#getInspection').val(), function (rep) {
                 show_mesege(rep);
                 $('#modal-xl').modal('hide');
                 checkFileType();
                 forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
             });
+            forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
         });
     });
 
@@ -246,6 +246,7 @@
         $('#rejectAdCerApproval').val($(this).val()); //<-- Share this button value to submitAdCerApproval button
         $('#setInspectionVal2').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
         $('#viewCertificateBtn').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
+        $('#upCertificate').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
         $('#modalTitlex2').html(fileData.file_no);
 
         $('#needApproval,#submitAdCerApproval,#rejectAdCerApproval,#setInspectionVal2,#viewCertificateBtn').addClass('d-none');
@@ -265,6 +266,7 @@
                 $('#submitAdCerApproval').removeClass('d-none');
                 $('#rejectAdCerApproval').removeClass('d-none');
                 $('#viewCertificateBtn').removeClass('d-none');
+                $('#upCertificate').removeClass('d-none');
             }
         } else if (f_Status == -1) {
             $('#needApproval').addClass('d-none');
@@ -320,6 +322,10 @@
         loadCertificatePathsApi(parseInt(fileData.id), function (set) {
             window.open(set.certificate_path, '_blank');
         });
+    });
+    $(document).on('click', '#upCertificate', function () {
+        var fileData = JSON.parse(unescape($(this).val()));
+        window.open('certificate_perforation/id/' + fileData.id, '_blank');
     });
     $(document).on('click', '#setInspectionVal2', function () {
         $('#modal-x2').modal('hide');

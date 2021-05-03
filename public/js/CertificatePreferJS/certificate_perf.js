@@ -94,14 +94,18 @@ function getCertificateDetails(file_id, callBack) {
                     $('.fileShowUi').removeClass('d-none');
                     $("#fileuploadedPath").attr("href", "/" + resp.certificate_path);
                     if (resp.client.cer_status == 2) {
-                        console.log(resp.client.cer_status);
+                        $("#correctedCertificatePath").attr("href", "/" + resp.corrected_file);
                         $('#uploadFileSection').addClass('d-none');
                         $('#certificateSubmittedLable').removeClass('d-none');
+                        $('.showCorrectedFileUi').removeClass('d-none');
+                        $('.correctedFileShowUi').removeClass('d-none');
                         $('.complCertificate').addClass('d-none');
                     } else {
                         $('#certificateSubmittedLable').addClass('d-none');
                         $('#uploadFileSection').removeClass('d-none');
                         $('.complCertificate').removeClass('d-none');
+                        $('.showCorrectedFileUi').addClass('d-none');
+                        $('.correctedFileShowUi').addClass('d-none');
                     }
                 }
             } else if (resp.client.file_status == 4) {

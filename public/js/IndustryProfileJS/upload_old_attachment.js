@@ -3,13 +3,17 @@ function loadAllOldAttachments(result, callBack) {
     var obj = '';
     var num = 0;
     $.each(result, function (index, row) {
-        obj += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;">';
+        obj += '<div class="col-3 text-center" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;">';
         if (row.type === 'pdf') {
             obj += '<a href="/' + row.path + '" target="_blank"><img class="rounded" alt="PDF" style="width: auto; height: auto;" src="/dist/img/pdf-view.png" data-holder-rendered="true"></a>';
         } else {
-            obj += '<a href="/' + row.path + '" target="_blank"><img class="rounded" alt="Attachment" style="width: 100%; height: 80%;" src="/' + row.path + '" data-holder-rendered="true"></a>';
+            obj += '<a href="/' + row.path + '" target="_blank"><img class="rounded img-thumbnail" alt="Attachment" style="" src="/' + row.path + '" data-holder-rendered="true"></a>';
         }
-        obj += '<center><a type="button" id="' + row.id + '" class="btn btn-danger text-white removeAttachs" value="0">Remove Attachment</a></center>';
+        if(row.description == null){
+            row.description = 'N/A';
+        }
+        obj += '<h6 class="text-center" >' + row.description + '</h6>';
+        obj += '<a type="button" id="' + row.id + '" class="btn btn-danger text-white removeAttachs" value="0">Remove Attachment</a>';
         obj += '</div>';
     });
     $('.injectViewAttachs').html(obj);
@@ -44,9 +48,11 @@ function deleteOldAttachments(id, callBack) {
     });
 }
 
-function uploadOldAttacments(client_id, key, value, callBack) {
+function uploadOldAttacments(client_id, key, value, desc, callBack) {
     let formData = new FormData();
     formData.append(key, value);
+    formData.append('file_catagory', 'ATTACHMENT');
+    formData.append('description', desc);
     ulploadFile2("/api/old/attachments/" + client_id, formData, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
