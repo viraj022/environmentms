@@ -107,7 +107,7 @@
                                                             <a class="btn btn-lg btn-default" id="setSiteClear"><i class="fa fa-plus"></i></a></span>
                                                         <div class="info-box-content">
                                                             <span class="info-box-text">View site clearance file</span>
-                                                            <span class="info-box-number" id="">View</span>
+                                                            <span class="info-box-number" id="">View <a id="setSiteCleanceCode"></a></span>
                                                         </div>
                                                         <!-- /.info-box-content -->
                                                     </div>
