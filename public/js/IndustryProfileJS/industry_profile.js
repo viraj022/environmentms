@@ -25,6 +25,7 @@ function setProfileDetails(obj) {
         $(".viewEPL").removeClass("d-none");
         $(".newEPL").addClass("d-none");
         $("#setEPLCode").html(obj.epls[obj.epls.length - 1].code);
+        $("#setSiteCleanceCode").html(obj.code_site);
         if (obj.epls.length != 0) {
             $("#setEPlLink").attr(
                     "href",

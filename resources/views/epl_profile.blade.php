@@ -112,7 +112,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <dt>Download Application :</dt>
-                                <a href="" class="btn btn-dark navTodownload" target="_blank">View Licence</a>   
+                                <a href="" class="btn btn-dark navTodownload" target="_blank">View Application</a>   
                             </div> 
                             <div class="col-md-6 cerInfoBtn d-none">
                                 <dt>Certificate Information :</dt>

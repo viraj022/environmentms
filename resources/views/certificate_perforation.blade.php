@@ -48,7 +48,7 @@
                                 <div class="col-md-4">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="card">
+                                            <div class="card card-success">
                                                 <div class="card-header">
                                                     <h3 class="card-title">
                                                         <i class="fas fa-user"></i> Client Details
@@ -94,7 +94,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card">
+                                    <div class="card card-success">
                                         <div class="card-header">
                                             <h3 class="card-title">
                                                 <i class="fas fa-address-card"></i> Certificate Details
