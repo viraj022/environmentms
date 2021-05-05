@@ -48,7 +48,7 @@
                                 <div class="col-md-4">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="card">
+                                            <div class="card card-success">
                                                 <div class="card-header">
                                                     <h3 class="card-title">
                                                         <i class="fas fa-user"></i> Client Details
@@ -94,7 +94,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card">
+                                    <div class="card card-success">
                                         <div class="card-header">
                                             <h3 class="card-title">
                                                 <i class="fas fa-address-card"></i> Certificate Details
@@ -133,7 +133,7 @@
                                                     <input id="expire_date" name="datepickerUi" type="text" max="2999-12-31" class="form-control form-control-sm " placeholder="Enter Expire Date..." value="">
                                                 </div>
                                             </div>
-                                            <div class="form-group d-none" id="fileUpDiv">
+                                            <div class="form-group fileUpDiv d-none">
                                                 <hr>
                                                 <label id="uploadLabel">File Upload </label>
                                                 <input id="fileUploadInput" type="file" class=""  accept="application/pdf">
@@ -144,10 +144,21 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="form-group showCorrectedFileUi d-none">
+                                                <hr>
+                                                <label id="uploadLabel">Corrected File </label>
+                                                <input id="correctedFile" type="file" class=""  accept="application/pdf">
+                                                <button id="uploadcorrectedFile" class="btn btn-success"><i class="fas fa-file-upload"></i> Upload</button>
+                                                <div class="progress d-none">
+                                                    <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                                        <!--<span class="sr-only">40% Complete (success)</span>-->
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <h4 class="text-success d-none" id="certificateSubmittedLable">Certificate Submitted</h4>
                                             <button class="btn btn-primary complCertificate d-none"><i class="fa fa-check"></i> Complete Certificate</button>
                                             <div class="row">
-                                                <div class="col-6">
+                                                <div class="col-4">
                                                     <div class="fileShowUi d-none" style=" height: 200px;">
                                                         <hr>
                                                         <a data-toggle="tooltip" data-placement="top" title="Click to view file" id="fileuploadedPath" href="" target="_blank">
@@ -156,11 +167,20 @@
                                                         </a>
                                                     </div>       
                                                 </div>   
-                                                <div class="col-6">
+                                                <div class="col-4">
                                                     <div class="originalCertificateShowUi d-none" style=" height: 200px;">
                                                         <hr>
                                                         <a data-toggle="tooltip" data-placement="top" title="Click to view file" id="originalCertificatePath" href="" target="_blank">
                                                             <p>Original Certificate</p>
+                                                            <img class="img-fluid rounded" alt="PDF" style="width: auto; height: auto;" src="/dist/img/pdf-view.png" data-holder-rendered="true">
+                                                        </a>
+                                                    </div>
+                                                </div>   
+                                                <div class="col-4">
+                                                    <div class="correctedFileShowUi d-none" style=" height: 200px;">
+                                                        <hr>
+                                                        <a data-toggle="tooltip" data-placement="top" title="Click to view file" id="correctedCertificatePath" href="" target="_blank">
+                                                            <p>Corrected File</p>
                                                             <img class="img-fluid rounded" alt="PDF" style="width: auto; height: auto;" src="/dist/img/pdf-view.png" data-holder-rendered="true">
                                                         </a>
                                                     </div>
@@ -339,8 +359,8 @@
         }
     });
     $('.navToFile1').click(function () {
-        $('#fileUpDiv').removeClass('d-none');
-        $('#issue_date','#expire_date').val('');
+        $('.fileUpDiv').removeClass('d-none');
+        $('#issue_date', '#expire_date').val('');
         daterangepicker.setValue(null);
     });
 
@@ -368,6 +388,30 @@
             url_upload = '/api/certificate/draft/';
         }
         console.log(FILE_STATUS);
+        submitDataWithFile(url_upload + CERTIFICATE_ID, DATA, function (resp) {
+            show_mesege(resp);
+            if (resp.id == 1) {
+                getCertificateDetails(PROFILE_ID, function (resp) {
+                    CERTIFICATE_ID = parseInt(resp.id);
+                    FILE_STATUS = parseInt(resp.client.file_status);
+                });
+            }
+        });
+    });
+
+    $('#uploadcorrectedFile').click(function () { //upload corrected file
+        let url_upload = '';
+        if (isNaN(CERTIFICATE_ID)) {
+            alert('Certificate ID Error!');
+            return false;
+        }
+        let file = $('#correctedFile')[0].files[0];
+        let DATA = {file: file}
+        if ($('#correctedFile')[0].files.length === 0) {
+            alert('No File Selected!');
+            return false;
+        }
+        url_upload = '/api/certificate/corrected_file/';
         submitDataWithFile(url_upload + CERTIFICATE_ID, DATA, function (resp) {
             show_mesege(resp);
             if (resp.id == 1) {

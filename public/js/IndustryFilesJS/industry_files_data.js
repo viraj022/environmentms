@@ -97,6 +97,7 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
         if (resp === null) {
             tbl = "<tr><td colspan='5'>No Data Found</td></tr>";
         } else {
+            $("#tblAllFiles").DataTable().destroy();
             $.each(resp, function (index, row) {
                 let status_Lable = '';
                 if (row.file_status == 2) {

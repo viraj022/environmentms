@@ -25,6 +25,7 @@ function setProfileDetails(obj) {
         $(".viewEPL").removeClass("d-none");
         $(".newEPL").addClass("d-none");
         $("#setEPLCode").html(obj.epls[obj.epls.length - 1].code);
+        $("#setSiteCleanceCode").html(obj.code_site);
         if (obj.epls.length != 0) {
             $("#setEPlLink").attr(
                     "href",
@@ -331,21 +332,31 @@ function reportFileIssueAPI(id, data, callBack) {
     if (isNaN(id)) {
         return false;
     }
-    ajaxRequest(
-            "POST",
-            "/api/files/file_problem_status/id/" + id,
-            data,
-            function (dataSet) {
-                if (
-                        typeof callBack !== "undefined" &&
-                        callBack != null &&
-                        typeof callBack === "function"
-                        ) {
-                    callBack(dataSet);
-                }
-            }
-    );
+    ulploadFileWithData("/api/files/file_problem_status/id/" + id, data, function (resp) {
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(resp);
+        }
+    });
 }
+//function reportFileIssueAPI(id, data, callBack) {
+//    if (isNaN(id)) {
+//        return false;
+//    }
+//    ajaxRequest(
+//            "POST",
+//            "/api/files/file_problem_status/id/" + id,
+//            data,
+//            function (dataSet) {
+//                if (
+//                        typeof callBack !== "undefined" &&
+//                        callBack != null &&
+//                        typeof callBack === "function"
+//                        ) {
+//                    callBack(dataSet);
+//                }
+//            }
+//    );
+//}
 
 //Remove Client File API
 function removeClientFileAPI(id, callBack) {
@@ -443,12 +454,20 @@ function pendingPaymentsTable(id) {
     });
 }
 
+function get_url_extension(url) {
+    return url.split(/[#?]/)[0].split('.').pop().trim();
+}
+
 function checkFileIssueStatus(is_exist) {
     if (is_exist.file_problem_status === "problem") {
         $(".markIssueClean").removeClass("d-none"); //<-- Show Issue Cleared
         $(".showReportInfoUi").removeClass("d-none");
         $(".reportIssueView").addClass("d-none"); //<-- Hide report issue
-        $(".reportInfo").html(is_exist.file_problem_status_description);
+        if (get_url_extension(is_exist.complain_attachment)  == 'pdf') {
+            $(".reportInfo").html(is_exist.file_problem_status_description + '<br>' + '<a href="/' + is_exist.complain_attachment + '" target="_blank"><img class="rounded" alt="PDF" style="width: auto; height: auto;" src="/dist/img/pdf-view.png" data-holder-rendered="true"></a>');
+        } else {
+            $(".reportInfo").html(is_exist.file_problem_status_description + '<br>' + '<a href="/' + is_exist.complain_attachment + '" target="_blank"><img class="rounded img-thumbnail" alt="IMG" style="width: auto; height: auto;" src="/' + is_exist.complain_attachment + '" data-holder-rendered="true"></a>');
+        }
     } else {
         $(".markIssueClean").addClass("d-none"); //<-- Hide Issue Cleared
         $(".showReportInfoUi").addClass("d-none");

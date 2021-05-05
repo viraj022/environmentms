@@ -82,9 +82,9 @@ function getCertificateDetails(file_id, callBack) {
             $('.genCertificateNum').removeClass('d-none');
         } else {
             $('.certificateDetails').remove();
-            $('#certificate_Num').html('Application/Licence Number: ' + resp.cetificate_number);
-            $('#created_at').html('Created At: ' + resp.created_at);
-            $('#updated_at').html('Updated At: ' + resp.updated_at);
+            $('#certificate_Num').html('<b>Application/Licence Number: </b>' + resp.cetificate_number);
+            $('#created_at').html('<b>Created At: </b>' + resp.created_at);
+            $('#updated_at').html('<b>Updated At: </b>' + resp.updated_at);
             $('#fileUpDiv').addClass('d-none');
             if (resp.cetificate_number != null) {
                 $('.genCertificateNum').addClass('d-none');
@@ -94,14 +94,18 @@ function getCertificateDetails(file_id, callBack) {
                     $('.fileShowUi').removeClass('d-none');
                     $("#fileuploadedPath").attr("href", "/" + resp.certificate_path);
                     if (resp.client.cer_status == 2) {
-                        console.log(resp.client.cer_status);
+                        $("#correctedCertificatePath").attr("href", "/" + resp.corrected_file);
                         $('#uploadFileSection').addClass('d-none');
                         $('#certificateSubmittedLable').removeClass('d-none');
+                        $('.showCorrectedFileUi').removeClass('d-none');
+                        $('.correctedFileShowUi').removeClass('d-none');
                         $('.complCertificate').addClass('d-none');
                     } else {
                         $('#certificateSubmittedLable').addClass('d-none');
                         $('#uploadFileSection').removeClass('d-none');
                         $('.complCertificate').removeClass('d-none');
+                        $('.showCorrectedFileUi').addClass('d-none');
+                        $('.correctedFileShowUi').addClass('d-none');
                     }
                 }
             } else if (resp.client.file_status == 4) {

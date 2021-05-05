@@ -58,6 +58,7 @@ function updateEPLOldFiles(epl_id, data, type, callBack) {
 function uploadOldAttacments(client_id, key, value, callBack) {
     let formData = new FormData();
     formData.append(key, value);
+    formData.append('file_catagory', 'OLD FILE');
     ulploadFile2("/api/old/attachments/" + client_id, formData, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);

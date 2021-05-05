@@ -136,6 +136,7 @@ return [
         'industryFile' => 14,
         'fileAssign' => 15,
         'fileLocations' => 16,
+        'searchFiles' => 17,
 
     ],
 
