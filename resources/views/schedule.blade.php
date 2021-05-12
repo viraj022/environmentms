@@ -156,6 +156,30 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+    <div class="modal fade" id="modal-file-data">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modalUserInfo">Modal</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body table-responsive" style="height: 450px;">
+                        <table class="table table-condensed" id="tblUserData">
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 
 </section>
 @endif
@@ -194,6 +218,13 @@
 <!-- AdminLTE App -->
 <script>
     $(function () {
+        // initialize the calendar--
+        var Calendar = FullCalendar.Calendar;
+        var Draggable = FullCalendarInteraction.Draggable;
+        var containerEl = document.getElementById('external-events');
+        var calendarEl = document.getElementById('calendar');
+        // initialize the external events
+        // -----------------------------------------------------------------
         //Load AssDir Combo
         loadAssDirCombo(function () {
             loadEnvOfficerCombo($('#getAsDirect').val(), function (rest) {
@@ -206,6 +237,7 @@
         });
         //Function when change Assist Dir Combo
         $(document).on('change', '#getAsDirect', function () {
+            calendar.removeAllEvents(); //clear calender before adding events
             loadEnvOfficerCombo($('#getAsDirect').val(), function () {
                 setInspectionNeededApi($('#getEnvOfficer').val(), false);
                 loadCalenderApi($('#getEnvOfficer').val(), function (event) {//get all events from db
@@ -220,6 +252,7 @@
 
         //Change EnvOfficer Combo
         $("#getEnvOfficer").change(function () {
+            calendar.removeAllEvents();
             setInspectionNeededApi($('#getEnvOfficer').val(), false);
             loadCalenderApi($('#getEnvOfficer').val(), function (event) {//get all events from db
                 calendar.getEventSources()[0].remove(); // This will remove all events from calender
@@ -227,13 +260,7 @@
             });
         });
 
-        // initialize the calendar--
-        var Calendar = FullCalendar.Calendar;
-        var Draggable = FullCalendarInteraction.Draggable;
-        var containerEl = document.getElementById('external-events');
-        var calendarEl = document.getElementById('calendar');
-        // initialize the external events
-        // -----------------------------------------------------------------
+
 
         new Draggable(containerEl, {
             itemSelector: '.external-event',
@@ -298,6 +325,13 @@
                 $('#modal-xl').modal('show');
                 $('#modalTitle').html('Appoinment - ' + $(this).data('date'));
                 $('#modalTitle').data('inspecdate', $(this).data('date'));
+            });
+
+            $(document).on('click', '.external-event', function () {//Event Modal
+                displayClientDataFromEvent($(this).attr("data-id"), function () {
+                });
+                $('#modalUserInfo').html($(this).text());
+                $('#modal-file-data').modal('show');
             });
 
         });
