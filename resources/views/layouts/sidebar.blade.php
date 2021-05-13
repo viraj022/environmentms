@@ -309,6 +309,24 @@
                 @endforeach
             </ul>
         </li>
+        <li class="nav-item has-treeview {{ Request::is('industry_files') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                <p>Environment Officer <i class="right fas fa-angle-left"></i></p>
+            </a>
+            <ul class="nav nav-treeview">
+                @foreach((auth()->user()->privileges) as $indexKey=>$pre)
+                @if($pre['id']===config('auth.privileges.assistantDirector'))
+                <li class="nav-item">
+                    <a href="{{ url('/industry_files') }}" class="nav-link {{ Request::is('industry_files') ? 'active' : '' }}">
+                        <i class="fas fa-clock nav-icon"></i>
+                        <p>ENV Pending List</p>
+                    </a>
+                </li>
+                @endif
+                @endforeach
+            </ul>
+        </li>
         <li class="nav-item has-treeview {{ Request::is('director_pending_list') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-user-tie"></i>
