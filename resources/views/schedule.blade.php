@@ -340,6 +340,7 @@
         $(document).on('click', '.removeInspecBtn', function () {
             InspectionRemoveApi($(this).val(), function (resp) {
                 show_mesege(resp);
+                calendar.removeAllEvents(); //clear calender before adding events
                 if (resp.id == 1) {
                     inspectionsByDateAPI($('#modalTitle').data('inspecdate'), $('#getEnvOfficer').val(), false);
                     setInspectionNeededApi($('#getEnvOfficer').val(), false);

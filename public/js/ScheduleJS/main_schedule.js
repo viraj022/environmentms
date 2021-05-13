@@ -148,6 +148,10 @@ function displayClientDataFromEvent(u_id, callBack) {
             tbl += ' <th>Site Address:</th>';
             tbl += ' <td>' + dataSet.address + '</td>';
             tbl += '</tr>';
+            tbl += '<tr>';
+            tbl += ' <th>Pradesheeyasaba:</th>';
+            tbl += ' <td>' + dataSet.pradesheeyasaba.name + '</td>';
+            tbl += '</tr>';
         }
         $('#tblUserData').html(tbl);
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
