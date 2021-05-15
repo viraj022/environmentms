@@ -73,6 +73,10 @@ Route::get('/dashboard', function () {
   return view('welcome');
 });
 
+Route::get('/client_reg', function () {
+  return view('client_space_expose');
+});
+Route::get('/client_space', 'ClientController@index');
 
 
 
