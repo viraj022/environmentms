@@ -43,7 +43,7 @@ class UserController extends Controller
                 'address' => 'sometimes|max:100',
                 'contactNo' => ['nullable', 'min:10', new contactNo],
                 'email' => 'sometimes|nullable|email',
-                'nic' => ['sometimes', 'nullable', 'unique:users', new nationalID],
+                'nic' => ['required|regex:/(.+)@(.+)\.(.+)/i', 'sometimes', 'nullable', 'unique:users', new nationalID],
                 'roll' => 'integer|required',
                 'password' => 'required|confirmed|min:6',
                 // 'institute' => 'required|integer',
