@@ -346,7 +346,7 @@ $('.levelCombo').change(function () {
 loadRolls(this.value, 'rollCombo');
 });
 load_deleted_user_table();
-$(document).on('click', '.btnAction', function () {
+$(document).on('click', '.btnAction', Function () {
 //var row = JSON.parse(decodeURIComponent($(this).data('row')));
 if (confirm('Are you sure you want to restore this user ?')) {
 activeDeletedUser($(this).val());

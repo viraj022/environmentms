@@ -41,7 +41,7 @@ class UserController extends Controller
                 'lastName' => 'required|max:50|string',
                 'userName' => 'required|max:50|string|unique:users,user_name',
                 'address' => 'sometimes|max:100',
-                'contactNo' => ['nullable', new contactNo],
+                'contactNo' => ['nullable', 'min:10', new contactNo],
                 'email' => 'sometimes|nullable|email',
                 'nic' => ['sometimes', 'nullable', 'unique:users', new nationalID],
                 'roll' => 'integer|required',
@@ -62,13 +62,11 @@ class UserController extends Controller
             $user->api_token = Str::random(80);
             $msg = $user->save();
             UserController::PrevilagesAdd($user);
-            LogActivity::addToLog('Save User : UserController',$user);            
+            LogActivity::addToLog('Save User : UserController', $user);
         });
         return redirect()
             ->back()
             ->with('success', 'Ok');
-          
-            
     }
 
     public function edit(Request $request, $id)
@@ -158,10 +156,9 @@ class UserController extends Controller
 
 
         if ($msg) {
-            LogActivity::addToLog('Update User Done: UserController',$user);          
- 
+            LogActivity::addToLog('Update User Done: UserController', $user);
         } else {
-            LogActivity::addToLog('Update User Fail : UserController',$user);
+            LogActivity::addToLog('Update User Fail : UserController', $user);
         }
 
 
@@ -189,10 +186,9 @@ class UserController extends Controller
 
 
         if ($msg) {
-            LogActivity::addToLog('Store Password Done: UserController',$user);          
- 
+            LogActivity::addToLog('Store Password Done: UserController', $user);
         } else {
-            LogActivity::addToLog('Store Password Fail: UserController',$user);
+            LogActivity::addToLog('Store Password Fail: UserController', $user);
         }
 
         if ($msg) {
@@ -251,14 +247,13 @@ class UserController extends Controller
         $pageAuth = $Auser->authentication(config('auth.privileges.userCreate'));
         return view('user', ['levels' => $level, 'users' => $users, 'pageAuth' => $pageAuth]);
 
- 
+
 
 
         if ($msg) {
-            LogActivity::addToLog('Delete Done: UserController',$user);          
- 
+            LogActivity::addToLog('Delete Done: UserController', $user);
         } else {
-            LogActivity::addToLog('Delete fail: UserController',$user);
+            LogActivity::addToLog('Delete fail: UserController', $user);
         }
     }
 
@@ -284,10 +279,9 @@ class UserController extends Controller
         $msg = $aUser->save();
 
         if ($msg) {
-            LogActivity::addToLog('changeMyPass Done: UserController',$aUser);          
- 
+            LogActivity::addToLog('changeMyPass Done: UserController', $aUser);
         } else {
-            LogActivity::addToLog('changeMyPass fail: UserController',$aUser);
+            LogActivity::addToLog('changeMyPass fail: UserController', $aUser);
         }
 
         if ($msg) {
@@ -322,8 +316,4 @@ class UserController extends Controller
             return array('id' => 0, 'mgs' => 'false');
         }
     }
-
-
-
-
 }
