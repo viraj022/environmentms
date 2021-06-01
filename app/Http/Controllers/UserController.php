@@ -41,9 +41,9 @@ class UserController extends Controller
                 'lastName' => 'required|max:50|string',
                 'userName' => 'required|max:50|string|unique:users,user_name',
                 'address' => 'sometimes|max:100',
-                'contactNo' => ['nullable', 'min:10', new contactNo],
-                'email' => 'sometimes|nullable|email',
-                'nic' => ['required|regex:/(.+)@(.+)\.(.+)/i', 'sometimes', 'nullable', 'unique:users', new nationalID],
+                'contactNo' => ['required', 'numeric', 'nullable', 'min:10', new contactNo],
+                'email' => 'sometimes', 'regex:/(.+)@(.+)\.(.+)/i', 'nullable|email',
+                'nic' => ['sometimes', 'nullable', 'unique:users', new nationalID],
                 'roll' => 'integer|required',
                 'password' => 'required|confirmed|min:6',
                 // 'institute' => 'required|integer',
@@ -134,15 +134,15 @@ class UserController extends Controller
     public function store(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        //        request()->validate([
-        //            'firstName' => 'required|max:50|alpha',
-        //            'lastName' => 'required|max:50|alpha',
-        //            'userName' => 'required|max:50|alpha_dash|unique:users,user_name',
-        //            'address' => 'max:100|alpha',
-        //            'contactNo' => 'max:12',
-        //            'email' => 'email',
-        //            'nic' => 'max:12|unique:users,3'
-        //        ]);
+        request()->validate([
+            'firstName' => 'required|max:50|string',
+            'lastName' => 'required|max:50|string',
+            'userName' => 'required|max:50|string',
+            'address' => 'sometimes|max:100',
+            'contactNo' => ['required', 'numeric', 'nullable', 'min:10', new contactNo],
+            'email' => 'regex:/(.+)@(.+)\.(.+)/i', 'nullable|email',
+            'nic' => ['nullable', new nationalID],
+        ]);
 
         //        dd($user);
         $user->user_name = request('userName');
@@ -160,7 +160,6 @@ class UserController extends Controller
         } else {
             LogActivity::addToLog('Update User Fail : UserController', $user);
         }
-
 
         if ($msg) {
             return redirect()
