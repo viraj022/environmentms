@@ -177,7 +177,7 @@
                                             title: 'Enviremontal MS</br>Error'
                                         });
                                     }
-                                    loadTable();
+                                    location.reload(true);
                                     resetinputFields();
                                 });
                             } else {
@@ -212,7 +212,7 @@
                             title: 'Enviremontal MS</br>Error'
                         });
                     }
-                    loadTable();
+                    location.reload(true);
                     showSave();
                     resetinputFields();
                     hideAllErrors();
@@ -221,24 +221,25 @@
         });
         //click delete button
         $('#btnDelete').click(function() {
-            deleteIndustry($('#btnDelete').val(), function(result) {
-                if (result.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Enviremontal MS</br>Removed!'
-                    });
-                } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Enviremontal MS</br>Error'
-                    });
-                }
-                loadTable();
-                showSave();
-                resetinputFields();
-                hideAllErrors();
-            });
+                deleteIndustry($('#btnDelete').val(), function(result) {
+                    if (result.id == 1) {
+                        Toast.fire({
+                            type: 'success',
+                            title: 'Enviremontal MS</br>Removed!'
+                        });
+                    } else {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Enviremontal MS</br>Error'
+                        });
+                    }
+                    location.reload(true);
+                    showSave();
+                    resetinputFields();
+                    hideAllErrors();
+                });
         });
+        
         //select button action 
         $(document).on('click', '.btnAction', function() {
             getaIndustrybyId(this.id, function(result) {

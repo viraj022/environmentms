@@ -7,6 +7,7 @@ use App\PaymentRange;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\LogActivity;
+use Exception;
 
 class PaymentsController extends Controller
 {
@@ -200,21 +201,23 @@ class PaymentsController extends Controller
     public function destroy($id)
     {
         //deletePayment 
-
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
-        if ($pageAuth['is_delete']) {
-            $payment = Payment::findOrFail($id);
-            $msg = $payment->delete();
-
-            if ($msg) {
-                LogActivity::addToLog('Payment Deleted', $payment);
-                return array('id' => 1, 'message' => 'true');
+        try {
+            $user = Auth::user();
+            $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
+            if ($pageAuth['is_delete']) {
+                $payment = Payment::findOrFail($id);
+                $msg = $payment->delete();
+                if ($msg) {
+                    LogActivity::addToLog('Payment Deleted', $payment);
+                    return array('id' => 1, 'message' => 'true');
+                } else {
+                    return array('id' => 0, 'message' => 'false');
+                }
             } else {
-                return array('id' => 0, 'message' => 'false');
+                abort(401);
             }
-        } else {
-            abort(401);
+        } catch (Exception $e) {
+            return array('id' => 0, 'message' => 'false');
         }
     }
     //end deletePayment 

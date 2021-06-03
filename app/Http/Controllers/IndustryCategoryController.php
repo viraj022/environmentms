@@ -6,6 +6,7 @@ use App\IndustryCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\LogActivity;
+use Exception;
 
 class IndustryCategoryController extends Controller
 {
@@ -146,27 +147,31 @@ class IndustryCategoryController extends Controller
      */
     public function destroy($id)
     {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.industry'));
-        if ($pageAuth['is_delete']) {
-            $industryCategory = IndustryCategory::findOrFail($id);;
-            //$attachment->name= \request('name');
-            $msg = $industryCategory->delete();
+        try {
+            $user = Auth::user();
+            $pageAuth = $user->authentication(config('auth.privileges.industry'));
+            if ($pageAuth['is_delete']) {
+                $industryCategory = IndustryCategory::findOrFail($id);;
+                //$attachment->name= \request('name');
+                $msg = $industryCategory->delete();
 
-            // if ($msg) {
-            //     return array('id' => 1, 'message' => 'true');
-            // } else {
-            //     return array('id' => 0, 'message' => 'false');
-            // }
+                // if ($msg) {
+                //     return array('id' => 1, 'message' => 'true');
+                // } else {
+                //     return array('id' => 0, 'message' => 'false');
+                // }
 
-            if ($msg) {
-                LogActivity::addToLog('Delete Industry Category', $industryCategory);
-                return array('id' => 1, 'message' => 'true');
+                if ($msg) {
+                    LogActivity::addToLog('Delete Industry Category', $industryCategory);
+                    return array('id' => 1, 'message' => 'true');
+                } else {
+                    return array('id' => 0, 'message' => 'false');
+                }
             } else {
-                return array('id' => 0, 'message' => 'false');
+                abort(401);
             }
-        } else {
-            abort(401);
+        } catch (Exception $e) {
+            return array('id' => 0, 'message' => 'false');
         }
     }
 
