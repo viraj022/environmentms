@@ -202,34 +202,35 @@
                 </li>
                 @endif
                 @if($pre['id']===config('auth.privileges.industryFile') && auth()->user()->roll->level->value < 4) <li class="nav-item">
-                    <a href="{{ url('/industry_files') }}" class="nav-link {{ Request::is('industry_files') ? 'active' : '' }}">
-                        <i class="far fa-file-alt nav-icon"></i>
-                        <p>Industry Files</p>
+                    <li class="nav-item">
+                        <a href="{{ url('/industry_files') }}" class="nav-link {{ Request::is('industry_files') ? 'active' : '' }}">
+                            <i class="far fa-file-alt nav-icon"></i>
+                            <p>Industry Files</p>
+                        </a>
+                    </li>
+                    @endif
+                    @if($pre['id']===config('auth.privileges.fileAssign'))
+                    <li class="nav-item">
+                        <a href="{{ url('/epl_assign') }}" class="nav-link {{ Request::is('epl_assign') ? 'active' : '' }}">
+                            <i class="far fa-id-badge nav-icon"></i>
+                            <p>File Assign</p>
+                        </a>
+                    </li>
+                    @endif
+                    @if($pre['id']===config('auth.privileges.clientSpace'))
+                    <li class="nav-item">
+                        <a href="{{ url('/old_file_list') }}" class="nav-link {{ Request::is('old_file_list') ? 'active' : '' }}">
+                            <i class="fas fa-file-contract nav-icon"></i>
+                            <p>Old Files</p>
+                        </a>
+                    </li>
+                    @endif
+                    {{-- @if($pre['id']===config('auth.privileges.clientSpace'))
+                    <li class="nav-item">
+                     <a href="{{ url('/env_officer') }}" class="nav-link {{ Request::is('env_officer') ? 'active' : '' }}">
+                    <i class="fas fa-user-clock nav-icon"></i>
+                    <p>Pending EPL</p>
                     </a>
-        </li>
-        @endif
-        @if($pre['id']===config('auth.privileges.fileAssign'))
-        <li class="nav-item">
-            <a href="{{ url('/epl_assign') }}" class="nav-link {{ Request::is('epl_assign') ? 'active' : '' }}">
-                <i class="far fa-id-badge nav-icon"></i>
-                <p>File Assign</p>
-            </a>
-        </li>
-        @endif
-        @if($pre['id']===config('auth.privileges.clientSpace'))
-        <li class="nav-item">
-            <a href="{{ url('/old_file_list') }}" class="nav-link {{ Request::is('old_file_list') ? 'active' : '' }}">
-                <i class="fas fa-file-contract nav-icon"></i>
-                <p>Old Files</p>
-            </a>
-        </li>
-        @endif
-        {{-- @if($pre['id']===config('auth.privileges.clientSpace'))
-                <li class="nav-item">
-                    <a href="{{ url('/env_officer') }}" class="nav-link {{ Request::is('env_officer') ? 'active' : '' }}">
-        <i class="fas fa-user-clock nav-icon"></i>
-        <p>Pending EPL</p>
-        </a>
         </li>
         @endif --}}
         @endforeach
