@@ -23,6 +23,7 @@ use App\SiteClearenceSession;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Exception;
 
 class ClientController extends Controller
 {
@@ -670,38 +671,42 @@ class ClientController extends Controller
 
     public function file_problem_status($id, Request $request)
     {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        request()->validate([
-            'file_problem_status' => ['required', 'regex:(pending|clean|problem)'],
-            'file_problem_status_description' => 'required|string',
-            'file' => 'mimes:jpeg,jpg,png,pdf'
-        ]);
-        $file = Client::findOrFail($id);
-        if (!($request->file == null)) {
-            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-            $fileUrl = '/uploads/' . FieUploadController::getOldFilePath($file);
-            $storePath = 'public' . $fileUrl;
-            $path = $request->file('file')->storeAs($storePath, $file_name);
-            $oldFiles = new OldFiles();
-            $oldFiles->path = "storage" . $fileUrl . "/" . $file_name;
-            $oldFiles->type = $request->file->extension();
-            $oldFiles->client_id = $file->id;
-            $oldFiles->description = \request('description');
-            $oldFiles->file_catagory = \request('file_catagory');
-            $file->complain_attachment = "storage" . $fileUrl . "/" . $file_name;
-            $msg = $oldFiles->save();
-        }
-        if (\request('file_problem_status') == 'clean') {
-            $file->complain_attachment = null;
-        }
-        $file->file_problem_status = \request('file_problem_status');
-        $file->file_problem_status_description = \request('file_problem_status_description');
-        LogActivity::fileLog($file->id, 'File', "set File problem status " . $file->file_problem_status, 1);
-        LogActivity::addToLog("Mark file problem status", $file);
-        if ($file->save()) {
-            return array('id' => 1, 'message' => 'true');
-        } else {
+        try {
+            $user = Auth::user();
+            $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+            request()->validate([
+                'file_problem_status' => ['required', 'regex:(pending|clean|problem)'],
+                'file_problem_status_description' => 'required|string',
+                'file' => 'mimes:jpeg,jpg,png,pdf'
+            ]);
+            $file = Client::findOrFail($id);
+            if (!($request->file == null)) {
+                $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+                $fileUrl = '/uploads/' . FieUploadController::getOldFilePath($file);
+                $storePath = 'public' . $fileUrl;
+                $path = $request->file('file')->storeAs($storePath, $file_name);
+                $oldFiles = new OldFiles();
+                $oldFiles->path = "storage" . $fileUrl . "/" . $file_name;
+                $oldFiles->type = $request->file->extension();
+                $oldFiles->client_id = $file->id;
+                $oldFiles->description = \request('description');
+                $oldFiles->file_catagory = \request('file_catagory');
+                $file->complain_attachment = "storage" . $fileUrl . "/" . $file_name;
+                $msg = $oldFiles->save();
+            }
+            if (\request('file_problem_status') == 'clean') {
+                $file->complain_attachment = null;
+            }
+            $file->file_problem_status = \request('file_problem_status');
+            $file->file_problem_status_description = \request('file_problem_status_description');
+            LogActivity::fileLog($file->id, 'File', "set File problem status " . $file->file_problem_status, 1);
+            LogActivity::addToLog("Mark file problem status", $file);
+            if ($file->save()) {
+                return array('id' => 1, 'message' => 'true');
+            } else {
+                return array('id' => 0, 'message' => 'false');
+            }
+        } catch (Exception $ex) {
             return array('id' => 0, 'message' => 'false');
         }
     }

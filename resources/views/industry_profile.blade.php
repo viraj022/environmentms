@@ -839,8 +839,8 @@
         };
         reportFileIssueAPI(PROFILE_ID, data, function(resp) {
             show_mesege(resp);
-            $('.reportView').addClass('d-none');
-            $('.reportIssueView').addClass('d-none');
+            // $('.reportView').addClass('d-none');
+            // $('.reportIssueView').addClass('d-none');
             $('.markIssueClean').removeClass('d-none');
             getaProfilebyId(PROFILE_ID, function(parameters) {
                 checkFileIssueStatus(parameters);
