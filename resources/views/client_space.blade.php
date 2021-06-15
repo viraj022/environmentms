@@ -282,7 +282,7 @@
                             </div>
                             <div class="form-group">
                                 <div id="the-basics">
-                                    <input id="getNic" type="text" class="form-control form-control-sm col-12 typeahead" placeholder="Enter Here..." value="">
+                                    <input id="getNic" type="text" class="form-control form-control-sm col-12 typeahead" max-length="12" min-length="10" placeholder="Enter Here..." value="">
                                 </div>
                                 <div id="valName" class="d-none">
                                     <p class="text-danger">Name is required</p>

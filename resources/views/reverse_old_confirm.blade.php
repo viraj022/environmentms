@@ -44,18 +44,19 @@
                                     <table class="table table-condensed" id="tbl_confirm">
                                         <thead>
                                             <tr>
-                                                <th style="width: 10px">#</th>
                                                 <th>Name Title</th>
                                                 <th>First Name</th>
                                                 <th>Last Name</th>
                                                 <th>Adreess</th>
                                                 <th>Contact No</th>
                                                 <th>Industry Investment</th>
-                                                <th>Industry Reg No</th>
+                                                <th>BR No</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <tr>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
