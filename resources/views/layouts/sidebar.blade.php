@@ -374,6 +374,12 @@
                     <p>Confirmed Files</p>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ url('/reverse_confirm') }}" class="nav-link {{ Request::is('reverse_confirm') ? 'active' : '' }}">
+                    <i class="fas fa-clock nav-icon"></i>
+                    <p>Revert Confirm</p>
+                </a>
+            </li>
             @endif
             @endforeach
         </ul>
