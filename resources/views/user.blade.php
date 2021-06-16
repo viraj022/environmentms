@@ -16,9 +16,9 @@
 @endsection
 
 @section('content')
-{{--    {{dump($pageAuth)}}--}}
+{{-- {{dump($pageAuth)}}--}}
 @if($pageAuth['is_read']==1 || false)
-{{--    <h1>{{$p['name']}}</h1>--}}
+{{-- <h1>{{$p['name']}}</h1>--}}
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -55,53 +55,42 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label>First Name</label>
-                                <input name="firstName" type="text" class="form-control form-control-sm"
-                                       placeholder="Enter First Name"
-                                       value="{{old('firstName')}}">
+                                <input name="firstName" type="text" class="form-control form-control-sm" placeholder="Enter First Name" value="{{old('firstName')}}">
                                 @error('roll')
                                 <p class="text-danger">{{$errors->first('firstName')}}</p>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label>Last Name</label>
-                                <input name="lastName" type="text" class="form-control form-control-sm"
-                                       placeholder="Enter Last Name"
-                                       value="{{old('lastName')}}">
+                                <input name="lastName" type="text" class="form-control form-control-sm" placeholder="Enter Last Name" value="{{old('lastName')}}">
                                 @error('roll')
                                 <p class="text-danger">{{$errors->first('lastName')}}</p>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label>User Name</label>
-                                <input name="userName" type="text" class="form-control form-control-sm"
-                                       placeholder="Enter User Name"
-                                       value="{{old('userName')}}">
+                                <input name="userName" type="text" class="form-control form-control-sm" placeholder="Enter User Name" value="{{old('userName')}}">
                                 @error('roll')
                                 <p class="text-danger">{{$errors->first('userName')}}</p>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label>Address</label>
-                                <textarea class="form-control form-control-sm" rows="3" placeholder="Enter Address"
-                                          name="address">{{old('address')}}</textarea>
+                                <textarea class="form-control form-control-sm" rows="3" placeholder="Enter Address" name="address">{{old('address')}}</textarea>
                                 @error('address')
                                 <p class="text-danger">{{$errors->first('address')}}</p>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label>Contact No</label>
-                                <input name="contactNo" maxlength="10" type="text" class="form-control form-control-sm"
-                                       placeholder="Enter Contact No"
-                                       value="{{old('contactNo')}}">
+                                <input name="contactNo" maxlength="10" type="text" class="form-control form-control-sm" placeholder="Enter Contact No" value="{{old('contactNo')}}">
                                 @error('contactNo')
                                 <p class="text-danger">{{$errors->first('contactNo')}}</p>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
-                                <input name="email" type="text" class="form-control form-control-sm"
-                                       placeholder="Enter Email"
-                                       value="{{old('email')}}">
+                                <input name="email" type="text" class="form-control form-control-sm" placeholder="Enter Email" value="{{old('email')}}">
                                 @error('email')
                                 <p class="text-danger">{{$errors->first('email')}}</p>
                                 @enderror
@@ -109,8 +98,7 @@
 
                             <div class="form-group">
                                 <label>NIC</label>
-                                <input name="nic" type="text" maxlength="12" class="form-control form-control-sm" placeholder="Enter NIC"
-                                       value="{{old('nic')}}">
+                                <input name="nic" type="text" maxlength="12" minlength="10" class="form-control form-control-sm" placeholder="Enter NIC" value="{{old('nic')}}">
                                 @error('nic')
                                 <p class="text-danger">{{$errors->first('nic')}}</p>
                                 @enderror
@@ -120,14 +108,11 @@
                             <div class="form-group">
                                 <label>User Level</label>
 
-                                <select class="form-control select2 select2-purple levelCombo"
-                                        data-dropdown-css-class="select2-purple"
-                                        style="width: 100%;" name="level">
+                                <select class="form-control select2 select2-purple levelCombo" data-dropdown-css-class="select2-purple" style="width: 100%;" name="level">
 
                                     @foreach($levels as $level)
                                     @if (old('level') == $level['id'])
-                                    <option value="{{$level['id']}}"
-                                            selected>{{$level['name']}}</option>
+                                    <option value="{{$level['id']}}" selected>{{$level['name']}}</option>
 
                                     @else
                                     <option value="{{$level['id']}}">{{$level['name']}}</option>
@@ -145,32 +130,26 @@
 
                    </select>
                                                     </div> --}}
-                                                <div class="form-group">
-                                                    <label>User Role</label>
+                            <div class="form-group">
+                                <label>User Role</label>
 
-                   <select class="form-control select2 select2-purple rollCombo"
-                                        data-dropdown-css-class="select2-purple"
-                                        style="width: 100%;" name="roll">
+                                <select class="form-control select2 select2-purple rollCombo" data-dropdown-css-class="select2-purple" style="width: 100%;" name="roll">
 
-                                        </select>
-                                        @error('roll')
-                                        <p class="text-danger">{{$errors->first('roll')}}</p>
-                                        @enderror
+                                </select>
+                                @error('roll')
+                                <p class="text-danger">{{$errors->first('roll')}}</p>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                <input name="password" type="password" class="form-control form-control-sm"
-                                       placeholder="Enter Password"
-                                       value="">
+                                <input name="password" type="password" class="form-control form-control-sm" placeholder="Enter Password" value="">
                                 @error('password')
                                 <p class="text-danger">{{$errors->first('password')}}</p>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label>Confirm Password</label>
-                                <input name="password_confirmation" type="password" class="form-control form-control-sm"
-                                       placeholder="Enter Password"
-                                       value="{{old('password_confirmation')}}">
+                                <input name="password_confirmation" type="password" class="form-control form-control-sm" placeholder="Enter Password" value="{{old('password_confirmation')}}">
                                 @error('password_confirmation')
                                 <p class="text-danger">{{$errors->first('roll')}}</p>
                                 @enderror
@@ -209,8 +188,7 @@
                                     <td>{{$user['nic']}}</td>
                                     <td>{{$user['activeStatus']}}</td>
                                     <td>
-                                        <a href="/users/id/{{$user['id']}}"
-                                           class="btn btn-sm btn-success">Select</a>
+                                        <a href="/users/id/{{$user['id']}}" class="btn btn-sm btn-success">Select</a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -226,65 +204,65 @@
             </div>
         </div>
     </div>
-</div>
-<div class="modal fade" id="modal-lg" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title"></h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Deleted Users</h3>
+    </div>
+    <div class="modal fade" id="modal-lg" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Deleted Users</h3>
 
-                            <div class="card-tools">
-                                <!-- <div class="input-group input-group-sm" style="width: 150px;">
+                                <div class="card-tools">
+                                    <!-- <div class="input-group input-group-sm" style="width: 150px;">
                                     <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
                                     <div class="input-group-append">
                                         <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
                                     </div>
                                 </div> -->
+                                </div>
                             </div>
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive p-0" style="height:300px;">
+                                <table class="table table-head-fixed" id="tbl_deleted_users">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>User</th>
+                                            <th>Deleted at</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
                         </div>
-                        <!-- /.card-header -->
-                        <div class="card-body table-responsive p-0" style="height:300px;">
-                            <table class="table table-head-fixed" id="tbl_deleted_users">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>User</th>
-                                        <th>Deleted at</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.card-body -->
+                        <!-- /.card -->
                     </div>
-                    <!-- /.card -->
+
+
+
                 </div>
+                <div class="modal-footer justify-content-right">
 
-
-
+                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
+                </div>
             </div>
-            <div class="modal-footer justify-content-right">
-
-                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
-            </div>
+            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-content -->
+        <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal-dialog -->
-</div>
-</div>
+    </div>
 </section>
 @endif
 @endsection
@@ -316,44 +294,44 @@
 <script src="../../js/userjs/get.js"></script>
 <script src="../../js/userjs/submit.js"></script>
 <script>
-$(function () {
+    $(function() {
 
-@if (session('success'))
-Toast.fire({
-type: 'success',
-title: 'Environment management system</br>User Saved'
-});
-@endif
+        @if(session('success'))
+        Toast.fire({
+            type: 'success',
+            title: 'Environment management system</br>User Saved'
+        });
+        @endif
 
-@if (session('error'))
-Toast.fire({
-type: 'error',
-title: 'Environment management system</br>Error'
-});
-@endif
+        @if(session('error'))
+        Toast.fire({
+            type: 'error',
+            title: 'Environment management system</br>Error'
+        });
+        @endif
 
-// loading roll combo at page start
-loadRolls($('.levelCombo').val(), 'rollCombo');
-// loading institute combo at page start
+        // loading roll combo at page start
+        loadRolls($('.levelCombo').val(), 'rollCombo');
+        // loading institute combo at page start
 
-//Initialize Select2 Elements
-$('.select2').select2();
-$("#tblUsers").DataTable();
-loadRolls($('.levelCombo').val(), 'rollCombo');
-
-
-$('.levelCombo').change(function () {
-loadRolls(this.value, 'rollCombo');
-});
-load_deleted_user_table();
-$(document).on('click', '.btnAction', function () {
-//var row = JSON.parse(decodeURIComponent($(this).data('row')));
-if (confirm('Are you sure you want to restore this user ?')) {
-activeDeletedUser($(this).val());
-}
-});
+        //Initialize Select2 Elements
+        $('.select2').select2();
+        $("#tblUsers").DataTable();
+        loadRolls($('.levelCombo').val(), 'rollCombo');
 
 
-})
+        $('.levelCombo').change(function() {
+            loadRolls(this.value, 'rollCombo');
+        });
+        load_deleted_user_table();
+        $(document).on('click', '.btnAction', Function() {
+            //var row = JSON.parse(decodeURIComponent($(this).data('row')));
+            if (confirm('Are you sure you want to restore this user ?')) {
+                activeDeletedUser($(this).val());
+            }
+        });
+
+
+    })
 </script>
 @endsection

@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Pradesheyasaba</h1>
+                <h1>Pradeshiya sabha</h1>
             </div>
         </div>
     </div>
@@ -31,7 +31,7 @@
             <div class="col-md-5">
                 <div class="card card-gray">
                     <div class="card-header">
-                        <label class="card-title" id="lblTitle">Add New Pradesiyasaba</label>
+                        <label class="card-title" id="lblTitle">Add New Pradeshiya sabha</label>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
@@ -39,26 +39,34 @@
                             <select id="getZone" class="form-control form-control-sm         combo_zone">
                                 <option>Loading...</option>
                             </select>
-                            <div id="valZone" class="d-none"><p class="text-danger">Field is required</p></div>
+                            <div id="valZone" class="d-none">
+                                <p class="text-danger">Field is required</p>
+                            </div>
                         </div>
 
 
                         <div class="form-group">
                             <label>Name*</label>
-                            <input id="getName" maxlength="50" type="text" class="form-control form-control-sm"
-                                   placeholder="Enter Name..."
-                                   value="">
-                            <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
-                            <div id="valUnique" class="d-none"><p class="text-danger">Name already taken!</p></div>
+                            <input id="getName" maxlength="50" type="text" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                            <div id="valName" class="d-none">
+                                <p class="text-danger">Name is required</p>
+                            </div>
+                            <div id="valUnique" class="d-none">
+                                <p class="text-danger">Name already taken!</p>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Code*</label>
-                            <input maxlength="10" id="getCode" type="text" class="form-control form-control-sm"
-                                   placeholder="Enter Code..."
-                                   value="">
-                            <div id="valCode" class="d-none"><p class="text-danger">Code is required</p></div>
-                            <div id="valCodeLen" class="d-none"><p class="text-danger">Code Maximum Character Must Be 10</p></div>
-                            <div id="valcodeUnique" class="d-none"><p class="text-danger">Code already taken!</p></div>
+                            <input maxlength="10" id="getCode" type="text" class="form-control form-control-sm" placeholder="Enter Code..." value="">
+                            <div id="valCode" class="d-none">
+                                <p class="text-danger">Code is required</p>
+                            </div>
+                            <div id="valCodeLen" class="d-none">
+                                <p class="text-danger">Code Maximum Character Must Be 10</p>
+                            </div>
+                            <div id="valcodeUnique" class="d-none">
+                                <p class="text-danger">Code already taken!</p>
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -69,10 +77,9 @@
                         <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
                         @endif
                         @if($pageAuth['is_delete']==1 || false)
-                        <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
-                                 data-target="#modal-danger">Delete</button>
+                        <button id="btnshowDelete" type="submit" class="btn btn-danger d-none" data-toggle="modal" data-target="#modal-danger">Delete</button>
                         @endif
-                    </div>                           
+                    </div>
                 </div>
             </div>
 
@@ -80,7 +87,7 @@
             <div class="col-md-7">
                 <div class="card card-gray">
                     <div class="card-header">
-                        <h3 class="card-title">Pradesiyasaba</h3>
+                        <h3 class="card-title">Pradeshiya sabha</h3>
                     </div>
                     <div class="card-body p-0">
                         <div class="card-body">
@@ -93,7 +100,9 @@
                                                 <select id="getZoneForTbl" class="form-control form-control-sm combo_zone">
                                                     <option>Loading...</option>
                                                 </select>
-                                                <div id="valZone" class="d-none"><p class="text-danger">Field is required</p></div> 
+                                                <div id="valZone" class="d-none">
+                                                    <p class="text-danger">Field is required</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -105,7 +114,7 @@
                                     </div>
                                 </div>
 
-                            </div> 
+                            </div>
                         </div>
                         <div class="card-body table-responsive" style="height: 450px;">
                             <table class="table table-condensed assignedPrivilages" id="tblPradesiyasaba">
@@ -127,30 +136,30 @@
             </div>
         </div>
     </div>
-</div>
-</div>
-<div class="modal fade" id="modal-danger">
-    <div class="modal-dialog">
-        <div class="modal-content bg-danger">
-            <div class="modal-header">
-                <h4 class="modal-title">Delete  Pradesiyasaba</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><b>Are you sure you want to permanently delete this  Pradesiyasaba ? </b></p>
-                <p>Once you continue, this process can not be undone. Please Procede with care.</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
-</div>
+    </div>
+    <div class="modal fade" id="modal-danger">
+        <div class="modal-dialog">
+            <div class="modal-content bg-danger">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Pradeshiya sabha</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><b>Are you sure you want to permanently delete this Pradeshiya sabha ? </b></p>
+                    <p>Once you continue, this process can not be undone. Please Procede with care.</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                    <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 </section>
 @endif
 @endsection
@@ -184,23 +193,23 @@
 <script src="../../js/pradeshiyasabajs/delete.js"></script>
 <!-- AdminLTE App -->
 <script>
-    $(function () {
-//combo and Load table
+    $(function() {
+        //combo and Load table
 
-        loadZoneCombo(function () {
+        loadZoneCombo(function() {
             loadPradeshiyaSabaTblByZone($('#getZoneForTbl').val());
 
         });
 
-//click save button
-        $('#btnSave').click(function () {
+        //click save button
+        $('#btnSave').click(function() {
             var data = fromValues();
             if (Validiteinsert(data)) {
-                uniqueNamecheck(data.name, function (r) {
-                    uniqueCodecheck(data.code, function (re) {
+                uniqueNamecheck(data.name, function(r) {
+                    uniqueCodecheck(data.code, function(re) {
                         if (r.message == 'unique') {
                             if (re.message == 'unique') {
-                                AddPradeshiyasaba(data, function (result) {
+                                AddPradeshiyasaba(data, function(result) {
 
                                     resetinputFields();
                                     if (result.id == 1) {
@@ -224,13 +233,11 @@
 
 
                                 });
-                            } else
-                            {
+                            } else {
                                 $('#valName').addClass('d-none');
                                 $('#valcodeUnique').removeClass('d-none');
                             }
-                        } else
-                        {
+                        } else {
                             $('#valName').addClass('d-none');
                             $('#valUnique').removeClass('d-none');
                         }
@@ -239,12 +246,12 @@
             }
             hideAllErrors();
         });
-//click update button
-        $('#btnUpdate').click(function () {
+        //click update button
+        $('#btnUpdate').click(function() {
             //get form data
             var data = fromValues();
             if (Validiteupdate(data)) {
-                updatePradesheeyasaba($('#btnUpdate').val(), data, function (result) {
+                updatePradesheeyasaba($('#btnUpdate').val(), data, function(result) {
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
@@ -264,9 +271,9 @@
             }
             hideAllErrors();
         });
-//click delete button
-        $('#btnDelete').click(function () {
-            deletePradesheeyasaba($('#btnDelete').val(), function (result) {
+        //click delete button
+        $('#btnDelete').click(function() {
+            deletePradesheeyasaba($('#btnDelete').val(), function(result) {
                 if (result.id == 1) {
                     Toast.fire({
                         type: 'success',
@@ -285,9 +292,9 @@
             });
             hideAllErrors();
         });
-//select button action 
-        $(document).on('click', '.btnAction', function () {
-            getaPradesiyasababyId(this.id, function (result) {
+        //select button action 
+        $(document).on('click', '.btnAction', function() {
+            getaPradesiyasababyId(this.id, function(result) {
                 $('#getZone').val(result.zone_id);
                 $('#getName').val(result.name);
                 $('#getCode').val(result.code);
@@ -298,49 +305,48 @@
             hideAllErrors();
         });
     });
-//Check change of name input   
-    $('#getName').change(function () {
+    //Check change of name input   
+    $('#getName').change(function() {
         var data = fromValues();
-        uniqueNamecheck(data.name, function (r) {
-//            alert(JSON.stringify(r));
+        uniqueNamecheck(data.name, function(r) {
+            //            alert(JSON.stringify(r));
             if (r.message == 'unique') {
                 $('#valName').addClass('d-none');
                 $('#valCode').addClass('d-none');
                 $('#valUnique').addClass('d-none');
 
-            } else
-            {
+            } else {
                 $('#valName').addClass('d-none');
                 $('#valCode').addClass('d-none');
                 $('#valUnique').removeClass('d-none');
             }
         });
     });
-//show update buttons    
+    //show update buttons    
     function showUpdate() {
         $('#btnSave').addClass('d-none');
         $('#btnUpdate').removeClass('d-none');
         $('#btnshowDelete').removeClass('d-none');
     }
-//show save button    
+    //show save button    
     function showSave() {
         $('#btnSave').removeClass('d-none');
         $('#btnUpdate').addClass('d-none');
         $('#btnshowDelete').addClass('d-none');
     }
-//HIDE ALL ERROR MSGS   
+    //HIDE ALL ERROR MSGS   
     function hideAllErrors() {
         $('#valcodeUnique').addClass('d-none');
         $('#valUnique').addClass('d-none');
     }
-//Reset all fields    
+    //Reset all fields    
     function resetinputFields() {
         $('#getName').val('');
         $('#getCode').val('');
         $('#btnUpdate').val('');
         $('#btnDelete').val('');
     }
-//get form values
+    //get form values
     function fromValues() {
 
         var data = {
@@ -352,7 +358,7 @@
     }
 
 
-    $('#getZoneForTbl').change(function () {
+    $('#getZoneForTbl').change(function() {
 
         // getPradeshiyaSabaByZone($(this).val());
         $('#check_all_Zone').prop('checked', false);
@@ -361,7 +367,7 @@
     });
 
 
-    $('#check_all_Zone').change(function () {
+    $('#check_all_Zone').change(function() {
         if (this.checked) {
 
             loadTable();

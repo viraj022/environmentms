@@ -62,9 +62,10 @@ function uniqueCodecheck(code,callBack) {
     });
 }
 
+var table =  $("#tblIndustryCat tbody");
+
 function loadTable() {
     GetIndustryCats(function (result) {
-        var table = "";
         var id = 1;
         $.each(result, function (index, value) {
             table += "<tr>";

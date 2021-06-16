@@ -35,19 +35,23 @@
                     </div>
                     <div class="card-body">
                         <label>Name*</label>
-                        <input id="getIndustryName" maxlength="50" type="text" class="form-control form-control-sm"
-                               placeholder="Enter Industry Name..."
-                               value="">
-                        <div id="valIndustryName" class="d-none"><p class="text-danger">Industry Name is required</p></div>
-                        <div id="valUnique" class="d-none"><p class="text-danger">Name already taken!</p></div>
+                        <input id="getIndustryName" maxlength="50" type="text" class="form-control form-control-sm" placeholder="Enter Industry Name..." value="">
+                        <div id="valIndustryName" class="d-none">
+                            <p class="text-danger">Industry Name is required</p>
+                        </div>
+                        <div id="valUnique" class="d-none">
+                            <p class="text-danger">Name already taken!</p>
+                        </div>
                     </div>
                     <div class="card-body">
                         <label>Code*</label>
-                        <input id="getIndustryCode" maxlength="5" type="text" class="form-control form-control-sm"
-                               placeholder="Enter Industry Code..."
-                               value="">
-                        <div id="valIndustryCode" class="d-none"><p class="text-danger">Industry Code is required</p></div>
-                        <div id="valCodeUnique" class="d-none"><p class="text-danger">Code already taken!</p></div>
+                        <input id="getIndustryCode" maxlength="5" type="text" class="form-control form-control-sm" placeholder="Enter Industry Code..." value="">
+                        <div id="valIndustryCode" class="d-none">
+                            <p class="text-danger">Industry Code is required</p>
+                        </div>
+                        <div id="valCodeUnique" class="d-none">
+                            <p class="text-danger">Code already taken!</p>
+                        </div>
                     </div>
 
                     <div class="card-footer">
@@ -58,10 +62,9 @@
                         <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
                         @endif
                         @if($pageAuth['is_delete']==1 || false)
-                        <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
-                                 data-target="#modal-danger">Delete</button>
+                        <button id="btnshowDelete" type="submit" class="btn btn-danger d-none" data-toggle="modal" data-target="#modal-danger">Delete</button>
                         @endif
-                    </div>                           
+                    </div>
                 </div>
             </div>
 
@@ -93,30 +96,30 @@
             </div>
         </div>
     </div>
-</div>
-</div>
-<div class="modal fade" id="modal-danger">
-    <div class="modal-dialog">
-        <div class="modal-content bg-danger">
-            <div class="modal-header">
-                <h4 class="modal-title">Delete Industry Category</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><b>Are you sure you want to permanently delete this Industry Category? </b></p>
-                <p>Once you continue, this process can not be undone. Please Procede with care.</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
-</div>
+    </div>
+    <div class="modal fade" id="modal-danger">
+        <div class="modal-dialog">
+            <div class="modal-content bg-danger">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Industry Category</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><b>Are you sure you want to permanently delete this Industry Category? </b></p>
+                    <p>Once you continue, this process can not be undone. Please Procede with care.</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                    <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 </section>
 @endif
 @endsection
@@ -150,19 +153,19 @@
 <script src="../../js/industrycatjs/delete.js"></script>
 <!-- AdminLTE App -->
 <script>
-    $(function () {
-//Load table
+    $(function() {
+        //Load table
         loadTable();
-//click save button
-        $('#btnSave').click(function () {
+        //click save button
+        $('#btnSave').click(function() {
             var data = fromValues();
             if (Validiteinsert(data)) {
                 //if validiated!
-                uniqueNamecheck(data.name, function (r) {
-                    uniqueCodecheck(data.code, function (re) {
+                uniqueNamecheck(data.name, function(r) {
+                    uniqueCodecheck(data.code, function(re) {
                         if (r.message == 'unique') {
                             if (re.message == 'unique') {
-                                AddIndustry(data, function (result) {
+                                AddIndustry(data, function(result) {
                                     if (result.id == 1) {
                                         Toast.fire({
                                             type: 'success',
@@ -174,31 +177,30 @@
                                             title: 'Enviremontal MS</br>Error'
                                         });
                                     }
-                                    loadTable();
+                                    location.reload(true);
                                     resetinputFields();
                                 });
                             } else {
                                 $('#valIndustryName').addClass('d-none');
-//                            $('#valUnique').removeClass('d-none');
+                                //$('#valUnique').removeClass('d-none');
                                 $('#valCodeUnique').removeClass('d-none');
                             }
-                        } else
-                        {
+                        } else {
                             $('#valIndustryName').addClass('d-none');
                             $('#valUnique').removeClass('d-none');
-//                            $('#valCodeUnique').removeClass('d-none');
+                            //                            $('#valCodeUnique').removeClass('d-none');
                         }
                     });
                 });
             }
             hideAllErrors();
         });
-//click update button
-        $('#btnUpdate').click(function () {
+        //click update button
+        $('#btnUpdate').click(function() {
             //get form data
             var data = fromValues();
             if (Validiteupdate(data)) {
-                updateIndustry($('#btnUpdate').val(), data, function (result) {
+                updateIndustry($('#btnUpdate').val(), data, function(result) {
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
@@ -210,36 +212,37 @@
                             title: 'Enviremontal MS</br>Error'
                         });
                     }
-                    loadTable();
+                    location.reload(true);
                     showSave();
                     resetinputFields();
                     hideAllErrors();
                 });
             }
         });
-//click delete button
-        $('#btnDelete').click(function () {
-            deleteIndustry($('#btnDelete').val(), function (result) {
-                if (result.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Enviremontal MS</br>Removed!'
-                    });
-                } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Enviremontal MS</br>Error'
-                    });
-                }
-                loadTable();
-                showSave();
-                resetinputFields();
-                hideAllErrors();
-            });
+        //click delete button
+        $('#btnDelete').click(function() {
+                deleteIndustry($('#btnDelete').val(), function(result) {
+                    if (result.id == 1) {
+                        Toast.fire({
+                            type: 'success',
+                            title: 'Enviremontal MS</br>Removed!'
+                        });
+                    } else {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Enviremontal MS</br>Error'
+                        });
+                    }
+                    location.reload(true);
+                    showSave();
+                    resetinputFields();
+                    hideAllErrors();
+                });
         });
-//select button action 
-        $(document).on('click', '.btnAction', function () {
-            getaIndustrybyId(this.id, function (result) {
+        
+        //select button action 
+        $(document).on('click', '.btnAction', function() {
+            getaIndustrybyId(this.id, function(result) {
                 $('#getIndustryName').val(result.name);
                 $('#getIndustryCode').val(result.code);
                 showUpdate();
@@ -249,31 +252,31 @@
             hideAllErrors();
         });
     });
-//show update buttons    
+    //show update buttons    
     function showUpdate() {
         $('#btnSave').addClass('d-none');
         $('#btnUpdate').removeClass('d-none');
         $('#btnshowDelete').removeClass('d-none');
     }
-//show save button    
+    //show save button    
     function showSave() {
         $('#btnSave').removeClass('d-none');
         $('#btnUpdate').addClass('d-none');
         $('#btnshowDelete').addClass('d-none');
     }
-//Reset all fields    
+    //Reset all fields    
     function resetinputFields() {
         $('#getIndustryName').val('');
         $('#getIndustryCode').val('');
         $('#btnUpdate').val('');
         $('#btnDelete').val('');
     }
-//HIDE ALL ERROR MSGS   
+    //HIDE ALL ERROR MSGS   
     function hideAllErrors() {
         $('#valCodeUnique').addClass('d-none');
         $('#valUnique').addClass('d-none');
     }
-//get form values
+    //get form values
     function fromValues() {
         var data = {
             name: $('#getIndustryName').val(),

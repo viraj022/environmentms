@@ -117,7 +117,7 @@
                             </div>
                             <div class="form-group">
                                 <div id="the-basics">
-                                    <input id="getNic" type="text" class="form-control form-control-sm col-12 typeahead"
+                                    <input id="getNic" type="text" minlength="10" maxlength="12" class="form-control form-control-sm col-12 typeahead"
                                            placeholder="Enter Here..." value="">
                                 </div>
                                 <div id="valName" class="d-none">

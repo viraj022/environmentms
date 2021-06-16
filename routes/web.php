@@ -76,9 +76,7 @@ Route::get('/dashboard', function () {
 Route::get('/client_reg', function () {
   return view('client_space_expose');
 });
+
 Route::get('/client_space', 'ClientController@index');
 
-
-
-
-//dashboard
+Route::get('/reverse_confirm', 'EPLController@index4');

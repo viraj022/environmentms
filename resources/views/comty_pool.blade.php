@@ -36,44 +36,40 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label>First Name*</label>
-                            <input id="getFname" maxlength="45" type="text" class="form-control form-control-sm"
-                                   placeholder="Enter attachment..."
-                                   value="">
-                            <div id="valFname" class="d-none"><p class="text-danger">First Name is required!</p></div>
+                            <input id="getFname" maxlength="45" type="text" class="form-control form-control-sm" placeholder="Enter attachment..." value="">
+                            <div id="valFname" class="d-none">
+                                <p class="text-danger">First Name is required!</p>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Last Name</label>
-                            <input id="getLname" maxlength="45" type="text" class="form-control form-control-sm"
-                                   placeholder="Enter Last Name..."
-                                   value="">
+                            <input id="getLname" maxlength="45" type="text" class="form-control form-control-sm" placeholder="Enter Last Name..." value="">
                         </div>
                         <div class="form-group">
                             <label>NIC</label>
-                            <input id="getNic" maxlength="12" type="text" class="form-control form-control-sm"
-                                   placeholder="Enter NIC Number..."
-                                   value="">
-                            <div id="valUnique" class="d-none"><p class="text-danger">NIC already taken!</p></div>
-                            <div id="valNic" class="d-none"><p class="text-danger">Invalid NIC Number!</p></div>
+                            <input id="getNic" maxlength="12" minlength="10" type="text" class="form-control form-control-sm" placeholder="Enter NIC Number..." value="">
+                            <div id="valUnique" class="d-none">
+                                <p class="text-danger">NIC already taken!</p>
+                            </div>
+                            <div id="valNic" class="d-none">
+                                <p class="text-danger">Invalid NIC Number!</p>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Email</label>
-                            <input id="getEmail" type="text" class="form-control form-control-sm" required pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}"
-                                   placeholder="Enter Email..."
-                                   value="">
+                            <input id="getEmail" type="text" class="form-control form-control-sm" required pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}" placeholder="Enter Email..." value="">
                         </div>
                         <div class="form-group">
                             <label>Address</label>
-                            <input id="getAddress" type="text" class="form-control form-control-sm"
-                                   placeholder="Enter Address..."
-                                   value="">
+                            <input id="getAddress" type="text" class="form-control form-control-sm" placeholder="Enter Address..." value="">
                         </div>
                         <div class="form-group">
                             <label>Contact Number</label>
-                            <input id="getContact" maxlength="10" type="number" class="form-control form-control-sm"
-                                   placeholder="Enter Contact Number..."
-                                   value="">
+                            <input id="getContact" maxlength="10" type="number" class="form-control form-control-sm" placeholder="Enter Contact Number..." value="">
                             <!--<div id="valContact" class="d-none"><p class="text-danger">Invalid Contact Number!</p></div>-->
-                            <div id="valContact" class="d-none"><p class="text-danger">Invalid Contact Number! (Example: 0714564567)</p></div>
+                            <div id="valContact" class="d-none">
+                                <p class="text-danger">Invalid Contact Number! (Example: 0714564567)</p>
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -84,11 +80,10 @@
                         <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
                         @endif
                         @if($pageAuth['is_delete']==1 || false)
-                        <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
-                                 data-target="#modal-danger">Delete</button>
+                        <button id="btnshowDelete" type="submit" class="btn btn-danger d-none" data-toggle="modal" data-target="#modal-danger">Delete</button>
                         @endif
                         <button id="btnReset" type="submit" class="btn btn-secondary">Reset</button>
-                    </div>                           
+                    </div>
                 </div>
             </div>
 
@@ -118,30 +113,30 @@
             </div>
         </div>
     </div>
-</div>
-</div>
-<div class="modal fade" id="modal-danger">
-    <div class="modal-dialog">
-        <div class="modal-content bg-danger">
-            <div class="modal-header">
-                <h4 class="modal-title">Delete Selected Item</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><b>Are you sure you want to permanently delete this Committee ? </b></p>
-                <p>Once you continue, this process can not be undone. Please Procede with care.</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
-</div>
+    </div>
+    <div class="modal fade" id="modal-danger">
+        <div class="modal-dialog">
+            <div class="modal-content bg-danger">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Selected Item</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><b>Are you sure you want to permanently delete this Committee ? </b></p>
+                    <p>Once you continue, this process can not be undone. Please Procede with care.</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                    <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 </section>
 @endif
 @endsection
@@ -175,18 +170,18 @@
 <script src="../../js/CommitteeJS/delete.js"></script>
 <!-- AdminLTE App -->
 <script>
-    $(function () {
-//Load table
+    $(function() {
+        //Load table
         loadTableUI();
-//click save button
-        $('#btnSave').click(function () {
+        //click save button
+        $('#btnSave').click(function() {
             var data = fromValues();
             if (Validiteinsert(data)) {
                 // if validiated
-                uniqueNICcheck(data.nic, function (r) {
-//                    alert(JSON.stringify(r));
+                uniqueNICcheck(data.nic, function(r) {
+                    //                    alert(JSON.stringify(r));
                     if (r.message == 'true') {
-                        AddCommittee(data, function (result) {
+                        AddCommittee(data, function(result) {
                             if (result.id == 1) {
                                 Toast.fire({
                                     type: 'success',
@@ -202,20 +197,19 @@
                             resetinputFields();
                             hideAllErrors();
                         });
-                    } else
-                    {
+                    } else {
                         $('#valFname').addClass('d-none');
                         $('#valUnique').removeClass('d-none');
                     }
                 });
             }
         });
-//click update button
-        $('#btnUpdate').click(function () {
+        //click update button
+        $('#btnUpdate').click(function() {
             //get form data
             var data = fromValues();
             if (Validiteupdate(data)) {
-                updateCommittee($('#btnUpdate').val(), data, function (result) {
+                updateCommittee($('#btnUpdate').val(), data, function(result) {
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
@@ -234,9 +228,9 @@
                 });
             }
         });
-//click delete button
-        $('#btnDelete').click(function () {
-            deleteCommittee($('#btnDelete').val(), function (result) {
+        //click delete button
+        $('#btnDelete').click(function() {
+            deleteCommittee($('#btnDelete').val(), function(result) {
                 if (result.id == 1) {
                     Toast.fire({
                         type: 'success',
@@ -254,14 +248,14 @@
             });
             hideAllErrors();
         });
-//select button action 
-        $(document).on('click', '.btnAction', function () {
-            getaCommitteebyId(this.id, function (result) {
+        //select button action 
+        $(document).on('click', '.btnAction', function() {
+            getaCommitteebyId(this.id, function(result) {
                 $('#getFname').val(result.first_name);
                 $('#getLname').val(result.last_name);
                 $('#getNic').val(result.nic);
                 $('#getEmail').val(result.email),
-                        $('#getAddress').val(result.address);
+                    $('#getAddress').val(result.address);
                 $('#getContact').val(result.contact_no);
                 showUpdate();
                 $('#btnUpdate').val(result.id);
@@ -270,61 +264,60 @@
             hideAllErrors();
         });
     });
-//Check change of name input   
-    $('#getNic').change(function () {
+    //Check change of name input   
+    $('#getNic').change(function() {
         var data = fromValues();
-        uniqueNICcheck(data.nic, function (r) {
+        uniqueNICcheck(data.nic, function(r) {
             if (r.message === 'true') {
                 $('#valFname').addClass('d-none');
                 $('#valUnique').addClass('d-none');
 
-            } else
-            {
+            } else {
                 $('#valFname').addClass('d-none');
                 $('#valUnique').removeClass('d-none');
             }
         });
     });
     //Reset
-    $('#btnReset').click(function () {
+    $('#btnReset').click(function() {
         resetinputFields();
         hideAllErrors();
         $('#valContact').addClass('d-none');
         $('#valNic').addClass('d-none');
         showSave();
     });
-//show update buttons    
+    //show update buttons    
     function showUpdate() {
         $('#btnSave').addClass('d-none');
         $('#btnUpdate').removeClass('d-none');
         $('#btnshowDelete').removeClass('d-none');
     }
-//show save button    
+    //show save button    
     function showSave() {
         $('#btnSave').removeClass('d-none');
         $('#btnUpdate').addClass('d-none');
         $('#btnshowDelete').addClass('d-none');
     }
-//Reset all fields    
+    //Reset all fields    
     function resetinputFields() {
         $('#getFname').val('');
         $('#getLname').val('');
         $('#getNic').val('');
         $('#getEmail').val(''),
-                $('#getAddress').val('');
+            $('#getAddress').val('');
         $('#getContact').val('');
         $('#btnUpdate').val('');
         $('#btnDelete').val('');
         $('#valFname').addClass('d-none');
         $('#valUnique').addClass('d-none');
     }
-//HIDE ALL ERROR MSGS   
+    //HIDE ALL ERROR MSGS   
     function hideAllErrors() {
         $('#valUnique').addClass('d-none');
         $('#valNic').addClass('d-none');
         $('#valContact').addClass('d-none');
     }
-//get form values
+    //get form values
     function fromValues() {
         var data = {
             first_name: $('#getFname').val(),
@@ -336,6 +329,5 @@
         };
         return data;
     }
-
 </script>
 @endsection

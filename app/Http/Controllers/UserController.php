@@ -41,8 +41,8 @@ class UserController extends Controller
                 'lastName' => 'required|max:50|string',
                 'userName' => 'required|max:50|string|unique:users,user_name',
                 'address' => 'sometimes|max:100',
-                'contactNo' => ['nullable', new contactNo],
-                'email' => 'sometimes|nullable|email',
+                'contactNo' => ['required', 'numeric', 'nullable', 'min:10', new contactNo],
+                'email' => 'sometimes', 'regex:/(.+)@(.+)\.(.+)/i', 'nullable|email',
                 'nic' => ['sometimes', 'nullable', 'unique:users', new nationalID],
                 'roll' => 'integer|required',
                 'password' => 'required|confirmed|min:6',
@@ -62,13 +62,11 @@ class UserController extends Controller
             $user->api_token = Str::random(80);
             $msg = $user->save();
             UserController::PrevilagesAdd($user);
-            LogActivity::addToLog('Save User : UserController',$user);            
+            LogActivity::addToLog('Save User : UserController', $user);
         });
         return redirect()
             ->back()
             ->with('success', 'Ok');
-          
-            
     }
 
     public function edit(Request $request, $id)
@@ -136,15 +134,15 @@ class UserController extends Controller
     public function store(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        //        request()->validate([
-        //            'firstName' => 'required|max:50|alpha',
-        //            'lastName' => 'required|max:50|alpha',
-        //            'userName' => 'required|max:50|alpha_dash|unique:users,user_name',
-        //            'address' => 'max:100|alpha',
-        //            'contactNo' => 'max:12',
-        //            'email' => 'email',
-        //            'nic' => 'max:12|unique:users,3'
-        //        ]);
+        request()->validate([
+            'firstName' => 'required|max:50|string',
+            'lastName' => 'required|max:50|string',
+            'userName' => 'required|max:50|string',
+            'address' => 'sometimes|max:100',
+            'contactNo' => ['required', 'numeric', 'nullable', 'min:10', new contactNo],
+            'email' => 'regex:/(.+)@(.+)\.(.+)/i', 'nullable|email',
+            'nic' => ['nullable', new nationalID],
+        ]);
 
         //        dd($user);
         $user->user_name = request('userName');
@@ -158,12 +156,10 @@ class UserController extends Controller
 
 
         if ($msg) {
-            LogActivity::addToLog('Update User Done: UserController',$user);          
- 
+            LogActivity::addToLog('Update User Done: UserController', $user);
         } else {
-            LogActivity::addToLog('Update User Fail : UserController',$user);
+            LogActivity::addToLog('Update User Fail : UserController', $user);
         }
-
 
         if ($msg) {
             return redirect()
@@ -189,10 +185,9 @@ class UserController extends Controller
 
 
         if ($msg) {
-            LogActivity::addToLog('Store Password Done: UserController',$user);          
- 
+            LogActivity::addToLog('Store Password Done: UserController', $user);
         } else {
-            LogActivity::addToLog('Store Password Fail: UserController',$user);
+            LogActivity::addToLog('Store Password Fail: UserController', $user);
         }
 
         if ($msg) {
@@ -251,14 +246,13 @@ class UserController extends Controller
         $pageAuth = $Auser->authentication(config('auth.privileges.userCreate'));
         return view('user', ['levels' => $level, 'users' => $users, 'pageAuth' => $pageAuth]);
 
- 
+
 
 
         if ($msg) {
-            LogActivity::addToLog('Delete Done: UserController',$user);          
- 
+            LogActivity::addToLog('Delete Done: UserController', $user);
         } else {
-            LogActivity::addToLog('Delete fail: UserController',$user);
+            LogActivity::addToLog('Delete fail: UserController', $user);
         }
     }
 
@@ -284,10 +278,9 @@ class UserController extends Controller
         $msg = $aUser->save();
 
         if ($msg) {
-            LogActivity::addToLog('changeMyPass Done: UserController',$aUser);          
- 
+            LogActivity::addToLog('changeMyPass Done: UserController', $aUser);
         } else {
-            LogActivity::addToLog('changeMyPass fail: UserController',$aUser);
+            LogActivity::addToLog('changeMyPass fail: UserController', $aUser);
         }
 
         if ($msg) {
@@ -322,8 +315,4 @@ class UserController extends Controller
             return array('id' => 0, 'mgs' => 'false');
         }
     }
-
-
-
-
 }

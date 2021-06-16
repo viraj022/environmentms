@@ -35,11 +35,13 @@
                     </div>
                     <div class="card-body">
                         <label>Payment Category Name*</label>
-                        <input id="getName" type="text" maxlength="100" class="form-control form-control-sm"
-                               placeholder="Enter Name..."
-                               value="">
-                        <div id="valName" class="d-none"><p class="text-danger">Name is required</p></div>
-                        <div id="valUnique" class="d-none"><p class="text-danger">Name already taken!</p></div>
+                        <input id="getName" type="text" maxlength="100" class="form-control form-control-sm" placeholder="Enter Name..." value="">
+                        <div id="valName" class="d-none">
+                            <p class="text-danger">Name is required</p>
+                        </div>
+                        <div id="valUnique" class="d-none">
+                            <p class="text-danger">Name already taken!</p>
+                        </div>
                     </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
@@ -49,10 +51,9 @@
                         <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
                         @endif
                         @if($pageAuth['is_delete']==1 || false)
-                        <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
-                                 data-target="#modal-danger">Delete</button>
+                        <button id="btnshowDelete" type="submit" class="btn btn-danger d-none" data-toggle="modal" data-target="#modal-danger">Delete</button>
                         @endif
-                    </div>                           
+                    </div>
                 </div>
             </div>
 
@@ -82,30 +83,30 @@
             </div>
         </div>
     </div>
-</div>
-</div>
-<div class="modal fade" id="modal-danger">
-    <div class="modal-dialog">
-        <div class="modal-content bg-danger">
-            <div class="modal-header">
-                <h4 class="modal-title">Delete Selected Item</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><b>Are you sure you want to permanently delete this Item? </b></p>
-                <p>Once you continue, this process can not be undone. Please Procede with care.</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
-</div>
+    </div>
+    <div class="modal fade" id="modal-danger">
+        <div class="modal-dialog">
+            <div class="modal-content bg-danger">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Selected Item</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><b>Are you sure you want to permanently delete this Item? </b></p>
+                    <p>Once you continue, this process can not be undone. Please Procede with care.</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                    <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 </section>
 @endif
 @endsection
@@ -139,15 +140,15 @@
 <script src="../../js/paymentcatjs/delete.js"></script>
 <!-- AdminLTE App -->
 <script>
-    $(function () {
-//Load table
+    $(function() {
+        //Load table
         loadTable();
-//click save button
-        $('#btnSave').click(function () {
+        //click save button
+        $('#btnSave').click(function() {
             var data = fromValues();
             if (Validiteinsert(data)) {
                 // if validiated
-                AddPaymentCat(data, function (result) {
+                AddPaymentCat(data, function(result) {
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
@@ -159,18 +160,19 @@
                             title: 'Enviremontal MS</br>Error'
                         });
                     }
-                    loadTable();
+                    // loadTable();
+                    location.reload(true);
                     resetinputFields();
                     hideAllErrors();
                 });
             }
         });
-//click update button
-        $('#btnUpdate').click(function () {
+        //click update button
+        $('#btnUpdate').click(function() {
             //get form data
             var data = fromValues();
             if (Validiteupdate(data)) {
-                updatePaymentCat($('#btnUpdate').val(), data, function (result) {
+                updatePaymentCat($('#btnUpdate').val(), data, function(result) {
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
@@ -182,16 +184,17 @@
                             title: 'Enviremontal MS</br>Error'
                         });
                     }
-                    loadTable();
+                    location.reload(true);
+                    // loadTable();
                     showSave();
                     resetinputFields();
                     hideAllErrors();
                 });
             }
         });
-//click delete button
-        $('#btnDelete').click(function () {
-            deletePaymentCat($('#btnDelete').val(), function (result) {
+        //click delete button
+        $('#btnDelete').click(function() {
+            deletePaymentCat($('#btnDelete').val(), function(result) {
                 if (result.id == 1) {
                     Toast.fire({
                         type: 'success',
@@ -203,15 +206,16 @@
                         title: 'Enviremontal MS</br>Error'
                     });
                 }
-                loadTable();
+                location.reload(true);
+                // loadTable();
                 showSave();
                 resetinputFields();
                 hideAllErrors();
             });
         });
-//select button action 
-        $(document).on('click', '.btnAction', function () {
-            getaPaymentCatbyId(this.id, function (result) {
+        //select button action 
+        $(document).on('click', '.btnAction', function() {
+            getaPaymentCatbyId(this.id, function(result) {
                 $('#getName').val(result.name);
                 showUpdate();
                 $('#btnUpdate').val(result.id);
@@ -220,32 +224,32 @@
             hideAllErrors();
         });
     });
-//show update buttons    
+    //show update buttons    
     function showUpdate() {
         $('#btnSave').addClass('d-none');
         $('#btnUpdate').removeClass('d-none');
         $('#btnshowDelete').removeClass('d-none');
     }
-//show save button    
+    //show save button    
     function showSave() {
         $('#btnSave').removeClass('d-none');
         $('#btnUpdate').addClass('d-none');
         $('#btnshowDelete').addClass('d-none');
     }
-//Reset all fields    
+    //Reset all fields    
     function resetinputFields() {
         $('#getName').val('');
         $('#btnUpdate').val('');
         $('#btnDelete').val('');
     }
-//get form values
+    //get form values
     function fromValues() {
         var data = {
             name: $('#getName').val()
         };
         return data;
     }
-//HIDE ALL ERROR MSGS   
+    //HIDE ALL ERROR MSGS   
     function hideAllErrors() {
         $('#valName').addClass('d-none');
     }

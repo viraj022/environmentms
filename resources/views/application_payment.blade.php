@@ -56,7 +56,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>NIC </label>
-                                                <input id="cus_nic" type="text"  maxlength="12" class="form-control form-control-sm" placeholder="" value="">
+                                                <input id="cus_nic" type="text"  maxlength="12" minlength="10" class="form-control form-control-sm" placeholder="" value="">
                                             </div>
                                             <div class="form-group">
                                                 <label>Contact </label>

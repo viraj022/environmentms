@@ -124,10 +124,10 @@
                                             <b id="eplexpireuiSetup">Dates To Expire</b> <a class="float-right" id="eplcalExpireDate">-</a>
                                         </li>
                                         <li class="list-group-item">
-                                            <b>Remarks</b> <a class="float-right eplRemark" >-</a>
+                                            <b>Remarks</b> <a class="float-right eplRemark">-</a>
                                         </li>
                                         <li class="list-group-item">
-                                           <button id="" type="button" class="btn btn-block btn-success btn-xs btnRenewal">Renew Certificate</button>
+                                            <button id="" type="button" class="btn btn-block btn-success btn-xs btnRenewal">Renew Certificate</button>
                                         </li>
                                     </ul>
                                 </div>
@@ -171,72 +171,72 @@
 <!--<script src="../../js/RemarksJS/delete.js"></script>-->
 <!-- AdminLTE App -->
 <script>
-var EPL = "{{$id}}";
-$(function () {
-    getEplCertificateDetails(EPL, function (parameters) {
-        $('#client_id').val(parameters.client_id);
-        if (parameters.status == 1) {
-            $('#showUiDb').addClass('d-none');
-            $('#showData').removeClass('d-none');
-//Set Issue Date
-            $('#eplissueDate').html(parameters.issue_date);
-//Set Expire Date
-            $('#eplExpireDate').html(parameters.expire_date);
-            $('#eplcalExpireDate').html(parameters.date_different);
-            var currentDate = new Date().toISOString().split('T')[0];
-            if (currentDate >= parameters.expire_date) {
-                $('#eplexpireuiSetup').html('Passed Away');
-            } else {
-                $('#eplexpireuiSetup').html('Dates To Expire');
-            }
-//Date Filtering End            
-            $('.clientName').html(parameters.name);
-            $('.eplName').html(parameters.first_name + ' ' + parameters.last_name);
-            $('.clientNic').html(parameters.code);
-            $('.clientAddr').html(parameters.client.industry_address);
-            $('.clientCont').html(parameters.contact_no);
-            $('.clientEmail').html(parameters.email);
-            $('.eplCerNo').html(parameters.certificate_no);
-            $('.eplRegNo').html(parameters.client.industry_registration_no);
-            $('.eplRemark').html(parameters.remark);
-            $('.eplClientName').html(parameters.client.first_name + ' ' + parameters.client.last_name);
-            $('.eplClientAdress').html(parameters.client.address);
-            $('.eplClientMail').html(parameters.client.email);
-            $('.eplClientConNo').html(parameters.client.contact_no);
-            $('.eplClientNic').html(parameters.client.nic);
-        } else {
-            $('#showUiDb').removeClass('d-none');
-            $('#showData').addClass('d-none');
-        }
-    });
-    $("#issueBtn").click(function () {
-        if (confirm('Are you sure you want to issue?')) {
-            IssueCertificateEPL($('#client_id').val(), formData(), function (p) {
-                show_mesege(p);
-                if (p.id === 1) {
-                    window.location.href = p.rout;
+    var EPL = "{{$id}}";
+    $(function() {
+        getEplCertificateDetails(EPL, function(parameters) {
+            $('#client_id').val(parameters.client_id);
+            if (parameters.status == 1) {
+                $('#showUiDb').addClass('d-none');
+                $('#showData').removeClass('d-none');
+                //Set Issue Date
+                $('#eplissueDate').html(parameters.issue_date);
+                //Set Expire Date
+                $('#eplExpireDate').html(parameters.expire_date);
+                $('#eplcalExpireDate').html(parameters.date_different);
+                var currentDate = new Date().toISOString().split('T')[0];
+                if (currentDate >= parameters.expire_date) {
+                    $('#eplexpireuiSetup').html('Passed Away');
+                } else {
+                    $('#eplexpireuiSetup').html('Dates To Expire');
                 }
-            });
-        } else {
-            return false;
+                //Date Filtering End            
+                $('.clientName').html(parameters.name);
+                $('.eplName').html(parameters.first_name + ' ' + parameters.last_name);
+                $('.clientNic').html(parameters.code);
+                $('.clientAddr').html(parameters.client.industry_address);
+                $('.clientCont').html(parameters.contact_no);
+                $('.clientEmail').html(parameters.email);
+                $('.eplCerNo').html(parameters.certificate_no);
+                $('.eplRegNo').html(parameters.client.industry_registration_no);
+                $('.eplRemark').html(parameters.remark);
+                $('.eplClientName').html(parameters.client.first_name + ' ' + parameters.client.last_name);
+                $('.eplClientAdress').html(parameters.client.address);
+                $('.eplClientMail').html(parameters.client.email);
+                $('.eplClientConNo').html(parameters.client.contact_no);
+                $('.eplClientNic').html(parameters.client.nic);
+            } else {
+                $('#showUiDb').removeClass('d-none');
+                $('#showData').addClass('d-none');
+            }
+        });
+        $("#issueBtn").click(function() {
+            if (confirm('Are you sure you want to issue?')) {
+                IssueCertificateEPL($('#client_id').val(), formData(), function(p) {
+                    show_mesege(p);
+                    if (p.id === 1) {
+                        window.location.href = p.rout;
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+
+        function formData() {
+            let data = {
+                client_id: $("#client_id").val().trim(),
+                remark: $("#remark").val().trim(),
+                created_date: $("#createdDate").val().trim(),
+                file: $('#fileUploadC')[0].files[0]
+            };
+            //        if (data.issue_date.length == 0 || data.expire_date.length == 0 || data.certificate_no.length == 0) {
+            //            alert("Please Fill Correct Values !");
+            //            return false;
+            //        }
+            return data;
         }
+        $('.btnRenewal').click(function() {
+            window.open("/renewal_page/id/" + EPL, '_blank');
+        });
     });
-    function formData() {
-        let data = {
-            client_id: $("#client_id").val().trim(),
-            remark: $("#remark").val().trim(),
-            created_date: $("#createdDate").val().trim(),
-            file: $('#fileUploadC')[0].files[0]
-        };
-//        if (data.issue_date.length == 0 || data.expire_date.length == 0 || data.certificate_no.length == 0) {
-//            alert("Please Fill Correct Values !");
-//            return false;
-//        }
-        return data;
-    }
-    $('.btnRenewal').click(function () {
-        window.open("/renewal_page/id/" + EPL, '_blank');
-    });
-});
 </script>
-@endsection
