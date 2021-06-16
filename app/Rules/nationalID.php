@@ -26,7 +26,6 @@ class nationalID implements Rule
     public function passes($attribute, $value)
     {
         return preg_match('/^[0-9]{9}[vV]{1}$/', $value) || preg_match('/^[0-9]{12}$/', $value);
-
     }
 
     /**

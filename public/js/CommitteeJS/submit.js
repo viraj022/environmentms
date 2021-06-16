@@ -43,7 +43,7 @@ function Validiteinsert(data) {
                     }
                     var firstVal = data.nic.charAt(9);
 //        alert(firstVal);
-                    if (firstVal != "v" && firstVal != "x") {
+                    if (firstVal != "V" && firstVal != "X" && firstVal != "v" && firstVal != "x") {
                         $('#valNic').removeClass('d-none');
                         response = false;
                     }

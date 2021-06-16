@@ -143,20 +143,24 @@ class PaymentTypeController extends Controller
      */
     public function destroy($id)
     {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
-        if ($pageAuth['is_delete']) {
-            $payment_type = PaymentType::findOrFail($id);
-            $msg = $payment_type->delete();
+        try {
+            $user = Auth::user();
+            $pageAuth = $user->authentication(config('auth.privileges.paymentDetails'));
+            if ($pageAuth['is_delete']) {
+                $payment_type = PaymentType::findOrFail($id);
+                $msg = $payment_type->delete();
 
-            if ($msg) {
-                LogActivity::addToLog('Payment type deleted', $payment_type);
-                return array('id' => 1, 'message' => 'true');
+                if ($msg) {
+                    LogActivity::addToLog('Payment type deleted', $payment_type);
+                    return array('id' => 1, 'message' => 'true');
+                } else {
+                    return array('id' => 0, 'message' => 'false');
+                }
             } else {
-                return array('id' => 0, 'message' => 'false');
+                abort(401);
             }
-        } else {
-            abort(401);
+        } catch (Exception $e) {
+            return array('id' => 0, 'message' => 'false');
         }
     }
 }

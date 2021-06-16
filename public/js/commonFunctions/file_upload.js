@@ -17,9 +17,9 @@ function ulploadFile2(URL, formData, callBack, metod = false) {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        xhr: function () {
+        xhr: function() {
             var xhr = new window.XMLHttpRequest();
-            xhr.upload.addEventListener("progress", function (evt) {
+            xhr.upload.addEventListener("progress", function(evt) {
                 if (evt.lengthComputable) {
                     $('.progress').removeClass('d-none');
                     var percentComplete = evt.loaded / evt.total;
@@ -37,17 +37,18 @@ function ulploadFile2(URL, formData, callBack, metod = false) {
         data: formData,
         contentType: false,
         processData: false
-    }).done(function (response) {
+    }).done(function(response) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(response);
         }
-    }).fail(function (jqXHR, exception) {
+    }).fail(function(jqXHR, exception) {
         let msg = responseMsg(jqXHR, exception);
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(msg);
         }
     });
 }
+
 function ulploadFileWithData(URL, dataArray, callBack, metod = false) {
     if (!metod) {
         metod = 'POST';
@@ -55,7 +56,7 @@ function ulploadFileWithData(URL, dataArray, callBack, metod = false) {
 
     let formData = new FormData();
     // populate fields
-    $.each(dataArray, function (key, value) {
+    $.each(dataArray, function(key, value) {
         formData.append(key, value);
     });
     // send form data
@@ -65,9 +66,9 @@ function ulploadFileWithData(URL, dataArray, callBack, metod = false) {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             "Accept": "application/json"
         },
-        xhr: function () {
+        xhr: function() {
             var xhr = new window.XMLHttpRequest();
-            xhr.upload.addEventListener("progress", function (evt) {
+            xhr.upload.addEventListener("progress", function(evt) {
                 if (evt.lengthComputable) {
                     $('.progress').removeClass('d-none');
                     var percentComplete = evt.loaded / evt.total;
@@ -85,14 +86,14 @@ function ulploadFileWithData(URL, dataArray, callBack, metod = false) {
         data: formData,
         contentType: false,
         processData: false
-    }).done(function (response) {
+    }).done(function(response) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(response);
         }
-    }).fail(function (jqXHR, exception) {
+    }).fail(function(jqXHR, exception) {
         let msg = responseMsg(jqXHR, exception);
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-            callBack(msg);
+            callBack(response);
         }
     });
 }
@@ -122,7 +123,7 @@ function responseMsg(jqXHR, exception) {
     return msg;
 }
 
-$("input[type='file']").on("change", function () {
+$("input[type='file']").on("change", function() {
     if (this.files[0].size > 30000000) {
         alert("Please upload file less than 20MB.");
         $(this).val('');

@@ -56,6 +56,7 @@ function inspectionsByDateAPI(schedule_date, id, callBack) {
         }
     });
 }
+
 //Set Inspection Needed Files
 function setInspectionNeededApi(id, callBack) {
     ajaxRequest('GET', "/api/files/need_inspection/officer/id/" + id, null, function (dataSet) {
@@ -100,13 +101,14 @@ function InspectionRemoveApi(id, callBack) {
 }
 //Load Calender
 function loadCalenderApi(id, callBack) {
+    let eventList = [];
     if (!id) {
         return false;
     }
-    let eventList = [];
     let url = "/api/files/need_inspection/pending/officer/id/" + id;
     ajaxRequest("GET", url, null, function (parameters) {
         $.each(parameters, function (index, row) {
+
             eventList.push({
                 title: row.file_no,
 //                start: new Date(y, m, 1),
@@ -121,4 +123,40 @@ function loadCalenderApi(id, callBack) {
             callBack(eventList);
         }
     });
+}
+
+//Load Table After Clicking Date
+function displayClientDataFromEvent(u_id, callBack) {
+    ajaxRequest('GET', "/api/client/id/" + u_id, null, function (dataSet) {
+        var tbl = "";
+        if (dataSet.length == 0) {
+            tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
+        } else {
+            tbl += '<tr>';
+            tbl += '<th>Industry Name:</th>';
+            tbl += '<td>' + dataSet.industry_name + '</td>';
+            tbl += '</tr>';
+            tbl += ' <tr>';
+            tbl += ' <th>Owner:</th>';
+            tbl += ' <td>' + dataSet.first_name + ' ' + dataSet.last_name + '</td>';
+            tbl += '</tr>';
+            tbl += '    <tr>';
+            tbl += ' <th>Industry Category:</th>';
+            tbl += ' <td>' + dataSet.industry_category.name + '</td>';
+            tbl += '</tr>';
+            tbl += '<tr>';
+            tbl += ' <th>Site Address:</th>';
+            tbl += ' <td>' + dataSet.address + '</td>';
+            tbl += '</tr>';
+            tbl += '<tr>';
+            tbl += ' <th>Pradesheeyasaba:</th>';
+            tbl += ' <td>' + dataSet.pradesheeyasaba.name + '</td>';
+            tbl += '</tr>';
+        }
+        $('#tblUserData').html(tbl);
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(dataSet);
+        }
+    }
+    );
 }

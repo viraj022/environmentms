@@ -370,9 +370,10 @@ class EPLController extends Controller
         return $epl;
     }
 
-    public function getCertificateByCertificateNo(Request $req) {
-        $number=$req->cert_no;
-        return Certificate::where('certificates.cetificate_number',$number)->get();
+    public function getCertificateByCertificateNo(Request $req)
+    {
+        $number = $req->cert_no;
+        return Certificate::where('certificates.cetificate_number', $number)->get();
     }
     /**
      * Display the specified resource.
@@ -710,6 +711,17 @@ class EPLController extends Controller
             return $epl->certificateInfo();
         } else {
             abort(404);
+        }
+    }
+
+    public function index4()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        if ($pageAuth['is_read']) {
+            return view('reverse_old_confirm', ['pageAuth' => $pageAuth]);
+        } else {
+            abort(401);
         }
     }
 }

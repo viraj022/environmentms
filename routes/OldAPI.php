@@ -186,3 +186,8 @@ Route::middleware('auth:api')->delete('/site_clearance/old/site_clearance_sessio
     "message": "true"
 }
 */
+
+Route::middleware('auth:api')->patch('/old/unconfirm_industry/{id}', 'ClientController@markOldUnfinish');
+
+
+Route::middleware('auth:api')->get('/old/confirmed_clients', 'ClientController@getConfirmedClients');
