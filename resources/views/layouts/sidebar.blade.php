@@ -44,37 +44,6 @@
                 </li>
             </ul>
         </li>
-        <li class="nav-item has-treeview {{ Request::is('users','rolls') ? 'menu-open' : '' }}">
-            <a href="#" class="nav-link active">
-                <i class="nav-icon fas fa-user-shield"></i>
-                <p>
-                    User Management
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                @foreach((auth()->user()->privileges) as $indexKey=>$pre)
-                @if($pre['id']===config('auth.privileges.userCreate'))
-                <li class="nav-item">
-                    <a href="{{ url('/users') }}" class="nav-link {{ Request::is('users') ? 'active' : '' }}">
-                        <i class="fas fa-user-plus nav-icon"></i>
-                        <p>User Create</p>
-                    </a>
-                </li>
-                @endif
-                {{-- @if($pre['id']===config('auth.privileges.userRole') && auth()->user()->roll->level->value == 1) --}}
-                @if($pre['id']===config('auth.privileges.userRole'))
-                <li class="nav-item">
-                    <a href="{{ url('/rolls') }}" class="nav-link {{ Request::is('rolls') ? 'active' : '' }}">
-                        <i class="fas fa-users-cog nav-icon"></i>
-                        <p>ROll Create</p>
-                    </a>
-                </li>
-                @endif
-                @endforeach
-
-            </ul>
-        </li>
         <li class="nav-item has-treeview {{ Request::is('attachments','attachment_map','pradesheyasaba','industry_category','payment_type','payments','payment_range','zone','assistant_director','environment_officer','committee_pool') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-pencil-ruler"></i>
@@ -409,7 +378,37 @@
             @endforeach
         </ul>
     </li>
+    <li class="nav-item has-treeview {{ Request::is('users','rolls') ? 'menu-open' : '' }}">
+        <a href="#" class="nav-link active">
+            <i class="nav-icon fas fa-user-shield"></i>
+            <p>
+                User Management
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            @foreach((auth()->user()->privileges) as $indexKey=>$pre)
+            @if($pre['id']===config('auth.privileges.userCreate'))
+            <li class="nav-item">
+                <a href="{{ url('/users') }}" class="nav-link {{ Request::is('users') ? 'active' : '' }}">
+                    <i class="fas fa-user-plus nav-icon"></i>
+                    <p>User Create</p>
+                </a>
+            </li>
+            @endif
+            {{-- @if($pre['id']===config('auth.privileges.userRole') && auth()->user()->roll->level->value == 1) --}}
+            @if($pre['id']===config('auth.privileges.userRole'))
+            <li class="nav-item">
+                <a href="{{ url('/rolls') }}" class="nav-link {{ Request::is('rolls') ? 'active' : '' }}">
+                    <i class="fas fa-users-cog nav-icon"></i>
+                    <p>ROll Create</p>
+                </a>
+            </li>
+            @endif
+            @endforeach
 
+        </ul>
+    </li>
     </ul>
 </nav>
 <!-- /.sidebar-menu -->

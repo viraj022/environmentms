@@ -44,12 +44,9 @@
                                     <table class="table table-condensed" id="tbl_confirm">
                                         <thead>
                                             <tr>
-                                                <th>Name Title</th>
-                                                <th>First Name</th>
-                                                <th>Last Name</th>
-                                                <th>Adreess</th>
-                                                <th>Contact No</th>
-                                                <th>Industry Investment</th>
+                                                <th>File No</th>
+                                                <th>Name</th>
+                                                <th>Address</th>
                                                 <th>BR No</th>
                                                 <th>Action</th>
                                             </tr>
@@ -104,13 +101,15 @@
     $(document).ready(function() {
         //Confirm Button
         $(document).on("click", ".btnUnconfirm", function() {
-            var id = $(this).val();
-            UnConfirmUploadingAttachs(id, function(respo) {
-                show_mesege(respo);
-                if (respo.id == 1) {
-                    location.reload();
-                }
-            });
+            if (confirm('Are you sure?')) {
+                var id = $(this).val();
+                UnConfirmUploadingAttachs(id, function(respo) {
+                    show_mesege(respo);
+                    if (respo.id == 1) {
+                        location.reload();
+                    }
+                });
+            }
         });
     });
 </script>

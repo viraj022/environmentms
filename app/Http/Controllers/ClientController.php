@@ -543,7 +543,7 @@ class ClientController extends Controller
             $user = Auth::user();
             $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
             $client = Client::find($id);
-            // $this->generateCertificateForOldData($client, $user);
+            $this->generateCertificateForOldData($client, $user);
             $client->is_old = 2; // inspected state
             $client->file_status = 5; // set file status
             $client->cer_status = 6; // set certificate status
@@ -565,9 +565,15 @@ class ClientController extends Controller
             $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
             $client = Client::find($id);
             $client->is_old = 0; // inspected state
-            LogActivity::addToLog("Old file Uncomplete" . $id, $client);
-            LogActivity::fileLog($client->id, 'File', "Old file Uncomplete", 1);
-            if ($client->save()) {
+            $client->file_status = 0; // set file status
+            $client->cer_status = 0; // set certificate status
+            $client->save();
+            $certificate = DB::table('certificates')
+                ->where('client_id', '=', $id)
+                ->delete();
+            LogActivity::addToLog("Old file confirm revert" . $id, $client);
+            LogActivity::fileLog($client->id, 'File', "Old file confirm revert", 1);
+            if ($client == true && $certificate == true) {
 
                 return array('id' => 1, 'message' => 'true');
             } else {

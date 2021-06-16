@@ -287,7 +287,6 @@
                                 </div>
                                 <div class="card-body d-none isConfirmed">
                                     <h4 class="text-success">File Checked And Confirmed <i class="fa fa-check-circle"></i></h4>
-                                    <button id="btnUnConfirm" class="btn btn-dark">UnConfirm</button>
                                 </div>
                             </div>
                         </div>
@@ -782,16 +781,6 @@
                 }
             });
         }
-    });
-
-    //Confirm Button
-    $('#btnUnConfirm').click(function() {
-        UnConfirmUploadingAttachs(PROFILE_ID, function(respo) {
-            show_mesege(respo);
-            if (respo.id == 1) {
-                location.reload();
-            }
-        });
     });
 
     //Handle Upload Button
