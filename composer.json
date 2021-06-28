@@ -5,7 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.2",
+        "php": "^8",
         "codedge/laravel-fpdf": "^1.7",
         "doctrine/dbal": "^2.10",
         "fideloper/proxy": "^4.0",
