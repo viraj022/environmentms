@@ -173,7 +173,6 @@
 <script>
 var EPL = "{{$id}}";
 $(function () {
-    alert();
     getEplCertificateDetails(EPL, function (parameters) {
         $('#client_id').val(parameters.client_id);
         if (parameters.status == 1) {
