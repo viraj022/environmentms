@@ -62,7 +62,7 @@
                     <!--<button type="button" id="prepareCertificate" class="btn btn-primary d-none"><i class="fa fa-check"></i> Approve Certificate</button>-->
                     <div class="form-group">
                         <label>Minute</label>
-                        <textarea id="getMinutes" maxlength="55" type="text" class="form-control form-control-sm" placeholder="Enter Minute..." value=""></textarea>
+                        <textarea id="getMinutes" type="text" class="form-control form-control-sm" placeholder="Enter Minute..." value=""></textarea>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
