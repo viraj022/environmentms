@@ -110,9 +110,9 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
                     } else {
                         status_Lable = '(' + row.need_inspection + ')';
                     }
-
+                    
                 }
-
+                
                 var myDate = new Date(row.created_at);
                 var fixMydate = myDate.toISOString().split('T')[0];
                 if ((row.file_status == file_status) || (file_status == 'all')) {
@@ -158,6 +158,10 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
 //Approval API Btn
 function approvalApi(file_id, env_offi, DATA, callBack) {
     if (isNaN(file_id)) {
+        return false;
+    }
+    if (DATA.minutes.length == null || DATA.minutes.length == 0) {
+        alert('Please Enter Minute Text !');
         return false;
     }
     ajaxRequest('PATCH', "/api/environment_officer/approve/" + env_offi + "/" + file_id, DATA, function (dataSet) {

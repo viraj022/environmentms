@@ -16,12 +16,23 @@ function getaProfilebyId(callBack) {
                 tbl += '<td>' + ++index + '</td>';
                 tbl += '<td>' + row.industry_name + '</td>';
                 tbl += '<td><a href="/industry_profile/id/' + row.id + '" target="_blank">' + row.file_no + '</a>(' + certificate_type[row.cer_type_status] + ')</td>';
+                tbl += '<td title="' + row.certificate_comment + '">' + row.certificate_comment + '</td>';
                 tbl += '<td>' + certificate_status[row.cer_status] + '</td>';
                 tbl += '<td><a href="/certificate_perforation/id/' + row.id + '" class="btn btn-success">Certificate<a></td>';
                 tbl += '</tr>';
             });
         }
         $('#tblPendingCertificate tbody').html(tbl);
+        $('#tblPendingCertificate').DataTable({
+            columnDefs: [{
+                    targets: 3,
+                    render: function (data, type, row) {
+                        return data.length > 10 ?
+                                data.substr(0, 10) + '…' :
+                                data;
+                    }
+                }]
+        });
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }
