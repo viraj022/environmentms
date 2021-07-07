@@ -127,6 +127,10 @@
                         <label>Minute</label>
                         <textarea id="getMinutes" type="text" class="form-control form-control-sm" placeholder="Enter Minute..." value=""></textarea>
                     </div>
+                    <div class="form-group d-none" id="nominate_certificate">
+                        <label>For Certificate Prepare</label>
+                        <textarea id="cert_nominate" type="text" class="form-control form-control-sm" placeholder="Add Comment" value=""></textarea>
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" id="setInspectionVal2" class="btn btn-primary d-none"><i class="fa fa-check"></i> Set Inspection</button>
@@ -176,8 +180,11 @@
     var file_status = {0: 'pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Prenidng Approval', 4: 'D Certificate Approval Prenidng', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold'};
     function minute() {
         var data = {
-            minutes: $('#getMinutes').val()
+            minutes: $('#getMinutes').val().trim()
         };
+        if ($('#cert_nominate').val().trim() != null || $('#cert_nominate').val().trim().length > 0) {
+            data.nominate = $('#cert_nominate').val().trim();
+        }
         return data;
     }
     fileStatusCombo(file_status);
@@ -248,6 +255,12 @@
         $('#viewCertificateBtn').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
         $('#upCertificate').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
         $('#modalTitlex2').html(fileData.file_no);
+        if (fileData.need_inspection != null && f_Status == 0) {
+            $('#nominate_certificate').removeClass('d-none');
+        } else {
+            $('#nominate_certificate').addClass('d-none');
+        }
+
 
         $('#needApproval,#submitAdCerApproval,#rejectAdCerApproval,#setInspectionVal2,#viewCertificateBtn').addClass('d-none');
 

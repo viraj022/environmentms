@@ -386,6 +386,10 @@ class EnvironmentOfficerController extends Controller
             if ($request->has('minutes')) {
                 $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ENV_APPROVE_FILE, $user->id));
             }
+            if ($request->has('nominate')) {
+                $file->certificate_comment = $request->nominate;
+                $file->save();
+            }
             if ($msg) {
                 return array('id' => 1, 'message' => 'true');
             } else {
