@@ -23,10 +23,7 @@ use Illuminate\Support\Facades\DB;
 class MinutesRepository {
 
     public static function all($file_id) {
-//        $file =   Client::FindOrfail($file_id);
-        $minutes = Minute::with('user')->where('file_id', $file_id)->get()->toArray();
-//        $minutes =  $minutes->groupBy('file_type');
-//        dd($minutes);
+        $minutes = Minute::with('user')->where('file_id', $file_id)->orderBy('id', 'DESC')->get()->toArray();
         $array = [];
         foreach ($minutes as $min) {
             $user = $min['user'];
