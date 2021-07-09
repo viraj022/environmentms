@@ -83,31 +83,31 @@ function getCardOfTableUI(callBack) {
     var id = 1;
     methodMinuteAPI(null, 4, PROFILE_ID, function (dataSet) {
         if (dataSet) {
-            $.each(dataSet, function (index, set) {
-                card += '<div class="card card-widget">';
-                card += '<div class="card-header">';
-                card += ' <b class="username">' + set.type + '(' + set.Date + ')' + '</b>';
-                card += ' <div class="card-tools">';
-                card += ' <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>';
-                card += '  </button>';
-                card += ' </div>';
-                card += ' </div>';
-                card += ' <div class="card-footer card-comments" style="display: block;">';
-                $.each(set.minute_object, function (index, e) {
-                    card += '<div class="card-comment">';
-                    card += ' <img class="img-circle img-sm" src="../../dist/img/user1-128x128.jpg" alt="User Image">';
-                    card += '<div class="comment-text">';
-                    card += '<span class="username">';
-                    card += situations_arr[e.situation];
-                    card += ' <span class="text-muted float-right">' + e.updated_at + '</span>';
-                    card += '</span>';
-                    card += e.minute_description;
-                    card += '</div>';
-                    card += '</div>';
-                });
+            card += '<div class="card card-widget">';
+            card += '<div class="card-header">';
+            card += ' <b class="username">Minutes List</b>';
+            card += ' <div class="card-tools">';
+            card += ' <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>';
+            card += '  </button>';
+            card += ' </div>';
+            card += ' </div>';
+            card += ' <div class="card-footer card-comments" style="display: block;">';
+            $.each(dataSet, function (index, e) {
+                card += '<div class="card-comment">';
+                card += '<img class="img-circle img-sm" src="../../dist/img/user1-128x128.jpg" alt="User Image">';
+                card += '<div class="comment-text">';
+                card += '<span class="username">';
+                card += situations_arr[e.situation];
+                card += '<span class="text-muted float-right">' + e.updated_at + '</span>';
+                card += '</span>';
+                card += e.minute_description;
+                card += '</br>';
+                card += 'Officer: ' + e.user;
                 card += '</div>';
                 card += '</div>';
             });
+            card += '</div>';
+            card += '</div>';
         } else {
             card = "<td>No Data Found</td>";
         }

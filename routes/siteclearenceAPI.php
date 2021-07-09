@@ -14,7 +14,7 @@ Route::middleware('auth:api')->patch('/site_clearance/processing_status/{siteCle
  * APis for manipulating  minutes records 
  */
 
-Route::apiResource('/file_minutes', 'MinuteController');
+Route::get('/file_minutes/{file_id}', 'MinuteController@GetAllMinutesByFile');
 
 
 Route::post('/tor/{site_clearence_session}', 'SiteClearanceController@uploadTor');
