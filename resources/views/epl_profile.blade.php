@@ -50,7 +50,8 @@
                                                 <dt class="">Contact Email : <a id="client_amil"></a></dt>
                                                 <dt class="">NIC : <a id="client_nic"> </a></dt>-->
                         <div class="">
-                            <a href="#" class="btn btn-primary viewCert" target="_blank">View Certificate</a>
+                            <a href="#" class="btn btn-primary viewCert d-none" target="_blank">View Certificate</a>
+                            <span id="no_certificate_span" class="text-danger"> No Certificate Uploaded</span>
                         </div>
                     </div>
                     <!-- /.card-body -->
@@ -221,10 +222,15 @@ $(function () {
             }
 
         }
-        var cert_num = {cert_no: result.certificate_no};
-        getCertificatebyId(cert_num, function (set) { // get certificate by cert number
-            $('.viewCert').attr('href', set[0].signed_certificate_path);
-        });
+
+        if (result.certificate_no != null) {
+            $('.viewCert').removeClass('d-none');
+            $('#no_certificate_span').addClass('d-none');
+            var cert_num = {cert_no: result.certificate_no};
+            getCertificatebyId(cert_num, function (set) { // get certificate by cert number
+                $('.viewCert').attr('href', "/"+set[0].signed_certificate_path);
+            });
+        }
     });
 });
 function disWarnPay() {
