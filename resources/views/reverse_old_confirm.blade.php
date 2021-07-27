@@ -36,7 +36,7 @@
                         <div class="card card-dark">
                             <div class="card-header">
                                 <h3 class="card-title">Confirmed Files</h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <button class="btn btn-sm btn-primary" id="tblRefresh"><i class="fa fa-refresh"></i> Refresh</button>&nbsp;
+<!--                                <button class="btn btn-sm btn-primary" id="tblRefresh"><i class="fa fa-refresh"></i> Refresh</button>&nbsp;-->
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body p-0">
