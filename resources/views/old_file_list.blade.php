@@ -44,7 +44,7 @@
                                         <th style="width: 10px">#</th>
                                         <th>BR</th>
                                         <th>File No</th>
-                                        <th >Industry Name</th>
+                                        <th>Client Name</th>
                                         <th style="width: 8px">EPL</th>
                                         <th style="width: 8px">Old Files</th>
                                         <th style="width: 8px">Env Officer</th>
@@ -115,14 +115,14 @@
     $(function () {
 //Load table
         getAllOldFilesApi(100, function () {
-            var colCount = $("#tblOldFiles tr").length - 1;
-            $('.oldFilesCount').html(colCount);
+//            var colCount = $("#tblOldFiles").
+//            $('.oldFilesCount').html(colCount);
         });
 
         $('#btnGetAll').click(function () {
             getAllOldFilesApi(-1, function () {
-                var colCount = $("#tblOldFiles tr").length - 1;
-                $('.oldFilesCount').html(colCount);
+//                var colCount = $("#tblOldFiles tr").length - 1;
+//                $('.oldFilesCount').html(colCount);
             });
         });
 

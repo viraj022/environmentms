@@ -1063,7 +1063,7 @@ class ClientController extends Controller {
     }
 
     public function getConfirmedClients() {
-        $clients = Client::where('is_old', '!=', 0)->get();
+        $clients = Client::where('deleted_at', '=', null)->where('is_old', '!=', 0)->get();
         return $clients;
     }
 
