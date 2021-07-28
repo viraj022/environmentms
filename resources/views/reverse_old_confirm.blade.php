@@ -45,8 +45,8 @@
                                         <thead>
                                             <tr>
                                                 <th>File No</th>
-                                                <th>Name</th>
-                                                <th>Address</th>
+                                                <th>Client Name</th>
+                                                <th>Industry Name</th>
                                                 <th>BR No</th>
                                                 <th>Action</th>
                                             </tr>
