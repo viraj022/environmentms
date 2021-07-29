@@ -6,7 +6,7 @@ function loadConfirmedTable() {
             table += "<tr>";
             table += "<td>" + value.file_no + "</td>";
             table += "<td>" + value.first_name + value.last_name + "</td>";
-            table += "<td>" + value.address + "</td>";
+            table += "<td>" + value.industry_name + "</td>";
             table += "<td>" + value.industry_registration_no + "</td>";
             table += "<td><button value='" + value.id + "' type ='button' class ='btnUnconfirm btn btn-success btn-xs'> UnConfirm </button></td>";
             table += "</tr>";
