@@ -131,7 +131,6 @@
         $(document).on('click', '.btnAction', function () {
         });
 
-
         $(document).on('click', '.actionDetails', function () {
             var fileData = JSON.parse(unescape($(this).val()));
             let f_Status = fileData.file_status;

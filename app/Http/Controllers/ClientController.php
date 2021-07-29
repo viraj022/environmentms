@@ -249,6 +249,7 @@ class ClientController extends Controller {
             'industry_registration_no' => 'nullable|string',
             'is_old' => 'sometimes|required|integer',
             'industry_sub_category' => 'nullable|string',
+            'file_no' => 'nullable|string'
                 // 'password' => 'required',
         ]);
         if ($pageAuth['is_update']) {
