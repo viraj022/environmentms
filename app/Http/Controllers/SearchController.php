@@ -154,8 +154,7 @@ class SearchController extends Controller {
                 $client_data[$key] = $exploded_value[0];
             }
         } elseif ($type == 'site_clear_code') {
-            $site_session_data = SiteClearenceSession::pluck($column)->toArray();
-            dd($site_session_data);
+            $client_data = SiteClearenceSession::pluck($column)->toArray();
 //            Client::find()
         } else {
             $client_data = Client::pluck($column)->toArray();
@@ -166,6 +165,13 @@ class SearchController extends Controller {
 
     function getBusinessByName($name) {
         return EPL::where('registration_no', 'like', '%' . $name . '%')->get();
+    }
+
+    function getClientBySite($name) {
+        $client = SiteClearenceSession::where('code', 'like', '%'.$name.'%')->select('client_id')->first();
+        $client_id = $client->client_id;
+        $client_data = EPL::where('client_id', '=', $client_id)->get();
+        dd($client_data);
     }
 
     public function search($type) {
@@ -190,6 +196,8 @@ class SearchController extends Controller {
                 return $this->getClientByAddress($value);
             case 'by_industry_name':
                 return $this->getClientByIndustryName($value);
+            case 'site_clear_code':
+                return $this->getClientBySite($value);
             default:
                 abort(422);
                 return response(array('message' => 'Invalid Code', 422));

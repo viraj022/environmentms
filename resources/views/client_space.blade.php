@@ -269,7 +269,7 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <label>Enter*</label>
+                                <label>Search with*</label>
                                 <select id="getDtaType" class="form-control form-control-sm select2 select2-purple col-sm-4" data-dropdown-css-class="select2-purple" style="width: 100%;" name="level">
                                     <option value="name">Client Name</option>
                                     <option value="id">Client NIC</option>
@@ -335,6 +335,37 @@
         </div>
     </div>
     <!--show lient details START-->
+    
+    <!--Search Site Clearance END-->
+    <div class="view-site-clear d-none">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-user"></i> Site Clearance Details
+
+                    </h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table class="table table-active" id="tblCusData">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Code</th>
+                                <th>Remark</th>
+                                <th>Type</th>
+                                <th>NIC</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+    </div>
 
     <!--Search Client By NIC END-->
 
