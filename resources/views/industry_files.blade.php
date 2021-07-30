@@ -68,9 +68,10 @@
                                 <thead>
                                     <tr class="tblTrsec">
                                         <th style="width: 10px">#</th>
-                                        <th>Industry Name</th>
-                                        <th>File No</th>
-                                        <th>#</th>
+                                        <th style='width: 25em'>Industry Name</th>
+                                        <th style='width: 20em'>EPL Code</th>
+                                        <th style='width: 25em'>File No</th>
+                                        <th style='width: 15em'>#</th>
                                         <th>Status</th>
                                         <!--<th class="inspectTbl" style="width: 180px">Inspection</th>-->
                                         <th class="" style="width: 180px">Action</th>

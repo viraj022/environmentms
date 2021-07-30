@@ -275,6 +275,7 @@
                                     <option value="id">Client NIC</option>
                                     <option value="license">License Number</option>
                                     <option value="epl">EPL Number</option>
+                                    <option value="site_clear_code">Site Clearance Code</option>
                                     <option value="by_industry_name">Business Name</option>
                                     <option value="business_reg">Business Registration Number</option>
                                     <option value="by_address">Address</option>
@@ -531,13 +532,7 @@
             };
             if (data2.value.length != 0 && data2.value != null) {
                 getClientbyNic($('#getDtaType').val(), data2, function(result) {
-                    //                if (result.length == 0 || result == undefined) {
-                    //                    if (confirm("Client Not Found, Do you want to register New Client?")) {
-                    //                        setSectionVisible('reg-newClient');
-                    //                    }
-                    //                } else {
-                    //                }             
-                    //                $('#getName').val(result.name);
+                  
                     switch ($('#getDtaType').val()) {
                         case 'name':
                             if (result != 0) {

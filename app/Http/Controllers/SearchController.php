@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\EPL;
 use App\Client;
 use App\Certificate;
+use App\SiteClearenceSession;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -135,6 +136,9 @@ class SearchController extends Controller {
             case 'license':
                 $column = 'cetificate_number';
                 break;
+            case 'site_clear_code':
+                $column = 'code';
+                break;
             default :
                 $column = 'first_name';
                 break;
@@ -144,12 +148,15 @@ class SearchController extends Controller {
         } else if ($type == 'license') {
             //get Certificate Number
 //            $client_data = Certificate::pluck($column)->toArray();
-          $client_data = Certificate::pluck($column)->toArray();
+            $client_data = Certificate::pluck($column)->toArray();
             foreach ($client_data as $key => $value) {
-               $exploded_value = explode("/",$value);
-               $client_data[$key] = $exploded_value[0];
+                $exploded_value = explode("/", $value);
+                $client_data[$key] = $exploded_value[0];
             }
-           
+        } elseif ($type == 'site_clear_code') {
+            $site_session_data = SiteClearenceSession::pluck($column)->toArray();
+            dd($site_session_data);
+//            Client::find()
         } else {
             $client_data = Client::pluck($column)->toArray();
         }

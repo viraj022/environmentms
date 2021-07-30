@@ -82,6 +82,10 @@ function loadAdPendingListTable(id) {
                 "defaultContent": "-"
             },
             {
+                "data": "code_epl",
+                "defaultContent": "-"
+            },
+            {
                 "data": "",
                 render: function (data, type, row) {
                     return "<td><a href='/industry_profile/id/" + row.id + "' target='_blank'>" + row.file_no + "</a></td>";
