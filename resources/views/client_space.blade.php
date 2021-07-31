@@ -565,7 +565,8 @@
                                                     table += "<tr>";
                                                     table += "<td>" + ++index + "</td>";
                                                     table += "<td>" + clientData.code + "</td>";
-                                                    table += "<td>" + clientData.first_name + "</td>";
+                                                    let client_name = clientData.first_name+clientData.last_name;
+                                                    table += "<td>" + client_name + "</td>";
                                                     table += "<td>" + clientData.industry_name + "</td>";
                                                     table += "<td>" + clientData.remark + "</td>";
                                                     table += "<td>" + clientData.site_clearance_type + "</td>";
