@@ -15,6 +15,7 @@ function getaProfilebyId(callBack) {
                 tbl += '<tr style="' + tr_style + '">';
                 tbl += '<td>' + ++index + '</td>';
                 tbl += '<td>' + row.industry_name + '</td>';
+                tbl += '<td>' + row.code_epl + '</td>';
                 tbl += '<td><a href="/industry_profile/id/' + row.id + '" target="_blank">' + row.file_no + '</a>(' + certificate_type[row.cer_type_status] + ')</td>';
                 tbl += '<td title="' + row.certificate_comment + '">' + row.certificate_comment + '</td>';
                 tbl += '<td>' + certificate_status[row.cer_status] + '</td>';

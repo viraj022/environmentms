@@ -172,23 +172,29 @@
                                     <div class="card card-gray">
                                         <div class="card-header">
                                             <h3 class="card-title">
-                                                <i class="fas fa-address-card"></i> Industry Details
+                                                <i class="fas fa-address-card"></i> Details
                                             </h3>
                                         </div>
                                         <!-- /.card-header -->
                                         <div class="card-body">
-                                            <h5 class="text-success">File Status:<b class="setCurrentFstatus"></b></h5>
-                                            <h6 id="env_firstname">Environment Officer: <a class="text-danger">Not Assigned</a></h6>
-                                            <dl class="row">
-                                                <dt class="col-sm-4">Name : </dt>
-                                                <dd class="col-sm-6" id="obj_name"></dd>
-                                                <dt class="col-sm-4">BR No:</dt>
-                                                <dd class="col-sm-6" id="obj_regno"></dd>
-                                                <dt class="col-sm-4">Investment :(RS)</dt>
-                                                <dd class="col-sm-6" id="obj_invest"></dd>
-                                                <dt class="col-sm-4">Industry Sub-Category :</dt>
-                                                <dd class="col-sm-6" id="obj_industrySub"></dd>
-                                            </dl>
+
+                                            <span style='font-size: 18px; color: green'><b>Industry Details</b></span>
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h5 class="text-success">File Status:<small><b class="setCurrentFstatus"></b></small></h5>
+                                                    <h6 id="env_firstname"><b>Environment Officer: </b><a class="text-danger">Not Assigned</a></h6>
+                                                    <dl class="row">
+                                                        <dt class="col-sm-4">Name : </dt>
+                                                        <dd class="col-sm-6" id="obj_name"></dd>
+                                                        <dt class="col-sm-4">BR No:</dt>
+                                                        <dd class="col-sm-6" id="obj_regno"></dd>
+                                                        <dt class="col-sm-4">Investment :(RS)</dt>
+                                                        <dd class="col-sm-6" id="obj_invest"></dd>
+                                                        <dt class="col-sm-4">Industry Sub-Category :</dt>
+                                                        <dd class="col-sm-6" id="obj_industrySub"></dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
                                             <hr>
                                             <span style='font-size: 18px; color: green'><b>Client Details</b></span>
                                             <div class="card">

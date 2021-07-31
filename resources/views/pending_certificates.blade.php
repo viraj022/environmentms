@@ -39,11 +39,13 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 10px">#</th>
-                                        <th>Industry Name</th>
-                                        <th>File No</th>
+                                        <th style="width: 25em">Industry Name</th>
+                                        <th style="width: 25em">EPL Code</th>
+                                        <th style="width: 20em">File No</th>
                                         <th>Nominate</th>
                                         <th>Status</th>
-                                        <th style="width: 140px">Action</th>
+                                        <th>Action</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
