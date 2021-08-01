@@ -54,95 +54,221 @@ function loadEnvOfficers_combo(ass_dir_id, callBack) {
 
 }
 function assigned_EPL_table(officer_id, callBack) {
-    $('#assigned_epl_table tbody').html('<td colspan="3">No Data Found</td></tr>');
+//    $('#assigned_epl_table tbody').html('<td colspan="3">No Data Found</td></tr>');
     if (isNaN(officer_id)) {
         return false;
     }
-    $('#assigned_epl_table').DataTable().destroy();
-    $.ajax({
-        type: "GET",
-        headers: {
-            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-            "Accept": "application/json"
+//    $('#assigned_epl_table').DataTable().destroy();
+//    $.ajax({
+//        type: "GET",
+//        headers: {
+//            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+//            "Accept": "application/json"
+//        },
+//        url: "api/epl/env_officer/" + officer_id,
+//        data: null,
+//        dataType: "json",
+//        cache: false,
+//        processDaate: false,
+//        success: function (result) {
+//            var tbl = "";
+//            $.each(result, function (index, value) {
+//                tbl += "<tr>";
+//                tbl += "<td>" + ++index + "</td>";
+//                tbl += "<td>" + value.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + value.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='" + TYPE + "'>(" + CODE + ")</a></td>";
+//                tbl += '<td><button type="button" class="btn btn-danger removePendingEpl" value="' + value.id + '">Remove</button></td>';
+//                tbl += "</tr>";
+//            });
+//            if (!(result.length == 0 || result == undefined)) {
+//                $('#assigned_epl_table tbody').html(tbl);
+//                $('#assigned_epl_table').DataTable();
+//            }
+//            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+//                callBack(result);
+//            }
+//        }
+//    });
+
+    assigned_epl = $('#assigned_epl_table').DataTable({
+        "destroy": true,
+        "processing": true,
+        "colReorder": true,
+        "serverSide": false,
+        "pageLength": 10,
+        language: {
+            searchPlaceholder: "Search..."
         },
-        url: "api/epl/env_officer/" + officer_id,
-        data: null,
-        dataType: "json",
-        cache: false,
-        processDaate: false,
-        success: function (result) {
-            var tbl = "";
-            $.each(result, function (index, value) {
-                let CODE = value.code_epl;
-                let TYPE = 'EPL';
-                if (CODE == 'N/A') {
-                    CODE = value.code_site;
-                    TYPE = 'Site Clearance';
+        ajax: {
+            "url": "api/epl/env_officer/" + officer_id,
+            "type": "GET",
+            "dataSrc": "",
+            "headers": {
+                "Accept": "application/json",
+                "Content-Type": "text/json; charset=utf-8",
+                "Authorization": "Bearer " + $('meta[name=api-token]').attr("content")
+            },
+        },
+        "columns": [{
+                "data": ""
+            },
+            {
+                "data": "",
+                render: function (data, type, row) {
+                    let CODE = row.code_epl;
+                    let TYPE = 'EPL';
                     if (CODE == 'N/A') {
-                        CODE = value.file_no;
-                        TYPE = 'File No';
+                        CODE = row.code_site;
+                        TYPE = 'Site Clearance';
+                        if (CODE == 'N/A') {
+                            CODE = row.file_no;
+                            TYPE = 'File No';
+                        }
                     }
-                }
-                tbl += "<tr>";
-                tbl += "<td>" + ++index + "</td>";
-                tbl += "<td>" + value.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + value.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='"+ TYPE +"'>(" + CODE + ")</a></td>";
-                tbl += '<td><button type="button" class="btn btn-danger removePendingEpl" value="' + value.id + '">Remove</button></td>';
-                tbl += "</tr>";
+                    return "<td>" + row.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + row.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='" + TYPE + "'>(" + CODE + ")</a></td>";
+                },
+                "defaultContent": "-"
+            },
+            {
+                "data": "",
+                render: function (data, type, row) {
+                    return '<td><button type="button" class="btn btn-danger removePendingEpl" value="' + row.id + '">Remove</button></td>';
+                },
+                "defaultContent": "-"
+            },
+        ],
+        "order": [
+            [1, "asc"]
+        ],
+    }
+    );
+
+    $(function () {
+        var t = $("#assigned_epl_table").DataTable();
+        t.on('order.dt search.dt', function () {
+            t.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
             });
-            if (!(result.length == 0 || result == undefined)) {
-                $('#assigned_epl_table tbody').html(tbl);
-                $('#assigned_epl_table').DataTable();
-            }
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack(result);
-            }
-        }
+        }).draw();
+    });
+
+    //data table error handling
+    $.fn.dataTable.ext.errMode = 'none';
+    $('#assigned_epl_table').on('error.dt', function (e, settings, techNote, message) {
+        console.log('DataTables error: ', message);
     });
 }
 function pending_EPL_table(director_id, callBack) {
-    $('#pending_epl_table tbody').html('<td colspan="3">No Data Found</td></tr>');
+//    $('#pending_epl_table tbody').html('<td colspan="3">No Data Found</td></tr>');
     if (isNaN(director_id)) {
         return false;
     }
-    $('#pending_epl_table').DataTable().destroy();
-    $.ajax({
-        type: "GET",
-        headers: {
-            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-            "Accept": "application/json"
+//    $('#pending_epl_table').DataTable().destroy();
+//    $.ajax({
+//        type: "GET",
+//        headers: {
+//            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+//            "Accept": "application/json"
+//        },
+//        url: "api/epl/assistance_director/" + director_id,
+//        data: null,
+//        dataType: "json",
+//        cache: false,
+//        processDaate: false,
+//        success: function (result) {
+//            var tbl = "";
+//            $.each(result, function (index, value) {
+//                let CODE = value.code_epl;
+//                let TYPE = 'EPL';
+//                if (CODE == 'N/A') {
+//                    CODE = value.code_site;
+//                    TYPE = 'Site Clearance';
+//                    if (CODE == 'N/A') {
+//                        CODE = value.file_no;
+//                        TYPE = 'File No';
+//                    }
+//                }
+//                tbl += "<tr>";
+//                tbl += "<td>" + ++index + "</td>";
+//                tbl += "<td>" + value.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + value.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='" + TYPE + "'>(" + CODE + ")</a></td>";
+//                tbl += '<td><button type="button" class="btn btn-success selPendingEpl" value="' + value.id + '">Add</button></td>';
+//                tbl += "</tr>";
+//            });
+//            if (!(result.length == 0 || result == undefined)) {
+//                $('#pending_epl_table tbody').html(tbl);
+//                $("#pending_epl_table").DataTable();
+//            }
+//            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+//                callBack(result);
+//            }
+//        }
+//    });
+
+    pending_epl = $('#pending_epl_table').DataTable({
+        "destroy": true,
+        "processing": true,
+        "colReorder": true,
+        "serverSide": false,
+        "pageLength": 10,
+        language: {
+            searchPlaceholder: "Search..."
         },
-        url: "api/epl/assistance_director/" + director_id,
-        data: null,
-        dataType: "json",
-        cache: false,
-        processDaate: false,
-        success: function (result) {
-            var tbl = "";
-            $.each(result, function (index, value) {
-                let CODE = value.code_epl;
+        ajax: {
+            "url": "api/epl/assistance_director/" + director_id,
+            "type": "GET",
+            "dataSrc": "",
+            "headers": {
+                "Accept": "application/json",
+                "Content-Type": "text/json; charset=utf-8",
+                "Authorization": "Bearer " + $('meta[name=api-token]').attr("content")
+            },
+        },
+        "columns": [{
+                "data": ""
+            },
+            {
+                "data": "",
+                render: function (data, type, row) {
+                let CODE = row.code_epl;
                 let TYPE = 'EPL';
                 if (CODE == 'N/A') {
-                    CODE = value.code_site;
+                    CODE = row.code_site;
                     TYPE = 'Site Clearance';
                     if (CODE == 'N/A') {
-                        CODE = value.file_no;
+                        CODE = row.file_no;
                         TYPE = 'File No';
                     }
                 }
-                tbl += "<tr>";
-                tbl += "<td>" + ++index + "</td>";
-                tbl += "<td>" + value.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + value.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='"+ TYPE +"'>(" + CODE + ")</a></td>";
-                tbl += '<td><button type="button" class="btn btn-success selPendingEpl" value="' + value.id + '">Add</button></td>';
-                tbl += "</tr>";
+                    return "<td>" + row.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + row.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='" + TYPE + "'>(" + CODE + ")</a></td>";
+                },
+                "defaultContent": "-"
+            },
+            {
+                "data": "",
+                render: function (data, type, row) {
+                    return '<td><button type="button" class="btn btn-success selPendingEpl" value="' + row.id + '">Add</button></td>';
+                },
+                "defaultContent": "-"
+            },
+        ],
+        "order": [
+            [1, "asc"]
+        ],
+    }
+    );
+
+    $(function () {
+        var t = $('#pending_epl_table').DataTable();
+        t.on('order.dt search.dt', function () {
+            t.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
             });
-            if (!(result.length == 0 || result == undefined)) {
-                $('#pending_epl_table tbody').html(tbl);
-                $("#pending_epl_table").DataTable();
-            }
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack(result);
-            }
-        }
+        }).draw();
+    });
+
+    //data table error handling
+    $.fn.dataTable.ext.errMode = 'none';
+   $('#pending_epl_table').on('error.dt', function (e, settings, techNote, message) {
+        console.log('DataTables error: ', message);
     });
 }
 function assign_epl_to_officer(data, callBack) {
@@ -169,7 +295,6 @@ function assign_epl_to_officer(data, callBack) {
         cache: false,
         processDaate: false,
         success: function (result) {
-
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
             }
