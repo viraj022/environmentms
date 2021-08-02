@@ -168,10 +168,11 @@ class SearchController extends Controller {
     }
 
     function getClientBySite($name) {
-        $client = SiteClearenceSession::where('code', 'like', '%'.$name.'%')->select('client_id')->first();
-        $client_id = $client->client_id;
-        $client_data = EPL::where('client_id', '=', $client_id)->get();
-        dd($client_data);
+        $client_site = SiteClearenceSession::join('clients', 'site_clearence_sessions.client_id', 'clients.id')
+                ->where('code', 'like', '%'.$name.'%')
+                ->select('code', 'remark', 'site_clearance_type', 'first_name', 'last_name', 'address', 'industry_name','clients.id')
+                ->get();
+        return $client_site;
     }
 
     public function search($type) {
