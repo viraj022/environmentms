@@ -22,6 +22,14 @@ function GetRemarks(id, callBack) {
     });
 }
 
+//function load_inspection_attach(inspection_attach_path){
+//    var insdiv = "";    
+//    $.each(inspection_attach_path, function (index, value) {
+//        insdiv += "<img src=" + value.path + "/>";
+//    });
+//    $('#attachments').html(insdiv);
+//}
+
 function loadInterface(id) {
     GetRemarks(id, function (result) {
         var uidev = "";

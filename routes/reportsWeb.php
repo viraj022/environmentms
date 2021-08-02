@@ -77,3 +77,5 @@ Route::get('/file_summary/{id}', 'ReportController@fileSummary');
  */
 
 Route::get('/attachments/{client}', 'ReportController@downloadContents');
+
+
