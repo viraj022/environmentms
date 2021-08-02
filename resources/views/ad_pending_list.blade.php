@@ -44,6 +44,7 @@
                                     <tr>
                                         <th style="width: 10px">#</th>
                                         <th>Industry Name</th>
+                                        <th>EPL Code</th>
                                         <th>File No</th>
                                         <th>Status</th>
                                         <th style="width: 140px">Action</th>
@@ -130,7 +131,6 @@
 //select button action 
         $(document).on('click', '.btnAction', function () {
         });
-
 
         $(document).on('click', '.actionDetails', function () {
             var fileData = JSON.parse(unescape($(this).val()));

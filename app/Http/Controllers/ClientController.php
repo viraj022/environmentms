@@ -249,6 +249,7 @@ class ClientController extends Controller {
             'industry_registration_no' => 'nullable|string',
             'is_old' => 'sometimes|required|integer',
             'industry_sub_category' => 'nullable|string',
+            'file_no' => 'nullable|string'
                 // 'password' => 'required',
         ]);
         if ($pageAuth['is_update']) {
@@ -1062,9 +1063,188 @@ class ClientController extends Controller {
         return $locations;
     }
 
-    public function getConfirmedClients() {
-        $clients = Client::where('deleted_at', '=', null)->where('is_old', '!=', 0)->get();
-        return $clients;
+//    public function getConfirmedClients() {
+//        $clients = Client::where('deleted_at', '=', null)->where('is_old', '!=', 0)->get();
+//        return $clients;
+//    }
+
+//    public function showListOfRegistrations() {
+//        $search_txt = '';
+////        $filter_main_payment_category_id = $this->input->post_get('main_payment_category_id');
+//        $this - > db - > select('user_tbl_id', false);
+//        $this - > db - > from('user_registrations');
+//        $this - > db - > join('master_classes_of_membership', 'master_classes_of_membership.class_of_membership_id = user_registrations.user_member_class', 'left');
+//        $this - > db - > join('master_core_engineering_disciplines', 'master_core_engineering_disciplines.core_engineering_discipline_id = user_registrations.user_member_discipline', 'left');
+//
+//        if (!empty($search['value'])) {
+//            $this - >db - > group_start();
+//            $this - > db - > like('reg_application_id', $search['value'], 'both');
+//            $this - > db - > or_like('user_name_w_initials', $search['value'], 'both');
+//            $this - > db - > or_like('user_nic', $search['value'], 'both');
+//            $this - > db - > group_end();
+//            $search_txt = $search['value'];
+//        }
+//        
+//        $result = FALSE;
+//        $totalData = $this - > db - > count_all_results();
+//        $totalFiltered = $totalData;
+//        $data_result = array();
+//        $q = '';
+//        if (!empty($totalData)) {
+//            $columns = array(
+//                'reg_application_id',
+//                'class_of_membership_name',
+//                'core_engineering_discipline_name',
+//                'user_picture',
+//                'user_name_w_initials',
+//                'user_nic',
+//                'applied_date',
+//                'final_approval'
+//            );
+//            
+//            $search = $this - > input - > post_get('search');
+//            $order = $this - > input - > post_get('order');
+//            $start = $this - > input - > post_get('start');
+//            $limit = $this - > input - > post_get('length');
+//            
+//            $this - > db - > select(implode(",", array(
+//                'reg_application_id',
+//                'class_of_membership_name',
+//                'core_engineering_discipline_name',
+//                'user_picture',
+//                'user_name_w_initials',
+//                'user_nic',
+//                'DATE(user_registrations.created_datetime) AS applied_date',
+//                'user_tbl_id',
+//                'final_approval'
+//                    )), false);
+//            $this - > db - > from('user_registrations');
+//            $this - > db - > join('master_classes_of_membership', 'master_classes_of_membership.class_of_membership_id = user_registrations.user_member_class', 'left');
+//            $this - > db - > join('master_core_engineering_disciplines', 'master_core_engineering_disciplines.core_engineering_discipline_id = user_registrations.user_member_discipline', 'left');
+//            if (!empty($search['value'])) {
+//                $this - > db - > group_start();
+//                $this - > db - > like('reg_application_id', $search['value'], 'both');
+//                $this - > db - > or_like('user_name_w_initials', $search['value'], 'both');
+//                $this - > db - > or_like('user_nic', $search['value'], 'both');
+//                $this - > db - > group_end();
+//            }
+//            $this - > db - > order_by($columns[$order[0]['column']], $order[0]['dir']);
+//            if (!empty($limit)) {
+//                $this - > db - > limit($limit, $start);
+//            }
+//            $query = $this - > db - > get();
+//            if (empty($query)) {
+//                return false;
+//            } else {
+//                $data_result = $query - > result();
+//            }
+//            if (!empty($search['value'])) {
+//                $totalFiltered = $query - > num_rows();
+//            }
+//        }
+//        $json_data = array(
+//        "draw" => intval($this- > input - > post_get('draw')), // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw.
+//        "recordsTotal" => intval($totalData), // total number of records
+//        "recordsFiltered" => intval($totalFiltered), // total number of records after searching, if there is no searching then totalFiltered = totalData
+//        "data" => $data_result // total data array
+//        );
+//        
+//        return $json_data;
+//    }
+//    public function server_side_process_two(Request $request) {
+//        //only sorts by one column
+////        $orderby = $request->input('order_column');
+////        $sort['col'] = $request->input('columns.' . $orderby . '.data');
+////        $sort['dir'] = $request->input('order_dir');
+//
+//        $query = Client::where('file_no', 'like', '%' . $request->input('search.value') . '%')
+//                ->where('deleted_at', '=', null)
+//                ->where('is_old', '!=', 0)
+//                ->orWhere('first_name', 'like', '%' . $request->input('search.value') . '%')
+//                ->orWhere('industry_name', 'like', '%' . $request->input('search.value') . '%');
+//
+//        $output['recordsTotal'] = $query->count();
+//
+//        $output['data'] = $query
+////                ->orderBy($sort['col'], $sort['dir'])
+//                ->skip($request->input('start'))
+//                ->take($request->input('length', 10))
+//                ->get();
+//
+//        $output['recordsFiltered'] = $output['recordsTotal'];
+//
+//        $output['draw'] = intval($request->input('draw'));
+//        return $output;
+//    }
+
+    public function server_side_process(Request $request) {
+        $columns = array(
+            0 => 'id',
+            1 => 'file_no',
+            2 => 'first_name',
+            3 => 'industry_name',
+            4 => 'industry_registration_no',
+        );
+        $totalData = Client::where('deleted_at', '=', null)->where('is_old', '!=', 0)->count();
+        
+        $totalFiltered = $totalData;
+        $limit = $request->input('length');
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+        if (empty($request->input('search.value'))) {
+            $clients = Client::where('is_old', '!=', 0)
+                    ->offset($start)
+                    ->limit($limit)
+                    ->orderBy($order, $dir)
+                    ->get();
+        } else {
+            $search = $request->input('search.value');
+            $clients = Client::where('is_old', '!=', 0)
+//                    ->orWhere('id', 'LIKE', "%{$search}%")
+                    ->Where('file_no', 'LIKE', "%{$search}%")
+                    ->orWhere('first_name', 'LIKE', "%{$search}%")
+                    ->orWhere('industry_registration_no', 'LIKE', "%{$search}%")
+                    ->orWhere('industry_name', 'LIKE', "%{$search}%")
+                    ->offset($start)
+                    ->limit($limit)
+                    ->orderBy($order, $dir)
+                    ->get();
+//dd($clients);
+            $totalFiltered = Client::where('is_old', '!=', 0)
+//                    ->orWhere('id', 'LIKE', "%{$search}%")
+                    ->Where('file_no', 'LIKE', "%{$search}%")
+                    ->orWhere('first_name', 'LIKE', "%{$search}%")
+                    ->orWhere('industry_registration_no', 'LIKE', "%{$search}%")
+                    ->orWhere('industry_name', 'LIKE', "%{$search}%")
+                    ->count();
+        }
+        $data = array();
+        if (!empty($clients)) {
+//            print_r($clients);
+//            exit;
+            foreach ($clients as $client) {
+//                $show =  route('posts.show',$post->id);
+//                $edit =  route('posts.edit',$post->id);
+                $nestedData['id'] = $client->id;
+                $nestedData['file_no'] = $client->file_no;
+                $nestedData['client_name'] = $client->first_name . $client->last_name;
+                $nestedData['industry_name'] = $client->industry_name;
+                $nestedData['industry_registration_no'] = $client->industry_registration_no;
+//                $nestedData['body'] = substr(strip_tags($post->body),0,50)."...";
+//                $nestedData['created_at'] = date('j M Y h:i a',strtotime($post->created_at));
+//                $nestedData['options'] = "&emsp;<a href='{$show}' title='SHOW' ><span class='glyphicon glyphicon-list'></span></a>
+//                                          &emsp;<a href='{$edit}' title='EDIT' ><span class='glyphicon glyphicon-edit'></span></a>";
+                $data[] = $nestedData;
+            }
+        }
+        $json_data = array(
+            "draw" => intval($request->input('draw')),
+            "recordsTotal" => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data" => $data
+        );
+        echo json_encode($json_data);
     }
 
 }

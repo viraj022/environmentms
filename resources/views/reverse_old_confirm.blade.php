@@ -53,6 +53,7 @@
                                         </thead>
                                         <tbody>
                                             <tr>
+                                                <td colspan="12" class="text-center"><b>No Data</b></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -97,20 +98,58 @@
 <script src="../../js/IndustryProfileJS/industry_profile.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
-    loadConfirmedTable();
-    $(document).ready(function() {
-        //Confirm Button
-        $(document).on("click", ".btnUnconfirm", function() {
+
+    $(document).ready(function () {
+        var table = $('#tbl_confirm').DataTable({
+    "processing": true,
+    "serverSide": true,
+    language: {
+        searchPlaceholder: "Search"
+    },
+    "ajax": {
+        "url": "/api/server_side_process",
+        "dataType": "json",
+        "type": "POST",
+        "data": {_token: "{{csrf_token()}}"}
+    },
+    "columns": [
+        {"data": "file_no"},
+        {"data": "client_name"},
+        {"data": "industry_name"},
+        {"data": "industry_registration_no"},
+        {"data": "id"}
+    ],
+    "columnDefs": [{
+            "targets": -1,
+            "data": "0",
+            "render": function (data, type, full, meta) {
+                return getJtableBtnHtml(full);
+            }
+        }],
+
+});
+
+function getJtableBtnHtml(full) {
+    var html = "";
+ //encode a string
+    html += '<div class="btn-group" role="group"  aria-label="" >';
+    html += '<button type= "button" value="' + full.id + '" type ="button" class ="btnUnconfirm btn btn-success btn-xs"> REVERT </button>';
+    html += "</div>";
+    return html;
+}
+     
+    });
+       //Confirm Button
+        $(document).on("click", ".btnUnconfirm", function () {
             if (confirm('Are you sure?')) {
                 var id = $(this).val();
-                UnConfirmUploadingAttachs(id, function(respo) {
+                UnConfirmUploadingAttachs(id, function (respo) {
                     show_mesege(respo);
                     if (respo.id == 1) {
-                        location.reload();
+                       location.reload();
                     }
                 });
             }
         });
-    });
 </script>
 @endsection

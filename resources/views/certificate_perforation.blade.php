@@ -51,8 +51,7 @@
                                             <div class="card card-success">
                                                 <div class="card-header">
                                                     <h3 class="card-title">
-                                                        <i class="fas fa-user"></i> Client Details
-
+                                                        <i class="fas fa-user"></i> <b>Client Details</b>
                                                     </h3>
                                                 </div>
                                                 <!-- /.card-header -->
@@ -68,10 +67,29 @@
                                                         <dd class="col-sm-6" id="client_amil"></dd>
                                                     </dl>
                                                     <hr>
-                                                    <dt>Name : <a id="obj_name"></a></dt>
-                                                    <dt>File No : <a id="obj_regno"></a></dt>                       
-                                                    <dt>Industry Name : <a id="342"></a></dt>                       
-                                                    <dt>Industry Address : <a id="34"></a></dt> 
+                                                </div>
+                                                <button class="btn btn-primary genCertificateNum d-none"><i class="fa fa-gear"></i> Generate Certificate Number</button>
+                                                <!-- /.card-body -->
+                                            </div>
+                                            <div class="card card-success">
+                                                <div class="card-header">
+                                                    <h3 class="card-title">
+                                                        <i class="fas fa-user"></i> <b>Industry Details</b>
+                                                    </h3>
+                                                </div>
+                                                <!-- /.card-header -->
+                                                <div class="card-body">
+                                                    <dl class="row">
+                                                        <dt class="col-sm-4">Name :</dt>
+                                                        <dt class="col-sm-6"><a id="obj_name" class='p-2' style='font-weight:normal'></a></dt>
+                                                        <dt class="col-sm-4">File No : </dt> 
+                                                        <dt class="col-sm-6"><a id="obj_regno"></a></dt>
+                                                        <dt class="col-sm-4">Industry Name : </dt> 
+                                                        <dt class="col-sm-6"><a id="342"></a></dt>
+                                                        <dt class="col-sm-4">Industry Address : </dt> 
+                                                        <dt class="col-sm-6"><a id="34"></a></dt>
+                                                    </dl>
+                                                    <hr>
                                                 </div>
                                                 <button class="btn btn-primary genCertificateNum d-none"><i class="fa fa-gear"></i> Generate Certificate Number</button>
                                                 <!-- /.card-body -->

@@ -125,12 +125,12 @@
                                     <hr>
                                     <div class="form-group">
                                         <label>File Code*</label>
-                                        <input disabled id="file_code_active" type="text" class="form-control form-control-sm cutenzReq d-none" placeholder="" value="">
-                                        <input disabled id="file_code_change" type="text" class="form-control form-control-sm cutenzReq" placeholder="" value="">
+                                        <input disabled id="file_code_active" type="text" class="form-control form-control-sm cutenzReq d-none" placeholder="">
+                                        <input disabled id="file_code_change" type="text" class="form-control form-control-sm cutenzReq " placeholder="">
                                     </div>
                                     <div class="form-group">
-                                        <button id="btnSaveFileCode" type="submit" class="btn btn-success"><i class="fas fa-check"></i> Change File Code</button>
-                                        <button onClick="location.href = location.href" type="submit" class="btn btn-info"><i class="fas fa-times"></i> Cancel</button>
+                                        <button id="btnSaveFileCode" type="submit" class="btn btn-success d-none"><i class="fas fa-check"></i> Change File Code</button>
+                                        <button onClick="location.href = location.href" type="submit" class="btn btn-info d-none"><i class="fas fa-times"></i> Cancel</button>
                                     </div>
                                     <hr>
                                 </div>
@@ -338,7 +338,8 @@
             industry_registration_no: $('#business_regno').val().trim(),
             industry_coordinate_x: _Latitude,
             industry_coordinate_y: _Longitude,
-            assign_date: $('#submittedDate').val()
+            assign_date: $('#submittedDate').val(),
+            file_no: $('#file_code_change').val()
         };
         if (requiredFieldHandler(dataz, ".cutenzReq")) {
             updateClientFileAPI($(this).val(), dataz, function(resp) {
@@ -376,6 +377,7 @@
         let bc_code = $('#businesScale :selected').data('bc_code');
         let code = 'PEA/' + ps_code + '/' + cat_code + '/' + bc_code;
         console.log(code);
+        $('#file_code_change').val(code);
     }
 
     function createNewFileCodeJ(e, callBack) {

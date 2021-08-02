@@ -1053,3 +1053,5 @@ Route::middleware('auth:api')->get('/payment/history/file/{id}', 'CashierControl
 */
 
 Route::get('/get_file_cordinates/{industry_cat_id}/{eo_id}', [ClientController::class, 'get_file_cordinates']);
+
+Route::post('server_side_process', [ClientController::class, 'server_side_process']);
