@@ -31,7 +31,11 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="row" id="showUiDb">
+<!--                    <input type="submit" value="" />-->
 
+                </div>
+                <div clas="row">
+                    <div id="attachments"></div>
                 </div>
                 <!--Add New Comment Section-->
                 <div class="card card-gray">
@@ -154,7 +158,9 @@
 <script>
 $(function () {
     var ID = "{{$id}}";
+    var inspect_attachment = "{{ $inspect_file_attach }}";
     loadInterface(ID);
+//    load_inspection_attach(inspect_attachment);
     loadInspectionStatusAPI(ID, function (resp) { //<-- Get Inspection Status
         if (resp.status === 0) {
             $('.inspectConfStatus').removeClass('d-none'); //<-- Show Complete Inspection Btn

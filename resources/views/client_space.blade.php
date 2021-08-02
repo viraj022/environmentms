@@ -560,12 +560,13 @@
                                             function showSiteClearanceDetails(obje) {
                                                 var table = "";
                                                 var id = 1;
+                                                $('#tblSiteClear').DataTable().destroy();
                                                 $.each(obje, function (index, clientData) {
                                                     console.log(clientData);
                                                     table += "<tr>";
                                                     table += "<td>" + ++index + "</td>";
                                                     table += "<td>" + clientData.code + "</td>";
-                                                    let client_name = clientData.first_name+clientData.last_name;
+                                                    let client_name = clientData.first_name + clientData.last_name;
                                                     table += "<td>" + client_name + "</td>";
                                                     table += "<td>" + clientData.industry_name + "</td>";
                                                     table += "<td>" + clientData.remark + "</td>";
@@ -574,7 +575,20 @@
                                                     table += "</tr>";
                                                 });
                                                 $('#tblSiteClear tbody').html(table);
-                                                $("#tblSiteClear").DataTable();
+                                                $(function () {
+                                                    var t = $("#tblSiteClear").DataTable();
+                                                    t.on('order.dt search.dt', function () {
+                                                        t.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+                                                            cell.innerHTML = i + 1;
+                                                        });
+                                                    }).draw();
+                                                });
+
+                                                //data table error handling
+                                                $.fn.dataTable.ext.errMode = 'none';
+                                                $('#tblSiteClear').on('error.dt', function (e, settings, techNote, message) {
+                                                    console.log('DataTables error: ', message);
+                                                });
                                             }
 
                                             //Search NIC Button 

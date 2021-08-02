@@ -80,3 +80,7 @@ Route::get('/client_reg', function () {
 Route::get('/client_space', 'ClientController@index');
 
 Route::get('/reverse_confirm', 'EPLController@index4');
+
+Route::get('/eo_report', function () {
+  return view('eo_report');
+});
