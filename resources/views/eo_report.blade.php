@@ -58,24 +58,15 @@
                                 <table class="table table-condensed" id="eo_client_tbl">
                                     <thead>
                                         <tr class="tblTrsec">
-<<<<<<< HEAD
                                             <th style="width: 10px">#</th>
-                                            <th style='width: 25em'>Client Name</th>
+                                            <th style='width: 20em'>Client Name</th>
                                             <th style='width: 20em'>Client Address</th>
-                                            <th style='width: 25em'>Industry Category</th>
+                                            <th style='width: 20em'>Industry Category</th>
                                             <th style='width: 25em'>Industry Address</th>
                                             <th style='width: 15em'>Licence Issue date</th>
                                             <th style='width: 15em'>Licence exp date</th>
                                             <th style='width: 15em'>Contact No</th>
-=======
-                                            <th>#</th>
-                                            <th>Client Name</th>
-                                            <th>Client Address</th>
-                                            <th>Industry Category</th>
-                                            <th>Licence Issue date</th>
-                                            <th>Licence exp date</th>
-                                            <th>Contact No</th>
->>>>>>> cbd50c626c9ca319e3cca46e48d920ffe7acd44e
+
                                             <!--<th class="inspectTbl" style="width: 180px">Inspection</th>-->
                                         </tr>
                                     </thead>
@@ -176,6 +167,7 @@
                         }
                         tbl += "<td>" + row.address + "</td>";
                         tbl += "<td>" + row.name + "</td>";
+                        tbl += "<td>" + row.industry_address + "</td>";
                         tbl += "<td>" + row.issue_date + "</td>";
                         tbl += "<td>" + row.expire_date + "</td>";
                         if (row.industry_contact_no == null) {
