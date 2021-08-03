@@ -194,7 +194,7 @@
                             cell.innerHTML = i + 1;
                         });
                     }).draw();
->>>>>>> cbd50c626c9ca319e3cca46e48d920ffe7acd44e
+
                 });
 
                 //data table error handling
