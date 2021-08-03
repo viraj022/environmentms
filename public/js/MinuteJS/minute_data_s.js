@@ -2,6 +2,7 @@ var situations_arr = {ENV_OFF_APP_FILE: 'Environment Officer Approved', ENV_OFF_
 
 //Method API
 function methodMinuteAPI(data, method, id, callBack) {
+  
     //Current Usage Explained - POST/1 , PUT/2 , DELETE/3 , GET/4
     let DATA_METHOD = '';
     let URL = '';
@@ -22,6 +23,8 @@ function methodMinuteAPI(data, method, id, callBack) {
         return false;
     }
     ajaxRequest(DATA_METHOD, URL, data, function (dataSet) {
+        
+      
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }

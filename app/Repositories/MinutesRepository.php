@@ -24,6 +24,7 @@ class MinutesRepository
 
     public function all($file_id)
     {
+       
         $file =   Client::FindOrfail($file_id);
         $minutes = Minute::with('user')->where('file_id', $file->id)->get();
         $minutes =  $minutes->groupBy('file_type');
