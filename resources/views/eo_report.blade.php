@@ -39,7 +39,8 @@
                                         <select id="industry_cat" name="industry_category" class="form-control form-control-sm">
                                             <option value="0">Loading..</option>
                                         </select>
-                                    </div>    
+                                    </div> 
+                                    <button type='button' id='report_generate' class='btn btn-primary'>Generate Report</button>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
@@ -49,7 +50,6 @@
                                         </select>
                                     </div>
                                 </div>
-                                <button type='button' id='report_generate'>Generate Report</button>
                             </div>
                         </div>  
                         <hr>
@@ -58,6 +58,7 @@
                                 <table class="table table-condensed" id="eo_client_tbl">
                                     <thead>
                                         <tr class="tblTrsec">
+<<<<<<< HEAD
                                             <th style="width: 10px">#</th>
                                             <th style='width: 25em'>Client Name</th>
                                             <th style='width: 20em'>Client Address</th>
@@ -66,6 +67,15 @@
                                             <th style='width: 15em'>Licence Issue date</th>
                                             <th style='width: 15em'>Licence exp date</th>
                                             <th style='width: 15em'>Contact No</th>
+=======
+                                            <th>#</th>
+                                            <th>Client Name</th>
+                                            <th>Client Address</th>
+                                            <th>Industry Category</th>
+                                            <th>Licence Issue date</th>
+                                            <th>Licence exp date</th>
+                                            <th>Contact No</th>
+>>>>>>> cbd50c626c9ca319e3cca46e48d920ffe7acd44e
                                             <!--<th class="inspectTbl" style="width: 180px">Inspection</th>-->
                                         </tr>
                                     </thead>
@@ -151,49 +161,52 @@
     function eo_report_load() {
         tbl = "";
         let data = $("#eo_report_form").serializeArray();
-        ajaxRequest("post", "/api/eo_client_data", data, function (resp) {
-            if (resp.length == 0) {
-                tbl = "<td class='text-center'><span>No Data Found</span></td>";
-            } else {
-                $.each(resp, function (index, row) {
-                    tbl += "<tr>";
-                    tbl += "<td>" + ++index + "</td>";
-                    tbl += "<td>" + row.first_name + row.last_name + "</td>";
-                    if (row.address == null) {
-                        row.address = '---';
-                    }
-                    tbl += "<td>" + row.address + "</td>";
-                    tbl += "<td>" + row.name + "</td>";
-                    tbl += "<td>" + row.industry_address + "</td>";
-                    tbl += "<td>" + row.issue_date + "</td>";
-                    tbl += "<td>" + row.expire_date + "</td>";
-                    if (row.industry_contact_no == null) {
-                        row.industry_contact_no = '---';
-                    }
-                    tbl += "<td>" + row.industry_contact_no + "</td>";
-                    tbl += "</tr>";
-                });
-            }
-            $('#eo_client_tbl tbody').html(tbl);
-            $("#eo_client_tbl").DataTable();
-            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-                callBack();
-            }
-        });
-        $(function () {
-            var t = $("#eo_client_tbl").DataTable();
-            t.on('order.dt search.dt', function () {
-                t.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
-                    cell.innerHTML = i + 1;
-                });
-            }).draw();
-        });
 
-        //data table error handling
-        $.fn.dataTable.ext.errMode = 'none';
-        $('#eo_client_tbl').on('error.dt', function (e, settings, techNote, message) {
-            console.log('DataTables error: ', message);
-        });
+        $('#eo_client_tbl').DataTable().destroy();
+                ajaxRequest("post", "/api/eo_client_data", data, function (resp) {
+                if (resp.length == 0) {
+                    tbl = "<td class='text-center'><span>No Data Found</span></td>";
+                } else {
+                    $.each(resp, function (index, row) {
+                        tbl += "<tr>";
+                        tbl += "<td>" + ++index + "</td>";
+                        tbl += "<td>" + row.first_name + row.last_name + "</td>";
+                        if (row.address == null) {
+                            row.address = '---';
+                        }
+                        tbl += "<td>" + row.address + "</td>";
+                        tbl += "<td>" + row.name + "</td>";
+                        tbl += "<td>" + row.issue_date + "</td>";
+                        tbl += "<td>" + row.expire_date + "</td>";
+                        if (row.industry_contact_no == null) {
+                            row.industry_contact_no = '---';
+                        }
+                        tbl += "<td>" + row.industry_contact_no + "</td>";
+                        tbl += "</tr>";
+                    });
+                }
+                $('#eo_client_tbl tbody').html(tbl);
+//            $("#eo_client_tbl").DataTable();
+                $(function () {
+                    var t = $("#eo_client_tbl").DataTable();
+                    t.on('order.dt search.dt', function () {
+                        t.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+                            cell.innerHTML = i + 1;
+                        });
+                    }).draw();
+>>>>>>> cbd50c626c9ca319e3cca46e48d920ffe7acd44e
+                });
+
+                //data table error handling
+                $.fn.dataTable.ext.errMode = 'none';
+                $('#eo_client_tbl').on('error.dt', function (e, settings, techNote, message) {
+                    console.log('DataTables error: ', message);
+                });
+                if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+                    callBack();
+                    }
+                }
+                );
     }
 </script>
 @endsection
