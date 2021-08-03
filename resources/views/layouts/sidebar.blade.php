@@ -380,6 +380,12 @@
                     <p>Revert Confirm</p>
                 </a>
             </li>
+	    <li class="nav-item">
+                <a href="{{ url('/eo_report') }}" class="nav-link {{ Request::is('eo_report') ? 'active' : '' }}">
+                    <i class="fas fa-clock nav-icon"></i>
+                    <p>EO Report</p>
+                </a>
+            </li>
             @endif
             @endforeach
         </ul>
