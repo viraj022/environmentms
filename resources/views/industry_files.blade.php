@@ -236,9 +236,11 @@
                 show_mesege(rep);
                 $('#modal-xl').modal('hide');
                 checkFileType();
-                forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+//                forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+                $("#tblAllFiles").DataTable().ajax.reload(null, false);
             });
-            forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+//            forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+            $("#tblAllFiles").DataTable().ajax.reload(null, false);
         });
     });
 
@@ -261,7 +263,6 @@
         } else {
             $('#nominate_certificate').addClass('d-none');
         }
-
 
         $('#needApproval,#submitAdCerApproval,#rejectAdCerApproval,#setInspectionVal2,#viewCertificateBtn').addClass('d-none');
 
@@ -300,7 +301,8 @@
                 show_mesege(resp);
                 if (resp.id == 1) {
                     $('#modal-x2').modal('hide');
-                    forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+//                    forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+                    $("#tblAllFiles").DataTable().ajax.reload(null, false);
                 }
             });
         }
@@ -313,7 +315,8 @@
                 show_mesege(resp);
                 if (resp.id == 1) {
                     $('#modal-x2').modal('hide');
-                    forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+//                    forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+                    $("#tblAllFiles").DataTable().ajax.reload(null, false);
                 }
             });
         }
@@ -325,7 +328,8 @@
                 show_mesege(resp);
                 if (resp.id == 1) {
                     $('#modal-x2').modal('hide');
-                    forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+//                    forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+                    $("#tblAllFiles").DataTable().ajax.reload(null, false);
                 }
             });
         }
