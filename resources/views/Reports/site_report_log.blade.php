@@ -19,18 +19,15 @@
     <table class="table cell-border compact stripe">
         <thead>
             <tr>
-                <th style="width: 10px">#</th>
-                <th>Date</th>
+                <th>#</th>
+                <th style="width: 4em">Date</th>
                 <th>Site Clearance Code</th>
                 <th>Applications Name and Address</th>
                 <th>Industry</th>
                 <th>Location</th>
-                <th>Inspection Fee</th>
-                <th>Inspection Bill Date</th>
-                <th>Licence No/Isue Date</th>
-                @for ($i = 0; $i < $data['header_count']; $i++)
-                <th>Renewals</th>                           
-                @endfor                                                              
+                <th>Licence No/Issue Date</th>
+                <th>code</th>
+                <th>Nature</th>
             </tr>
         </thead>
         <tbody>
@@ -38,36 +35,14 @@
             <tr>
                 <td>{{$indexKey+1}}.</td>
                 <td>{{$row['industry_start_date']}}</td>
-                <td>{{$row['site_code']}}</td>                                                 
+                <td>{{$row['code_site']}}</td>                                                                                                
                 <td>{{$row['name_title']}}</td>                                                 
                 <td>{{$row['category_name']}}</td>                                                 
                 <td>{{$row['industry_address']}}</td>                                                 
-                <td>{{$row['inspection_fee']}}</td>                                                 
-                <td>{{$row['inspection_pay_date']}}</td>                                                 
+                <td>{{$row['code_epl']}}</td>                                                       
                 <td>{{$row['code']}}</td>                                                       
-                @if($row['epls'][0]['count']==0)
-                <td>{{$row['epls'][0]['certificate_no']}} - {{date('d-m-Y', strtotime($row['epls'][0]['issue_date']))}}</td>  
-                @for ($i = 1; $i < $data['header_count']; $i++)
-                @if(isset($row['epls'][$i]))
-                <td>({{$row['epls'][$i]['count']}}) {{$row['epls'][$i]['certificate_no']}} - {{date('d-m-Y', strtotime($row['epls'][$i]['issue_date']))}}</td>
-                @else
-                <td>N/A</td>
-                @endif
-                <td>N/A</td>                   
-                @endfor   
-                <td>N/A</td> 
-                @else
-                <td>N/A</td>
-                @for ($i = 0; $i < $data['header_count']; $i++)
-                @if(isset($row['epls'][$i]))
-                <td>({{$row['epls'][$i]['count']}}) {{$row['epls'][$i]['certificate_no']}} - {{date('d-m-Y', strtotime($row['epls'][$i]['issue_date']))}}</td>
-                @else
-                <td>N/A</td>
-                @endif
-
-                @endfor   
-                @endif                                                     
-            </tr>
+                <td>{{$row['nature']}}</td> 
+             </tr>
             @endforeach
         </tbody>
     </table>
@@ -80,6 +55,7 @@
 $(document).ready(function () {
     // alert(123);
     $('.table').DataTable({
+        "order": [[ 1, "desc" ]],
         colReorder: true,
         responsive: true,
         select: true,

@@ -909,42 +909,38 @@ class ReportController extends Controller {
 
     public function siteClearanceApplicationLog($from, $to) {
         $start = microtime(true);
-        $epls = new SiteClearenceRepository();
-        $result = $epls->getSiteReport($from, $to)->toArray();
+        $site = new SiteClearenceRepository();
+        $result = $site->getSiteReport($from, $to)->toArray();
         $data = [];
         $data['header_count'] = 0;
         $data['results'] = [];
         $num = 0;
         foreach ($result as $row) {
+            $array = [];
+            $array['#'] = ++$num;
+            $array['industry_start_date'] = Carbon::parse($row['industry_start_date'])->format('Y-m-d');
             if (count($row['site_clearence_sessions']) > 0) {
-                // dd($row['epls']);
-                $array = [];
-                $array['#'] = ++$num;
-                $array['industry_start_date'] = Carbon::parse($row['industry_start_date'])->format('d-m-Y');
-                if (count($row['site_clearence_sessions']) > 0) {
-                    $array['site_code'] = $row['site_clearence_sessions'][0]['code'];
-                } else {
-                    $array['site_code'] = "N/A";
-                }
-                $array['name_title'] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'] . "\n" . $row['address'];
-                $array['category_name'] = $row['category_name'];
-                $array['industry_address'] = $row['industry_address'];
-                if (count($row['transactions']) > 0 && count($row['transactions'][0]['transaction_items']) > 0) {
-                    $array['inspection_fee'] = $row['transactions'][0]['transaction_items'][0]['amount'];
-                    $array['inspection_pay_date'] = Carbon::parse($row['transactions'][0]['billed_at'])->format('d-m-Y');
-                } else {
-                    $array['inspection_fee'] = "N/A";
-                    $array['inspection_pay_date'] = "N/A";
-                }
-                $array['code'] = $row['epls'][0]['code'];
-                $array['epls'] = $row['epls'];
-                if ($data['header_count'] < count($row['epls'])) {
-                    $data['header_count'] = count($row['epls']);
-                }
-                array_push($data['results'], $array);
+                $array['code_site'] = $row['code_site'];
+            } else {
+                $array['code_site'] = "N/A";
             }
+            $array['name_title'] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'] . "\n" . $row['address'];
+            $array['category_name'] = $row['name'];
+            $array['industry_address'] = $row['industry_address'];
+            if (count($row['site_clearence_sessions']) > 0) {
+                $array['nature'] = "SC -> EPL";
+            } else {
+                $array['nature'] = "EPL";
+            }
+            $array['code_epl'] = $row['code_epl'];
+            $array['code'] = $row['code'];
+            $array['epls'] = $row['epls'];
+            if ($data['header_count'] < count($row['epls'])) {
+                $data['header_count'] = count($row['epls']);
+            }
+            array_push($data['results'], $array);
         }
-        // dd($data);
+
         $time_elapsed_secs = round(microtime(true) - $start, 5);
         return view('Reports.site_report_log', ['data' => $data, 'time_elapsed_secs' => $time_elapsed_secs, 'from' => $from, 'to' => $to]);
     }
