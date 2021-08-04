@@ -151,7 +151,7 @@ class ReportController extends Controller
     {
         $start = microtime(true);
         $epls = new EPLRepository();
-        $result = $epls->getEPLReport('2010-01-01', '2021-01-01')->toArray();
+        $result = $epls->getEPLReport($from, $to)->toArray();
         $data = [];
         $data['header_count'] = 0;
         $data['results'] = [];
