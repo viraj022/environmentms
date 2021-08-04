@@ -147,7 +147,9 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
             });
         }
         $('#tblAllFiles tbody').html(tbl);
-        $("#tblAllFiles").DataTable();
+        $("#tblAllFiles").DataTable({
+            stateSave: true
+        });
     });
 
 //    tbl_all_files = $('#tblAllFiles').DataTable({
@@ -258,20 +260,22 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
 //    }
 //    );
 
-    $(function () {
-        var t = $('#tblAllFiles').DataTable();
-        t.on('order.dt search.dt', function () {
-            t.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
-                cell.innerHTML = i + 1;
-            });
-        }).draw();
-    });
 
-    //data table error handling
-    $.fn.dataTable.ext.errMode = 'none';
-    $('#tblAllFiles').on('error.dt', function (e, settings, techNote, message) {
-        console.log('DataTables error: ', message);
-    });
+
+//    $(function () {
+//        var t = $('#tblAllFiles').DataTable();
+//        t.on('order.dt search.dt', function () {
+//            t.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+//                cell.innerHTML = i + 1;
+//            });
+//        }).draw();
+//    });
+//
+//    //data table error handling
+//    $.fn.dataTable.ext.errMode = 'none';
+//    $('#tblAllFiles').on('error.dt', function (e, settings, techNote, message) {
+//        console.log('DataTables error: ', message);
+//    });
 
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
         callBack();
