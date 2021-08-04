@@ -25,7 +25,7 @@
                                                     <th>Applications Name and Address</th>
                                                     <th>Industry</th>
                                                     <th>Location</th>
-                                                    <th>Inspection Feee</th>
+                                                    <th>Inspection Fee</th>
                                                     <th>Letter Issued Date</th>                                     
                                                 </tr>
                                             </thead>
