@@ -262,7 +262,7 @@
     <div class="container-fluid search-Client">
         <div class="row">
             <div class="col-md-12">
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <div class="card card-gray">
                         <div class="card-header">
                             <h3 id="lblTitle" class="card-title">Search Client</h3>
@@ -270,7 +270,7 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label>Search with*</label>
-                                <select id="getDtaType" class="form-control form-control-sm select2 select2-purple col-sm-4" data-dropdown-css-class="select2-purple" style="width: 100%;" name="level">
+                                <select id="getDtaType" class="form-control form-control-sm select2 select2-purple col-sm-4" data-dropdown-css-class="select2-purple" style="width: 20%;" name="level">
                                     <option value="name">Client Name</option>
                                     <option value="id">Client NIC</option>
                                     <option value="license">License Number</option>
@@ -283,7 +283,7 @@
                             </div>
                             <div class="form-group">
                                 <div id="the-basics">
-                                    <input id="getNic" type="text" class="form-control form-control-sm col-12 typeahead" max-length="12" min-length="10" placeholder="Enter Here..." value="">
+                                    <input id="getNic" type="text" class="form-control form-control-sm col-12 typeahead" style="width:46em" max-length="12" min-length="10" placeholder="Enter Here..." value="">
                                 </div>
                                 <div id="valName" class="d-none">
                                     <p class="text-danger">Name is required</p>
