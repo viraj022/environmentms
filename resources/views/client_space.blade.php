@@ -270,7 +270,7 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label>Search with*</label>
-                                <select id="getDtaType" class="form-control form-control-sm select2 select2-purple col-sm-4" data-dropdown-css-class="select2-purple" style="width: 20%;" name="level">
+                                <select id="getDtaType" class="form-control form-control-sm select2 select2-purple col-sm-4" data-dropdown-css-class="select2-purple" style="width: 60em;" name="level">
                                     <option value="name">Client Name</option>
                                     <option value="id">Client NIC</option>
                                     <option value="license">License Number</option>
@@ -283,7 +283,7 @@
                             </div>
                             <div class="form-group">
                                 <div id="the-basics">
-                                    <input id="getNic" type="text" class="form-control form-control-sm col-12 typeahead" style="width:46em" max-length="12" min-length="10" placeholder="Enter Here..." value="">
+                                    <input id="getNic" type="text" class="form-control form-control-sm col-12 typeahead" style="width: 49.5em" max-length="12" min-length="10" placeholder="Enter Here..." value="">
                                 </div>
                                 <div id="valName" class="d-none">
                                     <p class="text-danger">Name is required</p>
