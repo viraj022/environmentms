@@ -23,6 +23,6 @@ function showCustomerDetails(obje) {
         $("#tblCusData").DataTable();
 }
 
-//View
+//View site clearance details
 
 

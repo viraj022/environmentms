@@ -1,5 +1,5 @@
-var cer_status = { 0: 'Pending', 1: 'Drafting', 2: 'Drafted', 3: 'AD Approval Pending', 4: 'Director Approval pending', 5: 'Director Approved', 6: 'Certificate Issued', '-1': 'Certificate Director Holded' };
-var file_status_list = { 0: 'Pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Prenidng Approval', 4: 'D Certificate Approval Prenidng', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold' };
+var cer_status = {0: 'Pending', 1: 'Drafting', 2: 'Drafted', 3: 'AD Approval Pending', 4: 'Director Approval pending', 5: 'Director Approved', 6: 'Certificate Issued', '-1': 'Certificate Director Holded'};
+var file_status_list = {0: 'Pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Prenidng Approval', 4: 'D Certificate Approval Prenidng', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold'};
 let PROFILE_ID = "";
 
 function getaProfilebyId(id, callBack) {
@@ -7,12 +7,12 @@ function getaProfilebyId(id, callBack) {
         return false;
     }
     var url = "/api/client/id/" + id;
-    ajaxRequest("GET", url, null, function(result) {
+    ajaxRequest("GET", url, null, function (result) {
         if (
-            typeof callBack !== "undefined" &&
-            callBack !== null &&
-            typeof callBack === "function"
-        ) {
+                typeof callBack !== "undefined" &&
+                callBack !== null &&
+                typeof callBack === "function"
+                ) {
             callBack(result);
         }
     });
@@ -26,15 +26,17 @@ function setProfileDetails(obj) {
         $(".viewEPL").removeClass("d-none");
         $(".newEPL").addClass("d-none");
         $("#setEPLCode").html(obj.epls[obj.epls.length - 1].code);
-        $("#setSiteCleanceCode").html(obj.code_site);
+//        if (obj.site_clearence_sessions.length == 0) {
+//            $("#setSiteCleanceCode").html(obj.site_clearence_sessions[0].code);
+//        }
         if (obj.epls.length != 0) {
             $("#setEPlLink").attr(
-                "href",
-                "/epl_profile/client/" +
-                PROFILE_ID +
-                "/profile/" +
-                obj.epls[obj.epls.length - 1].id
-            );
+                    "href",
+                    "/epl_profile/client/" +
+                    PROFILE_ID +
+                    "/profile/" +
+                    obj.epls[obj.epls.length - 1].id
+                    );
         }
     }
     //Check site clearance
@@ -42,39 +44,41 @@ function setProfileDetails(obj) {
         $(".newSiteClear").removeClass("d-none");
     } else {
         $(".setSiteClear").removeClass("d-none");
+        $("#setSiteCleanceCode").html(obj.site_clearence_sessions[0].code);
+        console.log(obj.site_clearence_sessions[0].code);
         if (obj.site_clearence_sessions.length != 0) {
             $("#setSiteClear").attr(
-                "href",
-                "/site_clearance/client/" +
-                PROFILE_ID +
-                "/profile/" +
-                obj.site_clearence_sessions[obj.site_clearence_sessions.length - 1].id
-            );
+                    "href",
+                    "/site_clearance/client/" +
+                    PROFILE_ID +
+                    "/profile/" +
+                    obj.site_clearence_sessions[obj.site_clearence_sessions.length - 1].id
+                    );
         }
 
     }
     obj.last_name == null ?
-        $("#client_name").html(obj.first_name) :
-        $("#client_name").html(obj.first_name + " " + obj.last_name);
-    (obj.address != null) ? $("#client_address").html(obj.address): $("#client_address").html('--');
-    (obj.contact_no != null) ? $("#client_cont").html(obj.contact_no): $("#client_cont").html('--');
-    (obj.email != null) ? $("#client_amil").html(obj.email): $("#client_amil").html('--');
+            $("#client_name").html(obj.first_name) :
+            $("#client_name").html(obj.first_name + " " + obj.last_name);
+    (obj.address != null) ? $("#client_address").html(obj.address) : $("#client_address").html('--');
+    (obj.contact_no != null) ? $("#client_cont").html(obj.contact_no) : $("#client_cont").html('--');
+    (obj.email != null) ? $("#client_amil").html(obj.email) : $("#client_amil").html('--');
     $("#client_nic").html(obj.nic);
     $("#obj_name").html(obj.industry_name);
-    (obj.industry_registration_no != null) ? $("#obj_regno").html(obj.industry_registration_no): $("#obj_regno").html('--');
+    (obj.industry_registration_no != null) ? $("#obj_regno").html(obj.industry_registration_no) : $("#obj_regno").html('--');
     $("#obj_invest").html(obj.industry_investment);
-    (obj.industry_sub_category != null) ? $("#obj_industrySub").html(obj.industry_sub_category): $("#obj_industrySub").html('--');
+    (obj.industry_sub_category != null) ? $("#obj_industrySub").html(obj.industry_sub_category) : $("#obj_industrySub").html('--');
     initMap(
-        parseFloat(obj.industry_coordinate_x),
-        parseFloat(obj.industry_coordinate_y)
-    );
+            parseFloat(obj.industry_coordinate_x),
+            parseFloat(obj.industry_coordinate_y)
+            );
     documentUploadDetails(obj);
 }
 
 // Initialize and add the map
 function initMap(_Latitude, _Longitude) {
     // The location of CeyTech
-    var defaultLocation = { lat: _Latitude, lng: _Longitude }; //default Location for load map
+    var defaultLocation = {lat: _Latitude, lng: _Longitude}; //default Location for load map
 
     // The map, centered at Uluru
     var map = new google.maps.Map(document.getElementById("map"), {
@@ -130,11 +134,11 @@ function documentUploadDetails(obj) {
     if (obj.environment_officer != null) {
         if (obj.environment_officer.user != null) {
             $("#env_firstname").html(
-                "Environment Officer: " +
-                obj.environment_officer.user.first_name +
-                " " +
-                obj.environment_officer.user.last_name
-            );
+                    "Environment Officer: " +
+                    obj.environment_officer.user.first_name +
+                    " " +
+                    obj.environment_officer.user.last_name
+                    );
         }
     } else if (obj.first_name == null) {
         $("#disPaylink").attr("href", "javascript:disWarnPay();");
@@ -159,29 +163,29 @@ function setIndustryAndClientDb(get) {
     //    alert(get.industry_start_date); <--someone changed tbl col name
     var con_assign_Date = or_assign_Date.toISOString().split("T")[0];
     $(".assign_date").html(con_assign_Date);
-    (get.address != null) ? $(".cl_address").html(get.address): $(".cl_address").html('--');
-    (get.email != null) ? $(".cl_email").html(get.email): $(".cl_email").html('--');
-    (get.contact_no != null) ? $(".cl_contact_no").html(get.contact_no): $(".cl_contact_no").html('--');
-    (get.nic != null) ? $(".cl_nic").html(get.nic): $(".cl_nic").html('--');
+    (get.address != null) ? $(".cl_address").html(get.address) : $(".cl_address").html('--');
+    (get.email != null) ? $(".cl_email").html(get.email) : $(".cl_email").html('--');
+    (get.contact_no != null) ? $(".cl_contact_no").html(get.contact_no) : $(".cl_contact_no").html('--');
+    (get.nic != null) ? $(".cl_nic").html(get.nic) : $(".cl_nic").html('--');
     //Industry
     $(".tabf_industry_name").html(get.industry_name);
     $(".tabf_industry_cat_name").html(get.industry_category.name);
     $(".tabf_business_scale").html(get.business_scale.name);
     $(".tabf_pradesheeyasaba").html(get.pradesheeyasaba.name);
-    (get.industry_registration_no != null) ? $(".tabf_industry_registration_no").html(get.industry_registration_no): $(".tabf_industry_registration_no").html('--');
+    (get.industry_registration_no != null) ? $(".tabf_industry_registration_no").html(get.industry_registration_no) : $(".tabf_industry_registration_no").html('--');
     $(".tabf_industry_start_date").html(get.start_date_only);
     $(".tabf_industry_investment").html(get.industry_investment);
     $(".tabf_subindustry_cat").html(get.industry_sub_category);
     $(".tabf_industry_address").html(get.industry_address);
-    (get.industry_email != null) ? $(".tabf_industry_email").html(get.industry_email): $(".tabf_industry_email").html('--');
-    (get.industry_contact_no != null) ? $(".tabf_industry_contact_no").html(get.industry_contact_no): $(".tabf_industry_contact_no").html('--');
+    (get.industry_email != null) ? $(".tabf_industry_email").html(get.industry_email) : $(".tabf_industry_email").html('--');
+    (get.industry_contact_no != null) ? $(".tabf_industry_contact_no").html(get.industry_contact_no) : $(".tabf_industry_contact_no").html('--');
     let env_officer = "Not Assinged";
     if (!(get.environment_officer == null)) {
         if (get.environment_officer.user != null) {
             env_officer =
-                get.environment_officer.user.first_name +
-                " " +
-                get.environment_officer.user.last_name;
+                    get.environment_officer.user.first_name +
+                    " " +
+                    get.environment_officer.user.last_name;
         }
     }
     $(".tabf_environment_officer").html(env_officer);
@@ -194,21 +198,22 @@ function loadAllEPLTable(dataSet, callBack) {
     if (dataSet.length == 0) {
         tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
     } else {
-        $.each(dataSet, function(index, row) {
+        $.each(dataSet, function (index, row) {
             tbl += "<tr>";
             tbl += "<td>" + ++index + "</td>";
             tbl +=
-                '<td><a type="button" href="/epl_profile/client/' +
-                PROFILE_ID +
-                "/profile/" +
-                row.id +
-                '" class="btn btn-primary">' +
-                row.code +
-                "</a></td>";
+                    '<td><a type="button" href="/epl_profile/client/' +
+                    PROFILE_ID +
+                    "/profile/" +
+                    row.id +
+                    '" class="btn btn-primary">' +
+                    row.code +
+                    "</a></td>";
+
             if (row.certificate_no == null) {
                 tbl += "<td>In Progress.</td>";
             } else {
-                tbl += "<td>" + row.certificate_no + "</td>";
+                tbl += "<td>" + row.certificate_no.toUpperCase() + "</td>";
             }
             tbl += "<td>" + row.issue_date_only + "</td>";
             tbl += "<td>" + row.expire_date_only + "</td>";
@@ -228,17 +233,17 @@ function loadAllSiteClearTable(dataSet, callBack) {
     if (dataSet.length == 0) {
         tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
     } else {
-        $.each(dataSet, function(index, row) {
+        $.each(dataSet, function (index, row) {
             tbl += "<tr>";
             tbl += "<td>" + ++index + "</td>";
             tbl +=
-                '<td><a type="button" href="/site_clearance/client/' +
-                PROFILE_ID +
-                "/profile/" +
-                row.id +
-                '" class="btn btn-primary">' +
-                row.code +
-                "</a></td>";
+                    '<td><a type="button" href="/site_clearance/client/' +
+                    PROFILE_ID +
+                    "/profile/" +
+                    row.id +
+                    '" class="btn btn-primary">' +
+                    row.code +
+                    "</a></td>";
             tbl += "<td>" + row.expire_date + "</td>";
             tbl += "</tr>";
         });
@@ -273,25 +278,25 @@ function getAllInspectionAPI(id, callBack) {
         return false;
     }
     var url = "/api/inspections/file/id/" + id;
-    ajaxRequest("GET", url, null, function(result) {
+    ajaxRequest("GET", url, null, function (result) {
         if (
-            typeof callBack !== "undefined" &&
-            callBack !== null &&
-            typeof callBack === "function"
-        ) {
+                typeof callBack !== "undefined" &&
+                callBack !== null &&
+                typeof callBack === "function"
+                ) {
             callBack(result);
         }
     });
 }
 
 function loadAllSiteInspectionTable(id) {
-    getAllInspectionAPI(id, function(result) {
+    getAllInspectionAPI(id, function (result) {
         var tbl = "";
         var id = 1;
         if (result.length == 0) {
             tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
         } else {
-            $.each(result, function(index, row) {
+            $.each(result, function (index, row) {
                 tbl += "<tr>";
                 tbl += "<td>" + ++index + "</td>";
                 if (row.status == 0) {
@@ -314,18 +319,18 @@ function checkInspectionStatus(id, btn_val, callBack) {
         return false;
     }
     ajaxRequest(
-        "PATCH",
-        "/api/inspection/" + btn_val + "/file/" + id,
-        null,
-        function(dataSet) {
-            if (
-                typeof callBack !== "undefined" &&
-                callBack != null &&
-                typeof callBack === "function"
-            ) {
-                callBack(dataSet);
+            "PATCH",
+            "/api/inspection/" + btn_val + "/file/" + id,
+            null,
+            function (dataSet) {
+                if (
+                        typeof callBack !== "undefined" &&
+                        callBack != null &&
+                        typeof callBack === "function"
+                        ) {
+                    callBack(dataSet);
+                }
             }
-        }
     );
 }
 
@@ -334,7 +339,7 @@ function reportFileIssueAPI(id, data, callBack) {
     if (isNaN(id)) {
         return false;
     }
-    ulploadFileWithData("/api/files/file_problem_status/id/" + id, data, function(resp) {
+    ulploadFileWithData("/api/files/file_problem_status/id/" + id, data, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
         }
@@ -365,12 +370,12 @@ function removeClientFileAPI(id, callBack) {
     if (isNaN(id)) {
         return false;
     }
-    ajaxRequest("DELETE", "/api/client/id/" + id, null, function(dataSet) {
+    ajaxRequest("DELETE", "/api/client/id/" + id, null, function (dataSet) {
         if (
-            typeof callBack !== "undefined" &&
-            callBack != null &&
-            typeof callBack === "function"
-        ) {
+                typeof callBack !== "undefined" &&
+                callBack != null &&
+                typeof callBack === "function"
+                ) {
             callBack(dataSet);
         }
     });
@@ -381,14 +386,14 @@ function removeEPLPaymentAPI(id, callBack) {
     if (isNaN(id)) {
         return false;
     }
-    ajaxRequest("DELETE", "/api/epl/regPayment/id/" + id, null, function(
-        dataSet
-    ) {
+    ajaxRequest("DELETE", "/api/epl/regPayment/id/" + id, null, function (
+            dataSet
+            ) {
         if (
-            typeof callBack !== "undefined" &&
-            callBack != null &&
-            typeof callBack === "function"
-        ) {
+                typeof callBack !== "undefined" &&
+                callBack != null &&
+                typeof callBack === "function"
+                ) {
             callBack(dataSet);
         }
     });
@@ -396,27 +401,27 @@ function removeEPLPaymentAPI(id, callBack) {
 
 //Pending Payments API
 function pendingPaymentsAPI(id, callBack) {
-    ajaxRequest("GET", "/api/payment/history/file/" + id, null, function(
-        dataSet
-    ) {
+    ajaxRequest("GET", "/api/payment/history/file/" + id, null, function (
+            dataSet
+            ) {
         if (
-            typeof callBack !== "undefined" &&
-            callBack != null &&
-            typeof callBack === "function"
-        ) {
+                typeof callBack !== "undefined" &&
+                callBack != null &&
+                typeof callBack === "function"
+                ) {
             callBack(dataSet);
         }
     });
 }
 //Pending Payment Table
 function pendingPaymentsTable(id) {
-    pendingPaymentsAPI(id, function(result) {
+    pendingPaymentsAPI(id, function (result) {
         var tbl = "";
         var id = 1;
         if (result.length == 0) {
             tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
         } else {
-            $.each(result, function(index, row) {
+            $.each(result, function (index, row) {
                 tbl += "<tr>";
                 tbl += "<td>" + ++index + "</td>";
                 if (row.cashier_name !== null) {
@@ -439,13 +444,13 @@ function pendingPaymentsTable(id) {
                 tbl += "<td>" + row.net_total + "</td>";
                 if (row.status == 0) {
                     tbl +=
-                        '<td><button type="button" data-name="' +
-                        row.name +
-                        '" value="' +
-                        row.id +
-                        '" class="btn btn-primary printBarcode"><i class="fas fa-barcode"></i>  Re-Print BarCode </button> <button type="button" value="' +
-                        row.id +
-                        '" class="btn btn-danger removeBarcode"><i class="fas fa-times"></i> Remove </button></td>';
+                            '<td><button type="button" data-name="' +
+                            row.name +
+                            '" value="' +
+                            row.id +
+                            '" class="btn btn-primary printBarcode"><i class="fas fa-barcode"></i>  Re-Print BarCode </button> <button type="button" value="' +
+                            row.id +
+                            '" class="btn btn-danger removeBarcode"><i class="fas fa-times"></i> Remove </button></td>';
                 } else {
                     tbl += "<td><i class='fas fa-check text-success'></i></td>";
                 }

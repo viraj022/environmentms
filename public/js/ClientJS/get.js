@@ -60,7 +60,6 @@ function getaClientbyId(id, callBack) {
             }
         }
     });
-
 }
 //DEV Mode
 //function getClientbyNic(nic, callBack) {
@@ -109,7 +108,6 @@ function getClientbyNic(type, data, callBack) {
             alert('Error');
         }
     });
-
 }
 
 function getClientSearchDetails(type, callBack) {
@@ -131,5 +129,6 @@ function getClientSearchDetails(type, callBack) {
             alert('Error');
         }
     });
-
 }
+
+

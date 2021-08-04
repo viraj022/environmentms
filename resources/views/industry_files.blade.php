@@ -68,12 +68,13 @@
                                 <thead>
                                     <tr class="tblTrsec">
                                         <th style="width: 10px">#</th>
-                                        <th>Industry Name</th>
-                                        <th>File No</th>
-                                        <th>#</th>
-                                        <th>Status</th>
+                                        <th style='width: 25em'>Industry Name</th>
+                                        <th style='width: 20em'>EPL Code</th>
+                                        <th style='width: 25em'>File No</th>
+                                        <th style='width: 25em'>#</th>
+                                        <th style='width: 25em'>Status</th>
                                         <!--<th class="inspectTbl" style="width: 180px">Inspection</th>-->
-                                        <th class="" style="width: 180px">Action</th>
+                                        <th style='width: 5em'>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -125,7 +126,11 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Minute</label>
-                        <textarea id="getMinutes" maxlength="55" type="text" class="form-control form-control-sm" placeholder="Enter Minute..." value=""></textarea>
+                        <textarea id="getMinutes" type="text" class="form-control form-control-sm" placeholder="Enter Minute..." value=""></textarea>
+                    </div>
+                    <div class="form-group d-none" id="nominate_certificate">
+                        <label>For Certificate Prepare</label>
+                        <textarea id="cert_nominate" type="text" class="form-control form-control-sm" placeholder="Add Comment" value=""></textarea>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -176,8 +181,11 @@
     var file_status = {0: 'pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Prenidng Approval', 4: 'D Certificate Approval Prenidng', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold'};
     function minute() {
         var data = {
-            minutes: $('#getMinutes').val()
+            minutes: $('#getMinutes').val().trim()
         };
+        if ($('#cert_nominate').val().trim() != null || $('#cert_nominate').val().trim().length > 0) {
+            data.nominate = $('#cert_nominate').val().trim();
+        }
         return data;
     }
     fileStatusCombo(file_status);
@@ -227,10 +235,12 @@
             checkInspectionStatus(f_id, $('#getInspection').val(), function (rep) {
                 show_mesege(rep);
                 $('#modal-xl').modal('hide');
-                checkFileType();
+//                checkFileType();
                 forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+//                $("#tblAllFiles").DataTable().ajax.reload(null, false);
             });
             forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+//            $("#tblAllFiles").DataTable().ajax.reload(null, false);
         });
     });
 
@@ -248,6 +258,11 @@
         $('#viewCertificateBtn').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
         $('#upCertificate').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
         $('#modalTitlex2').html(fileData.file_no);
+        if (fileData.need_inspection != null && f_Status == 0) {
+            $('#nominate_certificate').removeClass('d-none');
+        } else {
+            $('#nominate_certificate').addClass('d-none');
+        }
 
         $('#needApproval,#submitAdCerApproval,#rejectAdCerApproval,#setInspectionVal2,#viewCertificateBtn').addClass('d-none');
 
@@ -287,6 +302,7 @@
                 if (resp.id == 1) {
                     $('#modal-x2').modal('hide');
                     forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+//                    $("#tblAllFiles").DataTable().ajax.reload(null, false);
                 }
             });
         }
@@ -300,6 +316,7 @@
                 if (resp.id == 1) {
                     $('#modal-x2').modal('hide');
                     forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+//                    $("#tblAllFiles").DataTable().ajax.reload(null, false);
                 }
             });
         }
@@ -312,6 +329,7 @@
                 if (resp.id == 1) {
                     $('#modal-x2').modal('hide');
                     forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+//                    $("#tblAllFiles").DataTable().ajax.reload(null, false);
                 }
             });
         }

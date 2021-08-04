@@ -17,3 +17,5 @@ composer.lock
 /.idea
 /nbproject/private/
 /nbproject/
+/.vs/
+/.vs

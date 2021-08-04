@@ -7,25 +7,26 @@ use App\Minute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\MinutesRepository;
-use App\Repositories\CommitteeRepository;
 
-class MinuteController extends Controller
-{
-    private  $minutesRepository;
+//use App\Repositories\CommitteeRepository;
 
-    public function __construct(MinutesRepository $minutesRepository)
-    {
+class MinuteController extends Controller {
+
+    private $minutesRepository;
+
+    public function __construct(MinutesRepository $minutesRepository) {
         
         $this->middleware(['auth:api']);
         $this->minutesRepository = $minutesRepository;
     }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
+        
     }
 
     /**
@@ -33,8 +34,7 @@ class MinuteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
@@ -44,8 +44,7 @@ class MinuteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
@@ -55,30 +54,13 @@ class MinuteController extends Controller
      * @param  \App\Minute  $minute
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         return $this->minutesRepository->all($id);
-        return array(
-            array(
-                "type" => "EPL",
-                "date" => "2020-01-01",
-                "minute_object" =>  array(
-                    "minute_description" => "Text minutes",
-                    "situation" => "situvation",
-                    "user" => array(Auth::user())
-                )
-            ),
-            array(
-                "type" => "EPL",
-                "date" => "2020-01-01",
-                "minute_object" =>  array(
-                    "minute_description" => "Text minutes",
-                    "situation" => "situvation",
-                    "user" => array(Auth::user())
-                )
+    }
 
-            )
-        );
+    public function GetAllMinutesByFile($file_id) {
+        $test = MinutesRepository::all($file_id);
+       return $test;
     }
 
     /**
@@ -87,8 +69,7 @@ class MinuteController extends Controller
      * @param  \App\Minute  $minute
      * @return \Illuminate\Http\Response
      */
-    public function edit(Minute $minute)
-    {
+    public function edit(Minute $minute) {
         //
     }
 
@@ -99,8 +80,7 @@ class MinuteController extends Controller
      * @param  \App\Minute  $minute
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Minute $minute)
-    {
+    public function update(Request $request, Minute $minute) {
         //
     }
 
@@ -110,8 +90,8 @@ class MinuteController extends Controller
      * @param  \App\Minute  $minute
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Minute $minute)
-    {
+    public function destroy(Minute $minute) {
         //
     }
+
 }
