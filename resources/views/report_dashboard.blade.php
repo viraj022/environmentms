@@ -35,6 +35,7 @@
                                 <option value="4">Progress Report</option>
                                 <option value="5">EO Inspection Report</option>
                                 <option value="6">File Count By Category</option>
+                                <option value="7">Site Clearance Log</option>
                             </select>
                         </div>
                         <div class="form-group" id="generateBy_section">
@@ -153,6 +154,9 @@
                     break;
                 case 6:
                     URL = '/category_count_report/' + date_from + '/' + date_to;
+                    break;
+                case 7:
+                    URL = '/site_clearence_log/' + date_from + '/' + date_to;
                     break;
             }
             console.log('url: ' + URL);

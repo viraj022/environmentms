@@ -66,7 +66,8 @@ function setProfileDetails(obj) {
     $("#client_nic").html(obj.nic);
     $("#obj_name").html(obj.industry_name);
     (obj.industry_registration_no != null) ? $("#obj_regno").html(obj.industry_registration_no) : $("#obj_regno").html('--');
-    $("#obj_invest").html(obj.industry_investment);
+    let invest = format(obj.industry_investment);
+    $("#obj_invest").html(invest);
     (obj.industry_sub_category != null) ? $("#obj_industrySub").html(obj.industry_sub_category) : $("#obj_industrySub").html('--');
     initMap(
             parseFloat(obj.industry_coordinate_x),
@@ -174,7 +175,8 @@ function setIndustryAndClientDb(get) {
     $(".tabf_pradesheeyasaba").html(get.pradesheeyasaba.name);
     (get.industry_registration_no != null) ? $(".tabf_industry_registration_no").html(get.industry_registration_no) : $(".tabf_industry_registration_no").html('--');
     $(".tabf_industry_start_date").html(get.start_date_only);
-    $(".tabf_industry_investment").html(get.industry_investment);
+    let invest_tabf = format(get.industry_investment);
+    $(".tabf_industry_investment").html(invest_tabf);
     $(".tabf_subindustry_cat").html(get.industry_sub_category);
     $(".tabf_industry_address").html(get.industry_address);
     (get.industry_email != null) ? $(".tabf_industry_email").html(get.industry_email) : $(".tabf_industry_email").html('--');
@@ -244,7 +246,11 @@ function loadAllSiteClearTable(dataSet, callBack) {
                     '" class="btn btn-primary">' +
                     row.code +
                     "</a></td>";
-            tbl += "<td>" + row.expire_date + "</td>";
+            if (row.expire_date != null) {
+                tbl += "<td>" + row.expire_date + "</td>";
+            }else{
+                tbl += "<td> ----- No Data ----- </td>";
+            }
             tbl += "</tr>";
         });
     }
@@ -509,4 +515,13 @@ function setCurrentFileStatus(api_result) {
         }
     }
     $('.setCurrentFstatus').text(file_status_list[api_result.file_status] + status_Lable);
+}
+
+function format(n, sep, decimals) {
+    sep = sep || "."; // Default to period as decimal separator
+    decimals = decimals || 2; // Default to 2 decimals
+
+    return n.toLocaleString().split(sep)[0]
+            + sep
+            + n.toFixed(decimals).split(sep)[1];
 }
