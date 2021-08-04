@@ -169,118 +169,87 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
 //                "Authorization": "Bearer " + $('meta[name=api-token]').attr("content")
 //            },
 //        },
-//        "columns": [{
-//                "data": ""
+//        "columns": [
+//            {
+//                "data": "",
+//                "defaultContent": "         ----------           "
 //            },
 //            {
 //                "data": "industry_name",
-//                "defaultContent": "-"
+//                "defaultContent": "         ----------           "
 //            },
 //            {
 //                "data": "code_epl",
-//                "defaultContent": "-"
+//                "defaultContent": "         ----------           "
 //            },
 //            {
 //                "data": "",
 //                render: function (data, type, row) {
-//                    let tr_style = '';
-//                    if ((row.file_status == 0) && (row.need_inspection == null)) {
-//                        tr_style = '    background-color: #dcf3e0;';
-//                    } else if (row.file_status == 5) {
-//                        tr_style = '    background-color: #bac6e88a;';
-//                    } else if (row.file_status == -1) {
-//                        tr_style = '    background-color: #f3dcdc75;';
-//                    }
-//                    if ((row.file_status == file_status) || (file_status == 'all')) {
-//                        if (row.is_old != 0) {
-//                            return '<td><a href="/industry_profile/id/' + row.id + '" class="btn btn-dark" target="_blank">' + row.file_no + '</a></td>';
+//                    if (row != null) {
+//                        if ((row.file_status == file_status) || (file_status == 'all')) {
+//                            if (row.is_old != 0) {
+//                                return '<td><a href="/industry_profile/id/' + row.id + '" class="btn btn-dark" target="_blank">' + row.file_no + '</a></td>';
+//                            }
 //                        }
 //                    }
 //                },
-//                "defaultContent": "-"
+//                "defaultContent": "         ----------           "
 //            },
 //            {
 //                "data": "",
 //                render: function (data, type, row) {
-//                    let tr_style = '';
-//                    if ((row.file_status == 0) && (row.need_inspection == null)) {
-//                        tr_style = '    background-color: #dcf3e0;';
-//                    } else if (row.file_status == 5) {
-//                        tr_style = '    background-color: #bac6e88a;';
-//                    } else if (row.file_status == -1) {
-//                        tr_style = '    background-color: #f3dcdc75;';
-//                    }
-//                    var myDate = new Date(row.created_at);
-//                    var fixMydate = myDate.toISOString().split('T')[0];
-//                    if ((row.file_status == file_status) || (file_status == 'all')) {
-//                        if (row.is_old != 0) {
-//                            return '<td class="">' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
+//                    if (row != null) {
+//                        if ((row.file_status == file_status) || (file_status == 'all')) {
+//                            if (row.is_old != 0) {
+//                                var myDate = new Date(row.created_at);
+//                                var fixMydate = myDate.toISOString().split('T')[0];
+//                                return '<td class="">' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
+//                            }
 //                        }
 //                    }
 //                },
-//                "defaultContent": "-"
+//                "defaultContent": "         ----------           "
 //            },
 //            {
 //                "data": "",
 //                render: function (data, type, row) {
-//                    let tr_style = '';
-//                    if ((row.file_status == 0) && (row.need_inspection == null)) {
-//                        tr_style = '    background-color: #dcf3e0;';
-//                    } else if (row.file_status == 5) {
-//                        tr_style = '    background-color: #bac6e88a;';
-//                    } else if (row.file_status == -1) {
-//                        tr_style = '    background-color: #f3dcdc75;';
+//                    let status_Lable = '';
+//                    if (row.file_status == 2) {
+//                        status_Lable = '(' + cer_status[row.cer_status] + ')';
+//                    } else if (row.file_status == 0) {
+//                        if (row.need_inspection == null) {
+//                            status_Lable = '(Set Inspction Status)';
+//                        } else if (row.need_inspection == 'Pending') {
+//                            status_Lable = '(Inpection Result Pending)';
+//                        } else {
+//                            status_Lable = '(' + row.need_inspection + ')';
+//                        }
 //                    }
-//                    if ((row.file_status == file_status) || (file_status == 'all')) {
-//                        if (row.is_old != 0) {
-//                            let status_Lable = '';
-//                            if (row.file_status == 2) {
-//                                status_Lable = '(' + cer_status[row.cer_status] + ')';
-//                            } else if (row.file_status == 0) {
-//                                if (row.need_inspection == null) {
-//                                    status_Lable = '(Set Inspction Status)';
-//                                } else if (row.need_inspection == 'Pending') {
-//                                    status_Lable = '(Inpection Result Pending)';
+//                    if (row != null) {
+//                        if ((row.file_status == file_status) || (file_status == 'all')) {
+//                            if (row.is_old != 0) {
+//                                return '<td>' + file_status_list[row.file_status] + status_Lable + '</td>';
+//                            }
+//                        }
+//                    }
+//                },
+//                "defaultContent": "         ----------           "
+//            },
+//            {
+//                "data": "",
+//                render: function (data, type, row) {
+//                    if (row != null) {
+//                        if ((row.file_status == file_status) || (file_status == 'all')) {
+//                            if (row.is_old != 0) {
+//                                if (row.file_status != 5) {
+//                                    return '<td class="text-center"><button type="button" value="' + escape(JSON.stringify(row)) + '" class="btn btn-info detailsData">Details</button></td>';
 //                                } else {
-//                                    status_Lable = '(' + row.need_inspection + ')';
+//                                    return '<td class="text-center"><i class="fa fa-check fa-lg text-success"></i></td>';
 //                                }
-//
 //                            }
-//                            return '<td>' + file_status_list[row.file_status] + status_Lable + '</td>';
 //                        }
 //                    }
-//                },
-//                "defaultContent": "-"
-//            },
-//            {
-//                "data": "",
-//                render: function (data, type, row) {
-//                    let tr_style = '';
-//                    if ((row.file_status == 0) && (row.need_inspection == null)) {
-//                        tr_style = '    background-color: #dcf3e0;';
-//                    } else if (row.file_status == 5) {
-//                        tr_style = '    background-color: #bac6e88a;';
-//                    } else if (row.file_status == -1) {
-//                        tr_style = '    background-color: #f3dcdc75;';
-//                    }
-//                    if ((row.file_status == file_status) || (file_status == 'all')) {
-//                        if (row.is_old != 0) {
-//                            tbl = '';
-//                            if ((row.file_status == 0) && (row.need_inspection == null)) {
-//                                tbl += '<td><button type="button" value="' + row.id + '" data-toggle="modal" data-target="#modal-xl" class="btn btn-success setInspeBtn">Set Inspection</button></td>';
-//                            } else {
-//                                tbl += '<td>' + row.need_inspection + '</td>';
-//                            }
-//                            if (row.file_status != 5) {
-//                                tbl += '<td class="text-center"><button type="button" value="' + escape(JSON.stringify(row)) + '" class="btn btn-info detailsData">Details</button></td>';
-//                            } else {
-//                                tbl += '<td class="text-center"><i class="fa fa-check fa-lg text-success"></i></td>';
-//                            }
-//                            return tbl;
-//                        }
-//                    }
-//                },
-//                "defaultContent": "-"
+//                }
 //            },
 //        ],
 //        "order": [
@@ -288,21 +257,23 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
 //        ],
 //    }
 //    );
-//
-//    $(function () {
-//        var t = $('#tblAllFiles').DataTable();
-//        t.on('order.dt search.dt', function () {
-//            t.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
-//                cell.innerHTML = i + 1;
-//            });
-//        }).draw();
-//    });
-//
-//    //data table error handling
-//    $.fn.dataTable.ext.errMode = 'none';
-//    $('#tblAllFiles').on('error.dt', function (e, settings, techNote, message) {
-//        console.log('DataTables error: ', message);
-//    });
+
+
+
+    $(function () {
+        var t = $('#tblAllFiles').DataTable();
+        t.on('order.dt search.dt', function () {
+            t.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+    });
+
+    //data table error handling
+    $.fn.dataTable.ext.errMode = 'none';
+    $('#tblAllFiles').on('error.dt', function (e, settings, techNote, message) {
+        console.log('DataTables error: ', message);
+    });
 
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
         callBack();
