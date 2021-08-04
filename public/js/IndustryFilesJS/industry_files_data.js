@@ -93,29 +93,96 @@ function checkInspectionStatus(id, combo_val, callBack) {
 //----- Load Tables----//
 function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
     var tbl = "";
-//    loadAllFilesApi(env_id, function (resp) {
-//        if (resp === null) {
-//            tbl = "<tr><td colspan='5'>No Data Found</td></tr>";
-//        } else {
-//            $("#tblAllFiles").DataTable().destroy();
-//            $.each(resp, function (index, row) {
-//                let status_Lable = '';
-//                if (row.file_status == 2) {
-//                    status_Lable = '(' + cer_status[row.cer_status] + ')';
-//                } else if (row.file_status == 0) {
-//                    if (row.need_inspection == null) {
-//                        status_Lable = '(Set Inspction Status)';
-//                    } else if (row.need_inspection == 'Pending') {
-//                        status_Lable = '(Inpection Result Pending)';
+    loadAllFilesApi(env_id, function (resp) {
+        if (resp === null) {
+            tbl = "<tr><td colspan='5'>No Data Found</td></tr>";
+        } else {
+            $("#tblAllFiles").DataTable().destroy();
+            $.each(resp, function (index, row) {
+                let status_Lable = '';
+                if (row.file_status == 2) {
+                    status_Lable = '(' + cer_status[row.cer_status] + ')';
+                } else if (row.file_status == 0) {
+                    if (row.need_inspection == null) {
+                        status_Lable = '(Set Inspction Status)';
+                    } else if (row.need_inspection == 'Pending') {
+                        status_Lable = '(Inpection Result Pending)';
+                    } else {
+                        status_Lable = '(' + row.need_inspection + ')';
+                    }
+                }
+
+                var myDate = new Date(row.created_at);
+                var fixMydate = myDate.toISOString().split('T')[0];
+                if ((row.file_status == file_status) || (file_status == 'all')) {
+                    let tr_style = '';
+                    if ((row.file_status == 0) && (row.need_inspection == null)) {
+                        tr_style = '    background-color: #dcf3e0;';
+                    } else if (row.file_status == 5) {
+                        tr_style = '    background-color: #bac6e88a;';
+                    } else if (row.file_status == -1) {
+                        tr_style = '    background-color: #f3dcdc75;';
+                    }
+                    if (row.is_old != 0) {
+                        tbl += '<tr style="' + tr_style + '">';
+                        tbl += '<td>' + ++index + '</td>';
+                        tbl += '<td>' + row.industry_name + '</td>';
+                        tbl += '<td>' + row.code_epl + '</td>';
+                        tbl += '<td><a href="/industry_profile/id/' + row.id + '" class="btn btn-dark" target="_blank">' + row.file_no + '</a></td>';
+                        tbl += '<td class="">' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
+                        tbl += '<td>' + file_status_list[row.file_status] + status_Lable + '</td>';
+//                    if ((row.file_status == 0) && (row.need_inspection == null)) {
+//                        tbl += '<td><button type="button" value="' + row.id + '" data-toggle="modal" data-target="#modal-xl" class="btn btn-success setInspeBtn">Set Inspection</button></td>';
 //                    } else {
-//                        status_Lable = '(' + row.need_inspection + ')';
+//                        tbl += '<td>' + row.need_inspection + '</td>';
 //                    }
-//
-//                }
-//
-//                var myDate = new Date(row.created_at);
-//                var fixMydate = myDate.toISOString().split('T')[0];
-//                if ((row.file_status == file_status) || (file_status == 'all')) {
+                        if (row.file_status != 5) {
+                            tbl += '<td class="text-center"><button type="button" value="' + escape(JSON.stringify(row)) + '" class="btn btn-info detailsData">Details</button></td>';
+                        } else {
+                            tbl += '<td class="text-center"><i class="fa fa-check fa-lg text-success"></i></td>';
+                        }
+                        tbl += '</tr>';
+                    }
+                }
+            });
+        }
+        $('#tblAllFiles tbody').html(tbl);
+        $("#tblAllFiles").DataTable();
+    });
+
+//    tbl_all_files = $('#tblAllFiles').DataTable({
+//        "destroy": true,
+//        "processing": true,
+//        "colReorder": true,
+//        "serverSide": false,
+//        "pageLength": 10,
+//        language: {
+//            searchPlaceholder: "Search..."
+//        },
+//        ajax: {
+//            "url": "/api/files/all/officer/id/" + env_id,
+//            "type": "GET",
+//            "dataSrc": "",
+//            "headers": {
+//                "Accept": "application/json",
+//                "Content-Type": "text/json; charset=utf-8",
+//                "Authorization": "Bearer " + $('meta[name=api-token]').attr("content")
+//            },
+//        },
+//        "columns": [{
+//                "data": ""
+//            },
+//            {
+//                "data": "industry_name",
+//                "defaultContent": "-"
+//            },
+//            {
+//                "data": "code_epl",
+//                "defaultContent": "-"
+//            },
+//            {
+//                "data": "",
+//                render: function (data, type, row) {
 //                    let tr_style = '';
 //                    if ((row.file_status == 0) && (row.need_inspection == null)) {
 //                        tr_style = '    background-color: #dcf3e0;';
@@ -124,186 +191,118 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
 //                    } else if (row.file_status == -1) {
 //                        tr_style = '    background-color: #f3dcdc75;';
 //                    }
-//                    if (row.is_old != 0) {
-//                        tbl += '<tr style="' + tr_style + '">';
-//                        tbl += '<td>' + ++index + '</td>';
-//                        tbl += '<td>' + row.industry_name + '</td>';
-//                        tbl += '<td>' + row.code_epl + '</td>';
-//                        tbl += '<td><a href="/industry_profile/id/' + row.id + '" class="btn btn-dark" target="_blank">' + row.file_no + '</a></td>';
-//                        tbl += '<td class="">' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
-//                        tbl += '<td>' + file_status_list[row.file_status] + status_Lable + '</td>';
-////                    if ((row.file_status == 0) && (row.need_inspection == null)) {
-////                        tbl += '<td><button type="button" value="' + row.id + '" data-toggle="modal" data-target="#modal-xl" class="btn btn-success setInspeBtn">Set Inspection</button></td>';
-////                    } else {
-////                        tbl += '<td>' + row.need_inspection + '</td>';
-////                    }
-//                        if (row.file_status != 5) {
-//                            tbl += '<td class="text-center"><button type="button" value="' + escape(JSON.stringify(row)) + '" class="btn btn-info detailsData">Details</button></td>';
-//                        } else {
-//                            tbl += '<td class="text-center"><i class="fa fa-check fa-lg text-success"></i></td>';
+//                    if ((row.file_status == file_status) || (file_status == 'all')) {
+//                        if (row.is_old != 0) {
+//                            return '<td><a href="/industry_profile/id/' + row.id + '" class="btn btn-dark" target="_blank">' + row.file_no + '</a></td>';
 //                        }
-//                        tbl += '</tr>';
 //                    }
-//                }
+//                },
+//                "defaultContent": "-"
+//            },
+//            {
+//                "data": "",
+//                render: function (data, type, row) {
+//                    let tr_style = '';
+//                    if ((row.file_status == 0) && (row.need_inspection == null)) {
+//                        tr_style = '    background-color: #dcf3e0;';
+//                    } else if (row.file_status == 5) {
+//                        tr_style = '    background-color: #bac6e88a;';
+//                    } else if (row.file_status == -1) {
+//                        tr_style = '    background-color: #f3dcdc75;';
+//                    }
+//                    var myDate = new Date(row.created_at);
+//                    var fixMydate = myDate.toISOString().split('T')[0];
+//                    if ((row.file_status == file_status) || (file_status == 'all')) {
+//                        if (row.is_old != 0) {
+//                            return '<td class="">' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
+//                        }
+//                    }
+//                },
+//                "defaultContent": "-"
+//            },
+//            {
+//                "data": "",
+//                render: function (data, type, row) {
+//                    let tr_style = '';
+//                    if ((row.file_status == 0) && (row.need_inspection == null)) {
+//                        tr_style = '    background-color: #dcf3e0;';
+//                    } else if (row.file_status == 5) {
+//                        tr_style = '    background-color: #bac6e88a;';
+//                    } else if (row.file_status == -1) {
+//                        tr_style = '    background-color: #f3dcdc75;';
+//                    }
+//                    if ((row.file_status == file_status) || (file_status == 'all')) {
+//                        if (row.is_old != 0) {
+//                            let status_Lable = '';
+//                            if (row.file_status == 2) {
+//                                status_Lable = '(' + cer_status[row.cer_status] + ')';
+//                            } else if (row.file_status == 0) {
+//                                if (row.need_inspection == null) {
+//                                    status_Lable = '(Set Inspction Status)';
+//                                } else if (row.need_inspection == 'Pending') {
+//                                    status_Lable = '(Inpection Result Pending)';
+//                                } else {
+//                                    status_Lable = '(' + row.need_inspection + ')';
+//                                }
+//
+//                            }
+//                            return '<td>' + file_status_list[row.file_status] + status_Lable + '</td>';
+//                        }
+//                    }
+//                },
+//                "defaultContent": "-"
+//            },
+//            {
+//                "data": "",
+//                render: function (data, type, row) {
+//                    let tr_style = '';
+//                    if ((row.file_status == 0) && (row.need_inspection == null)) {
+//                        tr_style = '    background-color: #dcf3e0;';
+//                    } else if (row.file_status == 5) {
+//                        tr_style = '    background-color: #bac6e88a;';
+//                    } else if (row.file_status == -1) {
+//                        tr_style = '    background-color: #f3dcdc75;';
+//                    }
+//                    if ((row.file_status == file_status) || (file_status == 'all')) {
+//                        if (row.is_old != 0) {
+//                            tbl = '';
+//                            if ((row.file_status == 0) && (row.need_inspection == null)) {
+//                                tbl += '<td><button type="button" value="' + row.id + '" data-toggle="modal" data-target="#modal-xl" class="btn btn-success setInspeBtn">Set Inspection</button></td>';
+//                            } else {
+//                                tbl += '<td>' + row.need_inspection + '</td>';
+//                            }
+//                            if (row.file_status != 5) {
+//                                tbl += '<td class="text-center"><button type="button" value="' + escape(JSON.stringify(row)) + '" class="btn btn-info detailsData">Details</button></td>';
+//                            } else {
+//                                tbl += '<td class="text-center"><i class="fa fa-check fa-lg text-success"></i></td>';
+//                            }
+//                            return tbl;
+//                        }
+//                    }
+//                },
+//                "defaultContent": "-"
+//            },
+//        ],
+//        "order": [
+//            [1, "asc"]
+//        ],
+//    }
+//    );
+//
+//    $(function () {
+//        var t = $('#tblAllFiles').DataTable();
+//        t.on('order.dt search.dt', function () {
+//            t.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+//                cell.innerHTML = i + 1;
 //            });
-//        }
-//        $('#tblAllFiles tbody').html(tbl);
-//        $("#tblAllFiles").DataTable();
+//        }).draw();
 //    });
-
-    tbl_all_files = $('#tblAllFiles').DataTable({
-        "destroy": true,
-        "processing": true,
-        "colReorder": true,
-        "serverSide": false,
-        "pageLength": 10,
-        language: {
-            searchPlaceholder: "Search..."
-        },
-        ajax: {
-            "url": "/api/files/all/officer/id/" + env_id,
-            "type": "GET",
-            "dataSrc": "",
-            "headers": {
-                "Accept": "application/json",
-                "Content-Type": "text/json; charset=utf-8",
-                "Authorization": "Bearer " + $('meta[name=api-token]').attr("content")
-            },
-        },
-        "columns": [{
-                "data": ""
-            },
-            {
-                "data": "industry_name",
-                "defaultContent": "-"
-            },
-            {
-                "data": "code_epl",
-                "defaultContent": "-"
-            },
-            {
-                "data": "",
-                render: function (data, type, row) {
-                    let tr_style = '';
-                    if ((row.file_status == 0) && (row.need_inspection == null)) {
-                        tr_style = '    background-color: #dcf3e0;';
-                    } else if (row.file_status == 5) {
-                        tr_style = '    background-color: #bac6e88a;';
-                    } else if (row.file_status == -1) {
-                        tr_style = '    background-color: #f3dcdc75;';
-                    }
-                    if ((row.file_status == file_status) || (file_status == 'all')) {
-                        if (row.is_old != 0) {
-                            return '<td><a href="/industry_profile/id/' + row.id + '" class="btn btn-dark" target="_blank">' + row.file_no + '</a></td>';
-                        }
-                    }
-                },
-                "defaultContent": "-"
-            },
-            {
-                "data": "",
-                render: function (data, type, row) {
-                    let tr_style = '';
-                    if ((row.file_status == 0) && (row.need_inspection == null)) {
-                        tr_style = '    background-color: #dcf3e0;';
-                    } else if (row.file_status == 5) {
-                        tr_style = '    background-color: #bac6e88a;';
-                    } else if (row.file_status == -1) {
-                        tr_style = '    background-color: #f3dcdc75;';
-                    }
-                    var myDate = new Date(row.created_at);
-                    var fixMydate = myDate.toISOString().split('T')[0];
-                    if ((row.file_status == file_status) || (file_status == 'all')) {
-                        if (row.is_old != 0) {
-                            return '<td class="">' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
-                        }
-                    }
-                },
-                "defaultContent": "-"
-            },
-            {
-                "data": "",
-                render: function (data, type, row) {
-                    let tr_style = '';
-                    if ((row.file_status == 0) && (row.need_inspection == null)) {
-                        tr_style = '    background-color: #dcf3e0;';
-                    } else if (row.file_status == 5) {
-                        tr_style = '    background-color: #bac6e88a;';
-                    } else if (row.file_status == -1) {
-                        tr_style = '    background-color: #f3dcdc75;';
-                    }
-                    if ((row.file_status == file_status) || (file_status == 'all')) {
-                        if (row.is_old != 0) {
-                            let status_Lable = '';
-                            if (row.file_status == 2) {
-                                status_Lable = '(' + cer_status[row.cer_status] + ')';
-                            } else if (row.file_status == 0) {
-                                if (row.need_inspection == null) {
-                                    status_Lable = '(Set Inspction Status)';
-                                } else if (row.need_inspection == 'Pending') {
-                                    status_Lable = '(Inpection Result Pending)';
-                                } else {
-                                    status_Lable = '(' + row.need_inspection + ')';
-                                }
-
-                            }
-                            return '<td>' + file_status_list[row.file_status] + status_Lable + '</td>';
-                        }
-                    }
-                },
-                "defaultContent": "-"
-            },
-            {
-                "data": "",
-                render: function (data, type, row) {
-                    let tr_style = '';
-                    if ((row.file_status == 0) && (row.need_inspection == null)) {
-                        tr_style = '    background-color: #dcf3e0;';
-                    } else if (row.file_status == 5) {
-                        tr_style = '    background-color: #bac6e88a;';
-                    } else if (row.file_status == -1) {
-                        tr_style = '    background-color: #f3dcdc75;';
-                    }
-                    if ((row.file_status == file_status) || (file_status == 'all')) {
-                        if (row.is_old != 0) {
-                            tbl = '';
-                            if ((row.file_status == 0) && (row.need_inspection == null)) {
-                                tbl += '<td><button type="button" value="' + row.id + '" data-toggle="modal" data-target="#modal-xl" class="btn btn-success setInspeBtn">Set Inspection</button></td>';
-                            } else {
-                                tbl += '<td>' + row.need_inspection + '</td>';
-                            }
-                            if (row.file_status != 5) {
-                                tbl += '<td class="text-center"><button type="button" value="' + escape(JSON.stringify(row)) + '" class="btn btn-info detailsData">Details</button></td>';
-                            } else {
-                                tbl += '<td class="text-center"><i class="fa fa-check fa-lg text-success"></i></td>';
-                            }
-                            return tbl;
-                        }
-                    }
-                },
-                "defaultContent": "-"
-            },
-        ],
-        "order": [
-            [1, "asc"]
-        ],
-    }
-    );
-
-    $(function () {
-        var t = $('#tblAllFiles').DataTable();
-        t.on('order.dt search.dt', function () {
-            t.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
-                cell.innerHTML = i + 1;
-            });
-        }).draw();
-    });
-
-    //data table error handling
-    $.fn.dataTable.ext.errMode = 'none';
-    $('#tblAllFiles').on('error.dt', function (e, settings, techNote, message) {
-        console.log('DataTables error: ', message);
-    });
+//
+//    //data table error handling
+//    $.fn.dataTable.ext.errMode = 'none';
+//    $('#tblAllFiles').on('error.dt', function (e, settings, techNote, message) {
+//        console.log('DataTables error: ', message);
+//    });
 
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
         callBack();
