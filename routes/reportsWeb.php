@@ -78,4 +78,4 @@ Route::get('/file_summary/{id}', 'ReportController@fileSummary');
 
 Route::get('/attachments/{client}', 'ReportController@downloadContents');
 
-
+Route::get('/site_clearence_log/{from}/{to}', 'ReportController@siteClearanceApplicationLog');

@@ -199,4 +199,21 @@ class SiteClearenceRepository {
         return $rtn;
     }
 
+    public function getSiteReport($from, $to) {
+        $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
+
+        $query = Client::whereHas('epls')
+                ->with('epls')
+                ->with('siteClearenceSessions')
+                ->with(['transactions.transactionItems' => function ($query) use ($inspectionTypes) {
+                        $query->where('payment_type_id', $inspectionTypes->id)->where('transaction_type', Transaction::TRANS_TYPE_EPL);
+                    }])
+                ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+                ->select('clients.id', 'clients.name_title', 'clients.first_name', 'clients.last_name', 'clients.address', 'industry_categories.name as category_name', 'clients.industry_address', 'industry_start_date')
+                ->whereBetween('industry_start_date', [$from, $to]);
+
+        $query = $query->get();
+        return $query;
+    }
+
 }
