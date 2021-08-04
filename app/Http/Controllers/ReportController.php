@@ -909,8 +909,9 @@ class ReportController extends Controller {
 
     public function siteClearanceApplicationLog($from, $to) {
         $start = microtime(true);
-        $epls = new SiteClearenceRepository();
-        $result = $epls->getSiteReport($from, $to)->toArray();
+        $site = new SiteClearenceRepository();
+        $result = $site->getSiteReport($from, $to)->toArray();
+//        dd($result);
         $data = [];
         $data['header_count'] = 0;
         $data['results'] = [];
@@ -920,7 +921,7 @@ class ReportController extends Controller {
             $array = [];
             $array['#'] = ++$num;
             $array['industry_start_date'] = Carbon::parse($row['industry_start_date'])->format('d-m-Y');
-            $array['code'] = $row['epls'][0]['code'];
+            $array['code_site'] = $row['site_clearence_sessions'][0]['code'];
             $array['name_title'] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'] . "\n" . $row['address'];
             $array['category_name'] = $row['category_name'];
             $array['industry_address'] = $row['industry_address'];
@@ -931,11 +932,7 @@ class ReportController extends Controller {
                 $array['inspection_fee'] = "N/A";
                 $array['inspection_pay_date'] = "N/A";
             }
-            if (count($row['site_clearence_sessions']) > 0) {
-                $array['site_code'] = $row['site_clearence_sessions'][0]['code'];
-            } else {
-                $array['site_code'] = "N/A";
-            }
+            $array['code_epl'] = $row['code_epl'];
             $array['epls'] = $row['epls'];
             if ($data['header_count'] < count($row['epls'])) {
                 $data['header_count'] = count($row['epls']);

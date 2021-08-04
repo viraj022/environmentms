@@ -202,9 +202,9 @@ class SiteClearenceRepository {
     public function getSiteReport($from, $to) {
         $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
 
-        $query = Client::whereHas('epls')
-                ->with('epls')
+        $query = Client::whereHas('siteClearenceSessions')
                 ->with('siteClearenceSessions')
+                ->with('epls')
                 ->with(['transactions.transactionItems' => function ($query) use ($inspectionTypes) {
                         $query->where('payment_type_id', $inspectionTypes->id)->where('transaction_type', Transaction::TRANS_TYPE_EPL);
                     }])
