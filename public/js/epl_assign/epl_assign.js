@@ -129,6 +129,10 @@ function assigned_EPL_table(officer_id, callBack) {
                 "defaultContent": "-"
             },
             {
+                "data": "created_at",
+                "defaultContent": "-"
+            },
+            {
                 "data": "",
                 render: function (data, type, row) {
                     return '<td><button type="button" class="btn btn-danger removePendingEpl" value="' + row.id + '">Remove</button></td>';
@@ -137,7 +141,7 @@ function assigned_EPL_table(officer_id, callBack) {
             },
         ],
         "order": [
-            [1, "asc"]
+            [2, "asc"]
         ],
     }
     );
@@ -228,18 +232,22 @@ function pending_EPL_table(director_id, callBack) {
             {
                 "data": "",
                 render: function (data, type, row) {
-                let CODE = row.code_epl;
-                let TYPE = 'EPL';
-                if (CODE == 'N/A') {
-                    CODE = row.code_site;
-                    TYPE = 'Site Clearance';
+                    let CODE = row.code_epl;
+                    let TYPE = 'EPL';
                     if (CODE == 'N/A') {
-                        CODE = row.file_no;
-                        TYPE = 'File No';
+                        CODE = row.code_site;
+                        TYPE = 'Site Clearance';
+                        if (CODE == 'N/A') {
+                            CODE = row.file_no;
+                            TYPE = 'File No';
+                        }
                     }
-                }
                     return "<td>" + row.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + row.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='" + TYPE + "'>(" + CODE + ")</a></td>";
                 },
+                "defaultContent": "-"
+            },
+            {
+                "data": "created_at",
                 "defaultContent": "-"
             },
             {
@@ -251,7 +259,7 @@ function pending_EPL_table(director_id, callBack) {
             },
         ],
         "order": [
-            [1, "asc"]
+            [2, "asc"]
         ],
     }
     );
@@ -267,7 +275,7 @@ function pending_EPL_table(director_id, callBack) {
 
     //data table error handling
     $.fn.dataTable.ext.errMode = 'none';
-   $('#pending_epl_table').on('error.dt', function (e, settings, techNote, message) {
+    $('#pending_epl_table').on('error.dt', function (e, settings, techNote, message) {
         console.log('DataTables error: ', message);
     });
 }
