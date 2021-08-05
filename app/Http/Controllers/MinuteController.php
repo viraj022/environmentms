@@ -15,6 +15,7 @@ class MinuteController extends Controller {
     private $minutesRepository;
 
     public function __construct(MinutesRepository $minutesRepository) {
+        
         $this->middleware(['auth:api']);
         $this->minutesRepository = $minutesRepository;
     }

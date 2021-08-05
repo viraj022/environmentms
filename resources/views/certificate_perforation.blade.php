@@ -362,6 +362,7 @@
             CERTIFICATE_ID = parseInt(resp.id);
         }
     });
+    
 //Gen Certificate Number
     $('.genCertificateNum').click(function () {
         if (confirm('Are you sure you want to create certificate number?')) {
@@ -376,6 +377,7 @@
             });
         }
     });
+    
     $('.navToFile1').click(function () {
         $('.fileUpDiv').removeClass('d-none');
         $('#issue_date', '#expire_date').val('');
