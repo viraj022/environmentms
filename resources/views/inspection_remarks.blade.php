@@ -62,6 +62,15 @@
                                         <p class="text-white"><i class="fa fa-check"></i> Inspection Completed </p>
                                     </div>
                                 </div>
+
+                                <div class="card card-gray">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Images</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" id="image_row"></div>
+                                    </div>
+                                </div>
                             </div> 
                         </div>
                     </div>
@@ -153,12 +162,18 @@
 <script src="/../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/../../dist/js/demo.js"></script>
+<script src="/../../js/attachmentsjs/inspection_attachment.js"></script>
 <script src="/../../js/InspectionRemarksJS/inspection_remarks.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
 $(function () {
     var ID = "{{$id}}";
     var inspect_attachment = "{{ $inspect_file_attach }}";
+    
+    getaAttachmentbyId(ID, function (res) {
+        iterateSavedImages(res);
+    });
+
     loadInterface(ID);
 //    load_inspection_attach(inspect_attachment);
     loadInspectionStatusAPI(ID, function (resp) { //<-- Get Inspection Status
