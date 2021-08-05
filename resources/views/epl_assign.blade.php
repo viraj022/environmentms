@@ -42,6 +42,7 @@
                                     <tr>
                                         <th style="width: 10px">#</th>
                                         <th>File</th>
+                                        <th>Date Created</th>
                                         <th style="width: 5%;">Action</th>
                                     </tr>
                                 </thead>
@@ -69,6 +70,7 @@
                                     <tr>
                                         <th style="width: 5%">#</th>
                                         <th>File</th>
+                                        <th>Date Created</th>
                                         <th style="width: 5%">Action</th>
                                     </tr>
                                 </thead>
