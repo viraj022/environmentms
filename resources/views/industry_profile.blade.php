@@ -277,8 +277,8 @@
                                     <input id="getDesc" type="text" maxlength="45" class="form-control form-control-sm" placeholder="Enter Description..." value="">
                                 </div>
                                 <div class="row">
-                                    <div class="form-group uploadAttachments">
-                                        <label>Upload: </label>
+                                    <div class="form-group uploadAttachments m-3">
+                                        <label>Upload: </label><br>
                                         <input id="otherFiles" accept="image/*,application/pdf" type="file">
                                         @if($pageAuth['is_create']==1 || false)
                                         <button disabled id="btnUpload" type="submit" class="btn btn-success">Upload</button>

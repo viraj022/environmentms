@@ -68,8 +68,8 @@
                                                     </dl>
                                                     <hr>
                                                 </div>
-                                                <button class="btn btn-primary genCertificateNum d-none"><i class="fa fa-gear"></i> Generate Certificate Number</button>
-                                                <!-- /.card-body -->
+<!--                                                <button class="btn btn-primary genCertificateNum d-none"><i class="fa fa-gear"></i> Generate Certificate Number</button>
+                                                 /.card-body -->
                                             </div>
                                             <div class="card card-success">
                                                 <div class="card-header">
