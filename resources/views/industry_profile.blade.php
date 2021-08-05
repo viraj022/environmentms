@@ -770,13 +770,18 @@
                                         });
                                         //Remove Old Attachments
                                         $(document).on('click', '.removeAttachs', function () {
-                                            var getRemoveId = $(this).attr('id');
-                                            deleteOldAttachments(getRemoveId, function (result) {
-                                                show_mesege(result);
-                                                getaProfilebyId(PROFILE_ID, function (parameters) {
-                                                    loadAllOldAttachments(parameters.old_files, function () {});
+                                            if (confirm('Do you sure!')) {
+                                                alert('File will be Removed!');
+                                                var getRemoveId = $(this).attr('id');
+                                                deleteOldAttachments(getRemoveId, function (result) {
+                                                    show_mesege(result);
+                                                    getaProfilebyId(PROFILE_ID, function (parameters) {
+                                                        loadAllOldAttachments(parameters.old_files, function () {});
+                                                    });
                                                 });
-                                            });
+                                            } else {
+                                                alert('You have cancelled!');
+                                            }
                                         });
                                         //Confirm Button
                                         $('#btnConfirm').click(function () {

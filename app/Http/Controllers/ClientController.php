@@ -975,7 +975,7 @@ class ClientController extends Controller {
         $date = $date->addDays(30);
         if ($pageAuth['is_read']) {
 
-            $responses = Certificate::With('Client')->selectRaw('max(id) as id, client_id,expire_date')
+            $responses = Certificate::With('Client.pradesheeyasaba')->selectRaw('max(id) as id, client_id, expire_date,cetificate_number')
                     ->whereHas('Client.environmentOfficer.assistantDirector', function ($query) use ($id) {
                         $query->where('assistant_directors.id', '=', $id);
                     })
@@ -1067,7 +1067,6 @@ class ClientController extends Controller {
 //        $clients = Client::where('deleted_at', '=', null)->where('is_old', '!=', 0)->get();
 //        return $clients;
 //    }
-
 //    public function showListOfRegistrations() {
 //        $search_txt = '';
 ////        $filter_main_payment_category_id = $this->input->post_get('main_payment_category_id');
@@ -1186,7 +1185,7 @@ class ClientController extends Controller {
             4 => 'industry_registration_no',
         );
         $totalData = Client::where('deleted_at', '=', null)->where('is_old', '!=', 0)->count();
-        
+
         $totalFiltered = $totalData;
         $limit = $request->input('length');
         $start = $request->input('start');
@@ -1245,6 +1244,35 @@ class ClientController extends Controller {
             "data" => $data
         );
         echo json_encode($json_data);
+    }
+
+    public function eo_client_data(Request $request) {
+        $prs = $request->pradeshiya_sabha;
+        $ind_cat = $request->industry_category;
+        $prs_check = $request->pradeshiya_sabha_check;
+        $ind_cat_check = $request->industry_category_check;
+        $client_data = null;
+        
+        if ($prs_check == 'on' && $ind_cat_check != 'on') {
+            $client_data = Client::where('pradesheeyasaba_id', '=', $prs)
+                    ->join('e_p_l_s', 'clients.id', 'e_p_l_s.client_id')
+                    ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+                    ->get();
+        }
+        if ($prs_check != 'on' && $ind_cat_check == 'on') {
+            $client_data = Client::leftjoin('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+                    ->leftjoin('e_p_l_s', 'clients.id', 'e_p_l_s.client_id')
+                    ->where('industry_category_id', '=', $ind_cat)
+                    ->get();
+        }
+        if ($prs_check == 'on' && $ind_cat_check == 'on') {
+            $client_data = Client::where('pradesheeyasaba_id', '=', $prs)
+                    ->Where('industry_category_id', '=', $ind_cat)
+                    ->join('e_p_l_s', 'clients.id', 'e_p_l_s.client_id')
+                    ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+                    ->get();
+        }
+        return $client_data;
     }
 
 }

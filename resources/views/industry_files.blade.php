@@ -71,10 +71,10 @@
                                         <th style='width: 25em'>Industry Name</th>
                                         <th style='width: 20em'>EPL Code</th>
                                         <th style='width: 25em'>File No</th>
-                                        <th style='width: 15em'>#</th>
-                                        <th>Status</th>
+                                        <th style='width: 25em'>#</th>
+                                        <th style='width: 25em'>Status</th>
                                         <!--<th class="inspectTbl" style="width: 180px">Inspection</th>-->
-                                        <th class="" style="width: 180px">Action</th>
+                                        <th style='width: 5em'>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -235,10 +235,12 @@
             checkInspectionStatus(f_id, $('#getInspection').val(), function (rep) {
                 show_mesege(rep);
                 $('#modal-xl').modal('hide');
-                checkFileType();
+//                checkFileType();
                 forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+//                $("#tblAllFiles").DataTable().ajax.reload(null, false);
             });
             forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+//            $("#tblAllFiles").DataTable().ajax.reload(null, false);
         });
     });
 
@@ -261,7 +263,6 @@
         } else {
             $('#nominate_certificate').addClass('d-none');
         }
-
 
         $('#needApproval,#submitAdCerApproval,#rejectAdCerApproval,#setInspectionVal2,#viewCertificateBtn').addClass('d-none');
 
@@ -301,6 +302,7 @@
                 if (resp.id == 1) {
                     $('#modal-x2').modal('hide');
                     forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+//                    $("#tblAllFiles").DataTable().ajax.reload(null, false);
                 }
             });
         }
@@ -314,6 +316,7 @@
                 if (resp.id == 1) {
                     $('#modal-x2').modal('hide');
                     forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+//                    $("#tblAllFiles").DataTable().ajax.reload(null, false);
                 }
             });
         }
@@ -326,6 +329,7 @@
                 if (resp.id == 1) {
                     $('#modal-x2').modal('hide');
                     forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+//                    $("#tblAllFiles").DataTable().ajax.reload(null, false);
                 }
             });
         }

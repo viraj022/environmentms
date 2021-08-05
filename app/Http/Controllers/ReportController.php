@@ -22,23 +22,19 @@ use App\Repositories\EnvironmentOfficerRepository;
 use App\Repositories\PradesheeyasabaRepository;
 use PhpParser\Node\Expr\Print_;
 
-class ReportController extends Controller
-{
+class ReportController extends Controller {
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware(['auth']);
     }
 
-    public function index()
-    {
+    public function index() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('report_dashboard', ['pageAuth' => $pageAuth]);
     }
 
-    public function getFileLog($client_id)
-    {
+    public function getFileLog($client_id) {
         $fileLogRepository = new FileLogRepository();
         return $fileLogRepository->getFIleLogById($client_id);
     }
@@ -80,12 +76,12 @@ class ReportController extends Controller
     //     $fpdf->Output();
     //     exit;
     // }
+
     /**
      * DO NOT DELETE
      * fpdf multi cell report don not delete
      */
-    public function siteClearanceApplicationReport()
-    {
+    public function siteClearanceApplicationReport() {
         $start = microtime(true);
         $headers = ['#', 'Date', 'File Number', 'Applications Name and Address', 'Industry', "Location", 'Inspection Feee', "Letter Issued Date"];
         $width = ([10, 30, 60, 70, 50, 50, 50, 50]);
@@ -111,8 +107,7 @@ class ReportController extends Controller
         $pdf->Output();
     }
 
-    public function siteClearanceApplicationReportBeta($from, $to, $type)
-    {
+    public function siteClearanceApplicationReportBeta($from, $to, $type) {
         $start = microtime(true);
         $site = new SiteClearenceRepository();
         $result = $site->getSiteClearenceReport($from, $to, $type)->toArray();
@@ -147,11 +142,10 @@ class ReportController extends Controller
         return view('Reports.site_clearence_report', ['data' => $data, 'time_elapsed_secs' => $time_elapsed_secs, 'title' => $title, 'from' => $from, 'to' => $to]);
     }
 
-    public function eplApplicationReport($from, $to)
-    {
+    public function eplApplicationReport($from, $to) {
         $start = microtime(true);
         $epls = new EPLRepository();
-        $result = $epls->getEPLReport('2010-01-01', '2021-01-01')->toArray();
+        $result = $epls->getEPLReport($from, $to)->toArray();
         $data = [];
         $data['header_count'] = 0;
         $data['results'] = [];
@@ -188,8 +182,7 @@ class ReportController extends Controller
         return view('Reports.epl_report', ['data' => $data, 'time_elapsed_secs' => $time_elapsed_secs, 'from' => $from, 'to' => $to]);
     }
 
-    public function eplApplicationLog($from, $to)
-    {
+    public function eplApplicationLog($from, $to) {
         $start = microtime(true);
         $epls = new EPLRepository();
         $result = $epls->getEPLReport($from, $to)->toArray();
@@ -216,8 +209,7 @@ class ReportController extends Controller
         return view('Reports.epl_application_log_report', ['data' => $data, 'time_elapsed_secs' => $time_elapsed_secs, 'from' => $from, 'to' => $to]);
     }
 
-    public function monthlyProgress($from, $to)
-    {
+    public function monthlyProgress($from, $to) {
         // $from = $from;
         // $to = $to;
         $start = microtime(true);
@@ -258,7 +250,7 @@ class ReportController extends Controller
             $eplInspectionNewCount,
             $eplInspectionRenewCount,
             $siteInspectionNewCount, $siteInspectionRenewCount
-        ), $assistanceDirectors);
+                ), $assistanceDirectors);
         // dd($siteInspectionNewCount->toArray(), $siteInspectionRenewCount->toArray());
 
         $result[] = array('type' => 'Inspection', 'name' => 'SC(New)', 'application' => "", 'object' => $this->prepareCount($siteInspectionNewCount->toArray(), $assistanceDirectors));
@@ -289,7 +281,7 @@ class ReportController extends Controller
             $completedNewEplCount,
             $completedReNewEplCount,
             $completedNewSiteCount, $completedRenewSiteCount
-        ), $assistanceDirectors);
+                ), $assistanceDirectors);
 
         $result[] = array('type' => 'Issued', 'name' => 'SC(New)', 'application' => "", 'object' => $this->prepareCount($completedNewSiteCount->toArray(), $assistanceDirectors));
 
@@ -349,8 +341,7 @@ class ReportController extends Controller
         return view('Reports.monthly_progress_report', compact('result', 'assistanceDirectors', 'time_elapsed_secs', 'from', 'to'));
     }
 
-    private function prepareCount($array, $assistanceDirectors, $flag = true)
-    {
+    private function prepareCount($array, $assistanceDirectors, $flag = true) {
         $rtn = [];
         // dd($array);
         // dd($assistanceDirectors->toArray());
@@ -370,8 +361,7 @@ class ReportController extends Controller
         return $rtn;
     }
 
-    private function generateTotalField($array, $assistanceDirectors)
-    {
+    private function generateTotalField($array, $assistanceDirectors) {
         $rtn = [];
         // dd($array);
         // dd($assistanceDirectors->toArray());
@@ -389,8 +379,7 @@ class ReportController extends Controller
         return $rtn;
     }
 
-    private function prepareApplicationTotal($array, $flag = true)
-    {
+    private function prepareApplicationTotal($array, $flag = true) {
         $rtn = 0;
         if (count($array) > 0) {
 
@@ -406,8 +395,7 @@ class ReportController extends Controller
         }
     }
 
-    public function eoInspectionReport($eo_id, $from, $to)
-    {
+    public function eoInspectionReport($eo_id, $from, $to) {
         $start = microtime(true);
         $inspection = new InspectionSessionRepository();
         $env = new EnvironmentOfficerRepository();
@@ -454,13 +442,12 @@ class ReportController extends Controller
         return view('Reports.eo_inspection_monthly_report', compact('rows', 'environmentOfficer', 'time_elapsed_secs', 'from', 'to'));
     }
 
-    public function categoryLocalAuthorityWiseCountReport($from, $to)
-    {
+    public function categoryLocalAuthorityWiseCountReport($from, $to) {
         $start = microtime(true);
         $categoryRepo = new IndustryCategoryRepository();
         $pradesheeyaRepo = new PradesheeyasabaRepository();
         $category = $categoryRepo->all()->keyBy('id')->toArray();
-        $category =    array_map(function ($cat) {
+        $category = array_map(function ($cat) {
             return array(
                 "name" => $cat['name'],
                 "epl_new" => 0,
@@ -473,7 +460,7 @@ class ReportController extends Controller
 
         $la = $pradesheeyaRepo->all()->keyBy('id')->toArray();
 
-        $la =    array_map(function ($l) {
+        $la = array_map(function ($l) {
             return array(
                 "name" => $l['name']
             );
@@ -485,12 +472,12 @@ class ReportController extends Controller
         }
 
         $client = new ClientRepository();
-        $EplNewCount =   $client->fileCountByIndustryCategoryAndLocalAuthorityEPLNew($from, $to)->toArray();
-        $EplRenewCount =   $client->fileCountByIndustryCategoryAndLocalAuthorityEPLRevew($from, $to)->toArray();
-        $EplIssueCount =   $client->fileCountByIndustryCategoryAndLocalAuthorityEPLIssue($from, $to)->toArray();
-        $SiteNewCount =   $client->fileCountByIndustryCategoryAndLocalAuthoritySiteNew($from, $to)->toArray();
-        $SiteRenewCount =   $client->fileCountByIndustryCategoryAndLocalAuthoritySiteRevew($from, $to)->toArray();
-        $SiteIsssueCount =   $client->fileCountByIndustryCategoryAndLocalAuthoritySiteIssue($from, $to)->toArray();
+        $EplNewCount = $client->fileCountByIndustryCategoryAndLocalAuthorityEPLNew($from, $to)->toArray();
+        $EplRenewCount = $client->fileCountByIndustryCategoryAndLocalAuthorityEPLRevew($from, $to)->toArray();
+        $EplIssueCount = $client->fileCountByIndustryCategoryAndLocalAuthorityEPLIssue($from, $to)->toArray();
+        $SiteNewCount = $client->fileCountByIndustryCategoryAndLocalAuthoritySiteNew($from, $to)->toArray();
+        $SiteRenewCount = $client->fileCountByIndustryCategoryAndLocalAuthoritySiteRevew($from, $to)->toArray();
+        $SiteIsssueCount = $client->fileCountByIndustryCategoryAndLocalAuthoritySiteIssue($from, $to)->toArray();
         $data = array_merge($EplNewCount, $EplRenewCount, $EplIssueCount, $SiteNewCount, $SiteRenewCount, $SiteIsssueCount);
 
         foreach ($data as $key => $value) {
@@ -526,8 +513,8 @@ class ReportController extends Controller
         $time_elapsed_secs = round(microtime(true) - $start, 5);
         return view('Reports.category_wise_count_report_two', compact('req_array', 'time_elapsed_secs', 'from', 'to'));
     }
-    public function categoryWiseCountReport($from, $to)
-    {
+
+    public function categoryWiseCountReport($from, $to) {
         $start = microtime(true);
         $rows = [];
         $client = new ClientRepository();
@@ -543,22 +530,22 @@ class ReportController extends Controller
                 "certificates" => 0,
             );
             $siteNew = $data->where('industry_category_id', $category->id)
-                ->whereBetween('site_submit_date', [$from, $to])
-                ->where('site_count', 0)->count();
+                            ->whereBetween('site_submit_date', [$from, $to])
+                            ->where('site_count', 0)->count();
             $siteExtend = $data->where('industry_category_id', $category->id)
-                ->whereBetween('site_submit_date', [$from, $to])
-                ->where('site_count', '>', 0)->count();
+                            ->whereBetween('site_submit_date', [$from, $to])
+                            ->where('site_count', '>', 0)->count();
             $eplNew = $data->where('industry_category_id', $category->id)
-                ->whereBetween('epl_submitted_date', [$from, $to])
-                ->where('epl_count', 0)->count();
+                            ->whereBetween('epl_submitted_date', [$from, $to])
+                            ->where('epl_count', 0)->count();
             $eplRenew = $data->where('industry_category_id', $category->id)
-                ->whereBetween('epl_submitted_date', [$from, $to])
-                ->where('epl_count', '>', 0)->count();
+                            ->whereBetween('epl_submitted_date', [$from, $to])
+                            ->where('epl_count', '>', 0)->count();
 
             $eplCertificate = $data->where('industry_category_id', $category->id)
-                ->whereBetween('epl_issue_date', [$from, $to])->count();
+                            ->whereBetween('epl_issue_date', [$from, $to])->count();
             $siteCertificate = $data->where('industry_category_id', $category->id)
-                ->whereBetween('site_issue_date', [$from, $to])->count();
+                            ->whereBetween('site_issue_date', [$from, $to])->count();
 
             $row['sc_new'] = $siteNew;
             $row['sc_extend'] = $siteExtend;
@@ -572,8 +559,7 @@ class ReportController extends Controller
         return view('Reports.category_wise_count_report', compact('rows', 'time_elapsed_secs', 'from', 'to'));
     }
 
-    public function RowReport()
-    {
+    public function RowReport() {
         $start = microtime(true);
         $client = new ClientRepository();
         $rows = $client->getRowFiles()->toArray();
@@ -583,20 +569,16 @@ class ReportController extends Controller
         return view('Reports.row_file_report', compact('rows', 'time_elapsed_secs', 'headings'));
     }
 
-
-    public function fileSummary($id)
-    {
+    public function fileSummary($id) {
         $clientRepo = new ClientRepository();
         $file = $clientRepo->find($id);
         // dd($file->fileLogs->toArray());
         // dd($file->toArray());
         // dd($file->businessScale['name']);
-
         // $data = [];
         // $num = 0;
-
         // dd($data);
-        $fpdf =  new SummaryTemplate('p', 'mm', 'A4', 'File Summary');
+        $fpdf = new SummaryTemplate('p', 'mm', 'A4', 'File Summary');
         $splitSize = $fpdf->GetPageWidth() / 2 - 10;
         $fpdf->AddPage();
         $fpdf->SetFont('Times', '', 12);
@@ -657,7 +639,7 @@ class ReportController extends Controller
                     default:
                         $pStatus = "N/A";
                 }
-                $fpdf->Cell(null, 7, "Site Clearence Processing Type : " .  $pStatus, 0, 2);
+                $fpdf->Cell(null, 7, "Site Clearence Processing Type : " . $pStatus, 0, 2);
                 if (count($sc->siteClearances) > 0) {
                     $fpdf->SetFont('Times', 'B', 11);
                     $fpdf->Cell(10, 7, "#", 1, 0, 'C');
@@ -727,7 +709,7 @@ class ReportController extends Controller
             $fpdf->ln();
             $fpdf->SetFont('Times', '', 11);
             $i = 1;
-            foreach ($file->epls as  $epl) {
+            foreach ($file->epls as $epl) {
                 if ($epl['count'] == 0) {
                     $count = "New";
                 } else {
@@ -766,7 +748,7 @@ class ReportController extends Controller
         if (count($file->transactions) > 0) {
             $p = 1;
             $fpdf->SetFont('Times', '', 12);
-            foreach ($file->transactions as  $transaction) {
+            foreach ($file->transactions as $transaction) {
                 if ($transaction['status'] > 0) {
                     $fpdf->Cell(null, 7, $p++ . ")", 0, 2);
                     $fpdf->Cell(null, 7, "Invoice No : " . $transaction['invoice_no'], 0, 2);
@@ -774,7 +756,7 @@ class ReportController extends Controller
                     if ($transaction['status'] == 3) {
                         $fpdf->Cell(null, 7, "Cancelled At : " . Carbon::parse($transaction['canceled_at'])->format('Y-m-d'), 0, 2);
                     }
-                    $fpdf->Cell(null, 7, "Net Amount : " .  number_format($transaction['net_total']), 0, 2);
+                    $fpdf->Cell(null, 7, "Net Amount : " . number_format($transaction['net_total']), 0, 2);
                     $fpdf->Cell(null, 7, "Cashier Name : " . $transaction['cashier_name'], 0, 2);
                     $fpdf->SetFont('Times', '', 12);
 
@@ -785,7 +767,7 @@ class ReportController extends Controller
                     $fpdf->ln();
                     $fpdf->SetFont('Times', '', 11);
                     $i = 1;
-                    foreach ($transaction->transactionItems as  $items) {
+                    foreach ($transaction->transactionItems as $items) {
                         $fpdf->Cell(25, 7, $i++, 1, 0, 'C');
                         // dd($items['payment']['paymentType']);
                         $fpdf->Cell(100, 7, $items['payment']['paymentType']['name'], 1, 0, 'L');
@@ -810,7 +792,7 @@ class ReportController extends Controller
             $fpdf->ln();
             $fpdf->SetFont('Times', '', 11);
             $i = 1;
-            foreach ($file->inspectionSessions as  $inspection) {
+            foreach ($file->inspectionSessions as $inspection) {
                 $fpdf->Cell(10, 7, $i++, 1, 0, 'C');
                 $fpdf->Cell(50, 7, Carbon::parse($inspection->schedule_date)->format('Y-m-d'), 1, 0, 'C');
                 $fpdf->Cell(50, 7, Carbon::parse($inspection->completed_at)->format('Y-m-d'), 1, 0, 'C');
@@ -828,14 +810,14 @@ class ReportController extends Controller
         if (count($file->inspectionSessions) > 0) {
             $fpdf->SetFont('Times', '', 12);
             $j = 1;
-            foreach ($file->committees as  $committees) {
+            foreach ($file->committees as $committees) {
                 $fpdf->Cell(null, 7, $j++ . ")", 0, 2);
                 $fpdf->Cell(null, 5, "Schedule Date : " . $committees->schedule_date, 0, 2);
                 $fpdf->Cell(null, 7, "Description : " . $committees->remark, 0, 2);
                 $fpdf->SetFont('Times', 'B', 11);
                 $fpdf->Cell(null, 5, "Members : ", 0, 2);
                 $fpdf->SetFont('Times', '', 11);
-                foreach ($committees->commetyPool as  $pool) {
+                foreach ($committees->commetyPool as $pool) {
                     $fpdf->Cell(null, 5, $pool->first_name . " " . $pool->last_name, 0, 2);
                 }
                 $fpdf->ln(5);
@@ -849,7 +831,7 @@ class ReportController extends Controller
         $fpdf->Cell(null, 10, "Minutes", 0, 2);
         if (count($file->minutes) > 0) {
 
-            foreach ($file->minutes as  $minutes) {
+            foreach ($file->minutes as $minutes) {
                 $fpdf->SetFont('Times', '', 12);
                 $fpdf->Cell($splitSize - 5, 5, "Name : " . $minutes->user->first_name . " " . $minutes->user->last_name, 0, 0);
                 $fpdf->Cell($splitSize, 5, "Minute Date : " . Carbon::parse($minutes['created_at'])->format('Y-m-d'), 0, 0);
@@ -893,15 +875,14 @@ class ReportController extends Controller
         exit;
     }
 
-    public function downloadContents(Client $client)
-    {
+    public function downloadContents(Client $client) {
         // dd($client);
         $zip_file = 'attachments_of_' . $client->industry_name . 'zip';
         $zip = new \ZipArchive();
         $zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
 
         // $path = storage_path(FieUploadController::getClientFolderPath($client));
-        $path =  "storage/uploads/" . FieUploadController::getClientFolderPath($client);
+        $path = "storage/uploads/" . FieUploadController::getClientFolderPath($client);
         // dd($path);
         $files = Storage::allFiles("public/uploads/industry_files/" . $client->id);
         // $files = Storage::allFiles("uploads/" . FieUploadController::getClientFolderPath($client));
@@ -911,9 +892,9 @@ class ReportController extends Controller
             // dd($file->getPath());
             // We're skipping all subfolders
             if (file_exists($file) && is_file($file)) {
-                $filePath     = $file->getRealPath();
+                $filePath = $file->getRealPath();
                 // dd($filePath);
-                $relativePath =  substr($file->getPath(), strlen("storage/uploads/industry_files/"));
+                $relativePath = substr($file->getPath(), strlen("storage/uploads/industry_files/"));
                 // dd($relativePath);
 
                 $zip->addFile($filePath, $relativePath);
@@ -921,8 +902,47 @@ class ReportController extends Controller
         }
         $zip->close();
 
-        $rtn =   response()->download($zip_file)->deleteFileAfterSend(true);
+        $rtn = response()->download($zip_file)->deleteFileAfterSend(true);
         // unlink($zip_file);
         return $rtn;
     }
+
+    public function siteClearanceApplicationLog($from, $to) {
+        $start = microtime(true);
+        $site = new SiteClearenceRepository();
+        $result = $site->getSiteReport($from, $to)->toArray();
+        $data = [];
+        $data['header_count'] = 0;
+        $data['results'] = [];
+        $num = 0;
+        foreach ($result as $row) {
+            $array = [];
+            $array['#'] = ++$num;
+            $array['industry_start_date'] = Carbon::parse($row['industry_start_date'])->format('Y-m-d');
+            if (count($row['site_clearence_sessions']) > 0) {
+                $array['code_site'] = $row['code_site'];
+            } else {
+                $array['code_site'] = "N/A";
+            }
+            $array['name_title'] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'] . "\n" . $row['address'];
+            $array['category_name'] = $row['name'];
+            $array['industry_address'] = $row['industry_address'];
+            if (count($row['site_clearence_sessions']) > 0) {
+                $array['nature'] = "SC -> EPL";
+            } else {
+                $array['nature'] = "EPL";
+            }
+            $array['code_epl'] = $row['code_epl'];
+            $array['code'] = $row['code'];
+            $array['epls'] = $row['epls'];
+            if ($data['header_count'] < count($row['epls'])) {
+                $data['header_count'] = count($row['epls']);
+            }
+            array_push($data['results'], $array);
+        }
+
+        $time_elapsed_secs = round(microtime(true) - $start, 5);
+        return view('Reports.site_report_log', ['data' => $data, 'time_elapsed_secs' => $time_elapsed_secs, 'from' => $from, 'to' => $to]);
+    }
+
 }

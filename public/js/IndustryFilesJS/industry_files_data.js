@@ -110,9 +110,8 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
                     } else {
                         status_Lable = '(' + row.need_inspection + ')';
                     }
-                    
                 }
-                
+
                 var myDate = new Date(row.created_at);
                 var fixMydate = myDate.toISOString().split('T')[0];
                 if ((row.file_status == file_status) || (file_status == 'all')) {
@@ -148,8 +147,136 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
             });
         }
         $('#tblAllFiles tbody').html(tbl);
-        $("#tblAllFiles").DataTable();
+        $("#tblAllFiles").DataTable({
+            stateSave: true
+        });
     });
+
+//    tbl_all_files = $('#tblAllFiles').DataTable({
+//        "destroy": true,
+//        "processing": true,
+//        "colReorder": true,
+//        "serverSide": false,
+//        "pageLength": 10,
+//        language: {
+//            searchPlaceholder: "Search..."
+//        },
+//        ajax: {
+//            "url": "/api/files/all/officer/id/" + env_id,
+//            "type": "GET",
+//            "dataSrc": "",
+//            "headers": {
+//                "Accept": "application/json",
+//                "Content-Type": "text/json; charset=utf-8",
+//                "Authorization": "Bearer " + $('meta[name=api-token]').attr("content")
+//            },
+//        },
+//        "columns": [
+//            {
+//                "data": "",
+//                "defaultContent": "         ----------           "
+//            },
+//            {
+//                "data": "industry_name",
+//                "defaultContent": "         ----------           "
+//            },
+//            {
+//                "data": "code_epl",
+//                "defaultContent": "         ----------           "
+//            },
+//            {
+//                "data": "",
+//                render: function (data, type, row) {
+//                    if (row != null) {
+//                        if ((row.file_status == file_status) || (file_status == 'all')) {
+//                            if (row.is_old != 0) {
+//                                return '<td><a href="/industry_profile/id/' + row.id + '" class="btn btn-dark" target="_blank">' + row.file_no + '</a></td>';
+//                            }
+//                        }
+//                    }
+//                },
+//                "defaultContent": "         ----------           "
+//            },
+//            {
+//                "data": "",
+//                render: function (data, type, row) {
+//                    if (row != null) {
+//                        if ((row.file_status == file_status) || (file_status == 'all')) {
+//                            if (row.is_old != 0) {
+//                                var myDate = new Date(row.created_at);
+//                                var fixMydate = myDate.toISOString().split('T')[0];
+//                                return '<td class="">' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
+//                            }
+//                        }
+//                    }
+//                },
+//                "defaultContent": "         ----------           "
+//            },
+//            {
+//                "data": "",
+//                render: function (data, type, row) {
+//                    let status_Lable = '';
+//                    if (row.file_status == 2) {
+//                        status_Lable = '(' + cer_status[row.cer_status] + ')';
+//                    } else if (row.file_status == 0) {
+//                        if (row.need_inspection == null) {
+//                            status_Lable = '(Set Inspction Status)';
+//                        } else if (row.need_inspection == 'Pending') {
+//                            status_Lable = '(Inpection Result Pending)';
+//                        } else {
+//                            status_Lable = '(' + row.need_inspection + ')';
+//                        }
+//                    }
+//                    if (row != null) {
+//                        if ((row.file_status == file_status) || (file_status == 'all')) {
+//                            if (row.is_old != 0) {
+//                                return '<td>' + file_status_list[row.file_status] + status_Lable + '</td>';
+//                            }
+//                        }
+//                    }
+//                },
+//                "defaultContent": "         ----------           "
+//            },
+//            {
+//                "data": "",
+//                render: function (data, type, row) {
+//                    if (row != null) {
+//                        if ((row.file_status == file_status) || (file_status == 'all')) {
+//                            if (row.is_old != 0) {
+//                                if (row.file_status != 5) {
+//                                    return '<td class="text-center"><button type="button" value="' + escape(JSON.stringify(row)) + '" class="btn btn-info detailsData">Details</button></td>';
+//                                } else {
+//                                    return '<td class="text-center"><i class="fa fa-check fa-lg text-success"></i></td>';
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            },
+//        ],
+//        "order": [
+//            [1, "asc"]
+//        ],
+//    }
+//    );
+
+
+
+//    $(function () {
+//        var t = $('#tblAllFiles').DataTable();
+//        t.on('order.dt search.dt', function () {
+//            t.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+//                cell.innerHTML = i + 1;
+//            });
+//        }).draw();
+//    });
+//
+//    //data table error handling
+//    $.fn.dataTable.ext.errMode = 'none';
+//    $('#tblAllFiles').on('error.dt', function (e, settings, techNote, message) {
+//        console.log('DataTables error: ', message);
+//    });
+
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
         callBack();
     }

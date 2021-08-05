@@ -262,7 +262,7 @@
     <div class="container-fluid search-Client">
         <div class="row">
             <div class="col-md-12">
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <div class="card card-gray">
                         <div class="card-header">
                             <h3 id="lblTitle" class="card-title">Search Client</h3>
@@ -270,7 +270,7 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label>Search with*</label>
-                                <select id="getDtaType" class="form-control form-control-sm select2 select2-purple col-sm-4" data-dropdown-css-class="select2-purple" style="width: 100%;" name="level">
+                                <select id="getDtaType" class="form-control form-control-sm select2 select2-purple col-sm-4" data-dropdown-css-class="select2-purple" style="width: 60em;" name="level">
                                     <option value="name">Client Name</option>
                                     <option value="id">Client NIC</option>
                                     <option value="license">License Number</option>
@@ -283,7 +283,7 @@
                             </div>
                             <div class="form-group">
                                 <div id="the-basics">
-                                    <input id="getNic" type="text" class="form-control form-control-sm col-12 typeahead" max-length="12" min-length="10" placeholder="Enter Here..." value="">
+                                    <input id="getNic" type="text" class="form-control form-control-sm col-12 typeahead" style="width: 49.5em" max-length="12" min-length="10" placeholder="Enter Here..." value="">
                                 </div>
                                 <div id="valName" class="d-none">
                                     <p class="text-danger">Name is required</p>
@@ -560,12 +560,13 @@
                                             function showSiteClearanceDetails(obje) {
                                                 var table = "";
                                                 var id = 1;
+                                                $('#tblSiteClear').DataTable().destroy();
                                                 $.each(obje, function (index, clientData) {
                                                     console.log(clientData);
                                                     table += "<tr>";
                                                     table += "<td>" + ++index + "</td>";
                                                     table += "<td>" + clientData.code + "</td>";
-                                                    let client_name = clientData.first_name+clientData.last_name;
+                                                    let client_name = clientData.first_name + clientData.last_name;
                                                     table += "<td>" + client_name + "</td>";
                                                     table += "<td>" + clientData.industry_name + "</td>";
                                                     table += "<td>" + clientData.remark + "</td>";
@@ -574,7 +575,20 @@
                                                     table += "</tr>";
                                                 });
                                                 $('#tblSiteClear tbody').html(table);
-                                                $("#tblSiteClear").DataTable();
+                                                $(function () {
+                                                    var t = $("#tblSiteClear").DataTable();
+                                                    t.on('order.dt search.dt', function () {
+                                                        t.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+                                                            cell.innerHTML = i + 1;
+                                                        });
+                                                    }).draw();
+                                                });
+
+                                                //data table error handling
+                                                $.fn.dataTable.ext.errMode = 'none';
+                                                $('#tblSiteClear').on('error.dt', function (e, settings, techNote, message) {
+                                                    console.log('DataTables error: ', message);
+                                                });
                                             }
 
                                             //Search NIC Button 

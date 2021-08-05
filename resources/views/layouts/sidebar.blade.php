@@ -27,10 +27,10 @@
                 <li class="nav-item">
                     <a href="{{ url('/dashboard2') }}" class="nav-link active">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Dashboard v1</p>
+                        <p>Summery</p>
                     </a>
                 </li>
-                <li class="nav-item">
+<!--                <li class="nav-item">
                     <a href="./index2.html" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Dashboard v2</p>
@@ -41,7 +41,7 @@
                         <i class="far fa-circle nav-icon"></i>
                         <p>Dashboard v3</p>
                     </a>
-                </li>
+                </li>-->
             </ul>
         </li>
         <li class="nav-item has-treeview {{ Request::is('attachments','attachment_map','pradesheyasaba','industry_category','payment_type','payments','payment_range','zone','assistant_director','environment_officer','committee_pool') ? 'menu-open' : '' }}">
@@ -349,7 +349,7 @@
             @endif
             @if($pre['id']===config('auth.privileges.clientSpace'))
             <li class="nav-item">
-                <a href="{{ url('/act_status') }}" class="nav-link {{ Request::is('act_status') ? 'active' : '' }}">
+                <a href="{{ url('/act_status/id/1') }}" class="nav-link {{ Request::is('act_status') ? 'active' : '' }}">
                     <i class="fas fa-clock nav-icon"></i>
                     <p>Activity Status</p>
                 </a>
@@ -378,6 +378,12 @@
                 <a href="{{ url('/reverse_confirm') }}" class="nav-link {{ Request::is('reverse_confirm') ? 'active' : '' }}">
                     <i class="fas fa-clock nav-icon"></i>
                     <p>Revert Confirm</p>
+                </a>
+            </li>
+	    <li class="nav-item">
+                <a href="{{ url('/eo_report') }}" class="nav-link {{ Request::is('eo_report') ? 'active' : '' }}">
+                    <i class="fas fa-clock nav-icon"></i>
+                    <p>EO Report</p>
                 </a>
             </li>
             @endif
