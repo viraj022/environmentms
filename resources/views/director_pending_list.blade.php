@@ -68,7 +68,7 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <a id="viewCertificate" href="" class="btn btn-success d-none"><i class="fa fa-check"></i> Approve Certificate</a>
+                    <button id="approveCertificate" class="btn btn-success d-none"><i class="fa fa-check"></i> Approve Certificate</button>
                     <!--<button id="prepareCertificate" class="btn btn-success d-none"><i class="fa fa-check"></i> Approve Certificate</button>-->
                     <button type="button" id="holdCertificate" class="btn btn-warning d-none"><i class="fa fa-warning"></i> Hold Certificate</button>
                     <button type="button" id="uNholdCertificate" class="btn btn-warning d-none"><i class="fa fa-warning"></i> Un-Hold Certificate</button>
@@ -107,13 +107,18 @@
 <script>
     function minute() {
         var data = {
-            minutes: $('#getMinutes').val()
+            minutes: $('#getMinutes').val().trim()
         };
+        if (data.minutes == null || data.minutes.length == 0) {
+            alert('Please Add Minute First');
+            return false;
+        }
         return data;
     }
     $(function () {
 //Load table
         loadDirectorPendingListTable();
+
         $(document).on('click', '.actionDetails', function () {
             var fileData = JSON.parse(unescape($(this).val()));
             let f_Status = fileData.file_status;
@@ -124,11 +129,11 @@
             $('#uNholdCertificate').val($(this).val()); //<-- Share this button value to this button
             $('#viewCertificateBtn').val($(this).val());
             $('#modalTitlex2').html(fileData.file_no);
-            $('#viewCertificate,#prepareCertificate,#holdCertificate,#uNholdCertificate,#rejectCertificate').addClass('d-none');
+            $('#approveCertificate,#prepareCertificate,#holdCertificate,#uNholdCertificate,#rejectCertificate').addClass('d-none'); //hide all buttons
             if (f_Status == 4) {
 //                $("#viewCertificate").attr("href", "https://www.w3schools.com/jquery/");
                 $('#prepareCertificate').removeClass('d-none');
-                $('#viewCertificate').removeClass('d-none').attr("href", "/certificate_perforation/id/" + fileData.id);
+                $('#approveCertificate').removeClass('d-none').val(fileData.id);
                 $('#holdCertificate').removeClass('d-none');
                 $('#rejectCertificate').removeClass('d-none');
                 $('#viewCertificateBtn').removeClass('d-none');
@@ -136,12 +141,13 @@
                 $('#uNholdCertificate').removeClass('d-none');
             } else {
                 $('#prepareCertificate').addClass('d-none');
-                $('#viewCertificate').addClass('d-none');
+                $('#approveCertificate').addClass('d-none');
                 $('#holdCertificate').addClass('d-none');
                 $('#rejectCertificate').addClass('d-none');
             }
         });
 
+// prepare certificate button
         $(document).on('click', '#prepareCertificate', function () {
             var fileData = JSON.parse(unescape($(this).val()));
             if (confirm('Are you sure you want to approve?')) {
@@ -155,6 +161,7 @@
             }
         });
 
+// reject certifcate button
         $(document).on('click', '#rejectCertificate', function () {
             var fileData = JSON.parse(unescape($(this).val()));
             if (confirm('Are you sure you want to reject?')) {
@@ -167,6 +174,8 @@
                 });
             }
         });
+
+        // hold certificate button
         $(document).on('click', '#holdCertificate', function () {
             var fileData = JSON.parse(unescape($(this).val()));
             if (confirm('Are you sure you want to hold?')) {
@@ -179,6 +188,8 @@
                 });
             }
         });
+
+        //unhold certificate button
         $(document).on('click', '#uNholdCertificate', function () {
             var fileData = JSON.parse(unescape($(this).val()));
             if (confirm('Are you sure you want to un-hold?')) {
@@ -197,6 +208,21 @@
             var fileData = JSON.parse(unescape($(this).val()));
             loadCertificatePathsApi(parseInt(fileData.id), function (set) {
                 window.open(set.certificate_path, '_blank');
+            });
+        });
+
+        //approve certificate btn click
+        $(document).on('click', '#approveCertificate', function () {
+            let FILE_ID = parseInt($(this).val());
+            if (isNaN(FILE_ID)) {
+                alert('Invalid File Id');
+                return false;
+            }
+            DirectorFinalApproval(FILE_ID, minute(), function (parameters) {
+                if (parameters.message == 'true') {
+                    loadDirectorPendingListTable();
+                    $('#modal-x2').modal('hide');
+                }
             });
         });
 
