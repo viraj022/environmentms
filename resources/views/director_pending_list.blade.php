@@ -163,6 +163,7 @@
 
 // reject certifcate button
         $(document).on('click', '#rejectCertificate', function () {
+            if (minute() != '') {
             var fileData = JSON.parse(unescape($(this).val()));
             if (confirm('Are you sure you want to reject?')) {
                 preCertificateApi(fileData.id, minute(), 2, function (resp) {
@@ -173,19 +174,26 @@
                     }
                 });
             }
+            }else{
+                alert('Please Add Minute First!');
+            }
         });
 
         // hold certificate button
         $(document).on('click', '#holdCertificate', function () {
-            var fileData = JSON.parse(unescape($(this).val()));
-            if (confirm('Are you sure you want to hold?')) {
-                preCertificateApi(fileData.id, minute(), 3, function (resp) {
-                    show_mesege(resp);
-                    if (resp.id == 1) {
-                        loadDirectorPendingListTable();
-                        $('#modal-x2').modal('hide');
-                    }
-                });
+            if (minute() != '') {
+                var fileData = JSON.parse(unescape($(this).val()));
+                if (confirm('Are you sure you want to hold?')) {
+                    preCertificateApi(fileData.id, minute(), 3, function (resp) {
+                        show_mesege(resp);
+                        if (resp.id == 1) {
+                            loadDirectorPendingListTable();
+                            $('#modal-x2').modal('hide');
+                        }
+                    });
+                }
+            }else{
+                alert('Please Add Minute First!');
             }
         });
 

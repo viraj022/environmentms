@@ -27,6 +27,7 @@
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
                 <h1>File No: (<a href="/industry_profile/id/{{$id}}">{{$file_no}}</a>) - <b class="setBySiteClearType">New EPL</b></h1>
+                <input type="text" id="client_file_no" value="{{$file_no}}" hidden>
             </div>
         </div>
     </div>
@@ -42,7 +43,7 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label>Date*</label>
-                            <input id="startDate" type="date"  max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">
+                            <input id="startDate" type="date"  max="2999-12-31" class="form-control form-control-sm cutenzReq" placeholder="Enter Date..." value="">
                         </div>
                         <div class="form-group">
                             <label>Remark</label>
@@ -57,7 +58,7 @@
                         </div>
                         <input hidden id="client_id" type="text" class="form-control form-control-sm" placeholder="" value="{{$id ?? ''}}">
                         <div class="form-group">
-                            <label>Upload Application: </label>
+                            <label>Upload Application: *</label><br>
                             <input id="inp" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" type='file'>
                         </div>
                         <div class="progress d-none">
@@ -66,7 +67,7 @@
                             </div>
                         </div>
 
-    
+
                     </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
@@ -142,16 +143,59 @@ $("#getisOld").click(function () {
         $('#old_file').addClass('d-none');
     }
 });
+
 $("#btnSave").click(function () {
-    var data = fromValues(SITE_TYPE);
-    AddEpl(SITE_TYPE, data, function (result) {
-        if (result.id == 1) {
-            window.location.replace(result.rout);
-        }
-        show_mesege(result);
-    });
+    var data = fromValues();
+    if (requiredFieldHandler(data, '.cutenzReq')) {
+        var data = fromValues(SITE_TYPE);
+        AddEpl(SITE_TYPE, data, function (result) {
+            if (result.id == 1) {
+                window.location.replace(result.rout);
+            }
+            show_mesege(result);
+        });
+    }
 });
 
+$("#inp").on("change", function () {
+    $("#inp").removeClass("bg-danger");
+});
+
+function requiredFieldHandler(frm_data, required_class) {
+    var response = true;
+    if (frm_data.startDate.length == 0) {
+//        toastr.error('First Name Required!');
+        response = false;
+    }
+    if (frm_data.inp_check == 0) {
+//        toastr.error('Investment Required!');
+        $('#inp').addClass('bg-danger');
+        response = false;
+    }
+    $(required_class).each(function () {
+        if ($(this).val().length === 0) {
+            $(this).addClass("is-invalid");
+        } else {
+            $(this).removeClass("is-invalid");
+        }
+    });
+    if (response == false) {
+        toastr.error('Please fill the requied fields!');
+    }
+    return response;
+}
+
+//get form values
+function fromValues() {
+    var data = {
+        startDate: $('#startDate').val(),
+        setSiteType: $('#setSiteType').val(),
+        inp: $('#inp')[0].files[0],
+        inp_check: $('#inp').val(),
+        file_no: $('#client_file_no').val()
+    };
+    return data;
+}
 
 </script>
 @endsection

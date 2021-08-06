@@ -169,7 +169,7 @@
 $(function () {
     var ID = "{{$id}}";
     var inspect_attachment = "{{ $inspect_file_attach }}";
-    
+
     getaAttachmentbyId(ID, function (res) {
         iterateSavedImages(res);
     });
@@ -192,19 +192,15 @@ $(function () {
         if (Validiteinsert(data)) {
             AddComment(data, ID, function (result) {
                 if (result.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Saved'
-                    });
+                    alert('Comment is Added!')
                 } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Error'
-                    });
+                    alert('Comment addition is unsuccessfull!');
                 }
                 loadInterface(ID);
                 resetinputFields();
             });
+        }else{
+            alert('Please fill the comment!');
         }
     });
 
