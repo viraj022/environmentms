@@ -157,8 +157,8 @@ $("#btnSave").click(function () {
     }
 });
 
-$("#inp").on("change", function(){
-   $("#inp").removeClass("bg-danger");
+$("#inp").on("change", function () {
+    $("#inp").removeClass("bg-danger");
 });
 
 function requiredFieldHandler(frm_data, required_class) {
@@ -190,8 +190,8 @@ function fromValues() {
     var data = {
         startDate: $('#startDate').val(),
         setSiteType: $('#setSiteType').val(),
-        inp:  $('#inp')[0].files[0],
-        inp_check:  $('#inp').val(),
+        inp: $('#inp')[0].files[0],
+        inp_check: $('#inp').val(),
         file_no: $('#client_file_no').val()
     };
     return data;

@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Remark *</label>
-                                    <input id="remark" type="text" class="form-control form-control-sm" placeholder="" value="Enter Text">
+                                    <input id="remark" type="text" class="form-control form-control-sm" placeholder="" value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Created Date *</label>
@@ -209,7 +209,35 @@ $(function () {
             $('#showData').addClass('d-none');
         }
     });
+    
+    $('#fileUploadC').change(function(){
+        if($('#fileUploadC').val() != ''){
+            $('#fileUploadC').removeClass("bg-danger");
+        }
+    });
+    
     $("#issueBtn").click(function () {
+        if ($('#remark').val() == '') {
+            $('#remark').addClass("is-invalid");
+            alert('Please fill the remark field!')
+            return false;
+        }else{
+            $('#remark').removeClass("is-invalid");
+        }
+        if ($('#createdDate').val() == '') {
+            $('#createdDate').addClass("is-invalid");
+            alert('Please fill the date field!')
+            return false;
+        }else{
+            $('#remark').removeClass("is-invalid");
+        }
+        if ($('#fileUploadC').val() == '') {
+            $('#fileUploadC').addClass("bg-danger");
+            alert('Please select the file!')
+            return false;
+       }else{
+            $('#remark').removeClass("is-invalid");
+        }
         if (confirm('Are you sure you want to issue?')) {
             IssueCertificateEPL($('#client_id').val(), formData(), function (p) {
                 show_mesege(p);

@@ -483,18 +483,20 @@
                                                     // if validiated
                                                     AddClient(data, function (result) {
                                                         if (result.message == 'true') {
-                                                            Toast.fire({
-                                                                type: 'success',
-                                                                title: 'Enviremontal MS</br>Saved'
-                                                            });
+//                                                            Toast.fire({
+//                                                                type: 'success',
+//                                                                title: 'Enviremontal MS</br>Saved'
+//                                                            });
+                                                            alert('Enviremontal MS Saved');
                                                             getaClientbyId(result.id, function (result) {
                                                                 window.location = "/industry_profile/id/" + result.id;
                                                             });
                                                         } else {
-                                                            Toast.fire({
-                                                                type: 'error',
-                                                                title: 'Enviremontal MS</br>Error'
-                                                            });
+//                                                            Toast.fire({
+//                                                                type: 'error',
+//                                                                title: 'Enviremontal MS</br>Error'
+//                                                            });
+                                                            alert('Enviremontal MS Error');
                                                         }
                                                         //                                                        loadTable();
                                                         resetinputFields();
