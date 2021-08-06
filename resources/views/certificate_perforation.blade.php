@@ -45,7 +45,7 @@
                         <!--show lient details START-->
                         <div class="view-Client ">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="card card-success">
@@ -58,12 +58,12 @@
                                                 <div class="card-body">
                                                     <dl class="row">
                                                         <dt class="col-sm-4">Name:</dt>
-                                                        <dd class="col-sm-6" id="client_name"></dd>
+                                                        <dd class="col-sm-7" id="client_name"></dd>
                                                         <dt class="col-sm-4">Address:</dt>
-                                                        <dd class="col-sm-6" id="client_address"></dd>
+                                                        <dd class="col-sm-7" id="client_address"></dd>
                                                         <dt class="col-sm-4">Contact No:</dt>
-                                                        <dd class="col-sm-6" id="client_cont"></dd>
-                                                        <dt class="col-sm-5">Contact Email:</dt>
+                                                        <dd class="col-sm-7" id="client_cont"></dd>
+                                                        <dt class="col-sm-4">Contact Email:</dt>
                                                         <dd class="col-sm-7" id="client_amil"></dd>
                                                     </dl>
                                                 </div>
@@ -80,22 +80,22 @@
                                                 <div class="card-body">
                                                     <dl class="row">
                                                         <dt class="col-sm-4">Name :</dt>
-                                                        <dt class="col-sm-6"><a id="obj_name" style='font-weight:normal'></a></dt>
+                                                        <dt class="col-sm-7"><a id="obj_name" style='font-weight:normal'></a></dt>
                                                         <dt class="col-sm-4">File No : </dt> 
-                                                        <dt class="col-sm-6"><a id="obj_regno"></a></dt>
-                                                        <dt class="col-sm-7">Industry Name : </dt> 
-                                                        <dt class="col-sm-5"><a id="342"></a></dt>
-                                                        <dt class="col-sm-7">Industry Address : </dt> 
-                                                        <dt class="col-sm-5"><a id="34"></a></dt>
+                                                        <dt class="col-sm-7"><a id="obj_regno"></a></dt>
+                                                        <dt class="col-sm-4">Industry Name : </dt> 
+                                                        <dt class="col-sm-7"><a id="342"></a></dt>
+                                                        <dt class="col-sm-4">Industry Address : </dt> 
+                                                        <dt class="col-sm-7"><a id="34"></a></dt>
                                                     </dl>
                                                 </div>
-                                                <button class="btn btn-primary genCertificateNum d-none"><i class="fa fa-gear"></i> Generate Certificate Number</button>
+                                                <button class="btn btn-primary genCertificateNum m-1 d-none"><i class="fa fa-gear"></i> Generate Certificate Number</button>
                                                 <!-- /.card-body -->
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-7">
                                     <div class="col-md-12 showReportInfoUi d-none">
                                         <div class="card card-danger collapsed-card">
                                             <div class="card-header">
@@ -150,9 +150,9 @@
                                                     <input id="expire_date" name="datepickerUi" type="text" max="2999-12-31" class="form-control form-control-sm " placeholder="Enter Expire Date..." value="">
                                                 </div>
                                             </div>
-                                            <div class="form-group fileUpDiv d-none">
+                                            <div class="form-group fileUpDiv">
                                                 <hr>
-                                                <label id="uploadLabel">File Upload </label>
+                                                <label id="uploadLabel">File Upload </label><br>
                                                 <input id="fileUploadInput" type="file" class=""  accept="application/pdf">
                                                 <button id="uploadCerfile" class="btn btn-success"><i class="fas fa-file-upload"></i> Upload</button>
                                                 <div class="progress d-none">
@@ -378,7 +378,7 @@
     });
 
     $('.navToFile1').click(function () {
-        $('.fileUpDiv').removeClass('d-none');
+//        $('.fileUpDiv').removeClass('d-none');
         $('#issue_date', '#expire_date').val('');
         daterangepicker.setValue(null);
     });
@@ -416,6 +416,7 @@
                 });
             }
         });
+//        $('.fileUpDiv').addClass('d-none');
         location.reload();
     });
 
