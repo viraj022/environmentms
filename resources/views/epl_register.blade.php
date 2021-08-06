@@ -143,6 +143,7 @@ $("#getisOld").click(function () {
         $('#old_file').addClass('d-none');
     }
 });
+
 $("#btnSave").click(function () {
     var data = fromValues();
     if (requiredFieldHandler(data, '.cutenzReq')) {
@@ -162,17 +163,15 @@ $("#inp").on("change", function(){
 
 function requiredFieldHandler(frm_data, required_class) {
     var response = true;
-
     if (frm_data.startDate.length == 0) {
 //        toastr.error('First Name Required!');
         response = false;
     }
-    if (frm_data.inp.length == 0) {
+    if (frm_data.inp_check == 0) {
 //        toastr.error('Investment Required!');
         $('#inp').addClass('bg-danger');
         response = false;
     }
-
     $(required_class).each(function () {
         if ($(this).val().length === 0) {
             $(this).addClass("is-invalid");
@@ -192,6 +191,7 @@ function fromValues() {
         startDate: $('#startDate').val(),
         setSiteType: $('#setSiteType').val(),
         inp:  $('#inp')[0].files[0],
+        inp_check:  $('#inp').val(),
         file_no: $('#client_file_no').val()
     };
     return data;

@@ -63,10 +63,9 @@
                                                         <dd class="col-sm-6" id="client_address"></dd>
                                                         <dt class="col-sm-4">Contact No:</dt>
                                                         <dd class="col-sm-6" id="client_cont"></dd>
-                                                        <dt class="col-sm-4">Contact Email:</dt>
-                                                        <dd class="col-sm-6" id="client_amil"></dd>
+                                                        <dt class="col-sm-5">Contact Email:</dt>
+                                                        <dd class="col-sm-7" id="client_amil"></dd>
                                                     </dl>
-                                                    <hr>
                                                 </div>
 <!--                                                <button class="btn btn-primary genCertificateNum d-none"><i class="fa fa-gear"></i> Generate Certificate Number</button>
                                                  /.card-body -->
@@ -81,15 +80,14 @@
                                                 <div class="card-body">
                                                     <dl class="row">
                                                         <dt class="col-sm-4">Name :</dt>
-                                                        <dt class="col-sm-6"><a id="obj_name" class='p-2' style='font-weight:normal'></a></dt>
+                                                        <dt class="col-sm-6"><a id="obj_name" style='font-weight:normal'></a></dt>
                                                         <dt class="col-sm-4">File No : </dt> 
                                                         <dt class="col-sm-6"><a id="obj_regno"></a></dt>
-                                                        <dt class="col-sm-4">Industry Name : </dt> 
-                                                        <dt class="col-sm-6"><a id="342"></a></dt>
-                                                        <dt class="col-sm-4">Industry Address : </dt> 
-                                                        <dt class="col-sm-6"><a id="34"></a></dt>
+                                                        <dt class="col-sm-7">Industry Name : </dt> 
+                                                        <dt class="col-sm-5"><a id="342"></a></dt>
+                                                        <dt class="col-sm-7">Industry Address : </dt> 
+                                                        <dt class="col-sm-5"><a id="34"></a></dt>
                                                     </dl>
-                                                    <hr>
                                                 </div>
                                                 <button class="btn btn-primary genCertificateNum d-none"><i class="fa fa-gear"></i> Generate Certificate Number</button>
                                                 <!-- /.card-body -->
@@ -123,10 +121,11 @@
                                             <h6 id="certificate_Num">Application/Licence Number: <a class="text-danger">Not Assigned</a></h6>                      
                                             <h6 id="created_at">Created At:</h6>                      
                                             <h6 id="updated_at">Updated At:</h6>                      
-                                            <hr>
+
                                             <div id="uploadFileSection">
+                                                <hr>
                                                 <dt>Upload Application :</dt>
-                                                <button class="btn btn-dark navToFile1"><i class="fas fa-file-upload"></i> Upload Certificate/Application</button>   
+                                                <button class="btn btn-dark navToFile1"><i class="fas fa-file-upload"></i> Upload Certificate/Application</button>
                                             </div>
                                             <hr>
                                             <div class="form-group">
@@ -362,7 +361,7 @@
             CERTIFICATE_ID = parseInt(resp.id);
         }
     });
-    
+
 //Gen Certificate Number
     $('.genCertificateNum').click(function () {
         if (confirm('Are you sure you want to create certificate number?')) {
@@ -377,7 +376,7 @@
             });
         }
     });
-    
+
     $('.navToFile1').click(function () {
         $('.fileUpDiv').removeClass('d-none');
         $('#issue_date', '#expire_date').val('');
@@ -417,6 +416,7 @@
                 });
             }
         });
+        location.reload();
     });
 
     $('#uploadcorrectedFile').click(function () { //upload corrected file
@@ -441,6 +441,7 @@
                 });
             }
         });
+        location.reload();
     });
 
     $('.complCertificate').click(function () {
