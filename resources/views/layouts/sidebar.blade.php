@@ -310,6 +310,12 @@
                     <p>Director Pending List</p>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ url('/director_approved_list') }}" class="nav-link {{ Request::is('director_approved_list') ? 'active' : '' }}">
+                    <i class="fas fa-clock nav-icon"></i>
+                    <p>Director Approved List</p>
+                </a>
+            </li>
             @endif
             @endforeach
         </ul>

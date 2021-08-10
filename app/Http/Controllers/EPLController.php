@@ -178,28 +178,28 @@ class EPLController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
             $msg = \DB::transaction(function () use ($request) {
-                $client = Client::find(\request('client_id'));
                 request()->validate([
-                    'client_id' => 'required|integer',
+//                    'client_id' => 'required|integer',
                     'remark' => ['sometimes', 'nullable'],
-                    'created_date' => ['required', 'date'],
-                    'file' => 'required|mimes:jpeg,jpg,png,pdf'
+                    'startDate' => ['required', 'date'],
+                    'inp' => 'required|mimes:jpeg,jpg,png,pdf'
                 ]);
+                $client = Client::where('file_no', '=', $request->file_no)->first();
                 $epl = new EPL();
-                $epl->client_id = \request('client_id');
+                $epl->client_id = $client->id;
                 $epl->remark = \request('remark');
                 $epl->code = $this->generateCode($client, 'new');
                 $client->application_path = "";
-                $epl->submitted_date = \request('created_date');
+                $epl->submitted_date = \request('startDate');
                 $epl->count = 0;
                 $msg = $epl->save();
                 if ($msg) {
-                    $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+                    $file_name = Carbon::now()->timestamp . '.' . $request->inp->extension();
                     $fileUrl = '/uploads/industry_files/' . $client->id . '/application';
                     $fileUrl = '/uploads/'
                         . FieUploadController::getEPLApplicationFilePath($epl);
                     $storePath = 'public' . $fileUrl;
-                    $path = $request->file('file')->storeAs($storePath, $file_name);
+                    $path = $request->file('inp')->storeAs($storePath, $file_name);
                     $client->application_path = "storage/" . $fileUrl . "/" . $file_name;
                     $epl->application_path = "storage/" . $fileUrl . "/" . $file_name;
                     // $client->is_working = 1;

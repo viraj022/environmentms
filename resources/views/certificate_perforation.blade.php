@@ -45,7 +45,7 @@
                         <!--show lient details START-->
                         <div class="view-Client ">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="card card-success">
@@ -58,18 +58,17 @@
                                                 <div class="card-body">
                                                     <dl class="row">
                                                         <dt class="col-sm-4">Name:</dt>
-                                                        <dd class="col-sm-6" id="client_name"></dd>
+                                                        <dd class="col-sm-7" id="client_name"></dd>
                                                         <dt class="col-sm-4">Address:</dt>
-                                                        <dd class="col-sm-6" id="client_address"></dd>
+                                                        <dd class="col-sm-7" id="client_address"></dd>
                                                         <dt class="col-sm-4">Contact No:</dt>
-                                                        <dd class="col-sm-6" id="client_cont"></dd>
+                                                        <dd class="col-sm-7" id="client_cont"></dd>
                                                         <dt class="col-sm-4">Contact Email:</dt>
-                                                        <dd class="col-sm-6" id="client_amil"></dd>
+                                                        <dd class="col-sm-7" id="client_amil"></dd>
                                                     </dl>
-                                                    <hr>
                                                 </div>
-                                                <button class="btn btn-primary genCertificateNum d-none"><i class="fa fa-gear"></i> Generate Certificate Number</button>
-                                                <!-- /.card-body -->
+<!--                                                <button class="btn btn-primary genCertificateNum d-none"><i class="fa fa-gear"></i> Generate Certificate Number</button>
+                                                 /.card-body -->
                                             </div>
                                             <div class="card card-success">
                                                 <div class="card-header">
@@ -81,23 +80,22 @@
                                                 <div class="card-body">
                                                     <dl class="row">
                                                         <dt class="col-sm-4">Name :</dt>
-                                                        <dt class="col-sm-6"><a id="obj_name" class='p-2' style='font-weight:normal'></a></dt>
+                                                        <dt class="col-sm-7"><a id="obj_name" style='font-weight:normal'></a></dt>
                                                         <dt class="col-sm-4">File No : </dt> 
-                                                        <dt class="col-sm-6"><a id="obj_regno"></a></dt>
+                                                        <dt class="col-sm-7"><a id="obj_regno"></a></dt>
                                                         <dt class="col-sm-4">Industry Name : </dt> 
-                                                        <dt class="col-sm-6"><a id="342"></a></dt>
+                                                        <dt class="col-sm-7"><a id="342"></a></dt>
                                                         <dt class="col-sm-4">Industry Address : </dt> 
-                                                        <dt class="col-sm-6"><a id="34"></a></dt>
+                                                        <dt class="col-sm-7"><a id="34"></a></dt>
                                                     </dl>
-                                                    <hr>
                                                 </div>
-                                                <button class="btn btn-primary genCertificateNum d-none"><i class="fa fa-gear"></i> Generate Certificate Number</button>
+                                                <button class="btn btn-primary genCertificateNum m-1 d-none"><i class="fa fa-gear"></i> Generate Certificate Number</button>
                                                 <!-- /.card-body -->
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-7">
                                     <div class="col-md-12 showReportInfoUi d-none">
                                         <div class="card card-danger collapsed-card">
                                             <div class="card-header">
@@ -123,10 +121,11 @@
                                             <h6 id="certificate_Num">Application/Licence Number: <a class="text-danger">Not Assigned</a></h6>                      
                                             <h6 id="created_at">Created At:</h6>                      
                                             <h6 id="updated_at">Updated At:</h6>                      
-                                            <hr>
+
                                             <div id="uploadFileSection">
+                                                <hr>
                                                 <dt>Upload Application :</dt>
-                                                <button class="btn btn-dark navToFile1"><i class="fas fa-file-upload"></i> Upload Certificate/Application</button>   
+                                                <button class="btn btn-dark navToFile1"><i class="fas fa-file-upload"></i> Upload Certificate/Application</button>
                                             </div>
                                             <hr>
                                             <div class="form-group">
@@ -151,9 +150,9 @@
                                                     <input id="expire_date" name="datepickerUi" type="text" max="2999-12-31" class="form-control form-control-sm " placeholder="Enter Expire Date..." value="">
                                                 </div>
                                             </div>
-                                            <div class="form-group fileUpDiv d-none">
+                                            <div class="form-group fileUpDiv">
                                                 <hr>
-                                                <label id="uploadLabel">File Upload </label>
+                                                <label id="uploadLabel">File Upload </label><br>
                                                 <input id="fileUploadInput" type="file" class=""  accept="application/pdf">
                                                 <button id="uploadCerfile" class="btn btn-success"><i class="fas fa-file-upload"></i> Upload</button>
                                                 <div class="progress d-none">
@@ -362,6 +361,7 @@
             CERTIFICATE_ID = parseInt(resp.id);
         }
     });
+
 //Gen Certificate Number
     $('.genCertificateNum').click(function () {
         if (confirm('Are you sure you want to create certificate number?')) {
@@ -376,8 +376,9 @@
             });
         }
     });
+
     $('.navToFile1').click(function () {
-        $('.fileUpDiv').removeClass('d-none');
+//        $('.fileUpDiv').removeClass('d-none');
         $('#issue_date', '#expire_date').val('');
         daterangepicker.setValue(null);
     });
@@ -394,7 +395,7 @@
             alert('No File Selected!');
             return false;
         }
-        if (FILE_STATUS == 4) {
+        if (FILE_STATUS == 5) {
             url_upload = '/api/certificate/original/';
             DATA['issue_date'] = $('#issue_date').val().trim();
             DATA['expire_date'] = $('#expire_date').val().trim();
@@ -415,6 +416,8 @@
                 });
             }
         });
+//        $('.fileUpDiv').addClass('d-none');
+        location.reload();
     });
 
     $('#uploadcorrectedFile').click(function () { //upload corrected file
@@ -439,6 +442,7 @@
                 });
             }
         });
+        location.reload();
     });
 
     $('.complCertificate').click(function () {

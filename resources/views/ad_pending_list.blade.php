@@ -170,52 +170,69 @@
             }
         });
         $(document).on('click', '#approveCertificate', function () { // approve certificate btn
-            var fileData = JSON.parse(unescape($(this).val()));
-            if (confirm('Are you sure you want to approve?')) {
-                certificateApproveApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
-                    show_mesege(resp);
-                    if (resp.id == 1) {
-                        loadAdPendingListTable($('#getAssistantDirector').val());
-                        $('#modal-x2').modal('hide');
-                    }
-                });
+            if ($('#getMinutes').val() != '') {
+                var fileData = JSON.parse(unescape($(this).val()));
+                if (confirm('Are you sure you want to approve?')) {
+                    certificateApproveApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
+                        show_mesege(resp);
+                        if (resp.id == 1) {
+                            loadAdPendingListTable($('#getAssistantDirector').val());
+                            $('#modal-x2').modal('hide');
+                        }
+                    });
+                }
+            } else {
+                alert('Please fill the minute field!');
             }
         });
         $(document).on('click', '#rejectCertificate', function () { // reject certificate btn
-            var fileData = JSON.parse(unescape($(this).val()));
-            if (confirm('Are you sure you want to reject?')) {
-                certificateRejectApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
-                    show_mesege(resp);
-                    if (resp.id == 1) {
-                        loadAdPendingListTable($('#getAssistantDirector').val());
-                        $('#modal-x2').modal('hide');
-                    }
-                });
+            if ($('#getMinutes').val() != '') {
+                var fileData = JSON.parse(unescape($(this).val()));
+                if (confirm('Are you sure you want to reject?')) {
+                    certificateRejectApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
+                        show_mesege(resp);
+                        if (resp.id == 1) {
+                            loadAdPendingListTable($('#getAssistantDirector').val());
+                            $('#modal-x2').modal('hide');
+                        }
+                    });
+                }
+            } else {
+                alert('Please fill the minute field!');
             }
         });
         $(document).on('click', '#approveFile', function () { // approveFile btn
-            var fileData = JSON.parse(unescape($(this).val()));
-            if (confirm('Are you sure you want to approve?')) {
-                fileApproveApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
-                    show_mesege(resp);
-                    if (resp.id == 1) {
-                        loadAdPendingListTable($('#getAssistantDirector').val());
-                        $('#modal-x2').modal('hide');
-                    }
-                });
+            if ($('#getMinutes').val() != '') {
+                var fileData = JSON.parse(unescape($(this).val()));
+                if (confirm('Are you sure you want to approve?')) {
+                    fileApproveApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
+                        show_mesege(resp);
+                        if (resp.id == 1) {
+                            loadAdPendingListTable($('#getAssistantDirector').val());
+                            $('#modal-x2').modal('hide');
+                        }
+                    });
+                }
+            } else {
+                alert('Please enter minutes to approve!')
             }
         });
         $(document).on('click', '#rejectFile', function () { // reject file btn
-            var fileData = JSON.parse(unescape($(this).val()));
-            if (confirm('Are you sure you want to reject?')) {
-                fileRejectApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
-                    show_mesege(resp);
-                    if (resp.id == 1) {
-                        loadAdPendingListTable($('#getAssistantDirector').val());
-                        $('#modal-x2').modal('hide');
-                    }
-                });
+            if ($('#getMinutes').val() != '') {
+                var fileData = JSON.parse(unescape($(this).val()));
+                if (confirm('Are you sure you want to reject?')) {
+                    fileRejectApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
+                        show_mesege(resp);
+                        if (resp.id == 1) {
+                            loadAdPendingListTable($('#getAssistantDirector').val());
+                            $('#modal-x2').modal('hide');
+                        }
+                    });
+                }
+            } else {
+                alert('Please enter minutes to reject!')
             }
+
         });
         //View certificate btn click
         $(document).on('click', '#viewCertificateBtn', function () {

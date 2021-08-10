@@ -196,6 +196,7 @@
             options.append($("<option>").val(key).text(val));
         });
     }
+
     $(function () {
         //Load AssDir Combo
         loadAssDirCombo(function () {
@@ -250,7 +251,8 @@
         let f_Status = fileData.file_status;
 
         $('#modal-x2').modal();
-        console.log(fileData);
+        $('#getMinutes').val('');
+
         $('#needApproval').val($(this).val()); //<-- Share this button value to this button
         $('#submitAdCerApproval').val($(this).val()); //<-- Share this button value to submitAdCerApproval button
         $('#rejectAdCerApproval').val($(this).val()); //<-- Share this button value to submitAdCerApproval button
@@ -309,29 +311,37 @@
     });
 
     $(document).on('click', '#submitAdCerApproval', function () {
-        var fileData = JSON.parse(unescape($(this).val()));
-        if (confirm('Are you sure you want to approve?')) {
-            adCertificateApproval(fileData.id, fileData.environment_officer_id, minute(), function (resp) {
-                show_mesege(resp);
-                if (resp.id == 1) {
-                    $('#modal-x2').modal('hide');
-                    forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+        if ($('#getMinutes').val() != '') {
+            var fileData = JSON.parse(unescape($(this).val()));
+            if (confirm('Are you sure you want to approve?')) {
+                adCertificateApproval(fileData.id, fileData.environment_officer_id, minute(), function (resp) {
+                    show_mesege(resp);
+                    if (resp.id == 1) {
+                        $('#modal-x2').modal('hide');
+                        forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
 //                    $("#tblAllFiles").DataTable().ajax.reload(null, false);
-                }
-            });
+                    }
+                });
+            }
+        } else {
+            alert('Please enter the minute field!');
         }
     });
     $(document).on('click', '#rejectAdCerApproval', function () {
-        var fileData = JSON.parse(unescape($(this).val()));
-        if (confirm('Are you sure you want to reject?')) {
-            rejectCertificateApproval(fileData.id, fileData.environment_officer_id, minute(), function (resp) {
-                show_mesege(resp);
-                if (resp.id == 1) {
-                    $('#modal-x2').modal('hide');
-                    forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
+        if ($('#getMinutes').val() != '') {
+            var fileData = JSON.parse(unescape($(this).val()));
+            if (confirm('Are you sure you want to reject?')) {
+                rejectCertificateApproval(fileData.id, fileData.environment_officer_id, minute(), function (resp) {
+                    show_mesege(resp);
+                    if (resp.id == 1) {
+                        $('#modal-x2').modal('hide');
+                        forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
 //                    $("#tblAllFiles").DataTable().ajax.reload(null, false);
-                }
-            });
+                    }
+                });
+            }
+        } else {
+            alert('Please enter the minutes field!');
         }
     });
     //View certificate btn click

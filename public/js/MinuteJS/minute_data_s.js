@@ -1,7 +1,21 @@
-var situations_arr = {ENV_OFF_APP_FILE: 'Environment Officer Approved', ENV_OFF_REJECT_FILE: 'Environment Officer File Rejected', ASSI_OFF_REJECT_FILE: 'Assistent Director File Rejected', ASSI_OFF_APPROVE_FILE: 'Assistent Director File Approved', ENV_OFF_APP__CERTIFICATE: 'Environment Officer Certificate Approved', ENV_OFF_REJECT__CERTIFICATE: 'Environment Officer Certificate Rejected', ASSI_OFF_REJECT__CERTIFICATE: 'Assistant Director Certificate Rejected', ASSI_OFF_APPROVE__CERTIFICATE: 'Assistant Director Certificate Approved', ENV_OFF_APP__CERTIFICATE: 'Environment Officer Certificate Approved', ENV_OFF_REJECT__CERTIFICATE: 'Environment Officer Certificate Rejected', ASSI_OFF_REJECT__CERTIFICATE: 'Assistant Director Certificate Rejected'};
+var situations_arr = {
+    ENV_OFF_APP_FILE: 'Environment Officer Approved',
+    ENV_OFF_REJECT_FILE: 'Environment Officer File Rejected',
+    ASSI_OFF_REJECT_FILE: 'Assistent Director File Rejected',
+    ASSI_OFF_APPROVE_FILE: 'Assistent Director File Approved',
+    ENV_OFF_APP__CERTIFICATE: 'Environment Officer Certificate Approved',
+    ENV_OFF_REJECT__CERTIFICATE: 'Environment Officer Certificate Rejected',
+    ASSI_OFF_REJECT__CERTIFICATE: 'Assistant Director Certificate Rejected',
+    ASSI_OFF_APPROVE__CERTIFICATE: 'Assistant Director Certificate Approved',
+    DIRECTOR_APP__CERTIFICATE: 'Director Certificate Approved',
+//    ENV_OFF_APP__CERTIFICATE: 'Environment Officer Certificate Approved',
+//    ENV_OFF_REJECT__CERTIFICATE: 'Environment Officer Certificate Rejected',
+//    ASSI_OFF_REJECT__CERTIFICATE: 'Assistant Director Certificate Rejected'
+};
 
 //Method API
 function methodMinuteAPI(data, method, id, callBack) {
+  
     //Current Usage Explained - POST/1 , PUT/2 , DELETE/3 , GET/4
     let DATA_METHOD = '';
     let URL = '';
@@ -22,6 +36,8 @@ function methodMinuteAPI(data, method, id, callBack) {
         return false;
     }
     ajaxRequest(DATA_METHOD, URL, data, function (dataSet) {
+        
+      
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }

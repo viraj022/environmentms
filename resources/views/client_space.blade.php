@@ -219,7 +219,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Start Date*</label>
-                                    <input id="startDate" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">
+                                    <input id="startDate" type="date" max="2999-12-31" class="form-control form-control-sm cutenzReq" placeholder="Enter Date..." value="">
                                 </div>
                                 <div class="form-group">
                                     <label>Submitted Date*</label>
@@ -483,18 +483,20 @@
                                                     // if validiated
                                                     AddClient(data, function (result) {
                                                         if (result.message == 'true') {
-                                                            Toast.fire({
-                                                                type: 'success',
-                                                                title: 'Enviremontal MS</br>Saved'
-                                                            });
+//                                                            Toast.fire({
+//                                                                type: 'success',
+//                                                                title: 'Enviremontal MS</br>Saved'
+//                                                            });
+                                                            alert('Enviremontal MS Saved');
                                                             getaClientbyId(result.id, function (result) {
                                                                 window.location = "/industry_profile/id/" + result.id;
                                                             });
                                                         } else {
-                                                            Toast.fire({
-                                                                type: 'error',
-                                                                title: 'Enviremontal MS</br>Error'
-                                                            });
+//                                                            Toast.fire({
+//                                                                type: 'error',
+//                                                                title: 'Enviremontal MS</br>Error'
+//                                                            });
+                                                            alert('Enviremontal MS Error');
                                                         }
                                                         //                                                        loadTable();
                                                         resetinputFields();

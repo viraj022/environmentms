@@ -43,6 +43,12 @@ class AssistantDirectorController extends Controller {
         $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
         return view('director_pending_list', ['pageAuth' => $pageAuth]);
     }
+    
+    public function directorApprovedListIndex() {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.assistantDirector'));
+        return view('director_approved_list', ['pageAuth' => $pageAuth]);
+    }
 
     /**
      * Show the form for creating a new resource.

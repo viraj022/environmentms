@@ -89,26 +89,26 @@ function getCertificateDetails(file_id, callBack) {
             if (resp.cetificate_number != null) {
                 $('.genCertificateNum').addClass('d-none');
             }
+            if (resp.certificate_path != null) {
+                $('.fileShowUi').removeClass('d-none');
+                $("#fileuploadedPath").attr("href", "/" + resp.certificate_path);
+            }
             if (resp.client.file_status == 2) {
-                if (resp.certificate_path != null) {
-                    $('.fileShowUi').removeClass('d-none');
-                    $("#fileuploadedPath").attr("href", "/" + resp.certificate_path);
-                    if (resp.client.cer_status == 2) {
-                        $("#correctedCertificatePath").attr("href", "/" + resp.corrected_file);
-                        $('#uploadFileSection').addClass('d-none');
-                        $('#certificateSubmittedLable').removeClass('d-none');
-                        $('.showCorrectedFileUi').removeClass('d-none');
-                        $('.correctedFileShowUi').removeClass('d-none');
-                        $('.complCertificate').addClass('d-none');
-                    } else {
-                        $('#certificateSubmittedLable').addClass('d-none');
-                        $('#uploadFileSection').removeClass('d-none');
-                        $('.complCertificate').removeClass('d-none');
-                        $('.showCorrectedFileUi').addClass('d-none');
-                        $('.correctedFileShowUi').addClass('d-none');
-                    }
+                if (resp.client.cer_status == 2) {
+                    $("#correctedCertificatePath").attr("href", "/" + resp.corrected_file);
+                    $('#uploadFileSection').addClass('d-none');
+                    $('#certificateSubmittedLable').removeClass('d-none');
+                    $('.showCorrectedFileUi').removeClass('d-none');
+                    $('.correctedFileShowUi').removeClass('d-none');
+                    $('.complCertificate').addClass('d-none');
+                } else {
+                    $('#certificateSubmittedLable').addClass('d-none');
+                    $('#uploadFileSection').removeClass('d-none');
+                    $('.complCertificate').removeClass('d-none');
+                    $('.showCorrectedFileUi').addClass('d-none');
+                    $('.correctedFileShowUi').addClass('d-none');
                 }
-            } else if (resp.client.file_status == 4) {
+            } else if (resp.client.file_status == 5) {
                 $('.fileShowUi').removeClass('d-none');
                 if (resp.signed_certificate_path != null) {
                     $('.complCertificate').removeClass('d-none').text('Issue Certificate').addClass('btn-success');
@@ -135,7 +135,7 @@ function completeCertificateAPI(certificate_id, FILE_STATUS, data, callBack) {
     }
     if (FILE_STATUS == 2) {
         url = "/api/certificate/drafted/";
-    } else if (FILE_STATUS == 4) {
+    } else if (FILE_STATUS == 5) {
         url = "/api/certificate/issue/";
 //        url = "/api/certificate/complete/";
     }

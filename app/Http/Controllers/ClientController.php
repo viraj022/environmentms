@@ -723,6 +723,10 @@ class ClientController extends Controller {
     public function getDirectorPendingList() {
         return Client::getFileByStatusQuery('file_status', array(-2, 4, 6))->get();
     }
+    
+    public function getDirectorApprovedList() {
+        return Client::where('file_status', '=', 5)->where('cer_status', '=', 5)->get();
+    }
 
     public function getAssistanceDirectorPendingList($id) {
         return Client::getFileByStatusQuery('file_status', array(1, 3))->whereHas('environmentOfficer.assistantDirector', function ($query) use ($id) {
@@ -899,14 +903,17 @@ class ClientController extends Controller {
                         $certificate->user_id = $user->id;
                         $msg = $msg && $certificate->save();
                         $file = $certificate->client;
+                        
+                        // check if => 1=new epl, 2=epl renew
                         if ($file->cer_type_status == 1 || $file->cer_type_status == 2) {
-                            $epl = EPL::where('client_id', $certificate->client_id)
-                                            ->whereNull('issue_date')->where('status', 0)->first();
+                            $epl = EPL::where('client_id', $certificate->client_id)->whereNull('issue_date')->where('status', 0)->first();
                             $epl->issue_date = $certificate->issue_date;
                             $epl->expire_date = $certificate->expire_date;
                             $epl->certificate_no = $certificate->cetificate_number;
                             $epl->status = 1;
                             $msg = $msg && $epl->save();
+                            
+                            //check if 3=site clearance
                         } else if ($file->cer_type_status == 3) {
                             $site = SiteClearenceSession::where('client_id', $certificate->client_id)->whereNull('issue_date')->first();
                             $site->issue_date = $certificate->issue_date;
@@ -918,15 +925,17 @@ class ClientController extends Controller {
                             $s->status = 1;
                             $msg = $msg && $s->save();
                             $msg = $msg && $site->save();
+                            
+//                            check if 4=site clearance renew
                         } else if ($file->cer_type_status == 4) {
-                            abort(501, "Method not implemented - hcw error code");
+                            abort(501, "Method not implemented - error code");
                         } else {
-                            abort(501, "Invalid File Status - hcw error code");
+                            abort(501, "Invalid File Status - error code");
                         }
                     } else {
-                        abort(422, "Certificate Already Issued -hcw error code");
+                        abort(422, "Certificate Already Issued");
                     }
-                    fileLog($file->id, 'certificate', 'User  (' . $user->last_name . ') Issued the Certificate', 0);
+                    fileLog($file->id, 'certificate', 'User (' . $user->last_name . ') Issued the Certificate', 0);
                     LogActivity::addToLog("Issue certificate", $certificate);
                     if ($msg) {
                         return array('id' => 1, 'message' => 'true');
