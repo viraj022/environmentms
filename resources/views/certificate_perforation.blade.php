@@ -396,7 +396,7 @@
             alert('No File Selected!');
             return false;
         }
-        if (FILE_STATUS == 4) {
+        if (FILE_STATUS == 5) {
             url_upload = '/api/certificate/original/';
             DATA['issue_date'] = $('#issue_date').val().trim();
             DATA['expire_date'] = $('#expire_date').val().trim();
