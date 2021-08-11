@@ -128,7 +128,7 @@
 <!--<script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>-->
 <script>
 var SITE_TYPE = '{{$type}}';
-
+var CLIENT_ID = '{{$id}}';
 if (SITE_TYPE === 'site_clearance') {
     $('.disType').removeClass('d-none');
     $('.setBySiteClearType').html('Site Clearance');
@@ -194,6 +194,13 @@ function fromValues() {
         inp_check: $('#inp').val(),
         file_no: $('#client_file_no').val()
     };
+    if (data.setSiteType == 'Site Clearance') {
+        data.remark = $('#getRemark').val().trim();
+        data.type = data.setSiteType;
+        data.submit_date = data.startDate;
+        data.client_id = CLIENT_ID;
+        data.file = data.inp;
+    }
     return data;
 }
 
