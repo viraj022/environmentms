@@ -211,6 +211,7 @@ class SiteClearanceController extends Controller
 
     public function create(Request $request)
     {
+        dd($request);
         return DB::transaction(function () use ($request) {
             request()->validate([
                 'remark' => 'nullable|string',
