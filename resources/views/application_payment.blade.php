@@ -77,7 +77,7 @@
                                                 <input id="amt" type="text" class="form-control form-control-sm" placeholder="" readonly="" value="">
                                             </div>
                                             <div class="form-group">
-                                                <label>Qty *</label>
+                                                <label>Quantity  *</label>
                                                 <input id="app_qty" type="number" class="form-control form-control-sm" placeholder="" value="1">
                                             </div>
                                         </div>

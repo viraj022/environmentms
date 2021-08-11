@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\EPL;
 use App\Client;
 use App\Certificate;
+use App\SiteClearenceSession;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -135,6 +136,9 @@ class SearchController extends Controller {
             case 'license':
                 $column = 'cetificate_number';
                 break;
+            case 'site_clear_code':
+                $column = 'code';
+                break;
             default :
                 $column = 'first_name';
                 break;
@@ -144,12 +148,14 @@ class SearchController extends Controller {
         } else if ($type == 'license') {
             //get Certificate Number
 //            $client_data = Certificate::pluck($column)->toArray();
-          $client_data = Certificate::pluck($column)->toArray();
+            $client_data = Certificate::pluck($column)->toArray();
             foreach ($client_data as $key => $value) {
-               $exploded_value = explode("/",$value);
-               $client_data[$key] = $exploded_value[0];
+                $exploded_value = explode("/", $value);
+                $client_data[$key] = $exploded_value[0];
             }
-           
+        } elseif ($type == 'site_clear_code') {
+            $client_data = SiteClearenceSession::pluck($column)->toArray();
+//            Client::find()
         } else {
             $client_data = Client::pluck($column)->toArray();
         }
@@ -159,6 +165,14 @@ class SearchController extends Controller {
 
     function getBusinessByName($name) {
         return EPL::where('registration_no', 'like', '%' . $name . '%')->get();
+    }
+
+    function getClientBySite($name) {
+        $client_site = SiteClearenceSession::join('clients', 'site_clearence_sessions.client_id', 'clients.id')
+                ->where('code', 'like', '%'.$name.'%')
+                ->select('code', 'remark', 'site_clearance_type', 'first_name', 'last_name', 'address', 'industry_name','clients.id')
+                ->get();
+        return $client_site;
     }
 
     public function search($type) {
@@ -183,6 +197,8 @@ class SearchController extends Controller {
                 return $this->getClientByAddress($value);
             case 'by_industry_name':
                 return $this->getClientByIndustryName($value);
+            case 'site_clear_code':
+                return $this->getClientBySite($value);
             default:
                 abort(422);
                 return response(array('message' => 'Invalid Code', 422));

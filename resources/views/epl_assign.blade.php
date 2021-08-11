@@ -42,6 +42,7 @@
                                     <tr>
                                         <th style="width: 10px">#</th>
                                         <th>File</th>
+                                        <th>Date Created</th>
                                         <th style="width: 5%;">Action</th>
                                     </tr>
                                 </thead>
@@ -57,24 +58,26 @@
             <div class="col-md-6">
                 <div class="card card-secondary">
                     <div class="card-header">
-                        <h3 class="card-title">Environment Officer</h3>
+                        <h3 class="card-title">Director assigned files</h3>
                     </div>
                     <div class="card-body">
+                        <label>Environment Officer</label>
                         <select class="form-control combo_envOfficer" id="env_officer_combo"></select>
-                        <div class="card-body p-0">
-                            <div class="card-body table-responsive" style="height: 550px;">
-                                <table class="table table-condensed" id="assigned_epl_table">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 5%">#</th>
-                                            <th>File</th>
-                                            <th style="width: 5%">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                            </div>
+                        <!--<div class="card-body p-0">-->
+                        <div class="card-body table-responsive" style="height: 550px;">
+                            <table class="table table-condensed" id="assigned_epl_table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 5%">#</th>
+                                        <th>File</th>
+                                        <th>Date Created</th>
+                                        <th style="width: 5%">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
                         </div>
+                        <!--</div>-->
                     </div>
                 </div>
             </div>
@@ -146,8 +149,10 @@
                 assign_epl_to_officer(obj, function (parameters) {
                     show_mesege(parameters);
                     if (parameters.id == 1) {
-                        assigned_EPL_table(parseInt($('#env_officer_combo').val()));
-                        pending_EPL_table(parseInt($('#ass_dir_combo').val()));
+//                        assigned_EPL_table(parseInt($('#env_officer_combo').val()));
+//                        pending_EPL_table(parseInt($('#ass_dir_combo').val()));
+                        $('#pending_epl_table').DataTable().ajax.reload(null, false);
+                        $('#assigned_epl_table').DataTable().ajax.reload(null, false);
                     }
                 });
             }
@@ -157,8 +162,10 @@
                 remove_epl_from_officer(parseInt($(this).val()), function (parameters) {
                     show_mesege(parameters);
                     if (parameters.id == 1) {
-                        assigned_EPL_table(parseInt($('#env_officer_combo').val()));
-                        pending_EPL_table(parseInt($('#ass_dir_combo').val()));
+//                        assigned_EPL_table(parseInt($('#env_officer_combo').val()));
+//                        pending_EPL_table(parseInt($('#ass_dir_combo').val()));
+                        $('#pending_epl_table').DataTable().ajax.reload(null, false);
+                        $('#assigned_epl_table').DataTable().ajax.reload(null, false);
                     }
                 });
             }

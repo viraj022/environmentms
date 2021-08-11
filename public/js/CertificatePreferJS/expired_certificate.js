@@ -55,19 +55,22 @@ function getExpireCerByAssDir(id, callBack) {
         if (result.length == 0) {
             tbl += '<td colspan="5">Data Not Found</td>';
         } else {
-            console.log(result);
+            $('#tblExpiredCertificate').DataTable().destroy();
             $.each(result, function (index, row) {
                 tbl += '<tr>';
                 tbl += '<td>' + ++index + '</td>';
                 tbl += '<td>' + row.client.industry_name + '</td>';
                 tbl += '<td>' + row.cetificate_number + ' (<a href="/industry_profile/id/' + row.client_id + '" target="_blank">' + row.client.file_no + '</a>)</td>';
                 tbl += '<td>' + row.client.pradesheeyasaba.name + '</td>';
-                tbl += '<td>('+row.expire_date+')' + row.due_date + '</td>';
+                tbl += '<td>(' + row.expire_date + ')' + row.due_date + '</td>';
                 tbl += '<td><a href="/certificate_perforation/id/' + row.id + '" class="btn btn-xs btn-success"><i class="fas fa-file-contract"></i><a></td>';
                 tbl += '</tr>';
             });
         }
         $('#tblExpiredCertificate tbody').html(tbl);
+        $('#tblExpiredCertificate').DataTable({
+            stateSave: true
+        });
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }

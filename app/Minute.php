@@ -19,7 +19,7 @@ class Minute extends Model
     public const DESCRIPTION_ASSI_REJECT_CERTIFICATE = 'ASSI_OFF_REJECT__CERTIFICATE'; // assistance director reject certificate
     public const DESCRIPTION_ASSI_APPROVE_CERTIFICATE = 'ASSI_OFF_APPROVE__CERTIFICATE'; // assistance director approve certificate
 
-    public const DESCRIPTION_Dire_APPROVE_CERTIFICATE = 'ENV_OFF_APP__CERTIFICATE'; // director approve certificate
+    public const DESCRIPTION_Dire_APPROVE_CERTIFICATE = 'DIRECTOR_APP__CERTIFICATE'; // director approve certificate
     public const DESCRIPTION_Dire_REJECT_CERTIFICATE = 'ENV_OFF_REJECT__CERTIFICATE'; // director reject certificate
     public const DESCRIPTION_Dire_Hold_CERTIFICATE = 'ASSI_OFF_REJECT__CERTIFICATE'; // director hold certificate
 

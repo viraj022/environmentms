@@ -48,16 +48,16 @@
                         </div>
                     </div>
                     <div class="card-body p-0">
-                        <div class="card-body table-responsive" style="height: 450px;">
+                        <div class="card-body table-responsive" style="height: 700px;">
                             <table class="table table-condensed" id="tblExpiredCertificate">
                                 <thead>
                                     <tr>
-                                        <th style="width: 10px">#</th>
-                                        <th>Industry Name</th>
-                                        <th>File No</th>
-                                        <th>Ps</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
+                                        <th style="width: 5em">#</th>
+                                        <th style="width: 20em">Industry Name</th>
+                                        <th style="width: 25em">File No</th>
+                                        <th style="width: 25em">Pradeshiya Sabha</th>
+                                        <th style="width: 20em">Status</th>
+                                        <th style="width: 20em">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>

@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DirectorController;
 
 /*
   |--------------------------------------------------------------------------
@@ -1053,3 +1054,9 @@ Route::middleware('auth:api')->get('/payment/history/file/{id}', 'CashierControl
 */
 
 Route::get('/get_file_cordinates/{industry_cat_id}/{eo_id}', [ClientController::class, 'get_file_cordinates']);
+
+Route::post('server_side_process', [ClientController::class, 'server_side_process']);
+
+Route::post('/eo_client_data', [ClientController::class, 'eo_client_data']);
+
+Route::middleware('auth:api')->post('/director_final_approve/file_id/{file_id}', 'DirectorController@DirectorFinalApprove');

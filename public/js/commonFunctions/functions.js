@@ -60,21 +60,21 @@ function submitDataWithFile(url, frmDta, callBack, metod = false) {
 
 function show_mesege(resp_id) {
     if (resp_id.id == 1) {
-        Toast.fire({
+        Swal.fire({
             type: 'success',
             title: 'Envirmontal MS</br>Success!'
         });
     } else {
-        Toast.fire({
+        Swal.fire({
             type: 'error',
             title: 'Enviremontal MS</br>Error'
         });
     }
 }
-const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 4000
-
-});
+//const Toast = Swal.mixin({
+//    toast: true,
+//    position: 'top-end',
+//    showConfirmButton: false,
+//    timer: 4000
+//
+//});

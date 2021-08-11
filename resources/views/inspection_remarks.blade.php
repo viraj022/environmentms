@@ -31,7 +31,11 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="row" id="showUiDb">
+<!--                    <input type="submit" value="" />-->
 
+                </div>
+                <div clas="row">
+                    <div id="attachments"></div>
                 </div>
                 <!--Add New Comment Section-->
                 <div class="card card-gray">
@@ -56,6 +60,15 @@
                                     </div>
                                     <div class="overlay dark disInspection">
                                         <p class="text-white"><i class="fa fa-check"></i> Inspection Completed </p>
+                                    </div>
+                                </div>
+
+                                <div class="card card-gray">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Images</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" id="image_row"></div>
                                     </div>
                                 </div>
                             </div> 
@@ -149,12 +162,20 @@
 <script src="/../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/../../dist/js/demo.js"></script>
+<script src="/../../js/attachmentsjs/inspection_attachment.js"></script>
 <script src="/../../js/InspectionRemarksJS/inspection_remarks.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
 $(function () {
     var ID = "{{$id}}";
+    var inspect_attachment = "{{ $inspect_file_attach }}";
+
+    getaAttachmentbyId(ID, function (res) {
+        iterateSavedImages(res);
+    });
+
     loadInterface(ID);
+//    load_inspection_attach(inspect_attachment);
     loadInspectionStatusAPI(ID, function (resp) { //<-- Get Inspection Status
         if (resp.status === 0) {
             $('.inspectConfStatus').removeClass('d-none'); //<-- Show Complete Inspection Btn
@@ -171,19 +192,15 @@ $(function () {
         if (Validiteinsert(data)) {
             AddComment(data, ID, function (result) {
                 if (result.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Saved'
-                    });
+                    alert('Comment is Added!')
                 } else {
-                    Toast.fire({
-                        type: 'error',
-                        title: 'Error'
-                    });
+                    alert('Comment addition is unsuccessfull!');
                 }
                 loadInterface(ID);
                 resetinputFields();
             });
+        }else{
+            alert('Please fill the comment!');
         }
     });
 

@@ -98,7 +98,9 @@ function loadTable() {
             table += "</tr>";
         });
         $('#tbl_pendingpays tbody').html(table);
-        $("#tbl_pendingpays").DataTable();
+        $("#tbl_pendingpays").DataTable({
+            "order": [[1, "asc"]]
+        });
     });
 }
 

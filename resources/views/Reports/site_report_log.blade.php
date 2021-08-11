@@ -6,39 +6,43 @@
         <meta name="api-token" content="{{auth()->user()->api_token}}" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Environemnt Authority | North Western Province</title>
+        <title>Site Clearance Log Report | North Western Province</title>
         <link rel="stylesheet" type="text/css" href="/dataTable/datatables.min.css"/>
     </head>
     <body class="hold-transition sidebar-mini layout-fixed text-sm">
     <center>
-        <h1>Envrionment Protection Licence Log </h1>
-        <h5>From: {{$from}} - To: {{$to}}</h5>
+        <h1>Site Clearance Log Report </h1>
+        <h5>From: {{$from}} .To: {{$to}}</h5>
     </center>
     <h4>Report Genaration Time :{{$time_elapsed_secs}} seconds</h4>
-    {{-- @dump($data); --}}
+    {{-- @dump($data['results'][2]); --}}
     <table class="table cell-border compact stripe">
         <thead>
             <tr>
                 <th>#</th>
-                <th>Date</th>
-                <th>File Number</th>
+                <th style="width: 4em">Date</th>
+                <th>Site Clearance Code</th>
                 <th>Applications Name and Address</th>
                 <th>Industry</th>
                 <th>Location</th>
-                <th>Inspection Nature</th>
+                <th>Licence No/Issue Date</th>
+                <th>code</th>
+                <th>Nature</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($data as $indexKey=>$row)
+            @foreach($data['results'] as $indexKey=>$row)
             <tr>
                 <td>{{$indexKey+1}}.</td>
-                <td>{{$row['submitted_date']}}</td>
-                <td>{{$row['code']}}</td>                                                 
+                <td>{{$row['industry_start_date']}}</td>
+                <td>{{$row['code_site']}}</td>                                                                                                
                 <td>{{$row['name_title']}}</td>                                                 
                 <td>{{$row['category_name']}}</td>                                                 
-                <td>{{$row['industry_address']}}</td>  
-                <td>{{$row['nature']}}</td>  
-            </tr>
+                <td>{{$row['industry_address']}}</td>                                                 
+                <td>{{$row['code_epl']}}</td>                                                       
+                <td>{{$row['code']}}</td>                                                       
+                <td>{{$row['nature']}}</td> 
+             </tr>
             @endforeach
         </tbody>
     </table>
@@ -51,6 +55,7 @@
 $(document).ready(function () {
     // alert(123);
     $('.table').DataTable({
+        "order": [[ 1, "desc" ]],
         colReorder: true,
         responsive: true,
         select: true,
