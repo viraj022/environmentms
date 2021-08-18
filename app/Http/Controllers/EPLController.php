@@ -234,6 +234,10 @@ class EPLController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
+            $oldEpl = EPL::where('client_id', '=', request('client_id'))->orderBy('count', 'DESC')->first();
+            if ($oldEpl->status == 0) {
+                return array('id' => 0, 'message' => 'EPL In Progress !');
+            }
             $msg = \DB::transaction(function () use ($request) {
                 $client = Client::find(\request('client_id'));
                 request()->validate([
