@@ -190,7 +190,7 @@
                     } else {
                         Toast.fire({
                             type: 'error',
-                            title: 'Enviremontal MS</br>Error'
+                            title: 'Enviremontal MS</br>' + data.message
                         });
                     }
 //                    loadTable();
