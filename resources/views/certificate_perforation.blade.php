@@ -390,7 +390,7 @@
             return false;
         }
         let file = $('#fileUploadInput')[0].files[0];
-        let DATA = {file: file}
+        let DATA = {file: file};
         if ($('#fileUploadInput')[0].files.length === 0) {
             alert('No File Selected!');
             return false;
@@ -405,6 +405,7 @@
             }
         } else if (FILE_STATUS == 2) {
             url_upload = '/api/certificate/draft/';
+            
         }
         console.log(FILE_STATUS);
         submitDataWithFile(url_upload + CERTIFICATE_ID, DATA, function (resp) {

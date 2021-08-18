@@ -392,6 +392,12 @@
                     <p>EO Report</p>
                 </a>
             </li>
+	    <li class="nav-item">
+                <a href="{{ url('/file_progress_report') }}" class="nav-link {{ Request::is('file_progress_report') ? 'active' : '' }}">
+                    <i class="fas fa-clock nav-icon"></i>
+                    <p>File Progress Report</p>
+                </a>
+            </li>
             @endif
             @endforeach
         </ul>

@@ -269,7 +269,6 @@ class ReportController extends Controller {
         $result[] = array('type' => 'Inspection', 'name' => 'Other', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
         $result[] = array('type' => 'Inspection', 'name' => 'UnAuthorized', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
 
-
         /**
          * Completed Section
          */
@@ -299,9 +298,7 @@ class ReportController extends Controller {
 
         $result[] = array('type' => 'Issued', 'name' => 'Respond for Court Case', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
 
-
         $result[] = array('type' => 'Issued', 'name' => 'Other Letters', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
-
 
         /**
          * Rejected Section
@@ -449,12 +446,12 @@ class ReportController extends Controller {
         $category = $categoryRepo->all()->keyBy('id')->toArray();
         $category = array_map(function ($cat) {
             return array(
-                "name" => $cat['name'],
-                "epl_new" => 0,
-                "epl_renew" => 0,
-                "site_new" => 0,
-                "site_renew" => 0,
-                "certificate_issue" => 0
+        "name" => $cat['name'],
+        "epl_new" => 0,
+        "epl_renew" => 0,
+        "site_new" => 0,
+        "site_renew" => 0,
+        "certificate_issue" => 0
             );
         }, $category);
 
@@ -462,7 +459,7 @@ class ReportController extends Controller {
 
         $la = array_map(function ($l) {
             return array(
-                "name" => $l['name']
+        "name" => $l['name']
             );
         }, $la);
         $req_array = $la;
@@ -943,6 +940,15 @@ class ReportController extends Controller {
 
         $time_elapsed_secs = round(microtime(true) - $start, 5);
         return view('Reports.site_report_log', ['data' => $data, 'time_elapsed_secs' => $time_elapsed_secs, 'from' => $from, 'to' => $to]);
+    }
+
+    public function fileProgressReport() {
+        return Client::select('id', 'first_name', 'last_name', 'updated_at', 'deleted_at', 'industry_name', 'file_no', 'file_status', 'cer_type_status', 'cer_status','industry_category_id')->with('industryCategory')
+                        ->where('file_status', '<>', 5)
+                        ->where('file_status', '<>', 6)
+//                        ->where('deleted_at', '<>', 'null')
+                        ->orderBy('updated_at', 'ASC')->get()->toArray();
+//        dd($data);
     }
 
 }
