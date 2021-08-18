@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
  */
 
 Route::middleware('auth:api')->get('/file_log/{file_id}', 'ReportController@getFileLog'); // 
+Route::middleware('auth:api')->get('/file_progress', 'ReportController@fileProgressReport'); // 
 
 /*
 {

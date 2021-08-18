@@ -104,9 +104,11 @@ function getCertificateDetails(file_id, callBack) {
                 } else {
                     $('#certificateSubmittedLable').addClass('d-none');
                     $('#uploadFileSection').removeClass('d-none');
-                    $('.complCertificate').removeClass('d-none');
                     $('.showCorrectedFileUi').addClass('d-none');
                     $('.correctedFileShowUi').addClass('d-none');
+                    if (resp.certificate_path != null) {
+                        $('.complCertificate').removeClass('d-none');
+                    }
                 }
             } else if (resp.client.file_status == 5) {
                 $('.fileShowUi').removeClass('d-none');
