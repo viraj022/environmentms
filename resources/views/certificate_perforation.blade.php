@@ -405,7 +405,7 @@
             }
         } else if (FILE_STATUS == 2) {
             url_upload = '/api/certificate/draft/';
-            
+
         }
         console.log(FILE_STATUS);
         submitDataWithFile(url_upload + CERTIFICATE_ID, DATA, function (resp) {
@@ -414,11 +414,10 @@
                 getCertificateDetails(PROFILE_ID, function (resp) {
                     CERTIFICATE_ID = parseInt(resp.id);
                     FILE_STATUS = parseInt(resp.client.file_status);
+                    location.reload();
                 });
             }
         });
-//        $('.fileUpDiv').addClass('d-none');
-        location.reload();
     });
 
     $('#uploadcorrectedFile').click(function () { //upload corrected file
