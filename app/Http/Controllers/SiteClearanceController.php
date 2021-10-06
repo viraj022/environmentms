@@ -84,6 +84,7 @@ class SiteClearanceController extends Controller
             $siteClearance->expire_date = \request('expire_date');
             $siteClearance->count = \request('count');
             $siteClearance->site_clearence_session_id = $siteSessions->id;
+            $siteClearance->status = 1;
             $msg = $msg && $siteClearance->save();
             LogActivity::fileLog($client->id, 'SiteClear', "Save old data :SiteClearanceController", 1);
             // save old data file
@@ -198,6 +199,7 @@ class SiteClearanceController extends Controller
         ]);
 //        dd($this->siteClearenceRepository->getLastSiteClearanceBySiteClearenceSessionId($siteClearance->id)->status);
         $site = $this->siteClearenceRepository->getLastSiteClearanceBySiteClearenceSessionId($siteClearance->id);
+//        dd($site);
         if ($site->status == 1) {
             if ($this->siteClearenceRepository->extendSiteClearance($request,$site)) {
                 return array('id' => 1, 'message' => 'true');

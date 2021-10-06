@@ -238,20 +238,20 @@ function loadAllSiteClearTable(dataSet, callBack) {
         $.each(dataSet, function (index, row) {
             tbl += "<tr>";
             tbl += "<td>" + ++index + "</td>";
-            tbl +=
-                    '<td><a type="button" href="/site_clearance/client/' +
-                    PROFILE_ID +
-                    "/profile/" +
-                    row.id +
-                    '" class="btn btn-primary">' +
-                    row.code +
-                    "</a></td>";
+            tbl += '<td><a type="button" href="/site_clearance/client/' + PROFILE_ID + "/profile/" + row.id + '" class="btn btn-primary">' + row.code + "</a></td>";
             if (row.expire_date != null) {
                 tbl += "<td>" + row.expire_date + "</td>";
-            }else{
+            } else {
                 tbl += "<td> ----- No Data ----- </td>";
             }
             tbl += "</tr>";
+            $.each(row.site_clearances, function (index2, row2) {
+                tbl += "<tr>";
+                tbl += "<td></td>";
+                tbl += "<td>" + ++index2 + "</td>";
+                tbl += "<td colspan='2'>issued: " + row2.issue_date + ", Expired: " + row2.expire_date + ", Session: " + row2.count + "</td>";
+                tbl += "</tr>";
+            });
         });
     }
     $("#clientSiteclearList tbody").html(tbl);

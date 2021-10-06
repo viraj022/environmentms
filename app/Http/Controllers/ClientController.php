@@ -77,6 +77,9 @@ class ClientController extends Controller {
     }
 
     public function index1($id) {
+        if (!Auth::check()) {
+            abort(401);
+        }
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         if ($pageAuth['is_read']) {
@@ -363,7 +366,7 @@ class ClientController extends Controller {
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
         //    PaymentType::get();
-        $file = Client::with('epls')->with('siteClearenceSessions')->with('environmentOfficer.user')->with('oldFiles')->with('industryCategory')->with('businessScale')->with('pradesheeyasaba')->find($id)->toArray();
+        $file = Client::with('epls')->with('siteClearenceSessions.siteClearances')->with('environmentOfficer.user')->with('oldFiles')->with('industryCategory')->with('businessScale')->with('pradesheeyasaba')->find($id)->toArray();
         $file['created_at'] = date('Y-m-d', strtotime($file['created_at']));
         $file['industry_start_date'] = date('Y-m-d', strtotime($file['industry_start_date']));
         return $file;
@@ -723,7 +726,7 @@ class ClientController extends Controller {
     public function getDirectorPendingList() {
         return Client::getFileByStatusQuery('file_status', array(-2, 4, 6))->get();
     }
-    
+
     public function getDirectorApprovedList() {
         return Client::where('file_status', '=', 5)->where('cer_status', '=', 5)->get();
     }
@@ -903,7 +906,7 @@ class ClientController extends Controller {
                         $certificate->user_id = $user->id;
                         $msg = $msg && $certificate->save();
                         $file = $certificate->client;
-                        
+
                         // check if => 1=new epl, 2=epl renew
                         if ($file->cer_type_status == 1 || $file->cer_type_status == 2) {
                             $epl = EPL::where('client_id', $certificate->client_id)->whereNull('issue_date')->where('status', 0)->first();
@@ -912,7 +915,7 @@ class ClientController extends Controller {
                             $epl->certificate_no = $certificate->cetificate_number;
                             $epl->status = 1;
                             $msg = $msg && $epl->save();
-                            
+
                             //check if 3=site clearance
                         } else if ($file->cer_type_status == 3) {
                             $site = SiteClearenceSession::where('client_id', $certificate->client_id)->whereNull('issue_date')->first();
@@ -925,10 +928,17 @@ class ClientController extends Controller {
                             $s->status = 1;
                             $msg = $msg && $s->save();
                             $msg = $msg && $site->save();
-                            
+
 //                            check if 4=site clearance renew
                         } else if ($file->cer_type_status == 4) {
-                            abort(501, "Method not implemented - error code");
+                            $site = SiteClearenceSession::where('client_id', $certificate->client_id)->orderBy('id', 'desc')->first();
+                            $site->issue_date = $certificate->issue_date;
+                            $site->expire_date = $certificate->expire_date;
+                            $site->status = 1; //status already 1
+                            $site->save();
+                            $s = SiteClearance::where('site_clearence_session_id', $site->id)->where('status', 0)->first();
+                            $s->status = 1;
+                            $s->save();
                         } else {
                             abort(501, "Invalid File Status - error code");
                         }
@@ -999,7 +1009,6 @@ class ClientController extends Controller {
                 $target = date_create(date($res['expire_date']));
                 $interval = date_diff($origin, $target);
 
-
                 if ($interval->format('%R%a days') > 0) {
                     $reses[$k]['due_date'] = $interval->format('Expire within %a days');
                 } else {
@@ -1018,7 +1027,6 @@ class ClientController extends Controller {
     public function getExpiredCertificates() { //to all get expired certificates and certificates that expired within a month by env officer id
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-
 
         $date = Carbon::now();
         $date = $date->addDays(30);
@@ -1261,7 +1269,7 @@ class ClientController extends Controller {
         $prs_check = $request->pradeshiya_sabha_check;
         $ind_cat_check = $request->industry_category_check;
         $client_data = null;
-        
+
         if ($prs_check == 'on' && $ind_cat_check != 'on') {
             $client_data = Client::where('pradesheeyasaba_id', '=', $prs)
                     ->join('e_p_l_s', 'clients.id', 'e_p_l_s.client_id')
