@@ -46,31 +46,31 @@
                     <div class="card-body">
                         <h4 class="siteClearType text-success"></h4>
                         <h5 class="processingMethod text-success"></h5>
-											<dl class="row">
-                                                <dt class="col-sm-4">Name : </dt>
-                                                <dd class="col-sm-6" id="client_name"></dd>
-                                                <dt class="col-sm-4">Address:</dt>
-                                                <dd class="col-sm-6" id="client_address"></dd>
-                                                <dt class="col-sm-4">Contact Number:</dt>
-                                                <dd class="col-sm-6" id="client_cont"></dd>
-                                                <dt class="col-sm-4">Contact Email:</dt>
-                                                <dd class="col-sm-6" id="client_amil"></dd>
-												 <dt class="col-sm-4">NIC:</dt>
-                                                <dd class="col-sm-6" id="client_nic"></dd>
-                                            </dl>
+                        <dl class="row">
+                            <dt class="col-sm-4">Name : </dt>
+                            <dd class="col-sm-6" id="client_name"></dd>
+                            <dt class="col-sm-4">Address:</dt>
+                            <dd class="col-sm-6" id="client_address"></dd>
+                            <dt class="col-sm-4">Contact Number:</dt>
+                            <dd class="col-sm-6" id="client_cont"></dd>
+                            <dt class="col-sm-4">Contact Email:</dt>
+                            <dd class="col-sm-6" id="client_amil"></dd>
+                            <dt class="col-sm-4">NIC:</dt>
+                            <dd class="col-sm-6" id="client_nic"></dd>
+                        </dl>
                         <hr>
-											<dl class="row">
-                                                <dt class="col-sm-4">Industry Name : </dt>
-                                                <dd class="col-sm-6" id="obj_name"></dd>
-                                                <dt class="col-sm-4">Industry Registration No:</dt>
-                                                <dd class="col-sm-6" id="obj_regno"></dd>
-                                                <dt class="col-sm-4">Industry Code:</dt>
-                                                <dd class="col-sm-6" id="obj_code"></dd>
-                                                <dt class="col-sm-4">Industry Investment:</dt>
-                                                <dd class="col-sm-6" id="obj_invest"></dd>
-												 <dt class="col-sm-4">Industry Remark:</dt>
-                                                <dd class="col-sm-6" id="obj_remark"></dd>
-                                            </dl>
+                        <dl class="row">
+                            <dt class="col-sm-4">Industry Name : </dt>
+                            <dd class="col-sm-6" id="obj_name"></dd>
+                            <dt class="col-sm-4">Industry Registration No:</dt>
+                            <dd class="col-sm-6" id="obj_regno"></dd>
+                            <dt class="col-sm-4">Industry Code:</dt>
+                            <dd class="col-sm-6" id="obj_code"></dd>
+                            <dt class="col-sm-4">Industry Investment:</dt>
+                            <dd class="col-sm-6" id="obj_invest"></dd>
+                            <dt class="col-sm-4">Industry Remark:</dt>
+                            <dd class="col-sm-6" id="obj_remark"></dd>
+                        </dl>
                     </div>
                     <!-- /.card-body -->
                 </div>                                                                        
@@ -98,10 +98,12 @@
                             <h6><a href="/remarks/epl/{{$profile}}" class="text-success isOld2">Remarks</a></h6>
                             <p>Add Comments</p>
                         </div>
-                        <div class="callout callout-danger">
-                            <h6><a href="/issue_certificate/id/{{$profile}}" class="text-success ">Certificate Information</a></h6>
-                            <p>Issue Certificate / Certificate Information</p>
-                        </div>
+
+                        <!--                        <div class="callout callout-danger">
+                                                    <h6><a href="/issue_certificate/id/{{-- $profile --}}" class="text-success ">Certificate Information</a></h6>
+                                                    <p>Issue Certificate / Certificate Information</p>
+                                                </div>-->
+
                     </div>
                     <!-- /.card-body -->
 
@@ -419,7 +421,8 @@ $(function () {
     $("#uploadExten").click(function () {
         let data = {
             submit_date: $('#submitDateExten').val(),
-            file: $('#fileUploadExten')[0].files[0]
+            file: $('#fileUploadExten')[0].files[0],
+            client_id: CLIENT
         };
         setSiteClearanceExtenAPI(PROFILE, data, function (rest) {
             show_mesege(rest);
@@ -430,7 +433,7 @@ $(function () {
 //                        viewUploadContentData(resp.content_paths);
 //                    }
 //                });
-            }else{
+            } else {
 //                alert(rest.message);
             }
         });
