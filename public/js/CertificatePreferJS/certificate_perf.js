@@ -9,7 +9,7 @@ function getaProfilebyId(id, callBack) {
         }
     });
 }
-var certificate_Status = {1: 'New EPL', 2: 'Renew EPL', 3: 'New Site Clearance', 4: 'Site Clearance'};
+var certificate_Status = {1: 'New EPL', 2: 'Renew EPL', 3: 'New Site Clearance', 4: 'Site Clearance Extend'};
 function setProfileDetails(obj) {
     //    $('#newEPL').val(obj.id);
     if (obj.epls.length == 0) {

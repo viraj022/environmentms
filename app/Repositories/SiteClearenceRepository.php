@@ -162,6 +162,7 @@ class SiteClearenceRepository {
     public function extendSiteClearance($request, $siteClearence) {
         return DB::transaction(function () use ($request, $siteClearence) {
                     $site = new SiteClearance();
+//                    dd($siteClearence);
                     $site->site_clearence_session_id = $siteClearence->site_clearence_session_id;
                     if ($request->file('file') != null) {
                         $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
@@ -179,6 +180,10 @@ class SiteClearenceRepository {
                     $file->file_status = 0;
                     $file->need_inspection = Client::STATUS_INSPECTION_NEEDED;
                     $file->save();
+                    $clent = Client::find($request->client_id);
+                    $clent->cer_type_status = 4;
+                    $clent->cer_status = 0;
+                    $clent->save();
                     return $site->save();
                 });
     }
