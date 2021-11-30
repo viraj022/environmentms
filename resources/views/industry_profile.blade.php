@@ -190,7 +190,7 @@
                                                         <dd class="col-sm-6" id="obj_regno"></dd>
                                                         <dt class="col-sm-4">Investment :(RS)</dt>
                                                         <dd class="col-sm-6" id="obj_invest"></dd>
-                                                        <dt class="col-sm-4">Industry Sub-Category :</dt>
+                                                        <dt class="col-sm-4">Industry Address :</dt>
                                                         <dd class="col-sm-6" id="obj_industrySub"></dd>
                                                     </dl>
                                                 </div>
@@ -681,6 +681,7 @@
                                                 checkCompletedStatus(parameters.file_status, parameters.epls, parameters.site_clearence_sessions);
                                                 $(".loadingRenderUI").remove(); //<--Check Loading Status
                                             });
+                                            
                                             $('#newEPL').click(function () {
                                                 if (isNaN(parseInt(PROFILE_ID))) {
                                                     return false;
