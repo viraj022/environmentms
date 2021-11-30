@@ -19,6 +19,7 @@ function getaProfilebyId(id, callBack) {
 }
 
 function setProfileDetails(obj) {
+//    console.log(obj);
     //    $('#newEPL').val(obj.id);
     if (obj.epls.length == 0) {
         $(".newEPL").removeClass("d-none");
@@ -47,13 +48,7 @@ function setProfileDetails(obj) {
         $("#setSiteCleanceCode").html(obj.site_clearence_sessions[0].code);
         console.log(obj.site_clearence_sessions[0].code);
         if (obj.site_clearence_sessions.length != 0) {
-            $("#setSiteClear").attr(
-                    "href",
-                    "/site_clearance/client/" +
-                    PROFILE_ID +
-                    "/profile/" +
-                    obj.site_clearence_sessions[obj.site_clearence_sessions.length - 1].id
-                    );
+            $("#setSiteClear").attr("href","/site_clearance/client/" +PROFILE_ID +"/profile/" +obj.site_clearence_sessions[obj.site_clearence_sessions.length - 1].id);
         }
 
     }
@@ -68,7 +63,7 @@ function setProfileDetails(obj) {
     (obj.industry_registration_no != null) ? $("#obj_regno").html(obj.industry_registration_no) : $("#obj_regno").html('--');
     let invest = format(obj.industry_investment);
     $("#obj_invest").html(invest);
-    (obj.industry_sub_category != null) ? $("#obj_industrySub").html(obj.industry_sub_category) : $("#obj_industrySub").html('--');
+    (obj.industry_address != null) ? $("#obj_industrySub").html(obj.industry_address) : $("#obj_industrySub").html('-');
     initMap(
             parseFloat(obj.industry_coordinate_x),
             parseFloat(obj.industry_coordinate_y)

@@ -446,12 +446,12 @@ class ReportController extends Controller {
         $category = $categoryRepo->all()->keyBy('id')->toArray();
         $category = array_map(function ($cat) {
             return array(
-        "name" => $cat['name'],
-        "epl_new" => 0,
-        "epl_renew" => 0,
-        "site_new" => 0,
-        "site_renew" => 0,
-        "certificate_issue" => 0
+                "name" => $cat['name'],
+                "epl_new" => 0,
+                "epl_renew" => 0,
+                "site_new" => 0,
+                "site_renew" => 0,
+                "certificate_issue" => 0
             );
         }, $category);
 
@@ -459,7 +459,7 @@ class ReportController extends Controller {
 
         $la = array_map(function ($l) {
             return array(
-        "name" => $l['name']
+                "name" => $l['name']
             );
         }, $la);
         $req_array = $la;
@@ -907,34 +907,23 @@ class ReportController extends Controller {
     public function siteClearanceApplicationLog($from, $to) {
         $start = microtime(true);
         $site = new SiteClearenceRepository();
-        $result = $site->getSiteReport($from, $to)->toArray();
+        $result = $site->getSiteReport($from, $to);
+//        dd($result);
         $data = [];
         $data['header_count'] = 0;
         $data['results'] = [];
         $num = 0;
         foreach ($result as $row) {
+//            dd($row);
             $array = [];
             $array['#'] = ++$num;
-            $array['industry_start_date'] = Carbon::parse($row['industry_start_date'])->format('Y-m-d');
-            if (count($row['site_clearence_sessions']) > 0) {
-                $array['code_site'] = $row['code_site'];
-            } else {
-                $array['code_site'] = "N/A";
-            }
-            $array['name_title'] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'] . "\n" . $row['address'];
-            $array['category_name'] = $row['name'];
-            $array['industry_address'] = $row['industry_address'];
-            if (count($row['site_clearence_sessions']) > 0) {
-                $array['nature'] = "SC -> EPL";
-            } else {
-                $array['nature'] = "EPL";
-            }
-            $array['code_epl'] = $row['code_epl'];
+            $array['industry_start_date'] = Carbon::parse($row['created_at'])->format('Y-m-d');
+            $array['code_site'] = $row['code'];
+            $array['name_title'] = $row['client']['name_title'] . ' ' . $row['client']['first_name'] . ' ' . $row['client']['last_name'] . "\n" . $row['client']['address'];
+            $array['category_name'] = $row['client']['industry_category']['name'];
+            $array['industry_address'] = $row['client']['industry_address'];
+            $array['nature'] = $row['site_clearance_type'];
             $array['code'] = $row['code'];
-            $array['epls'] = $row['epls'];
-            if ($data['header_count'] < count($row['epls'])) {
-                $data['header_count'] = count($row['epls']);
-            }
             array_push($data['results'], $array);
         }
 
@@ -943,7 +932,7 @@ class ReportController extends Controller {
     }
 
     public function fileProgressReport() {
-        return Client::select('id', 'first_name', 'last_name', 'updated_at', 'deleted_at', 'industry_name', 'file_no', 'file_status', 'cer_type_status', 'cer_status','industry_category_id')->with('industryCategory')
+        return Client::select('id', 'first_name', 'last_name', 'updated_at', 'deleted_at', 'industry_name', 'file_no', 'file_status', 'cer_type_status', 'cer_status', 'industry_category_id')->with('industryCategory')
                         ->where('file_status', '<>', 5)
                         ->where('file_status', '<>', 6)
 //                        ->where('deleted_at', '<>', 'null')
