@@ -241,6 +241,7 @@
     var PROFILE = '{{$id}}';
     var fCODER = '';
     var CUTE = '';
+    var FILE_NUMBER = '';
     // Initialize and add the map
     function initMap() {
         // The location of CeyTech
@@ -276,6 +277,7 @@
             //Client
             $(".fileNoDbzz").html(set.file_no);
             $("#file_code_active").val(set.file_no);
+            FILE_NUMBER = set.file_no;
             $("#getisOld").val(set.is_old);
             $('#getfName').val(set.first_name);
             $('#getlName').val(set.last_name);
@@ -357,12 +359,11 @@
             return false;
         }
         gen_fileCode();
-        createNewFileCodeJ(null, function(set) {
-            $('.genNewFileCodeAcc').removeClass('d-none');
-            $('.editingDetectedFCode').addClass('bg-gradient-secondary');
-            $("#prsdeshiySb,#industryCat,#businesScale").removeAttr('disabled');
-            $("#prsdeshiySb").focus();
-        });
+        $('.genNewFileCodeAcc').removeClass('d-none');
+        $('.editingDetectedFCode').addClass('bg-gradient-secondary');
+        $("#prsdeshiySb,#industryCat,#businesScale").removeAttr('disabled');
+        $("#prsdeshiySb").focus();
+        $('#file_code_change').val(FILE_NUMBER);
     });
     $('#btnSaveFileCode').click(function() {
         if (confirm('Are you sure you want to modify this file coe?')) {
@@ -371,43 +372,23 @@
         }
     });
 
-    function gen_fileCode(parameters) {
+    function gen_fileCode() {
         let ps_code = $('#prsdeshiySb :selected').data('ps_code');
         let cat_code = $('#industryCat :selected').data('cat_code');
         let bc_code = $('#businesScale :selected').data('bc_code');
-        let code = 'PEA/' + ps_code + '/' + cat_code + '/' + bc_code;
-        console.log(code);
+        let postFix = FILE_NUMBER.split('/');
+        let code = 'PEA/' + ps_code + '/' + cat_code + '/' + bc_code + '/' + postFix[4] + '/' + postFix[5];
         $('#file_code_change').val(code);
     }
 
     function createNewFileCodeJ(e, callBack) {
-        var c = $('#file_code_active').val();
-        fCODER = c.split('/');
-        CUTE = fCODER[0] + '/' + fCODER[1] + '/' + fCODER[2] + '/' + fCODER[3] + '/' + fCODER[4] + '/' + fCODER[5];
-        $('#file_code_change').val(CUTE);
+
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack();
         }
     }
-    $('#prsdeshiySb').on('change', function() {
-        let sData = $(this).find("option:selected").text().split('-');
-        fCODER[1] = sData[0].trim();
-        CUTE = fCODER[0] + '/' + fCODER[1] + '/' + fCODER[2] + '/' + fCODER[3] + '/' + fCODER[4] + '/' + fCODER[5];
-        $('#file_code_change').val(CUTE);
-    });
-    $('#industryCat').on('change', function() {
-        fCODER[2] = $(this).find("option:selected").text();
-        CUTE = fCODER[0] + '/' + fCODER[1] + '/' + fCODER[2] + '/' + fCODER[3] + '/' + fCODER[4] + '/' + fCODER[5];
-        $('#file_code_change').val(CUTE);
-    });
-    $('#businesScale').on('change', function() {
-        let sData = $(this).find("option:selected").text().split('-');
-        let String = sData[0].trim();
-        String.split('-');
-        fCODER[3] = String[0].trim();
-
-        CUTE = fCODER[0] + '/' + fCODER[1] + '/' + fCODER[2] + '/' + fCODER[3] + '/' + fCODER[4] + '/' + fCODER[5];
-        $('#file_code_change').val(CUTE);
+    $('#prsdeshiySb,#industryCat,#businesScale').on('change', function() {
+        gen_fileCode();
     });
 </script>
 @endsection
