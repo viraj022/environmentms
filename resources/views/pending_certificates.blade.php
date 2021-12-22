@@ -13,6 +13,7 @@
 <!-- Theme style -->
 <link rel="stylesheet" href="/dist/css/adminlte.min.css">
 <!-- Google Font: Source Sans Pro -->
+
 @endsection
 @section('content')
 @if($pageAuth['is_read']==1 || false)
@@ -45,7 +46,7 @@
                                         <th>Nominate</th>
                                         <th>Status</th>
                                         <th>Action</th>
-                                        <th></th>
+                                        <!-- <th></th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -57,8 +58,8 @@
             </div>
         </div>
     </div>
-</div>
-</div>
+    </div>
+    </div>
 </section>
 @endif
 @endsection
@@ -87,14 +88,12 @@
 <script src="../../plugins/datatables/ellipsis.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();  
-//Load table
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+        //Load table
         getaProfilebyId();
-//select button action 
-        $(document).on('click', '.btnAction', function () {
-        });
+        //select button action 
+        $(document).on('click', '.btnAction', function() {});
     });
-
 </script>
 @endsection
