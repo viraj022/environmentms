@@ -273,17 +273,29 @@ class ClientController extends Controller
             // 'password' => 'required',
         ]);
         if ($pageAuth['is_update']) {
-            $msg = Client::where('id', $id)->update($request->all());
-            $epl = EPL::where('client_id', $id)->first();
+            try {
+                $msg = Client::where('id', $id)->update($request->all());
+                $epl = EPL::where('client_id', $id)->first();
 
-            //load and split previous epl no to generate new epl no for epl code 
-            $splited_epl_code_prev = explode("/", $epl->code);
-            $new_epl_code = $splited_epl_code_prev[5].'/'.$splited_epl_code_prev[6];
+                //load and split previous epl no to generate new epl no for epl code 
+                $splited_epl_no_prev = explode("/", $epl->code);
+                $new_epl_no = $splited_epl_no_prev[5] . '/' . $splited_epl_no_prev[6];
 
-            //load and split new file no to generate new epl code
-            $splited_file_no = explode("/", $request->file_no);
-            $epl->code = 'PEA/'.$splited_file_no[1].'/EPL/'.$splited_file_no[2].'/'.$splited_file_no[3].'/'.$new_epl_code;
-            $epl->save();
+                //load and split new file no to generate new epl code
+                $splited_file_no = explode("/", $request->file_no);
+                $epl->code = 'PEA/' . $splited_file_no[1] . '/EPL/' . $splited_file_no[2] . '/' . $splited_file_no[3] . '/' . $new_epl_no;
+                $epl->save();
+
+                //update the site clearence code
+                $site_clearsess = SiteClearenceSession::where('client_id', $id)->first();
+                $splited_site_no_prev = explode("/", $site_clearsess->code);
+                $new_site_no = $splited_site_no_prev[5] . '/' . $splited_site_no_prev[6];
+                $site_clearsess->code = 'PEA/' . $splited_file_no[1] . '/SC/' . $splited_file_no[2] . '/' . $splited_file_no[3] . '/' . $new_site_no;
+                $site_clearsess->save();
+            } catch (\Exception $ex) {
+                return array('id' => 0, 'message' => 'false');
+            }
+
             // LogActivity::fileLog($msg->id, 'File', "Update file", 1);
             LogActivity::addToLog('Update file', $msg);
             return array('id' => 1, 'message' => 'true');
