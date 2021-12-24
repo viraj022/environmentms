@@ -195,8 +195,8 @@
                             </div>
                             <div class="card-footer">
                                 @if($pageAuth['is_create']==1 || false)
-                                <button id="btnUpdate" type="submit" class="btn btn-success"><i class="fas fa-check"></i> Update</button>
-                                <button id="btnGenNewFileCode" type="submit" class="btn float-right btn-warning"><i class="fas fa-exclamation-triangle"></i> Change File Category</button>
+                                <button id="btnUpdate" type="button" class="btn btn-success"><i class="fas fa-check"></i> Update</button>
+                                <button id="btnGenNewFileCode" type="button" class="btn float-right btn-warning"><i class="fas fa-exclamation-triangle"></i> Change File Category</button>
                                 @endif
                             </div>
                             <div class="overlay dark loadingRenderUI">
@@ -345,10 +345,14 @@
         };
         if (requiredFieldHandler(dataz, ".cutenzReq")) {
             updateClientFileAPI($(this).val(), dataz, function(resp) {
-                show_mesege(resp);
+                // show_mesege(resp);
+                
                 if (resp.id === 1) {
+                    swal.fire('Successfull', resp.message, 'success');
                     //Do redirect to indust profile if u want...
                     window.location = '/industry_profile/id/' + PROFILE;
+                }else{
+                    swal.fire('Failed', resp.message, 'warning');
                 }
             });
         }
