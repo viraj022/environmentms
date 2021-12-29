@@ -236,7 +236,6 @@
             checkInspectionStatus(f_id, $('#getInspection').val(), function (rep) {
                 show_mesege(rep);
                 $('#modal-xl').modal('hide');
-//                checkFileType();
                 forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
 //                $("#tblAllFiles").DataTable().ajax.reload(null, false);
             });
