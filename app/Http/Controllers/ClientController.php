@@ -273,32 +273,53 @@ class ClientController extends Controller
             // 'password' => 'required',
         ]);
         if ($pageAuth['is_update']) {
+
             try {
+                DB::beginTransaction();
+
                 $msg = Client::where('id', $id)->update($request->all());
                 $epl = EPL::where('client_id', $id)->first();
-
-                //load and split previous epl no to generate new epl no for epl code 
-                $splited_epl_no_prev = explode("/", $epl->code);
-                $new_epl_no = $splited_epl_no_prev[5] . '/' . $splited_epl_no_prev[6];
+                $site_clearsess = SiteClearenceSession::where('client_id', $id)->first();
 
                 //load and split new file no to generate new epl code
                 $splited_file_no = explode("/", $request->file_no);
-                $epl->code = 'PEA/' . $splited_file_no[1] . '/EPL/' . $splited_file_no[2] . '/' . $splited_file_no[3] . '/' . $new_epl_no;
-                $epl->save();
 
-                //update the site clearence code
-                $site_clearsess = SiteClearenceSession::where('client_id', $id)->first();
-                $splited_site_no_prev = explode("/", $site_clearsess->code);
-                $new_site_no = $splited_site_no_prev[5] . '/' . $splited_site_no_prev[6];
-                $site_clearsess->code = 'PEA/' . $splited_file_no[1] . '/SC/' . $splited_file_no[2] . '/' . $splited_file_no[3] . '/' . $new_site_no;
-                $site_clearsess->save();
+                if (count($splited_file_no) != 6) {
+                    return array('id' => 0, 'message' => 'Previous file number format is not correct');
+                }
+
+                if ($epl != null) {
+                    //load and split previous epl no to generate new epl no for epl code 
+                    $splited_epl_no_prev = explode("/", $epl->code);
+                    if (count($splited_epl_no_prev) != 7) {
+                        return array('id' => 0, 'message' => 'Previous EPL number is not correct');
+                    }
+
+                    $new_epl_no = $splited_epl_no_prev[5] . '/' . $splited_epl_no_prev[6];
+
+                    $epl->code = 'PEA/' . $splited_file_no[1] . '/EPL/' . $splited_file_no[2] . '/' . $splited_file_no[3] . '/' . $new_epl_no;
+                    $epl->save();
+                }
+
+                if ($site_clearsess != null) {
+                    //update the site clearence code
+                    $splited_site_no_prev = explode("/", $site_clearsess->code);
+                    if (count($splited_site_no_prev) != 7) {
+                        return array('id' => 0, 'message' => 'Previous site clearence number is not correct');
+                    }
+                    $new_site_no = $splited_site_no_prev[5] . '/' . $splited_site_no_prev[6];
+                    $site_clearsess->code = 'PEA/' . $splited_file_no[1] . '/SC/' . $splited_file_no[2] . '/' . $splited_file_no[3] . '/' . $new_site_no;
+                    $site_clearsess->save();
+                }
+
+                DB::commit();
+                // LogActivity::fileLog($msg->id, 'File', "Update file", 1);
+                LogActivity::addToLog('Update file', $msg);
+                return array('id' => 1, 'message' => 'File Number, EPL Number, Site clearence Number has updated successful');
             } catch (\Exception $ex) {
-                return array('id' => 0, 'message' => 'false');
+                DB::rollBack();
+                return array('id' => 0, 'message' => 'File Number, EPL Number, Site clearence Number update is unsuccessful');
             }
-
-            // LogActivity::fileLog($msg->id, 'File', "Update file", 1);
-            LogActivity::addToLog('Update file', $msg);
-            return array('id' => 1, 'message' => 'true');
         } else {
             abort(401);
         }

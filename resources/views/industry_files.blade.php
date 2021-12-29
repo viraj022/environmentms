@@ -236,7 +236,6 @@
             checkInspectionStatus(f_id, $('#getInspection').val(), function (rep) {
                 show_mesege(rep);
                 $('#modal-xl').modal('hide');
-//                checkFileType();
                 forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(), file_status);
 //                $("#tblAllFiles").DataTable().ajax.reload(null, false);
             });
@@ -249,7 +248,7 @@
     $(document).on('click', '.detailsData', function () {
         var fileData = JSON.parse(unescape($(this).val()));
         let f_Status = fileData.file_status;
-
+        console.log(f_Status);
         $('#modal-x2').modal();
         $('#getMinutes').val('');
 
@@ -268,7 +267,7 @@
 
         $('#needApproval,#submitAdCerApproval,#rejectAdCerApproval,#setInspectionVal2,#viewCertificateBtn').addClass('d-none');
 
-        if (f_Status === 0) {
+        if (f_Status === 0 || f_Status === -1) {
             if (fileData.need_inspection == null) {
                 $('#setInspectionVal2').removeClass('d-none');
             } else if (fileData.need_inspection == 'Completed') {

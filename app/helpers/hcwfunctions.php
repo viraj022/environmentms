@@ -69,7 +69,7 @@ function prepareMinutesArray($file, $description, $situation, $user_id)
         $type = Minute::SITE_CLEARANCE;
         $type_id = $file->siteClearenceSessions->last()->id;
     } else {
-        abort(501, "Invalid File Status - hcw error code");
+        abort(422, "You Need to Add EPL or Site Clearance First !");
     }
     return [
         "file_id" => $file->id,
