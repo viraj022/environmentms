@@ -89,3 +89,4 @@ Route::get('/file_progress_report', function () {
 });
 
 Route::get('/director_approved_list', 'AssistantDirectorController@directorApprovedListIndex');
+Route::get('/reset_count', 'ResetSettingsController@index');

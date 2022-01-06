@@ -21,3 +21,4 @@ Route::post('/tor/{site_clearence_session}', 'SiteClearanceController@uploadTor'
 Route::post('/client_report/{site_clearence_session}', 'SiteClearanceController@clientReport');
 
 Route::middleware('auth:api')->post('/client_clearance/extend/{siteClearance}', 'SiteClearanceController@extendSiteClearence');
+

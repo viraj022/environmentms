@@ -132,6 +132,7 @@ function displayClientDataFromEvent(u_id, callBack) {
         if (dataSet.length == 0) {
             tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
         } else {
+            console.log(dataSet);
             tbl += '<tr>';
             tbl += '<th>Industry Name:</th>';
             tbl += '<td>' + dataSet.industry_name + '</td>';
@@ -146,7 +147,7 @@ function displayClientDataFromEvent(u_id, callBack) {
             tbl += '</tr>';
             tbl += '<tr>';
             tbl += ' <th>Site Address:</th>';
-            tbl += ' <td>' + dataSet.address + '</td>';
+            tbl += ' <td>' + dataSet.industry_address + '</td>';
             tbl += '</tr>';
             tbl += '<tr>';
             tbl += ' <th>Pradesheeyasaba:</th>';

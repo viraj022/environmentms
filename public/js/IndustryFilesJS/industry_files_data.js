@@ -127,7 +127,9 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
                         tbl += '<tr style="' + tr_style + '">';
                         tbl += '<td>' + ++index + '</td>';
                         tbl += '<td>' + row.industry_name + '</td>';
+                        tbl += '<td>' + row.first_name+' '+row.last_name+'</td>';
                         tbl += '<td>' + row.code_epl + '</td>';
+                        tbl += '<td>' + row.code_site + '</td>';
                         tbl += '<td><a href="/industry_profile/id/' + row.id + '" class="btn btn-dark" target="_blank">' + row.file_no + '</a></td>';
                         tbl += '<td class="">' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
                         tbl += '<td>' + file_status_list[row.file_status] + status_Lable + '</td>';

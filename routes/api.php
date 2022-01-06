@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DirectorController;
+use App\Http\Controllers\ResetSettingsController;
 
 /*
   |--------------------------------------------------------------------------
@@ -1060,3 +1061,5 @@ Route::post('server_side_process', [ClientController::class, 'server_side_proces
 Route::post('/eo_client_data', [ClientController::class, 'eo_client_data']);
 
 Route::middleware('auth:api')->post('/director_final_approve/file_id/{file_id}', 'DirectorController@DirectorFinalApprove');
+Route::get('/epl_site_count', [ResetSettingsController::class, 'get_epl_site_count']);
+Route::put('/reset_counts', [ResetSettingsController::class, 'reset_site_counts']);
