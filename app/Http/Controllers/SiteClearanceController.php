@@ -201,66 +201,78 @@ class SiteClearanceController extends Controller {
                 return array('id' => 0, 'message' => 'false');
             }
         } else {
-            return response(array('id' => 2, 'message' => 'Can\'t create a new site clearanc when last site clearance is not issued'), 422);
+            return response(array('id' => 2, 'message' => 'Can\'t create a new site clearance when last site clearance is not issued'), 422);
         }
     }
 
     public function create(Request $request) {
         return DB::transaction(function () use ($request) {
-                    request()->validate([
-                        'remark' => 'nullable|string',
-                        'type' => ["required", "regex:(" . SiteClearance::SITE_CLEARANCE . "|" . SiteClearance::SITE_TELECOMMUNICATION . "|" . SiteClearance::SITE_SCHEDULE_WASTE . ")"],
-                        'submit_date' => 'required|date',
-                        'client_id' => 'required|integer',
-                        'file' => 'required|mimes:jpeg,jpg,png,pdf',
-                    ]);
+                    //get the last updated date 
+                    $last_updated = Setting::where('name', 'site_ai')
+                            ->select('updated_at')
+                            ->first();
 
-                    //check active site clearance already exist
-                    $activeSiteClearance = SiteClearenceSession::where('client_id', '=', $request->client_id)->where('status', '=', 0)->count();
-                    if ($activeSiteClearance > 0) {
-                        return response(array("id" => 0, "message" => "Active File Already exist !"));
-                    }
-                    // save site clearance session
-                    $siteSessions = new SiteClearenceSession();
-                    $siteSessions->client_id = $request->client_id;
-                    $siteSessions->code = $this->generateCode($request->client_id);
-                    $siteSessions->remark = $request->remark;
-                    $siteSessions->site_clearance_type = $request->type;
-                    $msg = $siteSessions->save();
+                    $is_outdated = $last_updated->updated_at->format('Y');
 
-                    //  save site clearance
-                    $siteClearance = new SiteClearance();
-                    $siteClearance->submit_date = $request->submit_date;
-                    $siteClearance->site_clearence_session_id = $siteSessions->id;
-                    $siteClearance->count = 0;
-                    // upload file
-                    if ($request->file('file') != null) {
-                        $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                        $fileUrl = '/uploads/' . FieUploadController::getSiteClearanceAPPLICATIONFilePath($siteSessions);
-                        $storePath = 'public' . $fileUrl;
-                        $path = $request->file('file')->storeAs($storePath, $file_name);
-                        $siteClearance->application_path = "storage" . $fileUrl . "/" . $file_name;
-                        $msg = $msg && $siteClearance->save();
+                    if ($is_outdated != date("Y")) {
+                        return "Seting table must reset to generate site clearence for new year";
                     } else {
-                        return response(array('id' => 1, 'message' => 'certificate not found'), 422);
-                    }
-                    /**
-                     * increment serial number
-                     */
-                    incrementSerial(Setting::SITE_AI);
-                    // change file status        
-                    setFileStatus($siteSessions->client_id, 'file_status', 0);  // set file status to zero 
-                    setFileStatus($siteSessions->client_id, 'inspection', null);  //  set inspection pending status to 'null'
-                    setFileStatus($siteSessions->client_id, 'cer_type_status', 3);  // set inspection pending status to 3
-                    setFileStatus($siteSessions->client_id, 'cer_status', 0);  // set certificate status to 0
-                    setFileStatus($siteSessions->client_id, 'file_problem', 0); // set file problem status to 0
-                    // $file = #ssiteClearenceSession->client;
-                    LogActivity::addToLog('create new site clearance', $siteSessions);
-                    LogActivity::fileLog($siteSessions->client_id, 'site_clearance', "create new site clearance", 1);
-                    if ($siteSessions) {
-                        return response(array("id" => 1, "message" => "ok", 'rout' => "/site_clearance/client/" . $siteSessions->client_id . "/profile/" . $siteSessions->id));
-                    } else {
-                        return response(array("id" => 0, "message" => "fail"));
+                        request()->validate([
+                            'remark' => 'nullable|string',
+                            'type' => ["required", "regex:(" . SiteClearance::SITE_CLEARANCE . "|" . SiteClearance::SITE_TELECOMMUNICATION . "|" . SiteClearance::SITE_SCHEDULE_WASTE . ")"],
+                            'submit_date' => 'required|date',
+                            'client_id' => 'required|integer',
+                            'file' => 'required|mimes:jpeg,jpg,png,pdf',
+                        ]);
+
+                        //check active site clearance already exist
+                        $activeSiteClearance = SiteClearenceSession::where('client_id', '=', $request->client_id)->where('status', '=', 0)->count();
+                        if ($activeSiteClearance > 0) {
+                            return response(array("id" => 0, "message" => "Active File Already exist !"));
+                        }
+                        // save site clearance session
+                        $siteSessions = new SiteClearenceSession();
+                        $siteSessions->client_id = $request->client_id;
+
+                        $siteSessions->code = $this->generateCode($request->client_id);
+                        $siteSessions->remark = $request->remark;
+                        $siteSessions->site_clearance_type = $request->type;
+                        $msg = $siteSessions->save();
+
+                        //  save site clearance
+                        $siteClearance = new SiteClearance();
+                        $siteClearance->submit_date = $request->submit_date;
+                        $siteClearance->site_clearence_session_id = $siteSessions->id;
+                        $siteClearance->count = 0;
+                        // upload file
+                        if ($request->file('file') != null) {
+                            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+                            $fileUrl = '/uploads/' . FieUploadController::getSiteClearanceAPPLICATIONFilePath($siteSessions);
+                            $storePath = 'public' . $fileUrl;
+                            $path = $request->file('file')->storeAs($storePath, $file_name);
+                            $siteClearance->application_path = "storage" . $fileUrl . "/" . $file_name;
+                            $msg = $msg && $siteClearance->save();
+                        } else {
+                            return response(array('id' => 1, 'message' => 'certificate not found'), 422);
+                        }
+                        /**
+                         * increment serial number
+                         */
+                        incrementSerial(Setting::SITE_AI);
+                        // change file status        
+                        setFileStatus($siteSessions->client_id, 'file_status', 0);  // set file status to zero 
+                        setFileStatus($siteSessions->client_id, 'inspection', null);  //  set inspection pending status to 'null'
+                        setFileStatus($siteSessions->client_id, 'cer_type_status', 3);  // set inspection pending status to 3
+                        setFileStatus($siteSessions->client_id, 'cer_status', 0);  // set certificate status to 0
+                        setFileStatus($siteSessions->client_id, 'file_problem', 0); // set file problem status to 0
+                        // $file = #ssiteClearenceSession->client;
+                        LogActivity::addToLog('create new site clearance', $siteSessions);
+                        LogActivity::fileLog($siteSessions->client_id, 'site_clearance', "create new site clearance", 1);
+                        if ($siteSessions) {
+                            return response(array("id" => 1, "message" => "ok", 'rout' => "/site_clearance/client/" . $siteSessions->client_id . "/profile/" . $siteSessions->id));
+                        } else {
+                            return response(array("id" => 0, "message" => "fail"));
+                        }
                     }
                 });
     }
@@ -284,6 +296,7 @@ class SiteClearanceController extends Controller {
         $scaleCode = $scale->code;
         $e = SiteClearenceSession::orderBy('id', 'desc')->first();
         $serial = getSerialNumber(Setting::SITE_AI);
+
         $serial = sprintf('%02d', $serial);
         return "PEA/" . $lsCOde . "/SC/" . $industryCode . "/" . $scaleCode . "/" . $serial . "/" . date("Y");
     }

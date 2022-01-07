@@ -25,11 +25,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Exception;
 
-class ClientController extends Controller
-{
+class ClientController extends Controller {
 
-    public function __construct()
-    {
+    public function __construct() {
         // $this->middleware(['auth']);
     }
 
@@ -38,43 +36,37 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('client_space', ['pageAuth' => $pageAuth]);
     }
 
-    public function search_files()
-    {
+    public function search_files() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('search_files', ['pageAuth' => $pageAuth]);
     }
 
-    public function eo_locations()
-    {
+    public function eo_locations() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('eo_locations', ['pageAuth' => $pageAuth]);
     }
 
-    public function indexOldFileList()
-    {
+    public function indexOldFileList() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('old_file_list', ['pageAuth' => $pageAuth]);
     }
 
-    public function indexOldDataReg($id)
-    {
+    public function indexOldDataReg($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('old_data_registation', ['pageAuth' => $pageAuth, 'id' => $id]);
     }
 
-    public function allClientsindex()
-    {
+    public function allClientsindex() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.industryFile'));
         if ($pageAuth['is_read']) {
@@ -84,8 +76,7 @@ class ClientController extends Controller
         }
     }
 
-    public function index1($id)
-    {
+    public function index1($id) {
         if (!Auth::check()) {
             abort(401);
         }
@@ -98,36 +89,31 @@ class ClientController extends Controller
         }
     }
 
-    public function updateClient($id)
-    {
+    public function updateClient($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('update_industry_file', ['pageAuth' => $pageAuth, 'id' => $id]);
     }
 
-    public function certificatesUi()
-    {
+    public function certificatesUi() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('pending_certificates', ['pageAuth' => $pageAuth]);
     }
 
-    public function expireCertificatesUi()
-    {
+    public function expireCertificatesUi() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('expired_certificates', ['pageAuth' => $pageAuth]);
     }
 
-    public function expireCertUi()
-    {
+    public function expireCertUi() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('expired_cert', ['pageAuth' => $pageAuth]);
     }
 
-    public function certificatePrefer($id)
-    {
+    public function certificatePrefer($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('certificate_perforation', ['pageAuth' => $pageAuth, 'id' => $id]);
@@ -138,8 +124,7 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         request()->validate([
@@ -165,7 +150,7 @@ class ClientController extends Controller
             'is_old' => 'required|integer',
             'name_title' => 'required|string',
             'industry_sub_category' => 'nullable|string',
-            // 'password' => 'required',
+                // 'password' => 'required',
         ]);
         if ($pageAuth['is_create']) {
             $client = new Client();
@@ -215,8 +200,7 @@ class ClientController extends Controller
         }
     }
 
-    private function generateCode($client)
-    {
+    private function generateCode($client) {
         $la = Pradesheeyasaba::find($client->pradesheeyasaba_id);
         // print_r($la);
         $lsCOde = $la->code;
@@ -242,8 +226,7 @@ class ClientController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $id)
-    {
+    public function store(Request $request, $id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         request()->validate([
@@ -270,7 +253,7 @@ class ClientController extends Controller
             'is_old' => 'sometimes|required|integer',
             'industry_sub_category' => 'nullable|string',
             'file_no' => 'nullable|string'
-            // 'password' => 'required',
+                // 'password' => 'required',
         ]);
         if ($pageAuth['is_update']) {
 
@@ -296,7 +279,6 @@ class ClientController extends Controller
                     }
 
                     $new_epl_no = $splited_epl_no_prev[5] . '/' . $splited_epl_no_prev[6];
-
                     $epl->code = 'PEA/' . $splited_file_no[1] . '/EPL/' . $splited_file_no[2] . '/' . $splited_file_no[3] . '/' . $new_epl_no;
                     $epl->save();
                 }
@@ -313,7 +295,7 @@ class ClientController extends Controller
                 }
 
                 DB::commit();
-                // LogActivity::fileLog($msg->id, 'File', "Update file", 1);
+                LogActivity::fileLog($id, 'File', "Update file", 1);
                 LogActivity::addToLog('Update file', $msg);
                 return array('id' => 1, 'message' => 'File Number, EPL Number, Site clearence Number has updated successful');
             } catch (\Exception $ex) {
@@ -325,8 +307,7 @@ class ClientController extends Controller
         }
     }
 
-    public function getClientById($id)
-    {
+    public function getClientById($id) {
         return Client::findOrFail($id);
     }
 
@@ -336,8 +317,7 @@ class ClientController extends Controller
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function show()
-    {
+    public function show() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         if ($pageAuth['is_read']) {
@@ -347,18 +327,17 @@ class ClientController extends Controller
         }
     }
 
-    public function oldFilesCountByDate()
-    {
+    public function oldFilesCountByDate() {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         if ($pageAuth['is_read']) {
             $oldFilesList = Client::selectRaw("COUNT(*) count, DATE_FORMAT(created_at, '%Y %m %e') date")
-                ->where('is_old', '0')
-                ->Orwhere('is_old', '2')
-                ->groupBy('date')
-                ->orderBy('created_at', 'ASC')
-                //                    ->toSql();
-                ->get();
+                    ->where('is_old', '0')
+                    ->Orwhere('is_old', '2')
+                    ->groupBy('date')
+                    ->orderBy('created_at', 'ASC')
+                    //                    ->toSql();
+                    ->get();
 
             return $oldFilesList;
         } else {
@@ -372,8 +351,7 @@ class ClientController extends Controller
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function edit(Client $client)
-    {
+    public function edit(Client $client) {
         //
     }
 
@@ -384,8 +362,7 @@ class ClientController extends Controller
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Client $client)
-    {
+    public function update(Request $request, Client $client) {
         //
     }
 
@@ -395,8 +372,7 @@ class ClientController extends Controller
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
 
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
@@ -418,18 +394,16 @@ class ClientController extends Controller
         }
     }
 
-    public function findClient_by_nic($nic)
-    {
+    public function findClient_by_nic($nic) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
         //    PaymentType::get();
         return Client::with('epls')->with('oldFiles')->where('nic', '=', $nic)
-            ->get();
+                        ->get();
     }
 
-    public function findClient_by_id($id)
-    {
+    public function findClient_by_id($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
@@ -440,8 +414,7 @@ class ClientController extends Controller
         return $file;
     }
 
-    public function getAllFiles($id)
-    {
+    public function getAllFiles($id) {
         //        dd('ffff');
         $data = array();
         $user = Auth::user();
@@ -463,14 +436,12 @@ class ClientController extends Controller
         return $data;
     }
 
-    public function certificatePath($id)
-    {
+    public function certificatePath($id) {
         $client = Client::findOrFail($id);
         return Certificate::where('client_id', $client->id)->orderBy('id', 'desc')->first();
     }
 
-    public function workingFiles($id)
-    {
+    public function workingFiles($id) {
         return array('id' => 'API removed contact hansana');
         // $data = array();
         // $user = Auth::user();
@@ -493,8 +464,7 @@ class ClientController extends Controller
         // return $data;
     }
 
-    public function newlyAssigned($id)
-    {
+    public function newlyAssigned($id) {
         $data = array();
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
@@ -514,25 +484,24 @@ class ClientController extends Controller
         return $data;
     }
 
-    public function inspection_needed_files($id)
-    {
+    public function inspection_needed_files($id) {
         $data = array();
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($user->roll->level->name == Level::DIRECTOR) {
             $data = Client::where('environment_officer_id', $id)
-                ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
-                ->get();
+                    ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
+                    ->get();
         } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
             $data = Client::where('environment_officer_id', $id)
-                ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
-                ->get();
+                    ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
+                    ->get();
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
             $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
             if ($envOfficer) {
                 $data = Client::where('environment_officer_id', $envOfficer->id)
-                    ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
-                    ->get();
+                        ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
+                        ->get();
             }
         } else {
             abort(401);
@@ -540,31 +509,30 @@ class ClientController extends Controller
         return $data;
     }
 
-    public function inspection_pending_needed_files($id)
-    {
+    public function inspection_pending_needed_files($id) {
         $data = array();
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($user->roll->level->name == Level::DIRECTOR) {
             $data = Client::with('inspectionSessions')->whereHas('inspectionSessions', function ($sql) {
-                return $sql->where('inspection_sessions.status', '=', 0);
-            })->where('environment_officer_id', $id)
-                ->where('need_inspection', Client::STATUS_PENDING)
-                ->get();
+                        return $sql->where('inspection_sessions.status', '=', 0);
+                    })->where('environment_officer_id', $id)
+                    ->where('need_inspection', Client::STATUS_PENDING)
+                    ->get();
         } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
             $data = Client::with('inspectionSessions')->whereHas('inspectionSessions', function ($sql) {
-                return $sql->where('inspection_sessions.status', '=', 0);
-            })->where('environment_officer_id', $id)
-                ->where('need_inspection', Client::STATUS_PENDING)
-                ->get();
+                        return $sql->where('inspection_sessions.status', '=', 0);
+                    })->where('environment_officer_id', $id)
+                    ->where('need_inspection', Client::STATUS_PENDING)
+                    ->get();
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
             $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
             if ($envOfficer) {
                 $data = Client::with('inspectionSessions')->whereHas('inspectionSessions', function ($sql) {
-                    return $sql->where('inspection_sessions.status', '=', 0);
-                })->where('environment_officer_id', $envOfficer->id)
-                    ->where('need_inspection', Client::STATUS_PENDING)
-                    ->get();
+                            return $sql->where('inspection_sessions.status', '=', 0);
+                        })->where('environment_officer_id', $envOfficer->id)
+                        ->where('need_inspection', Client::STATUS_PENDING)
+                        ->get();
             }
         } else {
             abort(401);
@@ -572,8 +540,7 @@ class ClientController extends Controller
         return $data;
     }
 
-    public function getOldFiles($count)
-    {
+    public function getOldFiles($count) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($count == -1) {
@@ -584,51 +551,48 @@ class ClientController extends Controller
         //        return Client::where('is_old', 0)->with('epls')->with('oldFiles')->orderBy('id', 'desc')->get();
     }
 
-    public function markOldFinish($id)
-    {
+    public function markOldFinish($id) {
         return DB::transaction(function () use ($id) {
-            $user = Auth::user();
-            $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-            $client = Client::find($id);
-            $this->generateCertificateForOldData($client, $user);
-            $client->is_old = 2; // inspected state
-            $client->file_status = 5; // set file status
-            $client->cer_status = 6; // set certificate status
-            LogActivity::addToLog("Old file complete" . $id, $client);
-            LogActivity::fileLog($client->id, 'File', "Old file complete", 1);
-            if ($client->save()) {
-                return array('id' => 1, 'message' => 'true');
-            } else {
-                return array('id' => 0, 'message' => 'false');
-            }
-        });
+                    $user = Auth::user();
+                    $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+                    $client = Client::find($id);
+                    $this->generateCertificateForOldData($client, $user);
+                    $client->is_old = 2; // inspected state
+                    $client->file_status = 5; // set file status
+                    $client->cer_status = 6; // set certificate status
+                    LogActivity::addToLog("Old file complete" . $id, $client);
+                    LogActivity::fileLog($client->id, 'File', "Old file complete", 1);
+                    if ($client->save()) {
+                        return array('id' => 1, 'message' => 'true');
+                    } else {
+                        return array('id' => 0, 'message' => 'false');
+                    }
+                });
     }
 
-    public function markOldUnfinish($id)
-    {
+    public function markOldUnfinish($id) {
         return DB::transaction(function () use ($id) {
-            $user = Auth::user();
-            $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-            $client = Client::find($id);
-            $client->is_old = 0; // inspected state
-            $client->file_status = 0; // set file status
-            $client->cer_status = 0; // set certificate status
-            $client->save();
-            $certificate = DB::table('certificates')
-                ->where('client_id', '=', $id)
-                ->delete();
-            LogActivity::addToLog("Old file confirm revert" . $id, $client);
-            LogActivity::fileLog($client->id, 'File', "Old file confirm revert", 1);
-            if ($client == true) {
-                return array('id' => 1, 'message' => 'true');
-            } else {
-                return array('id' => 0, 'message' => 'false');
-            }
-        });
+                    $user = Auth::user();
+                    $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+                    $client = Client::find($id);
+                    $client->is_old = 0; // inspected state
+                    $client->file_status = 0; // set file status
+                    $client->cer_status = 0; // set certificate status
+                    $client->save();
+                    $certificate = DB::table('certificates')
+                            ->where('client_id', '=', $id)
+                            ->delete();
+                    LogActivity::addToLog("Old file confirm revert" . $id, $client);
+                    LogActivity::fileLog($client->id, 'File', "Old file confirm revert", 1);
+                    if ($client == true) {
+                        return array('id' => 1, 'message' => 'true');
+                    } else {
+                        return array('id' => 0, 'message' => 'false');
+                    }
+                });
     }
 
-    public function generateCertificateForOldData(Client $client, $user)
-    {
+    public function generateCertificateForOldData(Client $client, $user) {
         $epls = $client->epls;
         $siteClearances = $client->siteClearenceSessions;
         foreach ($epls as $epl) {
@@ -667,8 +631,7 @@ class ClientController extends Controller
         }
     }
 
-    public function getOldFilesDetails($id)
-    {
+    public function getOldFilesDetails($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $client = Client::where('is_old', 0)->where('id', $id)->first();
@@ -684,8 +647,7 @@ class ClientController extends Controller
         }
     }
 
-    public function getOldSiteClearanceData($id)
-    {
+    public function getOldSiteClearanceData($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $client = Client::where('is_old', 0)->where('id', $id)->first();
@@ -703,8 +665,7 @@ class ClientController extends Controller
         }
     }
 
-    public function markInspection($inspectionNeed, $id)
-    {
+    public function markInspection($inspectionNeed, $id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $client = Client::findOrFail($id);
@@ -726,8 +687,7 @@ class ClientController extends Controller
         }
     }
 
-    public function file_problem_status($id, Request $request)
-    {
+    public function file_problem_status($id, Request $request) {
         try {
             $user = Auth::user();
             $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
@@ -790,8 +750,7 @@ class ClientController extends Controller
     //        }
     //    }
 
-    public function changeFileStatus($id)
-    {
+    public function changeFileStatus($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         request()->validate([
@@ -806,37 +765,31 @@ class ClientController extends Controller
         }
     }
 
-    public function getDirectorPendingList()
-    {
+    public function getDirectorPendingList() {
         return Client::getFileByStatusQuery('file_status', array(-2, 4, 6))->get();
     }
 
-    public function getDirectorApprovedList()
-    {
+    public function getDirectorApprovedList() {
         return Client::where('file_status', '=', 5)->where('cer_status', '=', 5)->get();
     }
 
-    public function getAssistanceDirectorPendingList($id)
-    {
+    public function getAssistanceDirectorPendingList($id) {
         return Client::getFileByStatusQuery('file_status', array(1, 3))->whereHas('environmentOfficer.assistantDirector', function ($query) use ($id) {
-            $query->where('assistant_directors.id', $id);
-        })->get();
+                    $query->where('assistant_directors.id', $id);
+                })->get();
     }
 
-    public function getEnvironmentOfficerPendingList($id)
-    {
+    public function getEnvironmentOfficerPendingList($id) {
         return Client::getFileByStatusQuery('file_status', array(0))->whereHas('environmentOfficer', function ($query) use ($id) {
-            $query->where('environment_officers.id', $id);
-        })->get();
+                    $query->where('environment_officers.id', $id);
+                })->get();
     }
 
-    public function getCertificateDraftingList()
-    {
+    public function getCertificateDraftingList() {
         return Client::getFileByStatusQuery('file_status', array(2))->where('cer_type_status', '!=', 0)->get();
     }
 
-    public function nextCertificateNumber($id)
-    {
+    public function nextCertificateNumber($id) {
 
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
@@ -868,8 +821,7 @@ class ClientController extends Controller
         }
     }
 
-    public function getCertificateDetails($id)
-    {
+    public function getCertificateDetails($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
@@ -882,8 +834,7 @@ class ClientController extends Controller
         }
     }
 
-    public function uploadCertificate(Request $request, $id)
-    {
+    public function uploadCertificate(Request $request, $id) {
         request()->validate([
             'issue_date' => 'sometimes|required|date',
             'expire_date' => 'sometimes|required|date',
@@ -918,8 +869,7 @@ class ClientController extends Controller
         }
     }
 
-    public function uploadCorrectedFile(Request $request, $id)
-    {
+    public function uploadCorrectedFile(Request $request, $id) {
         request()->validate([
             'file' => 'sometimes|required|mimes:jpeg,jpg,png,pdf'
         ]);
@@ -951,8 +901,7 @@ class ClientController extends Controller
         }
     }
 
-    public function uploadOriginalCertificate($id, Request $request)
-    {
+    public function uploadOriginalCertificate($id, Request $request) {
         request()->validate([
             'issue_date' => 'sometimes|required|date',
             'expire_date' => 'sometimes|required|date',
@@ -986,71 +935,69 @@ class ClientController extends Controller
         }
     }
 
-    public function issueCertificate($cer_id)
-    {
+    public function issueCertificate($cer_id) {
         return DB::transaction(function () use ($cer_id) {
-            $user = Auth::user();
-            $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-            $certificate = Certificate::findOrFail($cer_id);
-            if ($certificate->issue_status == 0) {
-                $file = Client::findOrFail($certificate->client_id);
-                $msg = setFileStatus($file->id, 'file_status', 5);
-                $msg = $msg && setFileStatus($file->id, 'cer_status', 6);
-                $certificate->issue_status = 1;
-                $certificate->user_id = $user->id;
-                $msg = $msg && $certificate->save();
-                $file = $certificate->client;
+                    $user = Auth::user();
+                    $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+                    $certificate = Certificate::findOrFail($cer_id);
+                    if ($certificate->issue_status == 0) {
+                        $file = Client::findOrFail($certificate->client_id);
+                        $msg = setFileStatus($file->id, 'file_status', 5);
+                        $msg = $msg && setFileStatus($file->id, 'cer_status', 6);
+                        $certificate->issue_status = 1;
+                        $certificate->user_id = $user->id;
+                        $msg = $msg && $certificate->save();
+                        $file = $certificate->client;
 
-                // check if => 1=new epl, 2=epl renew
-                if ($file->cer_type_status == 1 || $file->cer_type_status == 2) {
-                    $epl = EPL::where('client_id', $certificate->client_id)->whereNull('issue_date')->where('status', 0)->first();
-                    $epl->issue_date = $certificate->issue_date;
-                    $epl->expire_date = $certificate->expire_date;
-                    $epl->certificate_no = $certificate->cetificate_number;
-                    $epl->status = 1;
-                    $msg = $msg && $epl->save();
+                        // check if => 1=new epl, 2=epl renew
+                        if ($file->cer_type_status == 1 || $file->cer_type_status == 2) {
+                            $epl = EPL::where('client_id', $certificate->client_id)->whereNull('issue_date')->where('status', 0)->first();
+                            $epl->issue_date = $certificate->issue_date;
+                            $epl->expire_date = $certificate->expire_date;
+                            $epl->certificate_no = $certificate->cetificate_number;
+                            $epl->status = 1;
+                            $msg = $msg && $epl->save();
 
-                    //check if 3=site clearance
-                } else if ($file->cer_type_status == 3) {
-                    $site = SiteClearenceSession::where('client_id', $certificate->client_id)->whereNull('issue_date')->first();
-                    $site->issue_date = $certificate->issue_date;
-                    $site->expire_date = $certificate->expire_date;
-                    $site->licence_no = $certificate->cetificate_number;
-                    $site->status = 1;
+                            //check if 3=site clearance
+                        } else if ($file->cer_type_status == 3) {
+                            $site = SiteClearenceSession::where('client_id', $certificate->client_id)->whereNull('issue_date')->first();
+                            $site->issue_date = $certificate->issue_date;
+                            $site->expire_date = $certificate->expire_date;
+                            $site->licence_no = $certificate->cetificate_number;
+                            $site->status = 1;
 
-                    $s = SiteClearance::where('site_clearence_session_id', $site->id)->where('status', 0)->first();
-                    $s->status = 1;
-                    $msg = $msg && $s->save();
-                    $msg = $msg && $site->save();
+                            $s = SiteClearance::where('site_clearence_session_id', $site->id)->where('status', 0)->first();
+                            $s->status = 1;
+                            $msg = $msg && $s->save();
+                            $msg = $msg && $site->save();
 
-                    //                            check if 4=site clearance renew
-                } else if ($file->cer_type_status == 4) {
-                    $site = SiteClearenceSession::where('client_id', $certificate->client_id)->orderBy('id', 'desc')->first();
-                    $site->issue_date = $certificate->issue_date;
-                    $site->expire_date = $certificate->expire_date;
-                    $site->status = 1; //status already 1
-                    $site->save();
-                    $s = SiteClearance::where('site_clearence_session_id', $site->id)->where('status', 0)->first();
-                    $s->status = 1;
-                    $s->save();
-                } else {
-                    abort(501, "Invalid File Status - error code");
-                }
-            } else {
-                abort(422, "Certificate Already Issued");
-            }
-            fileLog($file->id, 'certificate', 'User (' . $user->last_name . ') Issued the Certificate', 0);
-            LogActivity::addToLog("Issue certificate", $certificate);
-            if ($msg) {
-                return array('id' => 1, 'message' => 'true');
-            } else {
-                return array('id' => 0, 'message' => 'false');
-            }
-        });
+                            //                            check if 4=site clearance renew
+                        } else if ($file->cer_type_status == 4) {
+                            $site = SiteClearenceSession::where('client_id', $certificate->client_id)->orderBy('id', 'desc')->first();
+                            $site->issue_date = $certificate->issue_date;
+                            $site->expire_date = $certificate->expire_date;
+                            $site->status = 1; //status already 1
+                            $site->save();
+                            $s = SiteClearance::where('site_clearence_session_id', $site->id)->where('status', 0)->first();
+                            $s->status = 1;
+                            $s->save();
+                        } else {
+                            abort(501, "Invalid File Status - error code");
+                        }
+                    } else {
+                        abort(422, "Certificate Already Issued");
+                    }
+                    fileLog($file->id, 'certificate', 'User (' . $user->last_name . ') Issued the Certificate', 0);
+                    LogActivity::addToLog("Issue certificate", $certificate);
+                    if ($msg) {
+                        return array('id' => 1, 'message' => 'true');
+                    } else {
+                        return array('id' => 0, 'message' => 'false');
+                    }
+                });
     }
 
-    public function completeDraftingCertificate($id)
-    {
+    public function completeDraftingCertificate($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $certificate = Certificate::findOrFail($id);
@@ -1064,8 +1011,7 @@ class ClientController extends Controller
         }
     }
 
-    public function completeCertificate($id)
-    {
+    public function completeCertificate($id) {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $certificate = Certificate::findOrFail($id);
@@ -1083,8 +1029,7 @@ class ClientController extends Controller
         }
     }
 
-    public function getExpiredCertificatesByEnvOfficer($id)
-    { //to get expired certificates and certificates that expired within a month by env officer id
+    public function getExpiredCertificatesByEnvOfficer($id) { //to get expired certificates and certificates that expired within a month by env officer id
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $date = Carbon::now();
@@ -1092,12 +1037,12 @@ class ClientController extends Controller
         if ($pageAuth['is_read']) {
 
             $responses = Certificate::With('Client.pradesheeyasaba')->selectRaw('max(id) as id, client_id, expire_date,cetificate_number')
-                ->whereHas('Client.environmentOfficer.assistantDirector', function ($query) use ($id) {
-                    $query->where('assistant_directors.id', '=', $id);
-                })
-                ->where('expire_date', '<', $date)
-                ->groupBy('client_id')
-                ->get();
+                    ->whereHas('Client.environmentOfficer.assistantDirector', function ($query) use ($id) {
+                        $query->where('assistant_directors.id', '=', $id);
+                    })
+                    ->where('expire_date', '<', $date)
+                    ->groupBy('client_id')
+                    ->get();
 
             $reses = $responses->toArray();
 
@@ -1121,8 +1066,7 @@ class ClientController extends Controller
 
     //end to get expired certificates and certificates that expired within a month by env officer id
 
-    public function getExpiredCertificates()
-    { //to all get expired certificates and certificates that expired within a month by env officer id
+    public function getExpiredCertificates() { //to all get expired certificates and certificates that expired within a month by env officer id
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
@@ -1131,10 +1075,10 @@ class ClientController extends Controller
 
         if ($pageAuth['is_read']) {
             $responses = Certificate::With('Client.pradesheeyasaba')->selectRaw('max(id) as id, client_id, expire_date,cetificate_number')
-                ->where('expire_date', '<', $date)
-                ->where('certificate_type', '=', 0)
-                ->groupBy('client_id')
-                ->get();
+                    ->where('expire_date', '<', $date)
+                    ->where('certificate_type', '=', 0)
+                    ->groupBy('client_id')
+                    ->get();
 
             $reses = $responses->toArray();
 
@@ -1156,21 +1100,19 @@ class ClientController extends Controller
         }
     }
 
-    public function getCofirmedFiles()
-    { //to all get all active files
+    public function getCofirmedFiles() { //to all get all active files
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $client = Client::where('is_old', 2)->get();
         return $client;
     }
 
-    public function get_file_cordinates($industry_cat_id, $eo_id)
-    {
+    public function get_file_cordinates($industry_cat_id, $eo_id) {
         $file_cords = \DB::table('clients')
-            ->select('clients.industry_coordinate_x', 'clients.industry_coordinate_y', 'clients.file_no')
-            ->where('clients.environment_officer_id', '=', $eo_id)
-            ->where('clients.industry_category_id', '=', $industry_cat_id)
-            ->get()->toArray();
+                        ->select('clients.industry_coordinate_x', 'clients.industry_coordinate_y', 'clients.file_no')
+                        ->where('clients.environment_officer_id', '=', $eo_id)
+                        ->where('clients.industry_category_id', '=', $industry_cat_id)
+                        ->get()->toArray();
         //                ->toSql();
         //        dd($file_cords);
         $locations = collect($file_cords)->map(function ($name) {
@@ -1293,8 +1235,7 @@ class ClientController extends Controller
     //        return $output;
     //    }
 
-    public function server_side_process(Request $request)
-    {
+    public function server_side_process(Request $request) {
         $columns = array(
             0 => 'id',
             1 => 'file_no',
@@ -1311,30 +1252,30 @@ class ClientController extends Controller
         $dir = $request->input('order.0.dir');
         if (empty($request->input('search.value'))) {
             $clients = Client::where('is_old', '!=', 0)
-                ->offset($start)
-                ->limit($limit)
-                ->orderBy($order, $dir)
-                ->get();
+                    ->offset($start)
+                    ->limit($limit)
+                    ->orderBy($order, $dir)
+                    ->get();
         } else {
             $search = $request->input('search.value');
             $clients = Client::where('is_old', '!=', 0)
-                //                    ->orWhere('id', 'LIKE', "%{$search}%")
-                ->Where('file_no', 'LIKE', "%{$search}%")
-                ->orWhere('first_name', 'LIKE', "%{$search}%")
-                ->orWhere('industry_registration_no', 'LIKE', "%{$search}%")
-                ->orWhere('industry_name', 'LIKE', "%{$search}%")
-                ->offset($start)
-                ->limit($limit)
-                ->orderBy($order, $dir)
-                ->get();
+                    //                    ->orWhere('id', 'LIKE', "%{$search}%")
+                    ->Where('file_no', 'LIKE', "%{$search}%")
+                    ->orWhere('first_name', 'LIKE', "%{$search}%")
+                    ->orWhere('industry_registration_no', 'LIKE', "%{$search}%")
+                    ->orWhere('industry_name', 'LIKE', "%{$search}%")
+                    ->offset($start)
+                    ->limit($limit)
+                    ->orderBy($order, $dir)
+                    ->get();
             //dd($clients);
             $totalFiltered = Client::where('is_old', '!=', 0)
-                //                    ->orWhere('id', 'LIKE', "%{$search}%")
-                ->Where('file_no', 'LIKE', "%{$search}%")
-                ->orWhere('first_name', 'LIKE', "%{$search}%")
-                ->orWhere('industry_registration_no', 'LIKE', "%{$search}%")
-                ->orWhere('industry_name', 'LIKE', "%{$search}%")
-                ->count();
+                    //                    ->orWhere('id', 'LIKE', "%{$search}%")
+                    ->Where('file_no', 'LIKE', "%{$search}%")
+                    ->orWhere('first_name', 'LIKE', "%{$search}%")
+                    ->orWhere('industry_registration_no', 'LIKE', "%{$search}%")
+                    ->orWhere('industry_name', 'LIKE', "%{$search}%")
+                    ->count();
         }
         $data = array();
         if (!empty($clients)) {
@@ -1364,8 +1305,7 @@ class ClientController extends Controller
         echo json_encode($json_data);
     }
 
-    public function eo_client_data(Request $request)
-    {
+    public function eo_client_data(Request $request) {
         $prs = $request->pradeshiya_sabha;
         $ind_cat = $request->industry_category;
         $prs_check = $request->pradeshiya_sabha_check;
@@ -1374,23 +1314,24 @@ class ClientController extends Controller
 
         if ($prs_check == 'on' && $ind_cat_check != 'on') {
             $client_data = Client::where('pradesheeyasaba_id', '=', $prs)
-                ->join('e_p_l_s', 'clients.id', 'e_p_l_s.client_id')
-                ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
-                ->get();
+                    ->join('e_p_l_s', 'clients.id', 'e_p_l_s.client_id')
+                    ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+                    ->get();
         }
         if ($prs_check != 'on' && $ind_cat_check == 'on') {
             $client_data = Client::leftjoin('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
-                ->leftjoin('e_p_l_s', 'clients.id', 'e_p_l_s.client_id')
-                ->where('industry_category_id', '=', $ind_cat)
-                ->get();
+                    ->leftjoin('e_p_l_s', 'clients.id', 'e_p_l_s.client_id')
+                    ->where('industry_category_id', '=', $ind_cat)
+                    ->get();
         }
         if ($prs_check == 'on' && $ind_cat_check == 'on') {
             $client_data = Client::where('pradesheeyasaba_id', '=', $prs)
-                ->Where('industry_category_id', '=', $ind_cat)
-                ->join('e_p_l_s', 'clients.id', 'e_p_l_s.client_id')
-                ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
-                ->get();
+                    ->Where('industry_category_id', '=', $ind_cat)
+                    ->join('e_p_l_s', 'clients.id', 'e_p_l_s.client_id')
+                    ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+                    ->get();
         }
         return $client_data;
     }
+
 }

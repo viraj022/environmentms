@@ -428,9 +428,14 @@
                     <p>ROll Create</p>
                 </a>
             </li>
-            @endif
+            <li class="nav-item">
+                <a href="{{ url('/reset_count') }}" class="nav-link {{ Request::is('reset_count') ? 'active' : '' }}">
+                    <i class="fa fa-redo-alt nav-icon"></i>
+                    <p>Reset Count</p>
+                </a>
+            </li>
+            @endif 
             @endforeach
-
         </ul>
     </li>
     </ul>

@@ -69,7 +69,9 @@
                                     <tr class="tblTrsec">
                                         <th style="width: 10px">#</th>
                                         <th style='width: 25em'>Industry Name</th>
+                                        <th style='width: 25em'>Client Name</th>
                                         <th style='width: 20em'>EPL Code</th>
+                                        <th style='width: 20em'>Site Clearance Code</th>
                                         <th style='width: 25em'>File No</th>
                                         <th style='width: 25em'>#</th>
                                         <th style='width: 25em'>Status</th>
