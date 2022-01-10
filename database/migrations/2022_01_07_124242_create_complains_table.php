@@ -15,12 +15,14 @@ class CreateComplainsTable extends Migration
     {
         Schema::create('complains', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('compliner_name', 255);
-            $table->string('compliner_address', 255);
+            $table->string('complainer_name', 255);
+            $table->string('complainer_address', 255);
             $table->string('comp_contact_no', 12);
             $table->tinyInteger('recieve_type');
             $table->tinyInteger('status');
-            $table->string('complain_des', 255);
+            $table->text('complain_des');
+            $table->string('complainer_code', 255);
+            $table->text('attachment');
             $table->unsignedBigInteger('assigned_user')->nullable();
             $table->unsignedBigInteger('created_user')->nullable();
             $table->foreign('assigned_user')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');

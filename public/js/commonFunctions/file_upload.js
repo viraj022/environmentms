@@ -49,7 +49,8 @@ function ulploadFile2(URL, formData, callBack, metod = false) {
     });
 }
 
-function ulploadFileWithData(URL, dataArray, callBack, metod = false) {
+function ulploadFileWithData(URL, dataArray, callBack, metod = false, file_list = []) {
+
     if (!metod) {
         metod = 'POST';
     }
@@ -58,6 +59,9 @@ function ulploadFileWithData(URL, dataArray, callBack, metod = false) {
     // populate fields
     $.each(dataArray, function(key, value) {
         formData.append(key, value);
+    });
+    $.each(file_list, function(key, value) {
+        formData.append("file_list[]", value);
     });
     // send form data
     $.ajax({

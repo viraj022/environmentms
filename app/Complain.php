@@ -18,4 +18,9 @@ class Complain extends Model {
         return $this->belongsTo(User::class, 'created_user');
     }
 
+    protected $fillable = [
+        'complainer_name', 'complainer_address', 'comp_contact_no', 'recieve_type', 'complain_des', 'created_user', 'complainer_code'
+    ];
+
+
 }
