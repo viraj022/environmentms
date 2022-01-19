@@ -932,7 +932,7 @@ class ReportController extends Controller {
     }
 
     public function fileProgressReport() {
-        return Client::select('id', 'first_name', 'last_name', 'updated_at', 'deleted_at', 'industry_name', 'file_no', 'file_status', 'cer_type_status', 'cer_status', 'industry_category_id')->with('industryCategory')
+        return Client::select('id', 'first_name', 'last_name', 'updated_at', 'deleted_at', 'industry_name', 'file_no', 'file_status', 'cer_type_status', 'cer_status', 'industry_category_id', 'environment_officer_id', 'created_at')->with('industryCategory')
                         ->where('file_status', '<>', 5)
                         ->where('file_status', '<>', 6)
 //                        ->where('deleted_at', '<>', 'null')

@@ -65,6 +65,7 @@
                                     <th style='width: 20em'>Client Name</th>
                                     <th style='width: 20em'>Industry Category</th>
                                     <th style='width: 10em'>File Updated Date</th>
+                                    <th style='width: 10em'>Created At</th>
                                     <th style='width: 10em'>File Status</th>
 
                                             <!--<th class="inspectTbl" style="width: 180px">Inspection</th>-->
@@ -153,7 +154,7 @@
     var file_type_status = {0: 'pending', 1: 'New EPL', 2: 'EPL Renew', 3: 'Site Clearance', 4: 'Extend Site Clearance'};
 
     function fileProgressReport() {
-        tbl = "";
+        var tbl = "";
         let data = $("#eo_report_form").serializeArray();
 
         $('#eo_client_tbl').DataTable().destroy();
@@ -169,7 +170,12 @@
                     tbl += "<td>" + row.first_name + ' ' + row.last_name + "</td>";
                     tbl += "<td>" + row.industry_category.name + "</td>";
                     tbl += "<td>" + row.updated_at + "</td>";
-                    tbl += "<td>" + file_status[row.file_status] + "</td>";
+                    tbl += "<td>" + row.created_at + "</td>";
+                    if (isNaN(parseInt(row.environment_officer_id))) {
+                        tbl += "<td style='color:red;'>Not Assigned</td>";
+                    } else {
+                        tbl += "<td>" + file_status[row.file_status] + "</td>";
+                    }
                     tbl += "</tr>";
                 });
             }
