@@ -7,7 +7,8 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Client extends Model {
+class Client extends Model
+{
 
     public const STATUS_INSPECTION_NEEDED = 'Inspection Needed';
     public const STATUS_INSPECTION_NOT_NEEDED = 'Inspection Not Needed';
@@ -23,58 +24,71 @@ class Client extends Model {
         'password', 'api_token',
     ];
 
-    public function getStartDateOnlyAttribute() {
+    public function getStartDateOnlyAttribute()
+    {
         //return strtotime($this->schedule_date)->toDateString();
         return Carbon::parse($this->industry_start_date)->format('Y-m-d');
     }
 
     use SoftDeletes;
 
-    public function epls() {
+    public function epls()
+    {
         return $this->hasMany(EPL::class);
     }
 
-    public function siteClearenceSessions() {
+    public function siteClearenceSessions()
+    {
         return $this->hasMany(SiteClearenceSession::class);
     }
 
-    public function committees() {
+    public function committees()
+    {
         return $this->hasMany(Committee::class);
     }
 
-    public function transactions() {
+    public function transactions()
+    {
         return $this->hasMany(Transaction::class);
     }
 
-    public function inspectionSessions() {
+    public function inspectionSessions()
+    {
         return $this->hasMany(InspectionSession::class);
     }
 
-    public function fileLogs() {
+    public function fileLogs()
+    {
         return $this->hasMany(FileLog::class);
     }
 
-    public function oldFiles() {
+    public function oldFiles()
+    {
         return $this->hasMany(OldFiles::class);
     }
 
-    public function environmentOfficer() {
+    public function environmentOfficer()
+    {
         return $this->belongsTo(EnvironmentOfficer::class);
     }
 
-    public function industryCategory() {
+    public function industryCategory()
+    {
         return $this->belongsTo(IndustryCategory::class);
     }
 
-    public function businessScale() {
+    public function businessScale()
+    {
         return $this->belongsTo(BusinessScale::class);
     }
 
-    public function pradesheeyasaba() {
+    public function pradesheeyasaba()
+    {
         return $this->belongsTo(Pradesheeyasaba::class);
     }
 
-    public static function getFileByStatusQuery($statusType, $statusCodes) {
+    public static function getFileByStatusQuery($statusType, $statusCodes)
+    {
         $file = "";
         switch ($statusType) {
             case 'file_status':
@@ -102,13 +116,14 @@ class Client extends Model {
                 abort('422', 'unknown status type');
         }
         return $file->with('oldFiles')
-                        ->with('industryCategory')
-                        ->with('businessScale')
-                        ->with('pradesheeyasaba')
-                        ->with('environmentOfficer.assistantDirector');
+            ->with('industryCategory')
+            ->with('businessScale')
+            ->with('pradesheeyasaba')
+            ->with('environmentOfficer.assistantDirector');
     }
 
-    public function generateCertificateNumber() {
+    public function generateCertificateNumber()
+    {
         switch ($this->cer_type_status) {
             case 1: //new epl
                 $cerNo = getSerialNumber(Setting::CERTIFICATE_AI);
@@ -133,20 +148,23 @@ class Client extends Model {
         }
     }
 
-    public function minutes() {
+    public function minutes()
+    {
         return $this->hasMany(Minute::class, 'file_id');
     }
 
-    public function resetFile() {
-        
+    public function resetFile()
+    {
     }
 
     /**
      * return woring file type and id and its model
      */
-    public function getActiveWorkingFileType() {
+    public function getActiveWorkingFileType()
+    {
         $rtn = [];
         switch ($this->cer_type_status) {
+            
             case 1:
                 $epl = EPL::where('client_id', $this->id)->orderBy('id', 'DESC')->first();
                 $rtn['type'] = 'EPL';
@@ -159,6 +177,7 @@ class Client extends Model {
                 $rtn['id'] = $epl->id;
                 $rtn['model'] = $epl;
                 break;
+
             case 3:
                 $siteSession = SiteClearenceSession::where('client_id', $this->id)->orderBy('id', 'DESC')->first();
                 $site = $siteSession->siteClearances->last();
@@ -174,13 +193,14 @@ class Client extends Model {
                 $rtn['model'] = $site;
                 break;
             default:
-            // $rtn = [];
+                // $rtn = [];
         }
 
         return $rtn;
     }
 
-    public function getCodeEplAttribute() {
+    public function getCodeEplAttribute()
+    {
         $epl = EPL::where('client_id', $this->id)->first();
         if ($epl) {
             return $epl->code;
@@ -189,7 +209,8 @@ class Client extends Model {
         }
     }
 
-    public function getCodeSiteAttribute() {
+    public function getCodeSiteAttribute()
+    {
         $site = SiteClearenceSession::where('client_id', $this->id)->first();
         if ($site) {
             return $site->code;
@@ -197,5 +218,4 @@ class Client extends Model {
             return "N/A";
         }
     }
-
 }
