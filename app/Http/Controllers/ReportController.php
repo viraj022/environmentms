@@ -21,20 +21,25 @@ use App\Repositories\AssistanceDirectorRepository;
 use App\Repositories\EnvironmentOfficerRepository;
 use App\Repositories\PradesheeyasabaRepository;
 use PhpParser\Node\Expr\Print_;
+use Illuminate\Http\Request;
 
-class ReportController extends Controller {
+class ReportController extends Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware(['auth']);
     }
 
-    public function index() {
+    public function index()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('report_dashboard', ['pageAuth' => $pageAuth]);
     }
 
-    public function getFileLog($client_id) {
+    public function getFileLog($client_id)
+    {
         $fileLogRepository = new FileLogRepository();
         return $fileLogRepository->getFIleLogById($client_id);
     }
@@ -81,7 +86,8 @@ class ReportController extends Controller {
      * DO NOT DELETE
      * fpdf multi cell report don not delete
      */
-    public function siteClearanceApplicationReport() {
+    public function siteClearanceApplicationReport()
+    {
         $start = microtime(true);
         $headers = ['#', 'Date', 'File Number', 'Applications Name and Address', 'Industry', "Location", 'Inspection Feee', "Letter Issued Date"];
         $width = ([10, 30, 60, 70, 50, 50, 50, 50]);
@@ -107,7 +113,8 @@ class ReportController extends Controller {
         $pdf->Output();
     }
 
-    public function siteClearanceApplicationReportBeta($from, $to, $type) {
+    public function siteClearanceApplicationReportBeta($from, $to, $type)
+    {
         $start = microtime(true);
         $site = new SiteClearenceRepository();
         $result = $site->getSiteClearenceReport($from, $to, $type)->toArray();
@@ -142,7 +149,8 @@ class ReportController extends Controller {
         return view('Reports.site_clearence_report', ['data' => $data, 'time_elapsed_secs' => $time_elapsed_secs, 'title' => $title, 'from' => $from, 'to' => $to]);
     }
 
-    public function eplApplicationReport($from, $to) {
+    public function eplApplicationReport($from, $to)
+    {
         $start = microtime(true);
         $epls = new EPLRepository();
         $result = $epls->getEPLReport($from, $to)->toArray();
@@ -182,7 +190,8 @@ class ReportController extends Controller {
         return view('Reports.epl_report', ['data' => $data, 'time_elapsed_secs' => $time_elapsed_secs, 'from' => $from, 'to' => $to]);
     }
 
-    public function eplApplicationLog($from, $to) {
+    public function eplApplicationLog($from, $to)
+    {
         $start = microtime(true);
         $epls = new EPLRepository();
         $result = $epls->getEPLReport($from, $to)->toArray();
@@ -209,7 +218,8 @@ class ReportController extends Controller {
         return view('Reports.epl_application_log_report', ['data' => $data, 'time_elapsed_secs' => $time_elapsed_secs, 'from' => $from, 'to' => $to]);
     }
 
-    public function monthlyProgress($from, $to) {
+    public function monthlyProgress($from, $to)
+    {
         // $from = $from;
         // $to = $to;
         $start = microtime(true);
@@ -250,7 +260,7 @@ class ReportController extends Controller {
             $eplInspectionNewCount,
             $eplInspectionRenewCount,
             $siteInspectionNewCount, $siteInspectionRenewCount
-                ), $assistanceDirectors);
+        ), $assistanceDirectors);
         // dd($siteInspectionNewCount->toArray(), $siteInspectionRenewCount->toArray());
 
         $result[] = array('type' => 'Inspection', 'name' => 'SC(New)', 'application' => "", 'object' => $this->prepareCount($siteInspectionNewCount->toArray(), $assistanceDirectors));
@@ -280,7 +290,7 @@ class ReportController extends Controller {
             $completedNewEplCount,
             $completedReNewEplCount,
             $completedNewSiteCount, $completedRenewSiteCount
-                ), $assistanceDirectors);
+        ), $assistanceDirectors);
 
         $result[] = array('type' => 'Issued', 'name' => 'SC(New)', 'application' => "", 'object' => $this->prepareCount($completedNewSiteCount->toArray(), $assistanceDirectors));
 
@@ -338,7 +348,8 @@ class ReportController extends Controller {
         return view('Reports.monthly_progress_report', compact('result', 'assistanceDirectors', 'time_elapsed_secs', 'from', 'to'));
     }
 
-    private function prepareCount($array, $assistanceDirectors, $flag = true) {
+    private function prepareCount($array, $assistanceDirectors, $flag = true)
+    {
         $rtn = [];
         // dd($array);
         // dd($assistanceDirectors->toArray());
@@ -358,7 +369,8 @@ class ReportController extends Controller {
         return $rtn;
     }
 
-    private function generateTotalField($array, $assistanceDirectors) {
+    private function generateTotalField($array, $assistanceDirectors)
+    {
         $rtn = [];
         // dd($array);
         // dd($assistanceDirectors->toArray());
@@ -376,7 +388,8 @@ class ReportController extends Controller {
         return $rtn;
     }
 
-    private function prepareApplicationTotal($array, $flag = true) {
+    private function prepareApplicationTotal($array, $flag = true)
+    {
         $rtn = 0;
         if (count($array) > 0) {
 
@@ -392,7 +405,8 @@ class ReportController extends Controller {
         }
     }
 
-    public function eoInspectionReport($eo_id, $from, $to) {
+    public function eoInspectionReport($eo_id, $from, $to)
+    {
         $start = microtime(true);
         $inspection = new InspectionSessionRepository();
         $env = new EnvironmentOfficerRepository();
@@ -439,7 +453,8 @@ class ReportController extends Controller {
         return view('Reports.eo_inspection_monthly_report', compact('rows', 'environmentOfficer', 'time_elapsed_secs', 'from', 'to'));
     }
 
-    public function categoryLocalAuthorityWiseCountReport($from, $to) {
+    public function categoryLocalAuthorityWiseCountReport($from, $to)
+    {
         $start = microtime(true);
         $categoryRepo = new IndustryCategoryRepository();
         $pradesheeyaRepo = new PradesheeyasabaRepository();
@@ -511,7 +526,8 @@ class ReportController extends Controller {
         return view('Reports.category_wise_count_report_two', compact('req_array', 'time_elapsed_secs', 'from', 'to'));
     }
 
-    public function categoryWiseCountReport($from, $to) {
+    public function categoryWiseCountReport($from, $to)
+    {
         $start = microtime(true);
         $rows = [];
         $client = new ClientRepository();
@@ -527,22 +543,22 @@ class ReportController extends Controller {
                 "certificates" => 0,
             );
             $siteNew = $data->where('industry_category_id', $category->id)
-                            ->whereBetween('site_submit_date', [$from, $to])
-                            ->where('site_count', 0)->count();
+                ->whereBetween('site_submit_date', [$from, $to])
+                ->where('site_count', 0)->count();
             $siteExtend = $data->where('industry_category_id', $category->id)
-                            ->whereBetween('site_submit_date', [$from, $to])
-                            ->where('site_count', '>', 0)->count();
+                ->whereBetween('site_submit_date', [$from, $to])
+                ->where('site_count', '>', 0)->count();
             $eplNew = $data->where('industry_category_id', $category->id)
-                            ->whereBetween('epl_submitted_date', [$from, $to])
-                            ->where('epl_count', 0)->count();
+                ->whereBetween('epl_submitted_date', [$from, $to])
+                ->where('epl_count', 0)->count();
             $eplRenew = $data->where('industry_category_id', $category->id)
-                            ->whereBetween('epl_submitted_date', [$from, $to])
-                            ->where('epl_count', '>', 0)->count();
+                ->whereBetween('epl_submitted_date', [$from, $to])
+                ->where('epl_count', '>', 0)->count();
 
             $eplCertificate = $data->where('industry_category_id', $category->id)
-                            ->whereBetween('epl_issue_date', [$from, $to])->count();
+                ->whereBetween('epl_issue_date', [$from, $to])->count();
             $siteCertificate = $data->where('industry_category_id', $category->id)
-                            ->whereBetween('site_issue_date', [$from, $to])->count();
+                ->whereBetween('site_issue_date', [$from, $to])->count();
 
             $row['sc_new'] = $siteNew;
             $row['sc_extend'] = $siteExtend;
@@ -556,7 +572,8 @@ class ReportController extends Controller {
         return view('Reports.category_wise_count_report', compact('rows', 'time_elapsed_secs', 'from', 'to'));
     }
 
-    public function RowReport() {
+    public function RowReport()
+    {
         $start = microtime(true);
         $client = new ClientRepository();
         $rows = $client->getRowFiles()->toArray();
@@ -566,7 +583,8 @@ class ReportController extends Controller {
         return view('Reports.row_file_report', compact('rows', 'time_elapsed_secs', 'headings'));
     }
 
-    public function fileSummary($id) {
+    public function fileSummary($id)
+    {
         $clientRepo = new ClientRepository();
         $file = $clientRepo->find($id);
         // dd($file->fileLogs->toArray());
@@ -872,7 +890,8 @@ class ReportController extends Controller {
         exit;
     }
 
-    public function downloadContents(Client $client) {
+    public function downloadContents(Client $client)
+    {
         // dd($client);
         $zip_file = 'attachments_of_' . $client->industry_name . 'zip';
         $zip = new \ZipArchive();
@@ -904,17 +923,18 @@ class ReportController extends Controller {
         return $rtn;
     }
 
-    public function siteClearanceApplicationLog($from, $to) {
+    public function siteClearanceApplicationLog($from, $to)
+    {
         $start = microtime(true);
         $site = new SiteClearenceRepository();
         $result = $site->getSiteReport($from, $to);
-//        dd($result);
+        //        dd($result);
         $data = [];
         $data['header_count'] = 0;
         $data['results'] = [];
         $num = 0;
         foreach ($result as $row) {
-//            dd($row);
+            //            dd($row);
             $array = [];
             $array['#'] = ++$num;
             $array['industry_start_date'] = Carbon::parse($row['created_at'])->format('Y-m-d');
@@ -931,37 +951,41 @@ class ReportController extends Controller {
         return view('Reports.site_report_log', ['data' => $data, 'time_elapsed_secs' => $time_elapsed_secs, 'from' => $from, 'to' => $to]);
     }
 
-    public function fileProgressReport() {
-//         return Client::select('id', 'first_name', 'last_name', 'updated_at', 'deleted_at', 'industry_name', 'file_no', 'file_status', 'cer_type_status', 'cer_status', 'industry_category_id', 'environment_officer_id', 'created_at')->with('industryCategory')
-//                         ->where('file_status', '<>', 5)
-//                         ->where('file_status', '<>', 6)
-// //                        ->where('deleted_at', '<>', 'null')
-//                         ->orderBy('updated_at', 'ASC')->get()->toArray();
+    public function fileProgressReport(Request $request)
+    {
+        // return Client::select('id', 'first_name', 'last_name', 'updated_at', 'deleted_at', 'industry_name', 'file_no', 'file_status', 'cer_type_status', 'cer_status', 'industry_category_id', 'environment_officer_id', 'created_at')->with('industryCategory')
+        //     ->where('file_status', '<>', 5)
+        //     ->where('file_status', '<>', 6)
+        //     //                        ->where('deleted_at', '<>', 'null')
+        //     ->orderBy('updated_at', 'ASC')->get()->toArray();
 
-Client::select('id', 'first_name', 'last_name', 'updated_at', 'deleted_at', 'industry_name', 'file_no', 'file_status', 'cer_type_status', 'cer_status', 'industry_category_id', 'environment_officer_id', 'created_at')->with('industryCategory')
-                        ->where('file_status', '<>', 5)
-                        ->where('file_status', '<>', 6)
-                        ->orderBy('updated_at', 'ASC')->get()->toArray();
-						
+        // $clients = Client::select('id', 'first_name', 'last_name', 'updated_at', 'deleted_at', 'industry_name', 'file_no', 'file_status', 'cer_type_status', 'cer_status', 'industry_category_id', 'environment_officer_id', 'created_at')->with('industryCategory')
+        //     // ->where('file_status', '<>', 5)
+        //     // ->where('file_status', '<>', 6)
+        //     ->orderBy('updated_at', 'ASC')
+        //     ->limit(10)
+        //     ->get()->toArray();
+
+        //column name array
         $columns = array(
             0 => 'id',
             1 => 'first_name',
             2 => 'last_name',
             3 => 'updated_at',
             4 => 'deleted_at',
-			5 => 'industry_name',
-			6 => 'file_no',
-			7 => 'file_status',
-			8 => 'cer_type_status',
-			9 => 'industry_category_id',
-			10 => 'environment_officer_id',
-			11 => 'created_at'
+            5 => 'industry_name',
+            6 => 'file_no',
+            7 => 'file_status',
+            8 => 'cer_type_status',
+            9 => 'industry_category_id',
+            10 => 'environment_officer_id',
+            11 => 'created_at'
         );
 
         // get counts
         $totalData =  Client::with('industryCategory')
-                        ->where('file_status', '<>', 5)
-                        ->where('file_status', '<>', 6)
+            ->where('file_status', '<>', 5)
+            ->where('file_status', '<>', 6)
             ->count();
 
         $totalFiltered = $totalData;
@@ -970,86 +994,82 @@ Client::select('id', 'first_name', 'last_name', 'updated_at', 'deleted_at', 'ind
         $start = $request->input('start');
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
-		
-		
+
+
         if (empty($request->input('search.value'))) {
-            $Clients = Client::with('industryCategory')
-                        ->where('file_status', '<>', 5)
-                        ->where('file_status', '<>', 6)
+            $clients = Client::with('industryCategory')
+                ->where('file_status', '<>', 5)
+                ->where('file_status', '<>', 6)
                 ->offset($start)
-                ->limit($limit)
+                ->limit(10)
                 ->orderBy($order, $dir)
                 ->get();
         } else {
             $search = $request->input('search.value');
 
-            $posts =  Client::select('id', 'first_name', 'last_name', 'updated_at', 'deleted_at', 'industry_name', 'file_no', 'file_status', 'cer_type_status', 'cer_status', 'industry_category_id', 'environment_officer_id', 'created_at')
-                ->where('id', 'LIKE', "%{$search}%")
+            $clients =  Client::with('industryCategory')
                 ->orWhere('first_name', 'LIKE', "%{$search}%")
                 ->orWhere('last_name', 'LIKE', "%{$search}%")
                 ->orWhere('updated_at', 'LIKE', "%{$search}%")
-                ->orWhere('deleted_at', 'LIKE', "%{$search}%")
-                ->orWhere('industry_name', 'LIKE', "%{$search}%")
-                ->orWhere('file_no', 'LIKE', "%{$search}%")
+                // ->orWhere('deleted_at', 'LIKE', "%{$search}%")
+
+                // ->orWhere('file_no', 'LIKE', "%{$search}%")
                 ->orWhere('file_status', 'LIKE', "%{$search}%")
-                ->orWhere('cer_type_status', 'LIKE', "%{$search}%")
-                ->orWhere('cer_status', 'LIKE', "%{$search}%")
-                ->orWhere('industry_category_id', 'LIKE', "%{$search}%")
-                ->orWhere('environment_officer_id', 'LIKE', "%{$search}%")
+                // ->orWhere('cer_type_status', 'LIKE', "%{$search}%")
+                // ->orWhere('cer_status', 'LIKE', "%{$search}%")
+                // ->orWhere('industry_category_id', 'LIKE', "%{$search}%")
+                // ->orWhere('environment_officer_id', 'LIKE', "%{$search}%")
                 ->orWhere('created_at', 'LIKE', "%{$search}%")
                 ->offset($start)
                 ->limit($limit)
                 ->orderBy($order, $dir)
                 ->get();
-          $totalFiltered = Client::select('id', 'first_name', 'last_name', 'updated_at', 'deleted_at', 'industry_name', 'file_no', 'file_status', 'cer_type_status', 'cer_status', 'industry_category_id', 'environment_officer_id', 'created_at')
-                ->where('id', 'LIKE', "%{$search}%")
+
+            $totalFiltered = Client::with('industryCategory')
                 ->orWhere('first_name', 'LIKE', "%{$search}%")
                 ->orWhere('last_name', 'LIKE', "%{$search}%")
                 ->orWhere('updated_at', 'LIKE', "%{$search}%")
-                ->orWhere('deleted_at', 'LIKE', "%{$search}%")
-                ->orWhere('industry_name', 'LIKE', "%{$search}%")
-                ->orWhere('file_no', 'LIKE', "%{$search}%")
+                // ->orWhere('deleted_at', 'LIKE', "%{$search}%")
+                // ->orWhere('file_no', 'LIKE', "%{$search}%")
                 ->orWhere('file_status', 'LIKE', "%{$search}%")
-                ->orWhere('cer_type_status', 'LIKE', "%{$search}%")
-                ->orWhere('cer_status', 'LIKE', "%{$search}%")
-                ->orWhere('industry_category_id', 'LIKE', "%{$search}%")
-                ->orWhere('environment_officer_id', 'LIKE', "%{$search}%")
+                // ->orWhere('cer_type_status', 'LIKE', "%{$search}%")
+                // ->orWhere('cer_status', 'LIKE', "%{$search}%")
+                // ->orWhere('industry_category_id', 'LIKE', "%{$search}%")
+                // ->orWhere('environment_officer_id', 'LIKE', "%{$search}%")
                 ->orWhere('created_at', 'LIKE', "%{$search}%")
                 ->count();
         }
 
- 
-
-        if (!empty($posts)) {
-            foreach ($posts as $post) {
-                $nestedData['id'] = $post->employer_name;
-                $nestedData['first_name'] = $post->prevailing_wage;
-                $nestedData['last_name'] = $post->job_title;
-                $nestedData['updated_at'] = $post->CITY_STATE;
-                $nestedData['deleted_at'] = $post->begin_date;
-                $nestedData['industry_name'] = $post->begin_date;
-                $nestedData['file_no'] = $post->begin_date;
-                $nestedData['file_status'] = $post->begin_date;
-                $nestedData['cer_type_status'] = $post->begin_date;
-                $nestedData['cer_status'] = $post->begin_date;
-                $nestedData['industry_category_id'] = $post->begin_date;
-                $nestedData['environment_officer_id'] = $post->begin_date;
-                $nestedData['created_at'] = $post->begin_date;
-                $data[] = $nestedData;
-            }
+        if (!empty($clients)) {
+            // foreach ($clients as $client) {
+            //     $nestedData['id'] = $client->id;
+            //     $nestedData['first_name'] = $client->first_name;
+            //     $nestedData['last_name'] = $client->last_name;
+            //     $nestedData['updated_at'] = $client->updated_at;
+            //     $nestedData['deleted_at'] = $client->deleted_at;
+            //     $nestedData['industry_name'] = $client->industry_name;
+            //     $nestedData['file_no'] = $client->file_no;
+            //     $nestedData['file_status'] = $client->file_status;
+            //     $nestedData['cer_type_status'] = $client->cer_type_status;
+            //     $nestedData['cer_status'] = $client->cer_status;
+            //     $nestedData['industry_category_id'] = $client->industry_category_id;
+            //     $nestedData['environment_officer_id'] = $client->environment_officer_id;
+            //     $nestedData['created_at'] = $client->created_at;
+            //     $data[] = $nestedData;
+            // }
+            // $data[] = $clients->toArray();
+            return json_encode($clients->toArray());
         }
 
-  
-        $json_data = array(
-            "draw"            => intval($request->input('draw')),
-            "recordsTotal"    => intval($totalData),
-            "recordsFiltered" => intval($totalFiltered),
-            "data"            => $data
-        );
+        // $json_data = array(
+        //     "draw"            => intval($request->input('draw')),
+        //     "recordsTotal"    => intval($totalData),
+        //     "recordsFiltered" => intval($totalFiltered),
+        //     "data"            => $clients->toArray()
+        // );
 
-        echo json_encode($json_data);
-                        
-//        dd($data);
+
+
+        //        dd($data);
     }
-
 }
