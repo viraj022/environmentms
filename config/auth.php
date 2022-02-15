@@ -137,6 +137,8 @@ return [
         'fileAssign' => 15,
         'fileLocations' => 16,
         'searchFiles' => 17,
+        'complains' => 18,
+        'reset' => 19,
 
     ],
 

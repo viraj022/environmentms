@@ -90,3 +90,5 @@ Route::get('/file_progress_report', function () {
 
 Route::get('/director_approved_list', 'AssistantDirectorController@directorApprovedListIndex');
 Route::get('/reset_count', 'ResetSettingsController@index');
+Route::get('/complains', 'ComplainController@index');
+Route::get('/complain_profile/id/{id}', 'ComplainController@complainProfile');
