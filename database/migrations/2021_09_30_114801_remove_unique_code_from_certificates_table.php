@@ -26,7 +26,7 @@ class RemoveUniqueCodeFromCertificatesTable extends Migration
     public function down()
     {
         Schema::table('certificates', function (Blueprint $table) {
-            //
+            $table->string('cetificate_number', 50);
         });
     }
 }

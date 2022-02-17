@@ -6,13 +6,18 @@ use Illuminate\Http\Request;
 use App\Rules\contactNo;
 use Illuminate\Support\Facades\Auth;
 use App\Complain;
+use App\UserAssignedComplain;
+use Illuminate\Support\Facades\Log;
 
 class ComplainController extends Controller
 {
 
     public function index()
     {
-        return view('complains');
+        $auth = Auth::user();
+        if (isset($auth)) {
+            return view('complains');
+        }
     }
 
     public function save_complain(Request $request)
@@ -159,5 +164,32 @@ class ComplainController extends Controller
         } else {
             return array('status' => 0, 'msg' => 'Complain delete unsuccessful');
         }
+    }
+
+    public function assign_complain_to_user($complain_id, $user_id)
+    {
+        try {
+            \DB::beginTransaction();
+            $assign_complain = Complain::find($complain_id);
+            $assign_complain->assigned_user = $user_id;
+            $assign_complain->save();
+
+            UserAssignedComplain::create([
+                "complain_id" => $complain_id,
+                "user_id" => $user_id,
+                "assigned_time" => date("Y-m-d H:i:s"),
+            ]);
+            \DB::commit();
+            return array('status' => 1, 'msg' => 'Complain assign successful');
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            return array('status' => 0, 'msg' => 'Complain assign unsuccessful');
+        }
+    }
+
+    public function load_assigned_user($complain_id)
+    {
+        $assigned_user = Complain::find($complain_id)->with('assignedUser')->get();
+        return $assigned_user;
     }
 }

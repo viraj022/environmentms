@@ -22,6 +22,6 @@ class Complain extends Model
     }
 
     protected $fillable = [
-        'complainer_name', 'complainer_address', 'comp_contact_no', 'recieve_type', 'complain_des', 'created_user', 'complainer_code'
+        'complainer_name', 'complainer_address', 'comp_contact_no', 'recieve_type', 'complain_des', 'created_user', 'complainer_code', 'assigned_user'
     ];
 }

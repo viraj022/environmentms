@@ -117,7 +117,6 @@
                                     <div class="form-group col-md-2">
                                         <label for="user_level">User Level: </label>
                                         <select id="user_level" class="custom-select">
-                                            <option value="">Select User Level</option>
                                             <option value="1">Local</option>
                                             <option value="2">Director</option>
                                             <option value="3">Assistant Director</option>
@@ -127,6 +126,17 @@
                                     <div class="form-group col-md-4">
                                         <label for="user">User: </label>
                                         <select id="user" class="custom-select"></select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <button type="button" class="btn btn-primary" id="assign_complain"> Assign To
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>Assigned User: </label><span id="assigned_user"></span>
                                     </div>
                                 </div>
                             </form>
@@ -143,6 +153,23 @@
     <script>
         $(document).ready(function() {
             loadProfileData();
+            let user_level = $('#user_level').val();
+            let complain_id = "{{ $complain_id }}";
+            load_user_by_level(user_level);
+            load_assigned_user(complain_id);
+        });
+
+        $('#user_level').on('change', function() {
+            let user_level = $(this).val();
+            load_user_by_level(user_level);
+        });
+
+        $('#assign_complain').click(function() {
+            let user_id = $('#user').val();
+            let complain_id = "{{ $complain_id }}";
+            assign_user_to_complain(complain_id, user_id, function(){
+                load_assigned_user(complain_id);
+            });
         });
 
         $('#upld_attach').click(function() {
@@ -195,7 +222,5 @@
                 }
             });
         }
-
-        
     </script>
 @endsection
