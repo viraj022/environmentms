@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Rules\contactNo;
 use Illuminate\Support\Facades\Auth;
 use App\Complain;
+use App\ComplainComment;
+use App\ComplainMinute;
 use App\UserAssignedComplain;
 use Illuminate\Support\Facades\Log;
 
@@ -119,8 +121,10 @@ class ComplainController extends Controller
 
     public function complainProfile($id)
     {
-        $complain_data = Complain::find($id);
-        return view('complain_profile', ['complain_id' => $id]);
+        $complain_assigned_user = Complain::find($id)->with('assignedUser')->get();
+        $complain_comments = ComplainComment::where('complain_id', $id)->get();
+        $complain_minutes = ComplainMinute::where('complain_id', $id)->get();
+        return view('complain_profile', ['complain_id' => $id, 'comp_assigned_user' => $complain_assigned_user, 'comments_of_complain' => $complain_comments, 'complain_minutes' => $complain_minutes]);
     }
 
     public function complainProfileData($id)
@@ -187,9 +191,35 @@ class ComplainController extends Controller
         }
     }
 
-    public function load_assigned_user($complain_id)
+    public function add_comment_to_complain(Request $request)
     {
-        $assigned_user = Complain::find($complain_id)->with('assignedUser')->get();
-        return $assigned_user;
+        $user_id = Auth::user()->id;
+        $save_complain_comment = new ComplainComment();
+        $save_complain_comment->comment = $request->comment;
+        $save_complain_comment->complain_id = $request->comp_comnt_hid_id;
+        $save_complain_comment->commented_user_id = $user_id;
+        $save_complain_comment->save();
+
+        if ($save_complain_comment == true) {
+            return array('status' => 1, 'msg' => 'Complain comment addition successful');
+        } else {
+            return array('status' => 0, 'msg' => 'Complain comment addition unsuccessful');
+        }
+    }
+
+    public function add_minute_to_complain(Request $request)
+    {
+        $user_id = Auth::user()->id;
+        $save_complain_minute = new ComplainMinute();
+        $save_complain_minute->minute = $request->minute;
+        $save_complain_minute->complain_id = $request->comp_minute_hid_id;
+        $save_complain_minute->minute_user_id = $user_id;
+        $save_complain_minute->save();
+
+        if ($save_complain_minute == true) {
+            return array('status' => 1, 'msg' => 'Complain comment addition successful');
+        } else {
+            return array('status' => 0, 'msg' => 'Complain comment addition unsuccessful');
+        }
     }
 }

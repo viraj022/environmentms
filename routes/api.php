@@ -1063,10 +1063,4 @@ Route::middleware('auth:api')->post('/director_final_approve/file_id/{file_id}',
 Route::get('/epl_site_count', [ResetSettingsController::class, 'get_epl_site_count']);
 Route::put('/reset_counts', [ResetSettingsController::class, 'reset_site_counts']);
 
-Route::middleware('auth:api')->get('/get_users_for_level/level/{level_id}', 'UserController@get_users_by_level');
-Route::middleware('auth:api')->get('/assign_complain_to_user/complain_id/{complain_id}/user_id/{user_id}', 'ComplainController@assign_complain_to_user');
-Route::middleware('auth:api')->get('/get_assigned_user/id/{complain_id}', 'ComplainController@load_assigned_user');
-
-
-
 
