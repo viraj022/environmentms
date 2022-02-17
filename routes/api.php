@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ResetSettingsController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 /*
   |--------------------------------------------------------------------------
@@ -1061,5 +1062,8 @@ Route::post('/eo_client_data', [ClientController::class, 'eo_client_data']);
 Route::middleware('auth:api')->post('/director_final_approve/file_id/{file_id}', 'DirectorController@DirectorFinalApprove');
 Route::get('/epl_site_count', [ResetSettingsController::class, 'get_epl_site_count']);
 Route::put('/reset_counts', [ResetSettingsController::class, 'reset_site_counts']);
+
+Route::middleware('auth:api')->get('/get_users_for_level/level/{level_id}', [UserController::class, 'get_users_by_level']);
+
 
 

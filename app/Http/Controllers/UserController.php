@@ -297,4 +297,12 @@ class UserController extends Controller {
         }
     }
 
+    /** 
+     *  get the users by the user level
+     */
+    public function get_users_by_level($level){
+        $users = User::with('roll')->where('level_id', $level)->get();
+        return $users;
+    }
+
 }
