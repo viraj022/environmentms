@@ -71,9 +71,9 @@ function loadProfileData() {
         $('#assigned_user').html(resp.assigner_user.first_name + ' ' + resp.assigner_user.last_name);
 
         let forward_hist_table = "";
-        $.each(resp.complain_minutes, function(key, value2) {
+        $.each(resp.complain_assign_log, function(key, value2) {
             key++;
-            forward_hist_table += "<td>" + key + "</td><td>" + value2.assignee_id + "</td><td>" + value2.assignee_id + "</td><td>" + value2.assignee_id + "</td>";
+            forward_hist_table += "<tr><td>" + key + "</td><td>" + value2.assignee_id + "</td><td>" + value2.assigner_id + "</td><td>" + value2.assigned_time + "</td></tr>";
         });
         $('#forward_history tbody').html(forward_hist_table);
     });
@@ -96,10 +96,18 @@ function load_user_by_level(level) {
     });
 }
 
+function forms_reset() {
+    $('#comments_frm')[0].reset();
+    $('#minutes_frm')[0].reset();
+    $('#complain_assign_frm')[0].reset();
+}
+
 function assign_user_to_complain(complain_id, user_id) {
     ajaxRequest('GET', "/api/assign_complain_to_user/complain_id/" + complain_id + "/user_id/" + user_id, null, function(result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully assigned the user to the complain', 'success');
+            forms_reset();
+            loadProfileData();
         } else {
             swal.fire('failed', 'User assigning was unsuccessful', 'warning');
         }
@@ -111,6 +119,8 @@ function comment_on_complain() {
     ajaxRequest('POST', "/api/comment_on_complain", data, function(result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully added the comment', 'success');
+            forms_reset();
+            loadProfileData();
         } else {
             swal.fire('failed', 'Comment addition was unsuccessful', 'warning');
         }
@@ -122,6 +132,8 @@ function add_minute_to_complain() {
     ajaxRequest('POST', "/api/minute_on_complain", data, function(result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully added the minute', 'success');
+            forms_reset()
+            loadProfileData();
         } else {
             swal.fire('failed', 'minute addition was unsuccessful', 'warning');
         }
