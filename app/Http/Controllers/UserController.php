@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Level;
+use App\Roll;
 use App\Privilege;
 use App\Helpers\LogActivity;
 use App\Rules\contactNo;
@@ -319,8 +320,8 @@ class UserController extends Controller
      */
     public function get_users_by_level($level)
     {
-        $users = User::join('rolls', 'users.roll_id', 'rolls.id')
-            ->where('level_id', $level)
+        $users = Roll::join('users', 'users.roll_id', '=', 'rolls.id')
+            ->where('rolls.level_id', $level)
             ->get();
         return $users;
     }

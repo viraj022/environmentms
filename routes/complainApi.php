@@ -12,3 +12,5 @@ Route::middleware('auth:api')->get('/get_users_for_level/level/{level_id}', 'Use
 Route::middleware('auth:api')->get('/assign_complain_to_user/complain_id/{complain_id}/user_id/{user_id}', 'ComplainController@assign_complain_to_user');
 Route::middleware('auth:api')->post('/comment_on_complain', 'ComplainController@add_comment_to_complain');
 Route::middleware('auth:api')->post('/minute_on_complain', 'ComplainController@add_minute_to_complain');
+Route::middleware('auth:api')->get('/confirm_complain/complain/{complain_id}', 'ComplainController@confirm_complain');
+Route::middleware('auth:api')->get('/reject_complain/complain/{complain_id}', 'ComplainController@reject_complain');

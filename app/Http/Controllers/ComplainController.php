@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Complain;
 use App\ComplainComment;
 use App\ComplainMinute;
-use App\UserAssignedComplain;
+use App\ComplainAssignLog;
 use Illuminate\Support\Facades\Log;
 
 class ComplainController extends Controller
@@ -121,15 +121,12 @@ class ComplainController extends Controller
 
     public function complainProfile($id)
     {
-        $complain_assigned_user = Complain::find($id)->with('assignedUser')->get();
-        $complain_comments = ComplainComment::where('complain_id', $id)->get();
-        $complain_minutes = ComplainMinute::where('complain_id', $id)->get();
-        return view('complain_profile', ['complain_id' => $id, 'comp_assigned_user' => $complain_assigned_user, 'comments_of_complain' => $complain_comments, 'complain_minutes' => $complain_minutes]);
+        return view('complain_profile', ['complain_id' => $id]);
     }
 
     public function complainProfileData($id)
     {
-        $complain_data = Complain::with(['assignedUser', 'createdUser'])->find($id);
+        $complain_data = Complain::with(['assignedUser', 'createdUser','assignerUser', 'complainComments', 'complainMinutes', 'complainAssignLog.user'])->find($id);
         return $complain_data;
     }
 
@@ -170,19 +167,25 @@ class ComplainController extends Controller
         }
     }
 
-    public function assign_complain_to_user($complain_id, $user_id)
+    public function assign_complain_to_user($complain_id, $assignee_id)
     {
+        $assigner_id = Auth::user()->id;
         try {
             \DB::beginTransaction();
             $assign_complain = Complain::find($complain_id);
-            $assign_complain->assigned_user = $user_id;
-            $assign_complain->save();
+            if ($assign_complain->assigned_user != '') {
+                $assign_complain->assigned_user = $assignee_id;
+                $assign_complain->assigner_user = $assigner_id;
+                $assign_complain->save();
 
-            UserAssignedComplain::create([
-                "complain_id" => $complain_id,
-                "user_id" => $user_id,
-                "assigned_time" => date("Y-m-d H:i:s"),
-            ]);
+                ComplainAssignLog::create([
+                    "complain_id" => $complain_id,
+                    "assignee_id" => $assignee_id,
+                    "assigner_id" => $assigner_id,
+                    "assigned_time" => date("Y-m-d H:i:s"),
+                ]);
+            }
+
             \DB::commit();
             return array('status' => 1, 'msg' => 'Complain assign successful');
         } catch (\Exception $e) {
@@ -220,6 +223,32 @@ class ComplainController extends Controller
             return array('status' => 1, 'msg' => 'Complain comment addition successful');
         } else {
             return array('status' => 0, 'msg' => 'Complain comment addition unsuccessful');
+        }
+    }
+
+    public function confirm_complain($complain_id)
+    {
+        $confirm_complain = Complain::find($complain_id);
+        $confirm_complain->status = 1;
+        $confirm_complain->save();
+
+        if ($confirm_complain == true) {
+            return array('status' => 1, 'msg' => 'Complain confirmation is successful');
+        } else {
+            return array('status' => 0, 'msg' => 'Complain confirmation was unsuccessful');
+        }
+    }
+
+    public function reject_complain($complain_id)
+    {
+        $confirm_complain = Complain::find($complain_id);
+        $confirm_complain->status = -1;
+        $confirm_complain->save();
+
+        if ($confirm_complain == true) {
+            return array('status' => 1, 'msg' => 'Complain rejection is successful');
+        } else {
+            return array('status' => 0, 'msg' => 'Complain rejection was unsuccessful');
         }
     }
 }

@@ -3,10 +3,10 @@ function update_attachments() {
     let url = '/api/update_attachments/id/' + id;
     let arr = [];
     let index = 0;
-    $.each($('#fileUploadInput')[0].files, function (key, val) {
+    $.each($('#fileUploadInput')[0].files, function(key, val) {
         arr[index++] = val;
     });
-    ulploadFileWithData(url, null, function (resp) {
+    ulploadFileWithData(url, null, function(resp) {
         if (resp.status == 1) {
             loadProfileData();
             swal.fire('success', 'Successfully change the attachments of complains', 'success');
@@ -19,7 +19,7 @@ function update_attachments() {
 function loadProfileData() {
     let id = $('#complain_profile_id').val();
     let url = '/api/complain_profile_data/id/' + id;
-    ajaxRequest('GET', url, null, function (resp) {
+    ajaxRequest('GET', url, null, function(resp) {
 
         $('#comp_code').html(resp.complainer_code);
         if (resp.assigned_user != null) {
@@ -44,25 +44,49 @@ function loadProfileData() {
         let image = '';
         if (resp.attachment != null || resp.attachment.length != 0) {
             let data = JSON.parse(unescape(resp.attachment));
-            let base_url = "{{ url('/') }}";
-            $.each(data, function (key, value) {
-                image += "<img src='" + base_url + '/storage/' + value.img_path +
-                    "' width='100em' height='100em'>";
+            // let base_url = "{{ url('/') }}";
+            $.each(data, function(key, value) {
+                image += "<img src='/storage/" + value.img_path + "' width='100em' height='100em'>";
             });
 
             $('#file_attachments').html(image);
         }
+
+        if (resp.complain_comments != '') {
+            let comments = '';
+            $.each(resp.complain_comments, function(key, value2) {
+                comments += '<div class="alert alert-info w-100" role="alert"><b>' + value2.comment + '</b></div>';
+            });
+            $('#comment_section').html(comments);
+        }
+
+        if (resp.complain_minutes != '') {
+            let minutes = '';
+            $.each(resp.complain_minutes, function(key, value2) {
+                minutes += '<div class="alert alert-info w-100" role="alert"><b>' + value2.minute + '</b></div>';
+            });
+            $('#minute_section').html(minutes);
+        }
+
+        $('#assigned_user').html(resp.assigner_user.first_name + ' ' + resp.assigner_user.last_name);
+
+        let forward_hist_table = "";
+        $.each(resp.complain_minutes, function(key, value2) {
+            key++;
+            forward_hist_table += "<td>" + key + "</td><td>" + value2.assignee_id + "</td><td>" + value2.assignee_id + "</td><td>" + value2.assignee_id + "</td>";
+        });
+        $('#forward_history tbody').html(forward_hist_table);
     });
 }
 
 function load_user_by_level(level) {
-    ajaxRequest('GET', "/api/get_users_for_level/level/" + level, null, function (dataSet) {
+    ajaxRequest('GET', "/api/get_users_for_level/level/" + level, null, function(dataSet) {
         var combo = "";
         if (dataSet.length == 0) {
             combo += "<option value=''>NO DATA FOUND</option>";
         } else {
-            $.each(dataSet, function (index, value) {
-                combo += "<option value='" + value.id + "'>" + value.first_name + ' ' + value.last_name + "</option>";
+            $.each(dataSet, function(index, value) {
+                combo += "<option value='" + value.id + "'>" + value.first_name + " - (" + value.name + ") </option>";
             });
         }
         $('#user').html(combo);
@@ -73,35 +97,53 @@ function load_user_by_level(level) {
 }
 
 function assign_user_to_complain(complain_id, user_id) {
-    ajaxRequest('GET', "/api/assign_complain_to_user/complain_id/" + complain_id + "/user_id/" + user_id, null, function (result) {
+    ajaxRequest('GET', "/api/assign_complain_to_user/complain_id/" + complain_id + "/user_id/" + user_id, null, function(result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully assigned the user to the complain', 'success');
         } else {
-            swal.fire('failed', 'User assigning was unsuccessfull', 'warning');
+            swal.fire('failed', 'User assigning was unsuccessful', 'warning');
         }
     });
 }
 
 function comment_on_complain() {
     let data = $('#comments_frm').serializeArray();
-    ajaxRequest('POST', "/api/comment_on_complain", data, function (result) {
+    ajaxRequest('POST', "/api/comment_on_complain", data, function(result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully added the comment', 'success');
-            location.reload();
         } else {
-            swal.fire('failed', 'Comment addition was unsuccessfull', 'warning');
+            swal.fire('failed', 'Comment addition was unsuccessful', 'warning');
         }
     });
 }
 
 function add_minute_to_complain() {
     let data = $('#minutes_frm').serializeArray();
-    ajaxRequest('POST', "/api/minute_on_complain", data, function (result) {
+    ajaxRequest('POST', "/api/minute_on_complain", data, function(result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully added the minute', 'success');
-            location.reload();
         } else {
-            swal.fire('failed', 'minute addition was unsuccessfull', 'warning');
+            swal.fire('failed', 'minute addition was unsuccessful', 'warning');
+        }
+    });
+}
+
+function confirm_complain(complain_id) {
+    ajaxRequest('GET', "/api/confirm_complain/complain/" + complain_id, null, function(result) {
+        if (result.status == 1) {
+            swal.fire('success', 'Successfully confirmed the complain', 'success');
+        } else {
+            swal.fire('failed', 'Complain confirmation was unsuccessful', 'warning');
+        }
+    });
+}
+
+function reject_complain(complain_id) {
+    ajaxRequest('GET', "/api/reject_complain/complain/" + complain_id, null, function(result) {
+        if (result.status == 1) {
+            swal.fire('success', 'Successfully rejected the complain', 'success');
+        } else {
+            swal.fire('failed', 'Complain rejection was unsuccessful', 'warning');
         }
     });
 }

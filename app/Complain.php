@@ -16,6 +16,11 @@ class Complain extends Model
         return $this->belongsTo(User::class, 'assigned_user');
     }
 
+    public function assignerUser()
+    {
+        return $this->belongsTo(User::class, 'assigner_user');
+    }
+
     public function createdUser()
     {
         return $this->belongsTo(User::class, 'created_user');
@@ -31,7 +36,12 @@ class Complain extends Model
         return $this->hasMany(ComplainComment::class);
     }
 
+    public function complainAssignLog()
+    {
+        return $this->hasMany(ComplainAssignLog::class);
+    }
+
     protected $fillable = [
-        'complainer_name', 'complainer_address', 'comp_contact_no', 'recieve_type', 'complain_des', 'created_user', 'complainer_code', 'assigned_user'
+        'complainer_name', 'complainer_address', 'comp_contact_no', 'recieve_type', 'complain_des', 'created_user', 'complainer_code', 'assigned_user', 'assigner_user'
     ];
 }
