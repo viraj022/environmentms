@@ -27,6 +27,6 @@ class ComplainAssignLog extends Model
     }
 
     protected $fillable = [
-        'complain_id', 'user_id', 'assigned_time', 'assignee_id', 'assigner_id'
+        'complain_id', 'user_id', 'assigned_time', 'assignee_user', 'assigner_user'
     ];
 }

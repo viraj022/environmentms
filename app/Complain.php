@@ -16,11 +16,6 @@ class Complain extends Model
         return $this->belongsTo(User::class, 'assigned_user');
     }
 
-    public function assignerUser()
-    {
-        return $this->belongsTo(User::class, 'assigner_user');
-    }
-
     public function createdUser()
     {
         return $this->belongsTo(User::class, 'created_user');

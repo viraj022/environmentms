@@ -126,7 +126,7 @@ class ComplainController extends Controller
 
     public function complainProfileData($id)
     {
-        $complain_data = Complain::with(['assignedUser', 'createdUser','assignerUser', 'complainComments', 'complainMinutes', 'complainAssignLog.user'])->find($id);
+        $complain_data = Complain::with(['assignedUser', 'createdUser', 'complainComments', 'complainMinutes'])->find($id);
         return $complain_data;
     }
 
@@ -175,13 +175,13 @@ class ComplainController extends Controller
             $assign_complain = Complain::find($complain_id);
             if ($assign_complain->assigned_user != '') {
                 $assign_complain->assigned_user = $assignee_id;
-                $assign_complain->assigner_user = $assigner_id;
+                $assign_complain->created_user = $assigner_id;
                 $assign_complain->save();
 
                 ComplainAssignLog::create([
                     "complain_id" => $complain_id,
-                    "assignee_id" => $assignee_id,
-                    "assigner_id" => $assigner_id,
+                    "assigner_user" => $assigner_id,
+                    "assignee_user" => $assignee_id,
                     "assigned_time" => date("Y-m-d H:i:s"),
                 ]);
             }
@@ -250,5 +250,12 @@ class ComplainController extends Controller
         } else {
             return array('status' => 0, 'msg' => 'Complain rejection was unsuccessful');
         }
+    }
+
+    public function get_complain_assign_log()
+    {
+        $complain_assign_log = ComplainAssignLog::with(['assignerUser', 'assigneeUser'])
+            ->get();
+        return $complain_assign_log;
     }
 }

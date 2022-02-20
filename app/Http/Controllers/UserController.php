@@ -322,6 +322,7 @@ class UserController extends Controller
     {
         $users = Roll::join('users', 'users.roll_id', '=', 'rolls.id')
             ->where('rolls.level_id', $level)
+            ->where('users.deleted_at', null)
             ->get();
         return $users;
     }
