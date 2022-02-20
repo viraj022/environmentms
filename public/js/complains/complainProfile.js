@@ -20,7 +20,6 @@ function loadProfileData() {
     let id = $('#complain_profile_id').val();
     let url = '/api/complain_profile_data/id/' + id;
     ajaxRequest('GET', url, null, function (resp) {
-        console.log(resp);
         $('#comp_code').html(resp.complainer_code);
         if (resp.assigned_user != null) {
             $('#assigned_officer').html(resp.assigned_user.user_name);
@@ -91,7 +90,7 @@ function load_forward_history_table() {
     let url = '/api/complain_log_data/';
     ajaxRequest('GET', url, null, function (resp) {
         var forward_hist_table = " ";
-
+        $('#forward_history').DataTable().destroy();
         $.each(resp, function (key, value2) {
             key++;
             let assignee_name = '-';

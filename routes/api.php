@@ -1063,4 +1063,3 @@ Route::post('/eo_client_data', [ClientController::class, 'eo_client_data']);
 Route::middleware('auth:api')->post('/director_final_approve/file_id/{file_id}', 'DirectorController@DirectorFinalApprove');
 Route::get('/epl_site_count', [ResetSettingsController::class, 'get_epl_site_count']);
 Route::put('/reset_counts', [ResetSettingsController::class, 'reset_site_counts']);
-Route::get('/complain_log_data', [ComplainController::class, 'get_complain_assign_log']);
