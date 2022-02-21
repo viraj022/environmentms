@@ -155,5 +155,9 @@ class RouteServiceProvider extends ServiceProvider
                         ->middleware('api')
                         ->namespace($this->namespace)
                         ->group(base_path('routes/complainApi.php'));
+                Route::prefix('api')
+                        ->middleware('api')
+                        ->namespace($this->namespace)
+                        ->group(base_path('routes/documentApi.php'));
         }
 }

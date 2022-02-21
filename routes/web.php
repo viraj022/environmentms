@@ -93,3 +93,5 @@ Route::get('/reset_count', 'ResetSettingsController@index');
 Route::get('/complains', 'ComplainController@index');
 Route::get('/complain_profile/id/{id}', 'ComplainController@complainProfile');
 Route::get('/letter_maker', 'WebDocumentController@index');
+Route::get('/letters', 'WebDocumentController@letters');
+Route::get('/get_letter/letter/{letter_id}', 'WebDocumentController@get_letter');
