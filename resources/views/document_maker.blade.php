@@ -96,14 +96,6 @@
             $(document).on('click', '#saveLetter', function() {
                 console.log(EDITOR_DATA.getData());
             });
-            $(document).on('click', '#printLetter', function() {
-                print('editor1');
-            });
-
-            function print() {
-                console.log('a');
-                EDITOR_DATA.execCommand('print');
-            }
         });
     </script>
 @endsection

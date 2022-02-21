@@ -21,7 +21,22 @@ class Complain extends Model
         return $this->belongsTo(User::class, 'created_user');
     }
 
+    public function complainMinutes()
+    {
+        return $this->hasMany(ComplainMinute::class);
+    }
+
+    public function complainComments()
+    {
+        return $this->hasMany(ComplainComment::class);
+    }
+
+    public function complainAssignLog()
+    {
+        return $this->hasMany(ComplainAssignLog::class);
+    }
+
     protected $fillable = [
-        'complainer_name', 'complainer_address', 'comp_contact_no', 'recieve_type', 'complain_des', 'created_user', 'complainer_code'
+        'complainer_name', 'complainer_address', 'comp_contact_no', 'recieve_type', 'complain_des', 'created_user', 'complainer_code', 'assigned_user', 'assigner_user'
     ];
 }
