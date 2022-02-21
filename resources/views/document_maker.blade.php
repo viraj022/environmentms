@@ -40,7 +40,8 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Letter Title*</label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" name="letter_title" id="letter_title"
+                                        placeholder="Enter the letter title">
                                 </div>
                                 <button class="btn btn-success" id="saveLetter">Save</button>
                                 <button class="btn btn-dark" id="printLetter">Print</button>
@@ -88,14 +89,90 @@
     <script src="../../plugins/moment/moment.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="../../dist/js/adminlte.min.js"></script>
-    <script src="https://cdn.ckeditor.com/4.17.2/standard/ckeditor.js"></script>
+    <script src="../../plugins/ckeditor/ckeditor.js"></script>
     <!-- AdminLTE App -->
     <script>
+        CKEDITOR.editorConfig = function(config) {
+            config.toolbarGroups = [{
+                    name: 'document',
+                    groups: ['mode', 'document', 'doctools']
+                },
+                {
+                    name: 'clipboard',
+                    groups: ['clipboard', 'undo']
+                },
+                {
+                    name: 'editing',
+                    groups: ['find', 'selection', 'spellchecker', 'editing']
+                },
+                {
+                    name: 'forms',
+                    groups: ['forms']
+                },
+                '/',
+                {
+                    name: 'basicstyles',
+                    groups: ['basicstyles', 'cleanup']
+                },
+                {
+                    name: 'paragraph',
+                    groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph']
+                },
+                {
+                    name: 'links',
+                    groups: ['links']
+                },
+                {
+                    name: 'insert',
+                    groups: ['insert']
+                },
+                '/',
+                {
+                    name: 'styles',
+                    groups: ['styles']
+                },
+                {
+                    name: 'colors',
+                    groups: ['colors']
+                },
+                {
+                    name: 'tools',
+                    groups: ['tools']
+                },
+                {
+                    name: 'others',
+                    groups: ['others']
+                },
+                {
+                    name: 'about',
+                    groups: ['about']
+                }
+            ];
+
+            config.removeButtons = 'Templates,RemoveFormat,CopyFormatting,CreateDiv,Anchor,Image,Smiley,Iframe';
+        };
         var EDITOR_DATA = CKEDITOR.replace('editor1');
-        $(function() {
-            $(document).on('click', '#saveLetter', function() {
-                console.log(EDITOR_DATA.getData());
-            });
+        $('#saveLetter').click(function() {
+            save_doc();
         });
+
+        function save_doc() {
+            let data = {
+                "title": $('#letter_title').val(),
+                "content": EDITOR_DATA.getData()
+            };
+            let url = '/api/save_document/';
+            if (data.title != '' && data.content != '') {
+                ajaxRequest('POST', url, data, function(resp) {
+                    if (resp.status == 1) {
+                        swal.fire('success', 'letter saving is successfull', 'success');
+                    } else {
+                        swal.fire('failed', 'letter saving was unsuccessful', 'warning');
+                    }
+                });
+            } else {
+                swal.fire('failed', 'Title and content are required to save letter', 'warning');
+            }
+        }
     </script>
 @endsection
