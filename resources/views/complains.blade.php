@@ -2,15 +2,14 @@
 @extends('layouts.styles')
 @extends('layouts.scripts')
 @extends('layouts.navbar')
-@extends('layouts.sidebar')
 @extends('layouts.footer')
+
 @section('pageStyles')
+<link href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+@endsection
 
 @section('content')
-
-<link href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 <!-- Main content -->
-
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -110,7 +109,6 @@
         </div>
     </div>
 </section>
-
 @endsection
 
 @section('pageScripts')

@@ -3,10 +3,10 @@ function update_attachments() {
     let url = '/api/update_attachments/id/' + id;
     let arr = [];
     let index = 0;
-    $.each($('#fileUploadInput')[0].files, function (key, val) {
+    $.each($('#fileUploadInput')[0].files, function(key, val) {
         arr[index++] = val;
     });
-    ulploadFileWithData(url, null, function (resp) {
+    ulploadFileWithData(url, null, function(resp) {
         if (resp.status == 1) {
             loadProfileData();
             swal.fire('success', 'Successfully change the attachments of complains', 'success');
@@ -19,7 +19,7 @@ function update_attachments() {
 function loadProfileData() {
     let id = $('#complain_profile_id').val();
     let url = '/api/complain_profile_data/id/' + id;
-    ajaxRequest('GET', url, null, function (resp) {
+    ajaxRequest('GET', url, null, function(resp) {
         $('#comp_code').html(resp.complainer_code);
         if (resp.assigned_user != null) {
             $('#assigned_officer').html(resp.assigned_user.user_name);
@@ -38,8 +38,10 @@ function loadProfileData() {
 
         if (resp.status == 1) {
             $('#comp_status_completed').removeClass('d-none');
+            $('#comp_status_pending').addClass('d-none');
         } else {
             $('#comp_status_pending').removeClass('d-none');
+            $('#comp_status_completed').addClass('d-none');
         }
 
         if (resp.status == 1 || resp.status == -1) {
@@ -55,7 +57,7 @@ function loadProfileData() {
         if (resp.attachment != null || resp.attachment.length != 0) {
             let data = JSON.parse(unescape(resp.attachment));
             // let base_url = "{{ url('/') }}";
-            $.each(data, function (key, value) {
+            $.each(data, function(key, value) {
                 image += "<img src='/storage/" + value.img_path + "' width='100em' height='100em'>";
             });
 
@@ -64,7 +66,7 @@ function loadProfileData() {
 
         if (resp.complain_comments != '') {
             let comments = '';
-            $.each(resp.complain_comments, function (key, value2) {
+            $.each(resp.complain_comments, function(key, value2) {
                 comments += '<div class="alert alert-info w-100" role="alert"><b>' + value2.comment + '</b></div>';
             });
             $('#comment_section').html(comments);
@@ -72,7 +74,7 @@ function loadProfileData() {
 
         if (resp.complain_minutes != '') {
             let minutes = '';
-            $.each(resp.complain_minutes, function (key, value2) {
+            $.each(resp.complain_minutes, function(key, value2) {
                 minutes += '<div class="alert alert-info w-100" role="alert"><b>' + value2.minute + '</b></div>';
             });
             $('#minute_section').html(minutes);
@@ -85,13 +87,13 @@ function loadProfileData() {
     });
 }
 
-function load_forward_history_table() {
+function load_forward_history_table(complain_id) {
 
-    let url = '/api/complain_log_data/';
-    ajaxRequest('GET', url, null, function (resp) {
+    let url = '/api/complain_log_data/complain/' + complain_id;
+    ajaxRequest('GET', url, null, function(resp) {
         var forward_hist_table = " ";
         $('#forward_history').DataTable().destroy();
-        $.each(resp, function (key, value2) {
+        $.each(resp, function(key, value2) {
             key++;
             let assignee_name = '-';
             let assigner_name = '-';
@@ -118,12 +120,12 @@ function load_forward_history_table() {
 }
 
 function load_user_by_level(level) {
-    ajaxRequest('GET', "/api/get_users_for_level/level/" + level, null, function (dataSet) {
+    ajaxRequest('GET', "/api/get_users_for_level/level/" + level, null, function(dataSet) {
         var combo = "";
         if (dataSet.length == 0) {
             combo += "<option value=''>NO DATA FOUND</option>";
         } else {
-            $.each(dataSet, function (index, value) {
+            $.each(dataSet, function(index, value) {
                 combo += "<option value='" + value.id + "'>" + value.first_name + " - (" + value.name + ") </option>";
             });
         }
@@ -141,12 +143,12 @@ function forms_reset() {
 }
 
 function assign_user_to_complain(complain_id, user_id) {
-    ajaxRequest('GET', "/api/assign_complain_to_user/complain_id/" + complain_id + "/user_id/" + user_id, null, function (result) {
+    ajaxRequest('GET', "/api/assign_complain_to_user/complain_id/" + complain_id + "/user_id/" + user_id, null, function(result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully assigned the user to the complain', 'success');
             forms_reset();
             loadProfileData();
-            load_forward_history_table();
+            load_forward_history_table(complain_id);
         } else {
             swal.fire('failed', 'User assigning was unsuccessful', 'warning');
         }
@@ -155,7 +157,7 @@ function assign_user_to_complain(complain_id, user_id) {
 
 function comment_on_complain() {
     let data = $('#comments_frm').serializeArray();
-    ajaxRequest('POST', "/api/comment_on_complain", data, function (result) {
+    ajaxRequest('POST', "/api/comment_on_complain", data, function(result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully added the comment', 'success');
             forms_reset();
@@ -168,7 +170,7 @@ function comment_on_complain() {
 
 function add_minute_to_complain() {
     let data = $('#minutes_frm').serializeArray();
-    ajaxRequest('POST', "/api/minute_on_complain", data, function (result) {
+    ajaxRequest('POST', "/api/minute_on_complain", data, function(result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully added the minute', 'success');
             forms_reset()
@@ -180,7 +182,7 @@ function add_minute_to_complain() {
 }
 
 function confirm_complain(complain_id) {
-    ajaxRequest('GET', "/api/confirm_complain/complain/" + complain_id, null, function (result) {
+    ajaxRequest('GET', "/api/confirm_complain/complain/" + complain_id, null, function(result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully confirmed the complain', 'success');
             loadProfileData();
@@ -191,7 +193,7 @@ function confirm_complain(complain_id) {
 }
 
 function reject_complain(complain_id) {
-    ajaxRequest('GET', "/api/reject_complain/complain/" + complain_id, null, function (result) {
+    ajaxRequest('GET', "/api/reject_complain/complain/" + complain_id, null, function(result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully rejected the complain', 'success');
             loadProfileData();

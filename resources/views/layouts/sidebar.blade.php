@@ -448,16 +448,12 @@
             </p>
         </a>
         <ul class="nav nav-treeview">
-            @foreach((auth()->user()->privileges) as $indexKey=>$pre)
-            @if($pre['id']===18)
             <li class="nav-item">
                 <a href="{{ url('/complains') }}" class="nav-link {{ Request::is('complains') ? 'active' : '' }}">
                     <i class="fas fa-user-plus nav-icon"></i>
                     <p>Complains</p>
                 </a>
             </li>
-            @endif
-            @endforeach
         </ul>
     </li>
     </ul>

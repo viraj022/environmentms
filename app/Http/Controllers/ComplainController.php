@@ -16,10 +16,7 @@ class ComplainController extends Controller
 
     public function index()
     {
-        $auth = Auth::user();
-        if (isset($auth)) {
-            return view('complains');
-        }
+        return view('complains');
     }
 
     public function save_complain(Request $request)
@@ -121,7 +118,9 @@ class ComplainController extends Controller
 
     public function complainProfile($id)
     {
-        return view('complain_profile', ['complain_id' => $id]);
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.complains'));
+        return view('complain_profile', ['complain_id' => $id, 'pageAuth' => $pageAuth]);
     }
 
     public function complainProfileData($id)
@@ -173,18 +172,18 @@ class ComplainController extends Controller
         try {
             \DB::beginTransaction();
             $assign_complain = Complain::find($complain_id);
-            if ($assign_complain->assigned_user != '') {
-                $assign_complain->assigned_user = $assignee_id;
-                $assign_complain->created_user = $assigner_id;
-                $assign_complain->save();
 
-                ComplainAssignLog::create([
-                    "complain_id" => $complain_id,
-                    "assigner_user" => $assigner_id,
-                    "assignee_user" => $assignee_id,
-                    "assigned_time" => date("Y-m-d H:i:s"),
-                ]);
-            }
+            $assign_complain->assigned_user = $assignee_id;
+            $assign_complain->created_user = $assigner_id;
+            $assign_complain->save();
+
+            ComplainAssignLog::create([
+                "complain_id" => $complain_id,
+                "assigner_user" => $assigner_id,
+                "assignee_user" => $assignee_id,
+                "assigned_time" => date("Y-m-d H:i:s"),
+            ]);
+
 
             \DB::commit();
             return array('status' => 1, 'msg' => 'Complain assign successful');
@@ -252,9 +251,10 @@ class ComplainController extends Controller
         }
     }
 
-    public function get_complain_assign_log()
+    public function get_complain_assign_log($complain_id)
     {
-        $complain_assign_log = ComplainAssignLog::with(['assignerUser', 'assigneeUser'])
+        $complain_assign_log = ComplainAssignLog::where('complain_id', $complain_id)
+            ->with(['assignerUser', 'assigneeUser'])
             ->get();
         return $complain_assign_log;
     }

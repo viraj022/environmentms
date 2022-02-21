@@ -2,7 +2,6 @@
 @extends('layouts.styles')
 @extends('layouts.scripts')
 @extends('layouts.navbar')
-@extends('layouts.sidebar')
 @extends('layouts.footer')
 
 @section('content')
@@ -225,7 +224,8 @@
 <script>
     $(document).ready(function() {
         loadProfileData();
-        load_forward_history_table();
+        let complain_id = "{{ $complain_id }}";
+        load_forward_history_table(complain_id);
         load_user_by_level($('#user_level').val());
     });
 
