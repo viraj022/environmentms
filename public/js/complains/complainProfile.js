@@ -52,6 +52,12 @@ function loadProfileData() {
             $('#reject').removeClass('d-none');
         }
 
+        if (resp.status != 4) {
+            $('#forward_letter_preforation').removeClass('d-none');
+        } else {
+            $('#forward_letter_preforation').addClass('d-none');
+        }
+
 
         let image = '';
         if (resp.attachment != null || resp.attachment.length != 0) {
@@ -199,6 +205,17 @@ function reject_complain(complain_id) {
             loadProfileData();
         } else {
             swal.fire('failed', 'Complain rejection was unsuccessful', 'warning');
+        }
+    });
+}
+
+function forward_letter_preforation(complain_id) {
+    ajaxRequest('GET', "/api/forward_to_letter_preforation/complain/" + complain_id, null, function(result) {
+        if (result.status == 1) {
+            swal.fire('success', 'Forward to letter preforation was successful', 'success');
+            loadProfileData();
+        } else {
+            swal.fire('failed', 'Forward to letter preforation was unsuccessful', 'warning');
         }
     });
 }

@@ -251,6 +251,19 @@ class ComplainController extends Controller
         }
     }
 
+    public function forward_to_letter_preforation($complain_id)
+    {
+        $confirm_complain = Complain::find($complain_id);
+        $confirm_complain->status = 4;
+        $confirm_complain->save();
+
+        if ($confirm_complain == true) {
+            return array('status' => 1, 'msg' => 'Forward letter preforation is successful');
+        } else {
+            return array('status' => 0, 'msg' => 'Forward letter preforation was unsuccessful');
+        }
+    }
+
     public function get_complain_assign_log($complain_id)
     {
         $complain_assign_log = ComplainAssignLog::where('complain_id', $complain_id)

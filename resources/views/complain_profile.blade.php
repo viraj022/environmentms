@@ -149,6 +149,7 @@
                                                 <div class="form-group mt-5">
                                                     <button id="confirm" class="btn btn-info d-none">Confirm</button>
                                                     <button id="reject" class="btn btn-warning d-none">Reject</button>
+                                                    <button id="forward_letter_preforation" class="btn btn-success">Forward to letter preforation</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -278,6 +279,24 @@
                 reject_complain(complain_id);
             } else if (result.isDenied) {
                 Swal.fire('Canceled!', 'Rejection was cancelled', 'info')
+            }
+        })
+    });
+
+    $('#forward_letter_preforation').click(function() {
+        Swal.fire({
+            title: 'Do you want to forward for letter preforation?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'confirm',
+            denyButtonText: `Don't confirm`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.value) {
+                let complain_id = "{{ $complain_id }}";
+                forward_letter_preforation(complain_id);
+            } else if (result.isDenied) {
+                Swal.fire('Canceled!', 'Confirmation was cancelled', 'info')
             }
         })
     });
