@@ -92,3 +92,4 @@ Route::get('/director_approved_list', 'AssistantDirectorController@directorAppro
 Route::get('/reset_count', 'ResetSettingsController@index');
 Route::get('/complains', 'ComplainController@index');
 Route::get('/complain_profile/id/{id}', 'ComplainController@complainProfile');
+Route::get('/letter_maker', 'WebDocumentController@index');
