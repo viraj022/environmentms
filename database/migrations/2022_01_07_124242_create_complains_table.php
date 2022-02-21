@@ -24,8 +24,10 @@ class CreateComplainsTable extends Migration
             $table->string('complainer_code', 255);
             $table->text('attachment');
             $table->unsignedBigInteger('assigned_user')->nullable();
+            $table->unsignedBigInteger('assigner_user')->nullable();
             $table->unsignedBigInteger('created_user')->nullable();
             $table->foreign('assigned_user')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreign('assigner_user')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->foreign('created_user')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
         });
