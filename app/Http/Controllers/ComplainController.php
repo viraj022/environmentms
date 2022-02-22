@@ -271,4 +271,9 @@ class ComplainController extends Controller
             ->get();
         return $complain_assign_log;
     }
+
+    public function forwarded_complains(){
+        $forwarded_complains = Complain::where('status', 4)->get();
+        return $forwarded_complains;
+    }
 }

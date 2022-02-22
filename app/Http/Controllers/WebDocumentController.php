@@ -54,4 +54,5 @@ class WebDocumentController extends Controller
         $letter = Letter::find($id);
         return View('letter_view', compact('letter'));
     }
+
 }

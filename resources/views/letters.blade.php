@@ -45,10 +45,10 @@
                                 <table class="table table-bordered" id="letter_view_tbl">
                                     <thead>
                                         <tr>
-                                            <th style="width: 10%">#</th>
+                                            <th style="width: 5%">#</th>
                                             <th style="width: 30%">title</th>
-                                            <th style="width: 25%">created date</th>
-                                            <th style="width: 15%">Action</th>
+                                            <th style="width: 10%">created date</th>
+                                            <th style="width: 5%">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
