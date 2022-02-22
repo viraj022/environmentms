@@ -71,7 +71,7 @@
                                                         <table class="table table-condensed" id="tblPendingCertificate">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>#</th>
+                                                                    <th style="width: 10em">#</th>
                                                                     <th style="width: 25em">Industry Name</th>
                                                                     <th style="width: 25em">EPL Code</th>
                                                                     <th style="width: 20em">File No</th>
@@ -100,10 +100,11 @@
                                                     <table class="table table-bordered" id="letter_view_tbl">
                                                         <thead>
                                                             <tr>
-                                                                <th style="width: 1%">#</th>
-                                                                <th style="width: 50%">title</th>
-                                                                <th style="width: 25%">created date</th>
-                                                                <th style="width: 10%">Action</th>
+                                                                <th>#</th>
+                                                                <th>Code</th>
+                                                                <th>Complainer Name</th>
+                                                                <th>Address</th>
+                                                                <th>Contact No</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody></tbody>
@@ -155,20 +156,17 @@
             getaProfilebyId();
             //select button action 
             $(document).on('click', '.btnAction', function() {});
-
             load_letters();
         });
 
         function load_letters() {
-            let url = '/api/get_fowarded_letters/';
+            let url = '/api/forwarded_complains/';
             ajaxRequest('GET', url, null, function(resp) {
                 var letter_view_tbl = "";
                 $('#letter_view_tbl').DataTable().destroy();
-                $.each(resp, function(key, value2) {
+                $.each(resp, function(key, value) {
                     key++;
-                    letter_view_tbl += "<tr><td>" + key + "</td><td>" + value2.letter_title + "</td><td>" +
-                        value2.created_at + "</td><td><a href='/get_letter/letter/" + value2.id +
-                        "' class='btn btn-success'>View</a></td></tr>";
+                    letter_view_tbl += "<tr><td>" + key + "</td><td>" + value.complainer_code + "</td><td>" + value.complainer_name + "</td><td>" + value.complainer_address + "</td><td>" + value.comp_contact_no + "</td></tr>";
                 });
                 $('#letter_view_tbl tbody').html(letter_view_tbl);
                 $('#letter_view_tbl').DataTable({
