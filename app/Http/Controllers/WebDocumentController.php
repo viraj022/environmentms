@@ -54,4 +54,10 @@ class WebDocumentController extends Controller
         $letter = Letter::find($id);
         return View('letter_view', compact('letter'));
     }
+
+    public function get_forwarded_letters()
+    {
+        $forwarded_letters = Letter::where('status', 4)->get();
+        return $forwarded_letters;
+    }
 }
