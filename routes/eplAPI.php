@@ -281,3 +281,4 @@ Route::middleware('auth:api')->delete('/epl/{epl}', 'EPLController@destroy');  /
 
 
 Route::middleware('auth:api')->get('/epl/get_certificate', 'EPLController@getCertificateByCertificateNo'); //   get cert by id
+
