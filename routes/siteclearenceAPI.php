@@ -22,3 +22,6 @@ Route::post('/client_report/{site_clearence_session}', 'SiteClearanceController@
 
 Route::middleware('auth:api')->post('/client_clearance/extend/{siteClearance}', 'SiteClearanceController@extendSiteClearence');
 
+Route::middleware('auth:api')->post('/change_site_file', 'ChangeFileController@changeSiteFile'); 
+
+
