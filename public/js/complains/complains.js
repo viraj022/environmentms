@@ -40,11 +40,6 @@ function load_complains() {
             "data": "comp_contact_no",
             "defaultContent": "-"
         },
-        // {
-        //     "data": "complain_des",
-        //     "defaultContent": "-"
-
-        // },
         {
             "data": "created_user.user_name",
             "defaultContent": "N/A"
@@ -129,13 +124,13 @@ function load_complains() {
 
 function getJtableBtnHtml(full) {
     var html = '';
-    html += '<div class="btn-group" role="group"  aria-label="" >';
-    html += '<button type="button" class="btn btn-primary btn-edit" value="' + full["id"] +
+    html += '<div class="btn-group" role="group"  aria-label="" > ';
+    html += ' <button type="button" class="btn btn-primary btn-edit" value="' + full["id"] +
         '" data-toggle="tooltip" title="Edit"><i class="fas fa-edit" aria-hidden="true"></i></button>';
-    html += '<a href="/complain_profile/id/' + full['id'] +
+    html += ' <a href="/complain_profile/id/' + full['id'] +
         '" class="btn btn-success" role="button" data-toggle="tooltip" title="profile"><i class="fa fa-info-circle" style="width: 10px" aria-hidden="true" alt="profile"></i></a>';
-    html += '<button type="button" class="btn btn-danger btn-del" value="' + full["id"] +
-        '" data-toggle="tooltip" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i></button>';
+    html += ' <button type="button" class="btn btn-danger btn-del" value="' + full["id"] +
+        '"data-toggle="tooltip" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i></button>';
     html += '</div>';
     return html;
 }
