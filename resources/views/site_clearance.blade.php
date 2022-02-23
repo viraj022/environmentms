@@ -341,7 +341,7 @@
 
     <!-- AdminLTE App -->
     <script>
-        ////Map Start    
+        ////Map Start
         //// Initialize and add the map
         //function initMap(_Latitude, _Longitude) {
         //    // The location of CeyTech
@@ -518,7 +518,8 @@
                     type: 'site_clearance',
                     site_clear_sess_id: $('#site_clear_sess_id').val()
                 };
-                ulploadFileWithData("/api/change_file/", data, function(resp) {
+
+                ulploadFileWithData("/api/change_file", data, function(resp) {
 
                     if (resp.status == 1) {
                         Swal.fire({
