@@ -51,10 +51,6 @@
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <dt class="">Name : <a id="client_name"></a></dt> <br>
-                                <!--                        <dt class="">Address : <a id="client_address"></a></dt>
-                                                                                                                                    <dt class="">Contact Number : <a id="client_cont"></a></dt>
-                                                                                                                                    <dt class="">Contact Email : <a id="client_amil"></a></dt>
-                                                                                                                                    <dt class="">NIC : <a id="client_nic"> </a></dt>-->
                                 <div class="">
                                     <a href="#" class="btn btn-primary viewCert d-none" target="_blank">View Certificate</a>
                                     <span id="no_certificate_span" class="text-danger"> No Certificate Uploaded</span>
@@ -203,7 +199,7 @@
     <script async="" defer=""
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
     <script>
-        //Map Start    
+        //Map Start
         // Initialize and add the map
         function initMap(_Latitude, _Longitude) {
             // The location of CeyTech
