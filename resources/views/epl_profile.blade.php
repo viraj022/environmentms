@@ -52,9 +52,9 @@
                             <div class="card-body">
                                 <dt class="">Name : <a id="client_name"></a></dt> <br>
                                 <!--                        <dt class="">Address : <a id="client_address"></a></dt>
-                                                                                                                                <dt class="">Contact Number : <a id="client_cont"></a></dt>
-                                                                                                                                <dt class="">Contact Email : <a id="client_amil"></a></dt>
-                                                                                                                                <dt class="">NIC : <a id="client_nic"> </a></dt>-->
+                                                                                                                                    <dt class="">Contact Number : <a id="client_cont"></a></dt>
+                                                                                                                                    <dt class="">Contact Email : <a id="client_amil"></a></dt>
+                                                                                                                                    <dt class="">NIC : <a id="client_nic"> </a></dt>-->
                                 <div class="">
                                     <a href="#" class="btn btn-primary viewCert d-none" target="_blank">View Certificate</a>
                                     <span id="no_certificate_span" class="text-danger"> No Certificate Uploaded</span>
@@ -92,9 +92,9 @@
                                     <p>Add Comments</p>
                                 </div>
                                 <!--                        <div class="callout callout-danger">
-                                                                                                                                    <h6><a href="/issue_certificate/id/{{ $profile }}" class="text-success ">Certificate Information</a></h6>
-                                                                                                                                    <p>Issue Certificate / Certificate Information</p>
-                                                                                                                                </div>-->
+                                                                                                                                        <h6><a href="/issue_certificate/id/{{ $profile }}" class="text-success ">Certificate Information</a></h6>
+                                                                                                                                        <p>Issue Certificate / Certificate Information</p>
+                                                                                                                                    </div>-->
                             </div>
                             <!-- /.card-body -->
 
@@ -279,14 +279,13 @@
         });
 
         function change_file() {
-
             let file = $('#change_file_input').get(0).files[0];
             if (file != undefined) {
                 const data = {
                     type: 'epl',
                     epl_id: $('#epl_hid').val()
                 };
-                ulploadFileWithData("/api/change_file/", data, function(resp) {
+                ulploadFileWithData("/api/change_file", data, function(resp) {
 
                     if (resp.status == 1) {
                         Swal.fire({
@@ -308,14 +307,6 @@
                 });
             }
 
-        }
-
-        function disWarnPay() {
-            toastr.error('Assign Environment Officer & Try Again!');
-        }
-
-        function showNotAvailable() {
-            toastr.info('Not Available For Old Files!');
         }
     </script>
 @endsection
