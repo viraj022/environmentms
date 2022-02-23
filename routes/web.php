@@ -70,11 +70,11 @@ Route::get('/eo_locations', 'ClientController@eo_locations');
 //ui routs
 //dashboard
 Route::get('/dashboard', function () {
-  return view('welcome');
+    return view('welcome');
 });
 
 Route::get('/client_reg', function () {
-  return view('client_space_expose');
+    return view('client_space_expose');
 });
 
 Route::get('/client_space', 'ClientController@index');
@@ -82,10 +82,10 @@ Route::get('/client_space', 'ClientController@index');
 Route::get('/reverse_confirm', 'EPLController@index4');
 
 Route::get('/eo_report', function () {
-  return view('eo_report');
+    return view('eo_report');
 });
 Route::get('/file_progress_report', function () {
-  return view('file_progress_report');
+    return view('file_progress_report');
 });
 
 Route::get('/director_approved_list', 'AssistantDirectorController@directorApprovedListIndex');
