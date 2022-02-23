@@ -10,6 +10,10 @@ function getaProfilebyId(callBack) {
         "serverSide": false,
         "stateSave": true,
         "pageLength": 10,
+        rowReorder: {
+            selector: 'td:nth-child(2)'
+        },
+        responsive: true,
         language: {
             searchPlaceholder: "Search..."
         },
@@ -23,7 +27,8 @@ function getaProfilebyId(callBack) {
             },
         },
         "columns": [{
-                "data": ""
+                "data": "",
+                "defaultContent": "-"
             },
             {
                 "data": "industry_name",
@@ -55,7 +60,6 @@ function getaProfilebyId(callBack) {
                 "targets": 3,
                 "data": "0",
                 "render": function(data, type, full, meta) {
-                    console.log(full);
                     return '<a href="/industry_profile/id/' + full['id'] + '" target="_blank">' + full['file_no'] + '</a>(' + certificate_type[full['cer_type_status']] + ')';
                 }
             },
@@ -85,12 +89,7 @@ function getaProfilebyId(callBack) {
     });
 
     $(function() {
-        var t = $("#tblPendingCertificate").DataTable({
-            rowReorder: {
-                selector: 'td:nth-child(2)'
-            },
-            responsive: true,
-        });
+        var t = $("#tblPendingCertificate").DataTable();
         t.on('order.dt search.dt', function() {
             t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function(cell, i) {
                 cell.innerHTML = i + 1;
