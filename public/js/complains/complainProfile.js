@@ -37,11 +37,9 @@ function loadProfileData() {
         $('#comp_desc').html(resp.complain_des);
 
         if (resp.status == 1) {
-            $('#comp_status_completed').removeClass('d-none');
-            $('#comp_status_pending').addClass('d-none');
+            $('#comp_status').addClass('badge bg-success').text('Complete');
         } else {
-            $('#comp_status_pending').removeClass('d-none');
-            $('#comp_status_completed').addClass('d-none');
+            $('#comp_status').addClass('badge bg-warning').text('Pending');
         }
 
         if (resp.status == 1 || resp.status == -1) {

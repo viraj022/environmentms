@@ -48,17 +48,18 @@
                         <div class="card-body box-profile">
                             <input type="text" id="complain_profile_id" value="{{ $complain_id }}"
                                                 class="d-none">
-                            <h3 class="profile-username text-center">Client Details</h3>
+                                <div class="text-center">
+                                    <h3 class="profile-username text-center"><b>Assigned Officer:</b><span  id="assigned_officer">></span></h3>
+                                    <h2 class="profile-username text-center"><b>Created By      :</b><span   id="created_user">></span></h2>
+
+                                </div>
+
 
                             <p class="text-muted text-center firstL_name">U.B. Jayawathi</p>
 
                             <ul class="list-group list-group-unbordered mb-3">
-                                <li class="list-group-item">
-                                    <b>Assigned Officer:</b> <a class="float-right" id="assigned_officer"></a>
-                                </li>
-                                <li class="list-group-item">
-                                    <b>Created By</b> <a class="float-right" id="created_user"></a>
-                                </li>
+                                
+                                
                                 <li class="list-group-item">
                                     <b>Code :</b> <a class="float-right" id="comp_code"></a>
                                 </li>
@@ -71,6 +72,14 @@
                                 <li class="list-group-item">
                                     <b>Description</b> <a class="float-right" id="comp_desc"></a>
                                 </li>
+
+                                <li class="list-group-item">
+                                    <b>Status : </b> <a class="float-right"><span id="comp_status" class=""></span></a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Complain By :</b> <a class="float-right" id="comp_by"></a>
+                                </li>
+
                             </ul>
                         </div>
                         <!--//Industry Profile Start//-->
@@ -89,16 +98,6 @@
                                                 <hr>
                                             </div>
                                             <div class="card-body">    
-                                            
-                                            
-                                            
-                                            
-                                            
-                                            
-                                            
-                                            
-                                            
-                                            
                                             
                                                 <dl class="row">
                                             
