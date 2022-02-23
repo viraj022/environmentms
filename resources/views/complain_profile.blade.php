@@ -19,9 +19,7 @@
         <div class="card card-primary card-tabs">
             <div class="card-header p-0 pt-1">
                 <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
-                    <li class="pt-2 px-3">
-                        <h3 class="card-title">Complain Profile</h3>
-                    </li>
+                  
                     <li class="nav-item">
                         <a class="nav-link active" id="custom-tabs-two-home-tab" data-toggle="pill"
                             href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-two-home"
@@ -47,8 +45,45 @@
                 <div class="tab-content" id="custom-tabs-three-tabContent">
                     <div class="tab-pane fade active show" id="custom-tabs-three-home" role="tabpanel"
                         aria-labelledby="custom-tabs-three-home-tab">
+                        <div class="card-body box-profile">
+                            <input type="text" id="complain_profile_id" value="{{ $complain_id }}"
+                                                class="d-none">
+                                <div class="text-center">
+                                    <h3 class="profile-username text-center"><b>Assigned Officer:</b><span  id="assigned_officer">></span></h3>
+                                    <h2 class="profile-username text-center"><b>Created By      :</b><span   id="created_user">></span></h2>
+
+                                </div>
+
+
+                            <p class="text-muted text-center firstL_name">U.B. Jayawathi</p>
+
+                            <ul class="list-group list-group-unbordered mb-3">
+                                
+                                
+                                <li class="list-group-item">
+                                    <b>Code :</b> <a class="float-right" id="comp_code"></a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Complainer Name :</b> <a class="float-right" id="comp_name"></a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Complainer Contact No:</b> <a class="float-right" id="comp_contact_no"></a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Description</b> <a class="float-right" id="comp_desc"></a>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <b>Status : </b> <a class="float-right"><span id="comp_status" class=""></span></a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Complain By :</b> <a class="float-right" id="comp_by"></a>
+                                </li>
+
+                            </ul>
+                        </div>
                         <!--//Industry Profile Start//-->
-                        <section class="content-header">
+                        {{-- <section class="content-header">
                             <!--show lient details START-->
                             <div class="view-Client">
                                 <div class="row">
@@ -56,27 +91,32 @@
                                         <div class="card">
                                             <input type="text" id="complain_profile_id" value="{{ $complain_id }}"
                                                 class="d-none">
-                                            <div class="card-body">
-                                                <h6><b>Assigned: </b><span id="assigned_officer"></span></h6>
+                                            <div class="card-header">
+                                                <h6><b>Assigned Officer: </b><span id=""></span></h6>
                                                 <hr>
                                                 <h6><b>Created By: </b><span id="created_user"></span></h6>
                                                 <hr>
+                                            </div>
+                                            <div class="card-body">    
+                                            
                                                 <dl class="row">
-                                                    <dt class="col-sm-4">Code : </dt>
-                                                    <dd class="col-sm-6" id="comp_code"></dd>
-                                                    <dt class="col-sm-4">Complainer Name : </dt>
-                                                    <dd class="col-sm-6" id="comp_name"></dd>
-                                                    <dt class="col-sm-4">Compainer Address:</dt>
-                                                    <dd class="col-sm-6" id="comp_address"></dd>
-                                                    <dt class="col-sm-4">Complainer Contact No:</dt>
-                                                    <dd class="col-sm-6" id="comp_contact_no"></dd>
-                                                    <dt class="col-sm-4">Description :</dt>
-                                                    <dd class="col-sm-6" id="comp_desc"></dd>
-                                                    <dt class="col-sm-4">Status : </dt>
-                                                    <dd class="col-sm-6">
-                                                        <div class="bg-success d-none" id="comp_status_completed">Completed
+                                            
+                                                    <dt class="col-sm-5">Code : </dt>
+                                                    <dd class="col-sm-7" id="comp_code"></dd>
+                                               
+                                                    <dt class="col-sm-5">Complainer Name : </dt>
+                                                    <dd class="col-sm-7" id="comp_name"></dd>
+                                                    <dt class="col-sm-5">Compainer Address:</dt>
+                                                    <dd class="col-sm-7" id="comp_address"></dd>
+                                                    <dt class="col-sm-5">Complainer Contact No:</dt>
+                                                    <dd class="col-sm-7" id="comp_contact_no"></dd>
+                                                    <dt class="col-sm-5">Description :</dt>
+                                                    <dd class="col-sm-7" id="comp_desc"></dd>
+                                                    <dt class="col-sm-5">Status : </dt>
+                                                    <dd class="col-sm-7">
+                                                        <div class="text-success d-none" id="comp_status_completed">Completed
                                                         </div>
-                                                        <div class="bg-warning d-none" id="comp_status_pending">Pending
+                                                        <div class="text-warning d-none" id="comp_status_pending">Pending
                                                         </div>
                                                     </dd>
                                                     <dt class="col-sm-4">Complain By :</dt>
@@ -87,7 +127,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </section>
+                        </section> --}}
                         <!--//Industry Profile END//-->
                     </div>
                     <div class="tab-pane" id="custom-tabs-three-attachments" role="tabpanel"
