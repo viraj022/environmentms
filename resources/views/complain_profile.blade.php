@@ -35,6 +35,10 @@
                             href="#complain-assign" role="tab" aria-controls="custom-tabs-two-messages"
                             aria-selected="false">Assign Complain</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-letters-tab" data-toggle="pill" href="#letters"
+                            role="tab" aria-controls="custom-tabs-two-letters" aria-selected="false">letter</a>
+                    </li>
                 </ul>
             </div>
             <div class="card-body">
@@ -275,6 +279,16 @@
                             </div>
                         </section>
                     </div>
+                    <div class="tab-pane" id="letters" role="tabpanel" aria-labelledby="letters">
+                        <section class="content-header">
+                            <button id="create_letter_btn">Create</button>
+                            <div id="letter_title_frm" class="form-group d-none">
+                                <label for="letter_title">Letter Title: </label>
+                                <input type="text" id="letter_title" class="form-control">
+                                <button type="button" class="btn btn-success">save</button>
+                            </div>
+                        </section>
+                    </div>
                 </div>
             </div>
         </div>
@@ -289,6 +303,10 @@
             let complain_id = "{{ $complain_id }}";
             load_forward_history_table(complain_id);
             load_user_by_level($('#user_level').val());
+        });
+
+        $('#create_letter_btn').click(function(){
+            $('#letter_title_frm').removeClass('d-none');
         });
 
         $('#user_level').on('change', function() {
