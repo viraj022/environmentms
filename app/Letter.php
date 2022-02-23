@@ -10,6 +10,6 @@ class Letter extends Model
     use SoftDeletes;
     
     protected $fillable = [
-        'letter_title', 'letter_content', 'status'
+        'letter_title', 'letter_content', 'status', 'complain_id'
     ];
 }

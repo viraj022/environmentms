@@ -244,7 +244,7 @@
                             <div id="letter_title_frm" class="form-group d-none">
                                 <label for="letter_title">Letter Title: </label>
                                 <input type="text" id="letter_title" class="form-control">
-                                <button type="button" class="btn btn-success">save</button>
+                                <button type="button" class="btn btn-success" id="save_letter_title">save</button>
                             </div>
                         </section>
                     </div>
@@ -284,6 +284,30 @@
         $('#add_minute').click(function() {
             add_minute_to_complain();
         });
+
+        $('#save_letter_title').click(function() {
+            save_title();
+        });
+
+        function save_title() {
+            let complain_id = "{{ $complain_id }}";
+            let data = {
+                "title": $('#letter_title').val(),
+                "complain_id": complain_id
+            };
+            let url = '/api/save_document';
+            if (data.title != '') {
+                ajaxRequest('POST', url, data, function(resp) {
+                    if (resp.status == 1) {
+                        swal.fire('success', 'letter title adding is successfull', 'success');
+                    } else {
+                        swal.fire('failed', 'letter title adding was unsuccessful', 'warning');
+                    }
+                });
+            } else {
+                swal.fire('failed', 'Title is required !', 'warning');
+            }
+        }
 
         $('#confirm').click(function() {
             Swal.fire({

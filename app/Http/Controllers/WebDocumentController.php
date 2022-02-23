@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Letter;
@@ -21,13 +22,17 @@ class WebDocumentController extends Controller
 
         $validated = $request->validate([
             'title' => 'required',
-            'content' => 'required',
         ]);
+
         if ($validated) {
             $save_letter_content = Letter::create([
                 "letter_title" => $request->title,
-                "letter_content" => $request->content,
+                "complain_id" => $request->complain_id,
             ]);
+            if ($request->content != null) {
+                $save_letter_content->letter_content = $request->content;
+                $save_letter_content->save();
+            }
         }
 
         if ($save_letter_content == true) {
@@ -52,5 +57,11 @@ class WebDocumentController extends Controller
     {
         $letter = Letter::find($id);
         return View('letter_view', compact('letter'));
+    }
+
+    public function get_letter_content($id)
+    {
+        $letter = Letter::find($id);
+        return view('letter_maker', $letter->letter_content);
     }
 }

@@ -95,3 +95,4 @@ Route::get('/complain_profile/id/{id}', 'ComplainController@complainProfile');
 Route::get('/letter_maker', 'WebDocumentController@index');
 Route::get('/letters', 'WebDocumentController@letters');
 Route::get('/get_letter/letter/{letter_id}', 'WebDocumentController@get_letter');
+Route::get('/get_letter_content/letter/{letter_id}', 'WebDocumentController@get_letter_content');
