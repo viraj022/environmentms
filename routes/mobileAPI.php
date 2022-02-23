@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
   |--------------------------------------------------------------------------
@@ -16,9 +16,24 @@ use Illuminate\Http\Request;
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //   return $request->user();
 // });
-
 //api
-Route::get('/mobile/test', 'MobileController@test');
-Route::get('/mobile/inspection_list', 'MobileController@inspectionFiles');
-Route::get('/mobile/inspection_list/id/{id}', 'MobileController@inspectionFiles');
-Route::post('/mobile/images/{id}', 'MobileController@uploadImage');
+
+
+// sanctum routes
+
+# login
+Route::post('mobile-auth/login', 'MobileAuthController@login')->name('mobile-app.login');
+
+// /api/mobile-auth/login
+Route::prefix('mobile-auth')->middleware('auth:sanctum')->group(function () {
+    # get current logged in user
+    Route::get('user', 'MobileAuthController@user')->name('mobile-app.user');
+    # logout
+    Route::post('logout', 'MobileAuthController@logout')->name('mobile-app.logout');
+});
+Route::prefix('mobile')->middleware('auth:sanctum')->group(function () {
+    Route::get('test', 'MobileController@test');
+    Route::get('all_inspection_list', 'MobileController@inspectionFiles');
+    Route::get('inspection_list/id/{id}', 'MobileController@inspectionFilesById');
+    Route::post('images/{id}', 'MobileController@uploadImage');
+});

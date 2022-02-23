@@ -31,5 +31,9 @@
     .status-two {
         background-color: #f1f1f1;
     }
+
+    .error {
+        color: red;
+    }
 </style>
 @endsection

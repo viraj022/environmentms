@@ -30,7 +30,7 @@
                         <p>Summery</p>
                     </a>
                 </li>
-<!--                <li class="nav-item">
+                <!--                <li class="nav-item">
                     <a href="./index2.html" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Dashboard v2</p>
@@ -386,13 +386,13 @@
                     <p>Revert Confirm</p>
                 </a>
             </li>
-	    <li class="nav-item">
+            <li class="nav-item">
                 <a href="{{ url('/eo_report') }}" class="nav-link {{ Request::is('eo_report') ? 'active' : '' }}">
                     <i class="fas fa-clock nav-icon"></i>
                     <p>EO Report</p>
                 </a>
             </li>
-	    <li class="nav-item">
+            <li class="nav-item">
                 <a href="{{ url('/file_progress_report') }}" class="nav-link {{ Request::is('file_progress_report') ? 'active' : '' }}">
                     <i class="fas fa-clock nav-icon"></i>
                     <p>File Progress Report</p>
@@ -420,7 +420,6 @@
                 </a>
             </li>
             @endif
-            {{-- @if($pre['id']===config('auth.privileges.userRole') && auth()->user()->roll->level->value == 1) --}}
             @if($pre['id']===config('auth.privileges.userRole'))
             <li class="nav-item">
                 <a href="{{ url('/rolls') }}" class="nav-link {{ Request::is('rolls') ? 'active' : '' }}">
@@ -428,14 +427,33 @@
                     <p>ROll Create</p>
                 </a>
             </li>
+            @endif
+            @if($pre['id']===19)
             <li class="nav-item">
                 <a href="{{ url('/reset_count') }}" class="nav-link {{ Request::is('reset_count') ? 'active' : '' }}">
                     <i class="fa fa-redo-alt nav-icon"></i>
                     <p>Reset Count</p>
                 </a>
             </li>
-            @endif 
+            @endif
             @endforeach
+        </ul>
+    </li>
+    <li class="nav-item has-treeview {{ Request::is('complains') ? 'menu-open' : '' }}">
+        <a href="#" class="nav-link active">
+            <i class="nav-icon fas fa-user-shield"></i>
+            <p>
+                Complains
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="{{ url('/complains') }}" class="nav-link {{ Request::is('complains') ? 'active' : '' }}">
+                    <i class="fas fa-user-plus nav-icon"></i>
+                    <p>Complains</p>
+                </a>
+            </li>
         </ul>
     </li>
     </ul>

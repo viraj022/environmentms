@@ -24,12 +24,13 @@ class UserTableSeeder extends Seeder
         $u->api_token = Str::random(80);
         $u->save();
         $u->privileges()->attach(
-            '1', [
+            '1',
+            [
                 'is_read' => '1',
                 'is_create' => '1',
                 'is_update' => '1',
                 'is_delete' => '1',
-            ]);
-
+            ]
+        );
     }
 }

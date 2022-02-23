@@ -419,9 +419,11 @@ class ClientRepository
             ->Where('need_inspection', Client::STATUS_PENDING)
             ->get();
     }
+
     public function GetInspectionListByUser($id)
     {
-        return Client::with('businessScale')
+        return Client::Join('inspection_sessions', 'clients.id', 'inspection_sessions.client_id')
+            ->with('businessScale')
             ->with('industryCategory')
             ->with('pradesheeyasaba.zone')
             ->with('environmentOfficer.user')
@@ -433,7 +435,8 @@ class ClientRepository
             ->with('committees.commetyPool')
             ->with('minutes.user')
             ->with('inspectionSessions.inspectionSessionAttachments')
-            ->Where('need_inspection', Client::STATUS_PENDING)
+            ->Where('inspection_sessions.status', '0')
+            ->Where('inspection_sessions.environment_officer_id', $id)
             ->get();
     }
 }

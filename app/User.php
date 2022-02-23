@@ -6,7 +6,7 @@ use App\Roll;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -77,5 +77,13 @@ class User extends Authenticatable
     public function findForPassport($username)
     {
         return $this->where('user_name', $username)->first();
+    }
+    
+    public function complains() {
+        return $this->hasMany(Complain::class);
+    }
+
+    public function complainAssignLogs() {
+        return $this->hasMany(ComplainAssignLog::class);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Level;
+use App\Roll;
 use App\Privilege;
 use App\Helpers\LogActivity;
 use App\Rules\contactNo;
@@ -13,9 +14,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-class UserController extends Controller {
+class UserController extends Controller
+{
 
-    public function index() {
+    public function index()
+    {
 
         $user = Auth::user();
         $users = User::get();
@@ -24,11 +27,13 @@ class UserController extends Controller {
         return view('user', ['levels' => $level, 'users' => $users, 'pageAuth' => $pageAuth]);
     }
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth');
     }
 
-    public function create(Request $request) {
+    public function create(Request $request)
+    {
         //       dd(request()->all());
 
         \DB::transaction(function () {
@@ -43,7 +48,7 @@ class UserController extends Controller {
                 'nic' => ['sometimes', 'nullable', 'unique:users', new nationalID],
                 'roll' => 'integer|required',
                 'password' => 'required|confirmed|min:6',
-                    // 'institute' => 'required|integer',
+                // 'institute' => 'required|integer',
             ]);
             $user = new User();
             $user->user_name = request('userName');
@@ -61,11 +66,12 @@ class UserController extends Controller {
             LogActivity::addToLog('Save User : UserController', $user);
         });
         return redirect()
-                        ->back()
-                        ->with('success', 'Ok');
+            ->back()
+            ->with('success', 'Ok');
     }
 
-    public function edit(Request $request, $id) {
+    public function edit(Request $request, $id)
+    {
         $aUser = Auth::user();
 
         $user = User::findOrFail($id);
@@ -83,24 +89,26 @@ class UserController extends Controller {
         return view('user_update', ['level' => $level, 'user' => $user, 'privileges' => $privileges, 'roles' => $roles, 'activitys' => $activity, 'pageAuth' => $pageAuth]);
     }
 
-    public function PrevilagesAdd($user) {
+    public function PrevilagesAdd($user)
+    {
         $privileges = $user->roll->privileges;
         //        dd($privileges);
         foreach ($privileges as $value) {
             //           echo $value['id'] . request('roll_id') . "</br>";
             $user->privileges()->attach(
-                    $value['id'],
-                    [
-                        'is_read' => $value['pivot']['is_read'],
-                        'is_create' => $value['pivot']['is_create'],
-                        'is_update' => $value['pivot']['is_update'],
-                        'is_delete' => $value['pivot']['is_delete'],
-                    ]
+                $value['id'],
+                [
+                    'is_read' => $value['pivot']['is_read'],
+                    'is_create' => $value['pivot']['is_create'],
+                    'is_update' => $value['pivot']['is_update'],
+                    'is_delete' => $value['pivot']['is_delete'],
+                ]
             );
         }
     }
 
-    public function PrevilagesAddById(Request $request, $id) {
+    public function PrevilagesAddById(Request $request, $id)
+    {
         $privileges = $request->all()['pre'];
         //        dd($privileges);
         $user = User::findOrFail($id);
@@ -112,19 +120,20 @@ class UserController extends Controller {
         $user->privileges()->detach();
         foreach ($privileges as $value) {
             $user->privileges()->attach(
-                    $value['id'],
-                    [
-                        'is_read' => $value['is_read'],
-                        'is_create' => $value['is_create'],
-                        'is_update' => $value['is_update'],
-                        'is_delete' => $value['is_delete'],
-                    ]
+                $value['id'],
+                [
+                    'is_read' => $value['is_read'],
+                    'is_create' => $value['is_create'],
+                    'is_update' => $value['is_update'],
+                    'is_delete' => $value['is_delete'],
+                ]
             );
         }
         return array('id' => '1', 'msg' => 'ok');
     }
 
-    public function store(Request $request, $id) {
+    public function store(Request $request, $id)
+    {
         $user = User::findOrFail($id);
         request()->validate([
             'firstName' => 'required|max:50|string',
@@ -155,18 +164,19 @@ class UserController extends Controller {
 
         if ($msg) {
             return redirect()
-                            ->back()
-                            ->with('success', 'Ok');
+                ->back()
+                ->with('success', 'Ok');
         } else {
             return redirect()
-                            ->back()
-                            ->withInput()
-                            ->with('error', 'Error');
+                ->back()
+                ->withInput()
+                ->with('error', 'Error');
         }
         LogActivity::addToLog('Assign User Privileges', $user);
     }
 
-    public function storePassword(Request $request, $id) {
+    public function storePassword(Request $request, $id)
+    {
         $user = User::findOrFail($id);
         request()->validate([
             'password' => 'required|confirmed|min:6',
@@ -183,17 +193,18 @@ class UserController extends Controller {
 
         if ($msg) {
             return redirect()
-                            ->back()
-                            ->with('success', 'Ok');
+                ->back()
+                ->with('success', 'Ok');
         } else {
             return redirect()
-                            ->back()
-                            ->withInput()
-                            ->with('error', 'Error');
+                ->back()
+                ->withInput()
+                ->with('error', 'Error');
         }
     }
 
-    public function activeStatus(Request $request, $id) {
+    public function activeStatus(Request $request, $id)
+    {
         $user = User::findOrFail($id);
         //        return $request;
         //        request()->validate([
@@ -220,12 +231,14 @@ class UserController extends Controller {
         $user->save();
     }
 
-    public function previlagesById($id) {
+    public function previlagesById($id)
+    {
         $user = User::findOrFail($id);
         return $user->privileges;
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $user = User::findOrFail($id);
         $msg = $user->delete();
         $users = User::with('roll')->get();
@@ -240,19 +253,22 @@ class UserController extends Controller {
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         Auth::logout();
         return view('auth.login');
         //        $this->middleware('auth');
     }
 
-    public function myProfile() {
+    public function myProfile()
+    {
         $aUser = Auth::user();
         $pageAuth = $aUser->authentication(config('auth.privileges.userCreate'));
         return view('my_profile', ['user' => $aUser, 'pageAuth' => $pageAuth]);
     }
 
-    public function changeMyPass() {
+    public function changeMyPass()
+    {
         $aUser = Auth::user();
         request()->validate([
             'password' => 'required|confirmed|min:6',
@@ -268,23 +284,25 @@ class UserController extends Controller {
 
         if ($msg) {
             return redirect()
-                            ->back()
-                            ->with('success', 'Ok');
+                ->back()
+                ->with('success', 'Ok');
         } else {
             return redirect()
-                            ->back()
-                            ->withInput()
-                            ->with('error', 'Error');
+                ->back()
+                ->withInput()
+                ->with('error', 'Error');
         }
     }
 
-    public function getDeletedUser() {
+    public function getDeletedUser()
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.userCreate'));
         return User::onlyTrashed()->get();
     }
 
-    public function activeDeletedUser($id) {
+    public function activeDeletedUser($id)
+    {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.userCreate'));
 
@@ -297,4 +315,15 @@ class UserController extends Controller {
         }
     }
 
+    /** 
+     *  get the users by the user level
+     */
+    public function get_users_by_level($level)
+    {
+        $users = Roll::join('users', 'users.roll_id', '=', 'rolls.id')
+            ->where('rolls.level_id', $level)
+            ->where('users.deleted_at', null)
+            ->get();
+        return $users;
+    }
 }

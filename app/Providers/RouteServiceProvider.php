@@ -62,9 +62,6 @@ class RouteServiceProvider extends ServiceProvider
 
                 Route::middleware('web')
                         ->namespace($this->namespace)
-                        ->group(base_path('routes/la.php'));
-                Route::middleware('web')
-                        ->namespace($this->namespace)
                         ->group(base_path('routes/reportsWeb.php'));
         }
 
@@ -81,10 +78,6 @@ class RouteServiceProvider extends ServiceProvider
                         ->middleware('api')
                         ->namespace($this->namespace)
                         ->group(base_path('routes/api.php'));
-                Route::prefix('api')
-                        ->middleware('api')
-                        ->namespace($this->namespace)
-                        ->group(base_path('routes/localAuthorityApi.php'));
                 Route::prefix('api')
                         ->middleware('api')
                         ->namespace($this->namespace)
@@ -158,5 +151,19 @@ class RouteServiceProvider extends ServiceProvider
                         ->middleware('api')
                         ->namespace($this->namespace)
                         ->group(base_path('routes/mobileAPI.php'));
-        }
-}
+                Route::prefix('api')
+                        ->middleware('api')
+                        ->namespace($this->namespace)
+                        ->group(base_path('routes/complainApi.php'));
+                Route::prefix('api')
+                        ->middleware('api')
+                        ->namespace($this->namespace)
+                        ->group(base_path('routes/documentApi.php'));
+                Route::prefix('api')
+                        ->middleware('api')
+                        ->namespace($this->namespace)
+                        ->group(base_path('routes/changeFileApi.php'));
+                Route::prefix('api')
+                        ->middleware('api')
+                        ->namespace($this->namespace)
+                        ->group(base_path('routes/certificateReferApi.php'));
