@@ -62,6 +62,29 @@ class WebDocumentController extends Controller
     public function get_letter_content($id)
     {
         $letter = Letter::find($id);
-        return view('letter_maker', $letter->letter_content);
+        $letter_title = $letter->letter_title;
+        $letter_content = $letter->letter_content;
+        return view('document_maker', compact('letter_title', 'id', 'letter_content'));
+    }
+
+    public function update_letter_content(Request $request)
+    {
+
+        $validated = $request->validate([
+            'complain_id' => 'required',
+            'content' => 'required',
+        ]);
+
+        if ($validated) {
+            $update_letter_content = Letter::find($request->complain_id);
+            $update_letter_content->letter_content = $request->content;
+            $status = $update_letter_content->save();
+        }
+
+        if ($status == true) {
+            return array("status" => 1, "message" => "Letter content saved successfully");
+        } else {
+            return array("status" => 0, "message" => "Letter content saving was unsuccessful");
+        }
     }
 }
