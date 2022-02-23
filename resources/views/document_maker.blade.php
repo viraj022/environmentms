@@ -154,6 +154,8 @@
         update_doc();
     });
 
+    
+    
     function update_doc() {
         let data = {
             "content": EDITOR_DATA.getData(),
