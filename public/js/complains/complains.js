@@ -1,6 +1,9 @@
 function gen_complain_code() {
     var code = Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5);
-    $('#complainer_code').val(code);
+    var d = new Date();
+    var date = d.getFullYear();
+    var prs = $("#ps option:selected").data('ps_code');
+    $('#complainer_code').val(date + '/' + prs + '/' + code);
 }
 
 function load_complains() {
@@ -13,6 +16,10 @@ function load_complains() {
         "serverSide": false,
         "stateSave": true,
         "pageLength": 10,
+        rowReorder: {
+            selector: 'td:nth-child(2)'
+        },
+        responsive: true,
         language: {
             searchPlaceholder: "Search..."
         },
@@ -22,100 +29,97 @@ function load_complains() {
             "dataSrc": ""
         },
         "columns": [{
-            "data": ""
-        },
-        {
-            "data": "complainer_code",
-            "defaultContent": "-"
-        },
-        {
-            "data": "complainer_name",
-            "defaultContent": "-"
-        },
-        {
-            "data": "complainer_address",
-            "defaultContent": "-"
-        },
-        {
-            "data": "comp_contact_no",
-            "defaultContent": "-"
-        },
-        {
-            "data": "created_user.user_name",
-            "defaultContent": "N/A"
-        },
-        {
-            "data": "assigned_user.user_name",
-            "defaultContent": "N/A"
-        },
-        {
-            "data": "id"
-        }
+                "data": ""
+            },
+            {
+                "data": "complainer_code",
+                "defaultContent": "-"
+            },
+            {
+                "data": "complainer_name",
+                "defaultContent": "-"
+            },
+            {
+                "data": "complainer_address",
+                "defaultContent": "-"
+            },
+            {
+                "data": "comp_contact_no",
+                "defaultContent": "-"
+            },
+            {
+                "data": "created_user.user_name",
+                "defaultContent": "N/A"
+            },
+            {
+                "data": "assigned_user.user_name",
+                "defaultContent": "N/A"
+            },
+            {
+                "data": "id"
+            }
         ],
         "columnDefs": [{
-            "targets": 0,
-            "data": "0",
-            "render": function () {
-                return index++;
-            }
-        },
-        {
-            "targets": 7,
-            "data": "0",
-            "render": function (data, type, full, meta) {
-                if (full['recieve_type'] == 1) {
-                    return "<span class='bg-success p-1 rounded'>Call</span>";
-                } else if (full['recieve_type'] == 2) {
-                    return "<span class='bg-success p-1 rounded'>Written</span>";
-                } else {
-                    return "<span class='bg-success p-1 rounded'>Verbal</span>";
+                "targets": 0,
+                "data": "0",
+                "render": function() {
+                    return index++;
+                }
+            },
+            {
+                "targets": 7,
+                "data": "0",
+                "render": function(data, type, full, meta) {
+                    if (full['recieve_type'] == 1) {
+                        return "<span class='bg-success p-1 rounded'>Call</span>";
+                    } else if (full['recieve_type'] == 2) {
+                        return "<span class='bg-success p-1 rounded'>Written</span>";
+                    } else {
+                        return "<span class='bg-success p-1 rounded'>Verbal</span>";
+                    }
+                }
+            },
+            {
+                "targets": 8,
+                "data": "0",
+                "render": function(data, type, full, meta) {
+                    if (full['status'] == 1) {
+                        return "<span class='bg-success p-1 rounded'>Completed</span>";
+                    } else {
+                        return "<span class='bg-warning p-1 rounded'>Pending</span>";
+                    }
+                }
+            },
+            {
+                "targets": 9,
+                "data": "0",
+                "render": function(data, type, full, meta) {
+                    return getJtableBtnHtml(full);
                 }
             }
-        },
-        {
-            "targets": 8,
-            "data": "0",
-            "render": function (data, type, full, meta) {
-                if (full['status'] == 1) {
-                    return "<span class='bg-success p-1 rounded'>Completed</span>";
-                } else {
-                    return "<span class='bg-warning p-1 rounded'>Pending</span>";
-                }
-            }
-        },
-        {
-            "targets": 9,
-            "data": "0",
-            "render": function (data, type, full, meta) {
-                return getJtableBtnHtml(full);
-            }
-        }
         ],
         "order": [
             [0, "asc"]
         ],
     });
 
-    $(function () {
-        var t = $("#complain_tbl").DataTable({
-            rowReorder: {
-                selector: 'td:nth-child(2)'
-            },
-            responsive: true,
-        });
-        t.on('order.dt search.dt', function () {
-            t.column(0, {
-                search: 'applied',
-                order: 'applied'
-            }).nodes().each(function (cell, i) {
-                cell.innerHTML = i + 1;
-            });
-        }).draw();
-    });
+    // $(function() {
+    //     var t = $("#complain_tbl").DataTable({
+
+    //     });
+    //     t.on('order.dt search.dt', function() {
+    //         t.column(0, {
+    //             search: 'applied',
+    //             order: 'applied'
+    //         }).nodes().each(function(cell, i) {
+    //             cell.innerHTML = i + 1;
+    //         });
+    //     }).draw();
+    // });
 
     //data table error handling
     $.fn.dataTable.ext.errMode = 'none';
-    $('#complain_tbl').on('error.dt', function (e, settings, techNote, message) {
+    $('#complain_tbl').on('error.dt', function(e, settings, techNote, message) {
         console.log('DataTables error: ', message);
     });
 }
@@ -144,17 +148,19 @@ function save_complain() {
         contact_complainer_ipt: $('#contact_complainer_ipt').val(),
         complain_desc_ipt: $('#complain_desc_ipt').val(),
         recieve_type_ipt: $('#recieve_type_ipt').val(),
+        pradeshiya_saba_id: $('#ps').val(),
     };
     let arr = [];
     let index = 0;
-    $.each($('#complain_attach')[0].files, function (key, val) {
+    $.each($('#complain_attach')[0].files, function(key, val) {
         arr[index++] = val;
     });
-    ulploadFileWithData(url, data, function (resp) {
+    ulploadFileWithData(url, data, function(resp) {
         if (resp.status == 1) {
             $('#complain_frm')[0].reset();
             $('#complain_tbl').DataTable().ajax.reload();
             gen_complain_code();
+            $('img').addClass('d-none');
             swal.fire('success', 'Successfully save the complains', 'success');
         } else {
             swal.fire('failed', 'Complain saving is unsuccessful', 'warning');
@@ -172,17 +178,21 @@ function update_complain() {
         contact_complainer_ipt: $('#contact_complainer_ipt').val(),
         complain_desc_ipt: $('#complain_desc_ipt').val(),
         recieve_type_ipt: $('#recieve_type_ipt').val(),
+        pradeshiya_saba_id: $('#ps').val(),
     };
     let arr = [];
     let index = 0;
-    $.each($('#complain_attach')[0].files, function (key, val) {
+    $.each($('#complain_attach')[0].files, function(key, val) {
         arr[index++] = val;
     });
-    ulploadFileWithData(url, data, function (resp) {
+    ulploadFileWithData(url, data, function(resp) {
         if (resp.status == 1) {
             $('#complain_frm')[0].reset();
             $('#complain_tbl').DataTable().ajax.reload();
             gen_complain_code();
+            $('img').addClass('d-none');
+            $('#update').addClass('d-none');
+            $('#save').removeClass('d-none');
             swal.fire('success', 'Successfully update the complains', 'success');
         } else {
             swal.fire('failed', 'Complain updating is unsuccessful', 'warning');
@@ -192,12 +202,30 @@ function update_complain() {
 
 function delete_complain(id) {
     let url = '/api/delete_complain/id/' + id;
-    ajaxRequest('DELETE', url, null, function (resp) {
+    ajaxRequest('DELETE', url, null, function(resp) {
         if (resp.status == 1) {
             $('#complain_tbl').DataTable().ajax.reload();
             swal.fire('success', 'Successfully deleted the complains', 'success');
         } else {
             swal.fire('failed', 'Complain deleting is unsuccessful', 'warning');
+        }
+    });
+}
+
+function loadPradeshiyaSabha(callBack) {
+    var cbo = "";
+    ajaxRequest('GET', "/api/pradesheeyasabas", null, function(dataSet) {
+        if (dataSet) {
+            $.each(dataSet, function(index, row) {
+                cbo += '<option value="' + row.id + '" data-ps_code="' + row.code + '">' + row.code + ' - ' + row.name + '</option>';
+            });
+        } else {
+            cbo = "<option value=''>No Data Found</option>";
+        }
+        $('#ps').html(cbo);
+        $('.select2').select2();
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack();
         }
     });
 }
