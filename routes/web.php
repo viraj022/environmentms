@@ -84,9 +84,7 @@ Route::get('/reverse_confirm', 'EPLController@index4');
 Route::get('/eo_report', function () {
     return view('eo_report');
 });
-Route::get('/file_progress_report', function () {
-    return view('file_progress_report');
-});
+Route::get('/file_progress_report', 'ReportController@fileProgressReport');
 
 Route::get('/director_approved_list', 'AssistantDirectorController@directorApprovedListIndex');
 Route::get('/reset_count', 'ResetSettingsController@index');

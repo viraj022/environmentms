@@ -17,6 +17,12 @@
             word-break: break-word;
         }
 
+        @media print {
+           #print_letter  {
+              display: none;
+           }
+        }
+
     </style>
 @endsection
 
@@ -41,6 +47,7 @@
                                 <div id="letter_container">
                                     <div class="form-group">
                                         {{-- <h5><label>Letter Title: </label></h5> --}}
+                                        <button type="button" class="btn btn-secondary" id="print_letter">Print letter</button>
                                         <h4 class="text-center"><b>{{ $letter->letter_title }}</b></h4>
                                     </div>
                                     <hr>
@@ -68,6 +75,8 @@
     <!-- AdminLTE for demo purposes -->
     <script src="../../dist/js/adminlte.min.js"></script>
     <script>
-
+        $('#print_letter').click(function(){
+            window.print();
+        });
     </script>
 @endsection
