@@ -29,7 +29,8 @@ class ComplainController extends Controller
             "recieve_type_ipt" => 'required',
             "complain_desc_ipt" => 'required|max:255|string',
             "complainer_code" => 'required|max:255|string',
-            "file_list" => 'required'
+            // "file_list" => 'required',
+            "pradeshiya_saba_id" => 'required'
         ]);
 
         $save_complain = Complain::create([
@@ -40,6 +41,7 @@ class ComplainController extends Controller
             "complain_des" => $request->complain_desc_ipt,
             "complainer_code" => $request->complainer_code,
             "created_user" =>  $user,
+            "pradeshiya_saba_id" => $request->pradeshiya_saba_id
         ]);
         $files = $request->file_list;
         if ($files != null) {
@@ -54,8 +56,8 @@ class ComplainController extends Controller
             }
 
             $save_complain->attachment = json_encode($Arr);
-            $save_complain->save();
         }
+        $save_complain->save();
 
         if ($save_complain == true) {
             return array('status' => 1, 'msg' => 'Complain successfully saved');
@@ -74,7 +76,8 @@ class ComplainController extends Controller
             "recieve_type_ipt" => 'required',
             "complain_desc_ipt" => 'required|max:255|string',
             "complainer_code" => 'required|max:255|string',
-            "file_list" => 'required'
+            // "file_list" => 'required',
+            "pradeshiya_saba_id" => 'required'
         ]);
 
         $update_complain = Complain::find($id);
@@ -85,7 +88,7 @@ class ComplainController extends Controller
         $update_complain->complain_des = $request->complain_desc_ipt;
         $update_complain->complainer_code = $request->complainer_code;
         $update_complain->created_user = $user;
-
+        $update_complain->pradeshiya_saba_id = $request->pradeshiya_saba_id;
         $files = $request->file_list;
 
         if ($files != null) {
@@ -100,8 +103,8 @@ class ComplainController extends Controller
             }
 
             $update_complain->attachment = json_encode($Arr);
-            $update_complain->save();
         }
+        $update_complain->save();
 
         if ($update_complain == true) {
             return array('status' => 1, 'msg' => 'Complain successfully updated');

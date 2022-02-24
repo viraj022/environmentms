@@ -6,6 +6,7 @@
 
 @section('pageStyles')
     <link href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
 @endsection
 
 @section('content')
@@ -21,6 +22,10 @@
                         <div class="card-body">
                             <input type="text" id="hidden_id" value="" hidden>
                             <form enctype="multipart/form-data" id="complain_frm">
+                                <div class="form-group">
+                                    <label>Pradeshiya Sabha*</label>
+                                    <select id="ps" class="form-control form-control-sm select2 select2-purple cutenzReq"></select>
+                                </div>
                                 <div class="form-group">
                                     <label>Complain Code*</label>
                                     <input id="complainer_code" name="complainer_code" type="text" maxlength="45"
@@ -76,7 +81,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Attachment</label>
+                                    <label>Attachment: </label>
                                     <input type="file" id="complain_attach" name="complain_attach"
                                         accept=".png, .jpg, .jpeg" multiple>
                                     <div id="complain_attach_valid" class="d-none">
@@ -132,11 +137,20 @@
 @section('pageScripts')
     <script src="{{ asset('plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('js/complains/complains.js') }}"></script>
+    <script src="../../plugins/select2/js/select2.full.min.js"></script>
+
     <!-- Page script -->
     <script>
         $(document).ready(function() {
+            loadPradeshiyaSabha(function() {
+                gen_complain_code();
+            });
+            
             load_complains();
-            gen_complain_code();
+        });
+
+        $('#ps').change(function() {
+                gen_complain_code();
         });
 
         $('#complain_attach').change(function() {
@@ -178,6 +192,9 @@
                 $('#complain_desc_ipt').val(resp.complain_des);
                 $('#recieve_type_ipt').val(resp.recieve_type);
                 $('#hidden_id').val(resp.id);
+                $('#ps').val(resp.pradeshiya_saba_id);
+                $('#ps').change();
+                $('.select2').select2();
             });
 
             $('#save').addClass('d-none');
