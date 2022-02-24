@@ -953,123 +953,37 @@ class ReportController extends Controller
 
     public function fileProgressReport(Request $request)
     {
-        // return Client::select('id', 'first_name', 'last_name', 'updated_at', 'deleted_at', 'industry_name', 'file_no', 'file_status', 'cer_type_status', 'cer_status', 'industry_category_id', 'environment_officer_id', 'created_at')->with('industryCategory')
-        //     ->where('file_status', '<>', 5)
-        //     ->where('file_status', '<>', 6)
-        //     //                        ->where('deleted_at', '<>', 'null')
-        //     ->orderBy('updated_at', 'ASC')->get()->toArray();
-
-        // $clients = Client::select('id', 'first_name', 'last_name', 'updated_at', 'deleted_at', 'industry_name', 'file_no', 'file_status', 'cer_type_status', 'cer_status', 'industry_category_id', 'environment_officer_id', 'created_at')->with('industryCategory')
-        //     // ->where('file_status', '<>', 5)
-        //     // ->where('file_status', '<>', 6)
-        //     ->orderBy('updated_at', 'ASC')
-        //     ->limit(10)
-        //     ->get()->toArray();
-
-        //column name array
-        $columns = array(
-            0 => 'id',
-            1 => 'first_name',
-            2 => 'last_name',
-            3 => 'updated_at',
-            4 => 'deleted_at',
-            5 => 'industry_name',
-            6 => 'file_no',
-            7 => 'file_status',
-            8 => 'cer_type_status',
-            9 => 'industry_category_id',
-            10 => 'environment_officer_id',
-            11 => 'created_at'
-        );
-
-        // get counts
-        $totalData =  Client::with('industryCategory')
+        $file_type_status = [
+            0 => 'pending',
+            1 => 'New EPL',
+            2 => 'EPL Renew',
+            3 => 'Site Clearance',
+            4 => 'Extend Site Clearance',
+        ];
+        $file_status = [
+            0 => 'EO pending',
+            1 => 'AD File Approval Pending',
+            2 => 'Certificate Preparation',
+            3 => 'AD Certificate Prenidng Approval',
+            4 => 'D Certificate Approval Prenidng',
+            5 => 'Complete',
+            6 => 'Issued',
+            '-1' => 'Rejected',
+            '-2' => 'Hold'
+        ];
+        $clients = Client::select('id', 'first_name', 'last_name', 'updated_at', 'deleted_at', 'industry_name', 'file_no', 'file_status', 'cer_type_status', 'cer_status', 'industry_category_id', 'environment_officer_id', 'created_at')->with('industryCategory')
             ->where('file_status', '<>', 5)
             ->where('file_status', '<>', 6)
-            ->count();
-
-        $totalFiltered = $totalData;
-
-        $limit = $request->input('length');
-        $start = $request->input('start');
-        $order = $columns[$request->input('order.0.column')];
-        $dir = $request->input('order.0.dir');
-
-
-        if (empty($request->input('search.value'))) {
-            $clients = Client::with('industryCategory')
-                ->where('file_status', '<>', 5)
-                ->where('file_status', '<>', 6)
-                ->offset($start)
-                ->limit(10)
-                ->orderBy($order, $dir)
-                ->get();
-        } else {
-            $search = $request->input('search.value');
-
-            $clients =  Client::with('industryCategory')
-                ->orWhere('first_name', 'LIKE', "%{$search}%")
-                ->orWhere('last_name', 'LIKE', "%{$search}%")
-                ->orWhere('updated_at', 'LIKE', "%{$search}%")
-                // ->orWhere('deleted_at', 'LIKE', "%{$search}%")
-
-                // ->orWhere('file_no', 'LIKE', "%{$search}%")
-                ->orWhere('file_status', 'LIKE', "%{$search}%")
-                // ->orWhere('cer_type_status', 'LIKE', "%{$search}%")
-                // ->orWhere('cer_status', 'LIKE', "%{$search}%")
-                // ->orWhere('industry_category_id', 'LIKE', "%{$search}%")
-                // ->orWhere('environment_officer_id', 'LIKE', "%{$search}%")
-                ->orWhere('created_at', 'LIKE', "%{$search}%")
-                ->offset($start)
-                ->limit($limit)
-                ->orderBy($order, $dir)
-                ->get();
-
-            $totalFiltered = Client::with('industryCategory')
-                ->orWhere('first_name', 'LIKE', "%{$search}%")
-                ->orWhere('last_name', 'LIKE', "%{$search}%")
-                ->orWhere('updated_at', 'LIKE', "%{$search}%")
-                // ->orWhere('deleted_at', 'LIKE', "%{$search}%")
-                // ->orWhere('file_no', 'LIKE', "%{$search}%")
-                ->orWhere('file_status', 'LIKE', "%{$search}%")
-                // ->orWhere('cer_type_status', 'LIKE', "%{$search}%")
-                // ->orWhere('cer_status', 'LIKE', "%{$search}%")
-                // ->orWhere('industry_category_id', 'LIKE', "%{$search}%")
-                // ->orWhere('environment_officer_id', 'LIKE', "%{$search}%")
-                ->orWhere('created_at', 'LIKE', "%{$search}%")
-                ->count();
-        }
-
-        if (!empty($clients)) {
-            // foreach ($clients as $client) {
-            //     $nestedData['id'] = $client->id;
-            //     $nestedData['first_name'] = $client->first_name;
-            //     $nestedData['last_name'] = $client->last_name;
-            //     $nestedData['updated_at'] = $client->updated_at;
-            //     $nestedData['deleted_at'] = $client->deleted_at;
-            //     $nestedData['industry_name'] = $client->industry_name;
-            //     $nestedData['file_no'] = $client->file_no;
-            //     $nestedData['file_status'] = $client->file_status;
-            //     $nestedData['cer_type_status'] = $client->cer_type_status;
-            //     $nestedData['cer_status'] = $client->cer_status;
-            //     $nestedData['industry_category_id'] = $client->industry_category_id;
-            //     $nestedData['environment_officer_id'] = $client->environment_officer_id;
-            //     $nestedData['created_at'] = $client->created_at;
-            //     $data[] = $nestedData;
-            // }
-            // $data[] = $clients->toArray();
-            return json_encode($clients->toArray());
-        }
-
-        // $json_data = array(
-        //     "draw"            => intval($request->input('draw')),
-        //     "recordsTotal"    => intval($totalData),
-        //     "recordsFiltered" => intval($totalFiltered),
-        //     "data"            => $clients->toArray()
-        // );
-
-
-
-        //        dd($data);
+            ->orderBy('updated_at', 'ASC')
+            // ->limit(10)
+            ->get();
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('file_progress_report', [
+            'pageAuth' => $pageAuth,
+            'report_data' => $clients,
+            'file_type_status' => $file_type_status,
+            'file_status' => $file_status,
+        ]);
     }
 }

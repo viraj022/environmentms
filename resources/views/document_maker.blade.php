@@ -5,18 +5,7 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('pageStyles')
-<!-- This section didnt work for me -->
-<!-- fullCalendar -->
-<link rel="stylesheet" href="../plugins/fullcalendar/main.min.css">
-<link rel="stylesheet" href="../plugins/fullcalendar-daygrid/main.min.css">
-<link rel="stylesheet" href="../plugins/fullcalendar-timegrid/main.min.css">
-<link rel="stylesheet" href="../plugins/fullcalendar-bootstrap/main.min.css">
-<style>
-    /* SHADE DAYS IN THE PAST */
-    td.fc-day.fc-past {
-        background-color: #EEEEEE;
-    }
-</style>
+
 @endsection
 
 @section('content')
@@ -154,8 +143,8 @@
         update_doc();
     });
 
-    
-    
+
+
     function update_doc() {
         let data = {
             "content": EDITOR_DATA.getData(),
