@@ -7,6 +7,7 @@
 
 @section('pageStyles')
     <link href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css">
 @endsection
 
 @section('content')
@@ -135,6 +136,7 @@
 
     <script src="{{ asset('plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('js/complains/complains.js') }}"></script>
+    <script src="../../dist/js/adminlte.min.js"></script>
     <!-- Page script -->
     <script>
         $(document).ready(function() {
