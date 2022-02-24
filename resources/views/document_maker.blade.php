@@ -160,6 +160,7 @@
         let data = {
             "content": EDITOR_DATA.getData(),
             "complain_id": "{{$id}}",
+            "letter_title": $('#letter_title').val()
         };
         let url = '/api/update_document';
         if (data.content != '' && data.complain_id != '') {
