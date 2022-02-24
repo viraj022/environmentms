@@ -4,6 +4,14 @@
 @extends('layouts.navbar')
 @extends('layouts.sidebar')
 @extends('layouts.footer')
+@section('pageStyles')
+<style>
+    table.dataTable td {
+        word-break: break-word;
+    }
+
+</style>
+@endsection
 
 @section('content')
 <section class="content-header">
@@ -278,11 +286,11 @@
                         <h1> Letter List </h1>
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered" id="letter_list">
+                        <table class="table table-bordered" id="letter_list" style="word-break: break-word;">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Letter Title</th>
+                                    <th style="width: 5%">#</th>
+                                    <th style="width: 50%">Letter Title</th>
                                     <th>Letter Date</th>
                                     <th>Action</th>
                                 </tr>
@@ -350,6 +358,7 @@
                 if (resp.status == 1) {
                     swal.fire('success', 'letter title adding is successfull', 'success');
                     $('#letter_title').val('');
+                    load_letters();
                 } else {
                     swal.fire('failed', 'letter title adding was unsuccessful', 'warning');
                 }
@@ -430,7 +439,7 @@
         let url = '/api/get_all_letters';
         ajaxRequest('GET', url, null, function(resp) {
             var letter_view_tbl = "";
-            $('#letter_view_tbl').DataTable().destroy();
+            // $('#letter_view_tbl').DataTable().destroy();
             $.each(resp, function(key, value2) {
                 key++;
                 letter_view_tbl += "<tr><td>" + key + "</td><td>" + value2.letter_title + "</td><td>" +
@@ -438,15 +447,15 @@
                     "' class='btn btn-success'>Edit</a></td></tr>";
             });
             $('#letter_list tbody').html(letter_view_tbl);
-            $('#letter_list').DataTable({
-                responsive: true,
-                aLengthMenu: [
-                    [10, 25, 50, 100, -1],
-                    [10, 25, 50, 100, "All"]
-                ],
-                "bDestroy": true,
-                iDisplayLength: 10
-            });
+            // $('#letter_list').DataTable({
+            //     responsive: true,
+            //     aLengthMenu: [
+            //         [10, 25, 50, 100, -1],
+            //         [10, 25, 50, 100, "All"]
+            //     ],
+            //     "bDestroy": true,
+            //     iDisplayLength: 10
+            // });
         });
     }
 </script>
