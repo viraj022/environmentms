@@ -5,6 +5,8 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('pageStyles')
+  <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+
 <style>
     table.dataTable td {
         word-break: break-word;
@@ -311,6 +313,7 @@
 
 @section('pageScripts')
 <script src="{{ asset('/js/complains/complainProfile.js') }}" type="text/javascript"></script>
+<script src="../../dist/js/adminlte.min.js"></script>
 <script>
     $(document).ready(function() {
         loadProfileData();
