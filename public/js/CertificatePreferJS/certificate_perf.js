@@ -3,13 +3,14 @@ function getaProfilebyId(id, callBack) {
         return false;
     }
     var url = "/api/client/id/" + id;
-    ajaxRequest('GET', url, null, function (result) {
+    ajaxRequest('GET', url, null, function(result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }
     });
 }
-var certificate_Status = {1: 'New EPL', 2: 'Renew EPL', 3: 'New Site Clearance', 4: 'Site Clearance Extend'};
+var certificate_Status = { 1: 'New EPL', 2: 'Renew EPL', 3: 'New Site Clearance', 4: 'Site Clearance Extend' };
+
 function setProfileDetails(obj) {
     //    $('#newEPL').val(obj.id);
     if (obj.epls.length == 0) {
@@ -20,7 +21,7 @@ function setProfileDetails(obj) {
         $('#setEPLCode').html(obj.epls[obj.epls.length - 1].code);
         $("#setEPlLink").attr("href", "/epl_profile/client/" + PROFILE_ID + "/profile/" + obj.epls[obj.epls.length - 1].id);
     }
-    (obj.last_name == null) ? $('#client_name').html(obj.first_name) : $('#client_name').html(obj.first_name + ' ' + obj.last_name);
+    (obj.last_name == null) ? $('#client_name').html(obj.first_name): $('#client_name').html(obj.first_name + ' ' + obj.last_name);
     $('#client_address').html(obj.address);
     $('#client_cont').html(obj.contact_no);
     $('#client_amil').html(obj.email);
@@ -66,23 +67,25 @@ function genCertificateNumbyId(file_id, callBack) {
         return false;
     }
     var url = "/api/start_drafting/id/" + file_id;
-    ajaxRequest('POST', url, null, function (result) {
+    ajaxRequest('POST', url, null, function(result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }
     });
 }
+
 function getCertificateDetails(file_id, callBack) {
     if (file_id.length == 0) {
         return false;
     }
     var url = "/api/working_certificate/file/" + file_id;
-    ajaxRequest('GET', url, null, function (resp) {
+    ajaxRequest('GET', url, null, function(resp) {
         if (resp.length == 0) {
             $('.genCertificateNum').removeClass('d-none');
         } else {
             $('.certificateDetails').remove();
             $('#certificate_Num').html('<b>Application/Licence Number: </b>' + resp.cetificate_number);
+            $('#ref_Num').html('<b>Reference Number: </b>' + resp.refference_no);
             $('#created_at').html('<b>Created At: </b>' + resp.created_at);
             $('#updated_at').html('<b>Updated At: </b>' + resp.updated_at);
             $('#fileUpDiv').addClass('d-none');
@@ -139,11 +142,11 @@ function completeCertificateAPI(certificate_id, FILE_STATUS, data, callBack) {
         url = "/api/certificate/drafted/";
     } else if (FILE_STATUS == 5) {
         url = "/api/certificate/issue/";
-//        url = "/api/certificate/complete/";
+        //        url = "/api/certificate/complete/";
     }
 
     url += certificate_id;
-    ajaxRequest('PATCH', url, data, function (result) {
+    ajaxRequest('PATCH', url, data, function(result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Letter;
@@ -21,13 +22,17 @@ class WebDocumentController extends Controller
 
         $validated = $request->validate([
             'title' => 'required',
-            'content' => 'required',
         ]);
+
         if ($validated) {
             $save_letter_content = Letter::create([
                 "letter_title" => $request->title,
-                "letter_content" => $request->content,
+                "complain_id" => $request->complain_id,
             ]);
+            if ($request->content != null) {
+                $save_letter_content->letter_content = $request->content;
+                $save_letter_content->save();
+            }
         }
 
         if ($save_letter_content == true) {
@@ -52,5 +57,34 @@ class WebDocumentController extends Controller
     {
         $letter = Letter::find($id);
         return View('letter_view', compact('letter'));
+    }
+
+    public function get_letter_content($id)
+    {
+        $letter = Letter::find($id);
+        $letter_title = $letter->letter_title;
+        $letter_content = $letter->letter_content;
+        return view('document_maker', compact('letter_title', 'id', 'letter_content'));
+    }
+
+    public function update_letter_content(Request $request)
+    {
+
+        $validated = $request->validate([
+            'complain_id' => 'required',
+            'content' => 'required',
+        ]);
+
+        if ($validated) {
+            $update_letter_content = Letter::find($request->complain_id);
+            $update_letter_content->letter_content = $request->content;
+            $status = $update_letter_content->save();
+        }
+
+        if ($status == true) {
+            return array("status" => 1, "message" => "Letter content saved successfully");
+        } else {
+            return array("status" => 0, "message" => "Letter content saving was unsuccessful");
+        }
     }
 }

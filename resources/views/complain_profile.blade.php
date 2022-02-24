@@ -2,10 +2,18 @@
 @extends('layouts.styles')
 @extends('layouts.scripts')
 @extends('layouts.navbar')
+@extends('layouts.sidebar')
 @extends('layouts.footer')
+@section('pageStyles')
+<style>
+    table.dataTable td {
+        word-break: break-word;
+    }
+
+</style>
+@endsection
 
 @section('content')
-
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -15,208 +23,289 @@
         </div>
     </div>
 </section>
-<!--//Tab Section START//-->
 <section class="content-header">
-    <div class="card card-success card-outline card-outline-tabs col-md-12">
-        <div class="card-header p-0 border-bottom-0">
-            <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+    <div class="card card-primary card-tabs">
+        <div class="card-header p-0 pt-1">
+            <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+
                 <li class="nav-item">
-                    <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="false">Profile Details</a>
+                    <a class="nav-link active" id="custom-tabs-two-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-two-home" aria-selected="true">Profile Details</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-three-attachments-tab" data-toggle="pill" href="#custom-tabs-three-attachments" role="tab" aria-controls="custom-tabs-three-attachments" aria-selected="false">Attachments</a>
+                    <a class="nav-link" id="custom-tabs-two-profile-tab" data-toggle="pill" href="#custom-tabs-three-attachments" role="tab" aria-controls="custom-tabs-two-profile" aria-selected="false">Attachments</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="complain-assign-tab" data-toggle="pill" href="#complain-assign" role="tab" aria-controls="complain-assign" aria-selected="false">Assign Complain</a>
+                    <a class="nav-link" id="custom-tabs-two-messages-tab" data-toggle="pill" href="#complain-assign" role="tab" aria-controls="custom-tabs-two-messages" aria-selected="false">Assign Complain</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-two-letters-tab" data-toggle="pill" href="#letters" role="tab" aria-controls="custom-tabs-two-letters" aria-selected="false">letter</a>
                 </li>
             </ul>
         </div>
         <div class="card-body">
             <div class="tab-content" id="custom-tabs-three-tabContent">
                 <div class="tab-pane fade active show" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+                    <div class="card-body box-profile">
+                        <input type="text" id="complain_profile_id" value="{{ $complain_id }}" class="d-none">
+                        <div class="text-center">
+                            <h3 class="profile-username text-center"><b>Assigned Officer:</b><span id="assigned_officer">></span></h3>
+                            <h2 class="profile-username text-center"><b>Created By :</b><span id="created_user">></span></h2>
+
+                        </div>
+
+
+                        <p class="text-muted text-center firstL_name">U.B. Jayawathi</p>
+
+                        <ul class="list-group list-group-unbordered mb-3">
+
+
+                            <li class="list-group-item">
+                                <b>Code :</b> <a class="float-right" id="comp_code"></a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Complainer Name :</b> <a class="float-right" id="comp_name"></a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Complainer Contact No:</b> <a class="float-right" id="comp_contact_no"></a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Description</b> <a class="float-right" id="comp_desc"></a>
+                            </li>
+
+                            <li class="list-group-item">
+                                <b>Status : </b> <a class="float-right"><span id="comp_status" class=""></span></a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Complain By :</b> <a class="float-right" id="comp_by"></a>
+                            </li>
+
+                        </ul>
+                    </div>
                     <!--//Industry Profile Start//-->
-                    <section class="content-header">
-                        <!--show lient details START-->
-                        <div class="view-Client ">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="card">
-                                        <input type="text" id="complain_profile_id" value="{{ $complain_id }}" class="d-none">
-                                        <div class="card-body">
-                                            <h6><b>Assigned: </b><span id="assigned_officer"></span></h6>
-                                            <hr>
-                                            <h6><b>Created By: </b><span id="created_user"></span></h6>
-                                            <hr>
-                                            <dl class="row">
-                                                <dt class="col-sm-4">Code : </dt>
-                                                <dd class="col-sm-6" id="comp_code"></dd>
-                                                <dt class="col-sm-4">Complainer Name : </dt>
-                                                <dd class="col-sm-6" id="comp_name"></dd>
-                                                <dt class="col-sm-4">Compainer Address:</dt>
-                                                <dd class="col-sm-6" id="comp_address"></dd>
-                                                <dt class="col-sm-4">Complainer Contact No:</dt>
-                                                <dd class="col-sm-6" id="comp_contact_no"></dd>
-                                                <dt class="col-sm-4">Description :</dt>
-                                                <dd class="col-sm-6" id="comp_desc"></dd>
-                                                <dt class="col-sm-4">Status : </dt>
-                                                <dd class="col-sm-6">
-                                                    <div class="bg-success d-none" id="comp_status_completed">Completed
-                                                    </div>
-                                                    <div class="bg-warning d-none" id="comp_status_pending">Pending
-                                                    </div>
-                                                </dd>
-                                                <dt class="col-sm-4">Complain By :</dt>
-                                                <dd class="col-sm-6" id="comp_by">Call</dd>
-                                            </dl>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    <!--//Industry Profile END//-->
-                </div>
-                <div class="tab-pane" id="custom-tabs-three-attachments" role="tabpanel" aria-labelledby="custom-tabs-three-attachments">
-                    <section class="content-header">
+                    {{-- <section class="content-header">
+                            <!--show lient details START-->
+                            <div class="view-Client">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <input type="text" id="complain_profile_id" value="{{ $complain_id }}"
+                    class="d-none">
+                    <div class="card-header">
+                        <h6><b>Assigned Officer: </b><span id=""></span></h6>
                         <hr>
-                        <dt class="text-center"> <b>Upload Attachments</b> </dt>
+                        <h6><b>Created By: </b><span id="created_user"></span></h6>
                         <hr>
-                        <div class="form-group" id="fileUpDiv">
+                    </div>
+                    <div class="card-body">
 
-                            <label id="uploadLabel">File Upload </label>
-                            <input id="fileUploadInput" type="file" class="col-12" accept=".png, .jpg, .jpeg" multiple>
-                            <div class="col-12">
-                                <span id="attached_files"></span>
-                            </div>
-                            <div class="col-12">
-                                <button type="button" class="btn btn-primary mt-2" data-upload_file="attachments" id="upld_attach"> Upload Attachment </button>
-                            </div>
-                        </div>
-                        <hr>
-                        <dt class="text-center"> <b>Uploaded Attachments</b> </dt>
-                        <hr>
-                        <span id="file_attachments"></span>
-                    </section>
-                </div>
-                <div class="tab-pane" id="complain-assign" role="tabpanel" aria-labelledby="complain-assign">
-                    <section class="content-header">
-                        <div class="row mt-5">
-                            <div class="col-12">
-                                <div class="card card-light">
-                                    <div class="card-header">
-                                        <h1> Complain assignment for user </h1>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <form id="complain_assign_frm" class="w-100">
-                                                    <div class="form-group">
-                                                        <label for="user_level">User Level: </label>
-                                                        <select id="user_level" class="custom-select">
-                                                            <option value="1">Local</option>
-                                                            <option value="2">Director</option>
-                                                            <option value="3">Assistant Director</option>
-                                                            <option value="4">Environment Officer</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="user">User: </label>
-                                                        <select id="user" class="custom-select"></select>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <button type="button" class="btn btn-primary" id="assign_complain"> Assign To </button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="col-md-9">
-                                                <div class="card card-light p-5">
-                                                    <div class="form-group">
-                                                        <h6><label>Assigned User: </label></h6>
-                                                        <span id="assigned_user"></span>
-                                                    </div>
-                                                    <table class="table table-bordered" id="forward_history">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>#</th>
-                                                                <th>Assignee</th>
-                                                                <th>Assigner</th>
-                                                                <th>Assigned Time</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody></tbody>
-                                                    </table>
-                                                </div>
-                                                <div class="form-group mt-5">
-                                                    <button id="confirm" class="btn btn-info d-none">Confirm</button>
-                                                    <button id="reject" class="btn btn-warning d-none">Reject</button>
-                                                    <button id="forward_letter_preforation" class="btn btn-success">Forward to letter preforation</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card card-light">
-                                    <div class="card-header">
-                                        <h1> Add comment for complains </h1>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <form id="comments_frm" class="w-100">
-                                                    <input type="text" id="comp_comnt_hid_id" name="comp_comnt_hid_id" value="{{ $complain_id }}" hidden>
-                                                    <div class="form-group">
-                                                        <label for="comment">Comment: </label>
-                                                        <input type="text" id="comment" class="form-control" name="comment" placeholder="Please type the comment">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <button type="button" class="btn btn-primary" id="add_comment">
-                                                            Add Comment </button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="col-md-8 mt-3" id="comment_section"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card card-light">
-                                    <div class="card-header">
-                                        <h1> Add minutes for complains </h1>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <form id="minutes_frm">
-                                                    <div class="form-group">
-                                                        <input type="text" id="comp_minute_hid_id" name="comp_minute_hid_id" value="{{ $complain_id }}" hidden>
-                                                        <label for="minute">Minute: </label>
-                                                        <input type="text" id="minute" class="form-control" name="minute" placeholder="Please type the minute">
-                                                    </div>
+                        <dl class="row">
 
-                                                    <div class="form-group">
-                                                        <button type="button" class="btn btn-primary" id="add_minute">
-                                                            Add Minute </button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="col-md-8 mt-3" id="minute_section"></div>
-                                        </div>
-                                    </div>
+                            <dt class="col-sm-5">Code : </dt>
+                            <dd class="col-sm-7" id="comp_code"></dd>
+
+                            <dt class="col-sm-5">Complainer Name : </dt>
+                            <dd class="col-sm-7" id="comp_name"></dd>
+                            <dt class="col-sm-5">Compainer Address:</dt>
+                            <dd class="col-sm-7" id="comp_address"></dd>
+                            <dt class="col-sm-5">Complainer Contact No:</dt>
+                            <dd class="col-sm-7" id="comp_contact_no"></dd>
+                            <dt class="col-sm-5">Description :</dt>
+                            <dd class="col-sm-7" id="comp_desc"></dd>
+                            <dt class="col-sm-5">Status : </dt>
+                            <dd class="col-sm-7">
+                                <div class="text-success d-none" id="comp_status_completed">Completed
                                 </div>
-                            </div>
-                        </div>
-                    </section>
+                                <div class="text-warning d-none" id="comp_status_pending">Pending
+                                </div>
+                            </dd>
+                            <dt class="col-sm-4">Complain By :</dt>
+                            <dd class="col-sm-6" id="comp_by">Call</dd>
+                        </dl>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</section> --}}
+<!--//Industry Profile END//-->
+</div>
+<div class="tab-pane" id="custom-tabs-three-attachments" role="tabpanel" aria-labelledby="custom-tabs-three-attachments">
+    <section class="content-header">
+        <hr>
+        <dt class="text-center"> <b>Upload Attachments</b> </dt>
+        <hr>
+        <div class="form-group" id="fileUpDiv">
+
+            <label id="uploadLabel">File Upload </label>
+            <input id="fileUploadInput" type="file" class="col-12" accept=".png, .jpg, .jpeg" multiple>
+            <div class="col-12">
+                <span id="attached_files"></span>
+            </div>
+            <div class="col-12">
+                <button type="button" class="btn btn-primary mt-2" data-upload_file="attachments" id="upld_attach"> Upload Attachment </button>
+            </div>
+        </div>
+        <hr>
+        <dt class="text-center"> <b>Uploaded Attachments</b> </dt>
+        <hr>
+        <span id="file_attachments"></span>
+    </section>
+</div>
+<div class="tab-pane" id="complain-assign" role="tabpanel" aria-labelledby="complain-assign">
+    <section class="content-header">
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card card-light">
+                    <div class="card-header">
+                        <h1> Complain assignment for user </h1>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <form id="complain_assign_frm" class="w-100">
+                                    <div class="form-group">
+                                        <label for="user_level">User Level: </label>
+                                        <select id="user_level" class="custom-select">
+                                            <option value="1">Local</option>
+                                            <option value="2">Director</option>
+                                            <option value="3">Assistant Director</option>
+                                            <option value="4">Environment Officer</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="user">User: </label>
+                                        <select id="user" class="custom-select"></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-primary" id="assign_complain"> Assign To </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="card card-light p-5">
+                                    <div class="form-group">
+                                        <h6><label>Assigned User: </label></h6>
+                                        <span id="assigned_user"></span>
+                                    </div>
+                                    <table class="table table-bordered" id="forward_history">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Assignee</th>
+                                                <th>Assigner</th>
+                                                <th>Assigned Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                                <div class="form-group mt-5">
+                                    <button id="confirm" class="btn btn-info d-none">Confirm</button>
+                                    <button id="reject" class="btn btn-warning d-none">Reject</button>
+                                    <button id="forward_letter_preforation" class="btn btn-success">Forward to letter preforation</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-light">
+                    <div class="card-header">
+                        <h1> Add comment for complains </h1>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <form id="comments_frm" class="w-100">
+                                    <input type="text" id="comp_comnt_hid_id" name="comp_comnt_hid_id" value="{{ $complain_id }}" hidden>
+                                    <div class="form-group">
+                                        <label for="comment">Comment: </label>
+                                        <input type="text" id="comment" class="form-control" name="comment" placeholder="Please type the comment">
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-primary" id="add_comment">
+                                            Add Comment </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-8 mt-3" id="comment_section"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-light">
+                    <div class="card-header">
+                        <h1> Add minutes for complains </h1>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <form id="minutes_frm">
+                                    <div class="form-group">
+                                        <input type="text" id="comp_minute_hid_id" name="comp_minute_hid_id" value="{{ $complain_id }}" hidden>
+                                        <label for="minute">Minute: </label>
+                                        <input type="text" id="minute" class="form-control" name="minute" placeholder="Please type the minute">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-primary" id="add_minute">
+                                            Add Minute </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-8 mt-3" id="minute_section"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="tab-pane" id="letters" role="tabpanel" aria-labelledby="letters">
+    <div class="row">
+        <div class="col-md-4">
+            <section class="content-header">
+                <button id="create_letter_btn" type="button" class="btn btn-secondary">Create</button>
+                <div id="letter_title_frm" class="form-group d-none">
+                    <label for="letter_title">Letter Title: </label>
+                    <input type="text" id="letter_title" class="form-control" placeholder="Enter the letter title" value="">
+                    <button type="button" class="btn btn-success mt-2" id="save_letter_title">Save</button>
+                </div>
+            </section>
+        </div>
+        <div class="col-md-8">
+            <section class="content-header">
+                <div class="card card-light">
+                    <div class="card-header">
+                        <h1> Letter List </h1>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered" id="letter_list" style="word-break: break-word;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%">#</th>
+                                    <th style="width: 50%">Letter Title</th>
+                                    <th>Letter Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
 </section>
 @endsection
 
@@ -228,6 +317,12 @@
         let complain_id = "{{ $complain_id }}";
         load_forward_history_table(complain_id);
         load_user_by_level($('#user_level').val());
+        load_letters();
+    });
+
+    $('#create_letter_btn').click(function() {
+        $(this).addClass('d-none');
+        $('#letter_title_frm').removeClass('d-none');
     });
 
     $('#user_level').on('change', function() {
@@ -246,6 +341,32 @@
     $('#add_minute').click(function() {
         add_minute_to_complain();
     });
+
+    $('#save_letter_title').click(function() {
+        save_title();
+    });
+
+    function save_title() {
+        let complain_id = "{{ $complain_id }}";
+        let data = {
+            "title": $('#letter_title').val(),
+            "complain_id": complain_id
+        };
+        let url = '/api/save_document';
+        if (data.title != '') {
+            ajaxRequest('POST', url, data, function(resp) {
+                if (resp.status == 1) {
+                    swal.fire('success', 'letter title adding is successfull', 'success');
+                    $('#letter_title').val('');
+                    load_letters();
+                } else {
+                    swal.fire('failed', 'letter title adding was unsuccessful', 'warning');
+                }
+            });
+        } else {
+            swal.fire('failed', 'Title is required !', 'warning');
+        }
+    }
 
     $('#confirm').click(function() {
         Swal.fire({
@@ -313,5 +434,29 @@
         });
         $('#attached_files').html(html);
     });
+
+    function load_letters() {
+        let url = '/api/get_all_letters';
+        ajaxRequest('GET', url, null, function(resp) {
+            var letter_view_tbl = "";
+            // $('#letter_view_tbl').DataTable().destroy();
+            $.each(resp, function(key, value2) {
+                key++;
+                letter_view_tbl += "<tr><td>" + key + "</td><td>" + value2.letter_title + "</td><td>" +
+                    value2.created_at + "</td><td><a href='/get_letter_content/letter/" + value2.id +
+                    "' class='btn btn-success'>Edit</a></td></tr>";
+            });
+            $('#letter_list tbody').html(letter_view_tbl);
+            // $('#letter_list').DataTable({
+            //     responsive: true,
+            //     aLengthMenu: [
+            //         [10, 25, 50, 100, -1],
+            //         [10, 25, 50, 100, "All"]
+            //     ],
+            //     "bDestroy": true,
+            //     iDisplayLength: 10
+            // });
+        });
+    }
 </script>
 @endsection
