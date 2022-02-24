@@ -5,6 +5,7 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('pageStyles')
+<link rel="stylesheet" href="/dist/css/adminlte.min.css">
 <style>
     table.dataTable td {
         word-break: break-word;
