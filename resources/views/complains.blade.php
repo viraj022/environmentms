@@ -2,6 +2,7 @@
 @extends('layouts.styles')
 @extends('layouts.scripts')
 @extends('layouts.navbar')
+@extends('layouts.sidebar')
 @extends('layouts.footer')
 
 @section('pageStyles')
@@ -60,7 +61,7 @@
                                     <label>Complainer Contact Number*</label>
                                     <input id="contact_complainer_ipt" name="contact_complainer_ipt"
                                         onKeyDown="if (this.value.length == 10 && event.keyCode != 8)
-                                                                                                                return false;" type="number" class="form-control form-control-sm"
+                                                                                                                    return false;" type="number" class="form-control form-control-sm"
                                         placeholder="Enter Contact Number of complainer..." value="" required>
                                     <div id="contact_complainer_valid" class="d-none">
                                         <p class="text-danger">Complainer Contact Number is required</p>
@@ -130,6 +131,8 @@
 @endsection
 
 @section('pageScripts')
+    <script src="../../dist/js/adminlte.min.js"></script>
+
     <script src="{{ asset('plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('js/complains/complains.js') }}"></script>
     <!-- Page script -->
