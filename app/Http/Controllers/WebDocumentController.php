@@ -77,6 +77,7 @@ class WebDocumentController extends Controller
 
         if ($validated) {
             $update_letter_content = Letter::find($request->complain_id);
+            $update_letter_content->letter_title = $request->letter_title;
             $update_letter_content->letter_content = $request->content;
             $status = $update_letter_content->save();
         }
