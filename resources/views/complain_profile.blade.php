@@ -443,7 +443,8 @@
             $.each(resp, function(key, value2) {
                 key++;
                 letter_view_tbl += "<tr><td>" + key + "</td><td>" + value2.letter_title + "</td><td>" +
-                    value2.created_at + "</td><td><a href='/get_letter_content/letter/" + value2.id +
+                    value2.created_at + "</td><td><a href='/get_letter/letter/" + value2.id +
+                        "' class='btn btn-primary mr-2'>View</a><a href='/get_letter_content/letter/" + value2.id +
                     "' class='btn btn-success'>Edit</a></td></tr>";
             });
             $('#letter_list tbody').html(letter_view_tbl);
