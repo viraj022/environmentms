@@ -159,7 +159,7 @@ function save_complain() {
             $('#complain_frm')[0].reset();
             $('#complain_tbl').DataTable().ajax.reload();
             gen_complain_code();
-            $('img').attr('src', '');
+            $('img').addClass('d-none');
             swal.fire('success', 'Successfully save the complains', 'success');
         } else {
             swal.fire('failed', 'Complain saving is unsuccessful', 'warning');
@@ -189,7 +189,7 @@ function update_complain() {
             $('#complain_frm')[0].reset();
             $('#complain_tbl').DataTable().ajax.reload();
             gen_complain_code();
-            $('img').attr('src', '');
+            $('img').addClass('d-none');
             $('#update').addClass('d-none');
             $('#save').removeClass('d-none');
             swal.fire('success', 'Successfully update the complains', 'success');
