@@ -164,7 +164,7 @@ class Client extends Model
     {
         $rtn = [];
         switch ($this->cer_type_status) {
-            
+
             case 1:
                 $epl = EPL::where('client_id', $this->id)->orderBy('id', 'DESC')->first();
                 $rtn['type'] = 'EPL';
