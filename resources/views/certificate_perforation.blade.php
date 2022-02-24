@@ -141,6 +141,8 @@
                                                 <div class="card-body">
                                                     <h6 id="certificate_Num">Application/Licence Number: <a
                                                             class="text-danger">Not Assigned</a></h6>
+                                                    <h6 id="ref_Num">Reference No: <a
+                                                                class="text-danger">N/A</a></h6>
                                                     <h6 id="created_at">Created At:</h6>
                                                     <h6 id="updated_at">Updated At:</h6>
 
@@ -561,7 +563,7 @@
             };
 
             if (data['cert_id'] != '' && data['cert_ref_no'] != '') {
-                ajaxRequest('POST', "/api/save_reference_no/", data, function(resp) {
+                ajaxRequest('POST', "/api/save_reference_no", data, function(resp) {
                     if (resp.status == 1) {
                         swal.fire('success', 'Reference Number Saved Successfully', 'success');
                         $('#man_cert_ref_no').val('');
