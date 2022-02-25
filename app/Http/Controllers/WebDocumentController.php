@@ -67,21 +67,24 @@ class WebDocumentController extends Controller
         $letter = Letter::find($id);
         $letter_title = $letter->letter_title;
         $letter_content = $letter->letter_content;
-        return view('document_maker', compact('letter_title', 'id', 'letter_content'));
+        $letter_status = $letter->status;
+        $complain_id = $letter->complain_id;
+        return view('document_maker', compact('letter_title', 'id', 'letter_content', 'letter_status', 'complain_id'));
     }
 
     public function update_letter_content(Request $request)
     {
 
         $validated = $request->validate([
-            'complain_id' => 'required',
+            'letter_id' => 'required',
             'content' => 'required',
         ]);
-
+        $user_name = Auth::user()->user_name;
         if ($validated) {
-            $update_letter_content = Letter::find($request->complain_id);
+            $update_letter_content = Letter::find($request->letter_id);
             $update_letter_content->letter_title = $request->letter_title;
             $update_letter_content->letter_content = $request->content;
+            $update_letter_content->user_name = $user_name;
             $status = $update_letter_content->save();
         }
 
@@ -89,6 +92,17 @@ class WebDocumentController extends Controller
             return array("status" => 1, "message" => "Letter content saved successfully");
         } else {
             return array("status" => 0, "message" => "Letter content saving was unsuccessful");
+        }
+    }
+
+    public function letter_status_change($status, $id){
+        $status_change = Letter::find($id);
+        $status_change->status = $status;
+        $status_change->save();
+        if($status_change == true){
+            return array("status" => 1, "message" => "Letter status changed successfully");
+        }else{
+            return array("status" => 0, "message" => "Letter status change was unsuccessful");
         }
     }
 }

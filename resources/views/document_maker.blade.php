@@ -30,8 +30,12 @@
                                 <label>Letter Title*</label>
                                 <input type="text" class="form-control" name="letter_title" id="letter_title" placeholder="Enter the letter title" value="{{$letter_title}}">
                             </div>
+                            @if($letter_status != 'COMPLETED')
                             <button class="btn btn-success" id="updateLetter">Update</button>
                             <button class="btn btn-dark" id="completeLetter">Complete</button>
+                            @else
+                            <h3><span class="text-danger">Completed</span></h3>
+                            @endif
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -46,6 +50,8 @@
                         </div>
                         <!-- /.card-body -->
                     </div>
+
+                    
                     <!-- /.card -->
 
                 </div>
@@ -149,22 +155,39 @@
 
 
     function complete_doc() {
-        let letter_id = "{{$id}}";
-        let url = "/api/letter_status_change/status/COMPLETED/letter/"+letter_id;
-        ajaxRequest('POST', url, null, function(resp) {
-            if (resp.status == 1) {
-                swal.fire('success', 'Successfully completed the letter', 'success');
-            } else {
-                swal.fire('failed', 'Letter completion was unsuccessful', 'warning');
+
+        Swal.fire({
+            title: 'Once you complete you cant edit this letter?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'confirm',
+            denyButtonText: `Don't confirm`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.value) {
+                let letter_id = "{{$id}}";
+                let url = "/api/letter_status_change/status/COMPLETED/letter/"+letter_id;
+                ajaxRequest('POST', url, null, function(resp) {
+                   if (resp.status == 1) {
+                       swal.fire('success', 'Successfully completed the letter', 'success');
+                       location.reload();
+                   } else {
+                       swal.fire('failed', 'Letter completion was unsuccessful', 'warning');
+                   }
+              });
+            } else if (result.isDenied) {
+                Swal.fire('Canceled!', 'Confirmation was cancelled', 'info')
             }
-        });
+        })
+
+       
     }
 
 
     function update_doc() {
         let data = {
             "content": EDITOR_DATA.getData(),
-            "complain_id": "{{$id}}",
+            "letter_id": "{{$id}}",
             "letter_title": $('#letter_title').val()
         };
         let url = '/api/update_document';
