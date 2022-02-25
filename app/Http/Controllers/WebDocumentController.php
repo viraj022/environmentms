@@ -24,7 +24,9 @@ class WebDocumentController extends Controller
         $validated = $request->validate([
             'title' => 'required',
         ]);
-        $user_name = Auth::user()->user_name;
+        $first_name = Auth::user()->first_name;
+        $last_name = Auth::user()->last_name;
+        $user_name = $first_name . ' ' . $last_name;
         if ($validated) {
             $save_letter_content = Letter::create([
                 "letter_title" => $request->title,
@@ -79,7 +81,9 @@ class WebDocumentController extends Controller
             'letter_id' => 'required',
             'content' => 'required',
         ]);
-        $user_name = Auth::user()->user_name;
+        $first_name = Auth::user()->first_name;
+        $last_name = Auth::user()->last_name;
+        $user_name = $first_name . ' ' . $last_name;
         if ($validated) {
             $update_letter_content = Letter::find($request->letter_id);
             $update_letter_content->letter_title = $request->letter_title;
