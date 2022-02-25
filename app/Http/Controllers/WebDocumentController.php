@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Letter;
-
+use App\LetterTemplate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -99,14 +99,57 @@ class WebDocumentController extends Controller
         }
     }
 
-    public function letter_status_change($status, $id){
+    public function letter_status_change($status, $id)
+    {
         $status_change = Letter::find($id);
         $status_change->status = $status;
         $status_change->save();
-        if($status_change == true){
+        if ($status_change == true) {
             return array("status" => 1, "message" => "Letter status changed successfully");
-        }else{
+        } else {
             return array("status" => 0, "message" => "Letter status change was unsuccessful");
         }
+    }
+
+    public function createLetterTemplate(Request $request)
+    {
+        $create_let_temp = LetterTemplate::create([
+            "template_name" => $request->template_name,
+            "created_by" => Auth::user()->id,
+        ]);
+        if ($create_let_temp == true) {
+            return array("status" => 1, "message" => "Letter template created successfully");
+        } else {
+            return array("status" => 0, "message" => "Letter template creation was unsuccessful");
+        }
+    }
+
+    public function updateLetterTemplate(Request $request)
+    {
+        $update_let_temp = LetterTemplate::find($request->template_id);
+        $update_let_temp->template_name = $request->template_name;
+        $update_let_temp->content = $request->template_content;
+        $update_let_temp->created_by = Auth::user()->id;
+        $update_let_temp->save();
+        if ($update_let_temp == true) {
+            return array("status" => 1, "message" => "Letter template updated successfully");
+        } else {
+            return array("status" => 0, "message" => "Letter template updation was unsuccessful");
+        }
+    }
+
+    public function letterTemplatePage()
+    {
+        return view('letter_template');
+    }
+
+    public function loadTemplates(){
+        $templates = LetterTemplate::all();
+        return $templates;
+    }
+
+    public function letterTempById($id){
+        $template = LetterTemplate::find($id);
+        return view('letter_template', compact('template'));
     }
 }
