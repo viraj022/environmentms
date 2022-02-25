@@ -19,3 +19,4 @@ composer.lock
 /nbproject/
 /.vs/
 /.vs
+/public/storage/debugbar

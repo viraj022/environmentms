@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Letter;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WebDocumentController extends Controller
 {
@@ -23,11 +24,13 @@ class WebDocumentController extends Controller
         $validated = $request->validate([
             'title' => 'required',
         ]);
-
+        $user_name = Auth::user()->user_name;
         if ($validated) {
             $save_letter_content = Letter::create([
                 "letter_title" => $request->title,
                 "complain_id" => $request->complain_id,
+                "status" => 'INPROGRESS',
+                "user_name" => $user_name,
             ]);
             if ($request->content != null) {
                 $save_letter_content->letter_content = $request->content;

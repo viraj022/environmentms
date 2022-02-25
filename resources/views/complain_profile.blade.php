@@ -272,7 +272,7 @@
     <div class="row">
         <div class="col-md-4">
             <section class="content-header">
-                <button id="create_letter_btn" type="button" class="btn btn-secondary">Create</button>
+                <button id="create_letter_btn" type="button" class="btn btn-secondary">Create Letter</button>
                 <div id="letter_title_frm" class="form-group d-none">
                     <label for="letter_title">Letter Title: </label>
                     <input type="text" id="letter_title" class="form-control" placeholder="Enter the letter title" value="">
@@ -291,7 +291,9 @@
                             <thead>
                                 <tr>
                                     <th style="width: 5%">#</th>
-                                    <th style="width: 50%">Letter Title</th>
+                                    <th style="width: 30%">Letter Title</th>
+                                    <th>Status</th>
+                                    <th>Created User</th>
                                     <th>Letter Date</th>
                                     <th>Action</th>
                                 </tr>
@@ -444,10 +446,11 @@
             // $('#letter_view_tbl').DataTable().destroy();
             $.each(resp, function(key, value2) {
                 key++;
-                letter_view_tbl += "<tr><td>" + key + "</td><td>" + value2.letter_title + "</td><td>" +
+
+                let edit_btn = (value2.status != 'COMPLETED') ? '<a href="/get_letter_content/letter/' + value2.id + '" class="btn btn-success">Edit</a>' :'';
+                letter_view_tbl += "<tr><td>" + key + "</td><td>" + value2.letter_title + "</td><td>" + value2.status + "</td><td>" + value2.user_name + "</td><td>" +
                     value2.created_at + "</td><td><a href='/get_letter/letter/" + value2.id +
-                        "' class='btn btn-primary mr-2'>View</a><a href='/get_letter_content/letter/" + value2.id +
-                    "' class='btn btn-success'>Edit</a></td></tr>";
+                        "' class='btn btn-primary mr-2'>View</a>"+edit_btn+"</td></tr>";
             });
             $('#letter_list tbody').html(letter_view_tbl);
             // $('#letter_list').DataTable({

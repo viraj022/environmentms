@@ -31,7 +31,7 @@
                                 <input type="text" class="form-control" name="letter_title" id="letter_title" placeholder="Enter the letter title" value="{{$letter_title}}">
                             </div>
                             <button class="btn btn-success" id="updateLetter">Update</button>
-                            <button class="btn btn-dark" id="printLetter">Print</button>
+                            <button class="btn btn-dark" id="completeLetter">Complete</button>
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -143,6 +143,22 @@
         update_doc();
     });
 
+    $('#completeLetter').click(function() {
+        complete_doc();
+    });
+
+
+    function complete_doc() {
+        let letter_id = "{{$id}}";
+        let url = "/api/letter_status_change/status/COMPLETED/letter/"+letter_id;
+        ajaxRequest('POST', url, null, function(resp) {
+            if (resp.status == 1) {
+                swal.fire('success', 'Successfully completed the letter', 'success');
+            } else {
+                swal.fire('failed', 'Letter completion was unsuccessful', 'warning');
+            }
+        });
+    }
 
 
     function update_doc() {
