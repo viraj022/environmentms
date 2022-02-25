@@ -7,5 +7,3 @@ Route::middleware('auth:api')->post('/letter_status_change/status/{status}/lette
 Route::middleware('auth:api')->post('/create_let_template', 'WebDocumentController@createLetterTemplate');
 Route::middleware('auth:api')->post('/update_let_template', 'WebDocumentController@updateLetterTemplate');
 Route::middleware('auth:api')->get('/load_templates', 'WebDocumentController@loadTemplates');
-
-

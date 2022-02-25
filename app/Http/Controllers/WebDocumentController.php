@@ -143,12 +143,14 @@ class WebDocumentController extends Controller
         return view('letter_template');
     }
 
-    public function loadTemplates(){
+    public function loadTemplates()
+    {
         $templates = LetterTemplate::all();
         return $templates;
     }
 
-    public function letterTempById($id){
+    public function letterTempById($id)
+    {
         $template = LetterTemplate::find($id);
         return view('letter_template', compact('template'));
     }

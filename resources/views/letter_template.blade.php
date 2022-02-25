@@ -30,10 +30,10 @@
                                 <label>Letter Template Name*</label>
                                 <input type="text" class="form-control" name="letter_temp_name" id="letter_temp_name" placeholder="Enter the letter template name" value="{{(isset($template->template_name)) ? $template->template_name : ''}}">
                             </div>
-                            @if($template == null)
-                            <button class="btn btn-success" id="saveLetTemp">Save</button>
-                            @else
+                            @if(isset($template->template_name))
                             <button class="btn btn-warning" id="updateLetTemp">Update</button>
+                            @else
+                            <button class="btn btn-success" id="saveLetTemp">Save</button>
                             @endif
                         </div>
                         <!-- /.card-body -->
@@ -43,23 +43,23 @@
                             <h4 class="card-title">Letter Templates</h4>
                         </div>
                         <div class="card-body">
-                           <table class="table table-bordered" id="letter_temp_tbl">
-                               <thead>
-                                   <tr>
-                                       <th>#</th>
-                                       <th>Template Name</th>
-                                       <th>Action</th>
-                                   </tr>
-                               </thead>
-                               <tbody>
-                                   <tr></tr>
-                               </tbody>
-                           </table>
+                            <table class="table table-bordered" id="letter_temp_tbl">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Template Name</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr></tr>
+                                </tbody>
+                            </table>
                         </div>
                         <!-- /.card-body -->
                     </div>
 
-                    
+
                     <!-- /.card -->
 
                 </div>
@@ -154,7 +154,7 @@
     };
     var EDITOR_DATA = CKEDITOR.replace('editor1');
 
-    $(document).ready(function(){
+    $(document).ready(function() {
         load_templates();
     });
 
@@ -169,24 +169,26 @@
 
     function save_template() {
 
-        const data = {template_name: $('#letter_temp_name').val()};
+        const data = {
+            template_name: $('#letter_temp_name').val()
+        };
 
         let url = "/api/create_let_template";
         if (data.template_name != '') {
             ajaxRequest('POST', url, data, function(resp) {
-            if (resp.status == 1) {
-                swal.fire('success', 'Successfully save the letter template', 'success');
-                location.reload();
-            } else {
-                swal.fire('failed', 'Letter template saving was unsuccessful', 'warning');
-            }
-         });
+                if (resp.status == 1) {
+                    swal.fire('success', 'Successfully save the letter template', 'success');
+                    location.reload();
+                } else {
+                    swal.fire('failed', 'Letter template saving was unsuccessful', 'warning');
+                }
+            });
         } else {
             swal.fire('failed', 'template name is required to create letter template', 'warning');
         }
     }
 
-    
+
     function update_template() {
         var temp_id = "{{(isset($template->id)) ? $template->id : ''}}";
         let data = {
@@ -200,37 +202,36 @@
             ajaxRequest('POST', url, data, function(resp) {
                 if (resp.status == 1) {
                     swal.fire('success', 'letter content updation is successfull', 'success');
-                    location.reload();
                 } else {
                     swal.fire('failed', 'letter content updation was unsuccessful', 'warning');
                 }
             });
         } else {
-            swal.fire('failed', 'template id and document content are required to update letter template', 'warning');
+            swal.fire('failed', 'document content is required to update letter template', 'warning');
         }
     }
 
     function load_templates() {
 
-      let url = '/api/load_templates';
-      ajaxRequest('GET', url, null, function(resp) {
-          var template_tbl = " ";
-          $.each(resp, function(key, value2) {
-              key++;
+        let url = '/api/load_templates';
+        ajaxRequest('GET', url, null, function(resp) {
+            var template_tbl = " ";
+            $.each(resp, function(key, value2) {
+                key++;
 
-              template_tbl += "<tr><td>" + key + "</td><td>" + value2.template_name + "</td><td><a href='/load_temp/id/" + value2.id +
-                        "' class='btn btn-primary mr-2'>Edit</a></td></tr>";
-          });
-          $('#letter_temp_tbl tbody').html(template_tbl);
-          $('#letter_temp_tbl').DataTable({
-              aLengthMenu: [
-                  [10, 25, 50, 100, -1],
-            [10, 25, 50, 100, "All"]
-              ],
-              "bDestroy": true,
-              iDisplayLength: 10
-          });
-      });
+                template_tbl += "<tr><td>" + key + "</td><td>" + value2.template_name + "</td><td><a href='/load_temp/id/" + value2.id +
+                    "' class='btn btn-primary mr-2'>Edit</a></td></tr>";
+            });
+            $('#letter_temp_tbl tbody').html(template_tbl);
+            $('#letter_temp_tbl').DataTable({
+                aLengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"]
+                ],
+                "bDestroy": true,
+                iDisplayLength: 10
+            });
+        });
 
     }
 </script>
