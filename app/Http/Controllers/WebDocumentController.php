@@ -71,7 +71,15 @@ class WebDocumentController extends Controller
         $letter_content = $letter->letter_content;
         $letter_status = $letter->status;
         $complain_id = $letter->complain_id;
-        return view('document_maker', compact('letter_title', 'id', 'letter_content', 'letter_status', 'complain_id'));
+        $template = LetterTemplate::all();
+        return view('document_maker', compact(
+            'letter_title',
+            'id',
+            'letter_content',
+            'letter_status',
+            'complain_id',
+            'template'
+        ));
     }
 
     public function update_letter_content(Request $request)
@@ -153,5 +161,9 @@ class WebDocumentController extends Controller
     {
         $template = LetterTemplate::find($id);
         return view('letter_template', compact('template'));
+    }
+    public function GetLetterTemplateById($id)
+    {
+        return LetterTemplate::find($id);
     }
 }

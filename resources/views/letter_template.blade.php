@@ -46,7 +46,6 @@
                             <table class="table table-bordered" id="letter_temp_tbl">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
                                         <th>Template Name</th>
                                         <th>Action</th>
                                     </tr>
@@ -212,25 +211,22 @@
     }
 
     function load_templates() {
-
         let url = '/api/load_templates';
         ajaxRequest('GET', url, null, function(resp) {
             var template_tbl = " ";
             $.each(resp, function(key, value2) {
-                key++;
-
-                template_tbl += "<tr><td>" + key + "</td><td>" + value2.template_name + "</td><td><a href='/load_temp/id/" + value2.id +
+                template_tbl += "<tr><td>" + value2.template_name + "</td><td><a href='/load_temp/id/" + value2.id +
                     "' class='btn btn-primary mr-2'>Edit</a></td></tr>";
             });
             $('#letter_temp_tbl tbody').html(template_tbl);
-            $('#letter_temp_tbl').DataTable({
-                aLengthMenu: [
-                    [10, 25, 50, 100, -1],
-                    [10, 25, 50, 100, "All"]
-                ],
-                "bDestroy": true,
-                iDisplayLength: 10
-            });
+            // $('#letter_temp_tbl').DataTable({
+            //     aLengthMenu: [
+            //         [10, 25, 50, 100, -1],
+            //         [10, 25, 50, 100, "All"]
+            //     ],
+            //     "bDestroy": true,
+            //     iDisplayLength: 10
+            // });
         });
 
     }
