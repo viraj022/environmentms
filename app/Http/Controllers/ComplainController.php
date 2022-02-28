@@ -41,7 +41,7 @@ class ComplainController extends Controller
             "complain_des" => $request->complain_desc_ipt,
             "complainer_code" => $request->complainer_code,
             "created_user" =>  $user,
-            "pradeshiya_saba_id" => $request->pradeshiya_saba_id
+            "pradeshiya_saba_id" => $request->pradeshiya_saba_id,
         ]);
         $files = $request->file_list;
         if ($files != null) {

@@ -27,26 +27,34 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="form-group">
-                                <label>Letter Title*</label>
-                                <input type="text" class="form-control" name="letter_title" id="letter_title" placeholder="Enter the letter title" value="{{$letter_title}}">
+                                <label>Letter Template Name*</label>
+                                <input type="text" class="form-control" name="letter_temp_name" id="letter_temp_name" placeholder="Enter the letter template name" value="{{(isset($template->template_name)) ? $template->template_name : ''}}">
                             </div>
-                            @if($letter_status != 'COMPLETED')
-                            <button class="btn btn-success" id="updateLetter">Update</button>
-                            <button class="btn btn-dark" id="completeLetter">Complete</button>
+                            @if(isset($template->template_name))
+                            <button class="btn btn-warning" id="updateLetTemp">Update</button>
                             @else
-                            <h3><span class="text-danger">Completed</span></h3>
+                            <button class="btn btn-success" id="saveLetTemp">Save</button>
                             @endif
                         </div>
                         <!-- /.card-body -->
                     </div>
                     <div class="card card-gray">
                         <div class="card-header">
-                            <h4 class="card-title">Events</h4>
+                            <h4 class="card-title">Letter Templates</h4>
                         </div>
                         <div class="card-body">
-                            <!-- the events -->
-                            <p class='text-success'>Loading...</p>
-
+                            <table class="table table-bordered" id="letter_temp_tbl">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Template Name</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr></tr>
+                                </tbody>
+                            </table>
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -60,7 +68,7 @@
             <div class="col-md-9">
                 <div class="card card-gray">
                     <div class="card-body p-0">
-                        <textarea name="editor1">{{$letter_content}}</textarea>
+                        <textarea name="editor1">{{(isset($template->content)) ? $template->content : ''}}</textarea>
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -145,53 +153,52 @@
         config.removeButtons = 'Templates,RemoveFormat,CopyFormatting,CreateDiv,Anchor,Image,Smiley,Iframe';
     };
     var EDITOR_DATA = CKEDITOR.replace('editor1');
-    $('#updateLetter').click(function() {
-        update_doc();
+
+    $(document).ready(function() {
+        load_templates();
     });
 
-    $('#completeLetter').click(function() {
-        complete_doc();
+    $('#saveLetTemp').click(function() {
+        save_template();
+    });
+
+    $('#updateLetTemp').click(function() {
+        update_template();
     });
 
 
-    function complete_doc() {
+    function save_template() {
 
-        Swal.fire({
-            title: 'Once you complete you cant edit this letter?',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'confirm',
-            denyButtonText: `Don't confirm`,
-        }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.value) {
-                let letter_id = "{{$id}}";
-                let url = "/api/letter_status_change/status/COMPLETED/letter/"+letter_id;
-                ajaxRequest('POST', url, null, function(resp) {
-                   if (resp.status == 1) {
-                       swal.fire('success', 'Successfully completed the letter', 'success');
-                       location.reload();
-                   } else {
-                       swal.fire('failed', 'Letter completion was unsuccessful', 'warning');
-                   }
-              });
-            } else if (result.isDenied) {
-                Swal.fire('Canceled!', 'Confirmation was cancelled', 'info')
-            }
-        })
+        const data = {
+            template_name: $('#letter_temp_name').val()
+        };
 
-
+        let url = "/api/create_let_template";
+        if (data.template_name != '') {
+            ajaxRequest('POST', url, data, function(resp) {
+                if (resp.status == 1) {
+                    swal.fire('success', 'Successfully save the letter template', 'success');
+                    location.reload();
+                } else {
+                    swal.fire('failed', 'Letter template saving was unsuccessful', 'warning');
+                }
+            });
+        } else {
+            swal.fire('failed', 'template name is required to create letter template', 'warning');
+        }
     }
 
 
-    function update_doc() {
+    function update_template() {
+        var temp_id = "{{(isset($template->id)) ? $template->id : ''}}";
         let data = {
-            "content": EDITOR_DATA.getData(),
-            "letter_id": "{{$id}}",
-            "letter_title": $('#letter_title').val()
+            "template_id": temp_id,
+            "template_name": $('#letter_temp_name').val(),
+            "template_content": EDITOR_DATA.getData()
         };
-        let url = '/api/update_document';
-        if (data.content != '' && data.complain_id != '') {
+        let url = '/api/update_let_template';
+
+        if (data.template_name != '' && data.template_content != '' && data.template_id != '') {
             ajaxRequest('POST', url, data, function(resp) {
                 if (resp.status == 1) {
                     swal.fire('success', 'letter content updation is successfull', 'success');
@@ -200,8 +207,32 @@
                 }
             });
         } else {
-            swal.fire('failed', 'complain id and document content are required to update letter', 'warning');
+            swal.fire('failed', 'document content is required to update letter template', 'warning');
         }
+    }
+
+    function load_templates() {
+
+        let url = '/api/load_templates';
+        ajaxRequest('GET', url, null, function(resp) {
+            var template_tbl = " ";
+            $.each(resp, function(key, value2) {
+                key++;
+
+                template_tbl += "<tr><td>" + key + "</td><td>" + value2.template_name + "</td><td><a href='/load_temp/id/" + value2.id +
+                    "' class='btn btn-primary mr-2'>Edit</a></td></tr>";
+            });
+            $('#letter_temp_tbl tbody').html(template_tbl);
+            $('#letter_temp_tbl').DataTable({
+                aLengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"]
+                ],
+                "bDestroy": true,
+                iDisplayLength: 10
+            });
+        });
+
     }
 </script>
 @endsection

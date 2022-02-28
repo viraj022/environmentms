@@ -139,8 +139,13 @@
                     </a>
                 </li>
                 @endif
-
                 @endforeach
+                <li class="nav-item">
+                    <a href="{{ url('/letter_template') }}" class="nav-link {{ Request::is('letter_template') ? 'active' : '' }}">
+                        <i class="fas fa-file-archive nav-icon"></i>
+                        <p>Letter Template</p>
+                    </a>
+                </li>
 
             </ul>
         </li>
