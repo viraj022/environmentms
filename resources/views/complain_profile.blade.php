@@ -161,9 +161,9 @@
                                 </div>
                             </div>
                             <hr>
-                            <dt class="text-center"> <b>Uploaded Attachments</b> </dt>
-                            <hr>
-                            <span id="file_attachments"></span>
+                            <div class="row" id="file_attachments">
+                                
+                            </div>
                         </section>
                     </div>
                     <div class="tab-pane" id="complain-assign" role="tabpanel" aria-labelledby="complain-assign">
@@ -373,6 +373,23 @@
 
         $('#save_letter_title').click(function() {
             save_title();
+        });
+        
+        $(document).on('click', '.remove_attach', function() {
+            let data = {
+                "id": "{{ $complain_id }}",
+                "file_path": $(this).attr('data-name'),
+            };
+            let url = '/api/delete_attach';
+                ajaxRequest('DELETE', url, data, function(resp) {
+                    if (resp.status == 1) {
+                        swal.fire('success', 'Complain attachments successfully removed', 'success');
+                        loadProfileData();
+                    } else {
+                        swal.fire('failed', 'Complain attachments removal was unsuccessful', 'warning');
+                    }
+                });
+
         });
 
         function save_title() {

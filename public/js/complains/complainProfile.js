@@ -9,6 +9,9 @@ function update_attachments() {
     ulploadFileWithData(url, null, function(resp) {
         if (resp.status == 1) {
             loadProfileData();
+            $('#fileUploadInput').val('');
+            $('#attached_files').html('');
+
             swal.fire('success', 'Successfully change the attachments of complains', 'success');
         } else {
             swal.fire('failed', 'Complain attachments change is unsuccessful', 'warning');
@@ -56,13 +59,14 @@ function loadProfileData() {
             $('#forward_letter_preforation').addClass('d-none');
         }
 
-
         let image = '';
-        if (resp.attachment != null || resp.attachment.length != 0) {
+        if (resp.attachment != null || resp.attachment.length != 0 || resp.attachment.file_path != null) {
             let data = JSON.parse(unescape(resp.attachment));
             // let base_url = "{{ url('/') }}";
             $.each(data, function(key, value) {
-                image += "<img src='/storage/" + value.img_path + "' width='100em' height='100em'>";
+                if (value.img_path != '') {
+                    image += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><img src="/storage/' + value.img_path + '" alt="" style="width: auto; height: 200px; max-width: 384px;"><hr> <button type="button" data-name="' + value.img_path + '" class="btn btn-danger remove_attach">Remove</button> </div>';
+                }
             });
 
             $('#file_attachments').html(image);
@@ -215,5 +219,13 @@ function forward_letter_preforation(complain_id) {
         } else {
             swal.fire('failed', 'Forward to letter preforation was unsuccessful', 'warning');
         }
+    });
+}
+
+function remove_attach(id, delete_img_path) {
+    let url = '/api/complain_profile_data/id/' + id;
+
+    ajaxRequest('GET', url, null, function(resp) {
+        console.log(resp);
     });
 }
