@@ -18,3 +18,5 @@ Route::middleware('auth:api')->get('/forward_to_letter_preforation/complain/{com
 Route::get('/complain_log_data/complain/{complain_id}', 'ComplainController@get_complain_assign_log');
 Route::get('/forwarded_complains', 'ComplainController@forwarded_complains');
 Route::middleware('auth:api')->delete('/delete_attach', 'ComplainController@removeAttach');
+Route::middleware('auth:api')->get('/load_epl_combo', 'ComplainController@load_epl_combo');
+Route::middleware('auth:api')->post('/assign_epl', 'ComplainController@assign_epl');

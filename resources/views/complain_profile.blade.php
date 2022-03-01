@@ -330,6 +330,15 @@
                                 </section>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                 <label for="epl">EPL: </label>
+                                 <select class="custom-select" id="epl"></select>
+                                 <button type="button" id="assign_epl" class="btn btn-success">Assign epl</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -347,6 +356,7 @@
             load_forward_history_table(complain_id);
             load_user_by_level($('#user_level').val());
             load_letters();
+            load_epl();
         });
 
         $('#create_letter_btn').click(function() {
@@ -373,6 +383,12 @@
 
         $('#save_letter_title').click(function() {
             save_title();
+        });
+
+        $('#assign_epl').click(function() {
+            let complain_id = "{{ $complain_id }}";
+            let epl_id = $('#epl').val();
+            assign_epl(complain_id, epl_id);
         });
         
         $(document).on('click', '.remove_attach', function() {

@@ -9,6 +9,7 @@ use App\Complain;
 use App\ComplainComment;
 use App\ComplainMinute;
 use App\ComplainAssignLog;
+use App\EPL;
 use Illuminate\Support\Facades\Log;
 
 class ComplainController extends Controller
@@ -297,5 +298,16 @@ class ComplainController extends Controller
         } else {
             return array('status' => 0, 'msg' => 'Complain attachments removal was unsuccessful');
         }
+    }
+
+    public function load_epl_combo(){
+        $epl = EPL::with('client')->limit(10)->get();
+        return $epl;
+    }
+
+    public function assign_epl(Request $request){
+        $assign_epl = Complain::find($request->id);
+        $assign_epl->epl_id = $request->epl_id;
+        $assign_epl->save();
     }
 }

@@ -229,3 +229,36 @@ function remove_attach(id, delete_img_path) {
         console.log(resp);
     });
 }
+
+function load_epl() {
+    ajaxRequest('GET', "/api/load_epl_combo", null, function(dataSet) {
+        var combo = "";
+        if (dataSet.length == 0) {
+            combo += "<option value=''>NO DATA FOUND</option>";
+        } else {
+            $.each(dataSet, function(index, value) {
+                console.log(value.client.file_no);
+                combo += "<option value='" + value.id + "'>" + value.client.file_no + "</option>";
+            });
+        }
+        $('#epl').html(combo);
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack();
+        }
+    });
+}
+
+function assign_epl(complain_id, epl_id) {
+    let data = {
+        "id": complain_id,
+        "epl_id": epl_id,
+    };
+    let url = '/api/assign_epl';
+    ajaxRequest('POST', url, data, function(resp) {
+        if (resp.status == 1) {
+            swal.fire('success', 'EPL has assigned for the complain', 'success');
+        } else {
+            swal.fire('failed', 'EPL assignment for the complain was unsuccessful', 'warning');
+        }
+    });
+}
