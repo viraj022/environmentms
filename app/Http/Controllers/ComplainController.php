@@ -9,7 +9,7 @@ use App\Complain;
 use App\ComplainComment;
 use App\ComplainMinute;
 use App\ComplainAssignLog;
-use App\EPL;
+use App\Client;
 use Illuminate\Support\Facades\Log;
 
 class ComplainController extends Controller
@@ -300,14 +300,19 @@ class ComplainController extends Controller
         }
     }
 
-    public function load_epl_combo(){
-        $epl = EPL::with('client')->limit(10)->get();
-        return $epl;
+    public function loadFileNo(){
+        $file_no = Client::select('id', 'file_no')->get();
+        return $file_no;
     }
 
-    public function assign_epl(Request $request){
-        $assign_epl = Complain::find($request->id);
-        $assign_epl->epl_id = $request->epl_id;
-        $assign_epl->save();
+    public function assignFileNo(Request $request){
+        $assign_file = Complain::find($request->id);
+        $assign_file->client_id = $request->client_id;
+        $assign_file->save();
+        if($assign_file == true){
+            return array('status' => 1, 'msg' => 'File assigned successfully');
+        }else{
+            return array('status' => 0, 'msg' => 'File assigning was unsuccessful');
+        }
     }
 }

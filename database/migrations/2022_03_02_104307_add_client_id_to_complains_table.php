@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddEplNoToComplainsTable extends Migration
+class AddClientIdToComplainsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,9 @@ class AddEplNoToComplainsTable extends Migration
     public function up()
     {
         Schema::table('complains', function (Blueprint $table) {
-            $table->unsignedBigInteger('epl_id')->nullable();
-            $table->foreign('epl_id')->references('id')->on('e_p_l_s')->onDelete('restrict')->onUpdate('cascade');
+            $table->unsignedBigInteger('client_id')->nullable();
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('restrict')->onUpdate('cascade');
+
         });
     }
 
@@ -27,8 +28,8 @@ class AddEplNoToComplainsTable extends Migration
     public function down()
     {
         Schema::table('complains', function (Blueprint $table) {
-            $table->dropForeign(['epl_id']);
-            $table->dropColumn('epl_id');
+            $table->dropForeign('clients_id');
+            $table->dropColumn('client_id');
         });
     }
 }

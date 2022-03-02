@@ -330,12 +330,18 @@
                                 </section>
                             </div>
                         </div>
+                        <hr>
                         <div class="row">
                             <div class="col-md-4">
-                                <div class="form-group">
-                                 <label for="epl">EPL: </label>
-                                 <select class="custom-select" id="epl"></select>
-                                 <button type="button" id="assign_epl" class="btn btn-success">Assign epl</button>
+                                <div class="card card-light">
+                                    <div class="card-header"><h4>File Assign</h4></div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="client_id">File No: </label>
+                                            <select class="custom-select" id="client_id"></select>
+                                            <button type="button" id="assign_file" class="btn btn-success mt-1">Assign File</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -356,7 +362,7 @@
             load_forward_history_table(complain_id);
             load_user_by_level($('#user_level').val());
             load_letters();
-            load_epl();
+            load_file_no();
         });
 
         $('#create_letter_btn').click(function() {
@@ -385,10 +391,10 @@
             save_title();
         });
 
-        $('#assign_epl').click(function() {
+        $('#assign_file').click(function() {
             let complain_id = "{{ $complain_id }}";
-            let epl_id = $('#epl').val();
-            assign_epl(complain_id, epl_id);
+            let client_id = $('#client_id').val();
+            assign_file_no(complain_id, client_id);
         });
         
         $(document).on('click', '.remove_attach', function() {

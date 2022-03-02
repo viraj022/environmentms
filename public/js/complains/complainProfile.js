@@ -6,17 +6,22 @@ function update_attachments() {
     $.each($('#fileUploadInput')[0].files, function(key, val) {
         arr[index++] = val;
     });
-    ulploadFileWithData(url, null, function(resp) {
-        if (resp.status == 1) {
-            loadProfileData();
-            $('#fileUploadInput').val('');
-            $('#attached_files').html('');
+    if (arr.length != 0) {
+        ulploadFileWithData(url, null, function(resp) {
+            if (resp.status == 1) {
+                loadProfileData();
+                $('#fileUploadInput').val('');
+                $('#attached_files').html('');
 
-            swal.fire('success', 'Successfully change the attachments of complains', 'success');
-        } else {
-            swal.fire('failed', 'Complain attachments change is unsuccessful', 'warning');
-        }
-    }, false, arr);
+                swal.fire('success', 'Successfully change the attachments of complains', 'success');
+            } else {
+                swal.fire('failed', 'Complain attachments change is unsuccessful', 'warning');
+            }
+        }, false, arr);
+    } else {
+        swal.fire('failed', 'One or more images must be selected to upload', 'warning');
+    }
+
 }
 
 function loadProfileData() {
@@ -222,43 +227,34 @@ function forward_letter_preforation(complain_id) {
     });
 }
 
-function remove_attach(id, delete_img_path) {
-    let url = '/api/complain_profile_data/id/' + id;
-
-    ajaxRequest('GET', url, null, function(resp) {
-        console.log(resp);
-    });
-}
-
-function load_epl() {
-    ajaxRequest('GET', "/api/load_epl_combo", null, function(dataSet) {
+function load_file_no() {
+    ajaxRequest('GET', "/api/load_file_no", null, function(dataSet) {
         var combo = "";
         if (dataSet.length == 0) {
             combo += "<option value=''>NO DATA FOUND</option>";
         } else {
             $.each(dataSet, function(index, value) {
-                console.log(value.client.file_no);
-                combo += "<option value='" + value.id + "'>" + value.client.file_no + "</option>";
+                combo += "<option value='" + value.id + "'>" + value.file_no + "</option>";
             });
         }
-        $('#epl').html(combo);
+        $('#client_id').html(combo);
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack();
         }
     });
 }
 
-function assign_epl(complain_id, epl_id) {
+function assign_file_no(complain_id, client_id) {
     let data = {
         "id": complain_id,
-        "epl_id": epl_id,
+        "client_id": client_id,
     };
-    let url = '/api/assign_epl';
+    let url = '/api/assign_file_no';
     ajaxRequest('POST', url, data, function(resp) {
         if (resp.status == 1) {
-            swal.fire('success', 'EPL has assigned for the complain', 'success');
+            swal.fire('success', 'File No has assigned for the complain', 'success');
         } else {
-            swal.fire('failed', 'EPL assignment for the complain was unsuccessful', 'warning');
+            swal.fire('failed', 'File No assignment for the complain was unsuccessful', 'warning');
         }
     });
 }
