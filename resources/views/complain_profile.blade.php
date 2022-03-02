@@ -6,6 +6,7 @@
 @extends('layouts.footer')
 @section('pageStyles')
     <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <style>
         table.dataTable td {
             word-break: break-word;
@@ -340,7 +341,7 @@
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="client_id">File No: </label>
-                                            <select class="custom-select" id="client_id"></select>
+                                            <select class="custom-select select2" id="client_id"></select>
                                             <button type="button" id="assign_file" class="btn btn-success mt-1">Assign
                                                 File</button>
                                         </div>
@@ -358,6 +359,8 @@
 @section('pageScripts')
     <script src="{{ asset('/js/complains/complainProfile.js') }}" type="text/javascript"></script>
     <script src="../../dist/js/adminlte.min.js"></script>
+    <script src="../../plugins/select2/js/select2.full.min.js"></script>
+
     <script>
         $(document).ready(function() {
             loadProfileData();
