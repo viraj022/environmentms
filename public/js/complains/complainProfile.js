@@ -238,6 +238,8 @@ function load_file_no() {
             });
         }
         $('#client_id').html(combo);
+        $('.select2').select2();
+
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack();
         }
