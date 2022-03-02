@@ -7,3 +7,5 @@ Route::middleware('auth:api')->post('/letter_status_change/status/{status}/lette
 Route::middleware('auth:api')->post('/create_let_template', 'WebDocumentController@createLetterTemplate');
 Route::middleware('auth:api')->post('/update_let_template', 'WebDocumentController@updateLetterTemplate');
 Route::middleware('auth:api')->get('/load_templates', 'WebDocumentController@loadTemplates');
+Route::middleware('auth:api')->delete('/delete_letter/letter/{letter_id}', 'WebDocumentController@deleteLetter');
+Route::middleware('auth:api')->delete('/delete_letter_temp/letter_template/{letter_temp_id}', 'WebDocumentController@deleteLetterTemplate');

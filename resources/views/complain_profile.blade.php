@@ -162,7 +162,7 @@
                             </div>
                             <hr>
                             <div class="row" id="file_attachments">
-                                
+
                             </div>
                         </section>
                     </div>
@@ -334,12 +334,15 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="card card-light">
-                                    <div class="card-header"><h4>File Assign</h4></div>
+                                    <div class="card-header">
+                                        <h4>File Assign</h4>
+                                    </div>
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="client_id">File No: </label>
                                             <select class="custom-select" id="client_id"></select>
-                                            <button type="button" id="assign_file" class="btn btn-success mt-1">Assign File</button>
+                                            <button type="button" id="assign_file" class="btn btn-success mt-1">Assign
+                                                File</button>
                                         </div>
                                     </div>
                                 </div>
@@ -396,21 +399,21 @@
             let client_id = $('#client_id').val();
             assign_file_no(complain_id, client_id);
         });
-        
+
         $(document).on('click', '.remove_attach', function() {
             let data = {
                 "id": "{{ $complain_id }}",
                 "file_path": $(this).attr('data-name'),
             };
             let url = '/api/delete_attach';
-                ajaxRequest('DELETE', url, data, function(resp) {
-                    if (resp.status == 1) {
-                        swal.fire('success', 'Complain attachments successfully removed', 'success');
-                        loadProfileData();
-                    } else {
-                        swal.fire('failed', 'Complain attachments removal was unsuccessful', 'warning');
-                    }
-                });
+            ajaxRequest('DELETE', url, data, function(resp) {
+                if (resp.status == 1) {
+                    swal.fire('success', 'Complain attachments successfully removed', 'success');
+                    loadProfileData();
+                } else {
+                    swal.fire('failed', 'Complain attachments removal was unsuccessful', 'warning');
+                }
+            });
 
         });
 
