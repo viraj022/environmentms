@@ -19,7 +19,7 @@ class Client extends Model
     public const IS_WORKING_WORKING = 1;
     public const IS_WORKING_FINISH = 2;
 
-    protected $appends = ['start_date_only', 'code_epl', 'code_site'];
+    // protected $appends = ['start_date_only', 'code_epl', 'code_site'];
     protected $hidden = [
         'password', 'api_token',
     ];
@@ -83,7 +83,7 @@ class Client extends Model
     }
 
     public function pradesheeyasaba()
-    {
+    { 
         return $this->belongsTo(Pradesheeyasaba::class);
     }
 
