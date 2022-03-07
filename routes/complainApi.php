@@ -17,3 +17,6 @@ Route::middleware('auth:api')->get('/reject_complain/complain/{complain_id}', 'C
 Route::middleware('auth:api')->get('/forward_to_letter_preforation/complain/{complain_id}', 'ComplainController@forward_to_letter_preforation');
 Route::get('/complain_log_data/complain/{complain_id}', 'ComplainController@get_complain_assign_log');
 Route::get('/forwarded_complains', 'ComplainController@forwarded_complains');
+Route::middleware('auth:api')->delete('/delete_attach', 'ComplainController@removeAttach');
+Route::middleware('auth:api')->get('/load_file_no', 'ComplainController@loadFileNo');
+Route::middleware('auth:api')->post('/assign_file_no', 'ComplainController@assignFileNo');

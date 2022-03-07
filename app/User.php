@@ -86,4 +86,8 @@ class User extends Authenticatable
     public function complainAssignLogs() {
         return $this->hasMany(ComplainAssignLog::class);
     }
+
+    public function letterTemplates() {
+        return $this->hasMany(LetterTemplate::class);
+    }
 }
