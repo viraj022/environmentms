@@ -33,6 +33,7 @@
                                 @if ($letter_status != 'COMPLETED')
                                     <button class="btn btn-success" id="updateLetter">Update</button>
                                     <button class="btn btn-dark" id="completeLetter">Complete</button>
+                                    <button type="button" class="btn btn-danger" id="deleteLetter">Delete</button>
                                 @else
                                     <h3><span class="text-danger">Completed</span></h3>
                                 @endif
@@ -156,6 +157,38 @@
         $('#completeLetter').click(function() {
             complete_doc();
         });
+
+        $('#deleteLetter').click(function() {
+            delete_doc();
+        });
+
+        function delete_doc(){
+            Swal.fire({
+                title: 'Are sure to delete this letter?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'confirm',
+                denyButtonText: `Don't confirm`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.value) {
+                    let letter_id = "{{ $id }}";
+                    let complain_id = "{{ $complain_id }}";
+                    let url = "/api/delete_letter/letter/" + letter_id;
+                    ajaxRequest('DELETE', url, null, function(resp) {
+                        if (resp.status == 1) {
+                            swal.fire('success', 'Successfully deleted the letter', 'success');
+                            window.location.replace("/complain_profile/id/" + complain_id); 
+                        } else {
+                            swal.fire('failed', 'Letter deletion was unsuccessful', 'warning');
+                        }
+                    });
+                } else if (result.isDenied) {
+                    Swal.fire('Canceled!', 'Confirmation was cancelled', 'info')
+                }
+            })
+        }
+
         $(document).on('click', '.LoadTemplate', function() {
             ajaxRequest('GET', '/api/letter_template/id/' + $(this).val(), null, function(resp) {
                 EDITOR_DATA.setData(resp.content);
@@ -204,6 +237,7 @@
                 ajaxRequest('POST', url, data, function(resp) {
                     if (resp.status == 1) {
                         swal.fire('success', 'letter content updation is successfull', 'success');
+                        location.reload();
                     } else {
                         swal.fire('failed', 'letter content updation was unsuccessful', 'warning');
                     }

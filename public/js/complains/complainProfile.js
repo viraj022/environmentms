@@ -6,14 +6,22 @@ function update_attachments() {
     $.each($('#fileUploadInput')[0].files, function(key, val) {
         arr[index++] = val;
     });
-    ulploadFileWithData(url, null, function(resp) {
-        if (resp.status == 1) {
-            loadProfileData();
-            swal.fire('success', 'Successfully change the attachments of complains', 'success');
-        } else {
-            swal.fire('failed', 'Complain attachments change is unsuccessful', 'warning');
-        }
-    }, false, arr);
+    if (arr.length != 0) {
+        ulploadFileWithData(url, null, function(resp) {
+            if (resp.status == 1) {
+                loadProfileData();
+                $('#fileUploadInput').val('');
+                $('#attached_files').html('');
+
+                swal.fire('success', 'Successfully change the attachments of complains', 'success');
+            } else {
+                swal.fire('failed', 'Complain attachments change is unsuccessful', 'warning');
+            }
+        }, false, arr);
+    } else {
+        swal.fire('failed', 'One or more images must be selected to upload', 'warning');
+    }
+
 }
 
 function loadProfileData() {
@@ -56,13 +64,14 @@ function loadProfileData() {
             $('#forward_letter_preforation').addClass('d-none');
         }
 
-
         let image = '';
-        if (resp.attachment != null || resp.attachment.length != 0) {
+        if (resp.attachment != null || resp.attachment.length != 0 || resp.attachment.file_path != null) {
             let data = JSON.parse(unescape(resp.attachment));
             // let base_url = "{{ url('/') }}";
             $.each(data, function(key, value) {
-                image += "<img src='/storage/" + value.img_path + "' width='100em' height='100em'>";
+                if (value.img_path != '') {
+                    image += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><img src="/storage/' + value.img_path + '" alt="" style="width: auto; height: 200px; max-width: 384px;"><hr> <button type="button" data-name="' + value.img_path + '" class="btn btn-danger remove_attach">Remove</button> </div>';
+                }
             });
 
             $('#file_attachments').html(image);
@@ -214,6 +223,40 @@ function forward_letter_preforation(complain_id) {
             loadProfileData();
         } else {
             swal.fire('failed', 'Forward to letter preforation was unsuccessful', 'warning');
+        }
+    });
+}
+
+function load_file_no() {
+    ajaxRequest('GET', "/api/load_file_no", null, function(dataSet) {
+        var combo = "";
+        if (dataSet.length == 0) {
+            combo += "<option value=''>NO DATA FOUND</option>";
+        } else {
+            $.each(dataSet, function(index, value) {
+                combo += "<option value='" + value.id + "'>" + value.file_no + "</option>";
+            });
+        }
+        $('#client_id').html(combo);
+        $('.select2').select2();
+
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack();
+        }
+    });
+}
+
+function assign_file_no(complain_id, client_id) {
+    let data = {
+        "id": complain_id,
+        "client_id": client_id,
+    };
+    let url = '/api/assign_file_no';
+    ajaxRequest('POST', url, data, function(resp) {
+        if (resp.status == 1) {
+            swal.fire('success', 'File No has assigned for the complain', 'success');
+        } else {
+            swal.fire('failed', 'File No assignment for the complain was unsuccessful', 'warning');
         }
     });
 }

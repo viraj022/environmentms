@@ -9,6 +9,7 @@ use App\Complain;
 use App\ComplainComment;
 use App\ComplainMinute;
 use App\ComplainAssignLog;
+use App\Client;
 use Illuminate\Support\Facades\Log;
 
 class ComplainController extends Controller
@@ -136,19 +137,20 @@ class ComplainController extends Controller
     {
         $user = Auth::user()->id;
         $update_attach = Complain::find($id);
+         $curr_file_path_arr = json_decode($update_attach->attachment);
         $files = $request->file_list;
         if ($files != null) {
-            $Arr = array();
             foreach ($files as $file) {
                 $attach = $file->store('public/complain_attachments/' . $id);
-                $Arr[] = [
+                $curr_file_path_arr[] = [
                     'img_path' => str_replace('public/', '', $attach),
                     'upload_time' => date("Y-m-d H:i:s"),
                     'uploaded_user' => $user
                 ];
+
             }
 
-            $update_attach->attachment = json_encode($Arr);
+            $update_attach->attachment = json_encode($curr_file_path_arr);
             $update_attach->save();
         }
 
@@ -278,5 +280,39 @@ class ComplainController extends Controller
     public function forwarded_complains(){
         $forwarded_complains = Complain::where('status', 4)->get();
         return $forwarded_complains;
+    }
+
+    public function removeAttach(Request $request){
+        $attach = Complain::find($request->id);
+        $decoded_paths = json_decode($attach->attachment);
+        foreach($decoded_paths as $decoded_path){
+            if($decoded_path->img_path == $request->file_path){
+                $decoded_path->img_path = '';
+            }
+        }
+        $encoded_path = json_encode($decoded_paths);
+        $attach->attachment = $encoded_path;
+        $attach->save();
+        if ($attach == true) {
+            return array('status' => 1, 'msg' => 'Complain attachments successfully removed');
+        } else {
+            return array('status' => 0, 'msg' => 'Complain attachments removal was unsuccessful');
+        }
+    }
+
+    public function loadFileNo(){
+        $file_no = Client::select('id', 'file_no')->get();
+        return $file_no;
+    }
+
+    public function assignFileNo(Request $request){
+        $assign_file = Complain::find($request->id);
+        $assign_file->client_id = $request->client_id;
+        $assign_file->save();
+        if($assign_file == true){
+            return array('status' => 1, 'msg' => 'File assigned successfully');
+        }else{
+            return array('status' => 0, 'msg' => 'File assigning was unsuccessful');
+        }
     }
 }

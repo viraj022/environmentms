@@ -6,6 +6,7 @@
 @extends('layouts.footer')
 @section('pageStyles')
     <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <style>
         table.dataTable td {
             word-break: break-word;
@@ -161,9 +162,9 @@
                                 </div>
                             </div>
                             <hr>
-                            <dt class="text-center"> <b>Uploaded Attachments</b> </dt>
-                            <hr>
-                            <span id="file_attachments"></span>
+                            <div class="row" id="file_attachments">
+
+                            </div>
                         </section>
                     </div>
                     <div class="tab-pane" id="complain-assign" role="tabpanel" aria-labelledby="complain-assign">
@@ -330,6 +331,24 @@
                                 </section>
                             </div>
                         </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card card-light">
+                                    <div class="card-header">
+                                        <h4>File Assign</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="client_id">File No: </label>
+                                            <select class="custom-select select2" id="client_id"></select>
+                                            <button type="button" id="assign_file" class="btn btn-success mt-1">Assign
+                                                File</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -340,6 +359,8 @@
 @section('pageScripts')
     <script src="{{ asset('/js/complains/complainProfile.js') }}" type="text/javascript"></script>
     <script src="../../dist/js/adminlte.min.js"></script>
+    <script src="../../plugins/select2/js/select2.full.min.js"></script>
+
     <script>
         $(document).ready(function() {
             loadProfileData();
@@ -347,6 +368,7 @@
             load_forward_history_table(complain_id);
             load_user_by_level($('#user_level').val());
             load_letters();
+            load_file_no();
         });
 
         $('#create_letter_btn').click(function() {
@@ -373,6 +395,29 @@
 
         $('#save_letter_title').click(function() {
             save_title();
+        });
+
+        $('#assign_file').click(function() {
+            let complain_id = "{{ $complain_id }}";
+            let client_id = $('#client_id').val();
+            assign_file_no(complain_id, client_id);
+        });
+
+        $(document).on('click', '.remove_attach', function() {
+            let data = {
+                "id": "{{ $complain_id }}",
+                "file_path": $(this).attr('data-name'),
+            };
+            let url = '/api/delete_attach';
+            ajaxRequest('DELETE', url, data, function(resp) {
+                if (resp.status == 1) {
+                    swal.fire('success', 'Complain attachments successfully removed', 'success');
+                    loadProfileData();
+                } else {
+                    swal.fire('failed', 'Complain attachments removal was unsuccessful', 'warning');
+                }
+            });
+
         });
 
         function save_title() {

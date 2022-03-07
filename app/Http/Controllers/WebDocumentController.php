@@ -166,4 +166,22 @@ class WebDocumentController extends Controller
     {
         return LetterTemplate::find($id);
     }
+
+    public function deleteLetter($letter_id){
+        $letter_delete = Letter::find($letter_id)->delete();
+        if ($letter_delete == true) {
+            return array("status" => 1, "message" => "Letter deleted successfully");
+        } else {
+            return array("status" => 0, "message" => "Letter deletion was unsuccessful");
+        }
+    }
+
+    public function deleteLetterTemplate($letter_temp_id){
+        $letter_temp_delete = LetterTemplate::find($letter_temp_id)->delete();
+        if ($letter_temp_delete == true) {
+            return array("status" => 1, "message" => "Letter template deleted successfully");
+        } else {
+            return array("status" => 0, "message" => "Letter template deletion was unsuccessful");
+        }
+    }
 }
