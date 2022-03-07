@@ -94,17 +94,14 @@ class InspectionSessionController extends Controller
         $client = Client::findOrfail($id);
         $epls = $client->epls;
         $siteClearance = $client->siteClearenceSessions;
-        // dd(count($epls));
-        if (count($epls) > 0 && count($siteClearance) > 0) {
-            abort(422, 'Can not resolve whether file belong to a inspection or a site clearance');
-        }
-        if (count($epls) > 1 && count($siteClearance) > 1) {
-            abort(422, 'Can not resolve whether file belong to a inspection or a site clearance. more than one epls or site clearances found');
-        }
+        $cer_type_status=$client->cer_type_status;
+         if ($cer_type_status==0) {
+            abort(422, 'Add EPL or Site Clearance to the file before schedule a inspection');
+         }
 
-        if (count($epls) > 0) {
+        if ($cer_type_status==1||$cer_type_status==2) {
             return array('type' => InspectionSession::TYPE_EPL, 'id' => $epls[0]->id);
-        } else if (count($siteClearance) > 0) {
+        } else if ($cer_type_status==3||$cer_type_status==4) {
             return array('type' => InspectionSession::SITE_CLEARANCE, 'id' => $siteClearance[0]->id);
         } else {
             abort(422, 'Can not resolve whether file belong to a inspection or a site clearance. No epls or site clearances found');
