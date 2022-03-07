@@ -65,7 +65,11 @@ function setInspectionNeededApi(id, callBack) {
             ui = "<p class='text-danger'>No Data Found</p>";
         } else {
             $.each(dataSet, function (index, row) {
-                ui += '<div class="external-event bg-info" data-id="' + row.id + '">' + row.file_no + '</div>';
+                if (row.cer_type_status==0) {
+                    ui += '<div class="external-event bg-danger" data-id="' + row.id + '">' + row.file_no + '</div>';
+                }else{
+                    ui += '<div class="external-event bg-info" data-id="' + row.id + '">' + row.file_no + '</div>';
+                }
             });
         }
         $('#external-events').html(ui);
