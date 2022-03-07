@@ -154,7 +154,7 @@
             $('[data-toggle="tooltip"]').tooltip();
             //Load table
             getaProfilebyId();
-            //select button action 
+            //select button action
             $(document).on('click', '.btnAction', function() {});
             load_letters();
         });
@@ -166,7 +166,9 @@
                 $('#letter_view_tbl').DataTable().destroy();
                 $.each(resp, function(key, value) {
                     key++;
-                    letter_view_tbl += "<tr><td>" + key + "</td><td>" + value.complainer_code + "</td><td>" + value.complainer_name + "</td><td>" + value.complainer_address + "</td><td>" + value.comp_contact_no + "</td></tr>";
+                    letter_view_tbl += "<tr><td>" + key + "</td><td>" + value.complainer_code +
+                        "</td><td>" + value.complainer_name + "</td><td>" + value.complainer_address +
+                        "</td><td>" + value.comp_contact_no + "</td></td><td><a href='/complain_profile/id/" + value.id + "' class='btn btn-dark'>View</a></td></tr>";
                 });
                 $('#letter_view_tbl tbody').html(letter_view_tbl);
                 $('#letter_view_tbl').DataTable({
