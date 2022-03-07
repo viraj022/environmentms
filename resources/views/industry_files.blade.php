@@ -16,7 +16,6 @@
 @endsection
 @section('content')
     @if ($pageAuth['is_read'] == 1 || false)
-        
         <section class="content-header">
             <!--    Register New Client START-->
             <div class="container-fluid reg-newClient">

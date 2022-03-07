@@ -92,6 +92,8 @@ class InspectionSessionController extends Controller
     private function getAutomaticInspectionPlacementData($id)
     {
         $client = Client::findOrfail($id);
+        $epls = $client->epls;
+        $siteClearance = $client->siteClearenceSessions;
         $cer_type_status=$client->cer_type_status;
          if ($cer_type_status==0) {
             abort(422, 'Add EPL or Site Clearance to the file before schedule a inspection');

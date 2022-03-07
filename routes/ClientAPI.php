@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 //   return $request->user();
 // });
 //api
-Route::middleware('auth:api')->get('/files/all/officer/id/{id}', 'ClientController@getAllFiles'); // get all files by environment officer
+    Route::middleware('auth:api')->get('/files/all/officer/id/{id}', 'ClientController@getAllFiles'); // get all files by environment officer
 Route::middleware('auth:api')->get('/files/certificate/officer/id/{id}', 'ClientController@certificatePath'); // get all files by certificate Path
 
 
