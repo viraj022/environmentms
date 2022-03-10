@@ -323,6 +323,8 @@ class EnvironmentOfficerController extends Controller
                 ->whereNull('environment_officer_id')
                 ->where('pradesheeyasabas.zone_id', $assistantDirector->zone_id)
                 ->select('clients.*')
+                ->with('epls')
+                ->with('siteClearenceSessions')
                 ->get();
         } else {
             abort(404);
@@ -334,6 +336,8 @@ class EnvironmentOfficerController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         return Client::where('environment_officer_id', $id)
+            ->with('epls')
+            ->with('siteClearenceSessions')
             ->get();
     }
 

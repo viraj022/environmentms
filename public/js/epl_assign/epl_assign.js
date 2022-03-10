@@ -54,40 +54,40 @@ function loadEnvOfficers_combo(ass_dir_id, callBack) {
 
 }
 function assigned_EPL_table(officer_id, callBack) {
-//    $('#assigned_epl_table tbody').html('<td colspan="3">No Data Found</td></tr>');
+    //    $('#assigned_epl_table tbody').html('<td colspan="3">No Data Found</td></tr>');
     if (isNaN(officer_id)) {
         return false;
     }
-//    $('#assigned_epl_table').DataTable().destroy();
-//    $.ajax({
-//        type: "GET",
-//        headers: {
-//            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-//            "Accept": "application/json"
-//        },
-//        url: "api/epl/env_officer/" + officer_id,
-//        data: null,
-//        dataType: "json",
-//        cache: false,
-//        processDaate: false,
-//        success: function (result) {
-//            var tbl = "";
-//            $.each(result, function (index, value) {
-//                tbl += "<tr>";
-//                tbl += "<td>" + ++index + "</td>";
-//                tbl += "<td>" + value.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + value.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='" + TYPE + "'>(" + CODE + ")</a></td>";
-//                tbl += '<td><button type="button" class="btn btn-danger removePendingEpl" value="' + value.id + '">Remove</button></td>';
-//                tbl += "</tr>";
-//            });
-//            if (!(result.length == 0 || result == undefined)) {
-//                $('#assigned_epl_table tbody').html(tbl);
-//                $('#assigned_epl_table').DataTable();
-//            }
-//            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-//                callBack(result);
-//            }
-//        }
-//    });
+    //    $('#assigned_epl_table').DataTable().destroy();
+    //    $.ajax({
+    //        type: "GET",
+    //        headers: {
+    //            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+    //            "Accept": "application/json"
+    //        },
+    //        url: "api/epl/env_officer/" + officer_id,
+    //        data: null,
+    //        dataType: "json",
+    //        cache: false,
+    //        processDaate: false,
+    //        success: function (result) {
+    //            var tbl = "";
+    //            $.each(result, function (index, value) {
+    //                tbl += "<tr>";
+    //                tbl += "<td>" + ++index + "</td>";
+    //                tbl += "<td>" + value.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + value.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='" + TYPE + "'>(" + CODE + ")</a></td>";
+    //                tbl += '<td><button type="button" class="btn btn-danger removePendingEpl" value="' + value.id + '">Remove</button></td>';
+    //                tbl += "</tr>";
+    //            });
+    //            if (!(result.length == 0 || result == undefined)) {
+    //                $('#assigned_epl_table tbody').html(tbl);
+    //                $('#assigned_epl_table').DataTable();
+    //            }
+    //            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+    //                callBack(result);
+    //            }
+    //        }
+    //    });
 
     assigned_epl = $('#assigned_epl_table').DataTable({
         "destroy": true,
@@ -109,36 +109,50 @@ function assigned_EPL_table(officer_id, callBack) {
             },
         },
         "columns": [{
-                "data": ""
-            },
-            {
-                "data": "",
-                render: function (data, type, row) {
-                    let CODE = row.code_epl;
+            "data": ""
+        },
+        {
+            "data": "",
+            render: function (data, type, row) {
+console.log(row);
+                let CODE = '';
+
+                if (row.epls.length != 0) {
                     let TYPE = 'EPL';
-                    if (CODE == 'N/A') {
-                        CODE = row.code_site;
-                        TYPE = 'Site Clearance';
-                        if (CODE == 'N/A') {
-                            CODE = row.file_no;
-                            TYPE = 'File No';
-                        }
-                    }
-                    return "<td>" + row.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + row.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='" + TYPE + "'>(" + CODE + ")</a></td>";
-                },
-                "defaultContent": "-"
+                    CODE = row.epls[0].code;
+                }else if(row.siteClearenceSessions != null){
+                    TYPE = 'Site Clearance';
+                    CODE = row.siteClearenceSessions[0].code;
+                }else if(row.file_no){
+                    TYPE = 'File No';
+                    CODE = row.file_no;
+                }
+
+                // let CODE = row.code_epl;
+                // let TYPE = 'EPL';
+                // if (CODE == 'N/A') {
+                //     CODE = row.code_site;
+                //     TYPE = 'Site Clearance';
+                //     if (CODE == 'N/A') {
+                //         CODE = row.file_no;
+                //         TYPE = 'File No';
+                //     }
+                // }
+                return "<td>" + row.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + row.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='" + TYPE + "'>(" + CODE + ")</a></td>";
             },
-            {
-                "data": "created_at",
-                "defaultContent": "-"
+            "defaultContent": "-"
+        },
+        {
+            "data": "created_at",
+            "defaultContent": "-"
+        },
+        {
+            "data": "",
+            render: function (data, type, row) {
+                return '<td><button type="button" class="btn btn-danger removePendingEpl" value="' + row.id + '">Remove</button></td>';
             },
-            {
-                "data": "",
-                render: function (data, type, row) {
-                    return '<td><button type="button" class="btn btn-danger removePendingEpl" value="' + row.id + '">Remove</button></td>';
-                },
-                "defaultContent": "-"
-            },
+            "defaultContent": "-"
+        },
         ],
         "order": [
             [2, "asc"]
@@ -149,7 +163,7 @@ function assigned_EPL_table(officer_id, callBack) {
     $(function () {
         var t = $("#assigned_epl_table").DataTable();
         t.on('order.dt search.dt', function () {
-            t.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
                 cell.innerHTML = i + 1;
             });
         }).draw();
@@ -162,50 +176,50 @@ function assigned_EPL_table(officer_id, callBack) {
     });
 }
 function pending_EPL_table(director_id, callBack) {
-//    $('#pending_epl_table tbody').html('<td colspan="3">No Data Found</td></tr>');
+    //    $('#pending_epl_table tbody').html('<td colspan="3">No Data Found</td></tr>');
     if (isNaN(director_id)) {
         return false;
     }
-//    $('#pending_epl_table').DataTable().destroy();
-//    $.ajax({
-//        type: "GET",
-//        headers: {
-//            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-//            "Accept": "application/json"
-//        },
-//        url: "api/epl/assistance_director/" + director_id,
-//        data: null,
-//        dataType: "json",
-//        cache: false,
-//        processDaate: false,
-//        success: function (result) {
-//            var tbl = "";
-//            $.each(result, function (index, value) {
-//                let CODE = value.code_epl;
-//                let TYPE = 'EPL';
-//                if (CODE == 'N/A') {
-//                    CODE = value.code_site;
-//                    TYPE = 'Site Clearance';
-//                    if (CODE == 'N/A') {
-//                        CODE = value.file_no;
-//                        TYPE = 'File No';
-//                    }
-//                }
-//                tbl += "<tr>";
-//                tbl += "<td>" + ++index + "</td>";
-//                tbl += "<td>" + value.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + value.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='" + TYPE + "'>(" + CODE + ")</a></td>";
-//                tbl += '<td><button type="button" class="btn btn-success selPendingEpl" value="' + value.id + '">Add</button></td>';
-//                tbl += "</tr>";
-//            });
-//            if (!(result.length == 0 || result == undefined)) {
-//                $('#pending_epl_table tbody').html(tbl);
-//                $("#pending_epl_table").DataTable();
-//            }
-//            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-//                callBack(result);
-//            }
-//        }
-//    });
+    //    $('#pending_epl_table').DataTable().destroy();
+    //    $.ajax({
+    //        type: "GET",
+    //        headers: {
+    //            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+    //            "Accept": "application/json"
+    //        },
+    //        url: "api/epl/assistance_director/" + director_id,
+    //        data: null,
+    //        dataType: "json",
+    //        cache: false,
+    //        processDaate: false,
+    //        success: function (result) {
+    //            var tbl = "";
+    //            $.each(result, function (index, value) {
+    //                let CODE = value.code_epl;
+    //                let TYPE = 'EPL';
+    //                if (CODE == 'N/A') {
+    //                    CODE = value.code_site;
+    //                    TYPE = 'Site Clearance';
+    //                    if (CODE == 'N/A') {
+    //                        CODE = value.file_no;
+    //                        TYPE = 'File No';
+    //                    }
+    //                }
+    //                tbl += "<tr>";
+    //                tbl += "<td>" + ++index + "</td>";
+    //                tbl += "<td>" + value.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + value.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='" + TYPE + "'>(" + CODE + ")</a></td>";
+    //                tbl += '<td><button type="button" class="btn btn-success selPendingEpl" value="' + value.id + '">Add</button></td>';
+    //                tbl += "</tr>";
+    //            });
+    //            if (!(result.length == 0 || result == undefined)) {
+    //                $('#pending_epl_table tbody').html(tbl);
+    //                $("#pending_epl_table").DataTable();
+    //            }
+    //            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+    //                callBack(result);
+    //            }
+    //        }
+    //    });
 
     pending_epl = $('#pending_epl_table').DataTable({
         "destroy": true,
@@ -227,36 +241,50 @@ function pending_EPL_table(director_id, callBack) {
             },
         },
         "columns": [{
-                "data": ""
-            },
-            {
-                "data": "",
-                render: function (data, type, row) {
-                    let CODE = row.code_epl;
+            "data": ""
+        },
+        {
+            "data": "",
+            render: function (data, type, row) {
+                let CODE = '';
+
+                if (row.epls.length != 0) {
                     let TYPE = 'EPL';
-                    if (CODE == 'N/A') {
-                        CODE = row.code_site;
-                        TYPE = 'Site Clearance';
-                        if (CODE == 'N/A') {
-                            CODE = row.file_no;
-                            TYPE = 'File No';
-                        }
-                    }
-                    return "<td>" + row.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + row.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='" + TYPE + "'>(" + CODE + ")</a></td>";
-                },
-                "defaultContent": "-"
+                    CODE = row.epls[0].code;
+                }else if(row.siteClearenceSessions != null){
+                    TYPE = 'Site Clearance';
+                    CODE = row.siteClearenceSessions[0].code;
+                }else if(row.file_no){
+                    TYPE = 'File No';
+                    CODE = row.file_no;
+                }
+
+
+
+                // let TYPE = 'EPL';
+                // if (CODE == 'N/A') {
+                    // CODE = row.code_site;
+                //     TYPE = 'Site Clearance';
+                //     if (CODE == 'N/A') {
+                //         CODE = row.file_no;
+                        // TYPE = 'File No';
+                //     }
+                // }
+                return "<td>" + row.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + row.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='" + TYPE + "'>(" + CODE + ")</a></td>";
             },
-            {
-                "data": "created_at",
-                "defaultContent": "-"
+            "defaultContent": "-"
+        },
+        {
+            "data": "created_at",
+            "defaultContent": "-"
+        },
+        {
+            "data": "",
+            render: function (data, type, row) {
+                return '<td><button type="button" class="btn btn-success selPendingEpl" value="' + row.id + '">Add</button></td>';
             },
-            {
-                "data": "",
-                render: function (data, type, row) {
-                    return '<td><button type="button" class="btn btn-success selPendingEpl" value="' + row.id + '">Add</button></td>';
-                },
-                "defaultContent": "-"
-            },
+            "defaultContent": "-"
+        },
         ],
         "order": [
             [2, "asc"]
@@ -267,7 +295,7 @@ function pending_EPL_table(director_id, callBack) {
     $(function () {
         var t = $('#pending_epl_table').DataTable();
         t.on('order.dt search.dt', function () {
-            t.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
                 cell.innerHTML = i + 1;
             });
         }).draw();
