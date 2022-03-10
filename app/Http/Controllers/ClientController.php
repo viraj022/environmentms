@@ -816,7 +816,7 @@ class ClientController extends Controller
 
     public function getDirectorApprovedList()
     {
-        return Client::where('file_status', '=', 5)->where('cer_status', '=', 5)->get();
+        return Client::where('file_status', '=', 5)->where('cer_status', '=', 5)->with('epls')->get();
     }
 
     public function getAssistanceDirectorPendingList($id)
