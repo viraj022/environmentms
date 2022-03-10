@@ -83,7 +83,7 @@ class Client extends Model
     }
 
     public function pradesheeyasaba()
-    { 
+    {
         return $this->belongsTo(Pradesheeyasaba::class);
     }
 
@@ -115,11 +115,13 @@ class Client extends Model
             default:
                 abort('422', 'unknown status type');
         }
-        return $file->with('oldFiles')
-            ->with('industryCategory')
-            ->with('businessScale')
-            ->with('pradesheeyasaba')
-            ->with('environmentOfficer.assistantDirector');
+        return $file->with('environmentOfficer.assistantDirector')
+            ->with('epls')
+            ->with('siteClearenceSessions');
+            // ->with('oldFiles')
+            // ->with('industryCategory')
+            // ->with('businessScale')
+            // ->with('pradesheeyasaba');
     }
 
     public function generateCertificateNumber()
