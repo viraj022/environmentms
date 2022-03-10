@@ -15,6 +15,7 @@ function ulploadFile2(URL, formData, callBack, metod = false) {
         type: metod,
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         xhr: function() {

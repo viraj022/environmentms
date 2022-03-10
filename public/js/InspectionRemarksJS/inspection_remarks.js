@@ -3,6 +3,7 @@ function GetRemarks(id, callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "/api/inspection_remarks/" + id,
@@ -23,7 +24,7 @@ function GetRemarks(id, callBack) {
 }
 
 //function load_inspection_attach(inspection_attach_path){
-//    var insdiv = "";    
+//    var insdiv = "";
 //    $.each(inspection_attach_path, function (index, value) {
 //        insdiv += "<img src=" + value.path + "/>";
 //    });
@@ -77,6 +78,7 @@ function deleteComment(id, callBack) {
         type: "DELETE",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "/api/inspection_remark/" + id,
@@ -100,6 +102,7 @@ function AddComment(data, id, callBack) {
         type: "POST",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "/api/inspection_remarks/" + id,
@@ -132,6 +135,7 @@ function updateZone(id, data, callBack) {
         type: "PUT",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/zone/id/" + id,

@@ -3,6 +3,7 @@ function GetPaymentRange(id, callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/rangedpayment",
@@ -50,7 +51,7 @@ function createPaymentRangeBox(id) {
                 range += "<div class='col-3'>";
                 if(rangevalue.to === '9999999999.99'){
                      range += "<input type='text' readonly='true' class='form-control form-control-sm txt-to' value='MAX' placeholder='Enter To..'>";
-                }else{                    
+                }else{
                 range += "<input type='number' readonly='true' class='form-control form-control-sm txt-to' value='" + rangevalue.to + "' placeholder='Enter To..'>";
                 }
                 range += "</div>";
@@ -108,6 +109,7 @@ function getaPaymentRangebyCat(id, callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/findRangedPayment/payment_id/" + id,

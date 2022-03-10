@@ -3,6 +3,7 @@ function updatePaymentCat(id, data, callBack) {
         type: "PUT",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/payment_type/id/" + id,
