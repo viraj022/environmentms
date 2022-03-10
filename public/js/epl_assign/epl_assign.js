@@ -114,11 +114,11 @@ function assigned_EPL_table(officer_id, callBack) {
         {
             "data": "",
             render: function (data, type, row) {
-console.log(row);
+
                 let CODE = '';
+                let TYPE = 'EPL';
 
                 if (row.epls.length != 0) {
-                    let TYPE = 'EPL';
                     CODE = row.epls[0].code;
                 }else if(row.siteClearenceSessions != null){
                     TYPE = 'Site Clearance';
@@ -247,9 +247,9 @@ function pending_EPL_table(director_id, callBack) {
             "data": "",
             render: function (data, type, row) {
                 let CODE = '';
+                let TYPE = 'EPL';
 
                 if (row.epls.length != 0) {
-                    let TYPE = 'EPL';
                     CODE = row.epls[0].code;
                 }else if(row.siteClearenceSessions != null){
                     TYPE = 'Site Clearance';
