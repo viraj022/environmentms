@@ -3,6 +3,7 @@ function GetZone(callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/zones",
@@ -27,6 +28,7 @@ function uniqueNamecheck(name,callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/zone/name/"+name,
@@ -47,6 +49,7 @@ function uniqueCodecheck(code,callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/zone/code/"+code,
@@ -85,6 +88,7 @@ function getaZonebyId(id, callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/zone/id/" + id,

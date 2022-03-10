@@ -3,6 +3,7 @@ function GetUsers(callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/AssistantDirector/unassign",
@@ -41,6 +42,7 @@ function GetZone(callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/zones",
@@ -80,6 +82,7 @@ function uniqueNamecheck(name,callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/zone/name/"+name,
@@ -100,6 +103,7 @@ function uniqueCodecheck(code,callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/zone/code/"+code,
@@ -142,6 +146,7 @@ function GetAssistantDir(callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/AssistantDirector/active",
@@ -152,7 +157,7 @@ function GetAssistantDir(callBack) {
         success: function (result) {
 
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-        
+
                 callBack(result);
             }
         }
@@ -168,6 +173,7 @@ function getaAssistantDirbyId(id,callBack)
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/get_a_AssistantDirector/id/"+id,
@@ -178,7 +184,7 @@ function getaAssistantDirbyId(id,callBack)
         success: function (result) {
 
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-        
+
                 callBack(result);
             }
         }

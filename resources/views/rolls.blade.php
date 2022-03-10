@@ -337,11 +337,12 @@ $('#btn_add_roll').click(function () {
 $('.div_add_roll').removeClass('d-none');
 });
 function loadPrevilages(id) {
-$.ajax({
-type: "GET",
+    $.ajax({
+        type: "GET",
         headers: {
-        "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-                "Accept": "application/json"
+            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            "Accept": "application/json"
         },
         url: "api/rolls/rollPrivilege/" + id,
         contentType: false,
@@ -460,7 +461,7 @@ $('.rollCombo').change();
 });
 });
 $(document).ready(function () {
-//check all checkboxes in page 
+//check all checkboxes in page
 $('#addAllPriv').click(function () {
 if ($(this).prop("checked") === true) {
 $('input:checkbox').not(this).prop('checked', this.checked = true)

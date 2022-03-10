@@ -3,6 +3,7 @@ function GetClients(callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/client",
@@ -47,6 +48,7 @@ function getaClientbyId(id, callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/client/id/" + id,
@@ -94,6 +96,7 @@ function getClientbyNic(type, data, callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/search/client/type/" + type,
@@ -115,6 +118,7 @@ function getClientSearchDetails(type, callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/search/clients_ditails/type/" + type,

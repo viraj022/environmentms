@@ -94,7 +94,7 @@
                         @if($pageAuth['is_create']==1 || false)
                         <button id="btnSave" type="submit" class="btn btn-success pull-right"><i class="fa fa-print"></i> &nbsp;Complete</button>
                         @endif
-                    </div>                           
+                    </div>
                 </div>
             </div>
 
@@ -125,7 +125,7 @@
                             </div>
                             <!-- /.card-body -->
                         </div>
-                    </div>                                        
+                    </div>
                 </div>
             </div>
         </div>
@@ -266,6 +266,11 @@
                         selectedPayments_table(ITEM_LIST);
                         $.ajax({
                             url: 'http://127.0.0.1:8081/hansana',
+                            headers: {
+                               "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+                               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                               "Accept": "application/json"
+                            },
                             data: {code: r.code, name: r.name},
                             success: function (result) {
                             }
@@ -288,6 +293,11 @@
                         selectedPayments_table(ITEM_LIST);
                         $.ajax({
                             url: 'http://127.0.0.1:8081/hansana',
+                            headers: {
+                              "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                              "Accept": "application/json"
+                            },
                             data: {code: r.code, name: r.name},
                             success: function (result) {
                             }

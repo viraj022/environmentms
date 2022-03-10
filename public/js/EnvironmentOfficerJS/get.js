@@ -4,6 +4,7 @@ function GetUsers(callBack) {
         headers: {
             Authorization:
                 "Bearer " + $("meta[name=api-token]").attr("content"),
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             Accept: "application/json",
         },
         url: "api/environment_officers/unassigned",
@@ -57,6 +58,7 @@ function uniqueNamecheck(name, callBack) {
         headers: {
             Authorization:
                 "Bearer " + $("meta[name=api-token]").attr("content"),
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             Accept: "application/json",
         },
         url: "api/zone/name/" + name,
@@ -81,6 +83,7 @@ function uniqueCodecheck(code, callBack) {
         headers: {
             Authorization:
                 "Bearer " + $("meta[name=api-token]").attr("content"),
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             Accept: "application/json",
         },
         url: "api/zone/code/" + code,
@@ -106,6 +109,7 @@ function GetAssistantDir(callBack) {
         headers: {
             Authorization:
                 "Bearer " + $("meta[name=api-token]").attr("content"),
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             Accept: "application/json",
         },
         url: "api/AssistantDirector/active",
@@ -156,6 +160,7 @@ function getEnvOfficerByAssistantDirId_table(id, callBack) {
         headers: {
             Authorization:
                 "Bearer " + $("meta[name=api-token]").attr("content"),
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             Accept: "application/json",
         },
         url: "api/environment_officers/assistant_director/id/" + id,
@@ -203,6 +208,7 @@ function getEnvOfficerById(id, callBack) {
         headers: {
             Authorization:
                 "Bearer " + $("meta[name=api-token]").attr("content"),
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             Accept: "application/json",
         },
         url: "api/environment_officer/id/" + id,

@@ -3,6 +3,7 @@ function deleteZone(id,callBack) {
         type: "DELETE",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/zone/id/"+ id,

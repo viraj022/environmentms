@@ -4,6 +4,7 @@ function deleteAssistantDir(id,callBack){
         type: "delete",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/unassistantdirector/id/"+id,
@@ -14,11 +15,11 @@ function deleteAssistantDir(id,callBack){
         success: function (result) {
 
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-        
+
                 callBack(result);
             }
         }
     });
 
-    
+
 }

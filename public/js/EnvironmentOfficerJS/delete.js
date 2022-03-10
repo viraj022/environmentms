@@ -5,6 +5,7 @@ function deleteEnviremontalOfficer(id, callBack) {
         headers: {
             Authorization:
                 "Bearer " + $("meta[name=api-token]").attr("content"),
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             Accept: "application/json",
         },
         url: "api/environment_officers/id/" + id,

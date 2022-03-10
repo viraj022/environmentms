@@ -3,6 +3,7 @@ function GetPradesheeyasabas(callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/pradesheeyasabas",
@@ -27,6 +28,7 @@ function uniqueNamecheck(name,callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/pradesheeyasaba/name/"+name,
@@ -47,6 +49,7 @@ function uniqueCodecheck(code,callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/pradesheeyasaba/code/"+code,
@@ -86,6 +89,7 @@ function getaPradesiyasababyId(id, callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/pradesheeyasaba/id/" + id,
@@ -109,6 +113,7 @@ function GetAllZone(callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/zones",
@@ -171,6 +176,7 @@ function getaPradesiyasabaByZone(zone_id, callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "api/pradesheeyasabas/zone/id/" + zone_id,

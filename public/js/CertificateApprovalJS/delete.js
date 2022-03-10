@@ -3,6 +3,7 @@ function deleteEnvOfficer(data,id,callBack) {
         type: "DELETE",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "/api/approval/officer/id/"+ id,
@@ -26,6 +27,7 @@ function deleteAssDir(data,id,callBack) {
         type: "DELETE",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "/api/approval/a_director/id/"+ id,
@@ -49,6 +51,7 @@ function deleteDir(data,id,callBack) {
         type: "DELETE",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "/api/approval/director/id/"+ id,
