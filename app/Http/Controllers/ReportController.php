@@ -968,6 +968,7 @@ class ReportController extends Controller
             4 => 'D Certificate Approval Prenidng',
             5 => 'Complete',
             6 => 'Issued',
+            7 => 'Not Assigned',
             '-1' => 'Rejected',
             '-2' => 'Hold'
         ];
@@ -977,6 +978,7 @@ class ReportController extends Controller
             ->orderBy('updated_at', 'ASC')
             // ->limit(10)
             ->get();
+
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('file_progress_report', [
