@@ -148,7 +148,8 @@ class WebDocumentController extends Controller
 
     public function letterTemplatePage()
     {
-        return view('letter_template');
+        $all_template = LetterTemplate::get();
+        return view('letter_template', compact('all_template'));
     }
 
     public function loadTemplates()
@@ -160,14 +161,16 @@ class WebDocumentController extends Controller
     public function letterTempById($id)
     {
         $template = LetterTemplate::find($id);
-        return view('letter_template', compact('template'));
+        $all_template=LetterTemplate::get();
+        return view('letter_template', compact('template','all_template'));
     }
     public function GetLetterTemplateById($id)
     {
         return LetterTemplate::find($id);
     }
 
-    public function deleteLetter($letter_id){
+    public function deleteLetter($letter_id)
+    {
         $letter_delete = Letter::find($letter_id)->delete();
         if ($letter_delete == true) {
             return array("status" => 1, "message" => "Letter deleted successfully");
@@ -176,7 +179,8 @@ class WebDocumentController extends Controller
         }
     }
 
-    public function deleteLetterTemplate($letter_temp_id){
+    public function deleteLetterTemplate($letter_temp_id)
+    {
         $letter_temp_delete = LetterTemplate::find($letter_temp_id)->delete();
         if ($letter_temp_delete == true) {
             return array("status" => 1, "message" => "Letter template deleted successfully");
