@@ -56,7 +56,19 @@ function getaProfilebyId(callBack) {
                 "defaultContent": "-"
             },
         ],
-        "columnDefs": [{
+        "columnDefs": [
+            {
+                "targets": 2,
+                "data": "0",
+                "render": function(data, type, full, meta) {
+                    let td = '-';
+                    if(full.epls.length != 0){
+                        td = full.epls[0].code;
+                    }
+                    return td;
+                }
+            },
+            {
                 "targets": 3,
                 "data": "0",
                 "render": function(data, type, full, meta) {
