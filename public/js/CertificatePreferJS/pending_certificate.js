@@ -60,14 +60,23 @@ function getaProfilebyId(callBack) {
             "defaultContent": "-"
         },
         ],
-        "columnDefs": [{
-            "targets": 2,
-            "data": "0",
-            "render": function (data, type, row) {
-                if (row.epls.length != 0) {
-                    return row.epls[0].code;
-                } else {
-                    return null;
+        "columnDefs": [
+            {
+                "targets": 2,
+                "data": "0",
+                "render": function(data, type, full, meta) {
+                    let td = '-';
+                    if(full.epls.length != 0){
+                        td = full.epls[0].code;
+                    }
+                    return td;
+                }
+            },
+            {
+                "targets": 3,
+                "data": "0",
+                "render": function(data, type, full, meta) {
+                    return '<a href="/industry_profile/id/' + full['id'] + '" target="_blank">' + full['file_no'] + '</a>(' + certificate_type[full['cer_type_status']] + ')';
                 }
             },
         },

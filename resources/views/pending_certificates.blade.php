@@ -153,16 +153,29 @@
         load_letters();
     });
 
-    function load_letters() {
-        let url = '/api/forwarded_complains/';
-        ajaxRequest('GET', url, null, function(resp) {
-            var letter_view_tbl = "";
-            $('#letter_view_tbl').DataTable().destroy();
-            $.each(resp, function(key, value) {
-                key++;
-                letter_view_tbl += "<tr><td>" + key + "</td><td>" + value.complainer_code +
-                    "</td><td>" + value.complainer_name + "</td><td>" + value.complainer_address +
-                    "</td><td>" + value.comp_contact_no + "</td></td><td><a href='/complain_profile/id/" + value.id + "' class='btn btn-dark'>View</a></td></tr>";
+        function load_letters() {
+            let url = '/api/forwarded_complains/';
+            ajaxRequest('GET', url, null, function(resp) {
+                var letter_view_tbl = "";
+                $('#letter_view_tbl').DataTable().destroy();
+                $('#letter_view_tbl').DataTable({
+                    responsive: true,
+                    aLengthMenu: [
+                        [10, 25, 50, 100, -1],
+                        [10, 25, 50, 100, "All"]
+                    ],
+                    "bDestroy": true,
+                    iDisplayLength: 10
+                });
+                $.each(resp, function(key, value) {
+                    key++;
+
+                    letter_view_tbl += "<tr><td>" + key + "</td><td>" + value.complainer_code +
+                        "</td><td>" + value.complainer_name + "</td><td>" + value.complainer_address +
+                        "</td><td>" + value.comp_contact_no + "</td></td><td><a href='/complain_profile/id/" + value.id + "' class='btn btn-dark'>View</a></td></tr>";
+                });
+                $('#letter_view_tbl tbody').html(letter_view_tbl);
+
             });
             $('#letter_view_tbl tbody').html(letter_view_tbl);
             $('#letter_view_tbl').DataTable({
