@@ -27,34 +27,38 @@ function getaProfilebyId(callBack) {
             },
         },
         "columns": [{
-                "data": "",
-                "defaultContent": "-"
-            },
-            {
-                "data": "industry_name",
-                "defaultContent": "-"
-            },
-            {
-                "data": "code_epl",
-                "defaultContent": "-"
-            },
-            {
-                "data": "",
-                "defaultContent": "-"
-            },
-            {
-                "data": "certificate_comment",
-                "defaultContent": "--"
-            },
-            {
-                "data": "",
-                "defaultContent": "-"
+            "data": "",
+            "defaultContent": "-"
+        },
+        {
+            "data": "industry_name",
+            "defaultContent": "-"
+        },
+        {
+            "data": "",
+            "defaultContent": "-"
+        },
+        {
+            "data": "",
+            "defaultContent": "-"
+        },
+        {
+            "data": "",
+            "defaultContent": "-"
+        },
+        {
+            "data": "certificate_comment",
+            "defaultContent": "--"
+        },
+        {
+            "data": "",
+            "defaultContent": "-"
 
-            },
-            {
-                "data": "",
-                "defaultContent": "-"
-            },
+        },
+        {
+            "data": "",
+            "defaultContent": "-"
+        },
         ],
         "columnDefs": [
             {
@@ -75,22 +79,41 @@ function getaProfilebyId(callBack) {
                     return '<a href="/industry_profile/id/' + full['id'] + '" target="_blank">' + full['file_no'] + '</a>(' + certificate_type[full['cer_type_status']] + ')';
                 }
             },
-            {
-                "targets": 5,
-                "data": "0",
-                "render": function(data, type, full, meta) {
-                    return certificate_status[full['cer_status']];
+        },
+        {
+            "targets": 3,
+            "data": "0",
+            "render": function (data, type, row) {
+                if (row.site_clearence_sessions != '') {
+                    return row.site_clearence_sessions[0].code;
+                } else {
+                    return null;
                 }
             },
-            {
-                "targets": 6,
-                "data": "0",
-                "render": function(data, type, full, meta) {
-                    return '<a href="/certificate_perforation/id/' + full['id'] + '" class="btn btn-success">Certificate<a>';
-                }
+        },
+        {
+            "targets": 4,
+            "data": "0",
+            "render": function (data, type, full, meta) {
+                return '<a href="/industry_profile/id/' + full['id'] + '" target="_blank">' + full['file_no'] + '</a>(' + certificate_type[full['cer_type_status']] + ')';
             }
+        },
+        {
+            "targets": 6,
+            "data": "0",
+            "render": function (data, type, full, meta) {
+                return certificate_status[full['cer_status']];
+            }
+        },
+        {
+            "targets": 7,
+            "data": "0",
+            "render": function (data, type, full, meta) {
+                return '<a href="/certificate_perforation/id/' + full['id'] + '" class="btn btn-success">Certificate<a>';
+            }
+        }
         ],
-        createdRow: function(row, data, dataIndex) {
+        createdRow: function (row, data, dataIndex) {
             if (data['cer_status'] == "2") {
                 $(row).addClass('status-two');
             }
@@ -100,10 +123,10 @@ function getaProfilebyId(callBack) {
         ],
     });
 
-    $(function() {
+    $(function () {
         var t = $("#tblPendingCertificate").DataTable();
-        t.on('order.dt search.dt', function() {
-            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function(cell, i) {
+        t.on('order.dt search.dt', function () {
+            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
                 cell.innerHTML = i + 1;
             });
         }).draw();
@@ -111,7 +134,7 @@ function getaProfilebyId(callBack) {
 
     //data table error handling
     $.fn.dataTable.ext.errMode = 'none';
-    $('#tblPendingCertificate').on('error.dt', function(e, settings, techNote, message) {
+    $('#tblPendingCertificate').on('error.dt', function (e, settings, techNote, message) {
         console.log('DataTables error: ', message);
     });
 
