@@ -78,7 +78,7 @@
 
                                                 <div class="card-body">
                                                     <!--                                                    <div class="callout callout-danger">
-                                                    
+
                                                                                                             <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change Environment Officer</button>
                                                                                                             <p>There is a problem that we need to</p>
                                                                                                         </div>-->
@@ -128,7 +128,7 @@
                                                                                                                 <span class="info-box-text">Create new telecommunication site clearance file</span>
                                                                                                                 <span class="info-box-number">Telecommunication Site Clearance</span>
                                                                                                             </div>
-                                                                                                             /.info-box-content 
+                                                                                                             /.info-box-content
                                                                                                         </div>-->
 
                                                     <div class="info-box mb-3 bg-info">
@@ -637,7 +637,7 @@
 @section('pageScripts')
 <!-- Page script -->
 
-<!-- Bootstrap4 Duallistbox 
+<!-- Bootstrap4 Duallistbox
 <script src="../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>-->
 <!-- InputMask -->
 <script src="../../plugins/moment/moment.min.js"></script>
@@ -681,7 +681,7 @@
                                                 checkCompletedStatus(parameters.file_status, parameters.epls, parameters.site_clearence_sessions);
                                                 $(".loadingRenderUI").remove(); //<--Check Loading Status
                                             });
-                                            
+
                                             $('#newEPL').click(function () {
                                                 if (isNaN(parseInt(PROFILE_ID))) {
                                                     return false;
@@ -744,7 +744,7 @@
                                                 });
                                             });
                                         });
-                                        //btnCustomerVa button action 
+                                        //btnCustomerVa button action
                                         $(document).on('click', '.btnCustomerVa', function () {
                                             var row = JSON.parse(decodeURIComponent($(this).data('row')));
                                             setClientDetails(row);
@@ -885,6 +885,11 @@
                                             toastr.info('Printing Barcode.Please Wait...');
                                             $.ajax({
                                                 url: 'http://127.0.0.1:8081/hansana',
+                                                headers: {
+                                                  "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+                                                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                                  "Accept": "application/json"
+                                                },
                                                 data: {
                                                     code: btnValue,
                                                     name: btnName

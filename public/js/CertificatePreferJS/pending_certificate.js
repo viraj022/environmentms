@@ -35,7 +35,11 @@ function getaProfilebyId(callBack) {
                 "defaultContent": "-"
             },
             {
-                "data": "code_epl",
+                "data": "",
+                "defaultContent": "-"
+            },
+            {
+                "data": "",
                 "defaultContent": "-"
             },
             {
@@ -57,6 +61,17 @@ function getaProfilebyId(callBack) {
             },
         ],
         "columnDefs": [{
+                "targets": 2,
+                "data": "0",
+                "render": function(data, type, full, meta) {
+                    let td = '-';
+                    if (full.epls.length != 0) {
+                        td = full.epls[0].code;
+                    }
+                    return td;
+                }
+            },
+            {
                 "targets": 3,
                 "data": "0",
                 "render": function(data, type, full, meta) {
@@ -64,14 +79,32 @@ function getaProfilebyId(callBack) {
                 }
             },
             {
-                "targets": 5,
+                "targets": 3,
+                "data": "0",
+                "render": function(data, type, row) {
+                    if (row.site_clearence_sessions != '') {
+                        return row.site_clearence_sessions[0].code;
+                    } else {
+                        return null;
+                    }
+                },
+            },
+            {
+                "targets": 4,
+                "data": "0",
+                "render": function(data, type, full, meta) {
+                    return '<a href="/industry_profile/id/' + full['id'] + '" target="_blank">' + full['file_no'] + '</a>(' + certificate_type[full['cer_type_status']] + ')';
+                }
+            },
+            {
+                "targets": 6,
                 "data": "0",
                 "render": function(data, type, full, meta) {
                     return certificate_status[full['cer_status']];
                 }
             },
             {
-                "targets": 6,
+                "targets": 7,
                 "data": "0",
                 "render": function(data, type, full, meta) {
                     return '<a href="/certificate_perforation/id/' + full['id'] + '" class="btn btn-success">Certificate<a>';

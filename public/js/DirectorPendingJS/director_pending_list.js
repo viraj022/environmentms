@@ -31,7 +31,11 @@ function loadDirectorPendingListTable() {
                 tbl += '<tr>';
                 tbl += '<td>' + ++index + '</td>';
                 tbl += '<td>' + row.industry_name + '</td>';
-                tbl += '<td>' + row.code_epl + '</td>';
+                if(row.epls.length != 0){
+                    tbl += '<td>' + row.epls[0].code + '</td>';
+                }else{
+                    tbl += '<td>-</td>';
+                }
                 tbl += '<td><a href="/industry_profile/id/' + row.id + '" target="_blank">' + row.file_no + '</a></td>';
                 tbl += '<td>' + dataObj[row.file_status] + '</td>';
                 if (row.file_status != 0) {
@@ -57,12 +61,15 @@ function loadDirectorApprovedListTable(callBack) {
                 tbl += '<tr>';
                 tbl += '<td>' + ++index + '</td>';
                 tbl += '<td>' + row.industry_name + '</td>';
-                tbl += '<td>' + row.code_epl + '</td>';
+                if(row.epls.length != 0){
+                    tbl += '<td>' + row.epls[0].code + '</td>';
+                }else{
+                    tbl += '<td>-</td>';
+                }
                 tbl += '<td><a href="/industry_profile/id/' + row.id + '" target="_blank">' + row.file_no + '</a></td>';
                 tbl += '<td>' + dataObj[row.file_status] + '</td>';
                 console.log(row.file_status);
                 if (row.file_status != 0) {
-                    console.log('as');
                     tbl += '<td><a href="/certificate_perforation/id/' + row.id + '" class="btn btn-sm btn-success">Upload Certificate</a></td>';
                 } else {
                     tbl += '<td>N/A</td>';

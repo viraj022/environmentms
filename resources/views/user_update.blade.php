@@ -364,12 +364,13 @@ $(function () {
 loadUserPrevilages(userId);
 ///// end array initialize
 function loadPrevilages(id) {
-$.ajax({
-type: "GET",
-    headers: {
-    "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-            "Accept": "application/json"
-    },
+    $.ajax({
+        type: "GET",
+        headers: {
+           "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+           "Accept": "application/json"
+        },
     url: "/api/rolls/rollPrivilege/" + id,
     contentType: false,
     dataType: "json",
@@ -427,12 +428,13 @@ type: "GET",
 function loadUserPrevilages(id) {
 $(".roleCombo").val(rollId);
 $('.select2').select2();
-$.ajax({
-type: "GET",
-    headers: {
-    "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+    $.ajax({
+        type: "GET",
+        headers: {
+            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
-    },
+        },
     url: "/api/user/Privileges/" + id,
     contentType: false,
     dataType: "json",

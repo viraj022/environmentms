@@ -4,6 +4,7 @@ function loadAssistantDirectorCombo(callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "/api/AssistantDirector/active",
@@ -29,6 +30,7 @@ function loadEnvOfficers_combo(ass_dir_id, callBack) {
         type: "GET",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "/api/environment_officers/assistant_director/id/" + ass_dir_id,
@@ -71,6 +73,7 @@ function assign_epl_to_officer(data, callBack) {
         type: "POST",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
         url: "/api/epl/assign/id/" + data.epl_id,

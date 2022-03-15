@@ -37,16 +37,12 @@
                                 @if (isset($template->template_name))
                                     <a href="/letter_template" class="btn btn-dark">Back</a>
                                     <button class="btn btn-warning" id="updateLetTemp">Update</button>
+                                    <button type="button" class="btn btn-danger" id="delete_letter_temp">Delete
+                                        Template</button>
                                 @else
                                     <button class="btn btn-success" id="saveLetTemp">Save</button>
                                 @endif
                             </div>
-                            @if(isset($template->template_name))
-                            <button class="btn btn-warning" id="updateLetTemp">Update</button>
-                            <button type="button" class="btn btn-danger" id="delete_letter_temp">Delete Template</button>
-                            @else
-                            <button class="btn btn-success" id="saveLetTemp">Save</button>
-                            @endif
                         </div>
                         <div class="card card-gray">
                             <div class="card-header">
@@ -61,7 +57,17 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr></tr>
+                                        @forelse ($all_template as $item)
+                                            <tr>
+                                                <td>{{ $item->template_name }}</td>
+                                                <td><a href="/load_temp/id/{{ $item->id }}"
+                                                        class="btn btn-dark btn-sm">Select</a></td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="2">No Template Found</td>
+                                            </tr>
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>
@@ -175,12 +181,12 @@
             update_template();
         });
 
-    $('#delete_letter_temp').click(function() {
-        delete_letter_template();
-    });
+        $('#delete_letter_temp').click(function() {
+            delete_letter_template();
+        });
 
 
-    function save_template() {
+        function save_template() {
 
             const data = {
                 template_name: $('#letter_temp_name').val()
@@ -211,20 +217,21 @@
             };
             let url = '/api/update_let_template';
 
-        if (data.template_name != '' && data.template_content != '' && data.template_id != '') {
-            ajaxRequest('POST', url, data, function(resp) {
-                if (resp.status == 1) {
-                    swal.fire('success', 'letter content updation is successfull', 'success');
-                    location.reload();
-                } else {
-                    swal.fire('failed', 'letter content updation was unsuccessful', 'warning');
-                }
-            });
-        } else {
-            swal.fire('failed', 'document content is required to update letter template', 'warning');
+            if (data.template_name != '' && data.template_content != '' && data.template_id != '') {
+                ajaxRequest('POST', url, data, function(resp) {
+                    if (resp.status == 1) {
+                        swal.fire('success', 'letter content updation is successfull', 'success');
+                        location.reload();
+                    } else {
+                        swal.fire('failed', 'letter content updation was unsuccessful', 'warning');
+                    }
+                });
+            } else {
+                swal.fire('failed', 'document content is required to update letter template', 'warning');
+            }
         }
 
-    function delete_letter_template(){
+        function delete_letter_template() {
             Swal.fire({
                 title: 'Are sure to delete this letter template?',
                 showDenyButton: true,
@@ -234,12 +241,12 @@
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.value) {
-                    let letter_temp_id = "{{(isset($template->id)) ? $template->id : ''}}";
+                    let letter_temp_id = "{{ isset($template->id) ? $template->id : '' }}";
                     let url = "/api/delete_letter_temp/letter_template/" + letter_temp_id;
                     ajaxRequest('DELETE', url, null, function(resp) {
                         if (resp.status == 1) {
                             swal.fire('success', 'Successfully deleted the letter template', 'success');
-                            window.location.replace("/letter_template"); 
+                            window.location.replace("/letter_template");
                         } else {
                             swal.fire('failed', 'Letter template deletion was unsuccessful', 'warning');
                         }
@@ -250,15 +257,17 @@
             })
         }
 
-    function load_templates() {
-        let url = '/api/load_templates';
-        ajaxRequest('GET', url, null, function(resp) {
-            var template_tbl = " ";
-            $.each(resp, function(key, value2) {
-                template_tbl += "<tr><td>" + value2.template_name + "</td><td><a href='/load_temp/id/" + value2.id +
-                    "' class='btn btn-primary mr-2'>Edit</a></td></tr>";
-            });
+        function load_templates() {
+            let url = '/api/load_templates';
+            ajaxRequest('GET', url, null, function(resp) {
+                var template_tbl = " ";
+                $.each(resp, function(key, value2) {
+                    template_tbl += "<tr><td>" + value2.template_name + "</td><td><a href='/load_temp/id/" +
+                        value2.id +
+                        "' class='btn btn-primary mr-2'>Edit</a></td></tr>";
+                });
 
+            })
         }
     </script>
 @endsection
