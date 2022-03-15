@@ -177,7 +177,7 @@
                 $('#letter_view_tbl tbody').html(letter_view_tbl);
 
             });
-            $('#letter_view_tbl tbody').html(letter_view_tbl);
+
             $('#letter_view_tbl').DataTable({
                 responsive: true,
                 aLengthMenu: [
@@ -187,7 +187,6 @@
                 "bDestroy": true,
                 iDisplayLength: 10
             });
-        });
-    }
+        }
 </script>
 @endsection
