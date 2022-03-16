@@ -69,9 +69,19 @@ function loadProfileData() {
             let data = JSON.parse(unescape(resp.attachment));
             // let base_url = "{{ url('/') }}";
             $.each(data, function(key, value) {
-                if (value.img_path != '') {
-                    image += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><img src="/storage/' + value.img_path + '" alt="" style="width: auto; height: 200px; max-width: 384px;"><hr> <button type="button" data-name="' + value.img_path + '" class="btn btn-danger remove_attach">Remove</button> </div>';
+                let file_path = value.img_path;
+                let file_type = file_path.substr(file_path.indexOf(".") + 1);
+
+                if (file_type != 'pdf') {
+                    if (file_path != '') {
+                        image += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><img src="/storage/' + file_path + '" alt="" style="width: auto; height: 200px; max-width: 384px;"><hr> <button type="button" data-name="' + file_path + '" class="btn btn-danger remove_attach">Remove</button> </div>';
+                    }
+                } else {
+                    if (file_path != '') {
+                        image += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><canvas src="/storage/' + file_path + '" alt="" style="width: auto; height: 200px; max-width: 384px;"><hr> <button type="button" data-name="' + file_path + '" class="btn btn-danger remove_attach">Remove</button> </div>';
+                    }
                 }
+
             });
 
             $('#file_attachments').html(image);

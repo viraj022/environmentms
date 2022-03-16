@@ -65,11 +65,7 @@
 
                             </div>
 
-
-                            <p class="text-muted text-center firstL_name">U.B. Jayawathi</p>
-
-                            <ul class="list-group list-group-unbordered mb-3">
-
+                            <ul class="list-group list-group-unbordered mt-5 mb-3">
 
                                 <li class="list-group-item">
                                     <b>Code :</b> <a class="float-right" id="comp_code"></a>
@@ -151,10 +147,10 @@
                             <div class="form-group" id="fileUpDiv">
 
                                 <label id="uploadLabel">File Upload </label>
-                                <input id="fileUploadInput" type="file" class="col-12" accept=".png, .jpg, .jpeg"
-                                    multiple>
+                                <input id="fileUploadInput" type="file" class="col-12"
+                                    accept=".png, .jpg, .jpeg, .pdf" multiple>
                                 <div class="col-12">
-                                    <span id="attached_files"></span>
+                                    <div id="attached_files"></div>
                                 </div>
                                 <div class="col-12">
                                     <button type="button" class="btn btn-primary mt-2" data-upload_file="attachments"
@@ -360,9 +356,16 @@
     <script src="{{ asset('/js/complains/complainProfile.js') }}" type="text/javascript"></script>
     <script src="../../dist/js/adminlte.min.js"></script>
     <script src="../../plugins/select2/js/select2.full.min.js"></script>
-
+    <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
     <script>
         $(document).ready(function() {
+
+            // Loaded via <script> tag, create shortcut to access PDF.js exports.
+            var pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+            // The workerSrc property shall be specified.
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
+
             loadProfileData();
             let complain_id = "{{ $complain_id }}";
             load_forward_history_table(complain_id);
@@ -504,10 +507,66 @@
             let index = 0;
             let html = "";
             $.each($('#fileUploadInput')[0].files, function(key, val) {
-                html += "<img src='" + window.URL.createObjectURL(val) + "' width='100em' height='100em'/>";
+                let file = val;
+                
+                let default_url = window.location.origin+"/dist/img/pdf-view.png";
+                if (val.type == "application/pdf") {
+                    html += "<img src='"+default_url+"' width='100em' height='100em'></img>";
+                    
+                } else {
+                    html += "<img src='" + window.URL.createObjectURL(val) +
+                        "' width='100em' height='100em'></img>";
+
+                }
+                    $('#attached_files').html(html);
             });
-            $('#attached_files').html(html);
         });
+
+        // $("#pdfViewer").removeClass('d-none');
+        //             $("#imgViewer").addClass('d-none');
+
+        //             var fileReader = new FileReader();
+        //             fileReader.onload = function() {
+        //                 var pdfData = new Uint8Array(this.result);
+        //                 // Using DocumentInitParameters object to load binary data.
+        //                 var loadingTask = pdfjsLib.getDocument({
+        //                     data: pdfData
+        //                 });
+        //                 loadingTask.promise.then(function(pdf) {
+        //                     console.log('PDF loaded');
+
+        //                     // Fetch the first page
+        //                     var pageNumber = 1;
+        //                     pdf.getPage(pageNumber).then(function(page) {
+        //                         console.log('Page loaded');
+
+        //                         var scale = 1.5;
+        //                         var viewport = page.getViewport({
+        //                             scale: scale
+        //                         });
+
+        //                         // Prepare canvas using PDF page dimensions
+        //                         var canvas = $("#pdfViewer")[0];
+        //                         var context = canvas.getContext('2d');
+        //                         canvas.height = viewport.height;
+        //                         canvas.width = viewport.width;
+
+        //                         // Render PDF page into canvas context
+        //                         var renderContext = {
+        //                             canvasContext: context,
+        //                             viewport: viewport
+        //                         };
+        //                         var renderTask = page.render(renderContext);
+        //                         renderTask.promise.then(function() {
+        //                             console.log('Page rendered');
+        //                         });
+        //                     });
+        //                 }, function(reason) {
+        //                     // PDF loading error
+        //                     console.error(reason);
+        //                 });
+        //             };
+        //             fileReader.readAsArrayBuffer(file);
 
         function load_letters() {
             let url = '/api/get_all_letters';

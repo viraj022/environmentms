@@ -147,7 +147,6 @@ class ComplainController extends Controller
                     'upload_time' => date("Y-m-d H:i:s"),
                     'uploaded_user' => $user
                 ];
-
             }
 
             $update_attach->attachment = json_encode($curr_file_path_arr);
