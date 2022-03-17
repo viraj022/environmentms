@@ -10,6 +10,7 @@ use App\ComplainComment;
 use App\ComplainMinute;
 use App\ComplainAssignLog;
 use App\Client;
+use Exception;
 use Illuminate\Support\Facades\Log;
 
 class ComplainController extends Controller
@@ -129,7 +130,7 @@ class ComplainController extends Controller
 
     public function complainProfileData($id)
     {
-        $complain_data = Complain::with(['assignedUser', 'createdUser', 'complainComments', 'complainMinutes'])->find($id);
+        $complain_data = Complain::with(['assignedUser', 'createdUser', 'complainComments.commentedUser', 'complainMinutes.minuteUser'])->find($id);
         return $complain_data;
     }
 
@@ -137,7 +138,7 @@ class ComplainController extends Controller
     {
         $user = Auth::user()->id;
         $update_attach = Complain::find($id);
-         $curr_file_path_arr = json_decode($update_attach->attachment);
+        $curr_file_path_arr = json_decode($update_attach->attachment);
         $files = $request->file_list;
         if ($files != null) {
             foreach ($files as $file) {
@@ -162,11 +163,19 @@ class ComplainController extends Controller
 
     public function delete_complain($id)
     {
-        $delete_complain = Complain::find($id)->delete();
-        if ($delete_complain == true) {
-            return array('status' => 1, 'msg' => 'Complain successfully deleted');
-        } else {
-            return array('status' => 0, 'msg' => 'Complain delete unsuccessful');
+        try {
+            $delete_complain = Complain::find($id)->delete();
+            if ($delete_complain == true) {
+                return array('status' => 1, 'msg' => 'Complain successfully deleted!');
+            } else {
+                return array('status' => 0, 'msg' => 'Complain deletion was unsuccessful!');
+            }
+        } catch (Exception $ex) {
+            if ($ex->getCode() == '23000') {
+                return array('status' => 0, 'msg' => 'This complain cannot be deleted, due to its dependencies');
+            } else {
+                return array('status' => 0, 'msg' => 'Database Error!');
+            }
         }
     }
 
@@ -272,20 +281,23 @@ class ComplainController extends Controller
     {
         $complain_assign_log = ComplainAssignLog::where('complain_id', $complain_id)
             ->with(['assignerUser', 'assigneeUser'])
+            ->orderBy('assignee_user', 'desc')
             ->get();
         return $complain_assign_log;
     }
 
-    public function forwarded_complains(){
+    public function forwarded_complains()
+    {
         $forwarded_complains = Complain::where('status', 4)->get();
         return $forwarded_complains;
     }
 
-    public function removeAttach(Request $request){
+    public function removeAttach(Request $request)
+    {
         $attach = Complain::find($request->id);
         $decoded_paths = json_decode($attach->attachment);
-        foreach($decoded_paths as $decoded_path){
-            if($decoded_path->img_path == $request->file_path){
+        foreach ($decoded_paths as $decoded_path) {
+            if ($decoded_path->img_path == $request->file_path) {
                 $decoded_path->img_path = '';
             }
         }
@@ -299,18 +311,20 @@ class ComplainController extends Controller
         }
     }
 
-    public function loadFileNo(){
+    public function loadFileNo()
+    {
         $file_no = Client::select('id', 'file_no')->get();
         return $file_no;
     }
 
-    public function assignFileNo(Request $request){
+    public function assignFileNo(Request $request)
+    {
         $assign_file = Complain::find($request->id);
         $assign_file->client_id = $request->client_id;
         $assign_file->save();
-        if($assign_file == true){
+        if ($assign_file == true) {
             return array('status' => 1, 'msg' => 'File assigned successfully');
-        }else{
+        } else {
             return array('status' => 0, 'msg' => 'File assigning was unsuccessful');
         }
     }

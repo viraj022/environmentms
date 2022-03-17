@@ -10,4 +10,9 @@ class ComplainMinute extends Model
     {
         return $this->belongsTo(Complain::class);
     }
+
+    public function minuteUser()
+    {
+        return $this->belongsTo(User::class, 'minute_user_id');
+    }
 }

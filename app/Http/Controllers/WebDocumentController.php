@@ -161,8 +161,8 @@ class WebDocumentController extends Controller
     public function letterTempById($id)
     {
         $template = LetterTemplate::find($id);
-        $all_template=LetterTemplate::get();
-        return view('letter_template', compact('template','all_template'));
+        $all_template = LetterTemplate::get();
+        return view('letter_template', compact('template', 'all_template'));
     }
     public function GetLetterTemplateById($id)
     {
@@ -187,5 +187,11 @@ class WebDocumentController extends Controller
         } else {
             return array("status" => 0, "message" => "Letter template deletion was unsuccessful");
         }
+    }
+
+    public function getLettersForComplainId($complain_id)
+    {
+        $all_letters_for_complain = Letter::where('complain_id', $complain_id)->get();
+        return $all_letters_for_complain;
     }
 }
