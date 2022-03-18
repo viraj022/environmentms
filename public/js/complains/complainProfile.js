@@ -3,11 +3,11 @@ function update_attachments() {
     let url = '/api/update_attachments/id/' + id;
     let arr = [];
     let index = 0;
-    $.each($('#fileUploadInput')[0].files, function (key, val) {
+    $.each($('#fileUploadInput')[0].files, function(key, val) {
         arr[index++] = val;
     });
     if (arr.length != 0) {
-        ulploadFileWithData(url, null, function (resp) {
+        ulploadFileWithData(url, null, function(resp) {
             if (resp.status == 1) {
                 loadProfileData();
                 $('#fileUploadInput').val('');
@@ -27,7 +27,7 @@ function update_attachments() {
 function loadProfileData() {
     let id = $('#complain_profile_id').val();
     let url = '/api/complain_profile_data/id/' + id;
-    ajaxRequest('GET', url, null, function (resp) {
+    ajaxRequest('GET', url, null, function(resp) {
         $('#comp_code').html(resp.complainer_code);
         if (resp.assigned_user != null) {
             $('#assigned_officer').html(resp.assigned_user.user_name);
@@ -64,25 +64,13 @@ function loadProfileData() {
             $('#forward_letter_preforation').addClass('d-none');
         }
 
-        switch (resp.recieve_type) {
-            case 1:
-                $('#comp_by').html('<span class="badge bg-success">Call</span>');
-                break;
-            case 2:
-                $('#comp_by').html('<span class="badge bg-success">Written</span>');
-                break;
-            case 3:
-                $('#comp_by').html('<span class="badge bg-success">Verbal</span>');
-                break;
-            default:
-            // code block
-        }
+        $('#comp_by').html('<span class="badge bg-success">' + resp.complainer_name + '</span>');
 
         let image = '';
-        if (resp.attachment != null && resp.attachment.length != 0 && resp.attachment.file_path != null) {
+        if (resp.attachment != null || resp.attachment.length != 0 || resp.attachment.file_path != null) {
             let data = JSON.parse(unescape(resp.attachment));
             // let base_url = "{{ url('/') }}";
-            $.each(data, function (key, value) {
+            $.each(data, function(key, value) {
                 let file_path = value.img_path;
                 let file_type = file_path.substr(file_path.indexOf(".") + 1);
 
@@ -103,7 +91,7 @@ function loadProfileData() {
 
         if (resp.complain_comments != '') {
             let comments = '';
-            $.each(resp.complain_comments, function (key, value2) {
+            $.each(resp.complain_comments, function(key, value2) {
                 comments += '<div class="row alert"><div class="col-md-4">' + ++key + '</div><div class="col-md-4">' + value2.comment + '</div><div class="col-md-4">' + value2.commented_user.user_name + '</div></div>';
             });
             $('#comment_section').html(comments);
@@ -111,7 +99,7 @@ function loadProfileData() {
 
         if (resp.complain_minutes != '') {
             let minutes = '';
-            $.each(resp.complain_minutes, function (key, value2) {
+            $.each(resp.complain_minutes, function(key, value2) {
                 minutes += '<div class="row alert"><div class="col-md-4">' + ++key + '</div><div class="col-md-4">' + value2.minute + '</div><div class="col-md-4">' + value2.minute_user.user_name + '</div></div>';
             });
             $('#minute_section').html(minutes);
@@ -127,10 +115,15 @@ function loadProfileData() {
 function load_forward_history_table(complain_id) {
 
     let url = '/api/complain_log_data/complain/' + complain_id;
-    ajaxRequest('GET', url, null, function (resp) {
+
+    let data = {
+        "status": $('#status_filter').val(),
+    };
+
+    ajaxRequest('GET', url, data, function(resp) {
         var forward_hist_table = " ";
         $('#forward_history').DataTable().destroy();
-        $.each(resp, function (key, value2) {
+        $.each(resp, function(key, value2) {
             key++;
             let assignee_name = '-';
             let assigner_name = '-';
@@ -157,12 +150,12 @@ function load_forward_history_table(complain_id) {
 }
 
 function load_user_by_level(level) {
-    ajaxRequest('GET', "/api/get_users_for_level/level/" + level, null, function (dataSet) {
+    ajaxRequest('GET', "/api/get_users_for_level/level/" + level, null, function(dataSet) {
         var combo = "";
         if (dataSet.length == 0) {
             combo += "<option value=''>NO DATA FOUND</option>";
         } else {
-            $.each(dataSet, function (index, value) {
+            $.each(dataSet, function(index, value) {
                 combo += "<option value='" + value.id + "'>" + value.first_name + " - (" + value.name + ") </option>";
             });
         }
@@ -180,7 +173,7 @@ function forms_reset() {
 }
 
 function assign_user_to_complain(complain_id, user_id) {
-    ajaxRequest('GET', "/api/assign_complain_to_user/complain_id/" + complain_id + "/user_id/" + user_id, null, function (result) {
+    ajaxRequest('GET', "/api/assign_complain_to_user/complain_id/" + complain_id + "/user_id/" + user_id, null, function(result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully assigned the user to the complain', 'success');
             forms_reset();
@@ -194,7 +187,7 @@ function assign_user_to_complain(complain_id, user_id) {
 
 function comment_on_complain() {
     let data = $('#comments_frm').serializeArray();
-    ajaxRequest('POST', "/api/comment_on_complain", data, function (result) {
+    ajaxRequest('POST', "/api/comment_on_complain", data, function(result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully added the comment', 'success');
             forms_reset();
@@ -207,7 +200,7 @@ function comment_on_complain() {
 
 function add_minute_to_complain() {
     let data = $('#minutes_frm').serializeArray();
-    ajaxRequest('POST', "/api/minute_on_complain", data, function (result) {
+    ajaxRequest('POST', "/api/minute_on_complain", data, function(result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully added the minute', 'success');
             forms_reset()
@@ -219,7 +212,7 @@ function add_minute_to_complain() {
 }
 
 function confirm_complain(complain_id) {
-    ajaxRequest('GET', "/api/confirm_complain/complain/" + complain_id, null, function (result) {
+    ajaxRequest('GET', "/api/confirm_complain/complain/" + complain_id, null, function(result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully confirmed the complain', 'success');
             loadProfileData();
@@ -230,7 +223,7 @@ function confirm_complain(complain_id) {
 }
 
 function reject_complain(complain_id) {
-    ajaxRequest('GET', "/api/reject_complain/complain/" + complain_id, null, function (result) {
+    ajaxRequest('GET', "/api/reject_complain/complain/" + complain_id, null, function(result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully rejected the complain', 'success');
             loadProfileData();
@@ -241,7 +234,7 @@ function reject_complain(complain_id) {
 }
 
 function forward_letter_preforation(complain_id) {
-    ajaxRequest('GET', "/api/forward_to_letter_preforation/complain/" + complain_id, null, function (result) {
+    ajaxRequest('GET', "/api/forward_to_letter_preforation/complain/" + complain_id, null, function(result) {
         if (result.status == 1) {
             swal.fire('success', 'Forward to letter preforation was successful', 'success');
             loadProfileData();
@@ -252,12 +245,12 @@ function forward_letter_preforation(complain_id) {
 }
 
 function load_file_no() {
-    ajaxRequest('GET', "/api/load_file_no", null, function (dataSet) {
+    ajaxRequest('GET', "/api/load_file_no", null, function(dataSet) {
         var combo = "";
         if (dataSet.length == 0) {
             combo += "<option value=''>NO DATA FOUND</option>";
         } else {
-            $.each(dataSet, function (index, value) {
+            $.each(dataSet, function(index, value) {
                 combo += "<option value='" + value.id + "'>" + value.file_no + "</option>";
             });
         }
@@ -276,7 +269,7 @@ function assign_file_no(complain_id, client_id) {
         "client_id": client_id,
     };
     let url = '/api/assign_file_no';
-    ajaxRequest('POST', url, data, function (resp) {
+    ajaxRequest('POST', url, data, function(resp) {
         if (resp.status == 1) {
             swal.fire('success', 'File No has assigned for the complain', 'success');
         } else {

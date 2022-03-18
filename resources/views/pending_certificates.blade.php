@@ -65,13 +65,15 @@
                                                 <table class="table table-condensed" id="tblPendingCertificate">
                                                     <thead>
                                                         <tr>
-                                                            <th style="width: 10em">#</th>
+                                                            <th style="width: 20em">#</th>
+                                                            <th style="width: 30em">Client Name</th>
                                                             <th style="width: 20em">Industry Name</th>
                                                             <th style="width: 30em">EPL Code</th>
                                                             <th style="width: 30em">Site Clearance Code</th>
                                                             <th style="width: 30em">File No</th>
                                                             <th>Nominate</th>
                                                             <th>Status</th>
+                                                            <th style="width: 30em">Date</th>
                                                             <th style="width: 30em">Action</th>
                                                             <!-- <th></th> -->
                                                         </tr>

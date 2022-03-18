@@ -31,6 +31,13 @@ function getaProfilebyId(callBack) {
                 "defaultContent": "-"
             },
             {
+                "data": "",
+                "render": function(data, type, row, meta) {
+                    return row.name_title + ' ' + row.first_name + ' ' + row.last_name;
+                },
+                "defaultContent": "-"
+            },
+            {
                 "data": "industry_name",
                 "defaultContent": "-"
             },
@@ -56,12 +63,17 @@ function getaProfilebyId(callBack) {
 
             },
             {
+                "data": "created_at",
+                "defaultContent": "-"
+
+            },
+            {
                 "data": "",
                 "defaultContent": "-"
             },
         ],
         "columnDefs": [{
-                "targets": 2,
+                "targets": 3,
                 "data": "0",
                 "render": function(data, type, full, meta) {
                     let td = '-';
@@ -72,14 +84,14 @@ function getaProfilebyId(callBack) {
                 }
             },
             {
-                "targets": 3,
+                "targets": 5,
                 "data": "0",
                 "render": function(data, type, full, meta) {
                     return '<a href="/industry_profile/id/' + full['id'] + '" target="_blank">' + full['file_no'] + '</a>(' + certificate_type[full['cer_type_status']] + ')';
                 }
             },
             {
-                "targets": 3,
+                "targets": 4,
                 "data": "0",
                 "render": function(data, type, row) {
                     if (row.site_clearence_sessions != '') {
@@ -89,22 +101,22 @@ function getaProfilebyId(callBack) {
                     }
                 },
             },
+            // {
+            //     "targets": 4,
+            //     "data": "0",
+            //     "render": function(data, type, full, meta) {
+            //         return '<a href="/industry_profile/id/' + full['id'] + '" target="_blank">' + full['file_no'] + '</a>(' + certificate_type[full['cer_type_status']] + ')';
+            //     }
+            // },
             {
-                "targets": 4,
-                "data": "0",
-                "render": function(data, type, full, meta) {
-                    return '<a href="/industry_profile/id/' + full['id'] + '" target="_blank">' + full['file_no'] + '</a>(' + certificate_type[full['cer_type_status']] + ')';
-                }
-            },
-            {
-                "targets": 6,
+                "targets": 7,
                 "data": "0",
                 "render": function(data, type, full, meta) {
                     return certificate_status[full['cer_status']];
                 }
             },
             {
-                "targets": 7,
+                "targets": 9,
                 "data": "0",
                 "render": function(data, type, full, meta) {
                     return '<a href="/certificate_perforation/id/' + full['id'] + '" class="btn btn-success">Certificate<a>';

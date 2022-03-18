@@ -277,12 +277,23 @@ class ComplainController extends Controller
         }
     }
 
-    public function get_complain_assign_log($complain_id)
+    public function get_complain_assign_log(Request $request, $complain_id)
     {
+        $status = $request->status;
+
         $complain_assign_log = ComplainAssignLog::where('complain_id', $complain_id)
-            ->with(['assignerUser', 'assigneeUser'])
-            ->orderBy('assignee_user', 'desc')
+            ->with(['assignerUser', 'assigneeUser', 'complain'])
+            ->whereHas('complain', function ($query) use($status){
+                $query->where('status','=', $status);
+            })
+            ->whereHas('assigneeUser', function ($query){
+                $query->whereHas('roll', function ($query){
+                    $query->groupBy('level_id')
+                    ->orderBy('assignee_user', 'desc');
+                });
+            })          
             ->get();
+           
         return $complain_assign_log;
     }
 

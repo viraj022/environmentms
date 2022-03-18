@@ -181,14 +181,25 @@
                             </div>
                             <div class="col-md-9">
                                 <div class="card card-light p-5">
-                                    <div class="form-group">
-                                        <h6><label>Assigned User: </label></h6>
-                                        <span id="assigned_user"></span>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <h6><label>Assigned User: </label></h6>
+                                            <span id="assigned_user"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-5 d-flex justify-content-end">
+                                       <div class="form-group">
+                                           <label for="status_filter">Filter with:</label>
+                                           <select class="custom-select" id="status_filter">
+                                               <option value="0">Pending</option>
+                                               <option value="1">Completed</option>
+                                           </select>
+                                       </div>
                                     </div>
                                     <table class="table table-bordered" id="forward_history">
                                         <thead>
                                             <tr>
-                                                <th>#</th>
+                                                <th style="width: 8%">#</th>
                                                 <th>Assignee</th>
                                                 <th>Assignor</th>
                                                 <th>Assigned Time</th>
@@ -396,6 +407,11 @@
         let complain_id = "{{ $complain_id }}";
         let client_id = $('#client_id').val();
         assign_file_no(complain_id, client_id);
+    });
+
+    $('#status_filter').change(function(){
+        let complain_id = "{{ $complain_id }}";
+        load_forward_history_table(complain_id);
     });
 
     $(document).on('click', '.remove_attach', function() {
