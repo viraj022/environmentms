@@ -97,7 +97,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>Code</th>
+                                                        <th>Complain Code</th>
                                                         <th>Complainer Name</th>
                                                         <th>Address</th>
                                                         <th>Contact No</th>
@@ -174,7 +174,7 @@
 
                     letter_view_tbl += "<tr><td>" + key + "</td><td>" + value.complainer_code +
                         "</td><td>" + value.complainer_name + "</td><td>" + value.complainer_address +
-                        "</td><td>" + value.comp_contact_no + "</td></td><td><a href='/complain_profile/id/" + value.id + "' class='btn btn-dark'>View</a></td></tr>";
+                        "</td><td>" + value.comp_contact_no + "</td></td><td style='width: 10%'><a href='/complain_profile/id/" + value.id + "' class='btn btn-dark'>View</a></td></tr>";
                 });
                 $('#letter_view_tbl tbody').html(letter_view_tbl);
 
