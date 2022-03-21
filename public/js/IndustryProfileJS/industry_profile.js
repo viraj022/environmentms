@@ -9,10 +9,10 @@ function getaProfilebyId(id, callBack) {
     var url = "/api/client/id/" + id;
     ajaxRequest("GET", url, null, function (result) {
         if (
-               typeof callBack !== "undefined" &&
-               callBack !== null &&
-               typeof callBack === "function"
-        ) {
+                typeof callBack !== "undefined" &&
+                callBack !== null &&
+                typeof callBack === "function"
+                ) {
             callBack(result);
         }
     });
@@ -27,11 +27,11 @@ function setProfileDetails(obj) {
         $("#setEPLCode").html(obj.epls[obj.epls.length - 1].code);
         if (obj.epls.length != 0) {
             $("#setEPlLink").attr(
-                   "href",
-                   "/epl_profile/client/" +
-                   PROFILE_ID +
-                   "/profile/" +
-                   obj.epls[obj.epls.length - 1].id
+                    "href",
+                    "/epl_profile/client/" +
+                    PROFILE_ID +
+                    "/profile/" +
+                    obj.epls[obj.epls.length - 1].id
             );
         }
     }
@@ -43,13 +43,13 @@ function setProfileDetails(obj) {
         $("#setSiteCleanceCode").html(obj.site_clearence_sessions[0].code);
         console.log(obj.site_clearence_sessions[0].code);
         if (obj.site_clearence_sessions.length != 0) {
-            $("#setSiteClear").attr("href","/site_clearance/client/" +PROFILE_ID+"/profile/" +obj.site_clearence_sessions[obj.site_clearence_sessions.length - 1].id);
+            $("#setSiteClear").attr("href","/site_clearance/client/" +PROFILE_ID +"/profile/" +obj.site_clearence_sessions[obj.site_clearence_sessions.length - 1].id);
         }
 
     }
     obj.last_name == null ?
-           $("#client_name").html(obj.first_name) :
-           $("#client_name").html(obj.first_name + " " + obj.last_name);
+            $("#client_name").html(obj.first_name) :
+            $("#client_name").html(obj.first_name + " " + obj.last_name);
     (obj.address != null) ? $("#client_address").html(obj.address) : $("#client_address").html('--');
     (obj.contact_no != null) ? $("#client_cont").html(obj.contact_no) : $("#client_cont").html('--');
     (obj.email != null) ? $("#client_amil").html(obj.email) : $("#client_amil").html('--');
@@ -60,8 +60,8 @@ function setProfileDetails(obj) {
     $("#obj_invest").html(invest);
     (obj.industry_address != null) ? $("#obj_industrySub").html(obj.industry_address) : $("#obj_industrySub").html('-');
     initMap(
-           parseFloat(obj.industry_coordinate_x),
-           parseFloat(obj.industry_coordinate_y)
+            parseFloat(obj.industry_coordinate_x),
+            parseFloat(obj.industry_coordinate_y)
     );
     documentUploadDetails(obj);
 }
@@ -69,7 +69,7 @@ function setProfileDetails(obj) {
 // Initialize and add the map
 function initMap(_Latitude, _Longitude) {
     // The location of CeyTech
-    var defaultLocation = {lat: _Latitude, lng: _Longitude }; //default Location for load map
+    var defaultLocation = {lat: _Latitude, lng: _Longitude}; //default Location for load map
 
     // The map, centered at Uluru
     var map = new google.maps.Map(document.getElementById("map"), {
@@ -125,10 +125,10 @@ function documentUploadDetails(obj) {
     if (obj.environment_officer != null) {
         if (obj.environment_officer.user != null) {
             $("#env_firstname").html(
-                   "Environment Officer: " +
-                   obj.environment_officer.user.first_name +
-                   " " +
-                   obj.environment_officer.user.last_name
+                    "Environment Officer: " +
+                    obj.environment_officer.user.first_name +
+                    " " +
+                    obj.environment_officer.user.last_name
             );
         }
     } else if (obj.first_name == null) {
@@ -276,9 +276,9 @@ function getAllInspectionAPI(id, callBack) {
     var url = "/api/inspections/file/id/" + id;
     ajaxRequest("GET", url, null, function (result) {
         if (
-               typeof callBack !== "undefined" &&
-               callBack !== null &&
-               typeof callBack === "function"
+                typeof callBack !== "undefined" &&
+                callBack !== null &&
+                typeof callBack === "function"
         ) {
             callBack(result);
         }
@@ -320,9 +320,9 @@ function checkInspectionStatus(id, btn_val, callBack) {
             null,
             function (dataSet) {
                 if (
-                    typeof callBack !== "undefined" &&
-                    callBack != null &&
-                    typeof callBack === "function"
+                        typeof callBack !== "undefined" &&
+                        callBack != null &&
+                        typeof callBack === "function"
                 ) {
                     callBack(dataSet);
                 }
@@ -371,7 +371,7 @@ function removeClientFileAPI(id, callBack) {
                 typeof callBack !== "undefined" &&
                 callBack != null &&
                 typeof callBack === "function"
-        ) {
+            ) {
             callBack(dataSet);
         }
     });
@@ -386,10 +386,10 @@ function removeEPLPaymentAPI(id, callBack) {
             dataSet
             ) {
         if (
-            typeof callBack !== "undefined" &&
-            callBack != null &&
-            typeof callBack === "function"
-            ) {
+                typeof callBack !== "undefined" &&
+                callBack != null &&
+                typeof callBack === "function"
+                ) {
             callBack(dataSet);
         }
     });
@@ -398,8 +398,8 @@ function removeEPLPaymentAPI(id, callBack) {
 //Pending Payments API
 function pendingPaymentsAPI(id, callBack) {
     ajaxRequest("GET", "/api/payment/history/file/" + id, null, function (
-        dataSet
-    ) {
+            dataSet
+            ) {
         if (
                 typeof callBack !== "undefined" &&
                 callBack != null &&
@@ -440,13 +440,13 @@ function pendingPaymentsTable(id) {
                 tbl += "<td>" + row.net_total + "</td>";
                 if (row.status == 0) {
                     tbl +=
-                        '<td><button type="button" data-name="' +
-                        row.name +
-                        '" value="' +
-                        row.id +
-                        '" class="btn btn-primary printBarcode"><i class="fas fa-barcode"></i>  Re-Print BarCode </button> <button type="button" value="' +
-                        row.id +
-                        '" class="btn btn-danger removeBarcode"><i class="fas fa-times"></i> Remove </button></td>';
+                            '<td><button type="button" data-name="' +
+                            row.name +
+                            '" value="' +
+                            row.id +
+                            '" class="btn btn-primary printBarcode"><i class="fas fa-barcode"></i>  Re-Print BarCode </button> <button type="button" value="' +
+                            row.id +
+                            '" class="btn btn-danger removeBarcode"><i class="fas fa-times"></i> Remove </button></td>';
                 } else {
                     tbl += "<td><i class='fas fa-check text-success'></i></td>";
                 }
@@ -511,7 +511,7 @@ function format(n, sep, decimals) {
     sep = sep || "."; // Default to period as decimal separator
     decimals = decimals || 2; // Default to 2 decimals
 
-    return n.toLocaleString().split(sep)[0] 
-        + sep 
-        + n.toFixed(decimals).split(sep)[1];
+    return n.toLocaleString().split(sep)[0]
+            + sep
+            + n.toFixed(decimals).split(sep)[1];
 }

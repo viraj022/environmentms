@@ -211,7 +211,7 @@ function loadPradeshiyaSabha(callBack) {
     var cbo = "";
     ajaxRequest('GET', "/api/pradesheeyasabas", null, function(dataSet) {
         if (dataSet) {
-            $.each(dataSet, function (index, row) {
+            $.each(dataSet, function(index, row) {
                 cbo += '<option value="' + row.id + '" data-ps_code="' + row.code + '">' + row.code + ' - ' + row.name + '</option>';
             });
         } else {
