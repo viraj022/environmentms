@@ -282,7 +282,7 @@
                                                 <div class="col-md-4">
                                                     <form id="minutes_frm">
                                                         <div class="form-group">
-                                                            <input type="text" id="comp_minute_hid_id" 
+                                                            <input type="text" id="comp_minute_hid_id"
                                                                 name="comp_minute_hid_id" value="{{ $complain_id }}"
                                                                 hidden>
                                                             <label for="minute">Minute: </label>
@@ -313,63 +313,63 @@
                             </div>
                         </section>
                     </div>
-<div class="tab-pane" id="letters" role="tabpanel" aria-labelledby="letters">
-    <div class="row">
-        <div class="col-md-3">
-            <section class="content-header">
-                <button id="create_letter_btn" type="button" class="btn btn-secondary">Create
-                    Letter</button>
-                <div id="letter_title_frm" class="form-group d-none">
-                    <label for="letter_title">Letter Title: </label>
-                    <input type="text" id="letter_title" class="form-control" placeholder="Enter the letter title" value="">
-                    <button type="button" class="btn btn-success mt-2" id="save_letter_title">Save</button>
-                </div>
-            </section>
-        </div>
-        <div class="col-md-9">
-            <section class="content-header">
-                <div class="card card-light">
-                    <div class="card-header">
-                        <h1> Letter List </h1>
+                    <div class="tab-pane" id="letters" role="tabpanel" aria-labelledby="letters">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <section class="content-header">
+                                    <button id="create_letter_btn" type="button" class="btn btn-secondary">Create
+                                        Letter</button>
+                                    <div id="letter_title_frm" class="form-group d-none">
+                                        <label for="letter_title">Letter Title: </label>
+                                        <input type="text" id="letter_title" class="form-control" placeholder="Enter the letter title" value="">
+                                        <button type="button" class="btn btn-success mt-2" id="save_letter_title">Save</button>
+                                    </div>
+                                </section>
+                            </div>
+                            <div class="col-md-9">
+                                <section class="content-header">
+                                    <div class="card card-light">
+                                        <div class="card-header">
+                                            <h1> Letter List </h1>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-bordered" id="letter_list" style="word-break: break-word;">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 10%">#</th>
+                                                        <th style="width: 25%">Letter Title</th>
+                                                        <th style="width: 15%">Status</th>
+                                                        <th>Created User</th>
+                                                        <th>Letter Date</th>
+                                                        <th style="width: 25%">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card card-light">
+                                    <div class="card-header">
+                                        <h4>File Assign</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="client_id">File No: </label>
+                                            <select class="custom-select select2" id="client_id"></select>
+                                            <button type="button" id="assign_file" class="btn btn-success mt-1">Assign
+                                                File</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <table class="table table-bordered" id="letter_list" style="word-break: break-word;">
-                            <thead>
-                                <tr>
-                                    <th style="width: 10%">#</th>
-                                    <th style="width: 25%">Letter Title</th>
-                                    <th style="width: 15%">Status</th>
-                                    <th>Created User</th>
-                                    <th>Letter Date</th>
-                                    <th style="width: 25%">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card card-light">
-                <div class="card-header">
-                    <h4>File Assign</h4>
-                </div>
-                <div class="card-body">
-                    <div class="form-group">
-                        <label for="client_id">File No: </label>
-                        <select class="custom-select select2" id="client_id"></select>
-                        <button type="button" id="assign_file" class="btn btn-success mt-1">Assign
-                            File</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 </div>
 </div>
 </div>
