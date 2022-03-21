@@ -110,9 +110,9 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Code</th>
-                                        <th>Name</th>
-                                        <th>Address</th>
+                                        <th>complain Code</th>
+                                        <th>Complainer Name</th>
+                                        <th>Complainer Address</th>
                                         <th>Contact Number</th>
                                         <!-- <th>Description</th> -->
                                         <th>Created User</th>
