@@ -383,7 +383,6 @@
     <script src="{{ asset('/js/complains/complainProfile.js') }}" type="text/javascript"></script>
     <script src="../../dist/js/adminlte.min.js"></script>
     <script src="../../plugins/select2/js/select2.full.min.js"></script>
-    
     <script>
         $(document).ready(function() {
             loadProfileData();

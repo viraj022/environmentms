@@ -36,7 +36,9 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label>Name*</label>
-                            <input id="getName" type="text" class="form-control form-control-sm" placeholder="Enter Name..." required="" value="">
+                            <input id="getName" type="text" class="form-control form-control-sm"
+                                   placeholder="Enter Name..."
+                                   value="">
                             <span class="text-danger d-none" id="valName">Session name is required!</span>
                         </div>
                     </div>
@@ -48,7 +50,8 @@
                         <button id="btnUpdate" type="submit" class="btn btn-warning d-none">Update</button>
                         @endif
                         @if($pageAuth['is_delete']==1 || false)
-                        <button id="btnshowDelete" type="submit" class="btn btn-danger d-none" data-toggle="modal" data-target="#modal-danger">Delete</button>
+                        <button id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
+                                data-target="#modal-danger">Delete</button>
                         @endif
                     </div>
                     <div class="overlay dark disInspection">
@@ -93,9 +96,9 @@
             </div>
         </div>
     </div>
-    </div>
-    </div>
-    <div class="modal fade" id="modal-danger">
+</div>
+</div>
+<div class="modal fade" id="modal-danger">
         <div class="modal-dialog">
             <div class="modal-content bg-danger">
                 <div class="modal-header">
@@ -151,89 +154,42 @@
 <script src="/../../js/InspectionRemarksJS/inspection_status.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
-    $(function() {
+$(function() {
 
-        //Load table
-        var id = "{{$id}}";
-        loadTable();
-        loadInspectionStatusAPI(id, function(resp) { //<-- Get Inspection Status
-            if (resp.status === 0) {
-                $('.disInspection').removeClass('overlay'); //Remove If inspection not completed
-            } else {
-                $('.disInspection').addClass('overlay');
-            }
-        });
-        //click save button
-        //Date range picker
-        $('#trackDate').daterangepicker({
-            singleDatePicker: true,
-            locale: {
-                format: 'MM/DD/YYYY'
-            }
-        });
-        $('#btnSave').click(function() {
-            var data = fromValues();
+//Load table
+var id = "{{$id}}";
+loadTable();
+loadInspectionStatusAPI(id, function(resp) { //<-- Get Inspection Status
+if (resp.status === 0) {
+$('.disInspection').removeClass('overlay'); //Remove If inspection not completed
+} else {
+$('.disInspection').addClass('overlay');
+}
+});
+//click save button
+//Date range picker
+$('#trackDate').daterangepicker({
+singleDatePicker: true,
+        locale: {
+        format: 'MM/DD/YYYY'
+        }
+});
+$('#btnSave').click(function() {
+var data = fromValues();
 
-            if ($('#getName').val() == '') {
-                Toast.fire({
-                    type: 'error',
-                    title: 'Session name is reuired to save'
-                });
-            } else {
-                if (Validiteinsert(data)) {
-
-                    // if validiated
-                    AddPersonalInspection(data, id, function(result) {
-                        if (result.id == 1) {
-                            Toast.fire({
-                                type: 'success',
-                                title: 'Enviremontal MS</br>Saved'
-                            });
-                        } else {
-                            Toast.fire({
-                                type: 'error',
-                                title: 'Enviremontal MS</br>Error'
-                            });
-                        }
-                        loadTable(id);
-                        resetinputFields();
-                        hideAllErrors();
-                    });
-                }
-            }
-
+    if ($('#getName').val() == '') {
+        Toast.fire({
+            type: 'error',
+            title: 'Session name is reuired to save'
         });
-        //click update button
-        $('#btnUpdate').click(function() {
-            //get form data
-            var data = fromValues();
-            if (Validiteupdate(data)) {
-                updateZone($('#btnUpdate').val(), data, function(result) {
-                    if (result.id == 1) {
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Enviremontal MS</br>Updated'
-                        });
-                    } else {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Enviremontal MS</br>Error'
-                        });
-                    }
-                    loadTable(id);
-                    showSave();
-                    resetinputFields();
-                    hideAllErrors();
-                });
-            }
-        });
-        //click delete button
-        $('#btnDelete').click(function() {
-            deleteInspectionPersonal($('#btnDelete').val(), function(result) {
-                if (result.id == 1) {
-                    Toast.fire({
-                        type: 'success',
-                        title: 'Enviremontal MS</br>Removed!'
+    } else {
+if (Validiteinsert(data)) {
+// if validiated
+AddPersonalInspection(data, id, function(result) {
+if (result.id == 1) {
+Toast.fire({
+type: 'success',
+        title: 'Enviremontal MS</br>Saved'
                     });
                 } else {
                     Toast.fire({
@@ -242,50 +198,96 @@
                     });
                 }
                 loadTable(id);
-                showSave();
                 resetinputFields();
                 hideAllErrors();
             });
-        });
-        //select button action 
-        $(document).on('click', '.btnAction', function() {
-            getInspectionPersonalbyId(this.id, function(result) {
-                $('#getName').val(result.name);
-                showUpdate();
-                $('#btnUpdate').val(result.id);
-                $('#btnDelete').val(result.id);
-            });
+        }
+    }
+
+});
+//click update button
+$('#btnUpdate').click(function() {
+    //get form data
+    var data = fromValues();
+    if (Validiteupdate(data)) {
+        updateZone($('#btnUpdate').val(), data, function(result) {
+            if (result.id == 1) {
+                Toast.fire({
+                    type: 'success',
+                    title: 'Enviremontal MS</br>Updated'
+                });
+            } else {
+                Toast.fire({
+                    type: 'error',
+                    title: 'Enviremontal MS</br>Error'
+                });
+            }
+            loadTable(id);
+            showSave();
+            resetinputFields();
             hideAllErrors();
         });
+    }
+});
+//click delete button
+$('#btnDelete').click(function() {
+    deleteInspectionPersonal($('#btnDelete').val(), function(result) {
+        if (result.id == 1) {
+            Toast.fire({
+                type: 'success',
+                title: 'Enviremontal MS</br>Removed!'
+            });
+        } else {
+            Toast.fire({
+                type: 'error',
+                title: 'Enviremontal MS</br>Error'
+            });
+        }
+        loadTable(id);
+        showSave();
+        resetinputFields();
+        hideAllErrors();
     });
-    //show update buttons    
-    function showUpdate() {
-        $('#btnSave').addClass('d-none');
-        //        $('#btnUpdate').removeClass('d-none');
-        $('#btnshowDelete').removeClass('d-none');
-    }
-    //show save button    
-    function showSave() {
-        $('#btnSave').removeClass('d-none');
-        $('#btnUpdate').addClass('d-none');
-        $('#btnshowDelete').addClass('d-none');
-    }
-    //Reset all fields    
-    function resetinputFields() {
-        $('#getName').val('');
-        $('#btnUpdate').val('');
-        $('#btnDelete').val('');
-    }
-    //get form values
-    function fromValues() {
-        var data = {
-            name: $('#getName').val()
-        };
-        return data;
-    }
-    //HIDE ALL ERROR MSGS   
-    function hideAllErrors() {
-        $('#valName').addClass('d-none');
-    }
+});
+//select button action 
+$(document).on('click', '.btnAction', function() {
+    getInspectionPersonalbyId(this.id, function(result) {
+            $('#getName').val(result.name);
+            showUpdate();
+            $('#btnUpdate').val(result.id);
+            $('#btnDelete').val(result.id);
+    });
+        hideAllErrors();
+    });
+});
+//show update buttons    
+function showUpdate() {
+    $('#btnSave').addClass('d-none');
+    //        $('#btnUpdate').removeClass('d-none');
+    $('#btnshowDelete').removeClass('d-none');
+}
+//show save button    
+function showSave() {
+    $('#btnSave').removeClass('d-none');
+    $('#btnUpdate').addClass('d-none');
+    $('#btnshowDelete').addClass('d-none');
+}
+//Reset all fields    
+function resetinputFields() {
+    $('#getName').val('');
+    $('#btnUpdate').val('');
+    $('#btnDelete').val('');
+}
+//get form values
+function fromValues() {
+    var data = {
+        name: $('#getName').val()
+    };
+    return data;
+}
+//HIDE ALL ERROR MSGS   
+function hideAllErrors() {
+    $('#valName').addClass('d-none');
+}
 </script>
 @endsection
