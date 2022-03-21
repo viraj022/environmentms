@@ -371,7 +371,7 @@ function removeClientFileAPI(id, callBack) {
                 typeof callBack !== "undefined" &&
                 callBack != null &&
                 typeof callBack === "function"
-            ) {
+                ) {
             callBack(dataSet);
         }
     });
