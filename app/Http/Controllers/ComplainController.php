@@ -128,7 +128,8 @@ class ComplainController extends Controller
         return view('complain_profile', ['complain_id' => $id, 'pageAuth' => $pageAuth]);
     }
 
-    public function complainProfileData($id){
+    public function complainProfileData($id)
+    {
         $complain_data = Complain::with(['assignedUser', 'createdUser', 'complainComments.commentedUser', 'complainMinutes.minuteUser'])->find($id);
         return $complain_data;
     }
