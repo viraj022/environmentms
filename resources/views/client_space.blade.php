@@ -780,6 +780,7 @@
                 setSectionVisible('');
             });
             $('#btnRegister').click(function() {
+                // view-Customer
                 setSectionVisible('reg-newClient');
             });
         });

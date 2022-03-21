@@ -198,14 +198,15 @@ class ClientController extends Controller
             if ($client->is_old == 0) {
                 $client->need_inspection = 'Inspection Not Needed';
             }
-
-            $msg = $client->save();
-            $client->file_no = $this->generateCode($client);
-            // dd($client->file_no);
-            $msg = $msg && $client->save();
-            LogActivity::fileLog($client->id, 'File', "Create New File", 1);
-            LogActivity::addToLog('Create new file', $client);
-            if ($msg) {
+            $code = $this->generateCode($client);
+            if (!$code || $code == null) {
+                return array('id' => 0, 'message' => 'Error Generating file code!');
+            }
+            $client->file_no = $code;
+            $client->save();
+            if ($client) {
+                LogActivity::fileLog($client->id, 'File', "Create New File", 1);
+                LogActivity::addToLog('Create new file', $client);
                 return array('id' => 1, 'message' => 'true', 'id' => $client->id);
             } else {
                 return array('id' => 0, 'message' => 'false');
