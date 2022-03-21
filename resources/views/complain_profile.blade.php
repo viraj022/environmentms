@@ -47,8 +47,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-letters-tab" data-toggle="pill" href="#letters"
-                            role="tab" aria-controls="custom-tabs-two-letters"
-                            aria-selected="false">letter</a>
+                            role="tab" aria-controls="custom-tabs-two-letters" aria-selected="false">letter</a>
                     </li>
                 </ul>
             </div>
@@ -137,30 +136,30 @@
         </div>
     </div>
 </section> --}}
-                          <!--//Industry Profile END//-->
-                      </div>
-                      <div class="tab-pane" id="custom-tabs-three-attachments" role="tabpanel"
-                          aria-labelledby="custom-tabs-three-attachments">
-                          <section class="content-header">
-                              <hr>
-                              <dt class="text-center"> <b>Upload Attachments</b> </dt>
-                              <hr>
-                              <div class="form-group" id="fileUpDiv">
+                    <!--//Industry Profile END//-->
+                </div>
+                <div class="tab-pane" id="custom-tabs-three-attachments" role="tabpanel"
+                    aria-labelledby="custom-tabs-three-attachments">
+                    <section class="content-header">
+                         <hr>
+                        <dt class="text-center"> <b>Upload Attachments</b> </dt>
+                        <hr>
+                        <div class="form-group" id="fileUpDiv">
 
-                                  <label id="uploadLabel">File Upload </label>
-                                  <input id="fileUploadInput" type="file" class="col-12" accept=".png, .jpg, .jpeg, .pdf" multiple>
-                                  <div class="col-12">
-                                      <div id="attached_files"></div>
-                                  </div>
-                                  <div class="col-12">
-                                      <button type="button" class="btn btn-primary mt-2" data-upload_file="attachments" id="upld_attach"> Upload Attachment </button>
-                                  </div>
-                              </div>
-                              <hr>
-                              <div class="row" id="file_attachments">
+                            <label id="uploadLabel">File Upload </label>
+                            <input id="fileUploadInput" type="file" class="col-12" accept=".png, .jpg, .jpeg, .pdf" multiple>
+                            <div class="col-12">
+                                <div id="attached_files"></div>
+                            </div>
+                            <div class="col-12">
+                                <button type="button" class="btn btn-primary mt-2" data-upload_file="attachments" id="upld_attach"> Upload Attachment </button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row" id="file_attachments">
 
-                              </div>
-                          </section>
+                        </div>
+                    </section>
                       </div>
                       <div class="tab-pane" id="complain-assign" role="tabpanel" aria-labelledby="complain-assign">
                           <section class="content-header">

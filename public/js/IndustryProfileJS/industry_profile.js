@@ -32,7 +32,7 @@ function setProfileDetails(obj) {
                     PROFILE_ID +
                     "/profile/" +
                     obj.epls[obj.epls.length - 1].id
-            );
+                    );
         }
     }
     //Check site clearance
@@ -62,7 +62,7 @@ function setProfileDetails(obj) {
     initMap(
             parseFloat(obj.industry_coordinate_x),
             parseFloat(obj.industry_coordinate_y)
-    );
+            );
     documentUploadDetails(obj);
 }
 
@@ -129,7 +129,7 @@ function documentUploadDetails(obj) {
                     obj.environment_officer.user.first_name +
                     " " +
                     obj.environment_officer.user.last_name
-            );
+                    );
         }
     } else if (obj.first_name == null) {
         $("#disPaylink").attr("href", "javascript:disWarnPay();");
@@ -279,7 +279,7 @@ function getAllInspectionAPI(id, callBack) {
                 typeof callBack !== "undefined" &&
                 callBack !== null &&
                 typeof callBack === "function"
-        ) {
+                ) {
             callBack(result);
         }
     });
@@ -323,7 +323,7 @@ function checkInspectionStatus(id, btn_val, callBack) {
                         typeof callBack !== "undefined" &&
                         callBack != null &&
                         typeof callBack === "function"
-                ) {
+                        ) {
                     callBack(dataSet);
                 }
             }
