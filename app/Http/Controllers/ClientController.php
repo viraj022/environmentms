@@ -463,6 +463,7 @@ class ClientController extends Controller
         } else {
             abort(401);
         }
+        $data->groupBy('clients.id');
         return $data->get();
     }
 
