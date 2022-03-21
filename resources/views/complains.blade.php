@@ -6,122 +6,122 @@
 @extends('layouts.footer')
 
 @section('pageStyles')
-<link href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
-<link rel="stylesheet" href="/dist/css/adminlte.min.css">
+    <link href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css">
 @endsection
 
 @section('content')
-<!-- Main content -->
-<section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="mt-5 col-3">
-                <div class="card card-primary">
-                    <div class="card-header">
-                        <div class="card-title">Complains</div>
-                    </div>
-                    <div class="card-body">
-                        <input type="text" id="hidden_id" value="" hidden>
-                        <form enctype="multipart/form-data" id="complain_frm">
-                            <div class="form-group">
-                                <label>Pradeshiya Sabha*</label>
-                                <select id="ps" class="form-control form-control-sm select2 select2-purple cutenzReq"></select>
-                            </div>
-                            <div class="form-group">
-                                <label>Complain Code*</label>
-                                <input id="complainer_code" name="complainer_code" type="text" maxlength="45" class="form-control form-control-sm cutenzReq" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Complainer Name*</label>
-                                <input id="complainer_name_ipt" name="complainer_name_ipt" type="text" maxlength="45" class="form-control form-control-sm cutenzReq" placeholder="Enter complainer name..." value="" required>
-                                <div id="comp_name_valid" class="d-none">
-                                    <p class="text-danger">Container Name is required</p>
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="mt-5 col-3">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="card-title">Complains</div>
+                        </div>
+                        <div class="card-body">
+                            <input type="text" id="hidden_id" value="" hidden>
+                            <form enctype="multipart/form-data" id="complain_frm">
+                                <div class="form-group">
+                                    <label>Pradeshiya Sabha*</label>
+                                    <select id="ps" class="form-control form-control-sm select2 select2-purple cutenzReq"></select>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Complain Recieve Type</label>
-                                <select id="recieve_type_ipt" name="recieve_type_ipt" class="form-control form-control-sm">
-                                    <option value="1">Call</option>
-                                    <option value="2">Written</option>
-                                    <option value="3">Verbal</option>
-                                </select>
-                                <div id="recieve_type_valid" class="d-none">
-                                    <p class="text-danger">Recieve type required</p>
+                                <div class="form-group">
+                                    <label>Complain Code*</label>
+                                    <input id="complainer_code" name="complainer_code" type="text" maxlength="45" class="form-control form-control-sm cutenzReq" readonly>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Complainer Address*</label>
-                                <input id="complainer_address_ipt" name="complainer_address_ipt" type="text" maxlength="45" class="form-control form-control-sm cutenzReq" placeholder="Enter complainer address..." value="" required>
-                                <div id="comp_address_valid" class="d-none">
-                                    <p class="text-danger">Container Address is required</p>
+                                <div class="form-group">
+                                    <label>Complainer Name*</label>
+                                    <input id="complainer_name_ipt" name="complainer_name_ipt" type="text" maxlength="45" class="form-control form-control-sm cutenzReq" placeholder="Enter complainer name..." value="" required>
+                                    <div id="comp_name_valid" class="d-none">
+                                        <p class="text-danger">Container Name is required</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Complainer Contact Number*</label>
-                                <input id="contact_complainer_ipt" name="contact_complainer_ipt" onKeyDown="if (this.value.length == 10 && event.keyCode != 8)
+                                <div class="form-group">
+                                    <label>Complain Recieve Type</label>
+                                    <select id="recieve_type_ipt" name="recieve_type_ipt" class="form-control form-control-sm">
+                                        <option value="1">Call</option>
+                                        <option value="2">Written</option>
+                                        <option value="3">Verbal</option>
+                                    </select>
+                                    <div id="recieve_type_valid" class="d-none">
+                                        <p class="text-danger">Recieve type required</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Complainer Address*</label>
+                                    <input id="complainer_address_ipt" name="complainer_address_ipt" type="text" maxlength="45" class="form-control form-control-sm cutenzReq" placeholder="Enter complainer address..." value="" required>
+                                    <div id="comp_address_valid" class="d-none">
+                                        <p class="text-danger">Container Address is required</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Complainer Contact Number*</label>
+                                    <input id="contact_complainer_ipt" name="contact_complainer_ipt" onKeyDown="if (this.value.length == 10 && event.keyCode != 8)
                                                                                                                     return false;" type="number" class="form-control form-control-sm" placeholder="Enter Contact Number of complainer..." value="" required>
-                                <div id="contact_complainer_valid" class="d-none">
-                                    <p class="text-danger">Complainer Contact Number is required</p>
+                                    <div id="contact_complainer_valid" class="d-none">
+                                        <p class="text-danger">Complainer Contact Number is required</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Complain Description*</label>
-                                <textarea id="complain_desc_ipt" name="complain_desc_ipt" class="form-control form-control-sm" placeholder="Enter complain Description..." value="" required></textarea>
-                                <div id="complain_desc_valid" class="d-none">
-                                    <p class="text-danger">Complain description required</p>
+                                <div class="form-group">
+                                    <label>Complain Description*</label>
+                                    <textarea id="complain_desc_ipt" name="complain_desc_ipt" class="form-control form-control-sm" placeholder="Enter complain Description..." value="" required></textarea>
+                                    <div id="complain_desc_valid" class="d-none">
+                                        <p class="text-danger">Complain description required</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Attachment: </label>
-                                <input type="file" id="complain_attach" name="complain_attach" accept=".png, .jpg, .jpeg" multiple>
-                                <div id="complain_attach_valid" class="d-none">
-                                    <p class="text-danger">Complain attachment required</p>
+                                <div class="form-group">
+                                    <label>Attachment: </label>
+                                    <input type="file" id="complain_attach" name="complain_attach" accept=".png, .jpg, .jpeg" multiple>
+                                    <div id="complain_attach_valid" class="d-none">
+                                        <p class="text-danger">Complain attachment required</p>
+                                    </div>
+                                    <span id="attachment_view"></span>
                                 </div>
-                                <span id="attachment_view"></span>
-                            </div>
-                            <div class="row mt-5">
-                                <div class="form-group col-12">
-                                    <button type="button" class="btn btn-lg btn-success" id="save">Save</button>
-                                    <button type="button" class="btn btn-lg btn-warning d-none" id="update">Update</button>
+                                <div class="row mt-5">
+                                    <div class="form-group col-12">
+                                        <button type="button" class="btn btn-lg btn-success" id="save">Save</button>
+                                        <button type="button" class="btn btn-lg btn-warning d-none" id="update">Update</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
-                    </div>
+                            </form>
+                        </div>
+                <    /div>
                 </div>
-            </div>
-            <div class=" mt-5 col-md-9">
-                <div class="card card-primary">
-                    <div class="card-header"> Complain Table </div>
-                    <div class="card-body table-responsive">
-                        <table class="table table-bordered" id="complain_tbl">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Code</th>
-                                    <th>Name</th>
-                                    <th>Address</th>
-                                    <th>Contact Number</th>
-                                    <!-- <th>Description</th> -->
-                                    <th>Created User</th>
-                                    <th>Assigned User</th>
-                                    <th>Recieved By</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td colspan="9" class="text-center"><b>No Data</b></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <div class=" mt-5 col-md-9">
+                    <div class="card card-primary">
+                        <div class="card-header"> Complain Table </div>
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered" id="complain_tbl">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Code</th>
+                                        <th>Name</th>
+                                        <th>Address</th>
+                                        <th>Contact Number</th>
+                                        <!-- <th>Description</th> -->
+                                        <th>Created User</th>
+                                        <th>Assigned User</th>
+                                        <th>Recieved By</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="9" class="text-center"><b>No Data</b></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 @endsection
 
 @section('pageScripts')
@@ -143,7 +143,7 @@
         });
 
         $('#ps').change(function() {
-            gen_complain_code();
+                gen_complain_code();
         });
 
         $('#complain_attach').change(function() {
@@ -277,5 +277,5 @@
         jQuery.validator.addMethod("valid_lk_nic", function(value, element) {
             return this.optional(element) || /^([0-9]{9}[x|X|v|V]|[0-9]{12})$/.test(value);
         }, "Please enter a valid NIC number");
-</script>
+    </script>
 @endsection
