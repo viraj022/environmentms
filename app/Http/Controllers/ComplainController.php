@@ -10,8 +10,9 @@ use App\ComplainComment;
 use App\ComplainMinute;
 use App\ComplainAssignLog;
 use App\Client;
-use Illuminate\Support\Facades\Log;
 use Exception;
+use Illuminate\Support\Facades\Log;
+
 class ComplainController extends Controller
 {
 
@@ -126,17 +127,17 @@ class ComplainController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.complains'));
         return view('complain_profile', ['complain_id' => $id, 'pageAuth' => $pageAuth]);
     }
+
     public function complainProfileData($id)
     {
         $complain_data = Complain::with(['assignedUser', 'createdUser', 'complainComments.commentedUser', 'complainMinutes.minuteUser'])->find($id);
         return $complain_data;
     }
 
-    public function update_attachments(Request $request, $id)
-	{
+    public function update_attachments(Request $request, $id){
         $user = Auth::user()->id;
         $update_attach = Complain::find($id);
-         $curr_file_path_arr = json_decode($update_attach->attachment);
+        $curr_file_path_arr = json_decode($update_attach->attachment);
         $files = $request->file_list;
         if ($files != null) {
             foreach ($files as $file) {
@@ -146,7 +147,6 @@ class ComplainController extends Controller
                     'upload_time' => date("Y-m-d H:i:s"),
                     'uploaded_user' => $user
                 ];
-				
             }
 
             $update_attach->attachment = json_encode($curr_file_path_arr);
