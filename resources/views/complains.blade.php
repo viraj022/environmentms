@@ -51,7 +51,7 @@
                                         <option value="3">Verbal</option>
                                     </select>
                                     <div id="recieve_type_valid" class="d-none">
-                                        <p class="text-danger">Recieve type required</p>
+                                        <p class="text-danger">Complain Receive Type</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -110,9 +110,9 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Code</th>
-                                        <th>Name</th>
-                                        <th>Address</th>
+                                        <th>complain Code</th>
+                                        <th>Complainer Name</th>
+                                        <th>Complainer Address</th>
                                         <th>Contact Number</th>
                                         <!-- <th>Description</th> -->
                                         <th>Created User</th>

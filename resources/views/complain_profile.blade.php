@@ -220,7 +220,7 @@
                                                         <button id="confirm" class="btn btn-info d-none">Confirm</button>
                                                         <button id="reject" class="btn btn-warning d-none">Reject</button>
                                                         <button id="forward_letter_preforation"
-                                                            class="btn btn-success">Forward to letter preforation</button>
+                                                            class="btn btn-success">Forward to letter perforation</button>
                                                     </div>
                                                 </div>
                                             </div>
