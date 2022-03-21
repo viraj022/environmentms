@@ -51,7 +51,7 @@
                                         <option value="3">Verbal</option>
                                     </select>
                                     <div id="recieve_type_valid" class="d-none">
-                                        <p class="text-danger">Complain Receive Type</p>
+                                        <p class="text-danger">Recieve type required</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -150,7 +150,6 @@
             loadPradeshiyaSabha(function() {
                 gen_complain_code();
             });
-            
             load_complains();
         });
 
@@ -207,8 +206,23 @@
         });
 
         $(document).on('click', '.btn-del', function() {
+
             let id = $(this).val();
-            delete_complain(id);
+
+            Swal.fire({
+                title: 'Do you want to delete complain?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'confirm',
+                denyButtonText: `Don't confirm`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.value) {
+                    delete_complain(id);
+                } else if (result.isDenied) {
+                    Swal.fire('Canceled!', 'Confirmation was cancelled', 'info')
+                }
+            })
         });
 
         var complain_form;

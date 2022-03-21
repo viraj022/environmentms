@@ -14,4 +14,9 @@ class ComplainComment extends Model
     protected $fillable = [
         'comment', 'complain_id ', 'commented_user_id'
     ];
+
+    public function commentedUser()
+    {
+        return $this->belongsTo(User::class, 'commented_user_id');
+    }
 }

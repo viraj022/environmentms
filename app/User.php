@@ -90,4 +90,14 @@ class User extends Authenticatable
     public function letterTemplates() {
         return $this->hasMany(LetterTemplate::class);
     }
+
+    public function ComplainComments()
+    {
+        return $this->hasMany(ComplainComment::class);
+    }
+
+    public function ComplainMinutes()
+    {
+        return $this->hasMany(ComplainMinute::class);
+    }
 }

@@ -65,11 +65,7 @@
 
                             </div>
 
-
-                            <p class="text-muted text-center firstL_name">U.B. Jayawathi</p>
-
-                            <ul class="list-group list-group-unbordered mb-3">
-
+                            <ul class="list-group list-group-unbordered mt-5 mb-3">
 
                                 <li class="list-group-item">
                                     <b>Code :</b> <a class="float-right" id="comp_code"></a>
@@ -132,7 +128,7 @@
                                 </div>
                             </dd>
                             <dt class="col-sm-4">Complain By :</dt>
-                            <dd class="col-sm-6" id="comp_by">Call</dd>
+                            <dd class="col-sm-6" id="comp_by"></dd>
                         </dl>
                     </div>
                 </div>
@@ -151,10 +147,9 @@
                             <div class="form-group" id="fileUpDiv">
 
                                 <label id="uploadLabel">File Upload </label>
-                                <input id="fileUploadInput" type="file" class="col-12" accept=".png, .jpg, .jpeg"
-                                    multiple>
+                                <input id="fileUploadInput" type="file" class="col-12" accept=".png, .jpg, .jpeg, .pdf" multiple>
                                 <div class="col-12">
-                                    <span id="attached_files"></span>
+                                    <div id="attached_files"></div>
                                 </div>
                                 <div class="col-12">
                                     <button type="button" class="btn btn-primary mt-2" data-upload_file="attachments"
@@ -200,27 +195,38 @@
                                                 </div>
                                                 <div class="col-md-9">
                                                     <div class="card card-light p-5">
-                                                        <div class="form-group">
-                                                            <h6><label>Assigned User: </label></h6>
-                                                            <span id="assigned_user"></span>
+                                                        <div class="row">
+                                                            <div class="form-group">
+                                                                <h6><label>Assigned User: </label></h6>
+                                                                <span id="assigned_user"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-5 d-flex justify-content-end">
+                                                            <div class="form-group">
+                                                                <label for="status_filter">Filter with:</label>
+                                                                <select class="custom-select" id="status_filter">
+                                                                    <option value="0">Pending</option>
+                                                                    <option value="1">Completed</option>
+                                                                </select>
+                                                            </div>
                                                         </div>
                                                         <table class="table table-bordered" id="forward_history">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>#</th>
+                                                                    <th style="width: 8%">#</th>
                                                                     <th>Assignee</th>
-                                                                    <th>Assigner</th>
+                                                                    <th>Assignor</th>
                                                                     <th>Assigned Time</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody></tbody>
                                                         </table>
-                                                    </div>
                                                     <div class="form-group mt-5">
                                                         <button id="confirm" class="btn btn-info d-none">Confirm</button>
                                                         <button id="reject" class="btn btn-warning d-none">Reject</button>
-                                                        <button id="forward_letter_preforation"
-                                                            class="btn btn-success">Forward to letter perforation</button>
+                                                        <button id="forward_letter_preforation" 
+                                                            class="btn btn-success">Forward to letter preforation</button>
+                                                    </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -251,12 +257,20 @@
                                                         </div>
                                                     </form>
                                                 </div>
-                                                <div class="col-md-8 mt-3" id="comment_section"></div>
+                                                <div class="col-md-8 mt-3">
+                                                    <div class="row">
+                                                        <div class="col-md-4"><b>#</b></div>
+                                                        <div class="col-md-4"><b>Comment</b></div>
+                                                        <div class="col-md-4"><b>Commented User</b></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12" id="comment_section"></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                    
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="card card-light">
@@ -282,7 +296,16 @@
                                                         </div>
                                                     </form>
                                                 </div>
-                                                <div class="col-md-8 mt-3" id="minute_section"></div>
+                                                <div class="col-md-8 mt-3">
+                                                    <div class="row">
+                                                        <div class="col-md-4"><b>#</b></div>
+                                                        <div class="col-md-4"><b>Minute</b></div>
+                                                        <div class="col-md-4"><b>Minute Added User</b></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12" id="minute_section"></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -292,7 +315,7 @@
                     </div>
                     <div class="tab-pane" id="letters" role="tabpanel" aria-labelledby="letters">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <section class="content-header">
                                     <button id="create_letter_btn" type="button" class="btn btn-secondary">Create
                                         Letter</button>
@@ -305,7 +328,7 @@
                                     </div>
                                 </section>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-9">
                                 <section class="content-header">
                                     <div class="card card-light">
                                         <div class="card-header">
@@ -316,12 +339,12 @@
                                                 style="word-break: break-word;">
                                                 <thead>
                                                     <tr>
-                                                        <th style="width: 5%">#</th>
-                                                        <th style="width: 30%">Letter Title</th>
-                                                        <th>Status</th>
+                                                        <th style="width: 10%">#</th>
+                                                        <th style="width: 25%">Letter Title</th>
+                                                        <th style="width: 15%">Status</th>
                                                         <th>Created User</th>
                                                         <th>Letter Date</th>
-                                                        <th>Action</th>
+                                                        <th style="width: 25%">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>
@@ -360,14 +383,13 @@
     <script src="{{ asset('/js/complains/complainProfile.js') }}" type="text/javascript"></script>
     <script src="../../dist/js/adminlte.min.js"></script>
     <script src="../../plugins/select2/js/select2.full.min.js"></script>
-
     <script>
         $(document).ready(function() {
             loadProfileData();
             let complain_id = "{{ $complain_id }}";
             load_forward_history_table(complain_id);
             load_user_by_level($('#user_level').val());
-            load_letters();
+            load_letters(complain_id);
             load_file_no();
         });
 
@@ -403,6 +425,11 @@
             assign_file_no(complain_id, client_id);
         });
 
+        $('#status_filter').change(function(){
+            let complain_id = "{{ $complain_id }}";
+            load_forward_history_table(complain_id);
+        });
+
         $(document).on('click', '.remove_attach', function() {
             let data = {
                 "id": "{{ $complain_id }}",
@@ -432,7 +459,7 @@
                     if (resp.status == 1) {
                         swal.fire('success', 'letter title adding is successfull', 'success');
                         $('#letter_title').val('');
-                        load_letters();
+                        load_letters(complain_id);
                     } else {
                         swal.fire('failed', 'letter title adding was unsuccessful', 'warning');
                     }
@@ -504,16 +531,25 @@
             let index = 0;
             let html = "";
             $.each($('#fileUploadInput')[0].files, function(key, val) {
-                html += "<img src='" + window.URL.createObjectURL(val) + "' width='100em' height='100em'/>";
+                let file = val;
+
+                let default_url = window.location.origin + "/dist/img/pdf-view.png";
+                if (val.type == "application/pdf") {
+                    html += "<img src='" + default_url + "' width='100em' height='100em'></img>";
+
+                } else {
+                    html += "<img src='" + window.URL.createObjectURL(val) +
+                    "' width='100em' height='100em'></img>";
+
+                }
+                $('#attached_files').html(html);
             });
-            $('#attached_files').html(html);
         });
 
-        function load_letters() {
-            let url = '/api/get_all_letters';
+        function load_letters(complain_id) {
+            let url = '/api/get_letters_by_complain/complain/' + complain_id;
             ajaxRequest('GET', url, null, function(resp) {
                 var letter_view_tbl = "";
-                // $('#letter_view_tbl').DataTable().destroy();
                 $.each(resp, function(key, value2) {
                     key++;
 
@@ -525,15 +561,7 @@
                         "' class='btn btn-primary mr-2'>View</a>" + edit_btn + "</td></tr>";
                 });
                 $('#letter_list tbody').html(letter_view_tbl);
-                // $('#letter_list').DataTable({
-                //     responsive: true,
-                //     aLengthMenu: [
-                //         [10, 25, 50, 100, -1],
-                //         [10, 25, 50, 100, "All"]
-                //     ],
-                //     "bDestroy": true,
-                //     iDisplayLength: 10
-                // });
+
             });
         }
     </script>
