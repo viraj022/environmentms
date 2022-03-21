@@ -189,7 +189,7 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <button type="button" class="btn btn-primary"
-                                                                             id="assign_complain"> Assign To </button>
+                                                                id="assign_complain"> Assign To </button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -224,7 +224,8 @@
                                                     <div class="form-group mt-5">
                                                         <button id="confirm" class="btn btn-info d-none">Confirm</button>
                                                         <button id="reject" class="btn btn-warning d-none">Reject</button>
-                                                        <button id="forward_letter_preforation" class="btn btn-success">Forward to letter preforation</button>
+                                                        <button id="forward_letter_preforation" 
+                                                            class="btn btn-success">Forward to letter preforation</button>
                                                     </div>
                                                     </div>
                                                 </div>
