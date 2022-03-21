@@ -380,19 +380,12 @@
 @endsection
 
 @section('pageScripts')
-    <script src="{{ asset('/js/complains/complainProfile.js') }}"type="text/javascript"></script>
+    <script src="{{ asset('/js/complains/complainProfile.js') }}" type="text/javascript"></script>
     <script src="../../dist/js/adminlte.min.js"></script>
     <script src="../../plugins/select2/js/select2.full.min.js"></script>
-    <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+    
     <script>
         $(document).ready(function() {
-
-            // Loaded via <script> tag, create shortcut to access PDF.js exports.
-            var pdfjsLib = window['pdfjs-dist/build/pdf'];
-
-            // The workerSrc property shall be specified.
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
-
             loadProfileData();
             let complain_id = "{{ $complain_id }}";
             load_forward_history_table(complain_id);
@@ -558,16 +551,6 @@
             let url = '/api/get_letters_by_complain/complain/' + complain_id;
             ajaxRequest('GET', url, null, function(resp) {
                 var letter_view_tbl = "";
-                // $('#letter_view_tbl').DataTable().destroy();
-                // $('#letter_list').DataTable({
-                //     responsive: true,
-                //     aLengthMenu: [
-                //         [10, 25, 50, 100, -1],
-                //         [10, 25, 50, 100, "All"]
-                //     ],
-                //     "bDestroy": true,
-                //     iDisplayLength: 10
-                // });
                 $.each(resp, function(key, value2) {
                     key++;
 
@@ -582,5 +565,5 @@
 
             });
         }
-</script>
+    </script>
 @endsection
