@@ -321,8 +321,10 @@
                                         Letter</button>
                                     <div id="letter_title_frm" class="form-group d-none">
                                         <label for="letter_title">Letter Title: </label>
-                                        <input type="text" id="letter_title" class="form-control" placeholder="Enter the letter title" value="">
-                                        <button type="button" class="btn btn-success mt-2" id="save_letter_title">Save</button>
+                                        <input type="text" id="letter_title" class="form-control"
+                                            placeholder="Enter the letter title" value="">
+                                        <button type="button" class="btn btn-success mt-2"
+                                            id="save_letter_title">Save</button>
                                     </div>
                                 </section>
                             </div>
@@ -333,7 +335,8 @@
                                             <h1> Letter List </h1>
                                         </div>
                                         <div class="card-body">
-                                            <table class="table table-bordered" id="letter_list" style="word-break: break-word;">
+                                            <table class="table table-bordered" id="letter_list"
+                                                style="word-break: break-word;">
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 10%">#</th>
@@ -370,214 +373,214 @@
                             </div>
                         </div>
                     </div>
-</div>
-</div>
-</div>
-</section>
+                </div>
+            </div>
+        </div>
+    </section>
 @endsection
 
 @section('pageScripts')
-<script src="{{ asset('/js/complains/complainProfile.js') }}"type="text/javascript"></script>
-<script src="../../dist/js/adminlte.min.js"></script>
-<script src="../../plugins/select2/js/select2.full.min.js"></script>
-<script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
-<script>
-    $(document).ready(function() {
+    <script src="{{ asset('/js/complains/complainProfile.js') }}"type="text/javascript"></script>
+    <script src="../../dist/js/adminlte.min.js"></script>
+    <script src="../../plugins/select2/js/select2.full.min.js"></script>
+    <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+    <script>
+        $(document).ready(function() {
 
-        // Loaded via <script> tag, create shortcut to access PDF.js exports.
-        var pdfjsLib = window['pdfjs-dist/build/pdf'];
+            // Loaded via <script> tag, create shortcut to access PDF.js exports.
+            var pdfjsLib = window['pdfjs-dist/build/pdf'];
 
-        // The workerSrc property shall be specified.
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
+            // The workerSrc property shall be specified.
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
 
-        loadProfileData();
-        let complain_id = "{{ $complain_id }}";
-        load_forward_history_table(complain_id);
-        load_user_by_level($('#user_level').val());
-        load_letters(complain_id);
-        load_file_no();
-    });
-
-    $('#create_letter_btn').click(function() {
-        $(this).addClass('d-none');
-        $('#letter_title_frm').removeClass('d-none');
-    });
-
-    $('#user_level').on('change', function() {
-        load_user_by_level($(this).val());
-    });
-
-    $('#assign_complain').click(function() {
-        let complain_id = "{{ $complain_id }}";
-        assign_user_to_complain(complain_id, $('#user').val());
-    });
-
-    $('#add_comment').click(function() {
-        comment_on_complain();
-    });
-
-    $('#add_minute').click(function() {
-        add_minute_to_complain();
-    });
-
-    $('#save_letter_title').click(function() {
-        save_title();
-    });
-
-    $('#assign_file').click(function() {
-        let complain_id = "{{ $complain_id }}";
-        let client_id = $('#client_id').val();
-        assign_file_no(complain_id, client_id);
-    });
-
-    $('#status_filter').change(function(){
-        let complain_id = "{{ $complain_id }}";
-        load_forward_history_table(complain_id);
-    });
-
-    $(document).on('click', '.remove_attach', function() {
-        let data = {
-            "id": "{{ $complain_id }}",
-            "file_path": $(this).attr('data-name'),
-        };
-        let url = '/api/delete_attach';
-        ajaxRequest('DELETE', url, data, function(resp) {
-            if (resp.status == 1) {
-                swal.fire('success', 'Complain attachments successfully removed', 'success');
-                loadProfileData();
-            } else {
-                swal.fire('failed', 'Complain attachments removal was unsuccessful', 'warning');
-            }
+            loadProfileData();
+            let complain_id = "{{ $complain_id }}";
+            load_forward_history_table(complain_id);
+            load_user_by_level($('#user_level').val());
+            load_letters(complain_id);
+            load_file_no();
         });
 
-    });
+        $('#create_letter_btn').click(function() {
+            $(this).addClass('d-none');
+            $('#letter_title_frm').removeClass('d-none');
+        });
 
-    function save_title() {
-        let complain_id = "{{ $complain_id }}";
-        let data = {
-            "title": $('#letter_title').val(),
-            "complain_id": complain_id
-        };
-        let url = '/api/save_document';
-        if (data.title != '') {
-            ajaxRequest('POST', url, data, function(resp) {
+        $('#user_level').on('change', function() {
+            load_user_by_level($(this).val());
+        });
+
+        $('#assign_complain').click(function() {
+            let complain_id = "{{ $complain_id }}";
+            assign_user_to_complain(complain_id, $('#user').val());
+        });
+
+        $('#add_comment').click(function() {
+            comment_on_complain();
+        });
+
+        $('#add_minute').click(function() {
+            add_minute_to_complain();
+        });
+
+        $('#save_letter_title').click(function() {
+            save_title();
+        });
+
+        $('#assign_file').click(function() {
+            let complain_id = "{{ $complain_id }}";
+            let client_id = $('#client_id').val();
+            assign_file_no(complain_id, client_id);
+        });
+
+        $('#status_filter').change(function(){
+            let complain_id = "{{ $complain_id }}";
+            load_forward_history_table(complain_id);
+        });
+
+        $(document).on('click', '.remove_attach', function() {
+            let data = {
+                "id": "{{ $complain_id }}",
+                "file_path": $(this).attr('data-name'),
+            };
+            let url = '/api/delete_attach';
+            ajaxRequest('DELETE', url, data, function(resp) {
                 if (resp.status == 1) {
-                    swal.fire('success', 'letter title adding is successfull', 'success');
-                    $('#letter_title').val('');
-                    load_letters(complain_id);
+                    swal.fire('success', 'Complain attachments successfully removed', 'success');
+                    loadProfileData();
                 } else {
-                    swal.fire('failed', 'letter title adding was unsuccessful', 'warning');
+                    swal.fire('failed', 'Complain attachments removal was unsuccessful', 'warning');
                 }
             });
-        } else {
-            swal.fire('failed', 'Title is required !', 'warning');
-        }
-    }
 
-    $('#confirm').click(function() {
-        Swal.fire({
-            title: 'Do you want to confirm?',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'confirm',
-            denyButtonText: `Don't confirm`,
-        }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.value) {
-                let complain_id = "{{ $complain_id }}";
-                confirm_complain(complain_id);
-            } else if (result.isDenied) {
-                Swal.fire('Canceled!', 'Confirmation was cancelled', 'info')
-            }
-        })
-    });
+        });
 
-    $('#reject').click(function() {
-        Swal.fire({
-            title: 'Do you want to reject?',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'reject',
-            denyButtonText: `Don't reject`,
-        }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.value) {
-                let complain_id = "{{ $complain_id }}";
-                reject_complain(complain_id);
-            } else if (result.isDenied) {
-                Swal.fire('Canceled!', 'Rejection was cancelled', 'info')
-            }
-        })
-    });
-
-    $('#forward_letter_preforation').click(function() {
-        Swal.fire({
-            title: 'Do you want to forward for letter preforation?',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'confirm',
-            denyButtonText: `Don't confirm`,
-        }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.value) {
-                let complain_id = "{{ $complain_id }}";
-                forward_letter_preforation(complain_id);
-            } else if (result.isDenied) {
-                Swal.fire('Canceled!', 'Confirmation was cancelled', 'info')
-            }
-        })
-    });
-
-    $('#upld_attach').click(function() {
-        update_attachments();
-    });
-
-    $('#fileUploadInput').change(function() {
-        let index = 0;
-        let html = "";
-        $.each($('#fileUploadInput')[0].files, function(key, val) {
-            let file = val;
-
-            let default_url = window.location.origin + "/dist/img/pdf-view.png";
-            if (val.type == "application/pdf") {
-                html += "<img src='" + default_url + "' width='100em' height='100em'></img>";
-
+        function save_title() {
+            let complain_id = "{{ $complain_id }}";
+            let data = {
+                "title": $('#letter_title').val(),
+                "complain_id": complain_id
+            };
+            let url = '/api/save_document';
+            if (data.title != '') {
+                ajaxRequest('POST', url, data, function(resp) {
+                    if (resp.status == 1) {
+                        swal.fire('success', 'letter title adding is successfull', 'success');
+                        $('#letter_title').val('');
+                        load_letters(complain_id);
+                    } else {
+                        swal.fire('failed', 'letter title adding was unsuccessful', 'warning');
+                    }
+                });
             } else {
-                html += "<img src='" + window.URL.createObjectURL(val) +
+                swal.fire('failed', 'Title is required !', 'warning');
+            }
+        }
+
+        $('#confirm').click(function() {
+            Swal.fire({
+                title: 'Do you want to confirm?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'confirm',
+                denyButtonText: `Don't confirm`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.value) {
+                    let complain_id = "{{ $complain_id }}";
+                    confirm_complain(complain_id);
+                } else if (result.isDenied) {
+                    Swal.fire('Canceled!', 'Confirmation was cancelled', 'info')
+                }
+            })
+        });
+
+        $('#reject').click(function() {
+            Swal.fire({
+                title: 'Do you want to reject?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'reject',
+                denyButtonText: `Don't reject`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.value) {
+                    let complain_id = "{{ $complain_id }}";
+                    reject_complain(complain_id);
+                } else if (result.isDenied) {
+                    Swal.fire('Canceled!', 'Rejection was cancelled', 'info')
+                }
+            })
+        });
+
+        $('#forward_letter_preforation').click(function() {
+            Swal.fire({
+                title: 'Do you want to forward for letter preforation?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'confirm',
+                denyButtonText: `Don't confirm`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.value) {
+                    let complain_id = "{{ $complain_id }}";
+                    forward_letter_preforation(complain_id);
+                } else if (result.isDenied) {
+                    Swal.fire('Canceled!', 'Confirmation was cancelled', 'info')
+                }
+            })
+        });
+
+        $('#upld_attach').click(function() {
+            update_attachments();
+        });
+
+        $('#fileUploadInput').change(function() {
+            let index = 0;
+            let html = "";
+            $.each($('#fileUploadInput')[0].files, function(key, val) {
+                let file = val;
+
+                let default_url = window.location.origin + "/dist/img/pdf-view.png";
+                if (val.type == "application/pdf") {
+                    html += "<img src='" + default_url + "' width='100em' height='100em'></img>";
+
+                } else {
+                    html += "<img src='" + window.URL.createObjectURL(val) +
                     "' width='100em' height='100em'></img>";
 
-            }
-            $('#attached_files').html(html);
-        });
-    });
-
-    function load_letters(complain_id) {
-        let url = '/api/get_letters_by_complain/complain/' + complain_id;
-        ajaxRequest('GET', url, null, function(resp) {
-            var letter_view_tbl = "";
-            // $('#letter_view_tbl').DataTable().destroy();
-            // $('#letter_list').DataTable({
-            //     responsive: true,
-            //     aLengthMenu: [
-            //         [10, 25, 50, 100, -1],
-            //         [10, 25, 50, 100, "All"]
-            //     ],
-            //     "bDestroy": true,
-            //     iDisplayLength: 10
-            // });
-            $.each(resp, function(key, value2) {
-                key++;
-
-                let edit_btn = (value2.status != 'COMPLETED') ? '<a href="/get_letter_content/letter/' +
-                    value2.id + '" class="btn btn-success">Edit</a>' : '';
-                letter_view_tbl += "<tr><td>" + key + "</td><td>" + value2.letter_title + "</td><td>" +
-                    value2.status + "</td><td>" + value2.user_name + "</td><td>" +
-                    value2.created_at + "</td><td><a href='/get_letter/letter/" + value2.id +
-                    "' class='btn btn-primary mr-2'>View</a>" + edit_btn + "</td></tr>";
+                }
+                $('#attached_files').html(html);
             });
-            $('#letter_list tbody').html(letter_view_tbl);
-
         });
-    }
+
+        function load_letters(complain_id) {
+            let url = '/api/get_letters_by_complain/complain/' + complain_id;
+            ajaxRequest('GET', url, null, function(resp) {
+                var letter_view_tbl = "";
+                // $('#letter_view_tbl').DataTable().destroy();
+                // $('#letter_list').DataTable({
+                //     responsive: true,
+                //     aLengthMenu: [
+                //         [10, 25, 50, 100, -1],
+                //         [10, 25, 50, 100, "All"]
+                //     ],
+                //     "bDestroy": true,
+                //     iDisplayLength: 10
+                // });
+                $.each(resp, function(key, value2) {
+                    key++;
+
+                    let edit_btn = (value2.status != 'COMPLETED') ? '<a href="/get_letter_content/letter/' +
+                        value2.id + '" class="btn btn-success">Edit</a>' : '';
+                    letter_view_tbl += "<tr><td>" + key + "</td><td>" + value2.letter_title + "</td><td>" +
+                        value2.status + "</td><td>" + value2.user_name + "</td><td>" +
+                        value2.created_at + "</td><td><a href='/get_letter/letter/" + value2.id +
+                        "' class='btn btn-primary mr-2'>View</a>" + edit_btn + "</td></tr>";
+                });
+                $('#letter_list tbody').html(letter_view_tbl);
+
+            });
+        }
 </script>
 @endsection
