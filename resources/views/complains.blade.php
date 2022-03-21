@@ -38,6 +38,7 @@
                                 <div id="comp_name_valid" class="d-none">
                                     <p class="text-danger">Container Name is required</p>
                                 </div>
+<<<<<<< HEAD
                             </div>
                             <div class="form-group">
                                 <label>Complain Recieve Type</label>
@@ -48,6 +49,19 @@
                                 </select>
                                 <div id="recieve_type_valid" class="d-none">
                                     <p class="text-danger">Recieve type required</p>
+=======
+                                <div class="form-group">
+                                    <label>Complain Recieve Type</label>
+                                    <select id="recieve_type_ipt" name="recieve_type_ipt"
+                                        class="form-control form-control-sm">
+                                        <option value="1">Call</option>
+                                        <option value="2">Written</option>
+                                        <option value="3">Verbal</option>
+                                    </select>
+                                    <div id="recieve_type_valid" class="d-none">
+                                        <p class="text-danger">Complain Receive Type</p>
+                                    </div>
+>>>>>>> 0e4aed9adc4cf932f16e49464e1c5481be8316a8
                                 </div>
                             </div>
                             <div class="form-group">
