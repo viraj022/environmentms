@@ -11,6 +11,7 @@
         table.dataTable td {
             word-break: break-word;
         }
+
     </style>
 @endsection
 
@@ -30,26 +31,36 @@
                 <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
 
                     <li class="nav-item">
-                        <a class="nav-link active" id="custom-tabs-two-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-two-home" aria-selected="true">Profile Details</a>
+                        <a class="nav-link active" id="custom-tabs-two-home-tab" data-toggle="pill"
+                            href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-two-home"
+                            aria-selected="true">Profile Details</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-profile-tab" data-toggle="pill" href="#custom-tabs-three-attachments" role="tab" aria-controls="custom-tabs-two-profile" aria-selected="false">Attachments</a>
+                        <a class="nav-link" id="custom-tabs-two-profile-tab" data-toggle="pill"
+                            href="#custom-tabs-three-attachments" role="tab" aria-controls="custom-tabs-two-profile"
+                            aria-selected="false">Attachments</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-messages-tab" data-toggle="pill" href="#complain-assign" role="tab" aria-controls="custom-tabs-two-messages" aria-selected="false">Assign Complain</a>
+                        <a class="nav-link" id="custom-tabs-two-messages-tab" data-toggle="pill" 
+                            href="#complain-assign" role="tab" aria-controls="custom-tabs-two-messages" 
+                            aria-selected="false">Assign Complain</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-letters-tab" data-toggle="pill" href="#letters" role="tab" aria-controls="custom-tabs-two-letters" aria-selected="false">letter</a>
+                        <a class="nav-link" id="custom-tabs-two-letters-tab" data-toggle="pill" href="#letters" 
+                            role="tab" aria-controls="custom-tabs-two-letters"
+                            aria-selected="false">letter</a>
                     </li>
                 </ul>
             </div>
             <div class="card-body">
                 <div class="tab-content" id="custom-tabs-three-tabContent">
-                    <div class="tab-pane fade active show" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+                    <div class="tab-pane fade active show" id="custom-tabs-three-home" role="tabpanel"
+                        aria-labelledby="custom-tabs-three-home-tab">
                         <div class="card-body box-profile">
                             <input type="text" id="complain_profile_id" value="{{ $complain_id }}" class="d-none">
                             <div class="text-center">
-                                <h3 class="profile-username text-center"><b>Assigned Officer:</b><span id="assigned_officer">></span></h3>
+                                <h3 class="profile-username text-center"><b>Assigned Officer:</b><span 
+                                        id="assigned_officer">></span></h3>
                                 <h2 class="profile-username text-center"><b>Created By :</b><span id="created_user">></span>
                                 </h2>
 
@@ -71,16 +82,17 @@
                                 </li>
 
                                 <li class="list-group-item">
-                                    <b>Status : </b> <a class="float-right"><span id="comp_status" class=""></span></a>
+                                    <b>Status : </b> <a class="float-right"><span id="comp_status"
+                                            class=""></span></a>
                                 </li>
                                 <li class="list-group-item">
                                     <b>Complain By :</b> <a class="float-right" id="comp_by"></a>
                                 </li>
 
-                        </ul>
-                    </div>
-                    <!--//Industry Profile Start//-->
-                    {{-- <section class="content-header">
+                            </ul>
+                        </div>
+                        <!--//Industry Profile Start//-->
+                        {{-- <section class="content-header">
                             <!--show lient details START-->
                             <div class="view-Client">
                                 <div class="row">

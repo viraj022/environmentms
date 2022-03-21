@@ -1,5 +1,5 @@
-var cer_status = { 0: 'pending', 1: 'Drafting', 2: 'Drafted', 3: 'AD Approval Pending', 4: 'Director Approval pending', 5: 'Director Approved', 6: 'Certificate Issued', '-1': 'Certificate Director Holded' };
-var cer_type_status = { 0: 'pending', 1: 'New EPL', 2: 'EPL Renew', 3: 'Site Clearance', 4: 'Extend Site Clearance' };
+var cer_status = {0: 'pending', 1: 'Drafting', 2: 'Drafted', 3: 'AD Approval Pending', 4: 'Director Approval pending', 5: 'Director Approved', 6: 'Certificate Issued', '-1': 'Certificate Director Holded' };
+var cer_type_status = {0: 'pending', 1: 'New EPL', 2: 'EPL Renew', 3: 'Site Clearance', 4: 'Extend Site Clearance' };
 
 function loadAssDirCombo(callBack) {
     var url = '/api/assistant_directors/level';
@@ -132,7 +132,7 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
                         tbl += '<tr style="' + tr_style + '">';
                         tbl += '<td>' + ++index + '</td>';
                         tbl += '<td>' + row.industry_name + '</td>';
-                        tbl += '<td>' + row.first_name + ' ' + row.last_name + '</td>';
+                        tbl += '<td>' + row.first_name+' '+row.last_name+'</td>';
                         tbl += '<td>' + row.code_epl + '</td>';
                         tbl += '<td>' + row.code_site + '</td>';
                         if (row.file_no != null) {
