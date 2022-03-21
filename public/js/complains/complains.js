@@ -119,7 +119,7 @@ function load_complains() {
 
     //data table error handling
     $.fn.dataTable.ext.errMode = 'none';
-    $('#complain_tbl').on('error.dt', function (e, settings, techNote, message) {
+    $('#complain_tbl').on('error.dt', function(e, settings, techNote, message) {
         console.log('DataTables error: ', message);
     });
 }
@@ -152,10 +152,10 @@ function save_complain() {
     };
     let arr = [];
     let index = 0;
-    $.each($('#complain_attach')[0].files, function (key, val) {
+    $.each($('#complain_attach')[0].files, function(key, val) {
         arr[index++] = val;
     });
-    ulploadFileWithData(url, data, function (resp) {
+    ulploadFileWithData(url, data, function(resp) {
         if (resp.status == 1) {
             $('#complain_frm')[0].reset();
             $('#complain_tbl').DataTable().ajax.reload();
@@ -182,10 +182,10 @@ function update_complain() {
     };
     let arr = [];
     let index = 0;
-    $.each($('#complain_attach')[0].files, function (key, val) {
+    $.each($('#complain_attach')[0].files, function(key, val) {
         arr[index++] = val;
     });
-    ulploadFileWithData(url, data, function (resp) {
+    ulploadFileWithData(url, data, function(resp) {
         if (resp.status == 1) {
             window.location.href = "/complains";
             swal.fire('success', 'Successfully update the complains', 'success');
@@ -197,7 +197,7 @@ function update_complain() {
 
 function delete_complain(id) {
     let url = '/api/delete_complain/id/' + id;
-    ajaxRequest('DELETE', url, null, function (resp) {
+    ajaxRequest('DELETE', url, null, function(resp) {
         if (resp.status == 1) {
             $('#complain_tbl').DataTable().ajax.reload();
             swal.fire('success', resp.msg, 'success');
@@ -209,9 +209,9 @@ function delete_complain(id) {
 
 function loadPradeshiyaSabha(callBack) {
     var cbo = "";
-    ajaxRequest('GET', "/api/pradesheeyasabas", null, function (dataSet) {
+    ajaxRequest('GET', "/api/pradesheeyasabas", null, function(dataSet) {
         if (dataSet) {
-            $.each(dataSet, function (index, row) {
+            $.each(dataSet, function(index, row) {
                 cbo += '<option value="' + row.id + '" data-ps_code="' + row.code + '">' + row.code + ' - ' + row.name + '</option>';
             });
         } else {

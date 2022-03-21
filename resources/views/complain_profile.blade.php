@@ -5,77 +5,77 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('pageStyles')
-<link rel="stylesheet" href="/dist/css/adminlte.min.css">
-<link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
-<style>
-    table.dataTable td {
-        word-break: break-word;
-    }
-</style>
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
+    <style>
+        table.dataTable td {
+            word-break: break-word;
+        }
+    </style>
 @endsection
 
 @section('content')
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-12 col-sm-6">
-                <h1>Complain Profile </h1>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-12 col-sm-6">
+                    <h1>Complain Profile </h1>
+                </div>
             </div>
         </div>
-    </div>
-</section>
-<section class="content-header">
-    <div class="card card-primary card-tabs">
-        <div class="card-header p-0 pt-1">
-            <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+    </section>
+    <section class="content-header">
+        <div class="card card-primary card-tabs">
+            <div class="card-header p-0 pt-1">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
 
-                <li class="nav-item">
-                    <a class="nav-link active" id="custom-tabs-two-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-two-home" aria-selected="true">Profile Details</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-two-profile-tab" data-toggle="pill" href="#custom-tabs-three-attachments" role="tab" aria-controls="custom-tabs-two-profile" aria-selected="false">Attachments</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-two-messages-tab" data-toggle="pill" href="#complain-assign" role="tab" aria-controls="custom-tabs-two-messages" aria-selected="false">Assign Complain</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-two-letters-tab" data-toggle="pill" href="#letters" role="tab" aria-controls="custom-tabs-two-letters" aria-selected="false">letter</a>
-                </li>
-            </ul>
-        </div>
-        <div class="card-body">
-            <div class="tab-content" id="custom-tabs-three-tabContent">
-                <div class="tab-pane fade active show" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
-                    <div class="card-body box-profile">
-                        <input type="text" id="complain_profile_id" value="{{ $complain_id }}" class="d-none">
-                        <div class="text-center">
-                            <h3 class="profile-username text-center"><b>Assigned Officer:</b><span id="assigned_officer">></span></h3>
-                            <h2 class="profile-username text-center"><b>Created By :</b><span id="created_user">></span>
-                            </h2>
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-two-home" aria-selected="true">Profile Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-profile-tab" data-toggle="pill" href="#custom-tabs-three-attachments" role="tab" aria-controls="custom-tabs-two-profile" aria-selected="false">Attachments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-messages-tab" data-toggle="pill" href="#complain-assign" role="tab" aria-controls="custom-tabs-two-messages" aria-selected="false">Assign Complain</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-letters-tab" data-toggle="pill" href="#letters" role="tab" aria-controls="custom-tabs-two-letters" aria-selected="false">letter</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-three-tabContent">
+                    <div class="tab-pane fade active show" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+                        <div class="card-body box-profile">
+                            <input type="text" id="complain_profile_id" value="{{ $complain_id }}" class="d-none">
+                            <div class="text-center">
+                                <h3 class="profile-username text-center"><b>Assigned Officer:</b><span id="assigned_officer">></span></h3>
+                                <h2 class="profile-username text-center"><b>Created By :</b><span id="created_user">></span>
+                                </h2>
 
-                        </div>
+                            </div>
 
-                        <ul class="list-group list-group-unbordered mt-5 mb-3">
+                            <ul class="list-group list-group-unbordered mt-5 mb-3">
 
-                            <li class="list-group-item">
-                                <b>Code :</b> <a class="float-right" id="comp_code"></a>
-                            </li>
-                            <li class="list-group-item">
-                                <b>Complainer Name :</b> <a class="float-right" id="comp_name"></a>
-                            </li>
-                            <li class="list-group-item">
-                                <b>Complainer Contact No:</b> <a class="float-right" id="comp_contact_no"></a>
-                            </li>
-                            <li class="list-group-item">
-                                <b>Description</b> <a class="float-right" id="comp_desc"></a>
-                            </li>
+                                <li class="list-group-item">
+                                    <b>Code :</b> <a class="float-right" id="comp_code"></a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Complainer Name :</b> <a class="float-right" id="comp_name"></a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Complainer Contact No:</b> <a class="float-right" id="comp_contact_no"></a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Description</b> <a class="float-right" id="comp_desc"></a>
+                                </li>
 
-                            <li class="list-group-item">
-                                <b>Status : </b> <a class="float-right"><span id="comp_status" class=""></span></a>
-                            </li>
-                            <li class="list-group-item">
-                                <b>Complain By :</b> <a class="float-right" id="comp_by"></a>
-                            </li>
+                                <li class="list-group-item">
+                                    <b>Status : </b> <a class="float-right"><span id="comp_status" class=""></span></a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Complain By :</b> <a class="float-right" id="comp_by"></a>
+                                </li>
 
                         </ul>
                     </div>
@@ -125,30 +125,30 @@
         </div>
     </div>
 </section> --}}
-<!--//Industry Profile END//-->
-</div>
-<div class="tab-pane" id="custom-tabs-three-attachments" role="tabpanel" aria-labelledby="custom-tabs-three-attachments">
-    <section class="content-header">
-        <hr>
-        <dt class="text-center"> <b>Upload Attachments</b> </dt>
-        <hr>
-        <div class="form-group" id="fileUpDiv">
+                          <!--//Industry Profile END//-->
+                      </div>
+                      <div class="tab-pane" id="custom-tabs-three-attachments" role="tabpanel" aria-labelledby="custom-tabs-three-attachments">
+                          <section class="content-header">
+                              <hr>
+                              <dt class="text-center"> <b>Upload Attachments</b> </dt>
+                              <hr>
+                              <div class="form-group" id="fileUpDiv">
 
-            <label id="uploadLabel">File Upload </label>
-            <input id="fileUploadInput" type="file" class="col-12" accept=".png, .jpg, .jpeg, .pdf" multiple>
-            <div class="col-12">
-                <div id="attached_files"></div>
-            </div>
-            <div class="col-12">
-                <button type="button" class="btn btn-primary mt-2" data-upload_file="attachments" id="upld_attach"> Upload Attachment </button>
-            </div>
-        </div>
-        <hr>
-        <div class="row" id="file_attachments">
+                                  <label id="uploadLabel">File Upload </label>
+                                  <input id="fileUploadInput" type="file" class="col-12" accept=".png, .jpg, .jpeg, .pdf" multiple>
+                                  <div class="col-12">
+                                      <div id="attached_files"></div>
+                                  </div>
+                                  <div class="col-12">
+                                      <button type="button" class="btn btn-primary mt-2" data-upload_file="attachments" id="upld_attach"> Upload Attachment </button>
+                                  </div>
+                              </div>
+                              <hr>
+                              <div class="row" id="file_attachments">
 
-        </div>
-    </section>
-</div>
+                              </div>
+                          </section>
+                      </div>
 <div class="tab-pane" id="complain-assign" role="tabpanel" aria-labelledby="complain-assign">
     <section class="content-header">
         <div class="row mt-5">

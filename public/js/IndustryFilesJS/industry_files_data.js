@@ -4,11 +4,11 @@ var cer_type_status = { 0: 'pending', 1: 'New EPL', 2: 'EPL Renew', 3: 'Site Cle
 function loadAssDirCombo(callBack) {
     var url = '/api/assistant_directors/level';
     let cbo = '';
-    ajaxRequest('GET', url, null, function(dataSet) {
+    ajaxRequest('GET', url, null, function (dataSet) {
         if (dataSet.length == 0) {
             cbo = "<option value=''>No Data Found</option>";
         } else {
-            $.each(dataSet, function(index, row) {
+            $.each(dataSet, function (index, row) {
                 cbo += '<option value="' + row.id + '">' + row.user.first_name + " " + row.user.last_name + '</option>';
             });
         }
@@ -22,11 +22,11 @@ function loadAssDirCombo(callBack) {
 function loadEnvOfficerCombo(uid, callBack) {
     var url = '/api/environment_officer/level/assistant_director_id/' + uid;
     let cbo = '';
-    ajaxRequest('GET', url, null, function(dataSet) {
+    ajaxRequest('GET', url, null, function (dataSet) {
         if (dataSet.length == 0) {
             cbo = "<option value=''>No Data Found</option>";
         } else {
-            $.each(dataSet, function(index, row) {
+            $.each(dataSet, function (index, row) {
                 cbo += '<option value="' + row.id + '">' + row.user.first_name + " " + row.user.last_name + '</option>';
             });
         }
@@ -41,7 +41,7 @@ function loadAllFilesApi(env_id, callBack) {
     if (isNaN(env_id)) {
         return false;
     }
-    ajaxRequest('GET', "/api/files/all/officer/id/" + env_id, null, function(dataSet) {
+    ajaxRequest('GET', "/api/files/all/officer/id/" + env_id, null, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
@@ -52,7 +52,7 @@ function loadCertificatePathsApi(file_id, callBack) {
     if (isNaN(file_id)) {
         return false;
     }
-    ajaxRequest('GET', "/api/files/certificate/officer/id/" + file_id, null, function(dataSet) {
+    ajaxRequest('GET', "/api/files/certificate/officer/id/" + file_id, null, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
@@ -63,7 +63,7 @@ function loadWorkingFilesApi(env_id, callBack) {
     if (isNaN(env_id)) {
         return false;
     }
-    ajaxRequest('GET', "/api/files/working/officer/id/" + env_id, null, function(dataSet) {
+    ajaxRequest('GET', "/api/files/working/officer/id/" + env_id, null, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
@@ -74,7 +74,7 @@ function loadNewFilesApi(env_id, callBack) {
     if (isNaN(env_id)) {
         return false;
     }
-    ajaxRequest('GET', "/api/files/new/officer/id/" + env_id, null, function(dataSet) {
+    ajaxRequest('GET', "/api/files/new/officer/id/" + env_id, null, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
@@ -87,7 +87,7 @@ function checkInspectionStatus(id, combo_val, callBack) {
     if (isNaN(id)) {
         return false;
     }
-    ajaxRequest('PATCH', "/api/inspection/" + combo_val + "/file/" + id, null, function(dataSet) {
+    ajaxRequest('PATCH', "/api/inspection/" + combo_val + "/file/" + id, null, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
@@ -98,12 +98,12 @@ function checkInspectionStatus(id, combo_val, callBack) {
 //----- Load Tables----//
 function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
     var tbl = "";
-    loadAllFilesApi(env_id, function(resp) {
+    loadAllFilesApi(env_id, function (resp) {
         if (resp === null) {
             tbl = "<tr><td colspan='5'>No Data Found</td></tr>";
         } else {
             $("#tblAllFiles").DataTable().destroy();
-            $.each(resp, function(index, row) {
+            $.each(resp, function (index, row) {
                 let status_Lable = '';
                 if (row.file_status == 2) {
                     status_Lable = '(' + cer_status[row.cer_status] + ')';
@@ -142,11 +142,6 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
                         }
                         tbl += '<td class="">' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
                         tbl += '<td>' + file_status_list[row.file_status] + status_Lable + '</td>';
-                        //                    if ((row.file_status == 0) && (row.need_inspection == null)) {
-                        //                        tbl += '<td><button type="button" value="' + row.id + '" data-toggle="modal" data-target="#modal-xl" class="btn btn-success setInspeBtn">Set Inspection</button></td>';
-                        //                    } else {
-                        //                        tbl += '<td>' + row.need_inspection + '</td>';
-                        //                    }
                         if (row.file_status != 5) {
                             tbl += '<td class="text-center"><button type="button" value="' + escape(JSON.stringify(row)) + '" class="btn btn-info detailsData">Details</button></td>';
                         } else {
@@ -163,131 +158,6 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
         });
     });
 
-    //    tbl_all_files = $('#tblAllFiles').DataTable({
-    //        "destroy": true,
-    //        "processing": true,
-    //        "colReorder": true,
-    //        "serverSide": false,
-    //        "pageLength": 10,
-    //        language: {
-    //            searchPlaceholder: "Search..."
-    //        },
-    //        ajax: {
-    //            "url": "/api/files/all/officer/id/" + env_id,
-    //            "type": "GET",
-    //            "dataSrc": "",
-    //            "headers": {
-    //                "Accept": "application/json",
-    //                "Content-Type": "text/json; charset=utf-8",
-    //                "Authorization": "Bearer " + $('meta[name=api-token]').attr("content")
-    //            },
-    //        },
-    //        "columns": [
-    //            {
-    //                "data": "",
-    //                "defaultContent": "         ----------           "
-    //            },
-    //            {
-    //                "data": "industry_name",
-    //                "defaultContent": "         ----------           "
-    //            },
-    //            {
-    //                "data": "code_epl",
-    //                "defaultContent": "         ----------           "
-    //            },
-    //            {
-    //                "data": "",
-    //                render: function (data, type, row) {
-    //                    if (row != null) {
-    //                        if ((row.file_status == file_status) || (file_status == 'all')) {
-    //                            if (row.is_old != 0) {
-    //                                return '<td><a href="/industry_profile/id/' + row.id + '" class="btn btn-dark" target="_blank">' + row.file_no + '</a></td>';
-    //                            }
-    //                        }
-    //                    }
-    //                },
-    //                "defaultContent": "         ----------           "
-    //            },
-    //            {
-    //                "data": "",
-    //                render: function (data, type, row) {
-    //                    if (row != null) {
-    //                        if ((row.file_status == file_status) || (file_status == 'all')) {
-    //                            if (row.is_old != 0) {
-    //                                var myDate = new Date(row.created_at);
-    //                                var fixMydate = myDate.toISOString().split('T')[0];
-    //                                return '<td class="">' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
-    //                            }
-    //                        }
-    //                    }
-    //                },
-    //                "defaultContent": "         ----------           "
-    //            },
-    //            {
-    //                "data": "",
-    //                render: function (data, type, row) {
-    //                    let status_Lable = '';
-    //                    if (row.file_status == 2) {
-    //                        status_Lable = '(' + cer_status[row.cer_status] + ')';
-    //                    } else if (row.file_status == 0) {
-    //                        if (row.need_inspection == null) {
-    //                            status_Lable = '(Set Inspction Status)';
-    //                        } else if (row.need_inspection == 'Pending') {
-    //                            status_Lable = '(Inpection Result Pending)';
-    //                        } else {
-    //                            status_Lable = '(' + row.need_inspection + ')';
-    //                        }
-    //                    }
-    //                    if (row != null) {
-    //                        if ((row.file_status == file_status) || (file_status == 'all')) {
-    //                            if (row.is_old != 0) {
-    //                                return '<td>' + file_status_list[row.file_status] + status_Lable + '</td>';
-    //                            }
-    //                        }
-    //                    }
-    //                },
-    //                "defaultContent": "         ----------           "
-    //            },
-    //            {
-    //                "data": "",
-    //                render: function (data, type, row) {
-    //                    if (row != null) {
-    //                        if ((row.file_status == file_status) || (file_status == 'all')) {
-    //                            if (row.is_old != 0) {
-    //                                if (row.file_status != 5) {
-    //                                    return '<td class="text-center"><button type="button" value="' + escape(JSON.stringify(row)) + '" class="btn btn-info detailsData">Details</button></td>';
-    //                                } else {
-    //                                    return '<td class="text-center"><i class="fa fa-check fa-lg text-success"></i></td>';
-    //                                }
-    //                            }
-    //                        }
-    //                    }
-    //                }
-    //            },
-    //        ],
-    //        "order": [
-    //            [1, "asc"]
-    //        ],
-    //    }
-    //    );
-
-
-
-    //    $(function () {
-    //        var t = $('#tblAllFiles').DataTable();
-    //        t.on('order.dt search.dt', function () {
-    //            t.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
-    //                cell.innerHTML = i + 1;
-    //            });
-    //        }).draw();
-    //    });
-    //
-    //    //data table error handling
-    //    $.fn.dataTable.ext.errMode = 'none';
-    //    $('#tblAllFiles').on('error.dt', function (e, settings, techNote, message) {
-    //        console.log('DataTables error: ', message);
-    //    });
-
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
         callBack();
     }
@@ -303,7 +173,7 @@ function approvalApi(file_id, env_offi, DATA, callBack) {
         alert('Please Enter Minute Text !');
         return false;
     }
-    ajaxRequest('PATCH', "/api/environment_officer/approve/" + env_offi + "/" + file_id, DATA, function(dataSet) {
+    ajaxRequest('PATCH', "/api/environment_officer/approve/" + env_offi + "/" + file_id, DATA, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
@@ -315,7 +185,7 @@ function adCertificateApproval(file_id, env_offi, DATA, callBack) {
     if (isNaN(file_id)) {
         return false;
     }
-    ajaxRequest('PATCH', "/api/environment_officer/approve_certificate/" + env_offi + "/" + file_id, DATA, function(dataSet) {
+    ajaxRequest('PATCH', "/api/environment_officer/approve_certificate/" + env_offi + "/" + file_id, DATA, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
@@ -326,7 +196,7 @@ function rejectCertificateApproval(file_id, env_offi, DATA, callBack) {
     if (isNaN(file_id)) {
         return false;
     }
-    ajaxRequest('PATCH', "/api/environment_officer/reject_certificate/" + env_offi + "/" + file_id, DATA, function(dataSet) {
+    ajaxRequest('PATCH', "/api/environment_officer/reject_certificate/" + env_offi + "/" + file_id, DATA, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
