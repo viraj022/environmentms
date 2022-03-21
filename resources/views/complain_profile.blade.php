@@ -246,7 +246,7 @@
                                                     <form id="comments_frm" class="w-100">
                                                         <input type="text" id="comp_comnt_hid_id" name="comp_comnt_hid_id"
                                                             value="{{ $complain_id }}" hidden>
-                                                              <div class="form-group">
+                                                        <div class="form-group">
                                                             <label for="comment">Comment: </label>
                                                             <input type="text" id="comment" class="form-control"
                                                                 name="comment" placeholder="Please type the comment">
@@ -282,9 +282,12 @@
                                                 <div class="col-md-4">
                                                     <form id="minutes_frm">
                                                         <div class="form-group">
-                                                            <input type="text" id="comp_minute_hid_id" name="comp_minute_hid_id" value="{{ $complain_id }}" hidden>
+                                                            <input type="text" id="comp_minute_hid_id" 
+                                                                name="comp_minute_hid_id" value="{{ $complain_id }}"
+                                                                hidden>
                                                             <label for="minute">Minute: </label>
-                                                            <input type="text" id="minute" class="form-control" name="minute" placeholder="Please type the minute">
+                                                            <input type="text" id="minute" class="form-control"
+                                                                name="minute" placeholder="Please type the minute">
                                                         </div>
 
                                                         <div class="form-group">
