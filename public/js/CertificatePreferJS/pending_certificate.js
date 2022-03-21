@@ -97,7 +97,7 @@ function getaProfilebyId(callBack) {
             {
                 "targets": 5,
                 "data": "0",
-                "render": function (data, type, full, meta) {
+                "render": function(data, type, full, meta) {
                     return '<a href="/industry_profile/id/' + full['id'] + '" target="_blank">' + full['file_no'] + '</a>(' + certificate_type[full['cer_type_status']] + ')';
                 }
             },
