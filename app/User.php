@@ -79,18 +79,15 @@ class User extends Authenticatable
         return $this->where('user_name', $username)->first();
     }
 
-    public function complains()
-    {
+    public function complains(){
         return $this->hasMany(Complain::class);
     }
 
-    public function complainAssignLogs()
-    {
+    public function complainAssignLogs(){
         return $this->hasMany(ComplainAssignLog::class);
     }
 
-    public function letterTemplates()
-    {
+    public function letterTemplates(){
         return $this->hasMany(LetterTemplate::class);
     }
 

@@ -128,14 +128,12 @@ class ComplainController extends Controller
         return view('complain_profile', ['complain_id' => $id, 'pageAuth' => $pageAuth]);
     }
 
-    public function complainProfileData($id)
-    {
+    public function complainProfileData($id){
         $complain_data = Complain::with(['assignedUser', 'createdUser', 'complainComments.commentedUser', 'complainMinutes.minuteUser'])->find($id);
         return $complain_data;
     }
 
-    public function update_attachments(Request $request, $id)
-    {
+    public function update_attachments(Request $request, $id){
         $user = Auth::user()->id;
         $update_attach = Complain::find($id);
         $curr_file_path_arr = json_decode($update_attach->attachment);
@@ -277,34 +275,31 @@ class ComplainController extends Controller
         }
     }
 
-    public function get_complain_assign_log(Request $request, $complain_id)
-    {
+    public function get_complain_assign_log(Request $request, $complain_id){
         $status = $request->status;
 
         $complain_assign_log = ComplainAssignLog::where('complain_id', $complain_id)
             ->with(['assignerUser', 'assigneeUser', 'complain'])
-            ->whereHas('complain', function ($query) use($status){
-                $query->where('status','=', $status);
+            ->whereHas('complain', function ($query) use ($status) {
+                $query->where('status', '=', $status);
             })
-            ->whereHas('assigneeUser', function ($query){
-                $query->whereHas('roll', function ($query){
+            ->whereHas('assigneeUser', function ($query) {
+                $query->whereHas('roll', function ($query) {
                     $query->groupBy('level_id')
-                    ->orderBy('assignee_user', 'desc');
+                        ->orderBy('assignee_user', 'desc');
                 });
-            })          
+            })
             ->get();
-           
+
         return $complain_assign_log;
     }
 
-    public function forwarded_complains()
-    {
+    public function forwarded_complains(){
         $forwarded_complains = Complain::where('status', 4)->get();
         return $forwarded_complains;
     }
 
-    public function removeAttach(Request $request)
-    {
+    public function removeAttach(Request $request){
         $attach = Complain::find($request->id);
         $decoded_paths = json_decode($attach->attachment);
         foreach ($decoded_paths as $decoded_path) {
@@ -322,14 +317,12 @@ class ComplainController extends Controller
         }
     }
 
-    public function loadFileNo()
-    {
+    public function loadFileNo(){
         $file_no = Client::select('id', 'file_no')->get();
         return $file_no;
     }
 
-    public function assignFileNo(Request $request)
-    {
+    public function assignFileNo(Request $request){
         $assign_file = Complain::find($request->id);
         $assign_file->client_id = $request->client_id;
         $assign_file->save();

@@ -158,8 +158,7 @@ class WebDocumentController extends Controller
         return $templates;
     }
 
-    public function letterTempById($id)
-    {
+    public function letterTempById($id){
         $template = LetterTemplate::find($id);
         $all_template = LetterTemplate::get();
         return view('letter_template', compact('template', 'all_template'));
