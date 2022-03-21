@@ -154,7 +154,7 @@
 <script src="/../../js/InspectionRemarksJS/inspection_status.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
-$(function (){
+$(function () {
 
 //Load table
 var id = "{{$id}}";
