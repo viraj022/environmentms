@@ -67,7 +67,8 @@
                                     <label>Complainer Contact Number*</label>
                                     <input id="contact_complainer_ipt" name="contact_complainer_ipt"
                                         onKeyDown="if (this.value.length == 10 && event.keyCode != 8)
-                                                                                                                    return false;" type="number" class="form-control form-control-sm" placeholder="Enter Contact Number of complainer..." value="" required>
+                                                                                                                    return false;" type="number" class="form-control form-control-sm" 
+                                        placeholder="Enter Contact Number of complainer..." value="" required>
                                     <div id="contact_complainer_valid" class="d-none">
                                         <p class="text-danger">Complainer Contact Number is required</p>
                                     </div>
@@ -83,7 +84,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Attachment: </label>
-                                    <input type="file" id="complain_attach" name="complain_attach" 
+                                    <input type="file" id="complain_attach" name="complain_attach"
                                         accept=".png, .jpg, .jpeg" multiple>
                                     <div id="complain_attach_valid" class="d-none">
                                         <p class="text-danger">Complain attachment required</p>

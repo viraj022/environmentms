@@ -27,7 +27,8 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Letter Title*</label>
-                                    <input type="text" class="form-control" name="letter_title" id="letter_title" placeholder="Enter the letter title" value="{{ $letter_title }}">
+                                    <input type="text" class="form-control" name="letter_title" id="letter_title"
+                                        placeholder="Enter the letter title" value="{{ $letter_title }}">
                                 </div>
                                 @if ($letter_status != 'COMPLETED')
                                 <div class="row">
@@ -40,7 +41,7 @@
                                     </div>
                                 </div>
                                 @else
-                                <h3><span class="text-danger">Completed</span></h3>
+                                    <h3><span class="text-danger">Completed</span></h3>
                                 @endif
                             </div>
                             <!-- /.card-body -->
@@ -52,9 +53,10 @@
                             <div class="card-body">
                                 <!-- the events -->
                                 @forelse ($template as $tempItem)
-                                <button class="btn btn-xs btn-outline-dark LoadTemplate" value="{{ $tempItem->id }}">{{ $tempItem->template_name }}</button>
+                                    <button class="btn btn-xs btn-outline-dark LoadTemplate"
+                                        value="{{ $tempItem->id }}">{{ $tempItem->template_name }}</button>
                                 @empty
-                                <p class='text-danger'>No Template Available</p>
+                                    <p class='text-danger'>No Template Available</p>
                                 @endforelse
                             </div>
                             <!-- /.card-body -->
@@ -166,7 +168,7 @@
             delete_doc();
         });
 
-        function delete_doc() {
+        function delete_doc(){
             Swal.fire({
                 title: 'Are sure to delete this letter?',
                 showDenyButton: true,
@@ -182,7 +184,7 @@
                     ajaxRequest('DELETE', url, null, function(resp) {
                         if (resp.status == 1) {
                             swal.fire('success', 'Successfully deleted the letter', 'success');
-                            window.location.replace("/complain_profile/id/" + complain_id);
+                            window.location.replace("/complain_profile/id/" + complain_id); 
                         } else {
                             swal.fire('failed', 'Letter deletion was unsuccessful', 'warning');
                         }
