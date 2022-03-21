@@ -147,7 +147,6 @@ class ComplainController extends Controller
                     'img_path' => str_replace('public/', '', $attach),
                     'upload_time' => date("Y-m-d H:i:s"),
                     'uploaded_user' => $user
-
                 ];
             }
 
@@ -314,9 +313,9 @@ class ComplainController extends Controller
         $encoded_path = json_encode($decoded_paths);
         $attach->attachment = $encoded_path;
         $attach->save();
-        if($attach == true){
+        if ($attach == true) {
             return array('status' => 1, 'msg' => 'Complain attachments successfully removed');
-        }else{
+        } else {
             return array('status' => 0, 'msg' => 'Complain attachments removal was unsuccessful');
         }
     }
@@ -330,9 +329,9 @@ class ComplainController extends Controller
         $assign_file = Complain::find($request->id);
         $assign_file->client_id = $request->client_id;
         $assign_file->save();
-        if ($assign_file == true) {
+        if($assign_file == true){
             return array('status' => 1, 'msg' => 'File assigned successfully');
-        } else {
+        }else{
             return array('status' => 0, 'msg' => 'File assigning was unsuccessful');
         }
     }

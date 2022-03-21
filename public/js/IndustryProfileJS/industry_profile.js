@@ -19,17 +19,12 @@ function getaProfilebyId(id, callBack) {
 }
 
 function setProfileDetails(obj) {
-    //    console.log(obj);
-    //    $('#newEPL').val(obj.id);
     if (obj.epls.length == 0) {
         $(".newEPL").removeClass("d-none");
     } else {
         $(".viewEPL").removeClass("d-none");
         $(".newEPL").addClass("d-none");
         $("#setEPLCode").html(obj.epls[obj.epls.length - 1].code);
-        //        if (obj.site_clearence_sessions.length == 0) {
-        //            $("#setSiteCleanceCode").html(obj.site_clearence_sessions[0].code);
-        //        }
         if (obj.epls.length != 0) {
             $("#setEPlLink").attr(
                 "href",
