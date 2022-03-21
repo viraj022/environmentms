@@ -129,8 +129,7 @@ class ComplainController extends Controller
     }
 
     public function complainProfileData($id)
-    {
-        $complain_data = Complain::with(['assignedUser', 'createdUser', 'complainComments.commentedUser', 'complainMinutes.minuteUser'])->find($id);
+    {   $complain_data = Complain::with(['assignedUser', 'createdUser', 'complainComments.commentedUser', 'complainMinutes.minuteUser'])->find($id);
         return $complain_data;
     }
 
