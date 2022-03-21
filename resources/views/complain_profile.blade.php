@@ -188,7 +188,8 @@
                                                             <select id="user" class="custom-select"></select>
                                                         </div>
                                                         <div class="form-group">
-                                                            <button type="button" class="btn btn-primary" id="assign_complain"> Assign To </button>
+                                                            <button type="button" class="btn btn-primary"
+                                                                             id="assign_complain"> Assign To </button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -220,11 +221,11 @@
                                                             </thead>
                                                             <tbody></tbody>
                                                         </table>
-                                                        <div class="form-group mt-5">
-                                                            <button id="confirm" class="btn btn-info d-none">Confirm</button>
-                                                            <button id="reject" class="btn btn-warning d-none">Reject</button>
-                                                            <button id="forward_letter_preforation" class="btn btn-success">Forward to letter preforation</button>
-                                                        </div>
+                                                    <div class="form-group mt-5">
+                                                        <button id="confirm" class="btn btn-info d-none">Confirm</button>
+                                                        <button id="reject" class="btn btn-warning d-none">Reject</button>
+                                                        <button id="forward_letter_preforation" class="btn btn-success">Forward to letter preforation</button>
+                                                    </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -236,20 +237,22 @@
                                 <div class="col-md-12">
                                     <div class="card card-light">
                                         <div class="card-header">
-                                                  <h1> Add comment for complains </h1>
+                                            <h1> Add comment for complains </h1>
                                         </div>
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <form id="comments_frm" class="w-100">
-                                                        <input type="text" id="comp_comnt_hid_id" name="comp_comnt_hid_id" value="{{ $complain_id }}" hidden>
+                                                        <input type="text" id="comp_comnt_hid_id" name="comp_comnt_hid_id"
+                                                            value="{{ $complain_id }}" hidden>
                                                               <div class="form-group">
                                                             <label for="comment">Comment: </label>
-                                                            <input type="text" id="comment" class="form-control" name="comment" placeholder="Please type the comment">
+                                                            <input type="text" id="comment" class="form-control"
+                                                                name="comment" placeholder="Please type the comment">
                                                         </div>
                                                         <div class="form-group">
                                                             <button type="button" class="btn btn-primary" id="add_comment">
-                                        Add Comment </button>
+                                                                Add Comment </button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -266,43 +269,44 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="card card-light">
-                                                <div class="card-header">
-                                                    <h1> Add minutes for complains </h1>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-md-4">
-                                                            <form id="minutes_frm">
-                                                                <div class="form-group">
-                                                                    <input type="text" id="comp_minute_hid_id" name="comp_minute_hid_id" value="{{ $complain_id }}" hidden>
-                                                                    <label for="minute">Minute: </label>
-                                                                    <input type="text" id="minute" class="form-control" name="minute" placeholder="Please type the minute">
-                                                                </div>
+                                    
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card card-light">
+                                        <div class="card-header">
+                                            <h1> Add minutes for complains </h1>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <form id="minutes_frm">
+                                                        <div class="form-group">
+                                                            <input type="text" id="comp_minute_hid_id" name="comp_minute_hid_id" value="{{ $complain_id }}" hidden>
+                                                            <label for="minute">Minute: </label>
+                                                            <input type="text" id="minute" class="form-control" name="minute" placeholder="Please type the minute">
+                                                        </div>
 
-                                                                <div class="form-group">
-                                                                    <button type="button" class="btn btn-primary" id="add_minute">
-                                                Add Minute </button>
-                                                                </div>
-                                                            </form>
+                                                        <div class="form-group">
+                                                            <button type="button" class="btn btn-primary" id="add_minute">
+                                                                Add Minute </button>
                                                         </div>
-                                                        <div class="col-md-8 mt-3">
-                                                            <div class="row">
-                                                                <div class="col-md-4"><b>#</b></div>
-                                                                <div class="col-md-4"><b>Minute</b></div>
-                                                                <div class="col-md-4"><b>Minute Added User</b></div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-12" id="minute_section"></div>
-                                                            </div>
-                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="col-md-8 mt-3">
+                                                    <div class="row">
+                                                        <div class="col-md-4"><b>#</b></div>
+                                                        <div class="col-md-4"><b>Minute</b></div>
+                                                        <div class="col-md-4"><b>Minute Added User</b></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12" id="minute_section"></div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
                         </section>
                     </div>
 <div class="tab-pane" id="letters" role="tabpanel" aria-labelledby="letters">
