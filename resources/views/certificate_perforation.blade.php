@@ -73,7 +73,7 @@
                                                             </dl>
                                                         </div>
                                                         <!--                                                <button class="btn btn-primary genCertificateNum d-none"><i class="fa fa-gear"></i> Generate Certificate Number</button>
-                                                                                     /.card-body -->
+                                                                                         /.card-body -->
                                                     </div>
                                                     <div class="card card-success">
                                                         <div class="card-header">
@@ -141,8 +141,7 @@
                                                 <div class="card-body">
                                                     <h6 id="certificate_Num">Application/Licence Number: <a
                                                             class="text-danger">Not Assigned</a></h6>
-                                                    <h6 id="ref_Num">Reference No: <a
-                                                                class="text-danger">N/A</a></h6>
+                                                    <h6 id="ref_Num">Reference No: <a class="text-danger">N/A</a></h6>
                                                     <h6 id="created_at">Created At:</h6>
                                                     <h6 id="updated_at">Updated At:</h6>
 
@@ -246,8 +245,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-4">
-                                                            <div class="correctedFileShowUi d-none"
-                                                                style=" height: 200px;">
+                                                            <div class="correctedFileShowUi d-none" style=" height: 200px;">
                                                                 <hr>
                                                                 <a data-toggle="tooltip" data-placement="top"
                                                                     title="Click to view file" id="correctedCertificatePath"
@@ -366,8 +364,8 @@
                     </div>
                 </div>
                 <!--        <div class="overlay dark loadingRenderUI">
-                                                        <i class="fas fa-2x fa-sync-alt"></i>
-                                                    </div>-->
+                                                            <i class="fas fa-2x fa-sync-alt"></i>
+                                                        </div>-->
             </div>
         </section>
         <!--//Tab Section END//-->
@@ -376,21 +374,10 @@
 
 @section('pageScripts')
     <!-- Page script -->
-    <!-- Select2 -->
-    <script src="../../plugins/select2/js/select2.full.min.js"></script>
-    <!-- Bootstrap4 Duallistbox -->
-    <script src="../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
     <!-- InputMask -->
     <script src="../../plugins/moment/moment.min.js"></script>
     <script src="../../plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
-    <!-- date-range-picker -->
-    <script src="../../plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- bootstrap color picker -->
-    <script src="../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Bootstrap Switch -->
-    <script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+
     <script src="../../dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="../../dist/js/demo.js"></script>
@@ -415,7 +402,7 @@
                 } else {}
             });
 
-            //select button action 
+            //select button action
             $(document).on('click', '.btnAction', function() {});
         });
 
@@ -549,12 +536,12 @@
             console.log($('#issue_date').val());
         });
 
-        $('input[name="datepickerUi"]').daterangepicker({
-            singleDatePicker: true,
-            locale: {
-                format: 'YYYY-MM-DD'
-            }
-        });
+        // $('input[name="datepickerUi"]').daterangepicker({
+        //     singleDatePicker: true,
+        //     locale: {
+        //         format: 'YYYY-MM-DD'
+        //     }
+        // });
 
         $('#save_man_ref_no').click(function() {
             const data = {
@@ -571,7 +558,7 @@
                         swal.fire('Failed', 'Reference Number Saving was Successfully', 'error');
                     }
                 });
-            }else{
+            } else {
                 swal.fire('Failed', 'Please enter reference no to save', 'error');
             }
         });

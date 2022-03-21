@@ -1,10 +1,10 @@
-//show save button    
+//show save button
 function showSave() {
     $('#btnSave').removeClass('d-none');
     $('#btnUpdate').addClass('d-none');
     $('#btnshowDelete').addClass('d-none');
 }
-//Reset all fields    
+//Reset all fields
 function resetinputFields() {
     $('#getName').val('');
     $('#btnUpdate').val('');
@@ -41,12 +41,12 @@ function fromValues() {
     };
     return data;
 }
-//HIDE ALL ERROR MSGS   
+//HIDE ALL ERROR MSGS
 function hideAllErrors() {
     $('#valName').addClass('d-none');
 }
 
-//show update buttons    
+//show update buttons
 function showUpdate() {
     $('#btnSave').addClass('d-none');
     $('#btnUpdate').removeClass('d-none');
@@ -69,10 +69,9 @@ function setSectionVisible(sec_id) {
         case "reg-newClient":
             $('.search-Client').addClass('d-none');
             $('.view-Client').addClass('d-none');
+            $('.view-Customer').addClass('d-none');
             $('.reg-newClient').removeClass('d-none');
-
             break;
-
         default:
             $('.search-Client').removeClass('d-none');
             $('.view-Client').addClass('d-none');
