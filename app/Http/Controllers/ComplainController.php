@@ -134,10 +134,11 @@ class ComplainController extends Controller
         return $complain_data;
     }
 
-    public function update_attachments(Request $request, $id){
+    public function update_attachments(Request $request, $id)
+    {
         $user = Auth::user()->id;
         $update_attach = Complain::find($id);
-        $curr_file_path_arr = json_decode($update_attach->attachment);
+         $curr_file_path_arr = json_decode($update_attach->attachment);
         $files = $request->file_list;
         if ($files != null) {
             foreach ($files as $file) {
@@ -146,6 +147,7 @@ class ComplainController extends Controller
                     'img_path' => str_replace('public/', '', $attach),
                     'upload_time' => date("Y-m-d H:i:s"),
                     'uploaded_user' => $user
+
                 ];
             }
 
@@ -276,7 +278,8 @@ class ComplainController extends Controller
         }
     }
 
-    public function get_complain_assign_log(Request $request, $complain_id){
+    public function get_complain_assign_log(Request $request, $complain_id)
+    {
         $status = $request->status;
 
         $complain_assign_log = ComplainAssignLog::where('complain_id', $complain_id)
@@ -303,17 +306,17 @@ class ComplainController extends Controller
     public function removeAttach(Request $request){
         $attach = Complain::find($request->id);
         $decoded_paths = json_decode($attach->attachment);
-        foreach ($decoded_paths as $decoded_path) {
-            if ($decoded_path->img_path == $request->file_path) {
+        foreach($decoded_paths as $decoded_path){
+            if($decoded_path->img_path == $request->file_path){
                 $decoded_path->img_path = '';
             }
         }
         $encoded_path = json_encode($decoded_paths);
         $attach->attachment = $encoded_path;
         $attach->save();
-        if ($attach == true) {
+        if($attach == true){
             return array('status' => 1, 'msg' => 'Complain attachments successfully removed');
-        } else {
+        }else{
             return array('status' => 0, 'msg' => 'Complain attachments removal was unsuccessful');
         }
     }
