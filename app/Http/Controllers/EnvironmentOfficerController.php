@@ -42,7 +42,7 @@ class EnvironmentOfficerController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.fileAssign'));
-//        dd($pageAuth);
+        //        dd($pageAuth);
         return view('epl_assign', ['pageAuth' => $pageAuth]);
     }
 
@@ -317,7 +317,7 @@ class EnvironmentOfficerController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $assistantDirector = AssistantDirector::find($id);
-//        print_r($assistantDirector->zone_id);
+        //        print_r($assistantDirector->zone_id);
         if ($assistantDirector) {
             return Client::join('pradesheeyasabas', 'clients.pradesheeyasaba_id', '=', 'pradesheeyasabas.id')
                 ->whereNull('environment_officer_id')
@@ -346,7 +346,7 @@ class EnvironmentOfficerController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($pageAuth['is_read']) {
-            return EnvironmentOfficer::join('users', 'environment_officers.user_id', 'users.id')->select('users.*','environment_officers.id AS env_id')->orderBy('users.first_name', 'ASC')->get();
+            return EnvironmentOfficer::join('users', 'environment_officers.user_id', 'users.id')->select('users.*', 'environment_officers.id AS env_id')->orderBy('users.first_name', 'ASC')->get();
         } else {
             abort(401);
         }
