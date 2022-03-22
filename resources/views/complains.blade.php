@@ -124,7 +124,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td colspan="9" class="text-center"><b>No Data</b></td>
+                                        <td colspan="10" class="text-center"><b>No Data</b></td>
                                     </tr>
                                 </tbody>
                             </table>

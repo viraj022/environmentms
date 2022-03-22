@@ -47,7 +47,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-letters-tab" data-toggle="pill" href="#letters"
-                            role="tab" aria-controls="custom-tabs-two-letters" aria-selected="false">letter</a>
+                            role="tab" aria-controls="custom-tabs-two-letters" aria-selected="false">Letter</a>
                     </li>
                 </ul>
             </div>
@@ -57,157 +57,112 @@
                         aria-labelledby="custom-tabs-three-home-tab">
                         <div class="card-body box-profile">
                             <input type="text" id="complain_profile_id" value="{{ $complain_id }}" class="d-none">
-                            <div class="text-center">
-                                <h3 class="profile-username text-center"><b>Assigned Officer:</b><span
-                                        id="assigned_officer">></span></h3>
-                                <h2 class="profile-username text-center"><b>Created By :</b><span id="created_user">></span>
-                                </h2>
+                            
+                            <div class="card card-light">
+                                <div class="card-body">
+    <div class="text-center">
+        <h3 class="profile-username text-center"><b>Assigned Officer:</b><span
+                id="assigned_officer">></span></h3>
+        <h2 class="profile-username text-center"><b>Created By :</b><span id="created_user">></span>
+        </h2>
 
-                            </div>
-
-                            <ul class="list-group list-group-unbordered mt-5 mb-3">
-
-                                <li class="list-group-item">
-                                    <b>Code :</b> <a class="float-right" id="comp_code"></a>
-                                </li>
-                                <li class="list-group-item">
-                                    <b>Complainer Name :</b> <a class="float-right" id="comp_name"></a>
-                                </li>
-                                <li class="list-group-item">
-                                    <b>Complainer Contact No:</b> <a class="float-right" id="comp_contact_no"></a>
-                                </li>
-                                <li class="list-group-item">
-                                    <b>Description</b> <a class="float-right" id="comp_desc"></a>
-                                </li>
-
-                                <li class="list-group-item">
-                                    <b>Status : </b> <a class="float-right"><span id="comp_status"
-                                            class=""></span></a>
-                                </li>
-                                <li class="list-group-item">
-                                    <b>Complain By :</b> <a class="float-right" id="comp_by"></a>
-                                </li>
-
-                            </ul>
-                        </div>
-                        <!--//Industry Profile Start//-->
-                        {{-- <section class="content-header">
-                            <!--show lient details START-->
-                            <div class="view-Client">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="card">
-                                            <input type="text" id="complain_profile_id" value="{{ $complain_id }}"
-                    class="d-none">
-                    <div class="card-header">
-                        <h6><b>Assigned Officer: </b><span id=""></span></h6>
-                        <hr>
-                        <h6><b>Created By: </b><span id="created_user"></span></h6>
-                        <hr>
-                    </div>
-                    <div class="card-body">
-
-                        <dl class="row">
-
-                            <dt class="col-sm-5">Code : </dt>
-                            <dd class="col-sm-7" id="comp_code"></dd>
-
-                            <dt class="col-sm-5">Complainer Name : </dt>
-                            <dd class="col-sm-7" id="comp_name"></dd>
-                            <dt class="col-sm-5">Compainer Address:</dt>
-                            <dd class="col-sm-7" id="comp_address"></dd>
-                            <dt class="col-sm-5">Complainer Contact No:</dt>
-                            <dd class="col-sm-7" id="comp_contact_no"></dd>
-                            <dt class="col-sm-5">Description :</dt>
-                            <dd class="col-sm-7" id="comp_desc"></dd>
-                            <dt class="col-sm-5">Status : </dt>
-                            <dd class="col-sm-7">
-                                <div class="text-success d-none" id="comp_status_completed">Completed
-                                </div>
-                                <div class="text-warning d-none" id="comp_status_pending">Pending
-                                </div>
-                            </dd>
-                            <dt class="col-sm-4">Complain By :</dt>
-                            <dd class="col-sm-6" id="comp_by"></dd>
-                        </dl>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-</section> --}}
-                        <!--//Industry Profile END//-->
+    <ul class="list-group list-group-unbordered mt-5 mb-3">
+    
+        <li class="list-group-item">
+            <b>Code :</b> <a class="float-right" id="comp_code"></a>
+        </li>
+        <li class="list-group-item">
+            <b>Complainer Name :</b> <a class="float-right" id="comp_name"></a>
+        </li>
+        <li class="list-group-item">
+            <b>Complainer Contact No:</b> <a class="float-right" id="comp_contact_no"></a>
+        </li>
+        <li class="list-group-item">
+            <b>Description</b> <a class="float-right" id="comp_desc"></a>
+        </li>
+    
+        <li class="list-group-item">
+            <b>Status : </b> <a class="float-right"><span id="comp_status"
+                    class=""></span></a>
+        </li>
+        <li class="list-group-item">
+            <b>Complain By :</b> <a class="float-right" id="comp_by"></a>
+        </li>
+    
+    </ul>
+</div>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane" id="custom-tabs-three-attachments" role="tabpanel"
                         aria-labelledby="custom-tabs-three-attachments">
                         <section class="content-header">
-                            <hr>
-                            <dt class="text-center"> <b>Upload Attachments</b> </dt>
-                            <hr>
-                            <div class="form-group" id="fileUpDiv">
-
-                                <label id="uploadLabel">File Upload </label>
-                                <input id="fileUploadInput" type="file" class="col-12" accept=".png, .jpg, .jpeg, .pdf" multiple>
-                                <div class="col-12">
-                                    <div id="attached_files"></div>
+                            <div class="card card-gray">
+                                <div class="card-header">
+                                    Upload Attachments
                                 </div>
-                                <div class="col-12">
-                                    <button type="button" class="btn btn-primary mt-2" data-upload_file="attachments"
-                                        id="upld_attach"> Upload Attachment </button>
+                                <div class="card-body">
+                                    <div class="form-group" id="fileUpDiv">
+        
+                                        <label id="uploadLabel">File Upload </label>
+                                        <input id="fileUploadInput" type="file" class="col-12" accept=".png, .jpg, .jpeg, .pdf" multiple>
+                                        <div class="col-12">
+                                            <div id="attached_files"></div>
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="button" class="btn btn-primary mt-2" data-upload_file="attachments"
+                                                id="upld_attach"> Upload Attachment </button>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row overflow-auto" id="file_attachments">
+        
+                                    </div>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="row" id="file_attachments">
-
                             </div>
                         </section>
                     </div>
                     <div class="tab-pane" id="complain-assign" role="tabpanel" aria-labelledby="complain-assign">
                         <section class="content-header">
-                            <div class="row mt-5">
+                            <div class="row">
                                 <div class="col-12">
-                                    <div class="card card-light">
+                                    <div class="card card-gray">
                                         <div class="card-header">
-                                            <h1> Complain assignment for user </h1>
+                                            Complain assignment for user 
                                         </div>
                                         <div class="card-body">
                                             <div class="row">
-                                                <div class="col-md-3">
-                                                    <form id="complain_assign_frm" class="w-100">
-                                                        <div class="form-group">
-                                                            <label for="user_level">User Level: </label>
-                                                            <select id="user_level" class="custom-select">
-                                                                <option value="1">Local</option>
-                                                                <option value="2">Director</option>
-                                                                <option value="3">Assistant Director</option>
-                                                                <option value="4">Environment Officer</option>
-                                                            </select>
+                                                <div class="col-md-4">
+                                                      <div class="card card-light">
+                                                        <div class="card-body">
+                                                            <form id="complain_assign_frm" class="w-100">
+                                                                <div class="form-group">
+                                                                    <label for="user_level">User Level: </label>
+                                                                    <select id="user_level" class="custom-select">
+                                                                        <option value="1">Local</option>
+                                                                        <option value="2">Director</option>
+                                                                        <option value="3">Assistant Director</option>
+                                                                        <option value="4">Environment Officer</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="user">User: </label>
+                                                                    <select id="user" class="custom-select"></select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <button type="button" class="btn btn-primary"
+                                                                        id="assign_complain"> Assign To </button>
+                                                                </div>
+                                                            </form>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label for="user">User: </label>
-                                                            <select id="user" class="custom-select"></select>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <button type="button" class="btn btn-primary"
-                                                                id="assign_complain"> Assign To </button>
-                                                        </div>
-                                                    </form>
+                                                      </div>
                                                 </div>
-                                                <div class="col-md-9">
+                                                <div class="col-md-8">
                                                     <div class="card card-light p-5">
                                                         <div class="row">
                                                             <div class="form-group">
-                                                                <h6><label>Assigned User: </label></h6>
-                                                                <span id="assigned_user"></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mt-5 d-flex justify-content-end">
-                                                            <div class="form-group">
-                                                                <label for="status_filter">Filter with:</label>
-                                                                <select class="custom-select" id="status_filter">
-                                                                    <option value="0">Pending</option>
-                                                                    <option value="1">Completed</option>
-                                                                </select>
+                                                                <h6><label>Assigned User: </label> <span id="assigned_user"></span></h6>
                                                             </div>
                                                         </div>
                                                         <table class="table table-bordered" id="forward_history">
@@ -221,7 +176,7 @@
                                                             </thead>
                                                             <tbody></tbody>
                                                         </table>
-                                                    <div class="form-group mt-5">
+                                                    <div class="form-group mt-2">
                                                         <button id="confirm" class="btn btn-info d-none">Confirm</button>
                                                         <button id="reject" class="btn btn-warning d-none">Reject</button>
                                                         <button id="forward_letter_preforation" 
@@ -236,75 +191,78 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="card card-light">
+                                    <div class="card card-gray">
                                         <div class="card-header">
-                                            <h1> Add comment for complains </h1>
+                                            Add comment for complains
                                         </div>
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <form id="comments_frm" class="w-100">
-                                                        <input type="text" id="comp_comnt_hid_id" name="comp_comnt_hid_id"
-                                                            value="{{ $complain_id }}" hidden>
-                                                        <div class="form-group">
-                                                            <label for="comment">Comment: </label>
-                                                            <input type="text" id="comment" class="form-control"
-                                                                name="comment" placeholder="Please type the comment">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <button type="button" class="btn btn-primary" id="add_comment">
-                                                                Add Comment </button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="col-md-8 mt-3">
-                                                    <div class="row">
-                                                        <div class="col-md-4"><b>#</b></div>
-                                                        <div class="col-md-4"><b>Comment</b></div>
-                                                        <div class="col-md-4"><b>Commented User</b></div>
+                                                    <div class="card card-light">
+                                                      <div class="card-body">
+                                                          <form id="comments_frm" class="w-100">
+                                                              <input type="text" id="comp_comnt_hid_id" name="comp_comnt_hid_id"
+                                                                  value="{{ $complain_id }}" hidden>
+                                                              <div class="form-group">
+                                                                  <label for="comment">Comment: </label>
+                                                                  <input type="text" id="comment" class="form-control"
+                                                                      name="comment" placeholder="Please type the comment">
+                                                              </div>
+                                                              <div class="form-group">
+                                                                  <button type="button" class="btn btn-primary" id="add_comment">
+                                                                      Add Comment </button>
+                                                              </div>
+                                                          </form>
+                                                      </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12" id="comment_section"></div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="card card-light">
+                                                        <div class="card-body">
+                                                          <div id="comment_section" class="card-comments overflow-auto" style="height: 160px"></div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    
+                                </div>
+                            </div>  
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="card card-light">
+                                    <div class="card card-gray">
                                         <div class="card-header">
-                                            <h1> Add minutes for complains </h1>
+                                            Add minutes for complains
                                         </div>
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <form id="minutes_frm">
-                                                        <div class="form-group">
-                                                            <input type="text" id="comp_minute_hid_id"
-                                                                name="comp_minute_hid_id" value="{{ $complain_id }}"
-                                                                hidden>
-                                                            <label for="minute">Minute: </label>
-                                                            <input type="text" id="minute" class="form-control"
-                                                                name="minute" placeholder="Please type the minute">
-                                                        </div>
+                                                    <div class="card card-light">
+                                                        <div class="card-body">
+                                                            <form id="minutes_frm">
+                                                               <div class="form-group">
+                                                               <input type="text" id="comp_minute_hid_id"
+                                                                   name="comp_minute_hid_id" value="{{ $complain_id }}"
+                                                                   hidden>
+                                                               <label for="minute">Minute: </label>
+                                                               <input type="text" id="minute" class="form-control"
+                                                                   name="minute" placeholder="Please type the minute">
+                                                               </div>
 
-                                                        <div class="form-group">
-                                                            <button type="button" class="btn btn-primary" id="add_minute">
-                                                                Add Minute </button>
+                                                               <div class="form-group">
+                                                                   <button type="button" class="btn btn-primary" id="add_minute">
+                                                                 Add Minute </button>
+                                                               </div>
+                                                            </form>
                                                         </div>
-                                                    </form>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-8 mt-3">
-                                                    <div class="row">
-                                                        <div class="col-md-4"><b>#</b></div>
-                                                        <div class="col-md-4"><b>Minute</b></div>
-                                                        <div class="col-md-4"><b>Minute Added User</b></div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12" id="minute_section"></div>
-                                                    </div>
+                                                <div class="col-md-8">
+                                                      <div class="card card-light">
+                                                        <div class="card-body">
+                                                            <div id="minute_section" class="card-comments overflow-auto" style="height: 160px"></div>
+                                                        </div>
+                                                      </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -330,21 +288,21 @@
                             </div>
                             <div class="col-md-9">
                                 <section class="content-header">
-                                    <div class="card card-light">
+                                    <div class="card card-gray">
                                         <div class="card-header">
-                                            <h1> Letter List </h1>
+                                            Letter List
                                         </div>
-                                        <div class="card-body">
+                                        <div class="card-body overflow-auto" style="height: 200px">
                                             <table class="table table-bordered" id="letter_list"
                                                 style="word-break: break-word;">
                                                 <thead>
                                                     <tr>
-                                                        <th style="width: 10%">#</th>
+                                                        <th style="width: 5%">#</th>
                                                         <th style="width: 25%">Letter Title</th>
                                                         <th style="width: 15%">Status</th>
                                                         <th>Created User</th>
-                                                        <th>Letter Date</th>
-                                                        <th style="width: 25%">Action</th>
+                                                        <th style="width: 15%">Letter Date</th>
+                                                        <th style="width: 20%">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>
@@ -357,9 +315,9 @@
                         <hr>
                         <div class="row">
                             <div class="col-md-4">
-                                <div class="card card-light">
+                                <div class="card card-gray">
                                     <div class="card-header">
-                                        <h4>File Assign</h4>
+                                        File Assign
                                     </div>
                                     <div class="card-body">
                                         <div class="form-group">
