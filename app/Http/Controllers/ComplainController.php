@@ -10,6 +10,7 @@ use App\ComplainComment;
 use App\ComplainMinute;
 use App\ComplainAssignLog;
 use App\Client;
+use Exception;
 use Illuminate\Support\Facades\Log;
 
 class ComplainController extends Controller
@@ -129,7 +130,7 @@ class ComplainController extends Controller
 
     public function complainProfileData($id)
     {
-        $complain_data = Complain::with(['assignedUser', 'createdUser', 'complainComments', 'complainMinutes'])->find($id);
+        $complain_data = Complain::with(['assignedUser', 'createdUser', 'complainComments.commentedUser', 'complainMinutes.minuteUser'])->find($id);
         return $complain_data;
     }
 
@@ -147,7 +148,7 @@ class ComplainController extends Controller
                     'upload_time' => date("Y-m-d H:i:s"),
                     'uploaded_user' => $user
                 ];
-
+                
             }
 
             $update_attach->attachment = json_encode($curr_file_path_arr);
@@ -163,11 +164,19 @@ class ComplainController extends Controller
 
     public function delete_complain($id)
     {
-        $delete_complain = Complain::find($id)->delete();
-        if ($delete_complain == true) {
-            return array('status' => 1, 'msg' => 'Complain successfully deleted');
-        } else {
-            return array('status' => 0, 'msg' => 'Complain delete unsuccessful');
+        try {
+            $delete_complain = Complain::find($id)->delete();
+            if ($delete_complain == true) {
+                return array('status' => 1, 'msg' => 'Complain successfully deleted!');
+            } else {
+                return array('status' => 0, 'msg' => 'Complain deletion was unsuccessful!');
+            }
+        } catch (Exception $ex) {
+            if ($ex->getCode() == '23000') {
+                return array('status' => 0, 'msg' => 'This complain cannot be deleted, due to its dependencies');
+            } else {
+                return array('status' => 0, 'msg' => 'Database Error!');
+            }
         }
     }
 
@@ -269,11 +278,23 @@ class ComplainController extends Controller
         }
     }
 
-    public function get_complain_assign_log($complain_id)
+    public function get_complain_assign_log(Request $request, $complain_id)
     {
+        $status = $request->status;
+
         $complain_assign_log = ComplainAssignLog::where('complain_id', $complain_id)
-            ->with(['assignerUser', 'assigneeUser'])
+            ->with(['assignerUser', 'assigneeUser', 'complain'])
+            ->whereHas('complain', function ($query) use ($status) {
+                $query->where('status', '=', $status);
+            })
+            ->whereHas('assigneeUser', function ($query) {
+                $query->whereHas('roll', function ($query) {
+                    $query->groupBy('level_id')
+                        ->orderBy('assignee_user', 'desc');
+                });
+            })
             ->get();
+
         return $complain_assign_log;
     }
 

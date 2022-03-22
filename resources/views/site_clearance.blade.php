@@ -149,6 +149,7 @@
                                 <div class="row mt-3">
                                     <div class="col-md-6">
                                         <a href="" class="btn btn-dark navTodownload" target="_blank">View Application</a>
+                                        <button id="delete_application" class="btn btn-danger d-none"  data-file="">Delete Application</button>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="input-group">
@@ -400,6 +401,9 @@
                     }
                     $('.navTodownload').attr('href', '/' + cleareance.application_path);
                     $('.siteClearType').html(resp.site_clearance_type);
+
+                    $('#delete_application').attr('data-file', '/' + cleareance.application_path);
+                    $('#delete_application').removeClass('d-none');
                 } else {}
                 if (resp.client.file_status == 5) {
                     $('.siteClearExtend').removeClass('d-none');
@@ -509,6 +513,38 @@
         $('#change_file_btn').click(function() {
             change_file();
         });
+
+        $('#delete_application').click(function() {
+            Swal.fire({
+              title: 'Are you sure?',
+              text: "You won't be able to revert this!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+              if (result.value) {
+                  delete_application();
+              }
+            });
+
+        });
+
+        function delete_application(){
+          let data = {
+              "site_sess_id": $('#site_clear_sess_id').val(),
+              "file_path": $('#delete_application').attr('data-file')
+          };
+            ajaxRequest('DELETE', "/api/remove_site_application", data, function (dataSet) {
+              if(dataSet.status == 1){
+               swal.fire('Success', 'File Deleted Successfully!', 'success');
+               window.location.reload();
+              }else{
+                swal.fire('Error', 'File Not Deleted!', 'error');
+              }
+            });
+        }
 
         function change_file() {
 

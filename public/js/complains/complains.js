@@ -187,12 +187,7 @@ function update_complain() {
     });
     ulploadFileWithData(url, data, function(resp) {
         if (resp.status == 1) {
-            $('#complain_frm')[0].reset();
-            $('#complain_tbl').DataTable().ajax.reload();
-            gen_complain_code();
-            $('img').addClass('d-none');
-            $('#update').addClass('d-none');
-            $('#save').removeClass('d-none');
+            window.location.href = "/complains";
             swal.fire('success', 'Successfully update the complains', 'success');
         } else {
             swal.fire('failed', 'Complain updating is unsuccessful', 'warning');
@@ -205,9 +200,9 @@ function delete_complain(id) {
     ajaxRequest('DELETE', url, null, function(resp) {
         if (resp.status == 1) {
             $('#complain_tbl').DataTable().ajax.reload();
-            swal.fire('success', 'Successfully deleted the complains', 'success');
+            swal.fire('success', resp.msg, 'success');
         } else {
-            swal.fire('failed', 'Complain deleting is unsuccessful', 'warning');
+            swal.fire('failed', resp.msg, 'warning');
         }
     });
 }

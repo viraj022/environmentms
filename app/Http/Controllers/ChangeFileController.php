@@ -8,6 +8,7 @@ use App\Client;
 use App\EPL;
 use App\SiteClearance;
 use App\SiteClearenceSession;
+use File;
 
 class ChangeFileController extends Controller
 {
@@ -41,4 +42,51 @@ class ChangeFileController extends Controller
             return array('status' => 0, 'message' => 'File has not uploaded successfully');
         }
     }
+
+    public function removeEplApplication(Request $request){
+    
+       $file_path = $request['file_path'];
+       $epl_id = $request['epl_id'];
+       $delete_file = Epl::find($epl_id);
+       $delete_file->path = '';
+
+       $delete_status = false;
+       if (File::exists(public_path($file_path))) {
+           $delete_status = unlink(public_path($file_path));
+       }
+
+       $delete_file->save();
+
+       if($delete_status == true && $delete_file == true){
+           return array('status' => 1, 'message' => 'File deleted successfully');
+       }else{
+           return array('status' => 0, 'message' => 'File has not deleted successfully');
+       }
+
+    }
+
+    public function removeSiteApplication(Request $request){
+    
+        $file_path = $request['file_path'];
+        $site_sess_id = $request['site_sess_id'];
+ 
+        $delete_file = SiteClearance::join('site_clearence_sessions', 'site_clearence_sessions.id', '=', 'site_clearances.site_clearence_session_id')
+        ->where('site_clearances.site_clearence_session_id', $site_sess_id)
+        ->first();
+
+        $delete_status = false;
+        if (File::exists(public_path($file_path))) {
+            $delete_status = unlink(public_path($file_path));
+        }
+ 
+        $delete_file->path = '';
+        $delete_file->save();
+ 
+        if($delete_status == true && $delete_file == true){
+            return array('status' => 1, 'message' => 'File deleted successfully');
+        }else{
+            return array('status' => 0, 'message' => 'File has not deleted successfully');
+        }
+ 
+     }
 }

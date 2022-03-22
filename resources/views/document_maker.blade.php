@@ -31,9 +31,15 @@
                                         placeholder="Enter the letter title" value="{{ $letter_title }}">
                                 </div>
                                 @if ($letter_status != 'COMPLETED')
-                                    <button class="btn btn-success" id="updateLetter">Update</button>
-                                    <button class="btn btn-dark" id="completeLetter">Complete</button>
-                                    <button type="button" class="btn btn-danger" id="deleteLetter">Delete</button>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <button class="btn btn-success" id="updateLetter">Save</button>
+                                            <button class="btn btn-dark" id="completeLetter">Complete</button>
+                                            <button type="button" class="btn btn-danger" id="deleteLetter">Delete</button>
+                                        </div>
+                                    </div>
+                                </div>
                                 @else
                                     <h3><span class="text-danger">Completed</span></h3>
                                 @endif
@@ -236,14 +242,14 @@
             if (data.content != '' && data.complain_id != '') {
                 ajaxRequest('POST', url, data, function(resp) {
                     if (resp.status == 1) {
-                        swal.fire('success', 'letter content updation is successfull', 'success');
+                        swal.fire('success', 'letter content saving letter content is successfull', 'success');
                         location.reload();
                     } else {
-                        swal.fire('failed', 'letter content updation was unsuccessful', 'warning');
+                        swal.fire('failed', 'letter content saving letter content was unsuccessful', 'warning');
                     }
                 });
             } else {
-                swal.fire('failed', 'complain id and document content are required to update letter', 'warning');
+                swal.fire('failed', 'complain id and document content are required to save letter content', 'warning');
             }
         }
     </script>

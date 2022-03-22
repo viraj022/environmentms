@@ -188,4 +188,10 @@ class WebDocumentController extends Controller
             return array("status" => 0, "message" => "Letter template deletion was unsuccessful");
         }
     }
+
+    public function getLettersForComplainId($complain_id)
+    {
+        $all_letters_for_complain = Letter::where('complain_id', $complain_id)->get();
+        return $all_letters_for_complain;
+    }
 }

@@ -65,13 +65,15 @@
                                                 <table class="table table-condensed" id="tblPendingCertificate">
                                                     <thead>
                                                         <tr>
-                                                            <th style="width: 10em">#</th>
+                                                            <th style="width: 20em">#</th>
+                                                            <th style="width: 30em">Client Name</th>
                                                             <th style="width: 20em">Industry Name</th>
                                                             <th style="width: 30em">EPL Code</th>
                                                             <th style="width: 30em">Site Clearance Code</th>
                                                             <th style="width: 30em">File No</th>
                                                             <th>Nominate</th>
                                                             <th>Status</th>
+                                                            <th style="width: 30em">Date</th>
                                                             <th style="width: 30em">Action</th>
                                                             <!-- <th></th> -->
                                                         </tr>
@@ -95,7 +97,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>Code</th>
+                                                        <th>Complain Code</th>
                                                         <th>Complainer Name</th>
                                                         <th>Address</th>
                                                         <th>Contact No</th>
@@ -172,7 +174,7 @@
 
                     letter_view_tbl += "<tr><td>" + key + "</td><td>" + value.complainer_code +
                         "</td><td>" + value.complainer_name + "</td><td>" + value.complainer_address +
-                        "</td><td>" + value.comp_contact_no + "</td></td><td><a href='/complain_profile/id/" + value.id + "' class='btn btn-dark'>View</a></td></tr>";
+                        "</td><td>" + value.comp_contact_no + "</td></td><td style='width: 10%'><a href='/complain_profile/id/" + value.id + "' class='btn btn-dark'>View</a></td></tr>";
                 });
                 $('#letter_view_tbl tbody').html(letter_view_tbl);
 

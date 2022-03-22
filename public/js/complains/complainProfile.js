@@ -50,7 +50,7 @@ function loadProfileData() {
             $('#comp_status').addClass('badge bg-warning').text('Pending');
         }
 
-        if (resp.status == 1 || resp.status == -1) {
+        if (resp.status == 1 || resp.status == -1 || resp.status == 4) {
             $('#confirm').addClass('d-none');
             $('#reject').addClass('d-none');
         } else {
@@ -64,14 +64,26 @@ function loadProfileData() {
             $('#forward_letter_preforation').addClass('d-none');
         }
 
+        $('#comp_by').html('<span class="badge bg-success">' + resp.complainer_name + '</span>');
+
         let image = '';
         if (resp.attachment != null || resp.attachment.length != 0 || resp.attachment.file_path != null) {
             let data = JSON.parse(unescape(resp.attachment));
             // let base_url = "{{ url('/') }}";
             $.each(data, function(key, value) {
-                if (value.img_path != '') {
-                    image += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><img src="/storage/' + value.img_path + '" alt="" style="width: auto; height: 200px; max-width: 384px;"><hr> <button type="button" data-name="' + value.img_path + '" class="btn btn-danger remove_attach">Remove</button> </div>';
+                let file_path = value.img_path;
+                let file_type = file_path.substr(file_path.indexOf(".") + 1);
+
+                if (file_type != 'pdf') {
+                    if (file_path != '') {
+                        image += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><img src="/storage/' + file_path + '" alt="" style="width: auto; height: 200px; max-width: 384px;"><hr> <button type="button" data-name="' + file_path + '" class="btn btn-danger remove_attach">Remove</button> </div>';
+                    }
+                } else {
+                    if (file_path != '') {
+                        image += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><embed  src="/storage/' + file_path + '" alt="" style="width: auto; height: 200px; max-width: 384px;"><hr> <button type="button" data-name="' + file_path + '" class="btn btn-danger remove_attach">Remove</button> </div>';
+                    }
                 }
+
             });
 
             $('#file_attachments').html(image);
@@ -80,7 +92,7 @@ function loadProfileData() {
         if (resp.complain_comments != '') {
             let comments = '';
             $.each(resp.complain_comments, function(key, value2) {
-                comments += '<div class="alert alert-info w-100" role="alert"><b>' + value2.comment + '</b></div>';
+                comments += '<div class="row alert"><div class="col-md-4">' + ++key + '</div><div class="col-md-4">' + value2.comment + '</div><div class="col-md-4">' + value2.commented_user.user_name + '</div></div>';
             });
             $('#comment_section').html(comments);
         }
@@ -88,7 +100,7 @@ function loadProfileData() {
         if (resp.complain_minutes != '') {
             let minutes = '';
             $.each(resp.complain_minutes, function(key, value2) {
-                minutes += '<div class="alert alert-info w-100" role="alert"><b>' + value2.minute + '</b></div>';
+                minutes += '<div class="row alert"><div class="col-md-4">' + ++key + '</div><div class="col-md-4">' + value2.minute + '</div><div class="col-md-4">' + value2.minute_user.user_name + '</div></div>';
             });
             $('#minute_section').html(minutes);
         }
@@ -103,7 +115,12 @@ function loadProfileData() {
 function load_forward_history_table(complain_id) {
 
     let url = '/api/complain_log_data/complain/' + complain_id;
-    ajaxRequest('GET', url, null, function(resp) {
+
+    let data = {
+        "status": $('#status_filter').val(),
+    };
+
+    ajaxRequest('GET', url, data, function(resp) {
         var forward_hist_table = " ";
         $('#forward_history').DataTable().destroy();
         $.each(resp, function(key, value2) {

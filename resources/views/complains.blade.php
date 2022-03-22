@@ -110,9 +110,9 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Code</th>
-                                        <th>Name</th>
-                                        <th>Address</th>
+                                        <th>complain Code</th>
+                                        <th>Complainer Name</th>
+                                        <th>Complainer Address</th>
                                         <th>Contact Number</th>
                                         <!-- <th>Description</th> -->
                                         <th>Created User</th>
@@ -150,7 +150,6 @@
             loadPradeshiyaSabha(function() {
                 gen_complain_code();
             });
-            
             load_complains();
         });
 
@@ -207,8 +206,23 @@
         });
 
         $(document).on('click', '.btn-del', function() {
+
             let id = $(this).val();
-            delete_complain(id);
+
+            Swal.fire({
+                title: 'Do you want to delete complain?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'confirm',
+                denyButtonText: `Don't confirm`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.value) {
+                    delete_complain(id);
+                } else if (result.isDenied) {
+                    Swal.fire('Canceled!', 'Confirmation was cancelled', 'info')
+                }
+            })
         });
 
         var complain_form;
