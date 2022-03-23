@@ -12,4 +12,9 @@ class Letter extends Model
     protected $fillable = [
         'letter_title', 'letter_content', 'status', 'complain_id', 'user_name',
     ];
+
+    public function complain()
+    {
+        return $this->belongsTo(Complain::class);
+    }
 }

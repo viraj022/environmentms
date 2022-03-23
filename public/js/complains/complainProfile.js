@@ -46,61 +46,74 @@ function loadProfileData() {
 
         if (resp.status == 1) {
             $('#comp_status').addClass('badge bg-success').text('Complete');
-        } else {
+        } else if(resp.status == -1) {
+            $('#comp_status').addClass('badge bg-danger').text('Rejected');
+        } else if(resp.status == 0){
             $('#comp_status').addClass('badge bg-warning').text('Pending');
         }
-
-        if (resp.status == 1 || resp.status == -1 || resp.status == 4) {
+        
+        if (resp.status == 1 || resp.status == -1 || resp.status == 4){
             $('#confirm').addClass('d-none');
             $('#reject').addClass('d-none');
-        } else {
-            $('#confirm').removeClass('d-none');
+        }else{
             $('#reject').removeClass('d-none');
+            $('#confirm').removeClass('d-none');
         }
 
-        if (resp.status != 4) {
+        if (resp.status != 4 && resp.status != 1 && resp.status != -1) {
             $('#forward_letter_preforation').removeClass('d-none');
         } else {
             $('#forward_letter_preforation').addClass('d-none');
         }
 
+        let last_index = resp.letters.length - 1;
+        
+        if (resp.letters[last_index] != null){
+          if (resp.letters[last_index].status == 'COMPLETED' && resp.status != 1 && resp.status != -1) {
+            $('#confirm').removeClass('d-none');
+          }
+        }
+    
         $('#comp_by').html('<span class="badge bg-success">' + resp.complainer_name + '</span>');
 
         let image = '';
         if (resp.attachment != null || resp.attachment.length != 0 || resp.attachment.file_path != null) {
-            let data = JSON.parse(unescape(resp.attachment));
-            // let base_url = "{{ url('/') }}";
-            $.each(data, function(key, value) {
-                let file_path = value.img_path;
-                let file_type = file_path.substr(file_path.indexOf(".") + 1);
+            let unescaped_data = unescape(resp.attachment);
+            if (unescaped_data != ''){
+                let data = JSON.parse(unescape(resp.attachment));
+                // let base_url = "{{ url('/') }}";
+                $.each(data, function (key, value) {
+                    let file_path = value.img_path;
+                    let file_type = file_path.substr(file_path.indexOf(".") + 1);
 
-                if (file_type != 'pdf') {
-                    if (file_path != '') {
-                        image += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><img src="/storage/' + file_path + '" alt="" style="width: auto; height: 200px; max-width: 384px;"><hr> <button type="button" data-name="' + file_path + '" class="btn btn-danger remove_attach">Remove</button> </div>';
+                    if (file_type != 'pdf') {
+                        if (file_path != '') {
+                            image += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><img src="/storage/' + file_path + '" class="img-fluid" alt="" style="width: auto; height: 200px; max-width: 384px;"><hr> <button type="button" data-name="' + file_path + '" class="btn btn-danger remove_attach">Remove</button> <a class="btn btn-primary m-1" href="/storage/' + file_path + '" target="blank">View</a></div>';
+                        }
+                    } else {
+                        if (file_path != '') {
+                            image += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><embed  src="/storage/' + file_path + '" class="img-fluid" alt="" style="width: auto; height: 200px; max-width: 384px;"><hr> <button type="button" data-name="' + file_path + '" class="btn btn-danger remove_attach">Remove</button> <a class="btn btn-primary m-1" href="/storage/' + file_path + '" target="blank">View</a></div>';
+                        }
                     }
-                } else {
-                    if (file_path != '') {
-                        image += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><embed  src="/storage/' + file_path + '" alt="" style="width: auto; height: 200px; max-width: 384px;"><hr> <button type="button" data-name="' + file_path + '" class="btn btn-danger remove_attach">Remove</button> </div>';
-                    }
-                }
 
-            });
+                });
 
-            $('#file_attachments').html(image);
+                $('#file_attachments').html(image);
+            }
         }
-
+        
         if (resp.complain_comments != '') {
             let comments = '';
-            $.each(resp.complain_comments, function(key, value2) {
-                comments += '<div class="row alert"><div class="col-md-4">' + ++key + '</div><div class="col-md-4">' + value2.comment + '</div><div class="col-md-4">' + value2.commented_user.user_name + '</div></div>';
+            $.each(resp.complain_comments, function (key, value2) {
+                comments += '<div class="card-comment"><div class="comment-text"><span class="username">' + value2.commented_user.user_name+'<span class="text-muted float-right">'+value2.created_at+'</span><br><span class="text-muted">' + value2.comment + '</span></div></div>';
             });
             $('#comment_section').html(comments);
         }
 
         if (resp.complain_minutes != '') {
             let minutes = '';
-            $.each(resp.complain_minutes, function(key, value2) {
-                minutes += '<div class="row alert"><div class="col-md-4">' + ++key + '</div><div class="col-md-4">' + value2.minute + '</div><div class="col-md-4">' + value2.minute_user.user_name + '</div></div>';
+            $.each(resp.complain_minutes, function (key, value2) {
+                minutes += '<div class="card-comment"><div class="comment-text"><span class="username">' + value2.minute_user.user_name + '<span class="text-muted float-right">' + value2.created_at + '</span><br><span class="text-muted">' + value2.minute + '</span></div></div>';
             });
             $('#minute_section').html(minutes);
         }
@@ -116,11 +129,7 @@ function load_forward_history_table(complain_id) {
 
     let url = '/api/complain_log_data/complain/' + complain_id;
 
-    let data = {
-        "status": $('#status_filter').val(),
-    };
-
-    ajaxRequest('GET', url, data, function(resp) {
+    ajaxRequest('GET', url, null, function(resp) {
         var forward_hist_table = " ";
         $('#forward_history').DataTable().destroy();
         $.each(resp, function(key, value2) {
@@ -138,9 +147,10 @@ function load_forward_history_table(complain_id) {
         });
         $('#forward_history tbody').html(forward_hist_table);
         $('#forward_history').DataTable({
+            "pageLength": 5,
             aLengthMenu: [
-                [10, 25, 50, 100, -1],
-                [10, 25, 50, 100, "All"]
+                [5, 10, 25, 50, 100, -1],
+                [5, 10, 25, 50, 100, "All"]
             ],
             "bDestroy": true,
             iDisplayLength: 10
@@ -186,29 +196,37 @@ function assign_user_to_complain(complain_id, user_id) {
 }
 
 function comment_on_complain() {
-    let data = $('#comments_frm').serializeArray();
-    ajaxRequest('POST', "/api/comment_on_complain", data, function(result) {
-        if (result.status == 1) {
-            swal.fire('success', 'Successfully added the comment', 'success');
-            forms_reset();
-            loadProfileData();
-        } else {
-            swal.fire('failed', 'Comment addition was unsuccessful', 'warning');
-        }
-    });
+    if ($('#comment').val() != ''){
+        let data = $('#comments_frm').serializeArray();
+        ajaxRequest('POST', "/api/comment_on_complain", data, function(result) {
+            if (result.status == 1) {
+                swal.fire('success', 'Successfully added the comment', 'success');
+                forms_reset();
+                loadProfileData();
+            } else {
+                swal.fire('failed', 'Comment addition was unsuccessful', 'warning');
+            }
+        });
+    }else{
+        swal.fire('failed', 'Comment cannot be empty!', 'warning');
+    }
 }
 
 function add_minute_to_complain() {
-    let data = $('#minutes_frm').serializeArray();
-    ajaxRequest('POST', "/api/minute_on_complain", data, function(result) {
-        if (result.status == 1) {
-            swal.fire('success', 'Successfully added the minute', 'success');
-            forms_reset()
-            loadProfileData();
-        } else {
-            swal.fire('failed', 'minute addition was unsuccessful', 'warning');
-        }
-    });
+    if ($('#minute').val() != '') {
+        let data = $('#minutes_frm').serializeArray();
+        ajaxRequest('POST', "/api/minute_on_complain", data, function (result) {
+            if (result.status == 1) {
+                swal.fire('success', 'Successfully added the minute', 'success');
+                forms_reset()
+                loadProfileData();
+            } else {
+                swal.fire('failed', 'minute addition was unsuccessful', 'warning');
+            }
+        });
+    }else{
+        swal.fire('failed', 'Minute cannot be empty!', 'warning');
+    }
 }
 
 function confirm_complain(complain_id) {

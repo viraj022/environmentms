@@ -85,7 +85,9 @@ function load_complains() {
                 "render": function(data, type, full, meta) {
                     if (full['status'] == 1) {
                         return "<span class='bg-success p-1 rounded'>Completed</span>";
-                    } else {
+                    } else if (full['status'] == -1){
+                        return "<span class='bg-danger p-1 rounded'>Rejected</span>";
+                    }else{
                         return "<span class='bg-warning p-1 rounded'>Pending</span>";
                     }
                 }

@@ -130,7 +130,7 @@ class ComplainController extends Controller
 
     public function complainProfileData($id)
     {
-        $complain_data = Complain::with(['assignedUser', 'createdUser', 'complainComments.commentedUser', 'complainMinutes.minuteUser'])->find($id);
+        $complain_data = Complain::with(['assignedUser', 'createdUser', 'complainComments.commentedUser', 'complainMinutes.minuteUser', 'letters'])->find($id);
         return $complain_data;
     }
 
@@ -280,13 +280,8 @@ class ComplainController extends Controller
 
     public function get_complain_assign_log(Request $request, $complain_id)
     {
-        $status = $request->status;
-
         $complain_assign_log = ComplainAssignLog::where('complain_id', $complain_id)
             ->with(['assignerUser', 'assigneeUser', 'complain'])
-            ->whereHas('complain', function ($query) use ($status) {
-                $query->where('status', '=', $status);
-            })
             ->whereHas('assigneeUser', function ($query) {
                 $query->whereHas('roll', function ($query) {
                     $query->groupBy('level_id')
