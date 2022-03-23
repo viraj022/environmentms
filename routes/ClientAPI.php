@@ -270,7 +270,7 @@ Route::middleware('auth:api')->get('/files/pending/director', 'ClientController@
   }
   ]
  */
-Route::middleware('auth:api')->get('/files/certificate_drafting', 'ClientController@getCertificateDraftingList'); //  get Certificate Drafting List
+Route::middleware('auth:api')->get('/files/certificate_drafting/status/{status}', 'ClientController@getCertificateDraftingList'); //  get Certificate Drafting List
 /*
   [
   {

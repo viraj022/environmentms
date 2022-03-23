@@ -1,5 +1,6 @@
 function getaProfilebyId(callBack) {
-    var url = "/api/files/certificate_drafting";
+    let status = $('#cert_filter').val();
+    var url = "/api/files/certificate_drafting/status/" + status;
     var certificate_status = { 0: 'pending', 1: 'Drafting', 2: 'Drafted', 3: 'AD Pending', 4: 'Director Pending', 5: 'Director Approved', 6: 'Issued', '-1': 'Hold' };
     var certificate_type = { 0: 'pending', 1: 'New EPL', 2: 'Renew EPL', 3: 'New Site Clearance', 4: 'Site Clearance Extended' };
 
