@@ -88,11 +88,11 @@ function loadProfileData() {
 
                     if (file_type != 'pdf') {
                         if (file_path != '') {
-                            image += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><img src="/storage/' + file_path + '" alt="" style="width: auto; height: 200px; max-width: 384px;"><hr> <button type="button" data-name="' + file_path + '" class="btn btn-danger remove_attach">Remove</button> <a class="btn btn-primary m-1" href="/storage/' + file_path + '" target="blank">View</a></div>';
+                            image += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><img src="/storage/' + file_path + '" class="img-fluid" alt="" style="width: auto; height: 200px; max-width: 384px;"><hr> <button type="button" data-name="' + file_path + '" class="btn btn-danger remove_attach">Remove</button> <a class="btn btn-primary m-1" href="/storage/' + file_path + '" target="blank">View</a></div>';
                         }
                     } else {
                         if (file_path != '') {
-                            image += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><embed  src="/storage/' + file_path + '" alt="" style="width: auto; height: 200px; max-width: 384px;"><hr> <button type="button" data-name="' + file_path + '" class="btn btn-danger remove_attach">Remove</button> <a class="btn btn-primary m-1" href="/storage/' + file_path + '" target="blank">View</a></div>';
+                            image += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><embed  src="/storage/' + file_path + '" class="img-fluid" alt="" style="width: auto; height: 200px; max-width: 384px;"><hr> <button type="button" data-name="' + file_path + '" class="btn btn-danger remove_attach">Remove</button> <a class="btn btn-primary m-1" href="/storage/' + file_path + '" target="blank">View</a></div>';
                         }
                     }
 
