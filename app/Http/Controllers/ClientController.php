@@ -835,9 +835,9 @@ class ClientController extends Controller
         })->get();
     }
 
-    public function getCertificateDraftingList()
+    public function getCertificateDraftingList($status)
     {
-        return Client::getFileByStatusQuery('file_status', array(2))->where('cer_type_status', '!=', 0)->get();
+        return Client::getFileByStatusQuery('file_status', array(2))->where('cer_type_status', '!=', 0)->where('cer_status', $status)->get();
     }
 
     public function nextCertificateNumber($id)
