@@ -739,10 +739,10 @@ class ClientController extends Controller
             request()->validate([
                 'file_problem_status' => ['required', 'regex:(pending|clean|problem)'],
                 'file_problem_status_description' => 'required|string',
-                'file' => 'mimes:jpeg,jpg,png,pdf'
+                'file' => $request->file != null ?'sometimes|required|min:8': ''
             ]);
             $file = Client::findOrFail($id);
-            if (!($request->file == null)) {
+            if (!($request->file == null || isset($request->file))) {
                 $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
                 $fileUrl = '/uploads/' . FieUploadController::getOldFilePath($file);
                 $storePath = 'public' . $fileUrl;
