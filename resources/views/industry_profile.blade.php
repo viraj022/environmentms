@@ -845,12 +845,15 @@
                                             };
                                             reportFileIssueAPI(PROFILE_ID, data, function (resp) {
                                                 show_mesege(resp);
-                                                // $('.reportView').addClass('d-none');
-                                                // $('.reportIssueView').addClass('d-none');
-                                                $('.markIssueClean').removeClass('d-none');
-                                                getaProfilebyId(PROFILE_ID, function (parameters) {
-                                                    checkFileIssueStatus(parameters);
-                                                });
+                                                // // $('.reportView').addClass('d-none');
+                                                // // $('.reportIssueView').addClass('d-none');
+                                                // $('.markIssueClean').removeClass('d-none');
+                                                // getaProfilebyId(PROFILE_ID, function (parameters) {
+                                                //     checkFileIssueStatus(parameters);
+                                                // });
+                                                if(resp.id == 1){
+                                                    location.reload();
+                                                }
                                             });
                                         });
                                         $('.markIssueClean').on('click', function () { // Mark As Cleared Btn

@@ -62,7 +62,16 @@
                                         </div>
                                         <div class="card-body p-0">
                                             <div class="card-body table-responsive" style="height: 450px;">
-                                                <table class="table table-condensed" id="tblPendingCertificate">
+                                                <div class="row">
+                                                    <div class="form-group col-2">
+                                                        <select class="custom-select" id="cert_filter">
+                                                         <option value="0">New</option>
+                                                         <option value="1">Processing</option>
+                                                        </select>
+                                                     </div>
+                                                </div>
+                                                <hr>
+                                                <table class="table table-condensed mt-2" id="tblPendingCertificate">
                                                     <thead>
                                                         <tr>
                                                             <th style="width: 20em">#</th>
@@ -190,5 +199,9 @@
                 iDisplayLength: 10
             });
         }
+
+        $('#cert_filter').change(function(){
+            getaProfilebyId();
+        });
 </script>
 @endsection

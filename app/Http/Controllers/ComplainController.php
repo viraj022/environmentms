@@ -117,7 +117,13 @@ class ComplainController extends Controller
 
     public function show()
     {
-        $complains = Complain::with(['createdUser', 'assignedUser'])->get();
+        $user = Auth::user()->id;
+        $complains = Complain::with(['createdUser', 'assignedUser'])
+            ->where('assigned_user', $user)
+            ->orWhere('assigned_user', null)
+            ->orderBy('id', 'desc')
+            ->get();
+        
         return $complains;
     }
 
