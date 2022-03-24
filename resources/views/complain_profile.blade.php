@@ -20,7 +20,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-12 col-sm-6">
-                    <h1>Complain Profile </h1>
+                    <h1>Complaint Profile </h1>
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-messages-tab" data-toggle="pill"
                             href="#complain-assign" role="tab" aria-controls="custom-tabs-two-messages"
-                            aria-selected="false">Assign Complain</a>
+                            aria-selected="false">Assign Complaint</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-letters-tab" data-toggle="pill" href="#letters"
@@ -148,8 +148,8 @@
                                                     <select id="user" class="custom-select"></select>
                                                 </div>
                                                 <div class="form-group">
-                                                    <button type="button" class="btn btn-primary"
-                                                        id="assign_complain"> Assign To </button>
+                                                    <button type="button" class="btn btn-primary" id="assign_complain">
+                                                        Assign To </button>
                                                 </div>
                                             </form>
                                         </div>
@@ -221,7 +221,8 @@
                                                     <input type="text" name="message" placeholder="Type Message ..."
                                                         class="form-control" id="minute">
                                                     <span class="input-group-append">
-                                                        <button type="button" class="btn btn-dark" id="add_minute">Add</button>
+                                                        <button type="button" class="btn btn-dark"
+                                                            id="add_minute">Add</button>
                                                     </span>
                                                 </div>
                                             </form>
