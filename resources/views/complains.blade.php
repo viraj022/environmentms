@@ -9,6 +9,13 @@
     <link href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+    <style>
+        table td{ 
+           vertical-align: top; 
+           padding: 5px;
+           word-break: break-all;  /* MUST ADD THIS */
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -111,20 +118,17 @@
                                     <tr>
                                         <th>#</th>
                                         <th>complain Code</th>
-                                        <th>Complainer Name</th>
-                                        <th>Complainer Address</th>
-                                        <th>Contact Number</th>
+                                        <th style="width: 20%">Complainer Name</th>
+                                        <th style="width: 14%">Contact Number</th>
                                         <!-- <th>Description</th> -->
-                                        <th>Created User</th>
-                                        <th>Assigned User</th>
-                                        <th>Recieved By</th>
+                                        <th style="width: 15%">Recieved Type</th>
                                         <th>Status</th>
-                                        <th>Action</th>
+                                        <th style="width: 10%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td colspan="10" class="text-center"><b>No Data</b></td>
+                                        <td colspan="7" class="text-center"><b>No Data</b></td>
                                     </tr>
                                 </tbody>
                             </table>
