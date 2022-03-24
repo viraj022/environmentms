@@ -20,7 +20,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-12 col-sm-6">
-                    <h1>Complain Profile </h1>
+                    <h1>Complaint Profile </h1>
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-messages-tab" data-toggle="pill"
                             href="#complain-assign" role="tab" aria-controls="custom-tabs-two-messages"
-                            aria-selected="false">Assign Complain</a>
+                            aria-selected="false">Assign Complaint</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-letters-tab" data-toggle="pill" href="#letters"
@@ -130,11 +130,36 @@
                         <section class="content-header">
 
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <div class="card card-gray">
+                                        <div class="card-header">
+                                            File Assign
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label for="client_id">File No: </label>
+                                                <select class="custom-select select2" id="client_id"></select>
+                                                <button type="button" id="assign_file" class="btn btn-success mt-1">Assign
+                                                    File</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card card-gray">
+                                       <div class="card-header">Actions</div>
+                                       <div class="card-body">
+                                        <div class="form-group">
+                                            <button id="confirm" class="btn btn-info d-none">Confirm</button>
+                                            <button id="reject" class="btn btn-warning d-none">Reject</button>
+                                            <button id="forward_letter_preforation" class="btn btn-success">Forward to letter preforation</button>
+                                        </div>
+                                       </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
                                     <div class="card card-light p-5">
                                         <form id="complain_assign_frm" class="w-100">
                                             <div class="row">
-                                                <div class="form-group col-md-4">
+                                                <div class="form-group col-md-2">
                                                     <label for="user_level">User Level: </label>
                                                     <select id="user_level" class="custom-select">
                                                         <option value="1">Local</option>
@@ -143,13 +168,13 @@
                                                         <option value="4">Environment Officer</option>
                                                     </select>
                                                 </div>
-                                                <div class="form-group col-md-4">
+                                                <div class="form-group col-md-3">
                                                     <label for="user">User: </label>
                                                     <select id="user" class="custom-select"></select>
                                                 </div>
-                                                <div class="form-group col-md-4">
+                                                <div class="col-md-3">
                                                     <button type="button" class="btn btn-primary mt-4"
-                                                        id="assign_complain"> Assign To </button>
+                                                    id="assign_complain"> Assign To </button>
                                                 </div>
                                             </div>
                                         </form>
@@ -165,13 +190,6 @@
                                             </thead>
                                             <tbody></tbody>
                                         </table>
-                                        <div class="form-group mt-2">
-                                            <button id="confirm" class="btn btn-info d-none">Confirm</button>
-                                            <button id="reject" class="btn btn-warning d-none">Reject</button>
-                                            <button id="forward_letter_preforation" class="btn btn-success">Forward
-                                                to letter
-                                                preforation</button>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -212,7 +230,8 @@
                                                     <input type="text" name="message" placeholder="Type Message ..."
                                                         class="form-control" id="minute">
                                                     <span class="input-group-append">
-                                                        <button type="button" class="btn btn-dark" id="add_minute">Add</button>
+                                                        <button type="button" class="btn btn-dark"
+                                                            id="add_minute">Add</button>
                                                     </span>
                                                 </div>
                                             </form>
@@ -265,24 +284,6 @@
                                         </div>
                                     </div>
                                 </section>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="card card-gray">
-                                    <div class="card-header">
-                                        File Assign
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <label for="client_id">File No: </label>
-                                            <select class="custom-select select2" id="client_id"></select>
-                                            <button type="button" id="assign_file" class="btn btn-success mt-1">Assign
-                                                File</button>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
