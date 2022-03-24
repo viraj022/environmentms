@@ -10,11 +10,13 @@
     <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="/dist/css/adminlte.min.css">
     <style>
-        table td{ 
-           vertical-align: top; 
-           padding: 5px;
-           word-break: break-all;  /* MUST ADD THIS */
+        table td {
+            vertical-align: top;
+            padding: 5px;
+            word-break: break-all;
+            /* MUST ADD THIS */
         }
+
     </style>
 @endsection
 
@@ -33,7 +35,8 @@
                             <form enctype="multipart/form-data" id="complain_frm">
                                 <div class="form-group">
                                     <label>Pradeshiya Sabha*</label>
-                                    <select id="ps" class="form-control form-control-sm select2 select2-purple cutenzReq"></select>
+                                    <select id="ps"
+                                        class="form-control form-control-sm select2 select2-purple cutenzReq"></select>
                                 </div>
                                 <div class="form-group">
                                     <label>Complain Code*</label>
@@ -74,7 +77,8 @@
                                     <label>Complainer Contact Number*</label>
                                     <input id="contact_complainer_ipt" name="contact_complainer_ipt"
                                         onKeyDown="if (this.value.length == 10 && event.keyCode != 8)
-                                                                                                                    return false;" type="number" class="form-control form-control-sm"
+                                                                                                                            return false;" type="number"
+                                        class="form-control form-control-sm"
                                         placeholder="Enter Contact Number of complainer..." value="" required>
                                     <div id="contact_complainer_valid" class="d-none">
                                         <p class="text-danger">Complainer Contact Number is required</p>
@@ -82,9 +86,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Complain Description*</label>
-                                    <textarea id="complain_desc_ipt" name="complain_desc_ipt"
-                                        class="form-control form-control-sm" placeholder="Enter complain Description..."
-                                        value="" required></textarea>
+                                    <textarea id="complain_desc_ipt" name="complain_desc_ipt" class="form-control form-control-sm"
+                                        placeholder="Enter complain Description..." value="" required></textarea>
                                     <div id="complain_desc_valid" class="d-none">
                                         <p class="text-danger">Complain description required</p>
                                     </div>
@@ -158,7 +161,7 @@
         });
 
         $('#ps').change(function() {
-                gen_complain_code();
+            gen_complain_code();
         });
 
         $('#complain_attach').change(function() {

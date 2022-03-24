@@ -108,11 +108,6 @@ function loadProfileData(user_id) {
 
         if (resp.complain_minutes != '') {
             iterateComplain_minit(resp.complain_minutes, user_id);
-            // let minutes = '';
-            // $.each(resp.complain_minutes, function (key, value2) {
-            //     minutes += '<div class="card-comment"><div class="comment-text"><span class="username">' + value2.minute_user.user_name + '<span class="text-muted float-right">' + value2.created_at + '</span><br><span class="text-muted">' + value2.minute + '</span></div></div>';
-            // });
-            // $('#minute_section').html(minutes);
         }
         let assigned_user = 'Not Assigned';
         if (resp.assigned_user != null) {
@@ -121,37 +116,39 @@ function loadProfileData(user_id) {
         $('#assigned_user').html(assigned_user);
     });
 }
+
 function iterateComplain_minit(object, user_id) {
     let minute = '';
     $.each(object, function (key, value2) {
-        let chat_msg = (value2.minute_user.id != user_id) ? 'right' : '';
-        let chat_name = (value2.minute_user.id != user_id) ? 'float-right' : 'float-left';
-        let chat_time = (value2.minute_user.id != user_id) ? 'float-left' : 'float-right';
+        let chat_msg = (value2.minute_user.id == user_id) ? 'right' : '';
+        let chat_name = (value2.minute_user.id == user_id) ? 'float-right' : 'float-left';
+        let chat_time = (value2.minute_user.id == user_id) ? 'float-left' : 'float-right';
         minute += `<div class="direct-chat-msg ${chat_msg}"><div class="direct-chat-infos clearfix">
                 <span class="direct-chat-name ${chat_name}">${value2.minute_user.first_name} ${value2.minute_user.last_name}</span>
                 <span class="direct-chat-timestamp ${chat_time}">${value2.created_at}</span>
             </div>
-            <img class="direct-chat-img" src="/dist/img/user3-128x128.jpg" alt="Message User Image">
+            <img class="direct-chat-img" src="/dist/img/user1-128x128.jpg" alt="Message User Image">
             <div class="direct-chat-text">${value2.minute}</div>
         </div>`;
     });
-    $('#minute_section').html(minute);
+    $('.minute_section').html(minute);
 }
+
 function iterateComplain_comments(object, user_id) {
     let comments = '';
     $.each(object, function (key, value2) {
-        let chat_msg = (value2.commented_user.id != user_id) ? 'right' : '';
-        let chat_name = (value2.commented_user.id != user_id) ? 'float-right' : 'float-left';
-        let chat_time = (value2.commented_user.id != user_id) ? 'float-left' : 'float-right';
+        let chat_msg = (value2.commented_user.id == user_id) ? 'right' : '';
+        let chat_name = (value2.commented_user.id == user_id) ? 'float-right' : 'float-left';
+        let chat_time = (value2.commented_user.id == user_id) ? 'float-left' : 'float-right';
         comments += `<div class="direct-chat-msg ${chat_msg}"><div class="direct-chat-infos clearfix">
                 <span class="direct-chat-name ${chat_name}">${value2.commented_user.first_name} ${value2.commented_user.last_name}</span>
                 <span class="direct-chat-timestamp ${chat_time}">${value2.created_at}</span>
             </div>
-            <img class="direct-chat-img" src="/dist/img/user3-128x128.jpg" alt="Message User Image">
+            <img class="direct-chat-img" src="/dist/img/user1-128x128.jpg" alt="Message User Image">
             <div class="direct-chat-text">${value2.comment}</div>
         </div>`;
     });
-    $('#comment_section').html(comments);
+    $('.comment_section').html(comments);
 }
 
 function load_forward_history_table(complain_id) {
@@ -224,14 +221,13 @@ function assign_user_to_complain(complain_id, user_id) {
     });
 }
 
-function comment_on_complain() {
-    if ($('#comment').val().trim() != '') {
-        let data = { 'minute': $('#comment').val().trim() };
+function comment_on_complain(data) {
+    if (data.comment != '') {
         ajaxRequest('POST', "/api/comment_on_complain", data, function (result) {
             if (result.status == 1) {
                 swal.fire('success', 'Successfully added the comment', 'success');
-                forms_reset();
-                loadProfileData();
+                $('#comment').val('');
+                loadProfileData(data.user_id);
             } else {
                 swal.fire('failed', 'Comment addition was unsuccessful', 'warning');
             }
@@ -241,14 +237,13 @@ function comment_on_complain() {
     }
 }
 
-function add_minute_to_complain() {
-    if ($('#minute').val() != '') {
-        let data = $('#minutes_frm').serializeArray();
+function add_minute_to_complain(data) {
+    if (data.minute != '') {
         ajaxRequest('POST', "/api/minute_on_complain", data, function (result) {
             if (result.status == 1) {
                 swal.fire('success', 'Successfully added the minute', 'success');
-                forms_reset()
-                loadProfileData();
+                $('#minute').val('');
+                loadProfileData(data.user_id);
             } else {
                 swal.fire('failed', 'minute addition was unsuccessful', 'warning');
             }

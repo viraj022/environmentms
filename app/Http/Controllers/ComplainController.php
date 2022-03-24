@@ -123,7 +123,7 @@ class ComplainController extends Controller
             ->orWhere('assigned_user', null)
             ->orderBy('id', 'desc')
             ->get();
-        
+
         return $complains;
     }
 
@@ -177,7 +177,7 @@ class ComplainController extends Controller
     {
         try {
             $delete_complain = Complain::find($id)->delete();
-            
+
             if ($delete_complain == true) {
                 return array('status' => 1, 'msg' => 'Complain successfully deleted!');
             } else {
@@ -225,7 +225,7 @@ class ComplainController extends Controller
         $user_id = Auth::user()->id;
         $save_complain_comment = new ComplainComment();
         $save_complain_comment->comment = $request->comment;
-        $save_complain_comment->complain_id = $request->comp_comnt_hid_id;
+        $save_complain_comment->complain_id = $request->complain_id;
         $save_complain_comment->commented_user_id = $user_id;
         $save_complain_comment->save();
 
@@ -241,7 +241,7 @@ class ComplainController extends Controller
         $user_id = Auth::user()->id;
         $save_complain_minute = new ComplainMinute();
         $save_complain_minute->minute = $request->minute;
-        $save_complain_minute->complain_id = $request->comp_minute_hid_id;
+        $save_complain_minute->complain_id = $request->complain_id;
         $save_complain_minute->minute_user_id = $user_id;
         $save_complain_minute->save();
 
