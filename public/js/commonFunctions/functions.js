@@ -4,7 +4,8 @@ function ajaxRequest(Method, url, data, callBack) {
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-            "Accept": "application/json"
+            "Accept": "application/json",
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
         },
         url: url,
         data: data,

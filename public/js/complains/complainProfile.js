@@ -3,11 +3,11 @@ function update_attachments() {
     let url = '/api/update_attachments/id/' + id;
     let arr = [];
     let index = 0;
-    $.each($('#fileUploadInput')[0].files, function(key, val) {
+    $.each($('#fileUploadInput')[0].files, function (key, val) {
         arr[index++] = val;
     });
     if (arr.length != 0) {
-        ulploadFileWithData(url, null, function(resp) {
+        ulploadFileWithData(url, null, function (resp) {
             if (resp.status == 1) {
                 loadProfileData();
                 $('#fileUploadInput').val('');
@@ -24,10 +24,10 @@ function update_attachments() {
 
 }
 
-function loadProfileData() {
+function loadProfileData(user_id) {
     let id = $('#complain_profile_id').val();
     let url = '/api/complain_profile_data/id/' + id;
-    ajaxRequest('GET', url, null, function(resp) {
+    ajaxRequest('GET', url, null, function (resp) {
         $('#comp_code').html(resp.complainer_code);
         if (resp.assigned_user != null) {
             $('#assigned_officer').html(resp.assigned_user.user_name);
@@ -46,16 +46,16 @@ function loadProfileData() {
 
         if (resp.status == 1) {
             $('#comp_status').addClass('badge bg-success').text('Complete');
-        } else if(resp.status == -1) {
+        } else if (resp.status == -1) {
             $('#comp_status').addClass('badge bg-danger').text('Rejected');
-        } else if(resp.status == 0){
+        } else if (resp.status == 0) {
             $('#comp_status').addClass('badge bg-warning').text('Pending');
         }
-        
-        if (resp.status == 1 || resp.status == -1 || resp.status == 4){
+
+        if (resp.status == 1 || resp.status == -1 || resp.status == 4) {
             $('#confirm').addClass('d-none');
             $('#reject').addClass('d-none');
-        }else{
+        } else {
             $('#reject').removeClass('d-none');
             $('#confirm').removeClass('d-none');
         }
@@ -67,19 +67,19 @@ function loadProfileData() {
         }
 
         let last_index = resp.letters.length - 1;
-        
-        if (resp.letters[last_index] != null){
-          if (resp.letters[last_index].status == 'COMPLETED' && resp.status != 1 && resp.status != -1) {
-            $('#confirm').removeClass('d-none');
-          }
+
+        if (resp.letters[last_index] != null) {
+            if (resp.letters[last_index].status == 'COMPLETED' && resp.status != 1 && resp.status != -1) {
+                $('#confirm').removeClass('d-none');
+            }
         }
-    
+
         $('#comp_by').html('<span class="badge bg-success">' + resp.complainer_name + '</span>');
 
         let image = '';
         if (resp.attachment != null || resp.attachment.length != 0 || resp.attachment.file_path != null) {
             let unescaped_data = unescape(resp.attachment);
-            if (unescaped_data != ''){
+            if (unescaped_data != '') {
                 let data = JSON.parse(unescape(resp.attachment));
                 // let base_url = "{{ url('/') }}";
                 $.each(data, function (key, value) {
@@ -101,21 +101,13 @@ function loadProfileData() {
                 $('#file_attachments').html(image);
             }
         }
-        
+
         if (resp.complain_comments != '') {
-            let comments = '';
-            $.each(resp.complain_comments, function (key, value2) {
-                comments += '<div class="card-comment"><div class="comment-text"><span class="username">' + value2.commented_user.user_name+'<span class="text-muted float-right">'+value2.created_at+'</span><br><span class="text-muted">' + value2.comment + '</span></div></div>';
-            });
-            $('#comment_section').html(comments);
+            iterateComplain_comments(resp.complain_comments, user_id);
         }
 
         if (resp.complain_minutes != '') {
-            let minutes = '';
-            $.each(resp.complain_minutes, function (key, value2) {
-                minutes += '<div class="card-comment"><div class="comment-text"><span class="username">' + value2.minute_user.user_name + '<span class="text-muted float-right">' + value2.created_at + '</span><br><span class="text-muted">' + value2.minute + '</span></div></div>';
-            });
-            $('#minute_section').html(minutes);
+            iterateComplain_minit(resp.complain_minutes, user_id);
         }
         let assigned_user = 'Not Assigned';
         if (resp.assigned_user != null) {
@@ -125,14 +117,48 @@ function loadProfileData() {
     });
 }
 
+function iterateComplain_minit(object, user_id) {
+    let minute = '';
+    $.each(object, function (key, value2) {
+        let chat_msg = (value2.minute_user.id == user_id) ? 'right' : '';
+        let chat_name = (value2.minute_user.id == user_id) ? 'float-right' : 'float-left';
+        let chat_time = (value2.minute_user.id == user_id) ? 'float-left' : 'float-right';
+        minute += `<div class="direct-chat-msg ${chat_msg}"><div class="direct-chat-infos clearfix">
+                <span class="direct-chat-name ${chat_name}">${value2.minute_user.first_name} ${value2.minute_user.last_name}</span>
+                <span class="direct-chat-timestamp ${chat_time}">${value2.created_at}</span>
+            </div>
+            <img class="direct-chat-img" src="/dist/img/user1-128x128.jpg" alt="Message User Image">
+            <div class="direct-chat-text">${value2.minute}</div>
+        </div>`;
+    });
+    $('.minute_section').html(minute);
+}
+
+function iterateComplain_comments(object, user_id) {
+    let comments = '';
+    $.each(object, function (key, value2) {
+        let chat_msg = (value2.commented_user.id == user_id) ? 'right' : '';
+        let chat_name = (value2.commented_user.id == user_id) ? 'float-right' : 'float-left';
+        let chat_time = (value2.commented_user.id == user_id) ? 'float-left' : 'float-right';
+        comments += `<div class="direct-chat-msg ${chat_msg}"><div class="direct-chat-infos clearfix">
+                <span class="direct-chat-name ${chat_name}">${value2.commented_user.first_name} ${value2.commented_user.last_name}</span>
+                <span class="direct-chat-timestamp ${chat_time}">${value2.created_at}</span>
+            </div>
+            <img class="direct-chat-img" src="/dist/img/user1-128x128.jpg" alt="Message User Image">
+            <div class="direct-chat-text">${value2.comment}</div>
+        </div>`;
+    });
+    $('.comment_section').html(comments);
+}
+
 function load_forward_history_table(complain_id) {
 
     let url = '/api/complain_log_data/complain/' + complain_id;
 
-    ajaxRequest('GET', url, null, function(resp) {
+    ajaxRequest('GET', url, null, function (resp) {
         var forward_hist_table = " ";
         $('#forward_history').DataTable().destroy();
-        $.each(resp, function(key, value2) {
+        $.each(resp, function (key, value2) {
             key++;
             let assignee_name = '-';
             let assigner_name = '-';
@@ -160,12 +186,12 @@ function load_forward_history_table(complain_id) {
 }
 
 function load_user_by_level(level) {
-    ajaxRequest('GET', "/api/get_users_for_level/level/" + level, null, function(dataSet) {
+    ajaxRequest('GET', "/api/get_users_for_level/level/" + level, null, function (dataSet) {
         var combo = "";
         if (dataSet.length == 0) {
             combo += "<option value=''>NO DATA FOUND</option>";
         } else {
-            $.each(dataSet, function(index, value) {
+            $.each(dataSet, function (index, value) {
                 combo += "<option value='" + value.id + "'>" + value.first_name + " - (" + value.name + ") </option>";
             });
         }
@@ -183,7 +209,7 @@ function forms_reset() {
 }
 
 function assign_user_to_complain(complain_id, user_id) {
-    ajaxRequest('GET', "/api/assign_complain_to_user/complain_id/" + complain_id + "/user_id/" + user_id, null, function(result) {
+    ajaxRequest('GET', "/api/assign_complain_to_user/complain_id/" + complain_id + "/user_id/" + user_id, null, function (result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully assigned the user to the complain', 'success');
             forms_reset();
@@ -195,42 +221,40 @@ function assign_user_to_complain(complain_id, user_id) {
     });
 }
 
-function comment_on_complain() {
-    if ($('#comment').val() != ''){
-        let data = $('#comments_frm').serializeArray();
-        ajaxRequest('POST', "/api/comment_on_complain", data, function(result) {
+function comment_on_complain(data) {
+    if (data.comment != '') {
+        ajaxRequest('POST', "/api/comment_on_complain", data, function (result) {
             if (result.status == 1) {
                 swal.fire('success', 'Successfully added the comment', 'success');
-                forms_reset();
-                loadProfileData();
+                $('#comment').val('');
+                loadProfileData(data.user_id);
             } else {
                 swal.fire('failed', 'Comment addition was unsuccessful', 'warning');
             }
         });
-    }else{
+    } else {
         swal.fire('failed', 'Comment cannot be empty!', 'warning');
     }
 }
 
-function add_minute_to_complain() {
-    if ($('#minute').val() != '') {
-        let data = $('#minutes_frm').serializeArray();
+function add_minute_to_complain(data) {
+    if (data.minute != '') {
         ajaxRequest('POST', "/api/minute_on_complain", data, function (result) {
             if (result.status == 1) {
                 swal.fire('success', 'Successfully added the minute', 'success');
-                forms_reset()
-                loadProfileData();
+                $('#minute').val('');
+                loadProfileData(data.user_id);
             } else {
                 swal.fire('failed', 'minute addition was unsuccessful', 'warning');
             }
         });
-    }else{
+    } else {
         swal.fire('failed', 'Minute cannot be empty!', 'warning');
     }
 }
 
 function confirm_complain(complain_id) {
-    ajaxRequest('GET', "/api/confirm_complain/complain/" + complain_id, null, function(result) {
+    ajaxRequest('GET', "/api/confirm_complain/complain/" + complain_id, null, function (result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully confirmed the complain', 'success');
             loadProfileData();
@@ -241,7 +265,7 @@ function confirm_complain(complain_id) {
 }
 
 function reject_complain(complain_id) {
-    ajaxRequest('GET', "/api/reject_complain/complain/" + complain_id, null, function(result) {
+    ajaxRequest('GET', "/api/reject_complain/complain/" + complain_id, null, function (result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully rejected the complain', 'success');
             loadProfileData();
@@ -252,7 +276,7 @@ function reject_complain(complain_id) {
 }
 
 function forward_letter_preforation(complain_id) {
-    ajaxRequest('GET', "/api/forward_to_letter_preforation/complain/" + complain_id, null, function(result) {
+    ajaxRequest('GET', "/api/forward_to_letter_preforation/complain/" + complain_id, null, function (result) {
         if (result.status == 1) {
             swal.fire('success', 'Forward to letter preforation was successful', 'success');
             loadProfileData();
@@ -263,12 +287,12 @@ function forward_letter_preforation(complain_id) {
 }
 
 function load_file_no() {
-    ajaxRequest('GET', "/api/load_file_no", null, function(dataSet) {
+    ajaxRequest('GET', "/api/load_file_no", null, function (dataSet) {
         var combo = "";
         if (dataSet.length == 0) {
             combo += "<option value=''>NO DATA FOUND</option>";
         } else {
-            $.each(dataSet, function(index, value) {
+            $.each(dataSet, function (index, value) {
                 combo += "<option value='" + value.id + "'>" + value.file_no + "</option>";
             });
         }
@@ -287,7 +311,7 @@ function assign_file_no(complain_id, client_id) {
         "client_id": client_id,
     };
     let url = '/api/assign_file_no';
-    ajaxRequest('POST', url, data, function(resp) {
+    ajaxRequest('POST', url, data, function (resp) {
         if (resp.status == 1) {
             swal.fire('success', 'File No has assigned for the complain', 'success');
         } else {

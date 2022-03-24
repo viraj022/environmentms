@@ -7,7 +7,6 @@ function gen_complain_code() {
 }
 
 function load_complains() {
-    let url = '/api/complain_data';
     let index = 1;
     complain_list = $('#complain_tbl').DataTable({
         "destroy": true,
@@ -24,9 +23,15 @@ function load_complains() {
             searchPlaceholder: "Search..."
         },
         "ajax": {
-            "url": "/api/get_complain_data/",
-            "type": "GET",
-            "dataSrc": ""
+            url: "/api/get_complain_data",
+            type: "GET",
+            headers: {
+                "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                "Accept": "application/json",
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            },
+            dataSrc: "",
         },
         "columns": [{
                 "data": ""
