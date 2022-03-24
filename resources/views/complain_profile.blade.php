@@ -11,7 +11,6 @@
         table.dataTable td {
             word-break: break-word;
         }
-
     </style>
 @endsection
 
@@ -20,7 +19,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-12 col-sm-6">
-                    <h1>Complain Profile </h1>
+                    <h1>Complaint Profile </h1>
                 </div>
             </div>
         </div>
@@ -43,7 +42,7 @@
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-messages-tab" data-toggle="pill"
                             href="#complain-assign" role="tab" aria-controls="custom-tabs-two-messages"
-                            aria-selected="false">Assign Complain</a>
+                            aria-selected="false">Assign Complaint</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-letters-tab" data-toggle="pill" href="#letters"
@@ -87,7 +86,7 @@
                     class=""></span></a>
         </li>
         <li class="list-group-item">
-            <b>Complain By :</b> <a class="float-right" id="comp_by"></a>
+            <b>Complaint By :</b> <a class="float-right" id="comp_by"></a>
         </li>
     
     </ul>
@@ -129,7 +128,7 @@
                                 <div class="col-12">
                                     <div class="card card-gray">
                                         <div class="card-header">
-                                            Complain assignment for user 
+                                            Complaint assignment for user 
                                         </div>
                                         <div class="card-body">
                                             <div class="row">
@@ -193,7 +192,7 @@
                                 <div class="col-md-12">
                                     <div class="card card-gray">
                                         <div class="card-header">
-                                            Add comment for complains
+                                            Add comment for complaint
                                         </div>
                                         <div class="card-body">
                                             <div class="row">
@@ -232,7 +231,7 @@
                                 <div class="col-md-12">
                                     <div class="card card-gray">
                                         <div class="card-header">
-                                            Add minutes for complains
+                                            Add minutes for complaint
                                         </div>
                                         <div class="card-body">
                                             <div class="row">

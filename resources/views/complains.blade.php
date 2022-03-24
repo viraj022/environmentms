@@ -26,7 +26,7 @@
                 <div class="mt-5 col-3">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <div class="card-title">Complains</div>
+                            <div class="card-title">Complaints</div>
                         </div>
                         <div class="card-body">
                             <input type="text" id="hidden_id" value="" hidden>
@@ -36,7 +36,7 @@
                                     <select id="ps" class="form-control form-control-sm select2 select2-purple cutenzReq"></select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Complain Code*</label>
+                                    <label>Complaint Code*</label>
                                     <input id="complainer_code" name="complainer_code" type="text" maxlength="45"
                                         class="form-control form-control-sm cutenzReq" readonly>
                                 </div>
@@ -46,11 +46,11 @@
                                         class="form-control form-control-sm cutenzReq"
                                         placeholder="Enter complainer name..." value="" required>
                                     <div id="comp_name_valid" class="d-none">
-                                        <p class="text-danger">Container Name is required</p>
+                                        <p class="text-danger">Complainer Name is required</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Complain Recieve Type</label>
+                                    <label>Complaint Recieve Type</label>
                                     <select id="recieve_type_ipt" name="recieve_type_ipt"
                                         class="form-control form-control-sm">
                                         <option value="1">Call</option>
@@ -81,12 +81,12 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Complain Description*</label>
+                                    <label>Complaint Description*</label>
                                     <textarea id="complain_desc_ipt" name="complain_desc_ipt"
-                                        class="form-control form-control-sm" placeholder="Enter complain Description..."
+                                        class="form-control form-control-sm" placeholder="Enter complaint Description..."
                                         value="" required></textarea>
                                     <div id="complain_desc_valid" class="d-none">
-                                        <p class="text-danger">Complain description required</p>
+                                        <p class="text-danger">Complaint description required</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -94,7 +94,7 @@
                                     <input type="file" id="complain_attach" name="complain_attach"
                                         accept=".png, .jpg, .jpeg" multiple>
                                     <div id="complain_attach_valid" class="d-none">
-                                        <p class="text-danger">Complain attachment required</p>
+                                        <p class="text-danger">Complaint attachment required</p>
                                     </div>
                                     <span id="attachment_view"></span>
                                 </div>
@@ -111,13 +111,13 @@
                 </div>
                 <div class=" mt-5 col-md-9">
                     <div class="card card-primary">
-                        <div class="card-header"> Complain Table </div>
+                        <div class="card-header"> Complaint Table </div>
                         <div class="card-body table-responsive">
                             <table class="table table-bordered" id="complain_tbl">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>complain Code</th>
+                                        <th>complaint Code</th>
                                         <th style="width: 20%">Complainer Name</th>
                                         <th style="width: 14%">Contact Number</th>
                                         <!-- <th>Description</th> -->
@@ -214,7 +214,7 @@
             let id = $(this).val();
 
             Swal.fire({
-                title: 'Do you want to delete complain?',
+                title: 'Do you want to delete complaint?',
                 showDenyButton: true,
                 showCancelButton: true,
                 confirmButtonText: 'confirm',
