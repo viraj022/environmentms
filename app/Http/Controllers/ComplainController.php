@@ -119,10 +119,11 @@ class ComplainController extends Controller
     {
         $user = Auth::user()->id;
         $complains = Complain::with(['createdUser', 'assignedUser'])
-        ->whereHas('assignedUser', function ($query) use ($user) {
-            $query->where('id', $user);
-        })
-        ->get();
+            ->where('assigned_user', $user)
+            ->orWhere('assigned_user', null)
+            ->orderBy('id', 'desc')
+            ->get();
+        
         return $complains;
     }
 
