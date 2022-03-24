@@ -130,11 +130,11 @@
                         <section class="content-header">
 
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="card card-light">
-                                        <div class="card-body">
-                                            <form id="complain_assign_frm" class="w-100">
-                                                <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="card card-light p-5">
+                                        <form id="complain_assign_frm" class="w-100">
+                                            <div class="row">
+                                                <div class="form-group col-md-4">
                                                     <label for="user_level">User Level: </label>
                                                     <select id="user_level" class="custom-select">
                                                         <option value="1">Local</option>
@@ -143,26 +143,17 @@
                                                         <option value="4">Environment Officer</option>
                                                     </select>
                                                 </div>
-                                                <div class="form-group">
+                                                <div class="form-group col-md-4">
                                                     <label for="user">User: </label>
                                                     <select id="user" class="custom-select"></select>
                                                 </div>
-                                                <div class="form-group">
-                                                    <button type="button" class="btn btn-primary"
+                                                <div class="form-group col-md-4">
+                                                    <button type="button" class="btn btn-primary mt-4"
                                                         id="assign_complain"> Assign To </button>
                                                 </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card card-light p-5">
-                                        <div class="row">
-                                            <div class="form-group">
-                                                <h6><label>Assigned User: </label> <span id="assigned_user"></span>
-                                                </h6>
                                             </div>
-                                        </div>
+                                        </form>
+                                        <hr>
                                         <table class="table table-head-fixed text-nowrap" id="forward_history">
                                             <thead>
                                                 <tr>
