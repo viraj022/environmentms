@@ -13,6 +13,7 @@
 <!-- Theme style -->
 <link rel="stylesheet" href="/dist/css/adminlte.min.css">
 <!-- Google Font: Source Sans Pro -->
+
 @endsection
 @section('content')
 @if($pageAuth['is_read']==1 || false)
@@ -609,17 +610,16 @@
                 <!--//minutesTab Open//-->
                 <div class="tab-pane fade" id="custom-tabs-three-minutesTab" role="tabpanel" aria-labelledby="custom-tabs-three-minutesTab-tab">
                     <div class="col-md-12">
-                        <div class="col-md-12 loadMinCard">
-
+                        <div class="col-md-12 loadMinCard" id="printable_minutes">
                         </div>
 
                     </div>
                 </div>
             </div>
         </div>
-        <div class="overlay dark loadingRenderUI">
+        {{-- <div class="overlay dark loadingRenderUI">
             <i class="fas fa-2x fa-sync-alt"></i>
-        </div>
+        </div> --}}
     </div>
 </section>
 <!--//Tab Section END//-->
@@ -656,6 +656,7 @@
                                         PROFILE_ID = '{{$id}}';
                                         var FILE_DETAILS = null;
                                         $(function () {
+                                            $(".loadingRenderUI").remove();
                                             $('.minutesTab').click(function () { //<--load min when click on min tab
                                                 getCardOfTableUI();
                                             });
@@ -679,7 +680,7 @@
                                                 setupInspectionUI(parameters.need_inspection);
                                                 checkFileIssueStatus(parameters);
                                                 checkCompletedStatus(parameters.file_status, parameters.epls, parameters.site_clearence_sessions);
-                                                $(".loadingRenderUI").remove(); //<--Check Loading Status
+                                                // $(".loadingRenderUI").remove(); //<--Check Loading Status
                                             });
 
                                             $('#newEPL').click(function () {
@@ -911,5 +912,6 @@
                                                 });
                                             }
                                         });
+
 </script>
 @endsection

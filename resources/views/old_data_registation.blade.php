@@ -13,6 +13,10 @@
 <!-- Theme style -->
 <link rel="stylesheet" href="/dist/css/adminlte.min.css">
 <!-- Google Font: Source Sans Pro -->
+
+<style>
+</style>
+
 @endsection
 @section('content')
 @if($pageAuth['is_read']==1 || false)
@@ -57,131 +61,134 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label>Industry Type*</label>
-                            <div class="col-sm-12">
                                 <select id="getIndustryType" class="form-control form-control-sm">
                                     <option value="01">EPL</option>
                                     <option value="02">Site Clearance</option>
                                     <option value="03">Telecommunication</option>
                                 </select>
-                            </div>
                         </div>
                         <button id="btnLoadAc" class="btn btn-primary">Load</button>
-                        <div class="eplSection legitSection d-none"> 
-                            <div class="form-group">
-                                <label class="txtCodeCn">EPL Code*</label>
-                                <input id="getEPLCode" type="text" class="form-control form-control-sm" placeholder="Enter Code..." value="">
-                                <div id="valEPL" class="d-none"><p class="text-danger">EPL is required</p></div>
-                            </div>
-                            <div class="form-group">
-                                <label>Remark</label>
-                                <input id="getRemark" type="text" class="form-control form-control-sm" placeholder="Enter Remark..." value="Limited">
-                                <div id="valRemark" class="d-none"><p class="text-danger">Remark is required</p></div>
-                            </div>
-                            <div class="form-group">
-                                <label>Issue Date*</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">
-                                            <i class="far fa-calendar-alt"></i>
-                                        </span>
+                        <form id="old_data_form">
+                            <div class="eplSection legitSection mt-2 d-none"> 
+                                <div class="form-group">
+                                    <label class="txtCodeCn">EPL Code*</label>
+                                    <div><input id="getEPLCode" name="getEPLCode" type="text" class="form-control form-control-sm" required="" placeholder="Enter Code..." value=""></div>
+                                    {{-- <div id="valEPL" class="d-none"><p class="text-danger">EPL is required</p></div> --}}
+                                </div>
+                                <div class="form-group">
+                                    <label>Remark*</label>
+                                    <div>
+                                        <input id="getRemark" name="getRemark" type="text" class="form-control form-control-sm" required="" placeholder="Enter Remark..." value="Limited">
                                     </div>
-                                    <input id="issue_date" name="datepickerUi" type="text" data-date="" data-date-format="YYYY MM DD" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Issue Date..." value="">
+                                    {{-- <div id="valRemark" class="d-none"><p class="text-danger">Remark is required</p></div> --}}
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Expire Date*</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">
-                                            <i class="far fa-calendar-alt"></i>
-                                        </span>
+                                <div class="form-group">
+                                    <label>Issue Date*</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="far fa-calendar-alt"></i>
+                                            </span>
+                                        </div>
+                                        <input id="issue_date" name="datepickerUiIssue" type="text" data-date="" data-date-format="YYYY MM DD" max="2999-12-31" class="form-control form-control-sm" required="" placeholder="Enter Issue Date..." value="">
                                     </div>
-                                    <input id="expire_date" name="datepickerUi"  max="2999-12-31"class="form-control form-control-sm " placeholder="Enter Expire Date..." value="">
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Last Submitted Date*</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">
-                                            <i class="far fa-calendar-alt"></i>
-                                        </span>
+                                <div class="form-group">
+                                    <label>Expire Date*</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="far fa-calendar-alt"></i>
+                                            </span>
+                                        </div>
+                                        <input id="expire_date" name="datepickerUiExp"  max="2999-12-31"class="form-control form-control-sm " required="" placeholder="Enter Expire Date..." value="">
                                     </div>
-                                    <input id="getsubmitDate" name="datepickerUi"  max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Submit Date..." value="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Submitted Date*</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="far fa-calendar-alt"></i>
+                                            </span>
+                                        </div>
+                                        <input id="getsubmitDate" name="datepickerUiSubmit"  max="2999-12-31" class="form-control form-control-sm" required="" placeholder="Enter Submit Date..." value="">
+                                    </div>
+                                </div>
+                                <div class="form-group showCertificateNo">
+                                    <label>Certificate No*</label>
+                                    <input id="getcertifateNo" type="text" name="getcertifateNo" class="form-control form-control-sm" required="" placeholder="Enter Certificate No..." value="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Previous Renews*</label>
+                                    <div class="input-group">
+                                        <select id="getPreRenew" name="getPreRenew" class="form-control form-control-sm" required="">
+                                            <option value="0">First</option>
+                                            <option value="1">R 1</option>
+                                            <option value="2">R 2</option>
+                                            <option value="3">R 3</option>
+                                            <option value="4">R 4</option>
+                                            <option value="5">R 5</option>
+                                            <option value="6">R 6</option>
+                                            <option value="7">R 7</option>
+                                            <option value="8">R 8</option>
+                                            <option value="9">R 9</option>
+                                            <option value="10">R 10</option>
+                                            <option value="11">R 11</option>
+                                            <option value="12">R 12</option>
+                                            <option value="13">R 13</option>
+                                            <option value="14">R 14</option>
+                                            <option value="15">R 15</option>
+                                            <option value="16">R 16</option>
+                                            <option value="17">R 17</option>
+                                            <option value="18">R 18</option>
+                                            <option value="19">R 19</option>
+                                            <option value="21">R 20</option>
+                                            <option value="22">R 22</option>
+                                            <option value="23">R 23</option>
+                                            <option value="24">R 24</option>
+                                            <option value="25">R 25</option>
+                                            <option value="26">R 26</option>
+                                            <option value="27">R 27</option>
+                                            <option value="28">R 28</option>
+                                            <option value="29">R 29</option>
+                                            <option value="30">R 30</option>
+                                            <option value="31">R 31</option>
+                                            <option value="32">R 32</option>
+                                            <option value="33">R 33</option>
+                                            <option value="34">R 34</option>
+                                            <option value="35">R 35</option>
+                                            <option value="36">R 36</option>
+                                            <option value="37">R 37</option>
+                                            <option value="38">R 38</option>
+                                            <option value="39">R 39</option>
+                                            <option value="40">R 40</option>
+                                            <option value="41">R 41</option>
+                                            <option value="42">R 42</option>
+                                            <option value="43">R 43</option>
+                                            <option value="44">R 44</option>
+                                            <option value="45">R 45</option>
+                                            <option value="46">R 46</option>
+                                            <option value="47">R 47</option>
+                                            <option value="48">R 48</option>
+                                            <option value="49">R 49</option>
+                                            <option value="50">R 50</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Issued Certificate* </label>
+                                    <div class="input-group">
+                                        <input id="last_certificate" name="last_certificate" type="file" accept="image/*,application/pdf" required="">
+                                    </div>
+                                </div>
+                                <div class="progress d-none">
+                                    <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                        <!--<span class="sr-only">40% Complete (success)</span>-->
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group showCertificateNo">
-                                <label>Certificate No*</label>
-                                <input id="getcertifateNo" type="text" class="form-control form-control-sm" placeholder="Enter Certificate No..." value="">
-                                <div id="valcertifateNo" class="d-none"><p class="text-danger">Certificate No is required</p></div>
-                            </div>
-                            <div class="form-group">
-                                <label>Previous Renews*</label>
-                                <div class="col-sm-12">
-                                    <select id="getPreRenew" class="form-control form-control-sm">
-                                        <option value="0">First</option>
-                                        <option value="1">R 1</option>
-                                        <option value="2">R 2</option>
-                                        <option value="3">R 3</option>
-                                        <option value="4">R 4</option>
-                                        <option value="5">R 5</option>
-                                        <option value="6">R 6</option>
-                                        <option value="7">R 7</option>
-                                        <option value="8">R 8</option>
-                                        <option value="9">R 9</option>
-                                        <option value="10">R 10</option>
-                                        <option value="11">R 11</option>
-                                        <option value="12">R 12</option>
-                                        <option value="13">R 13</option>
-                                        <option value="14">R 14</option>
-                                        <option value="15">R 15</option>
-                                        <option value="16">R 16</option>
-                                        <option value="17">R 17</option>
-                                        <option value="18">R 18</option>
-                                        <option value="19">R 19</option>
-                                        <option value="21">R 20</option>
-                                        <option value="22">R 22</option>
-                                        <option value="23">R 23</option>
-                                        <option value="24">R 24</option>
-                                        <option value="25">R 25</option>
-                                        <option value="26">R 26</option>
-                                        <option value="27">R 27</option>
-                                        <option value="28">R 28</option>
-                                        <option value="29">R 29</option>
-                                        <option value="30">R 30</option>
-                                        <option value="31">R 31</option>
-                                        <option value="32">R 32</option>
-                                        <option value="33">R 33</option>
-                                        <option value="34">R 34</option>
-                                        <option value="35">R 35</option>
-                                        <option value="36">R 36</option>
-                                        <option value="37">R 37</option>
-                                        <option value="38">R 38</option>
-                                        <option value="39">R 39</option>
-                                        <option value="40">R 40</option>
-                                        <option value="41">R 41</option>
-                                        <option value="42">R 42</option>
-                                        <option value="43">R 43</option>
-                                        <option value="44">R 44</option>
-                                        <option value="45">R 45</option>
-                                        <option value="46">R 46</option>
-                                        <option value="47">R 47</option>
-                                        <option value="48">R 48</option>
-                                        <option value="49">R 49</option>
-                                        <option value="50">R 50</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Last Issued Certificate: </label>
-                                <input id="last_certificate" type="file" accept="image/*,application/pdf">
-                            </div>
-                            <div class="progress d-none">
-                                <div class="progress-bar bg-primary progress-bar-striped Uploadprogress" id="Uploadprogress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                                    <!--<span class="sr-only">40% Complete (success)</span>-->
-                                </div>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                     <div class="card-footer">
                         @if($pageAuth['is_create']==1 || false)
@@ -314,9 +321,11 @@
 <script src="../../js/commonFunctions/file_upload.js" type="text/javascript"></script>
 <script src="../../js/OldFileListJS/assign-epl-combo-set.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
+<script src="{{ asset('/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
 <script>
     let PROFILE = '{{$id}}';
     $(function () {
+        
 //Load Combo Sets
         loadAssistantDirectorCombo(function () {
             loadEnvOfficers_combo(parseInt($('#ass_dir_combo').val()), function () {
@@ -329,9 +338,10 @@
         });
 //click save button
         $('#btnSave').click(function () {
+            var is_valid = $("#old_data_form").valid();
             let TYPE = $('#getIndustryType').val();
             var data = fromValues();
-            if (Validiteinsert(data)) {
+            if (is_valid) {
                 saveEPLOldFiles(PROFILE, data, TYPE, function (result) {
                     show_mesege(result);
                     visibleUploads(result);
@@ -558,5 +568,84 @@
             uploadButtonHandler($('#otherFiles').val());
         });
     });
+
+            var old_file_reg;
+            emp_registration = $("#emp_reg_form").validate({
+                errorClass: "invalid",
+                rules: {
+                    mobile: {
+                        valid_lk_phone: true,
+                    },
+                    landline: {
+                        valid_lk_phone: true,
+                    },
+                    nic_no: {
+                        valid_lk_nic: true,
+                    },
+                    landline: {
+                        valid_lk_phone: true,
+                    }
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+
+            jQuery(document).ajaxStart(function() {
+                jQuery(".loading_animation_content").show();
+            }).ajaxStop(function() {
+                jQuery(".loading_animation_content").hide();
+            });
+            jQuery.validator.setDefaults({
+                errorElement: "span",
+                ignore: ":hidden:not(select.chosen-select)",
+                errorPlacement: function(error, element) {
+                    // Add the `help-block` class to the error element
+                    error.addClass("help-block");
+                    if (element.prop("type") === "checkbox") {
+                        //                error.insertAfter(element.parent("label"));
+                        error.appendTo(element.parents("validate-parent"));
+                    } else if (element.is("select.chosen-select")) {
+                        error.insertAfter(element.siblings(".chosen-container"));
+                    } else if (element.prop("type") === "radio") {
+                        error.appendTo(element.parents("div.validate-parent"));
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                highlight: function(element, errorClass, validClass) {
+                    jQuery(element).parents(".validate-parent").addClass("has-error").removeClass("has-success");
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    jQuery(element).parents(".validate-parent").removeClass("has-error");
+                }
+            });
+            jQuery.validator.addMethod("valide_code", function(value, element) {
+                return this.optional(element) || /^[a-zA-Z\s\d\_\-()]{1,100}$/.test(value);
+            }, "Please enter a valid Code");
+            jQuery.validator.addMethod("valid_name", function(value, element) {
+                return this.optional(element) || /^[a-zA-Z\s\.\&\-()]*$/.test(value);
+            }, "Please enter a valid name");
+            jQuery.validator.addMethod("valid_date", function(value, element) {
+                return this.optional(element) || /^\d{4}\-\d{2}\-\d{2}$/.test(value);
+            }, "Please enter a valid date ex. 2017-03-27");
+            jQuery.validator.addMethod("valide_email", function(value, element) {
+                return this.optional(element) || /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/.test(value);
+            }, "Please enter a valid email addresss");
+            jQuery.validator.addMethod("valid_lk_phone", function(value, element) {
+                return this.optional(element) || /^(\+94)?\d{2,3}[-]?\d{7}$/.test(value);
+            }, "Please enter a valid phone number");
+            jQuery.validator.addMethod("valid_lk_nic", function(value, element) {
+                return this.optional(element) || /^([0-9]{9}[x|X|v|V]|[0-9]{12})$/.test(value);
+            }, "Please enter a valid NIC number");
+
 </script>
 @endsection
