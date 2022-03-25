@@ -182,11 +182,22 @@
                                                     </div>
                                                     <div class="form-group fileUpDiv">
                                                         <hr>
-                                                        <label id="uploadLabel">File Upload </label><br>
-                                                        <input id="fileUploadInput" type="file" class=""
-                                                            accept="application/pdf">
-                                                        <button id="uploadCerfile" class="btn btn-success"><i
-                                                                class="fas fa-file-upload"></i> Upload</button>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="fileUploadInput">PDF Upload: </label><br>
+                                                                    <input id="fileUploadInput" type="file" accept="application/pdf">
+                                                                    <button id="uploadCerfile" class="btn btn-success"><i class="fas fa-file-upload"></i> Upload</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                  <label for="fileUploadInputDocx">Word File Upload: </label><br>
+                                                                  <input id="fileUploadInputDocx" type="file" accept=".doc, .docx">
+                                                                  <button id="uploadCerfileDocx" class="btn btn-success"><i class="fas fa-file-upload"></i> Upload</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         <div class="progress d-none">
                                                             <div class="progress-bar bg-primary progress-bar-striped Uploadprogress"
                                                                 id="Uploadprogress" role="progressbar" aria-valuenow="40"
@@ -561,6 +572,32 @@
             } else {
                 swal.fire('Failed', 'Please enter reference no to save', 'error');
             }
+        });
+
+
+        $('#uploadCerfileDocx').click(function() {
+            let url_upload = '';
+            if (isNaN(CERTIFICATE_ID)) {
+                swal.fire('Failed', 'Certificate ID Error!', 'error');
+                return false;
+            }
+            let file = $('#fileUploadInputDocx')[0].files[0];
+            let DATA = {
+                file: file
+            };
+            if ($('#fileUploadInputDocx')[0].files.length === 0) {
+                fire('Failed', 'No File Selected!!', 'error');
+                return false;
+            }
+            url_upload = '/api/certificate/word/cert_id/';
+            submitDataWithFile(url_upload + CERTIFICATE_ID, DATA, function(resp) {
+                if(resp.status == 1){
+                    swal.fire('success', 'File Uploaded Successfully', 'success');
+                    $('#fileUploadInputDocx').val('');
+                }else{
+                    swal.fire('failed', 'File Uploaded Unsuccessful', 'error');
+                }
+            });
         });
     </script>
 @endsection

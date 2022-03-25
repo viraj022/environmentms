@@ -1398,4 +1398,31 @@ class ClientController extends Controller
         }
         return $client_data;
     }
+
+    public function uploadDocumentFile(Request $request, $id)
+    {
+        request()->validate([
+            'file' => 'required|mimes:doc,docx'
+        ]);
+
+        $certificate = Certificate::findOrFail($id);
+        if ($request->exists('file')) {
+            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+            $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/draft/document/" . $id;
+            $storePath = 'public' . $fileUrl;
+            $path = 'storage' . $fileUrl . "/" . $file_name;
+            $request->file('file')->storeAs($storePath, $file_name);
+            $certificate->document_cert_path = $path;
+            $certificate->save();
+
+            if ($certificate == true){
+              LogActivity::addToLog("Document has uploaded", $certificate);
+              return array('status' => 1, 'message' => 'File Uploaded Successfully');
+            } else {
+              return array('status' => 0, 'message' => 'File Uploaded Failed');
+            }
+        } else {
+            return array('id' => 0, 'message' => 'File does not exist');
+        }
+    }
 }

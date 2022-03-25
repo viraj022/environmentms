@@ -434,4 +434,5 @@ Route::middleware('auth:api')->patch('/reject/file/{file_id}', 'AssistantDirecto
 Route::middleware('auth:api')->get('/files/confirmed', 'ClientController@getCofirmedFiles'); //   get confirmed files
 
 Route::middleware('auth:api')->get('/files/approved/director', 'ClientController@getDirectorApprovedList'); //  get director approved list
+Route::middleware('auth:api')->post('/certificate/word/cert_id/{cert_id}', 'ClientController@uploadDocumentFile'); //  upload document file
 
