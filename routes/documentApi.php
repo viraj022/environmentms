@@ -10,3 +10,4 @@ Route::middleware('auth:api')->get('/load_templates', 'WebDocumentController@loa
 Route::middleware('auth:api')->delete('/delete_letter/letter/{letter_id}', 'WebDocumentController@deleteLetter');
 Route::middleware('auth:api')->delete('/delete_letter_temp/letter_template/{letter_temp_id}', 'WebDocumentController@deleteLetterTemplate');
 Route::middleware('auth:api')->get('/get_letters_by_complain/complain/{complain_id}', 'WebDocumentController@getLettersForComplainId');
+
