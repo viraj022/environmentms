@@ -24,7 +24,7 @@ function update_attachments() {
 
 }
 
-function loadProfileData(user_id) {
+function loadProfileData(user_id, callBack) {
     let id = $('#complain_profile_id').val();
     let url = '/api/complain_profile_data/id/' + id;
     ajaxRequest('GET', url, null, function (resp) {
@@ -115,6 +115,9 @@ function loadProfileData(user_id) {
         }
         $('#assigned_user').html(assigned_user);
     });
+    if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        callBack();
+    }
 }
 
 function iterateComplain_minit(object, user_id) {
@@ -174,12 +177,10 @@ function load_forward_history_table(complain_id) {
         $('#forward_history tbody').html(forward_hist_table);
         $('#forward_history').DataTable({
             "pageLength": 5,
-            aLengthMenu: [
-                [5, 10, 25, 50, 100, -1],
-                [5, 10, 25, 50, 100, "All"]
-            ],
             "bDestroy": true,
-            iDisplayLength: 10
+            "iDisplayLength": 10,
+            "bLengthChange": false,
+            "searching": false
         });
     });
 
@@ -212,9 +213,9 @@ function assign_user_to_complain(complain_id, user_id) {
     ajaxRequest('GET', "/api/assign_complain_to_user/complain_id/" + complain_id + "/user_id/" + user_id, null, function (result) {
         if (result.status == 1) {
             swal.fire('success', 'Successfully assigned the user to the complain', 'success');
-            forms_reset();
-            loadProfileData();
-            load_forward_history_table(complain_id);
+            loadProfileData(user_id, function(){
+                load_forward_history_table(complain_id);
+            });
         } else {
             swal.fire('failed', 'User assigning was unsuccessful', 'warning');
         }

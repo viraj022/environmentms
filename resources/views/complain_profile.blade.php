@@ -68,7 +68,7 @@
                                         </h2>
 
                                     </div>
-                                    <ul class="list-group list-group-unbordered mt-5 mb-3">
+                                    <ul class="list-group mt-5 mb-3">
 
                                         <li class="list-group-item">
                                             <b>Code :</b> <a class="float-right" id="comp_code"></a>
@@ -156,11 +156,15 @@
                                     </div>
                                 </div>
                                 <div class="col-md-9">
-                                    <div class="card card-light p-5">
-                                        <form id="complain_assign_frm" class="w-100">
-                                            <div class="row">
+                                    <div class="card card-gray">
+                                        <div class="card-header">
+                                            User assignment for the complain
+                                        </div>
+                                        <div class="card-body">
+                                            <form id="complain_assign_frm" class="w-100">
+                                              <div class="row">
+                                                <label>User Level: </label>
                                                 <div class="form-group col-md-2">
-                                                    <label for="user_level">User Level: </label>
                                                     <select id="user_level" class="custom-select">
                                                         <option value="1">Local</option>
                                                         <option value="2">Director</option>
@@ -168,28 +172,27 @@
                                                         <option value="4">Environment Officer</option>
                                                     </select>
                                                 </div>
+                                                <label for="user">User: </label>
                                                 <div class="form-group col-md-3">
-                                                    <label for="user">User: </label>
                                                     <select id="user" class="custom-select"></select>
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <button type="button" class="btn btn-primary mt-4"
-                                                    id="assign_complain"> Assign To </button>
+                                                    <button type="button" class="btn btn-primary form-control" id="assign_complain"> Assign To </button>
                                                 </div>
-                                            </div>
-                                        </form>
-                                        <hr>
-                                        <table class="table table-head-fixed text-nowrap" id="forward_history">
-                                            <thead>
-                                                <tr>
+                                              </div>
+                                            </form>
+                                            <table class="table table-head-fixed text-nowrap" id="forward_history">
+                                                <thead>
+                                                  <tr>
                                                     <th style="width: 8%">#</th>
                                                     <th>Assignee</th>
                                                     <th>Assignor</th>
                                                     <th>Assigned Time</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
+                                                   </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
