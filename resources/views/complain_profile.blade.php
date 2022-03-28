@@ -68,7 +68,7 @@
                                         </h2>
 
                                     </div>
-                                    <ul class="list-group list-group-unbordered mt-5 mb-3">
+                                    <ul class="list-group mt-5 mb-3">
 
                                         <li class="list-group-item">
                                             <b>Code :</b> <a class="float-right" id="comp_code"></a>
@@ -130,12 +130,41 @@
                         <section class="content-header">
 
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="card card-light">
+                                <div class="col-md-3">
+                                    <div class="card card-gray">
+                                        <div class="card-header">
+                                            File Assign
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label for="client_id">File No: </label>
+                                                <select class="custom-select select2" id="client_id"></select>
+                                                <button type="button" id="assign_file" class="btn btn-success mt-1">Assign
+                                                    File</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card card-gray">
+                                       <div class="card-header">Actions</div>
+                                       <div class="card-body">
+                                        <div class="form-group">
+                                            <button id="confirm" class="btn btn-info d-none">Confirm</button>
+                                            <button id="reject" class="btn btn-warning d-none">Reject</button>
+                                            <button id="forward_letter_preforation" class="btn btn-success">Forward to letter preforation</button>
+                                        </div>
+                                       </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card card-gray">
+                                        <div class="card-header">
+                                            User assignment for the complain
+                                        </div>
                                         <div class="card-body">
                                             <form id="complain_assign_frm" class="w-100">
-                                                <div class="form-group">
-                                                    <label for="user_level">User Level: </label>
+                                              <div class="row">
+                                                <label>User Level: </label>
+                                                <div class="form-group col-md-2">
                                                     <select id="user_level" class="custom-select">
                                                         <option value="1">Local</option>
                                                         <option value="2">Director</option>
@@ -143,43 +172,26 @@
                                                         <option value="4">Environment Officer</option>
                                                     </select>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="user">User: </label>
+                                                <label for="user">User: </label>
+                                                <div class="form-group col-md-3">
                                                     <select id="user" class="custom-select"></select>
                                                 </div>
-                                                <div class="form-group">
-                                                    <button type="button" class="btn btn-primary" id="assign_complain">
-                                                        Assign To </button>
+                                                <div class="col-md-3">
+                                                    <button type="button" class="btn btn-primary form-control" id="assign_complain"> Assign To </button>
                                                 </div>
+                                              </div>
                                             </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card card-light p-5">
-                                        <div class="row">
-                                            <div class="form-group">
-                                                <h6><label>Assigned User: </label> <span id="assigned_user"></span>
-                                                </h6>
-                                            </div>
-                                        </div>
-                                        <table class="table table-head-fixed text-nowrap" id="forward_history">
-                                            <thead>
-                                                <tr>
+                                            <table class="table table-head-fixed text-nowrap" id="forward_history">
+                                                <thead>
+                                                  <tr>
                                                     <th style="width: 8%">#</th>
                                                     <th>Assignee</th>
                                                     <th>Assignor</th>
                                                     <th>Assigned Time</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                        <div class="form-group mt-2">
-                                            <button id="confirm" class="btn btn-info d-none">Confirm</button>
-                                            <button id="reject" class="btn btn-warning d-none">Reject</button>
-                                            <button id="forward_letter_preforation" class="btn btn-success">Forward
-                                                to letter
-                                                preforation</button>
+                                                   </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -275,24 +287,6 @@
                                         </div>
                                     </div>
                                 </section>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="card card-gray">
-                                    <div class="card-header">
-                                        File Assign
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <label for="client_id">File No: </label>
-                                            <select class="custom-select select2" id="client_id"></select>
-                                            <button type="button" id="assign_file" class="btn btn-success mt-1">Assign
-                                                File</button>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>

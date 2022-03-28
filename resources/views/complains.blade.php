@@ -120,7 +120,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>complaint Code</th>
+                                        <th>Complaint Code</th>
                                         <th style="width: 20%">Complainer Name</th>
                                         <th style="width: 14%">Contact Number</th>
                                         <!-- <th>Description</th> -->
