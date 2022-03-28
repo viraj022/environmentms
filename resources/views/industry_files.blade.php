@@ -405,7 +405,7 @@
             var fileData = JSON.parse(unescape($(this).val()));
             loadCertificatePathsApi(parseInt(fileData.id), function(set) {
                let path = set.document_cert_path;
-               window.open(set.certificate_path, '_blank');
+               window.open(path, '_blank');
             });
         });
 

@@ -190,13 +190,6 @@
                                                                     <button id="uploadCerfile" class="btn btn-success"><i class="fas fa-file-upload"></i> Upload</button>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                  <label for="fileUploadInputDocx">Word File Upload: </label><br>
-                                                                  <input id="fileUploadInputDocx" type="file" accept=".doc, .docx">
-                                                                  <button id="uploadCerfileDocx" class="btn btn-success"><i class="fas fa-file-upload"></i> Upload</button>
-                                                                </div>
-                                                            </div>
                                                         </div>
                                                         <div class="progress d-none">
                                                             <div class="progress-bar bg-primary progress-bar-striped Uploadprogress"
@@ -207,10 +200,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group showCorrectedFileUi d-none">
-                                                        <hr>
-                                                        <label id="uploadLabel">Corrected File </label>
-                                                        <input id="correctedFile" type="file" class=""
-                                                            accept="application/pdf">
+                                                        <label for="uploadLabel">Word File Upload: </label>
+                                                        <input id="correctedFile" type="file" class="" accept=".doc, .docx, .pdf">
                                                         <button id="uploadcorrectedFile" class="btn btn-success"><i
                                                                 class="fas fa-file-upload"></i> Upload</button>
                                                         <div class="progress d-none">
@@ -262,9 +253,9 @@
                                                                     title="Click to view file" id="correctedCertificatePath"
                                                                     href="" target="_blank">
                                                                     <p>Corrected File</p>
-                                                                    <img class="img-fluid rounded" alt="PDF"
-                                                                        style="width: auto; height: auto;"
-                                                                        src="/dist/img/pdf-view.png"
+                                                                    <img class="img-fluid rounded" id="file_view" alt="PDF"
+                                                                        style="width: 128px; height: 128px;"
+                                                                        src=""
                                                                         data-holder-rendered="true">
                                                                 </a>
                                                             </div>
@@ -404,17 +395,21 @@
             getaProfilebyId(PROFILE_ID, function(parameters) {
                 FILE_STATUS = parseInt(parameters.file_status);
                 CER_STATUS = parseInt(parameters.cer_status);
+                if(CER_STATUS == 1){
+                    $('.showCorrectedFileUi').removeClass('d-none');
+                    $('.correctedFileShowUi').removeClass('d-none');
+                }else{
+                    $('.showCorrectedFileUi').addClass('d-none');
+                    $('.correctedFileShowUi').addClass('d-none');
+                }
                 setProfileDetails(parameters);
                 setIndustryAndClientDb(parameters);
                 $(".loadingRenderUI").remove(); //<--Check Loading Status
                 //Control Gen Certificate Btn View
                 if (FILE_STATUS === 6 && CER_STATUS === 6) {
                     $(".genCertificateNum").remove();
-                } else {}
+                }
             });
-
-            //select button action
-            $(document).on('click', '.btnAction', function() {});
         });
 
         //Show Certificate Details
@@ -433,7 +428,6 @@
                     if (resp.id == 1) {
                         getCertificateDetails(PROFILE_ID, function(resp) {
                             CERTIFICATE_ID = parseInt(resp.id);
-                            location.reload();
                         });
                     }
                 });
@@ -472,14 +466,13 @@
                 url_upload = '/api/certificate/draft/';
 
             }
-            console.log(FILE_STATUS);
+            
             submitDataWithFile(url_upload + CERTIFICATE_ID, DATA, function(resp) {
                 show_mesege(resp);
                 if (resp.id == 1) {
                     getCertificateDetails(PROFILE_ID, function(resp) {
                         CERTIFICATE_ID = parseInt(resp.id);
                         FILE_STATUS = parseInt(resp.client.file_status);
-                        location.reload();
                     });
                 }
             });
@@ -506,10 +499,15 @@
                     getCertificateDetails(PROFILE_ID, function(resp) {
                         CERTIFICATE_ID = parseInt(resp.id);
                         FILE_STATUS = parseInt(resp.client.file_status);
+                        $('#correctedFile').val('');
                     });
+                } else {
+                    // show errors
+
+                    // location.reload();
                 }
             });
-            location.reload();
+            
         });
 
         $('.complCertificate').click(function() {
