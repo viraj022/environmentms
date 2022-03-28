@@ -117,7 +117,7 @@
                 </div>
             </div>
             <div class="modal fade" id="modal-x2">
-                <div class="modal-dialog modal-md">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title" id="modalTitlex2">Modal</h4>
@@ -148,10 +148,26 @@
                                     class="fa fa-times"></i> Reject Certificate</button>
                             <button type="button" id="upCertificate" class="btn btn-primary d-none"><i
                                     class="fa fa-check"></i>Upload Certificate</button>
-                            <div class="btn btn-group-lg">
-                                <button type="button" id="viewCertificateBtn" class="btn btn-info d-none"><i
-                                        class="fa fa-file"></i> View Certificate</button>
-                            </div>
+                            <button type="button" id="viewCertificateBtn" class="btn btn-success d-none"><i
+                                    class="fa fa-file"></i> View Certificate</button>
+                            <button type="button" id="downloadDocumentBtn" class="btn btn-info d-none"><i
+                                    class="fa fa-file"></i> Download Document</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modal-x3">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="modalTitlex2">Modal</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="cert_doc"></div>
                         </div>
                     </div>
                 </div>
@@ -187,6 +203,7 @@
     <script src="../../dist/js/demo.js"></script>
     <!-- AdminLTE App -->
     <script>
+
         var file_status = {
             0: 'pending',
             1: 'AD File Approval Pending',
@@ -283,6 +300,7 @@
                 .val()); //<-- Share this button value to submitAdCerApproval button
             $('#setInspectionVal2').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
             $('#viewCertificateBtn').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
+            $('#downloadDocumentBtn').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
             $('#upCertificate').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
             $('#modalTitlex2').html(fileData.file_no);
             if (fileData.need_inspection != null && f_Status == 0) {
@@ -291,7 +309,7 @@
                 $('#nominate_certificate').addClass('d-none');
             }
 
-            $('#needApproval,#submitAdCerApproval,#rejectAdCerApproval,#setInspectionVal2,#viewCertificateBtn')
+            $('#needApproval,#submitAdCerApproval,#rejectAdCerApproval,#setInspectionVal2,#viewCertificateBtn,#downloadDocumentBtn')
                 .addClass('d-none');
 
             if (f_Status === 0 || f_Status === -1) {
@@ -309,6 +327,7 @@
                     $('#submitAdCerApproval').removeClass('d-none');
                     $('#rejectAdCerApproval').removeClass('d-none');
                     $('#viewCertificateBtn').removeClass('d-none');
+                    $('#downloadDocumentBtn').removeClass('d-none');
                     $('#upCertificate').removeClass('d-none');
                 }
             } else if (f_Status == -1) {
@@ -380,6 +399,16 @@
                 window.open(set.certificate_path, '_blank');
             });
         });
+
+         //View document when btn click
+        $(document).on('click', '#downloadDocumentBtn', function() {
+            var fileData = JSON.parse(unescape($(this).val()));
+            loadCertificatePathsApi(parseInt(fileData.id), function(set) {
+               let path = set.document_cert_path;
+               window.open(set.certificate_path, '_blank');
+            });
+        });
+
         $(document).on('click', '#upCertificate', function() {
             var fileData = JSON.parse(unescape($(this).val()));
             window.open('certificate_perforation/id/' + fileData.id, '_blank');
