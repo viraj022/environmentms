@@ -227,7 +227,7 @@
 <!-- AdminLTE App -->
 <script>
     $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
+        // $('[data-toggle="tooltip"]').tooltip();
         // initialize the calendar--
         var Calendar = FullCalendar.Calendar;
         var Draggable = FullCalendarInteraction.Draggable;

@@ -8,14 +8,14 @@ var situations_arr = {
     ASSI_OFF_REJECT__CERTIFICATE: 'Assistant Director Certificate Rejected',
     ASSI_OFF_APPROVE__CERTIFICATE: 'Assistant Director Certificate Approved',
     DIRECTOR_APP__CERTIFICATE: 'Director Certificate Approved',
-//    ENV_OFF_APP__CERTIFICATE: 'Environment Officer Certificate Approved',
-//    ENV_OFF_REJECT__CERTIFICATE: 'Environment Officer Certificate Rejected',
-//    ASSI_OFF_REJECT__CERTIFICATE: 'Assistant Director Certificate Rejected'
+    //    ENV_OFF_APP__CERTIFICATE: 'Environment Officer Certificate Approved',
+    //    ENV_OFF_REJECT__CERTIFICATE: 'Environment Officer Certificate Rejected',
+    //    ASSI_OFF_REJECT__CERTIFICATE: 'Assistant Director Certificate Rejected'
 };
 
 //Method API
 function methodMinuteAPI(data, method, id, callBack) {
-  
+
     //Current Usage Explained - POST/1 , PUT/2 , DELETE/3 , GET/4
     let DATA_METHOD = '';
     let URL = '';
@@ -35,15 +35,14 @@ function methodMinuteAPI(data, method, id, callBack) {
     } else {
         return false;
     }
-    ajaxRequest(DATA_METHOD, URL, data, function (dataSet) {
-        
-      
+    ajaxRequest(DATA_METHOD, URL, data, function(dataSet) {
+
+
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
     });
 }
-
 
 //function getCardOfTableUI(callBack) {
 //    var card = "";
@@ -97,18 +96,18 @@ function methodMinuteAPI(data, method, id, callBack) {
 function getCardOfTableUI(callBack) {
     var card = "";
     var id = 1;
-    methodMinuteAPI(null, 4, PROFILE_ID, function (dataSet) {
+    methodMinuteAPI(null, 4, PROFILE_ID, function(dataSet) {
         if (dataSet) {
             card += '<div class="card card-widget">';
             card += '<div class="card-header">';
             card += ' <b class="username">Minutes List</b>';
             card += ' <div class="card-tools">';
-            card += ' <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>';
-            card += '  </button>';
+            card += ' <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>';
+            card += ' <button type="button" class="btn btn-primary" onClick="window.print()">Print</button>';
             card += ' </div>';
             card += ' </div>';
             card += ' <div class="card-footer card-comments" style="display: block;">';
-            $.each(dataSet, function (index, e) {
+            $.each(dataSet, function(index, e) {
                 card += '<div class="card-comment">';
                 card += '<img class="img-circle img-sm" src="../../dist/img/user1-128x128.jpg" alt="User Image">';
                 card += '<div class="comment-text">';
@@ -128,7 +127,7 @@ function getCardOfTableUI(callBack) {
             card = "<td>No Data Found</td>";
         }
         $('.loadMinCard').html(card);
-//        $('.loadMinCard').html(table);
+        //        $('.loadMinCard').html(table);
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack();
         }

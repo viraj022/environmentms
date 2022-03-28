@@ -73,6 +73,7 @@ function setInspectionNeededApi(id, callBack) {
                 }
             });
         }
+        $('.external-event').tooltip('dispose');
         $('#external-events').html(ui);
         $('.external-event').tooltip();
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
