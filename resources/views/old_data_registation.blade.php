@@ -13,10 +13,6 @@
 <!-- Theme style -->
 <link rel="stylesheet" href="/dist/css/adminlte.min.css">
 <!-- Google Font: Source Sans Pro -->
-
-<style>
-</style>
-
 @endsection
 @section('content')
 @if($pageAuth['is_read']==1 || false)

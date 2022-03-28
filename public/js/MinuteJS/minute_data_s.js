@@ -44,26 +44,6 @@ function methodMinuteAPI(data, method, id, callBack) {
     });
 }
 
-// function printDiv(id) {
-//     var divContents = document.getElementById(id).innerHTML;
-//     var a = window.open('', '', 'height=800, width=600');
-//     a.document.write('<html>');
-//     a.document.write('<>');
-//     a.document.write('<style>');
-//     a.document.write('<link rel="stylesheet" href="/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">');
-//     a.document.write('</style>');
-//     a.document.write('</>');
-//     a.document.write('<body>');
-//     a.document.write(divContents);
-//     a.document.write('</body></html>');
-//     a.document.close();
-//     a.print();
-// }
-
-// $(document).on('click', '#print_minutes', function() {
-//     printDiv('printable_minutes');
-// });
-
 //function getCardOfTableUI(callBack) {
 //    var card = "";
 //    var id = 1;
