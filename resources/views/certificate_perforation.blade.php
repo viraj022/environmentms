@@ -473,6 +473,7 @@
                     getCertificateDetails(PROFILE_ID, function(resp) {
                         CERTIFICATE_ID = parseInt(resp.id);
                         FILE_STATUS = parseInt(resp.client.file_status);
+                        $('#fileUploadInput').val('');
                     });
                 }
             });
@@ -518,9 +519,12 @@
                 };
                 completeCertificateAPI(CERTIFICATE_ID, FILE_STATUS, dataB, function(resp) {
                     show_mesege(resp);
-                    if (resp.id === 1) {
-                        window.location.href = "/industry_profile/id/" + PROFILE_ID;
-                    }
+                    // if (resp.id === 1) {
+                    //     window.location.href = "/industry_profile/id/" + PROFILE_ID;
+                    // }
+                    $('#certificateSubmittedLable').removeClass('d-none');
+                    $('.complCertificate').addClass('d-none');
+                    
                     getCertificateDetails(PROFILE_ID, function(resp) {
                         CERTIFICATE_ID = parseInt(resp.id);
                         FILE_STATUS = parseInt(resp.client.file_status);
@@ -570,32 +574,6 @@
             } else {
                 swal.fire('Failed', 'Please enter reference no to save', 'error');
             }
-        });
-
-
-        $('#uploadCerfileDocx').click(function() {
-            let url_upload = '';
-            if (isNaN(CERTIFICATE_ID)) {
-                swal.fire('Failed', 'Certificate ID Error!', 'error');
-                return false;
-            }
-            let file = $('#fileUploadInputDocx')[0].files[0];
-            let DATA = {
-                file: file
-            };
-            if ($('#fileUploadInputDocx')[0].files.length === 0) {
-                fire('Failed', 'No File Selected!!', 'error');
-                return false;
-            }
-            url_upload = '/api/certificate/word/cert_id/';
-            submitDataWithFile(url_upload + CERTIFICATE_ID, DATA, function(resp) {
-                if(resp.status == 1){
-                    swal.fire('success', 'File Uploaded Successfully', 'success');
-                    $('#fileUploadInputDocx').val('');
-                }else{
-                    swal.fire('failed', 'File Uploaded Unsuccessful', 'error');
-                }
-            });
         });
     </script>
 @endsection

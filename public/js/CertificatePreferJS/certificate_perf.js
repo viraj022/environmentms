@@ -103,9 +103,11 @@ function getCertificateDetails(file_id, callBack) {
                     $('#uploadFileSection').addClass('d-none');
                     $('#certificateSubmittedLable').removeClass('d-none');
                     $('.showCorrectedFileUi').removeClass('d-none');
+                    $('.originalCertificateShowUi').addClass('d-none');
                     // $('.correctedFileShowUi').removeClass('d-none');
-                    $('.complCertificate').addClass('d-none');
+                    $('.fileUpDiv').addClass('d-none');
                 } else {
+                    $('.fileUpDiv').removeClass('d-none');
                     $('#certificateSubmittedLable').addClass('d-none');
                     $('#uploadFileSection').removeClass('d-none');
                     $('.showCorrectedFileUi').addClass('d-none');
