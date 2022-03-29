@@ -100,7 +100,7 @@
                                                                             class="form-control"
                                                                             placeholder="Enter reference number here">
                                                                         <button type="button" id="save_man_ref_no"
-                                                                            class="btn btn-success">Save Reference
+                                                                            class="btn btn-success mt-2">Save Reference
                                                                             No</button>
                                                                     </div>
                                                                 </dt>
@@ -200,7 +200,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group showCorrectedFileUi d-none">
-                                                        <label for="uploadLabel">Word File Upload: </label>
+                                                        <label for="uploadLabel">Word File Upload: </label><br>
                                                         <input id="correctedFile" type="file" class="" accept=".doc, .docx, .pdf">
                                                         <button id="uploadcorrectedFile" class="btn btn-success"><i
                                                                 class="fas fa-file-upload"></i> Upload</button>
