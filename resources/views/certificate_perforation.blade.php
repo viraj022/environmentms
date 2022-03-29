@@ -395,13 +395,7 @@
             getaProfilebyId(PROFILE_ID, function(parameters) {
                 FILE_STATUS = parseInt(parameters.file_status);
                 CER_STATUS = parseInt(parameters.cer_status);
-                if(CER_STATUS == 1){
-                    $('.showCorrectedFileUi').removeClass('d-none');
-                    $('.correctedFileShowUi').removeClass('d-none');
-                }else{
-                    $('.showCorrectedFileUi').addClass('d-none');
-                    $('.correctedFileShowUi').addClass('d-none');
-                }
+                
                 setProfileDetails(parameters);
                 setIndustryAndClientDb(parameters);
                 $(".loadingRenderUI").remove(); //<--Check Loading Status
@@ -567,6 +561,7 @@
                     if (resp.status == 1) {
                         swal.fire('success', 'Reference Number Saved Successfully', 'success');
                         $('#man_cert_ref_no').val('');
+                        getCertificateDetails(PROFILE_ID)
                     } else {
                         swal.fire('Failed', 'Reference Number Saving was Successfully', 'error');
                     }
