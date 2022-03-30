@@ -24,13 +24,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Exception;
-
+use App\Repositories\UserNotificationsRepositary;
 class ClientController extends Controller
 {
 
-    public function __construct()
+    protected UserNotificationsRepositary $userNotificationRepository;
+
+    public function __construct(UserNotificationsRepositary $userNotificationRepository)
     {
-        // $this->middleware(['auth']);
+        $this->userNotificationRepository = $userNotificationRepository;
     }
 
     /**
@@ -1058,9 +1060,14 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        $certificate = Certificate::findOrFail($id);
+        $certificate = Certificate::with('client.environmentOfficer')->whereId($id)->first();
+
+        dd($certificate);
         $msg = setFileStatus($certificate->client_id, 'cer_status', 2);
         fileLog($certificate->client_id, 'certificate', 'User (' . $user->user_name . ') complete draft', 0);
+        $client=Client::find($certificate->client_id);
+        dd($client);
+        $this->userNotificationRepository->makeNotification($certificate->client->environmentOfficer->user_id, 'Certificate Drafted for ');
         LogActivity::addToLog("Complete draft", $certificate);
         if ($msg) {
             return array('id' => 1, 'message' => 'true');

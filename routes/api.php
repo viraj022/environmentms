@@ -1064,3 +1064,4 @@ Route::middleware('auth:api')->post('/director_final_approve/file_id/{file_id}',
 Route::get('/epl_site_count', [ResetSettingsController::class, 'get_epl_site_count']);
 Route::put('/reset_counts', [ResetSettingsController::class, 'reset_site_counts']);
 
+Route::middleware('auth:api')->post('/save_notification', 'UserNotificationsController@create');
