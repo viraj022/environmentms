@@ -412,7 +412,6 @@
         $(document).on('click', '#downloadDocumentBtn', function() {
             var fileData = JSON.parse(unescape($(this).val()));
             loadCertificatePathsApi(parseInt(fileData.id), function(set) {
-                console.log(set);
                let path = set.corrected_file;
                window.open(path, '_blank');
             });
