@@ -17,6 +17,7 @@ use App\Rules\nationalID;
 use App\EnvironmentOfficer;
 use Illuminate\Support\Str;
 use App\Helpers\LogActivity;
+use App\Repositories\UserNotificationsRepositary;
 use App\SiteClearance;
 use Illuminate\Http\Request;
 use App\SiteClearenceSession;
@@ -28,9 +29,10 @@ use Exception;
 class ClientController extends Controller
 {
 
-    public function __construct()
+    private $userNotificationsRepositary;
+    public function __construct(UserNotificationsRepositary $userNotificationsRepositary)
     {
-        // $this->middleware(['auth']);
+        $this->userNotificationsRepositary = $userNotificationsRepositary;
     }
 
     /**
@@ -739,7 +741,7 @@ class ClientController extends Controller
             request()->validate([
                 'file_problem_status' => ['required', 'regex:(pending|clean|problem)'],
                 'file_problem_status_description' => 'required|string',
-                'file' => $request->file != null ?'sometimes|required|min:8': ''
+                'file' => $request->file != null ? 'sometimes|required|min:8' : ''
             ]);
             $file = Client::findOrFail($id);
             if (!($request->file == null || isset($request->file))) {
@@ -1058,10 +1060,17 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        $certificate = Certificate::findOrFail($id);
+        $certificate = Certificate::with('client.environmentOfficer')->whereId($id)->first();
+        $client = $certificate->client;
+        // dd($client);
         $msg = setFileStatus($certificate->client_id, 'cer_status', 2);
-        fileLog($certificate->client_id, 'certificate', 'User (' . $user->user_name . ') complete draft', 0);
+        fileLog($certificate->client_id, 'certificate', 'User (' . $user->first_name . ' ' . $user->last_name . ') complete draft', 0);
         LogActivity::addToLog("Complete draft", $certificate);
+        $this->userNotificationsRepositary->makeNotification(
+            $client->environmentOfficer->user_id,
+            'Certificate Drafted for "' . $client->industry_name . '"',
+            $certificate->client_id
+        );
         if ($msg) {
             return array('id' => 1, 'message' => 'true');
         } else {
@@ -1397,32 +1406,5 @@ class ClientController extends Controller
                 ->get();
         }
         return $client_data;
-    }
-
-    public function uploadDocumentFile(Request $request, $id)
-    {
-        request()->validate([
-            'file' => 'required|mimes:doc,docx'
-        ]);
-
-        $certificate = Certificate::findOrFail($id);
-        if ($request->exists('file')) {
-            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-            $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/draft/document/" . $id;
-            $storePath = 'public' . $fileUrl;
-            $path = 'storage' . $fileUrl . "/" . $file_name;
-            $request->file('file')->storeAs($storePath, $file_name);
-            $certificate->document_cert_path = $path;
-            $certificate->save();
-
-            if ($certificate == true){
-              LogActivity::addToLog("Document has uploaded", $certificate);
-              return array('status' => 1, 'message' => 'File Uploaded Successfully');
-            } else {
-              return array('status' => 0, 'message' => 'File Uploaded Failed');
-            }
-        } else {
-            return array('id' => 0, 'message' => 'File does not exist');
-        }
     }
 }

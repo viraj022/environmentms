@@ -47,7 +47,7 @@ Route::get('/application_payment', 'EPLController@index2');
 Route::get('/epl_payments/id/{id}/type/{type}', 'EPLPaymentController@index');
 Route::get('/certificate_approval/id/{id}', 'ApprovalLogController@index');
 Route::get('/issue_certificate/id/{id}', 'EPLController@index3');
-Route::get('/industry_profile/id/{id}', 'ClientController@index1');
+Route::get('/industry_profile/id/{id}', 'ClientController@index1')->name('industry_profile.find');
 Route::get('/renewal_page/id/{id}', 'EPLRenewController@index');
 Route::get('/old_file_list', 'ClientController@indexOldFileList');
 Route::get('/register_old_data/id/{id}', 'ClientController@indexOldDataReg');
@@ -96,3 +96,4 @@ Route::get('/get_letter/letter/{letter_id}', 'WebDocumentController@get_letter')
 Route::get('/get_letter_content/letter/{letter_id}', 'WebDocumentController@get_letter_content');
 Route::get('/letter_template', 'WebDocumentController@letterTemplatePage');
 Route::get('/load_temp/id/{id}', 'WebDocumentController@letterTempById');
+Route::get('/show/{userNotification}', 'UserNotificationsController@show')->name('userNotification.show');
