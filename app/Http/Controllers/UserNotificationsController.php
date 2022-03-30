@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Repositories\UserNotificationsRepositary;
+use App\UserNotification;
 
 class UserNotificationsController extends Controller
 {
@@ -42,21 +43,23 @@ class UserNotificationsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\UserNotifications  $userNotifications
+     * @param  \App\UserNotification  $userNotification
      * @return \Illuminate\Http\Response
      */
-    public function show(UserNotifications $userNotifications)
+    public function show(UserNotification $userNotification)
     {
-        //
+        $this->userNotificationRepository->markAsRead($userNotification->id);
+
+        return redirect()->route('industry_profile.find', $userNotification->client_id);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\UserNotifications  $userNotifications
+     * @param  \App\UserNotification  $userNotification
      * @return \Illuminate\Http\Response
      */
-    public function edit(UserNotifications $userNotifications)
+    public function edit(UserNotification $userNotification)
     {
         //
     }
@@ -65,10 +68,10 @@ class UserNotificationsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\UserNotifications  $userNotifications
+     * @param  \App\UserNotification  $userNotification
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, UserNotifications $userNotifications)
+    public function update(Request $request, UserNotification $userNotification)
     {
         //
     }
@@ -76,10 +79,10 @@ class UserNotificationsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\UserNotifications  $userNotifications
+     * @param  \App\UserNotification  $userNotification
      * @return \Illuminate\Http\Response
      */
-    public function destroy(UserNotifications $userNotifications)
+    public function destroy(UserNotification $userNotification)
     {
         //
     }

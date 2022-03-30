@@ -2,14 +2,14 @@
 
 namespace App\Repositories;
 
-use App\UserNotifications;
+use App\UserNotification;
 
 class UserNotificationsRepositary
 {
 
     public function makeNotification($user_id, $message, $client_id)
     {
-        $save_notification = UserNotifications::create([
+        $save_notification = UserNotification::create([
             "user_id" => $user_id,
             "message" => $message,
             "client_id" => $client_id,
@@ -20,5 +20,12 @@ class UserNotificationsRepositary
         } else {
             return array('status' => 0, 'message' => 'Notification sent unsuccessful');
         }
+    }
+
+    public function markAsRead($notificationId)
+    {
+        $notification = UserNotification::find($notificationId);
+        $notification->is_read = 1;
+        $notification->save();
     }
 }
