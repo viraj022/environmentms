@@ -926,7 +926,7 @@ class ClientController extends Controller
     public function uploadCorrectedFile(Request $request, $id)
     {
         request()->validate([
-            'file' => 'sometimes|required|mimes:jpeg,jpg,png,pdf'
+            'file' => 'sometimes|required|mimes:jpeg,jpg,png,pdf,doc,docx'
         ]);
         $user = Auth::user();
         $req = request()->all();
