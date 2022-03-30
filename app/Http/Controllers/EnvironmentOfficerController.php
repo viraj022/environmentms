@@ -17,12 +17,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\MinutesRepository;
 use Illuminate\Cache\Console\ClearCommand;
+use App\Repositories\UserNotificationsRepositary;
 
 class EnvironmentOfficerController extends Controller
 {
-
-    public function __construct()
+    
+    private $userNotificationsRepositary;
+    public function __construct(UserNotificationsRepositary $userNotificationsRepositary)
     {
+        $this->userNotificationsRepositary = $userNotificationsRepositary;
         $this->middleware(['auth']);
     }
 
@@ -275,6 +278,11 @@ class EnvironmentOfficerController extends Controller
                 if ($msg) {
                     LogActivity::fileLog($client->id, 'File', "Assign an EO", 1);
                     LogActivity::addToLog('Assign an EO', $client);
+                    $this->userNotificationsRepositary->makeNotification(
+                        $environmentOfficer->user_id,
+                        'New file assigned "' . $client->industry_name . '"',
+                        $client->id
+                    );
                     return array('id' => 1, 'message' => 'true');
                 } else {
                     LogActivity::addToLog('Fail to assign EPL to Environment Officer  ', $environmentOfficer);
@@ -382,11 +390,18 @@ class EnvironmentOfficerController extends Controller
             $user = Auth::user();
             $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
             $file = Client::findOrFail($file_id);
-            $officer = EnvironmentOfficer::with('user')->findOrFail($officerId);
+            $officer = EnvironmentOfficer::with(['user', 'assistantDirector'])->findOrFail($officerId);
+        
 
             $msg = setFileStatus($file_id, 'file_status', 1);
             fileLog($file->id, 'Approval', 'EO (' . $officer->user->last_name . ') Approve the file', 0);
             LogActivity::addToLog('EO approve', $file);
+            $this->userNotificationsRepositary->makeNotification(
+                $officer->assistantDirector->user_id,
+                'Approval for "' . $file->industry_name . '"',
+                $file->id
+            );
+
             if ($request->has('minutes')) {
                 $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ENV_APPROVE_FILE, $user->id));
             }
@@ -470,6 +485,13 @@ class EnvironmentOfficerController extends Controller
             $msg = $msg && setFileStatus($file_id, 'cer_status', 1);
             fileLog($file->id, 'Rejection', 'EO (' . $officer->user->last_name . ') Rejected the certificate', 0);
             LogActivity::addToLog('EO reject certificate', $file);
+
+            $this->userNotificationsRepositary->makeNotification(
+                 $file->environmentOfficer->user_id,
+                'Rejected "' . $file->industry_name . '"',
+                $file->id
+            );
+
             if ($request->has('minutes')) {
                 $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ENV_REJECT_CERTIFICATE, $user->id));
             }

@@ -14,10 +14,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\MinutesRepository;
 use Illuminate\Support\Facades\Auth;
+use App\Repositories\UserNotificationsRepositary;
 
 class AssistantDirectorController extends Controller {
 
-    public function __construct() {
+    private $userNotificationsRepositary;
+    public function __construct(UserNotificationsRepositary $userNotificationsRepositary)
+    {
+        $this->userNotificationsRepositary = $userNotificationsRepositary;
         $this->middleware(['auth']);
     }
 
@@ -304,6 +308,13 @@ class AssistantDirectorController extends Controller {
                     $msg = setFileStatus($file_id, 'cer_status', 0);
                     fileLog($file->id, 'Approval', 'AD (' . $assistantDirector->user->last_name . ')  and forward to certificate drafting.', 0);
                     LogActivity::addToLog('AD approve file', $file);
+
+                    $this->userNotificationsRepositary->makeNotification(
+                      $file->environmentOfficer->user_id,
+                      'Approved for "' . $file->industry_name . '"',
+                      $file->id
+                    );
+
                     if ($request->has('minutes')) {
                         $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ASSI_APPROVE_FILE, $user->id));
                     }
@@ -323,12 +334,20 @@ class AssistantDirectorController extends Controller {
                     $data = array();
                     $user = Auth::user();
                     $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-                    $file = Client::findOrFail($file_id);
+                    $file = Client::with('environmentOfficer')->whereId($file_id)->first();
+                    
                     $assistantDirector = AssistantDirector::with('user')->findOrFail($adId);
                     $msg = setFileStatus($file_id, 'file_status', -1);
 
                     fileLog($file->id, 'Rejection', 'AD (' . $assistantDirector->user->last_name . ') Rejected the file.', 0);
                     LogActivity::addToLog('AD reject file', $file);
+                    
+                    $this->userNotificationsRepositary->makeNotification(
+                      $file->environmentOfficer->user_id,
+                      'Rejected "' . $file->industry_name . '"',
+                      $file->id
+                    );
+
                     if ($request->has('minutes')) {
                         $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ASSI_REJECT_FILE, $user->id));
                     }
@@ -372,11 +391,18 @@ class AssistantDirectorController extends Controller {
                     ]);
                     $user = Auth::user();
                     $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-                    $file = Client::findOrFail($file_id);
+                    $file = Client::with('environmentOfficer.assistantDirector')->whereId($file_id)->first();
                     $msg = setFileStatus($file_id, 'file_status', 2);
                     $msg = setFileStatus($file_id, 'cer_status', 1);
                     fileLog($file->id, 'Rejection', 'Director (' . $user->last_name . ') Rejected the certificate.', 0);
                     LogActivity::addToLog('Director reject certificate', $file);
+
+                    $this->userNotificationsRepositary->makeNotification(
+                    $file->environmentOfficer->assistantDirector->user_id,
+                    'Rejected"' . $file->industry_name . '"',
+                    $file_id
+                    );
+
                     if ($request->has('minutes')) {
                         $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_Dire_REJECT_CERTIFICATE, $user->id));
                     }
