@@ -46,7 +46,8 @@
                 @endforelse
 
                 @if ($notifications['count'] > 0)
-                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                    <a href="{{ route('userNotification.all') }}" class="dropdown-item dropdown-footer">See All
+                        Notifications</a>
                 @endif
 
             </div>
