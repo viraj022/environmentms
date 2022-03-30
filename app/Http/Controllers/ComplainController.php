@@ -10,6 +10,7 @@ use App\ComplainComment;
 use App\ComplainMinute;
 use App\ComplainAssignLog;
 use App\Client;
+use Exception;
 use Illuminate\Support\Facades\Log;
 
 class ComplainController extends Controller
@@ -116,7 +117,13 @@ class ComplainController extends Controller
 
     public function show()
     {
-        $complains = Complain::with(['createdUser', 'assignedUser'])->get();
+        $user = Auth::user()->id;
+        $complains = Complain::with(['createdUser', 'assignedUser'])
+            ->where('assigned_user', $user)
+            ->orWhere('assigned_user', null)
+            ->orderBy('id', 'desc')
+            ->get();
+
         return $complains;
     }
 
@@ -124,12 +131,18 @@ class ComplainController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.complains'));
-        return view('complain_profile', ['complain_id' => $id, 'pageAuth' => $pageAuth]);
+        return view('complain_profile', ['complain_id' => $id, 'pageAuth' => $pageAuth, 'user' => $user]);
     }
 
     public function complainProfileData($id)
     {
-        $complain_data = Complain::with(['assignedUser', 'createdUser', 'complainComments', 'complainMinutes'])->find($id);
+        $complain_data = Complain::with([
+            'assignedUser',
+            'createdUser',
+            'complainComments.commentedUser',
+            'complainMinutes.minuteUser',
+            'letters'
+        ])->find($id);
         return $complain_data;
     }
 
@@ -137,7 +150,7 @@ class ComplainController extends Controller
     {
         $user = Auth::user()->id;
         $update_attach = Complain::find($id);
-         $curr_file_path_arr = json_decode($update_attach->attachment);
+        $curr_file_path_arr = json_decode($update_attach->attachment);
         $files = $request->file_list;
         if ($files != null) {
             foreach ($files as $file) {
@@ -147,7 +160,6 @@ class ComplainController extends Controller
                     'upload_time' => date("Y-m-d H:i:s"),
                     'uploaded_user' => $user
                 ];
-
             }
 
             $update_attach->attachment = json_encode($curr_file_path_arr);
@@ -163,17 +175,27 @@ class ComplainController extends Controller
 
     public function delete_complain($id)
     {
-        $delete_complain = Complain::find($id)->delete();
-        if ($delete_complain == true) {
-            return array('status' => 1, 'msg' => 'Complain successfully deleted');
-        } else {
-            return array('status' => 0, 'msg' => 'Complain delete unsuccessful');
+        try {
+            $delete_complain = Complain::find($id)->delete();
+
+            if ($delete_complain == true) {
+                return array('status' => 1, 'msg' => 'Complain successfully deleted!');
+            } else {
+                return array('status' => 0, 'msg' => 'Complain deletion was unsuccessful!');
+            }
+        } catch (Exception $ex) {
+            if ($ex->getCode() == '23000') {
+                return array('status' => 0, 'msg' => 'This complain cannot be deleted, due to its dependencies');
+            } else {
+                return array('status' => 0, 'msg' => 'Database Error!');
+            }
         }
     }
 
     public function assign_complain_to_user($complain_id, $assignee_id)
     {
         $assigner_id = Auth::user()->id;
+
         try {
             \DB::beginTransaction();
             $assign_complain = Complain::find($complain_id);
@@ -203,7 +225,7 @@ class ComplainController extends Controller
         $user_id = Auth::user()->id;
         $save_complain_comment = new ComplainComment();
         $save_complain_comment->comment = $request->comment;
-        $save_complain_comment->complain_id = $request->comp_comnt_hid_id;
+        $save_complain_comment->complain_id = $request->complain_id;
         $save_complain_comment->commented_user_id = $user_id;
         $save_complain_comment->save();
 
@@ -219,7 +241,7 @@ class ComplainController extends Controller
         $user_id = Auth::user()->id;
         $save_complain_minute = new ComplainMinute();
         $save_complain_minute->minute = $request->minute;
-        $save_complain_minute->complain_id = $request->comp_minute_hid_id;
+        $save_complain_minute->complain_id = $request->complain_id;
         $save_complain_minute->minute_user_id = $user_id;
         $save_complain_minute->save();
 
@@ -269,24 +291,33 @@ class ComplainController extends Controller
         }
     }
 
-    public function get_complain_assign_log($complain_id)
+    public function get_complain_assign_log(Request $request, $complain_id)
     {
         $complain_assign_log = ComplainAssignLog::where('complain_id', $complain_id)
-            ->with(['assignerUser', 'assigneeUser'])
+            ->with(['assignerUser', 'assigneeUser', 'complain'])
+            ->whereHas('assigneeUser', function ($query) {
+                $query->whereHas('roll', function ($query) {
+                    $query->groupBy('level_id')
+                        ->orderBy('assignee_user', 'desc');
+                });
+            })
             ->get();
+
         return $complain_assign_log;
     }
 
-    public function forwarded_complains(){
+    public function forwarded_complains()
+    {
         $forwarded_complains = Complain::where('status', 4)->get();
         return $forwarded_complains;
     }
 
-    public function removeAttach(Request $request){
+    public function removeAttach(Request $request)
+    {
         $attach = Complain::find($request->id);
         $decoded_paths = json_decode($attach->attachment);
-        foreach($decoded_paths as $decoded_path){
-            if($decoded_path->img_path == $request->file_path){
+        foreach ($decoded_paths as $decoded_path) {
+            if ($decoded_path->img_path == $request->file_path) {
                 $decoded_path->img_path = '';
             }
         }
@@ -300,18 +331,20 @@ class ComplainController extends Controller
         }
     }
 
-    public function loadFileNo(){
+    public function loadFileNo()
+    {
         $file_no = Client::select('id', 'file_no')->get();
         return $file_no;
     }
 
-    public function assignFileNo(Request $request){
+    public function assignFileNo(Request $request)
+    {
         $assign_file = Complain::find($request->id);
         $assign_file->client_id = $request->client_id;
         $assign_file->save();
-        if($assign_file == true){
+        if ($assign_file == true) {
             return array('status' => 1, 'msg' => 'File assigned successfully');
-        }else{
+        } else {
             return array('status' => 0, 'msg' => 'File assigning was unsuccessful');
         }
     }

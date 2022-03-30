@@ -7,7 +7,6 @@ function gen_complain_code() {
 }
 
 function load_complains() {
-    let url = '/api/complain_data';
     let index = 1;
     complain_list = $('#complain_tbl').DataTable({
         "destroy": true,
@@ -24,9 +23,15 @@ function load_complains() {
             searchPlaceholder: "Search..."
         },
         "ajax": {
-            "url": "/api/get_complain_data/",
-            "type": "GET",
-            "dataSrc": ""
+            url: "/api/get_complain_data",
+            type: "GET",
+            headers: {
+                "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                "Accept": "application/json",
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            },
+            dataSrc: "",
         },
         "columns": [{
                 "data": ""
@@ -40,20 +45,8 @@ function load_complains() {
                 "defaultContent": "-"
             },
             {
-                "data": "complainer_address",
-                "defaultContent": "-"
-            },
-            {
                 "data": "comp_contact_no",
                 "defaultContent": "-"
-            },
-            {
-                "data": "created_user.user_name",
-                "defaultContent": "N/A"
-            },
-            {
-                "data": "assigned_user.user_name",
-                "defaultContent": "N/A"
             },
             {
                 "data": "id"
@@ -67,7 +60,7 @@ function load_complains() {
                 }
             },
             {
-                "targets": 7,
+                "targets": 4,
                 "data": "0",
                 "render": function(data, type, full, meta) {
                     if (full['recieve_type'] == 1) {
@@ -80,18 +73,20 @@ function load_complains() {
                 }
             },
             {
-                "targets": 8,
+                "targets": 5,
                 "data": "0",
                 "render": function(data, type, full, meta) {
                     if (full['status'] == 1) {
                         return "<span class='bg-success p-1 rounded'>Completed</span>";
+                    } else if (full['status'] == -1) {
+                        return "<span class='bg-danger p-1 rounded'>Rejected</span>";
                     } else {
                         return "<span class='bg-warning p-1 rounded'>Pending</span>";
                     }
                 }
             },
             {
-                "targets": 9,
+                "targets": 6,
                 "data": "0",
                 "render": function(data, type, full, meta) {
                     return getJtableBtnHtml(full);
@@ -129,11 +124,11 @@ function load_complains() {
 function getJtableBtnHtml(full) {
     var html = '';
     html += '<div class="btn-group" role="group"  aria-label="" > ';
-    html += ' <button type="button" class="btn btn-primary btn-edit" value="' + full["id"] +
+    html += ' <button type="button" class="btn btn-sm btn-primary btn-edit mr-1" value="' + full["id"] +
         '" data-toggle="tooltip" title="Edit"><i class="fas fa-edit" aria-hidden="true"></i></button>';
     html += ' <a href="/complain_profile/id/' + full['id'] +
-        '" class="btn btn-success" role="button" data-toggle="tooltip" title="profile"><i class="fa fa-info-circle" style="width: 10px" aria-hidden="true" alt="profile"></i></a>';
-    html += ' <button type="button" class="btn btn-danger btn-del" value="' + full["id"] +
+        '" class="btn btn-sm btn-success mr-1" role="button" data-toggle="tooltip" title="profile"><i class="fa fa-info-circle" style="width: 10px" aria-hidden="true" alt="profile"></i></a>';
+    html += ' <button type="button" class="btn btn-sm btn-danger btn-del" value="' + full["id"] +
         '"data-toggle="tooltip" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i></button>';
     html += '</div>';
     return html;
@@ -187,12 +182,7 @@ function update_complain() {
     });
     ulploadFileWithData(url, data, function(resp) {
         if (resp.status == 1) {
-            $('#complain_frm')[0].reset();
-            $('#complain_tbl').DataTable().ajax.reload();
-            gen_complain_code();
-            $('img').addClass('d-none');
-            $('#update').addClass('d-none');
-            $('#save').removeClass('d-none');
+            window.location.href = "/complains";
             swal.fire('success', 'Successfully update the complains', 'success');
         } else {
             swal.fire('failed', 'Complain updating is unsuccessful', 'warning');
@@ -205,9 +195,9 @@ function delete_complain(id) {
     ajaxRequest('DELETE', url, null, function(resp) {
         if (resp.status == 1) {
             $('#complain_tbl').DataTable().ajax.reload();
-            swal.fire('success', 'Successfully deleted the complains', 'success');
+            swal.fire('success', resp.msg, 'success');
         } else {
-            swal.fire('failed', 'Complain deleting is unsuccessful', 'warning');
+            swal.fire('failed', resp.msg, 'warning');
         }
     });
 }

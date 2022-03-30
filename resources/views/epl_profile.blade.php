@@ -53,6 +53,7 @@
                                 <dt class="">Name : <a id="client_name"></a></dt> <br>
                                 <div class="">
                                     <a href="#" class="btn btn-primary viewCert d-none" target="_blank">View Certificate</a>
+                                    <input type="hidden" id='cert_path' value="">
                                     <span id="no_certificate_span" class="text-danger"> No Certificate Uploaded</span>
                                 </div>
                             </div>
@@ -121,6 +122,7 @@
                                     <div class="col-md-6">
                                         <dt>Download Application :</dt>
                                         <a href="" class="btn btn-dark navTodownload" target="_blank">View Application</a>
+                                        <button id="delete_application" class="btn btn-danger d-none"  data-file="">Delete Application</button>
                                         <div class="row mt-3">
                                             <div class="input-group">
                                                 <div class="custom-file">
@@ -249,10 +251,15 @@
                     $('#obj_remark').text(result.remark);
                     $('.eplCodeAfileNo').html(result.epl_instantNumber);
                     $('#epl_hid').val(PROFILE);
+
                     if (result.path == null) {
                         $(".navTodownload").attr("href", '/' + result.application_path);
                     } else {
                         $(".navTodownload").attr("href", '/' + result.path);
+                    }
+                    if(result.path != ''){
+                        $('#delete_application').removeClass('d-none');
+                        $('#delete_application').attr('data-file', '/' + result.path);
                     }
 
                 }
@@ -273,6 +280,38 @@
         $('#change_file_btn').click(function() {
             change_file();
         });
+
+        $('#delete_application').click(function() {
+            Swal.fire({
+              title: 'Are you sure?',
+              text: "You won't be able to revert this!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+              if (result.value) {
+                  delete_application();
+              }
+            });
+
+        });
+
+        function delete_application(){
+          let data = {
+              "epl_id": $('#epl_hid').val(),
+              "file_path": $('#delete_application').attr('data-file')
+          };
+            ajaxRequest('DELETE', "/api/remove_epl_application", data, function (dataSet) {
+              if(dataSet.status == 1){
+               swal.fire('Success', 'File Deleted Successfully!', 'success');
+               window.location.reload();
+              }else{
+                swal.fire('Error', 'File Not Deleted!', 'error');
+              }
+            });
+        }
 
         function change_file() {
             let file = $('#change_file_input').get(0).files[0];

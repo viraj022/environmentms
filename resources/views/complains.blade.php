@@ -9,6 +9,15 @@
     <link href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+    <style>
+        table td {
+            vertical-align: top;
+            padding: 5px;
+            word-break: break-all;
+            /* MUST ADD THIS */
+        }
+
+    </style>
 @endsection
 
 @section('content')
@@ -19,17 +28,18 @@
                 <div class="mt-5 col-3">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <div class="card-title">Complains</div>
+                            <div class="card-title">Complaints</div>
                         </div>
                         <div class="card-body">
                             <input type="text" id="hidden_id" value="" hidden>
                             <form enctype="multipart/form-data" id="complain_frm">
                                 <div class="form-group">
                                     <label>Pradeshiya Sabha*</label>
-                                    <select id="ps" class="form-control form-control-sm select2 select2-purple cutenzReq"></select>
+                                    <select id="ps"
+                                        class="form-control form-control-sm select2 select2-purple cutenzReq"></select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Complain Code*</label>
+                                    <label>Complaint Code*</label>
                                     <input id="complainer_code" name="complainer_code" type="text" maxlength="45"
                                         class="form-control form-control-sm cutenzReq" readonly>
                                 </div>
@@ -39,11 +49,11 @@
                                         class="form-control form-control-sm cutenzReq"
                                         placeholder="Enter complainer name..." value="" required>
                                     <div id="comp_name_valid" class="d-none">
-                                        <p class="text-danger">Container Name is required</p>
+                                        <p class="text-danger">Complainer Name is required</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Complain Recieve Type</label>
+                                    <label>Complaint Recieve Type</label>
                                     <select id="recieve_type_ipt" name="recieve_type_ipt"
                                         class="form-control form-control-sm">
                                         <option value="1">Call</option>
@@ -67,19 +77,19 @@
                                     <label>Complainer Contact Number*</label>
                                     <input id="contact_complainer_ipt" name="contact_complainer_ipt"
                                         onKeyDown="if (this.value.length == 10 && event.keyCode != 8)
-                                                                                                                    return false;" type="number" class="form-control form-control-sm"
+                                                                                                                                return false;" type="number"
+                                        class="form-control form-control-sm"
                                         placeholder="Enter Contact Number of complainer..." value="" required>
                                     <div id="contact_complainer_valid" class="d-none">
                                         <p class="text-danger">Complainer Contact Number is required</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Complain Description*</label>
-                                    <textarea id="complain_desc_ipt" name="complain_desc_ipt"
-                                        class="form-control form-control-sm" placeholder="Enter complain Description..."
-                                        value="" required></textarea>
+                                    <label>Complaint Description*</label>
+                                    <textarea id="complain_desc_ipt" name="complain_desc_ipt" class="form-control form-control-sm"
+                                        placeholder="Enter complain Description..." value="" required></textarea>
                                     <div id="complain_desc_valid" class="d-none">
-                                        <p class="text-danger">Complain description required</p>
+                                        <p class="text-danger">Complaint description required</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -87,7 +97,7 @@
                                     <input type="file" id="complain_attach" name="complain_attach"
                                         accept=".png, .jpg, .jpeg" multiple>
                                     <div id="complain_attach_valid" class="d-none">
-                                        <p class="text-danger">Complain attachment required</p>
+                                        <p class="text-danger">Complaint attachment required</p>
                                     </div>
                                     <span id="attachment_view"></span>
                                 </div>
@@ -104,27 +114,24 @@
                 </div>
                 <div class=" mt-5 col-md-9">
                     <div class="card card-primary">
-                        <div class="card-header"> Complain Table </div>
+                        <div class="card-header"> Complaint Table </div>
                         <div class="card-body table-responsive">
                             <table class="table table-bordered" id="complain_tbl">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Code</th>
-                                        <th>Name</th>
-                                        <th>Address</th>
-                                        <th>Contact Number</th>
+                                        <th>Complaint Code</th>
+                                        <th style="width: 20%">Complainer Name</th>
+                                        <th style="width: 14%">Contact Number</th>
                                         <!-- <th>Description</th> -->
-                                        <th>Created User</th>
-                                        <th>Assigned User</th>
-                                        <th>Recieved By</th>
+                                        <th style="width: 15%">Recieved Type</th>
                                         <th>Status</th>
-                                        <th>Action</th>
+                                        <th style="width: 10%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td colspan="9" class="text-center"><b>No Data</b></td>
+                                        <td colspan="7" class="text-center"><b>No Data</b></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -150,12 +157,11 @@
             loadPradeshiyaSabha(function() {
                 gen_complain_code();
             });
-            
             load_complains();
         });
 
         $('#ps').change(function() {
-                gen_complain_code();
+            gen_complain_code();
         });
 
         $('#complain_attach').change(function() {
@@ -207,8 +213,23 @@
         });
 
         $(document).on('click', '.btn-del', function() {
+
             let id = $(this).val();
-            delete_complain(id);
+
+            Swal.fire({
+                title: 'Do you want to delete complaint?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'confirm',
+                denyButtonText: `Don't confirm`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.value) {
+                    delete_complain(id);
+                } else if (result.isDenied) {
+                    Swal.fire('Canceled!', 'Confirmation was cancelled', 'info')
+                }
+            })
         });
 
         var complain_form;

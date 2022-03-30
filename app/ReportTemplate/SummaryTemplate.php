@@ -28,7 +28,7 @@ class SummaryTemplate extends FPDF
         $this->SetFont('Times', 'B', 24);
         $this->Cell(0, 5, $this->reportTitle, '0', '1', 'C');
         $this->SetFontSize(11);
-        $this->Cell(0, 10, 'Central Environment Authority - North Western Province', '0', '1', 'C');
+        $this->Cell(0, 10, 'Provincial Environmental Authority - North Western Province', '0', '1', 'C');
     }
 
     // Page footer

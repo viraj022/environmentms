@@ -15,6 +15,13 @@
     td.fc-day.fc-past {
         background-color: #EEEEEE;
     }
+
+    .tooltip-hoover{
+      color: #fff;
+      background-color: #5a6268;
+      border-color: #545b62;
+    }
+    
 </style>
 @endsection
 
@@ -62,6 +69,7 @@
                         <div class="card-body">
                             <!-- the events -->
                             <div id="external-events">
+                                
                                 <p class='text-success'>Loading...</p>
                                 <!--                                <div class="external-event bg-warning">Telecommunication</div>
                                                                 <div class="external-event bg-info">Another [1]</div>
@@ -215,9 +223,11 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/adminlte.min.js"></script>
 <script src="../../js/ScheduleJS/main_schedule.js" type="text/javascript"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
 <!-- AdminLTE App -->
 <script>
     $(function () {
+        // $('[data-toggle="tooltip"]').tooltip();
         // initialize the calendar--
         var Calendar = FullCalendar.Calendar;
         var Draggable = FullCalendarInteraction.Draggable;

@@ -39,7 +39,7 @@
                             <input id="getName" type="text" class="form-control form-control-sm"
                                    placeholder="Enter Name..."
                                    value="">
-                            <span class="text-danger d-none" id="valName">Errror!</span>
+                            <span class="text-danger d-none" id="valName">Session name is required!</span>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -53,7 +53,7 @@
                         <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none"  data-toggle="modal"
                                  data-target="#modal-danger">Delete</button>
                         @endif
-                    </div>   
+                    </div>  
                     <div class="overlay dark disInspection">
                         <p class="text-white"><i class="fa fa-check"></i> Inspection Completed </p>
                     </div>
@@ -89,7 +89,7 @@
                                     </div>
                                     <!-- /.card-body -->
                                 </div>
-                            </div>                                        
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -157,8 +157,9 @@
 $(function () {
 
 //Load table
-loadTable({{$id}});
-loadInspectionStatusAPI({{$id}}, function (resp) { //<-- Get Inspection Status
+var id = "{{$id}}";
+loadTable();
+loadInspectionStatusAPI(id, function (resp) { //<-- Get Inspection Status
 if (resp.status === 0) {
 $('.disInspection').removeClass('overlay'); //Remove If inspection not completed
 } else {
@@ -175,9 +176,16 @@ singleDatePicker: true,
 });
 $('#btnSave').click(function () {
 var data = fromValues();
+
+if ($('#getName').val() == '') {
+    Toast.fire({
+    type: 'error',
+    title: 'Session name is reuired to save'
+});
+} else {
 if (Validiteinsert(data)) {
 // if validiated
-AddPersonalInspection(data, {{$id}}, function (result) {
+AddPersonalInspection(data, id, function (result) {
 if (result.id == 1) {
 Toast.fire({
 type: 'success',
@@ -189,10 +197,11 @@ type: 'error',
         title: 'Enviremontal MS</br>Error'
         });
 }
-loadTable({{$id}});
+loadTable(id);
 resetinputFields();
 hideAllErrors();
 });
+}
 }
 
 });
@@ -213,7 +222,7 @@ type: 'error',
         title: 'Enviremontal MS</br>Error'
         });
 }
-loadTable({{$id}});
+loadTable(id);
 showSave();
 resetinputFields();
 hideAllErrors();
@@ -234,7 +243,7 @@ type: 'error',
         title: 'Enviremontal MS</br>Error'
         });
 }
-loadTable({{$id}});
+loadTable(id);
 showSave();
 resetinputFields();
 hideAllErrors();

@@ -270,7 +270,7 @@ Route::middleware('auth:api')->get('/files/pending/director', 'ClientController@
   }
   ]
  */
-Route::middleware('auth:api')->get('/files/certificate_drafting', 'ClientController@getCertificateDraftingList'); //  get Certificate Drafting List
+Route::middleware('auth:api')->get('/files/certificate_drafting/status/{status}', 'ClientController@getCertificateDraftingList'); //  get Certificate Drafting List
 /*
   [
   {
@@ -434,4 +434,6 @@ Route::middleware('auth:api')->patch('/reject/file/{file_id}', 'AssistantDirecto
 Route::middleware('auth:api')->get('/files/confirmed', 'ClientController@getCofirmedFiles'); //   get confirmed files
 
 Route::middleware('auth:api')->get('/files/approved/director', 'ClientController@getDirectorApprovedList'); //  get director approved list
+Route::middleware('auth:api')->post('/certificate/word/cert_id/{cert_id}', 'ClientController@uploadDocumentFile'); //  upload document file
+
 

@@ -2,11 +2,11 @@
 function loadAssDirCombo(callBack) {
     var url = '/api/assistant_directors/level';
     let cbo = '';
-    ajaxRequest('GET', url, null, function (dataSet) {
+    ajaxRequest('GET', url, null, function(dataSet) {
         if (dataSet.length == 0) {
             cbo = "<option value=''>No Data Found</option>";
         } else {
-            $.each(dataSet, function (index, row) {
+            $.each(dataSet, function(index, row) {
                 cbo += '<option value="' + row.id + '">' + row.user.first_name + " " + row.user.last_name + '</option>';
             });
         }
@@ -20,11 +20,11 @@ function loadAssDirCombo(callBack) {
 function loadEnvOfficerCombo(uid, callBack) {
     var url = '/api/environment_officer/level/assistant_director_id/' + uid;
     let cbo = '';
-    ajaxRequest('GET', url, null, function (dataSet) {
+    ajaxRequest('GET', url, null, function(dataSet) {
         if (dataSet.length == 0) {
             cbo = "<option value='4A616B65'>No Data Found</option>";
         } else {
-            $.each(dataSet, function (index, row) {
+            $.each(dataSet, function(index, row) {
                 cbo += '<option value="' + row.id + '">' + row.user.first_name + " " + row.user.last_name + '</option>';
             });
         }
@@ -37,12 +37,12 @@ function loadEnvOfficerCombo(uid, callBack) {
 
 //Load Table After Clicking Date
 function inspectionsByDateAPI(schedule_date, id, callBack) {
-    ajaxRequest('GET', "/api/inspections/file/date/" + schedule_date + "/id/" + id, null, function (dataSet) {
+    ajaxRequest('GET', "/api/inspections/file/date/" + schedule_date + "/id/" + id, null, function(dataSet) {
         var tbl = "";
         if (dataSet.length == 0) {
             tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
         } else {
-            $.each(dataSet, function (index, row) {
+            $.each(dataSet, function(index, row) {
                 tbl += '<tr>';
                 tbl += '<td>' + ++index + '</td>';
                 tbl += '<td><a href="/industry_profile/id/' + row.client_id + '" target="_blank">' + row.client.file_no + '</a></td>';
@@ -59,20 +59,23 @@ function inspectionsByDateAPI(schedule_date, id, callBack) {
 
 //Set Inspection Needed Files
 function setInspectionNeededApi(id, callBack) {
-    ajaxRequest('GET', "/api/files/need_inspection/officer/id/" + id, null, function (dataSet) {
+    ajaxRequest('GET', "/api/files/need_inspection/officer/id/" + id, null, function(dataSet) {
         var ui = "";
         if (dataSet.length == 0) {
             ui = "<p class='text-danger'>No Data Found</p>";
         } else {
-            $.each(dataSet, function (index, row) {
-                if (row.cer_type_status==0) {
-                    ui += '<div class="external-event bg-danger" data-id="' + row.id + '">' + row.file_no + '</div>';
-                }else{
-                    ui += '<div class="external-event bg-info" data-id="' + row.id + '">' + row.file_no + '</div>';
+            $.each(dataSet, function(index, row) {
+                if (row.cer_type_status == 0) {
+
+                    ui += '<div class="tooltip-hoover external-event bg-danger" data-toggle="tooltip" data-placement="right" title="' + row.industry_name + '" data-id="' + row.id + '">' + row.file_no + '</div>';
+                } else {
+                    ui += '<div class="tooltip-hoover external-event bg-info" data-bs-toggle="tooltip" data-placement="right" title="' + row.industry_name + '" data-id="' + row.id + '">' + row.file_no + '</div>';
                 }
             });
         }
+        $('.external-event').tooltip('dispose');
         $('#external-events').html(ui);
+        $('.external-event').tooltip();
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
@@ -85,7 +88,7 @@ function personalInspectionCreateApi(id, data, callBack) {
         return false;
     }
     let url = "/api/automatic_inspection/create/id/" + id;
-    ajaxRequest("POST", url, data, function (parameters) {
+    ajaxRequest("POST", url, data, function(parameters) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(parameters);
         }
@@ -97,7 +100,7 @@ function InspectionRemoveApi(id, callBack) {
         return false;
     }
     let url = "/api/inspection/delete/id/" + id;
-    ajaxRequest("DELETE", url, null, function (parameters) {
+    ajaxRequest("DELETE", url, null, function(parameters) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(parameters);
         }
@@ -110,12 +113,12 @@ function loadCalenderApi(id, callBack) {
         return false;
     }
     let url = "/api/files/need_inspection/pending/officer/id/" + id;
-    ajaxRequest("GET", url, null, function (parameters) {
-        $.each(parameters, function (index, row) {
+    ajaxRequest("GET", url, null, function(parameters) {
+        $.each(parameters, function(index, row) {
 
             eventList.push({
                 title: row.file_no,
-//                start: new Date(y, m, 1),
+                //                start: new Date(y, m, 1),
                 start: row.inspection_sessions[0].schedule_date_only,
                 backgroundColor: '#403d3d', //dark
                 borderColor: '#000000', //black
@@ -131,7 +134,7 @@ function loadCalenderApi(id, callBack) {
 
 //Load Table After Clicking Date
 function displayClientDataFromEvent(u_id, callBack) {
-    ajaxRequest('GET', "/api/client/id/" + u_id, null, function (dataSet) {
+    ajaxRequest('GET', "/api/client/id/" + u_id, null, function(dataSet) {
         var tbl = "";
         if (dataSet.length == 0) {
             tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
@@ -162,6 +165,5 @@ function displayClientDataFromEvent(u_id, callBack) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
-    }
-    );
+    });
 }

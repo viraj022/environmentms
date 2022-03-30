@@ -1,5 +1,6 @@
 var cer_status = {0: 'pending', 1: 'Drafting', 2: 'Drafted', 3: 'AD Approval Pending', 4: 'Director Approval pending', 5: 'Director Approved', 6: 'Certificate Issued', '-1': 'Certificate Director Holded'};
 var cer_type_status = {0: 'pending', 1: 'New EPL', 2: 'EPL Renew', 3: 'Site Clearance', 4: 'Extend Site Clearance'};
+
 function loadAssDirCombo(callBack) {
     var url = '/api/assistant_directors/level';
     let cbo = '';
@@ -17,6 +18,7 @@ function loadAssDirCombo(callBack) {
         }
     });
 }
+
 function loadEnvOfficerCombo(uid, callBack) {
     var url = '/api/environment_officer/level/assistant_director_id/' + uid;
     let cbo = '';
@@ -45,6 +47,7 @@ function loadAllFilesApi(env_id, callBack) {
         }
     });
 }
+
 function loadCertificatePathsApi(file_id, callBack) {
     if (isNaN(file_id)) {
         return false;
@@ -55,6 +58,7 @@ function loadCertificatePathsApi(file_id, callBack) {
         }
     });
 }
+
 function loadWorkingFilesApi(env_id, callBack) {
     if (isNaN(env_id)) {
         return false;
@@ -65,6 +69,7 @@ function loadWorkingFilesApi(env_id, callBack) {
         }
     });
 }
+
 function loadNewFilesApi(env_id, callBack) {
     if (isNaN(env_id)) {
         return false;
@@ -130,14 +135,13 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
                         tbl += '<td>' + row.first_name+' '+row.last_name+'</td>';
                         tbl += '<td>' + row.code_epl + '</td>';
                         tbl += '<td>' + row.code_site + '</td>';
-                        tbl += '<td><a href="/industry_profile/id/' + row.id + '" class="btn btn-dark" target="_blank">' + row.file_no + '</a></td>';
+                        if (row.file_no != null) {
+                            tbl += '<td><a href="/industry_profile/id/' + row.id + '" class="btn btn-dark" target="_blank">' + row.file_no + '</a></td>';
+                        } else {
+                            tbl += '<td> <b class="btn btn-dark">No File No</b> </td>';
+                        }
                         tbl += '<td class="">' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
                         tbl += '<td>' + file_status_list[row.file_status] + status_Lable + '</td>';
-//                    if ((row.file_status == 0) && (row.need_inspection == null)) {
-//                        tbl += '<td><button type="button" value="' + row.id + '" data-toggle="modal" data-target="#modal-xl" class="btn btn-success setInspeBtn">Set Inspection</button></td>';
-//                    } else {
-//                        tbl += '<td>' + row.need_inspection + '</td>';
-//                    }
                         if (row.file_status != 5) {
                             tbl += '<td class="text-center"><button type="button" value="' + escape(JSON.stringify(row)) + '" class="btn btn-info detailsData">Details</button></td>';
                         } else {
@@ -153,131 +157,6 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
             stateSave: true
         });
     });
-
-//    tbl_all_files = $('#tblAllFiles').DataTable({
-//        "destroy": true,
-//        "processing": true,
-//        "colReorder": true,
-//        "serverSide": false,
-//        "pageLength": 10,
-//        language: {
-//            searchPlaceholder: "Search..."
-//        },
-//        ajax: {
-//            "url": "/api/files/all/officer/id/" + env_id,
-//            "type": "GET",
-//            "dataSrc": "",
-//            "headers": {
-//                "Accept": "application/json",
-//                "Content-Type": "text/json; charset=utf-8",
-//                "Authorization": "Bearer " + $('meta[name=api-token]').attr("content")
-//            },
-//        },
-//        "columns": [
-//            {
-//                "data": "",
-//                "defaultContent": "         ----------           "
-//            },
-//            {
-//                "data": "industry_name",
-//                "defaultContent": "         ----------           "
-//            },
-//            {
-//                "data": "code_epl",
-//                "defaultContent": "         ----------           "
-//            },
-//            {
-//                "data": "",
-//                render: function (data, type, row) {
-//                    if (row != null) {
-//                        if ((row.file_status == file_status) || (file_status == 'all')) {
-//                            if (row.is_old != 0) {
-//                                return '<td><a href="/industry_profile/id/' + row.id + '" class="btn btn-dark" target="_blank">' + row.file_no + '</a></td>';
-//                            }
-//                        }
-//                    }
-//                },
-//                "defaultContent": "         ----------           "
-//            },
-//            {
-//                "data": "",
-//                render: function (data, type, row) {
-//                    if (row != null) {
-//                        if ((row.file_status == file_status) || (file_status == 'all')) {
-//                            if (row.is_old != 0) {
-//                                var myDate = new Date(row.created_at);
-//                                var fixMydate = myDate.toISOString().split('T')[0];
-//                                return '<td class="">' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
-//                            }
-//                        }
-//                    }
-//                },
-//                "defaultContent": "         ----------           "
-//            },
-//            {
-//                "data": "",
-//                render: function (data, type, row) {
-//                    let status_Lable = '';
-//                    if (row.file_status == 2) {
-//                        status_Lable = '(' + cer_status[row.cer_status] + ')';
-//                    } else if (row.file_status == 0) {
-//                        if (row.need_inspection == null) {
-//                            status_Lable = '(Set Inspction Status)';
-//                        } else if (row.need_inspection == 'Pending') {
-//                            status_Lable = '(Inpection Result Pending)';
-//                        } else {
-//                            status_Lable = '(' + row.need_inspection + ')';
-//                        }
-//                    }
-//                    if (row != null) {
-//                        if ((row.file_status == file_status) || (file_status == 'all')) {
-//                            if (row.is_old != 0) {
-//                                return '<td>' + file_status_list[row.file_status] + status_Lable + '</td>';
-//                            }
-//                        }
-//                    }
-//                },
-//                "defaultContent": "         ----------           "
-//            },
-//            {
-//                "data": "",
-//                render: function (data, type, row) {
-//                    if (row != null) {
-//                        if ((row.file_status == file_status) || (file_status == 'all')) {
-//                            if (row.is_old != 0) {
-//                                if (row.file_status != 5) {
-//                                    return '<td class="text-center"><button type="button" value="' + escape(JSON.stringify(row)) + '" class="btn btn-info detailsData">Details</button></td>';
-//                                } else {
-//                                    return '<td class="text-center"><i class="fa fa-check fa-lg text-success"></i></td>';
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            },
-//        ],
-//        "order": [
-//            [1, "asc"]
-//        ],
-//    }
-//    );
-
-
-
-//    $(function () {
-//        var t = $('#tblAllFiles').DataTable();
-//        t.on('order.dt search.dt', function () {
-//            t.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
-//                cell.innerHTML = i + 1;
-//            });
-//        }).draw();
-//    });
-//
-//    //data table error handling
-//    $.fn.dataTable.ext.errMode = 'none';
-//    $('#tblAllFiles').on('error.dt', function (e, settings, techNote, message) {
-//        console.log('DataTables error: ', message);
-//    });
 
     if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
         callBack();

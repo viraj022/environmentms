@@ -100,7 +100,7 @@
                                                                             class="form-control"
                                                                             placeholder="Enter reference number here">
                                                                         <button type="button" id="save_man_ref_no"
-                                                                            class="btn btn-success">Save Reference
+                                                                            class="btn btn-success mt-2">Save Reference
                                                                             No</button>
                                                                     </div>
                                                                 </dt>
@@ -182,11 +182,15 @@
                                                     </div>
                                                     <div class="form-group fileUpDiv">
                                                         <hr>
-                                                        <label id="uploadLabel">File Upload </label><br>
-                                                        <input id="fileUploadInput" type="file" class=""
-                                                            accept="application/pdf">
-                                                        <button id="uploadCerfile" class="btn btn-success"><i
-                                                                class="fas fa-file-upload"></i> Upload</button>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="fileUploadInput">PDF Upload: </label><br>
+                                                                    <input id="fileUploadInput" type="file" accept="application/pdf">
+                                                                    <button id="uploadCerfile" class="btn btn-success"><i class="fas fa-file-upload"></i> Upload</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         <div class="progress d-none">
                                                             <div class="progress-bar bg-primary progress-bar-striped Uploadprogress"
                                                                 id="Uploadprogress" role="progressbar" aria-valuenow="40"
@@ -196,10 +200,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group showCorrectedFileUi d-none">
-                                                        <hr>
-                                                        <label id="uploadLabel">Corrected File </label>
-                                                        <input id="correctedFile" type="file" class=""
-                                                            accept="application/pdf">
+                                                        <label for="uploadLabel">Word File Upload: </label><br>
+                                                        <input id="correctedFile" type="file" class="" accept=".doc, .docx, .pdf">
                                                         <button id="uploadcorrectedFile" class="btn btn-success"><i
                                                                 class="fas fa-file-upload"></i> Upload</button>
                                                         <div class="progress d-none">
@@ -251,9 +253,9 @@
                                                                     title="Click to view file" id="correctedCertificatePath"
                                                                     href="" target="_blank">
                                                                     <p>Corrected File</p>
-                                                                    <img class="img-fluid rounded" alt="PDF"
-                                                                        style="width: auto; height: auto;"
-                                                                        src="/dist/img/pdf-view.png"
+                                                                    <img class="img-fluid rounded" id="file_view" alt="PDF"
+                                                                        style="width: 128px; height: 128px;"
+                                                                        src=""
                                                                         data-holder-rendered="true">
                                                                 </a>
                                                             </div>
@@ -393,17 +395,15 @@
             getaProfilebyId(PROFILE_ID, function(parameters) {
                 FILE_STATUS = parseInt(parameters.file_status);
                 CER_STATUS = parseInt(parameters.cer_status);
+                
                 setProfileDetails(parameters);
                 setIndustryAndClientDb(parameters);
                 $(".loadingRenderUI").remove(); //<--Check Loading Status
                 //Control Gen Certificate Btn View
                 if (FILE_STATUS === 6 && CER_STATUS === 6) {
                     $(".genCertificateNum").remove();
-                } else {}
+                }
             });
-
-            //select button action
-            $(document).on('click', '.btnAction', function() {});
         });
 
         //Show Certificate Details
@@ -422,7 +422,6 @@
                     if (resp.id == 1) {
                         getCertificateDetails(PROFILE_ID, function(resp) {
                             CERTIFICATE_ID = parseInt(resp.id);
-                            location.reload();
                         });
                     }
                 });
@@ -461,14 +460,14 @@
                 url_upload = '/api/certificate/draft/';
 
             }
-            console.log(FILE_STATUS);
+            
             submitDataWithFile(url_upload + CERTIFICATE_ID, DATA, function(resp) {
                 show_mesege(resp);
                 if (resp.id == 1) {
                     getCertificateDetails(PROFILE_ID, function(resp) {
                         CERTIFICATE_ID = parseInt(resp.id);
                         FILE_STATUS = parseInt(resp.client.file_status);
-                        location.reload();
+                        $('#fileUploadInput').val('');
                     });
                 }
             });
@@ -495,10 +494,15 @@
                     getCertificateDetails(PROFILE_ID, function(resp) {
                         CERTIFICATE_ID = parseInt(resp.id);
                         FILE_STATUS = parseInt(resp.client.file_status);
+                        $('#correctedFile').val('');
                     });
+                } else {
+                    // show errors
+
+                    // location.reload();
                 }
             });
-            location.reload();
+            
         });
 
         $('.complCertificate').click(function() {
@@ -509,9 +513,12 @@
                 };
                 completeCertificateAPI(CERTIFICATE_ID, FILE_STATUS, dataB, function(resp) {
                     show_mesege(resp);
-                    if (resp.id === 1) {
-                        window.location.href = "/industry_profile/id/" + PROFILE_ID;
-                    }
+                    // if (resp.id === 1) {
+                    //     window.location.href = "/industry_profile/id/" + PROFILE_ID;
+                    // }
+                    $('#certificateSubmittedLable').removeClass('d-none');
+                    $('.complCertificate').addClass('d-none');
+                    
                     getCertificateDetails(PROFILE_ID, function(resp) {
                         CERTIFICATE_ID = parseInt(resp.id);
                         FILE_STATUS = parseInt(resp.client.file_status);
@@ -554,6 +561,7 @@
                     if (resp.status == 1) {
                         swal.fire('success', 'Reference Number Saved Successfully', 'success');
                         $('#man_cert_ref_no').val('');
+                        getCertificateDetails(PROFILE_ID)
                     } else {
                         swal.fire('Failed', 'Reference Number Saving was Successfully', 'error');
                     }

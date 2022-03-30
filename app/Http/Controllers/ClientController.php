@@ -739,10 +739,10 @@ class ClientController extends Controller
             request()->validate([
                 'file_problem_status' => ['required', 'regex:(pending|clean|problem)'],
                 'file_problem_status_description' => 'required|string',
-                'file' => 'mimes:jpeg,jpg,png,pdf'
+                'file' => $request->file != null ?'sometimes|required|min:8': ''
             ]);
             $file = Client::findOrFail($id);
-            if (!($request->file == null)) {
+            if (!($request->file == null || isset($request->file))) {
                 $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
                 $fileUrl = '/uploads/' . FieUploadController::getOldFilePath($file);
                 $storePath = 'public' . $fileUrl;
@@ -835,9 +835,9 @@ class ClientController extends Controller
         })->get();
     }
 
-    public function getCertificateDraftingList()
+    public function getCertificateDraftingList($status)
     {
-        return Client::getFileByStatusQuery('file_status', array(2))->where('cer_type_status', '!=', 0)->get();
+        return Client::getFileByStatusQuery('file_status', array(2))->where('cer_type_status', '!=', 0)->where('cer_status', $status)->get();
     }
 
     public function nextCertificateNumber($id)
@@ -926,7 +926,7 @@ class ClientController extends Controller
     public function uploadCorrectedFile(Request $request, $id)
     {
         request()->validate([
-            'file' => 'sometimes|required|mimes:jpeg,jpg,png,pdf'
+            'file' => 'sometimes|required|mimes:jpeg,jpg,png,pdf,doc,docx'
         ]);
         $user = Auth::user();
         $req = request()->all();
@@ -1397,5 +1397,32 @@ class ClientController extends Controller
                 ->get();
         }
         return $client_data;
+    }
+
+    public function uploadDocumentFile(Request $request, $id)
+    {
+        request()->validate([
+            'file' => 'required|mimes:doc,docx'
+        ]);
+
+        $certificate = Certificate::findOrFail($id);
+        if ($request->exists('file')) {
+            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+            $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/draft/document/" . $id;
+            $storePath = 'public' . $fileUrl;
+            $path = 'storage' . $fileUrl . "/" . $file_name;
+            $request->file('file')->storeAs($storePath, $file_name);
+            $certificate->document_cert_path = $path;
+            $certificate->save();
+
+            if ($certificate == true){
+              LogActivity::addToLog("Document has uploaded", $certificate);
+              return array('status' => 1, 'message' => 'File Uploaded Successfully');
+            } else {
+              return array('status' => 0, 'message' => 'File Uploaded Failed');
+            }
+        } else {
+            return array('id' => 0, 'message' => 'File does not exist');
+        }
     }
 }

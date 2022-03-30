@@ -183,14 +183,6 @@
                         </a>
                     </li>
                     @endif
-                    @if($pre['id']===config('auth.privileges.fileAssign'))
-                    <li class="nav-item">
-                        <a href="{{ url('/epl_assign') }}" class="nav-link {{ Request::is('epl_assign') ? 'active' : '' }}">
-                            <i class="far fa-id-badge nav-icon"></i>
-                            <p>File Assign</p>
-                        </a>
-                    </li>
-                    @endif
                     @if($pre['id']===config('auth.privileges.clientSpace'))
                     <li class="nav-item">
                         <a href="{{ url('/old_file_list') }}" class="nav-link {{ Request::is('old_file_list') ? 'active' : '' }}">
@@ -247,13 +239,21 @@
             @endforeach
         </ul>
     </li>
-    <li class="nav-item has-treeview {{ Request::is('schedule') ? 'menu-open' : '' }}">
+    <li class="nav-item has-treeview {{ Request::is('industry_files') ? 'menu-open' : '' }}">
         <a href="#" class="nav-link active">
-            <i class="nav-icon fas fa-calendar"></i>
-            <p>Calendar <i class="right fas fa-angle-left"></i></p>
+            <i class="nav-icon fas fa-chalkboard-teacher"></i>
+            <p>Environment Officer <i class="right fas fa-angle-left"></i></p>
         </a>
         <ul class="nav nav-treeview">
             @foreach((auth()->user()->privileges) as $indexKey=>$pre)
+            @if($pre['id']===config('auth.privileges.assistantDirector'))
+            <li class="nav-item">
+                <a href="{{ url('/industry_files') }}" class="nav-link {{ Request::is('industry_files') ? 'active' : '' }}">
+                    <i class="fas fa-clock nav-icon"></i>
+                    <p>ENV Pending List</p>
+                </a>
+            </li>
+            @endif
             @if($pre['id']===config('auth.privileges.clientSpace'))
             <li class="nav-item">
                 <a href="{{ url('/schedule') }}" class="nav-link {{ Request::is('schedule') ? 'active' : '' }}">
@@ -280,21 +280,19 @@
                 </a>
             </li>
             @endif
-            @endforeach
-        </ul>
-    </li>
-    <li class="nav-item has-treeview {{ Request::is('industry_files') ? 'menu-open' : '' }}">
-        <a href="#" class="nav-link active">
-            <i class="nav-icon fas fa-chalkboard-teacher"></i>
-            <p>Environment Officer <i class="right fas fa-angle-left"></i></p>
-        </a>
-        <ul class="nav nav-treeview">
-            @foreach((auth()->user()->privileges) as $indexKey=>$pre)
-            @if($pre['id']===config('auth.privileges.assistantDirector'))
+            @if($pre['id']===config('auth.privileges.clientSpace'))
             <li class="nav-item">
-                <a href="{{ url('/industry_files') }}" class="nav-link {{ Request::is('industry_files') ? 'active' : '' }}">
+                <a href="{{ url('/schedule') }}" class="nav-link {{ Request::is('schedule') ? 'active' : '' }}">
                     <i class="fas fa-clock nav-icon"></i>
-                    <p>ENV Pending List</p>
+                    <p>Schedule</p>
+                </a>
+            </li>
+            @endif
+            @if($pre['id']===config('auth.privileges.fileAssign'))
+            <li class="nav-item">
+                <a href="{{ url('/epl_assign') }}" class="nav-link {{ Request::is('epl_assign') ? 'active' : '' }}">
+                    <i class="far fa-id-badge nav-icon"></i>
+                    <p>File Assign</p>
                 </a>
             </li>
             @endif

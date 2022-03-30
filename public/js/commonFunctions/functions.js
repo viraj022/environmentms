@@ -4,16 +4,18 @@ function ajaxRequest(Method, url, data, callBack) {
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-            "Accept": "application/json"
+            "Accept": "application/json",
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
         },
         url: url,
         data: data,
         cache: false,
-        success: function (result) {
+        success: function(result) {
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
             }
-        }, error: function (jqXHR, exception) {
+        },
+        error: function(jqXHR, exception) {
             console.log(jqXHR.responseJSON.message);
             var msg = '';
             if (jqXHR.status === 0) {
@@ -35,10 +37,10 @@ function ajaxRequest(Method, url, data, callBack) {
             } else {
                 msg = 'Uncaught Error.\n' + jqXHR.responseText;
             }
-//            Toast.fire({
-//                type: 'error',
-//                title: 'Error</br>' + msg
-//            });
+            //            Toast.fire({
+            //                type: 'error',
+            //                title: 'Error</br>' + msg
+            //            });
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(msg);
             }
@@ -49,10 +51,10 @@ function ajaxRequest(Method, url, data, callBack) {
 function submitDataWithFile(url, frmDta, callBack, metod = false) {
     let formData = new FormData();
     // populate fields
-    $.each(frmDta, function (k, val) {
+    $.each(frmDta, function(k, val) {
         formData.append(k, val);
     });
-    ulploadFile2(url, formData, function (result) {
+    ulploadFile2(url, formData, function(result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }
@@ -68,7 +70,7 @@ function show_mesege(resp_id) {
     } else {
         Swal.fire({
             type: 'error',
-            title: 'Enviremontal MS</br>'+resp_id
+            title: 'Enviremontal MS</br>' + resp_id
         });
     }
 }

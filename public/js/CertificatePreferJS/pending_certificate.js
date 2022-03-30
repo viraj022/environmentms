@@ -1,5 +1,6 @@
 function getaProfilebyId(callBack) {
-    var url = "/api/files/certificate_drafting";
+    let status = $('#cert_filter').val();
+    var url = "/api/files/certificate_drafting/status/" + status;
     var certificate_status = { 0: 'pending', 1: 'Drafting', 2: 'Drafted', 3: 'AD Pending', 4: 'Director Pending', 5: 'Director Approved', 6: 'Issued', '-1': 'Hold' };
     var certificate_type = { 0: 'pending', 1: 'New EPL', 2: 'Renew EPL', 3: 'New Site Clearance', 4: 'Site Clearance Extended' };
 
@@ -31,6 +32,13 @@ function getaProfilebyId(callBack) {
                 "defaultContent": "-"
             },
             {
+                "data": "",
+                "render": function(data, type, row, meta) {
+                    return row.name_title + ' ' + row.first_name + ' ' + row.last_name;
+                },
+                "defaultContent": "-"
+            },
+            {
                 "data": "industry_name",
                 "defaultContent": "-"
             },
@@ -56,12 +64,17 @@ function getaProfilebyId(callBack) {
 
             },
             {
+                "data": "created_at",
+                "defaultContent": "-"
+
+            },
+            {
                 "data": "",
                 "defaultContent": "-"
             },
         ],
         "columnDefs": [{
-                "targets": 2,
+                "targets": 3,
                 "data": "0",
                 "render": function(data, type, full, meta) {
                     let td = '-';
@@ -72,14 +85,7 @@ function getaProfilebyId(callBack) {
                 }
             },
             {
-                "targets": 3,
-                "data": "0",
-                "render": function(data, type, full, meta) {
-                    return '<a href="/industry_profile/id/' + full['id'] + '" target="_blank">' + full['file_no'] + '</a>(' + certificate_type[full['cer_type_status']] + ')';
-                }
-            },
-            {
-                "targets": 3,
+                "targets": 4,
                 "data": "0",
                 "render": function(data, type, row) {
                     if (row.site_clearence_sessions != '') {
@@ -90,21 +96,21 @@ function getaProfilebyId(callBack) {
                 },
             },
             {
-                "targets": 4,
+                "targets": 5,
                 "data": "0",
                 "render": function(data, type, full, meta) {
                     return '<a href="/industry_profile/id/' + full['id'] + '" target="_blank">' + full['file_no'] + '</a>(' + certificate_type[full['cer_type_status']] + ')';
                 }
             },
             {
-                "targets": 6,
+                "targets": 7,
                 "data": "0",
                 "render": function(data, type, full, meta) {
                     return certificate_status[full['cer_status']];
                 }
             },
             {
-                "targets": 7,
+                "targets": 9,
                 "data": "0",
                 "render": function(data, type, full, meta) {
                     return '<a href="/certificate_perforation/id/' + full['id'] + '" class="btn btn-success">Certificate<a>';
