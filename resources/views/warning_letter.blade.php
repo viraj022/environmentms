@@ -90,7 +90,8 @@
         $(document).on('click', '.gen-warn-letter', function(){
             var data = {
               "client_id": $(this).data('client'),
-              "expired_date": $(this).data('expire-date')
+              "expired_date": $(this).data('expire-date'),
+              "file_type": $(this).data('file-type')
             };
             create_warn_letter(data, function(){
                 getExpiredCerByAssDir();
@@ -133,10 +134,12 @@
                 tbl += '<td>' + row.cetificate_number + ' (<a href="/industry_profile/id/' + row.client_id + '" target="_blank">' + row.client.file_no + '</a>)</td>';
                 tbl += '<td>' + row.client.pradesheeyasaba.name + '</td>';
                 tbl += '<td>(' + row.expire_date + ')' + row.due_date + '</td>';
+                 console.log(row.client);
                 if(row.client.warning_letters.length == 0){
-                  tbl += '<td><button type="button" class="btn btn-success gen-warn-letter" data-client="'+row.client_id+'" data-expire-date="'+row.expire_date+'">Generate Warning Letter</button></td>';
+                    console.log(row.client);
+                  tbl += '<td><button type="button" class="btn btn-success gen-warn-letter" data-client="'+row.client_id+'" data-expire-date="'+row.expire_date+'" data-file-type="'+row.certifcicate_type+'">Generate Warning Letter</button></td>';
                 }else{
-                  tbl += '<td><a href="/warn_view/id/'+row.client.warning_letters[0].id+'" class="btn btn-primary">View Warning Letter</a></td>';
+                  tbl += '<td><a href="/warn_view/id/'+row.id+'" class="btn btn-primary">View Warning Letter</a></td>';
                 }
                 tbl += '</tr>';
             });

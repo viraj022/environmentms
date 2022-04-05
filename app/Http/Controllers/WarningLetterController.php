@@ -30,16 +30,6 @@ class WarningLetterController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -52,12 +42,13 @@ class WarningLetterController extends Controller
         $user = Auth::user()->id;
         $client_id = $request->client_id;
         $expired_days = $current_date->diffInDays($expired_date);
+        $file_type = $request->file_type;
 
         $warning_letter = WarningLetter::create([
-            "letter_generated_date" =>  $current_date,
             "user_id" => $user,
             "client_id" => $client_id,
-            "expired_days" => $expired_days
+            "expired_days" => $expired_days,
+            "file_type" => $file_type 
         ]);
 
         if ($warning_letter == true) {
@@ -65,50 +56,5 @@ class WarningLetterController extends Controller
         } else {
             return array('status' => 0, 'message' => 'Warning letter saving is unsuccessful');
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\WarningLetter  $warningLetter
-     * @return \Illuminate\Http\Response
-     */
-    public function show(WarningLetter $warningLetter)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\WarningLetter  $warningLetter
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(WarningLetter $warningLetter)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\WarningLetter  $warningLetter
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, WarningLetter $warningLetter)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\WarningLetter  $warningLetter
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(WarningLetter $warningLetter)
-    {
-        //
     }
 }

@@ -15,10 +15,10 @@ class CreateWarningLettersTable extends Migration
     {
         Schema::create('warning_letters', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->datetime('letter_generated_date');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('client_id');
             $table->string('expired_days');
+            $table->string('file_type');
             $table->timestamps();
         });
     }

@@ -227,6 +227,6 @@ class Client extends Model
     }
 
     public function certificates(){
-        return $this->hasMany(Certificate::class);
+        return $this->belongsTo(Certificate::class);
     }
 }

@@ -13,7 +13,7 @@ class WarningLetter extends Model
      * @var array
      */
     protected $fillable = [
-        'letter_generated_date', 'user_id', 'client_id', 'expired_days',
+        'user_id', 'client_id', 'expired_days', 'file_type'
     ];
 
     public function client()
