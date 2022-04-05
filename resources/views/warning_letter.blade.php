@@ -5,21 +5,13 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('pageStyles')
-<!-- Select2 -->
-<link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
-<link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-<!-- Bootstrap4 Duallistbox -->
-<link rel="stylesheet" href="/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
 <!-- Theme style -->
 <link rel="stylesheet" href="/dist/css/adminlte.min.css">
 <!-- Google Font: Source Sans Pro -->
 @endsection
 @section('content')
 @if($pageAuth['is_read']==1 || false)
-<section class="content-header">
-    <div class="container-fluid">
-    </div>
-</section>
+
 <section class="content-header">
     <div class="container-fluid">
         <div class="row">
@@ -77,24 +69,7 @@
 
 @section('pageScripts')
 <!-- Page script -->
-<!-- Select2 -->
-<script src="../../plugins/select2/js/select2.full.min.js"></script>
-<!-- Bootstrap4 Duallistbox -->
-<script src="../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
-<!-- InputMask -->
-<script src="../../plugins/moment/moment.min.js"></script>
-<script src="../../plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
-<!-- date-range-picker -->
-<script src="../../plugins/daterangepicker/daterangepicker.js"></script>
-<!-- bootstrap color picker -->
-<script src="../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Bootstrap Switch -->
-<script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
 <script src="../../dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="../../dist/js/demo.js"></script>
 <script src="../../js/CertificatePreferJS/expired_certificate.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
@@ -117,17 +92,22 @@
               "client_id": $(this).data('client'),
               "expired_date": $(this).data('expire-date')
             };
-            create_warn_letter(data);
+            create_warn_letter(data, function(){
+                getExpiredCerByAssDir();
+            });
         });
     });
 
-    function create_warn_letter(data){
+    function create_warn_letter(data, callBack){
         var url = "/api/save_warning_letter";
         ajaxRequest('POST', url, data, function (result) {
            if(result.status == 1){
                swal.fire('Success', result.message, 'success');
            }else{
                swal.fire('Error', result.message, 'error');
+           }
+           if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
+               callBack(result);
            }
         });
     }
@@ -156,7 +136,7 @@
                 if(row.client.warning_letters.length == 0){
                   tbl += '<td><button type="button" class="btn btn-success gen-warn-letter" data-client="'+row.client_id+'" data-expire-date="'+row.expire_date+'">Generate Warning Letter</button></td>';
                 }else{
-                  tbl += '<td><button type="button" class="btn btn-primary view-warn-letter" data-client="'+row.client_id+'" data-expire-date="'+row.expire_date+'">View Warning Letter</button></td>';
+                  tbl += '<td><a href="/warn_view/id/'+row.client.warning_letters[0].id+'" class="btn btn-primary">View Warning Letter</a></td>';
                 }
                 tbl += '</tr>';
             });

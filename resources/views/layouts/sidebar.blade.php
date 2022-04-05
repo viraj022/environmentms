@@ -139,6 +139,14 @@
                     </a>
                 </li>
                 @endif
+                @if($pre['id']===config('auth.privileges.committeePool'))
+                <li class="nav-item">
+                    <a href="{{ url('/warning_letters') }}" class="nav-link {{ Request::is('warning_letters') ? 'active' : '' }}">
+                        <i class="fas fa-file-archive nav-icon"></i>
+                        <p>Warning Letters</p>
+                    </a>
+                </li>
+                @endif
                 @endforeach
                 <li class="nav-item">
                     <a href="{{ url('/letter_template') }}" class="nav-link {{ Request::is('letter_template') ? 'active' : '' }}">

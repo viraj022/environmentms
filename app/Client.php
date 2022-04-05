@@ -225,4 +225,8 @@ class Client extends Model
             return "N/A";
         }
     }
+
+    public function certificates(){
+        return $this->hasMany(Certificate::class);
+    }
 }
