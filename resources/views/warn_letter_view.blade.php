@@ -54,17 +54,20 @@
     <section class="content">
         <div class="container-fluid">
             <section id="warn_letter" class="A4-paper mt-5">
-                <p style="font-size: 21px" id="letter_address"></p>
+                <p style="font-size: 18px" id="letter_address"></p>
                 <p class="mt-5" style="text-decoration:underline; font-size: 21px; text-align: center">පාරිසරික ආරක්ෂණ බලපත්‍රය අළුත් කිරීම - {{$warn_let_data->client->industry_address.' - '. $warn_let_data->client->industryCategory->name}}</p>
                 <div class="mt-5" style="font-size: 18px">
                     <p class="text-justify">
-                        උක්ත ලිපිනයයහි සඳහන් කර්මාන්තය සඳහා මෙම අධිකාරිය විසින් නිකුත් කරන ලද {{ $warn_let_data->client->certificates[0]->cetificate_number }}
+                        <?php 
+                            $certificate_count = count($warn_let_data->client->certificates)-1;
+                        ?>
+                        උක්ත ලිපිනයෙහි සඳහන් කර්මාන්තය සඳහා මෙම අධිකාරිය විසින් නිකුත් කරන ලද {{ $warn_let_data->client->certificates[$certificate_count]->cetificate_number }}
                         අංක දරණ බලපත්‍රය {{ $warn_let_data->client->certificates[0]->expire_date }} දින කල් ඉකුත්වීමට නියමිතය. බලපත්‍රය අළුත් කීරීම සදහා “පාරිසරික
                         ආරක්ෂණ බලපත්‍රය වාර්ෂිකව අළුත් කීරීම සඳහා වූ ඉල්ලුම් පත්‍රය” ඉදිරිපත් කල යුතු බව කාරුණිකව
                         දන්වමි.
                     </p>
                     <p class="mt-1 text-justify">
-                        වලංගු පාරිසරික ආරක්ෂණ බලපත්‍රයක් නොමැතිව කර්මානතයක් පවත්වාගෙන යාම 1990 ළංක 12 
+                        වලංගු පාරිසරික ආරක්ෂණ බලපත්‍රයක් නොමැතිව කර්මානතයක් පවත්වාගෙන යාම 1990 අංක 12 
                         දරණ වයඹ පළාත් පාරිසරික ප්‍රඥප්තතිය යටතේ දඩුලම් ලැබිය හැකි වරදක් බව කාරුණිකව දන්වා සිටිමි. 
                     </p>
                     <p class="mt-1 text-justify">
@@ -72,7 +75,7 @@
                     </p>
                 </div>
                 <div class="mt-5">
-                    <p style="font-size: 18px; line-height: 1cm">
+                    <p style="font-size: 18px; line-height: 0.5cm">
                         <img src="" /><br>
                         එස්.කේ.ඒ. ලේනදූව,<br>
                         අධ්‍යක්ෂ,<br>
@@ -96,7 +99,7 @@
 
     var html='';
     $.each(address_array, function(index, item) {
-        html += '<span style="line-height: 1cm">'+item+' , </span><br>';
+        html += '<span style="line-height: 0.5cm">'+item+' , </span><br>';
     });
     $('#letter_address').html(html);
 </script>
