@@ -467,6 +467,13 @@ class AssistantDirectorController extends Controller {
 
                     fileLog($file->id, 'Rejection', 'AD (' . $assistantDirector->user->last_name . ') Rejected the Certificate', 0);
                     LogActivity::addToLog('AD Reject certificate', $file);
+
+                    $this->userNotificationsRepositary->makeNotification(
+                        $file->environmentOfficer->user_id,
+                        'Rejected the certificate for"' . $file->industry_name . '"',
+                        $file_id
+                    );
+
                     if ($request->has('minutes')) {
                         $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ASSI_REJECT_CERTIFICATE, $user->id));
                     }
