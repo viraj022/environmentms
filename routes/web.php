@@ -97,3 +97,5 @@ Route::get('/get_letter_content/letter/{letter_id}', 'WebDocumentController@get_
 Route::get('/letter_template', 'WebDocumentController@letterTemplatePage');
 Route::get('/load_temp/id/{id}', 'WebDocumentController@letterTempById');
 Route::get('/show/{userNotification}', 'UserNotificationsController@show')->name('userNotification.show');
+Route::get('/warning_letters', 'WarningLetterController@index')->name('warning_letters.index');
+Route::get('/warn_view/id/{warn_let_id}', 'WarningLetterController@warnLetView')->name('warning_letters.view');
