@@ -88,13 +88,25 @@
         });
 
         $(document).on('click', '.gen-warn-letter', function(){
-            var data = {
-              "client_id": $(this).data('client'),
-              "expired_date": $(this).data('expire-date'),
-              "file_type": $(this).data('file-type')
-            };
-            create_warn_letter(data, function(){
-                getExpiredCerByAssDir();
+            Swal.fire({
+               title: 'Are you sure?',
+               text: "Warning letter will be created!",
+               icon: 'warning',
+               showCancelButton: true,
+               confirmButtonColor: '#3085d6',
+               cancelButtonColor: '#d33',
+               confirmButtonText: 'Yes, create letter!'
+            }).then((result) => {
+                if (result.value) {
+                  var data = {
+                  "client_id": $(this).data('client'),
+                  "expired_date": $(this).data('expire-date'),
+                  "file_type": $(this).data('file-type')
+                };
+                  create_warn_letter(data, function(){
+                    getExpiredCerByAssDir();
+                  });
+                }
             });
         });
     });
