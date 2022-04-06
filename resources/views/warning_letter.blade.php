@@ -134,10 +134,9 @@
                 tbl += '<td>' + row.cetificate_number + ' (<a href="/industry_profile/id/' + row.client_id + '" target="_blank">' + row.client.file_no + '</a>)</td>';
                 tbl += '<td>' + row.client.pradesheeyasaba.name + '</td>';
                 tbl += '<td>(' + row.expire_date + ')' + row.due_date + '</td>';
-                 console.log(row.client);
+                 console.log(row);
                 if(row.client.warning_letters.length == 0){
-                    console.log(row.client);
-                  tbl += '<td><button type="button" class="btn btn-success gen-warn-letter" data-client="'+row.client_id+'" data-expire-date="'+row.expire_date+'" data-file-type="'+row.certifcicate_type+'">Generate Warning Letter</button></td>';
+                  tbl += '<td><button type="button" class="btn btn-success gen-warn-letter" data-client="'+row.client_id+'" data-expire-date="'+row.expire_date+'" data-file-type="'+row.certificate_type+'">Generate Warning Letter</button></td>';
                 }else{
                   tbl += '<td><a href="/warn_view/id/'+row.id+'" class="btn btn-primary">View Warning Letter</a></td>';
                 }

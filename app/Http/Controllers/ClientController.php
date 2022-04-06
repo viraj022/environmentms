@@ -1105,7 +1105,7 @@ class ClientController extends Controller
         $date = $date->addDays(30);
         if ($pageAuth['is_read']) {
 
-            $responses = Certificate::With(['Client.pradesheeyasaba', 'Client.warningLetters'])->selectRaw('max(id) as id, client_id, expire_date,cetificate_number')
+            $responses = Certificate::With(['Client.pradesheeyasaba', 'Client.warningLetters'])->selectRaw('max(id) as id, client_id, expire_date,cetificate_number,certificate_type')
                 ->whereHas('Client.environmentOfficer.assistantDirector', function ($query) use ($id) {
                     $query->where('assistant_directors.id', '=', $id);
                 })
