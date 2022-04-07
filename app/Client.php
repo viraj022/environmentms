@@ -87,6 +87,11 @@ class Client extends Model
         return $this->belongsTo(Pradesheeyasaba::class);
     }
 
+    public function warningLetters()
+    {
+        return $this->hasMany(WarningLetter::class);
+    }
+
     public static function getFileByStatusQuery($statusType, $statusCodes)
     {
         $file = "";
@@ -219,5 +224,10 @@ class Client extends Model
         } else {
             return "N/A";
         }
+    }
+
+    public function certificates()
+    {
+        return $this->hasMany(Certificate::class);
     }
 }

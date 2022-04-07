@@ -96,6 +96,16 @@ function getCertificateDetails(file_id, callBack) {
             if (resp.certificate_path != null) {
                 $('.fileShowUi').removeClass('d-none');
                 $("#fileuploadedPath").attr("href", "/" + resp.certificate_path);
+
+                let file_ext = resp.certificate_path.split('.').pop();
+
+                if (file_ext == 'pdf') {
+                    $('#drafted_cert_view').attr('src', '/dist/img/pdf-view.png');
+                }
+
+                if (file_ext == 'docx' || file_ext == 'docx') {
+                    $('#drafted_cert_view').attr('src', '/dist/img/doc-view.png');
+                }
             }
             if (resp.client.file_status == 2) {
                 if (resp.client.cer_status == 2) {
@@ -136,6 +146,16 @@ function getCertificateDetails(file_id, callBack) {
                     $('.complCertificate').removeClass('d-none').text('Issue Certificate').addClass('btn-success');
                     $('.originalCertificateShowUi').removeClass('d-none');
                     $("#originalCertificatePath").attr("href", "/" + resp.signed_certificate_path);
+
+                    let file_ext = resp.signed_certificate_path.split('.').pop();
+
+                    if (file_ext == 'pdf') {
+                        $('#original_cert_view').attr('src', '/dist/img/pdf-view.png');
+                    }
+
+                    if (file_ext == 'docx' || file_ext == 'docx') {
+                        $('#original_cert_view').attr('src', '/dist/img/doc-view.png');
+                    }
                 }
             } else {
                 $('#uploadFileSection').addClass('d-none');

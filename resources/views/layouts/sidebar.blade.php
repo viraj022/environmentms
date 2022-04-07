@@ -262,6 +262,14 @@
                 </a>
             </li>
             @endif
+            @if($pre['id']===config('auth.privileges.industryFile') && auth()->user()->roll->level->value < 4) <li class="nav-item">
+                <li class="nav-item">
+                    <a href="{{ url('/industry_files') }}" class="nav-link {{ Request::is('industry_files') ? 'active' : '' }}">
+                        <i class="far fa-file-alt nav-icon"></i>
+                        <p>Industry Files</p>
+                    </a>
+                </li>
+            @endif
             @endforeach
         </ul>
     </li>
@@ -399,6 +407,14 @@
                 <a href="{{ url('/file_progress_report') }}" class="nav-link {{ Request::is('file_progress_report') ? 'active' : '' }}">
                     <i class="fas fa-clock nav-icon"></i>
                     <p>File Progress Report</p>
+                </a>
+            </li>
+            @endif
+            @if($pre['id']===config('auth.privileges.committeePool'))
+            <li class="nav-item">
+                <a href="{{ url('/warning_letters') }}" class="nav-link {{ Request::is('warning_letters') ? 'active' : '' }}">
+                    <i class="fas fa-file-archive nav-icon"></i>
+                    <p>Warning Letters</p>
                 </a>
             </li>
             @endif
