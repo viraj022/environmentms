@@ -398,9 +398,15 @@ class AssistantDirectorController extends Controller {
                     LogActivity::addToLog('Director reject certificate', $file);
 
                     $this->userNotificationsRepositary->makeNotification(
-                    $file->environmentOfficer->assistantDirector->user_id,
-                    'Rejected"' . $file->industry_name . '"',
-                    $file_id
+                        $file->environmentOfficer->assistantDirector->user_id,
+                        'Rejected"' . $file->industry_name . '"',
+                        $file_id
+                    );
+
+                    $this->userNotificationsRepositary->makeNotification(
+                        $file->environmentOfficer->user_id,
+                        'Rejected"' . $file->industry_name . '"',
+                        $file_id
                     );
 
                     if ($request->has('minutes')) {
@@ -428,6 +434,13 @@ class AssistantDirectorController extends Controller {
 
                     fileLog($file->id, 'Approval', 'AD (' . $assistantDirector->user->last_name . ') Approve the Certificate', 0);
                     LogActivity::addToLog('AD Approve certificate', $file);
+
+                    $this->userNotificationsRepositary->makeNotification(
+                        $file->environmentOfficer->user_id,
+                        'Approve the Certificate"' . $file->industry_name . '"',
+                        $file_id
+                    );
+
                     if ($request->has('minutes')) {
                         $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ASSI_APPROVE_CERTIFICATE, $user->id));
                     }
@@ -454,6 +467,13 @@ class AssistantDirectorController extends Controller {
 
                     fileLog($file->id, 'Rejection', 'AD (' . $assistantDirector->user->last_name . ') Rejected the Certificate', 0);
                     LogActivity::addToLog('AD Reject certificate', $file);
+
+                    $this->userNotificationsRepositary->makeNotification(
+                        $file->environmentOfficer->user_id,
+                        'Rejected the certificate for"' . $file->industry_name . '"',
+                        $file_id
+                    );
+
                     if ($request->has('minutes')) {
                         $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ASSI_REJECT_CERTIFICATE, $user->id));
                     }
@@ -478,6 +498,19 @@ class AssistantDirectorController extends Controller {
                     $msg = setFileStatus($file_id, 'cer_status', -1);
                     fileLog($file->id, 'Hold', 'Director (' . $user->last_name . ') hold the certificate.', 3);
                     LogActivity::addToLog('Director Hold certificate', $file);
+
+                    $this->userNotificationsRepositary->makeNotification(
+                        $file->environmentOfficer->user_id,
+                        'Hold the certificate for"' . $file->industry_name . '"',
+                        $file_id
+                    );
+
+                    $this->userNotificationsRepositary->makeNotification(
+                        $file->environmentOfficer->assistantDirector->user_id,
+                        'Hold the certificate for"' . $file->industry_name . '"',
+                        $file_id
+                    );
+
                     if ($request->has('minutes')) {
                         $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_Dire_Hold_CERTIFICATE, $user->id));
                     }
@@ -502,6 +535,19 @@ class AssistantDirectorController extends Controller {
                     $msg = setFileStatus($file_id, 'cer_status', 4);
                     fileLog($file->id, 'Hold', 'Director (' . $user->last_name . ') un hold the certificate.', 4);
                     LogActivity::addToLog('Director um hold certificate', $file);
+
+                    $this->userNotificationsRepositary->makeNotification(
+                        $file->environmentOfficer->assistantDirector->user_id,
+                        'Un hold the certificate for"' . $file->industry_name . '"',
+                        $file_id
+                    );
+
+                    $this->userNotificationsRepositary->makeNotification(
+                        $file->environmentOfficer->user_id,
+                        'Un hold the certificate for"' . $file->industry_name . '"',
+                        $file_id
+                    );
+
                     if ($request->has('minutes')) {
                         $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_Dire_Hold_CERTIFICATE, $user->id));
                     }
