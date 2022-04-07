@@ -312,6 +312,14 @@
             $('#needApproval,#submitAdCerApproval,#rejectAdCerApproval,#setInspectionVal2,#viewCertificateBtn,#downloadDocumentBtn')
                 .addClass('d-none');
 
+            if(fileData.cer_status == 1){
+                $('.showCorrectedFileUi').removeClass('d-none');
+                $('.correctedFileShowUi').removeClass('d-none');
+            }else{
+                $('.showCorrectedFileUi').addClass('d-none');
+                $('.correctedFileShowUi').addClass('d-none');
+            }
+
             if (f_Status === 0 || f_Status === -1) {
                 if (fileData.need_inspection == null) {
                     $('#setInspectionVal2').removeClass('d-none');
@@ -404,8 +412,8 @@
         $(document).on('click', '#downloadDocumentBtn', function() {
             var fileData = JSON.parse(unescape($(this).val()));
             loadCertificatePathsApi(parseInt(fileData.id), function(set) {
-               let path = set.document_cert_path;
-               window.open(set.certificate_path, '_blank');
+               let path = set.corrected_file;
+               window.open(path, '_blank');
             });
         });
 

@@ -3,7 +3,7 @@ function getaProfilebyId(id, callBack) {
         return false;
     }
     var url = "/api/client/id/" + id;
-    ajaxRequest('GET', url, null, function (result) {
+    ajaxRequest('GET', url, null, function(result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }
@@ -21,7 +21,7 @@ function setProfileDetails(obj) {
         $('#setEPLCode').html(obj.epls[obj.epls.length - 1].code);
         $("#setEPlLink").attr("href", "/epl_profile/client/" + PROFILE_ID + "/profile/" + obj.epls[obj.epls.length - 1].id);
     }
-    (obj.last_name == null) ? $('#client_name').html(obj.first_name) : $('#client_name').html(obj.first_name + ' ' + obj.last_name);
+    (obj.last_name == null) ? $('#client_name').html(obj.first_name): $('#client_name').html(obj.first_name + ' ' + obj.last_name);
     $('#client_address').html(obj.address);
     $('#client_cont').html(obj.contact_no);
     $('#client_amil').html(obj.email);
@@ -67,7 +67,7 @@ function genCertificateNumbyId(file_id, callBack) {
         return false;
     }
     var url = "/api/start_drafting/id/" + file_id;
-    ajaxRequest('POST', url, null, function (result) {
+    ajaxRequest('POST', url, null, function(result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }
@@ -79,7 +79,7 @@ function getCertificateDetails(file_id, callBack) {
         return false;
     }
     var url = "/api/working_certificate/file/" + file_id;
-    ajaxRequest('GET', url, null, function (resp) {
+    ajaxRequest('GET', url, null, function(resp) {
         if (resp.length == 0) {
             $('.genCertificateNum').removeClass('d-none');
         } else {
@@ -96,6 +96,16 @@ function getCertificateDetails(file_id, callBack) {
             if (resp.certificate_path != null) {
                 $('.fileShowUi').removeClass('d-none');
                 $("#fileuploadedPath").attr("href", "/" + resp.certificate_path);
+
+                let file_ext = resp.certificate_path.split('.').pop();
+
+                if (file_ext == 'pdf') {
+                    $('#drafted_cert_view').attr('src', '/dist/img/pdf-view.png');
+                }
+
+                if (file_ext == 'docx' || file_ext == 'docx') {
+                    $('#drafted_cert_view').attr('src', '/dist/img/doc-view.png');
+                }
             }
             if (resp.client.file_status == 2) {
                 if (resp.client.cer_status == 2) {
@@ -103,9 +113,11 @@ function getCertificateDetails(file_id, callBack) {
                     $('#uploadFileSection').addClass('d-none');
                     $('#certificateSubmittedLable').removeClass('d-none');
                     $('.showCorrectedFileUi').removeClass('d-none');
+                    $('.originalCertificateShowUi').addClass('d-none');
                     // $('.correctedFileShowUi').removeClass('d-none');
-                    $('.complCertificate').addClass('d-none');
+                    $('.fileUpDiv').addClass('d-none');
                 } else {
+                    $('.fileUpDiv').removeClass('d-none');
                     $('#certificateSubmittedLable').addClass('d-none');
                     $('#uploadFileSection').removeClass('d-none');
                     $('.showCorrectedFileUi').addClass('d-none');
@@ -117,6 +129,16 @@ function getCertificateDetails(file_id, callBack) {
                 if (resp.corrected_file != null) {
                     $('.correctedFileShowUi').removeClass('d-none');
                     $("#correctedCertificatePath").attr("href", "/" + resp.corrected_file);
+
+                    let file_ext = resp.corrected_file.split('.').pop();
+
+                    if (file_ext == 'pdf') {
+                        $('#file_view').attr('src', '/dist/img/pdf-view.png');
+                    }
+
+                    if (file_ext == 'docx' || file_ext == 'docx') {
+                        $('#file_view').attr('src', '/dist/img/doc-view.png');
+                    }
                 }
             } else if (resp.client.file_status == 5) {
                 $('.fileShowUi').removeClass('d-none');
@@ -124,6 +146,16 @@ function getCertificateDetails(file_id, callBack) {
                     $('.complCertificate').removeClass('d-none').text('Issue Certificate').addClass('btn-success');
                     $('.originalCertificateShowUi').removeClass('d-none');
                     $("#originalCertificatePath").attr("href", "/" + resp.signed_certificate_path);
+
+                    let file_ext = resp.signed_certificate_path.split('.').pop();
+
+                    if (file_ext == 'pdf') {
+                        $('#original_cert_view').attr('src', '/dist/img/pdf-view.png');
+                    }
+
+                    if (file_ext == 'docx' || file_ext == 'docx') {
+                        $('#original_cert_view').attr('src', '/dist/img/doc-view.png');
+                    }
                 }
             } else {
                 $('#uploadFileSection').addClass('d-none');
@@ -151,7 +183,7 @@ function completeCertificateAPI(certificate_id, FILE_STATUS, data, callBack) {
     }
 
     url += certificate_id;
-    ajaxRequest('PATCH', url, data, function (result) {
+    ajaxRequest('PATCH', url, data, function(result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }

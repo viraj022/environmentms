@@ -12,9 +12,16 @@ use App\ComplainAssignLog;
 use App\Client;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use App\Repositories\UserNotificationsRepositary;
 
 class ComplainController extends Controller
 {
+
+    private $userNotificationsRepositary;
+    public function __construct(UserNotificationsRepositary $userNotificationsRepositary)
+    {
+        $this->userNotificationsRepositary = $userNotificationsRepositary;
+    }
 
     public function index()
     {
@@ -211,6 +218,11 @@ class ComplainController extends Controller
                 "assigned_time" => date("Y-m-d H:i:s"),
             ]);
 
+            $this->userNotificationsRepositary->makeNotification(
+                $assignee_id,
+                'You have assigned for complain',
+                null
+            );
 
             \DB::commit();
             return array('status' => 1, 'msg' => 'Complain assign successful');

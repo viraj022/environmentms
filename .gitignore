@@ -21,3 +21,4 @@ composer.lock
 /.vs
 /public/storage/debugbar
 /.lh
+/.vscode
