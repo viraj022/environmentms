@@ -270,6 +270,14 @@
                 </a>
             </li>
             @endif
+            @if($pre['id']===config('auth.privileges.industryFile') && auth()->user()->roll->level->value < 4) <li class="nav-item">
+                <li class="nav-item">
+                    <a href="{{ url('/industry_files') }}" class="nav-link {{ Request::is('industry_files') ? 'active' : '' }}">
+                        <i class="far fa-file-alt nav-icon"></i>
+                        <p>Industry Files</p>
+                    </a>
+                </li>
+            @endif
             @endforeach
         </ul>
     </li>

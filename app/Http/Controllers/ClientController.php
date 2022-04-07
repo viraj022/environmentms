@@ -894,7 +894,7 @@ class ClientController extends Controller
         request()->validate([
             'issue_date' => 'sometimes|required|date',
             'expire_date' => 'sometimes|required|date',
-            'file' => 'sometimes|required|mimes:jpeg,jpg,png,pdf'
+            'file' => 'sometimes|required|mimes:jpeg,jpg,png,pdf,doc,docx'
         ]);
         $user = Auth::user();
         $req = request()->all();

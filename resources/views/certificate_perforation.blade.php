@@ -186,7 +186,7 @@
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label for="fileUploadInput">PDF Upload: </label><br>
-                                                                    <input id="fileUploadInput" type="file" accept="application/pdf">
+                                                                    <input id="fileUploadInput" type="file" accept=".doc, .docx, .pdf">
                                                                     <button id="uploadCerfile" class="btn btn-success"><i class="fas fa-file-upload"></i> Upload</button>
                                                                 </div>
                                                             </div>
@@ -224,8 +224,8 @@
                                                                     title="Click to view file" id="fileuploadedPath" href=""
                                                                     target="_blank">
                                                                     <p>Drafted Certificate</p>
-                                                                    <img class="img-fluid rounded" alt="PDF"
-                                                                        style="width: auto; height: auto;"
+                                                                    <img id="drafted_cert_view" class="img-fluid rounded" alt="PDF"
+                                                                        style="width: 128px; height: 128px;"
                                                                         src="/dist/img/pdf-view.png"
                                                                         data-holder-rendered="true">
                                                                 </a>
@@ -239,8 +239,8 @@
                                                                     title="Click to view file" id="originalCertificatePath"
                                                                     href="" target="_blank">
                                                                     <p>Original Certificate</p>
-                                                                    <img class="img-fluid rounded" alt="PDF"
-                                                                        style="width: auto; height: auto;"
+                                                                    <img id="original_cert_view" class="img-fluid rounded" alt="PDF"
+                                                                        style="width: 128px; height: 128px;"
                                                                         src="/dist/img/pdf-view.png"
                                                                         data-holder-rendered="true">
                                                                 </a>

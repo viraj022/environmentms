@@ -35,9 +35,15 @@ class DirectorController extends Controller {
                     LogActivity::addToLog('Director Approve the certificate', $file);
 
                     $this->userNotificationsRepositary->makeNotification(
-                    $file->environmentOfficer->user_id,
-                    'Approved for"' . $file->industry_name . '"',
-                    $file_id
+                        $file->environmentOfficer->assistantDirector->user_id,
+                        'Approved for"' . $file->industry_name . '"',
+                        $file_id
+                    );
+
+                    $this->userNotificationsRepositary->makeNotification(
+                        $file->environmentOfficer->user_id,
+                        'Approved for"' . $file->industry_name . '"',
+                        $file_id
                     );
 
                     if ($request->has('minutes')) {
