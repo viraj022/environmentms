@@ -29,6 +29,7 @@ function getAdPendingList(id, callBack) {
 
 function loadAdPendingListTable(id) {
     var dataObj = { 0: 'pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Pending Approval', 4: 'D Certificate Approval Prenidng', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold' };
+    var cer_type_status = { 0: 'pending', 1: 'New EPL', 2: 'EPL Renew', 3: 'Site Clearance', 4: 'Extend Site Clearance' };
     //    var tbl = "";
     //    var id = 1;
     //    getAdPendingList(id, function (result) {
@@ -82,6 +83,13 @@ function loadAdPendingListTable(id) {
                 "defaultContent": "-"
             },
             {
+                "data": "",
+                render: function (data, type, row) {
+                    return  "<td>"+row.first_name + ' ' + row.last_name+"</td>";
+                },
+                "defaultContent": "-"
+            },
+            {
                 "data": "code_epl",
                 render: function (data, type, row) {
 
@@ -101,6 +109,15 @@ function loadAdPendingListTable(id) {
                 "data": "",
                 render: function (data, type, row) {
                     return "<td><a href='/industry_profile/id/" + row.id + "' target='_blank'>" + row.file_no + "</a></td>";
+                },
+                "defaultContent": "-"
+            },
+            {
+                "data": "",
+                render: function (data, type, row) {
+                    var myDate = new Date(row.created_at);
+                    var fixMydate = myDate.toISOString().split('T')[0];
+                    return '<td>' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
                 },
                 "defaultContent": "-"
             },

@@ -28,8 +28,10 @@
                                         <tr>
                                             <th style="width: 10px">#</th>
                                             <th>Industry Name</th>
+                                            <th style='width: 25em'>Client Name</th>
                                             <th>EPL Code</th>
                                             <th>File No</th>
+                                            <th style='width: 25em'>#</th>
                                             <th>Status</th>
                                             <th style="width: 140px">Action</th>
                                         </tr>
@@ -97,7 +99,7 @@
             return data;
         }
         $(function() {
-            $('#tblPendingAdList').DataTable();
+            // $('#tblPendingAdList').DataTable();
             //Load table
             loadDirectorPendingListTable();
 
