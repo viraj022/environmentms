@@ -35,19 +35,28 @@
                                         <th>#</th>
                                         <th>Notification</th>
                                         <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse ($notifications as $notification)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $notification->message }}</td>
+                                            <td>
+                                                @if ($notification->is_read == 0)
+                                                    <i class="fas fa-envelope mr-2"></i>
+                                                @else
+                                                    <i class="fas fa-envelope-open mr-2"></i>
+                                                @endif
+                                                {{ $notification->message }}
+                                            </td>
                                             <td>
                                                 <a href="{{ route('userNotification.show', $notification) }}"
                                                     class="btn btn-primary btn-sm">
-                                                    <i class="fas fa-eye"></i>
+                                                    Read
                                                 </a>
                                             </td>
+                                            <td>{{ $notification->created_at->diffForHumans() }}</td>
                                         </tr>
                                     @empty
                                         <tr>

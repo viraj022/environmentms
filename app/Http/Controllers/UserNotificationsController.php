@@ -25,7 +25,10 @@ class UserNotificationsController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $notifications = UserNotification::where('user_id', $user->id)->get();
+        $notifications = UserNotification::where('user_id', $user->id)
+            ->orderBy('is_read', 'asc')
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('notifications', compact('notifications'));
     }
 

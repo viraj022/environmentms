@@ -45,10 +45,10 @@
                     <span class="dropdown-item dropdown-header">No Notifications</span>
                 @endforelse
 
-                @if ($notifications['count'] > 0)
-                    <a href="{{ route('userNotification.all') }}" class="dropdown-item dropdown-footer">See All
-                        Notifications</a>
-                @endif
+                {{-- @if ($notifications['count'] > 0) --}}
+                <a href="{{ route('userNotification.all') }}" class="dropdown-item dropdown-footer">See All
+                    Notifications</a>
+                {{-- @endif --}}
 
             </div>
 
