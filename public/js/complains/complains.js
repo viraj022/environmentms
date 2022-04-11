@@ -151,7 +151,8 @@ function save_complain() {
         arr[index++] = val;
     });
     ulploadFileWithData(url, data, function(resp) {
-        $('#save').removeClass('d-none');
+        $('#save').attr('disabled', false);
+
         if (resp.status == 1) {
             $('#complain_frm')[0].reset();
             $('#complain_tbl').DataTable().ajax.reload();
@@ -159,7 +160,6 @@ function save_complain() {
             $('img').addClass('d-none');
             swal.fire('success', 'Successfully save the complains', 'success');
         } else {
-            $('#save').removeClass('d-none');
             swal.fire('failed', 'Complain saving is unsuccessful', 'warning');
         }
     }, false, arr);
@@ -183,7 +183,6 @@ function update_complain() {
         arr[index++] = val;
     });
     ulploadFileWithData(url, data, function(resp) {
-        $('#update').removeClass('d-none');
         if (resp.status == 1) {
             window.location.href = "/complains";
             swal.fire('success', 'Successfully update the complains', 'success');
