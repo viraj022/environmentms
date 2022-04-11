@@ -55,6 +55,7 @@ function uploadOldAttacments(client_id, key, value, desc, callBack) {
     formData.append('file_catagory', 'ATTACHMENT');
     formData.append('description', desc);
     ulploadFile2("/api/old/attachments/" + client_id, formData, function(resp) {
+        $('#btnUpload').prop('disabled', false);
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
         }
