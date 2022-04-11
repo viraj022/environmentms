@@ -151,7 +151,7 @@ function save_complain() {
         arr[index++] = val;
     });
     ulploadFileWithData(url, data, function(resp) {
-        $('#save').attr('disabled', false);
+        $('#save').prop('disabled', false);
 
         if (resp.status == 1) {
             $('#complain_frm')[0].reset();

@@ -15,7 +15,7 @@ function AddEpl(type, data, callBack) {
         formData.append(k, val);
     });
     ulploadFile2(url, formData, function (result) {
-        $('#btnSave').removeClass('d-none');
+        $('#btnSave').prop('disabled', false);
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }
