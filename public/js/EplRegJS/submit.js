@@ -6,7 +6,7 @@ function AddEpl(type, data, callBack) {
         url = "/api/site_clearance_new";
     }
     if (!data) {
-        $('#btnSave').removeClass('d-none');
+        $('#btnSave').prop('disabled', false);
         return false;
     }
     let formData = new FormData();
