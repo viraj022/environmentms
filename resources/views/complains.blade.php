@@ -174,20 +174,24 @@
         });
 
         $('#save').click(function() {
+            $('#save').addClass('d-none');
             let is_valid = jQuery("#complain_frm").valid();
             if (is_valid) {
                 save_complain();
             } else {
+                $('#save').removeClass('d-none');
                 swal.fire('failed', 'Required fields must fill', 'warning');
             }
 
         });
 
         $('#update').click(function() {
+            $('#update').addClass('d-none');
             let is_valid = jQuery("#complain_frm").valid();
             if (is_valid) {
                 update_complain();
             } else {
+                $('#update').removeClass('d-none');
                 swal.fire('failed', 'Required fields must fill', 'warning');
             }
         });

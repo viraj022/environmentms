@@ -435,8 +435,10 @@
         });
 
         $('#uploadCerfile').click(function() {
+            $('#uploadCerfile').addClass('d-none');
             let url_upload = '';
             if (isNaN(CERTIFICATE_ID)) {
+                $('#uploadCerfile').removeClass('d-none');
                 alert('Certificate ID Error!');
                 return false;
             }
@@ -445,6 +447,7 @@
                 file: file
             };
             if ($('#fileUploadInput')[0].files.length === 0) {
+                $('#uploadCerfile').removeClass('d-none');
                 alert('No File Selected!');
                 return false;
             }
@@ -453,6 +456,7 @@
                 DATA['issue_date'] = $('#issue_date').val().trim();
                 DATA['expire_date'] = $('#expire_date').val().trim();
                 if (DATA.issue_date.length == 0 || DATA.expire_date.length == 0) {
+                    $('#uploadCerfile').removeClass('d-none');
                     alert('Invalid Date !');
                     return false
                 }
@@ -462,6 +466,7 @@
             }
             
             submitDataWithFile(url_upload + CERTIFICATE_ID, DATA, function(resp) {
+                $('#uploadCerfile').removeClass('d-none');
                 show_mesege(resp);
                 if (resp.id == 1) {
                     getCertificateDetails(PROFILE_ID, function(resp) {
@@ -474,8 +479,10 @@
         });
 
         $('#uploadcorrectedFile').click(function() { //upload corrected file
+            $('#uploadcorrectedFile').addClass('d-none');
             let url_upload = '';
             if (isNaN(CERTIFICATE_ID)) {
+                $('#uploadcorrectedFile').removeClass('d-none');
                 alert('Certificate ID Error!');
                 return false;
             }
@@ -484,11 +491,13 @@
                 file: file
             }
             if ($('#correctedFile')[0].files.length === 0) {
+                $('#uploadcorrectedFile').removeClass('d-none');
                 alert('No File Selected!');
                 return false;
             }
             url_upload = '/api/certificate/corrected_file/';
             submitDataWithFile(url_upload + CERTIFICATE_ID, DATA, function(resp) {
+                $('#uploadcorrectedFile').removeClass('d-none');
                 show_mesege(resp);
                 if (resp.id == 1) {
                     getCertificateDetails(PROFILE_ID, function(resp) {

@@ -314,6 +314,7 @@
         }
 
         function change_file() {
+            $('#change_file_btn').addClass('d-none');
             let file = $('#change_file_input').get(0).files[0];
             if (file != undefined) {
                 const data = {
@@ -321,7 +322,7 @@
                     epl_id: $('#epl_hid').val()
                 };
                 ulploadFileWithData("/api/change_file", data, function(resp) {
-
+                    $('#change_file_btn').removeClass('d-none');
                     if (resp.status == 1) {
                         Swal.fire({
                             type: 'success',
@@ -336,6 +337,7 @@
                     location.reload();
                 }, metod = 'POST', file_list = [file]);
             } else {
+                $('#change_file_btn').removeClass('d-none');
                 Swal.fire({
                     type: 'error',
                     title: 'Please select a file!',
