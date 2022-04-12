@@ -6,7 +6,6 @@ function AddEpl(type, data, callBack) {
         url = "/api/site_clearance_new";
     }
     if (!data) {
-        $('#btnSave').prop('disabled', false);
         return false;
     }
     let formData = new FormData();
@@ -15,7 +14,6 @@ function AddEpl(type, data, callBack) {
         formData.append(k, val);
     });
     ulploadFile2(url, formData, function (result) {
-        $('#btnSave').prop('disabled', false);
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }
