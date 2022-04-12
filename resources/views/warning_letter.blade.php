@@ -49,7 +49,7 @@
                                         <th style="width: 25em">File No</th>
                                         <th style="width: 25em">Pradeshiya Sabha</th>
                                         <th style="width: 20em">Status</th>
-                                        <th style="width: 20em">Action</th>
+                                        <th style="width: 30em">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -146,11 +146,15 @@
                 tbl += '<td>' + row.cetificate_number + ' (<a href="/industry_profile/id/' + row.client_id + '" target="_blank">' + row.client.file_no + '</a>)</td>';
                 tbl += '<td>' + row.client.pradesheeyasaba.name + '</td>';
                 tbl += '<td>(' + row.expire_date + ')' + row.due_date + '</td>';
+                tbl += '<td>';
                 if(row.client.warning_letters.length == 0){
-                  tbl += '<td><button type="button" class="btn btn-success gen-warn-letter" data-client="'+row.client_id+'" data-expire-date="'+row.expire_date+'" data-file-type="'+row.certificate_type+'">Generate Warning Letter</button></td>';
+                  tbl += '<button type="button" class="btn btn-success gen-warn-letter" data-client="'+row.client_id+'" data-expire-date="'+row.expire_date+'" data-file-type="'+row.certificate_type+'">Generate Warning Letter</button>';
+                  tbl += '<button type="button" class="btn btn-info send_sms ml-1" data-expire-date="'+row.expire_date+'" data-industry-name="'+row.client.industry_name+'" data-tel="'+row.client.contact_no+'">Send SMS</button>';
                 }else{
-                  tbl += '<td><a href="/warn_view/id/'+row.client.warning_letters[0].id+'" class="btn btn-primary">View Warning Letter</a></td>';
+                  tbl += '<a href="/warn_view/id/'+row.client.warning_letters[0].id+'" class="btn btn-primary">View Warning Letter</a>';
+                  tbl += '<button type="button" class="btn btn-info send_sms ml-1" data-expire-date="'+row.expire_date+'" data-industry-name="'+row.client.industry_name+'" data-tel="'+row.client.contact_no+'">Send SMS</button>';
                 }
+                tbl += '</td>';
                 tbl += '</tr>';
             });
         }
@@ -161,6 +165,21 @@
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }
+    });
+}
+
+$(document).on('click', '.send_sms', function(){
+    let data = {
+        "SmsMessage": 'Industry name of '+ $(this).data('industry-name') +' has expired on '+ $(this).data('expire-date')+'.',
+        "PhoneNumber": $(this).data('tel'),
+    };
+    send_sms(data);
+});
+
+function send_sms(data){
+    let url = '/api/send_sms';
+    ajaxRequest('POST', url, data, function(resp){
+      console.log(resp);
     });
 }
 </script>
