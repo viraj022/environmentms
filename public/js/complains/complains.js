@@ -151,8 +151,6 @@ function save_complain() {
         arr[index++] = val;
     });
     ulploadFileWithData(url, data, function(resp) {
-        $('#save').prop('disabled', false);
-
         if (resp.status == 1) {
             $('#complain_frm')[0].reset();
             $('#complain_tbl').DataTable().ajax.reload();

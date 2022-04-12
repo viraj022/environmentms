@@ -25,7 +25,6 @@ function getAsetClientData(id, callBack) {
 function saveEPLOldFiles(profile_id, data, type, callBack) {
     let url = "";
     if (!data || data.length == 0) {
-        $('#btnSave').prop('disabled', false);
         return false;
     }
     if (type == 01) {
@@ -42,7 +41,6 @@ function saveEPLOldFiles(profile_id, data, type, callBack) {
 function updateEPLOldFiles(epl_id, data, type, callBack) {
     let url = "";
     if (!data || data.length == 0) {
-        $('#btnUpdate').prop('disabled', false);
         return false;
     }
     if (type == 01) {
@@ -58,7 +56,6 @@ function updateEPLOldFiles(epl_id, data, type, callBack) {
 }
 
 function uploadOldAttacments(client_id, key, value, callBack) {
-    $('#btnUpload').prop('disabled',true);
     let formData = new FormData();
     formData.append(key, value);
     formData.append('file_catagory', 'OLD FILE');
