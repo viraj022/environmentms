@@ -177,10 +177,12 @@
 //             
 //click save button
         $('#btnSave').click(function () {
+            $('#btnSave').addClass('d-none');
             var data = fromValues();
             if (Validiteinsert(data)) {
                 // if validiated
                 saveRenew(PROFILE_ID, data, function (result) {
+                    $('#btnSave').removeClass('d-none');
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
@@ -197,6 +199,8 @@
                     resetinputFields();
                     hideAllErrors();
                 });
+            }else{
+               $('#btnSave').removeClass('d-none');
             }
         });
         $(document).on('change', '#inp', function () {
@@ -206,10 +210,12 @@
         });
 //click update button
         $('#btnUpdate').click(function () {
+            $('#btnUpdate').addClass('d-none');
             //get form data
             var data = fromValues();
             if (Validiteupdate(data)) {
                 updateZone($('#btnUpdate').val(), data, function (result) {
+                    $('#btnUpdate').removeClass('d-none');
                 });
             }
         });

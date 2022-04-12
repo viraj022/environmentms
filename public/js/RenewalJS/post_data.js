@@ -3,9 +3,11 @@ function saveRenew(id, data, callBack) {
     var url = '/api/epl/renew/id/' + id;
 
     if (!data) {
+        $('#btnSave').removeClass('d-none');
         return false;
     }
     submitDataWithFile(url, data, function (result) {
+        $('#btnSave').removeClass('d-none');
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(result);
         }
@@ -28,7 +30,7 @@ function Validiteinsert(data) {
     } else {
         $('#renewDate').removeClass('is-invalid');
     }
-    if (data.file.length == 0) {
+    if (data.file == 'undefined') {
         toastr.error('Renewal Application is required')
         response = false;
     }

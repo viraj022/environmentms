@@ -757,13 +757,15 @@
                                         }
                                         //Upload Old Attachments
                                         $('#btnUpload').click(function () {
+                                            $(this).prop('disabled', true);
                                             var file = $('#otherFiles')[0].files[0];
                                             var descrip = $('#getDesc').val();
                                             uploadOldAttacments(PROFILE_ID, 'file', file, descrip, function (result) {
+                                                $(this).prop('disabled', false);
                                                 show_mesege(result);
                                                 if (result.id == 1) {
                                                     $('#getDesc').val('');
-                                                    $('#otherFiles')[0].files[null];
+                                                    $('#otherFiles').val('');
                                                 }
                                                 getaProfilebyId(PROFILE_ID, function (parameters) {
                                                     loadAllOldAttachments(parameters.old_files, function () {});
