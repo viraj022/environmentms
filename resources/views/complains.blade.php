@@ -174,10 +174,12 @@
         });
 
         $('#save').click(function() {
+            $('#save').attr('disabled', true);
             let is_valid = jQuery("#complain_frm").valid();
             if (is_valid) {
                 save_complain();
             } else {
+                $('#save').attr('disabled', false);
                 swal.fire('failed', 'Required fields must fill', 'warning');
             }
 
