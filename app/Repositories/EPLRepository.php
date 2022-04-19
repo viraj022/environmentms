@@ -9,6 +9,7 @@ use App\Committee;
 use Carbon\Carbon;
 use App\PaymentType;
 use App\SiteClearance;
+use App\SiteClearenceSession;
 use App\Transaction;
 use Illuminate\Support\Facades\DB;
 
@@ -33,18 +34,14 @@ class EPLRepository {
      */
     public function getEPLReport($from, $to) {
         $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
-
-        $query = Client::whereHas('epls')
-                ->with('epls')
-                ->with('siteClearenceSessions')
-                ->with(['transactions.transactionItems' => function ($query) use ($inspectionTypes) {
-                        $query->where('payment_type_id', $inspectionTypes->id)->where('transaction_type', Transaction::TRANS_TYPE_EPL);
-                    }])
-                ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
-                ->select('clients.id', 'clients.name_title', 'clients.first_name', 'clients.last_name', 'clients.address', 'industry_categories.name as category_name', 'clients.industry_address', 'industry_start_date')
-                ->whereBetween('industry_start_date', [$from, $to]);
-                    
-        $query = $query->get();
+        $query = EPL::with('client.industryCategory')
+        ->with(['client.transactions.transactionItems' => function ($query) use ($inspectionTypes) {
+            $query->where('payment_type_id', $inspectionTypes->id)->where('transaction_type', Transaction::TRANS_TYPE_EPL);
+        }])
+        ->whereBetween('created_at', [$from, $to])
+        ->orderBy('e_p_l_s.issue_date')
+        ->groupBy('e_p_l_s.client_id')
+        ->get();
         return $query;
     }
 
