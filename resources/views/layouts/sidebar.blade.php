@@ -360,7 +360,7 @@
             <li class="nav-item">
                 <a href="{{ url('/expired_certificates') }}" class="nav-link {{ Request::is('expired_certificates') ? 'active' : '' }}">
                     <i class="fas fa-clock nav-icon"></i>
-                    <p>Expired List</p>
+                    <p>Expired  certificates</p>
                 </a>
             </li>
             @endif
@@ -386,7 +386,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/expired_cert') }}" class="nav-link {{ Request::is('expired_cert') ? 'active' : '' }}">
+                <a href="{{ url('/confirmed_files') }}" class="nav-link {{ Request::is('confirmed_files') ? 'active' : '' }}">
                     <i class="fas fa-clock nav-icon"></i>
                     <p>Confirmed Files</p>
                 </a>
