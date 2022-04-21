@@ -12,7 +12,7 @@
 @endsection
 @section('content')
     @if ($pageAuth['is_read'] == 1 || false)
-    <section class="content-header">
+        <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-12 col-sm-6">
@@ -20,8 +20,8 @@
                 </div>
             </div>
         </div>
-    </section>
-    <section class="content-header">
+        </section>
+        <section class="content-header">
         <div class="card card-success card-outline card-outline-tabs">
             <div class="card-header p-0 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
@@ -324,8 +324,8 @@
                                                             <i class="fas fa-2x fa-sync-alt"></i>
                                                         </div>-->
         </div>
-    </section>
-    <!--//Tab Section END//-->
+        </section>
+        <!--//Tab Section END//-->
     @endif
 @endsection
 
