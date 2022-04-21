@@ -11,6 +11,7 @@ class SmsController extends Controller
 
        $tel_no = preg_replace('/^\+?1|\|1|\D/', '', ($request->PhoneNumber));
 
+       if(isset($request->PhoneNumber)){
         $data = array(
             'SmsMessage' => $request->SmsMessage,
             'PhoneNumber' => $tel_no,
@@ -34,6 +35,9 @@ class SmsController extends Controller
 
         // Close cURL resource
         curl_close($ch);
-        return $result;
+        return array('status' => 1, 'mesg' => 'SMS successfully sent');
+       }else{
+        return array('status' => 2, 'mesg' => 'No telephone number found');
+       }
     }
 }
