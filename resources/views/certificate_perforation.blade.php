@@ -5,13 +5,13 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('pageStyles')
-   <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-   <!-- Theme style -->
-   <link rel="stylesheet" href="/dist/css/adminlte.min.css">
-   <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
 @endsection
 @section('content')
-@if ($pageAuth['is_read'] == 1 || false)
+    @if ($pageAuth['is_read'] == 1 || false)
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -325,27 +325,27 @@
                                                         </div>-->
         </div>
     </section>
-<!--//Tab Section END//-->
-@endif
+    <!--//Tab Section END//-->
+    @endif
 @endsection
 
 @section('pageScripts')
-<!-- Page script -->
-<!-- InputMask -->
-<script src="../../plugins/moment/moment.min.js"></script>
-<script src="../../plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <!-- Page script -->
+    <!-- InputMask -->
+    <script src="../../plugins/moment/moment.min.js"></script>
+    <script src="../../plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
 
-<script src="../../dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="../../dist/js/demo.js"></script>
-<script src="../../js/CertificatePreferJS/certificate_perf.js" type="text/javascript"></script>
-<!-- AdminLTE App -->
-<script>
-    var PROFILE_ID = '{{ $id }}';
-    var FILE_STATUS = '';
-    var CER_STATUS = '';
-    var CERTIFICATE_ID = '';
-    $(function() {
+    <script src="../../dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="../../dist/js/demo.js"></script>
+    <script src="../../js/CertificatePreferJS/certificate_perf.js" type="text/javascript"></script>
+    <!-- AdminLTE App -->
+    <script>
+        var PROFILE_ID = '{{ $id }}';
+        var FILE_STATUS = '';
+        var CER_STATUS = '';
+        var CERTIFICATE_ID = '';
+        $(function() {
         //Load table
         getaProfilebyId(PROFILE_ID, function(parameters) {
             FILE_STATUS = parseInt(parameters.file_status);
@@ -359,18 +359,18 @@
                 $(".genCertificateNum").remove();
             }
         });
-    });
+        });
 
-    //Show Certificate Details
-    getCertificateDetails(PROFILE_ID, function(resp) {
+        //Show Certificate Details
+        getCertificateDetails(PROFILE_ID, function(resp) {
         if (resp.length != 0) {
             FILE_STATUS = parseInt(resp.client.file_status);
             CERTIFICATE_ID = parseInt(resp.id);
         }
-    });
+        });
 
-    //Gen Certificate Number
-    $('.genCertificateNum').click(function() {
+        //Gen Certificate Number
+        $('.genCertificateNum').click(function() {
         if (confirm('Are you sure you want to create certificate number?')) {
             genCertificateNumbyId(PROFILE_ID, function(resp) {
                 show_mesege(resp);
@@ -381,15 +381,15 @@
                 }
             });
         }
-    });
+        });
 
-    $('.navToFile1').click(function() {
+        $('.navToFile1').click(function() {
         //        $('.fileUpDiv').removeClass('d-none');
         $('#issue_date', '#expire_date').val('');
         daterangepicker.setValue(null);
-    });
+        });
 
-    $('#uploadCerfile').click(function() {
+        $('#uploadCerfile').click(function() {
         let uploaded_file_path = $('#drafted_cert_view').attr('src');
         let file_input = $('#fileUploadInput').val();
 
@@ -418,9 +418,9 @@
             );
         }
 
-    });
+        });
 
-    function draft_file_upload() {
+        function draft_file_upload() {
         $('#uploadCerfile').prop('disabled', true);
         let url_upload = '';
         if (isNaN(CERTIFICATE_ID)) {
@@ -462,9 +462,9 @@
                 });
             }
         });
-    }
+        }
 
-    $('.complCertificate').click(function() {
+        $('.complCertificate').click(function() {
         if (confirm('Are you sure you want to complete this certificate?')) {
             var dataB = {
                 issue_date: $('#issue_date').val().trim(),
@@ -484,9 +484,9 @@
                 });
             });
         }
-    });
+        });
 
-    $('#issue_date').on('change', function() { //<--On change issue date configer expire date
+        $('#issue_date').on('change', function() { //<--On change issue date configer expire date
         var issueDate = new Date($(this).val());
         console.log(issueDate);
         var year = issueDate.getFullYear() + 1;
@@ -495,21 +495,21 @@
         var expireDate = year + "-" + ('0' + month).slice(-2) + "-" + ('0' + date).slice(-2);
         console.log(expireDate);
         $('#expire_date').val(expireDate);
-    });
+        });
 
-    $('#expire_date').on('change', function() {
+        $('#expire_date').on('change', function() {
         console.log($(this).val());
         console.log($('#issue_date').val());
-    });
+        });
 
-    // $('input[name="datepickerUi"]').daterangepicker({
-    //     singleDatePicker: true,
-    //     locale: {
-    //         format: 'YYYY-MM-DD'
-    //     }
-    // });
+        // $('input[name="datepickerUi"]').daterangepicker({
+        //     singleDatePicker: true,
+        //     locale: {
+        //         format: 'YYYY-MM-DD'
+        //     }
+        // });
 
-    $('#save_man_ref_no').click(function() {
+        $('#save_man_ref_no').click(function() {
         const data = {
             cert_id: CERTIFICATE_ID,
             cert_ref_no: $('#man_cert_ref_no').val()
@@ -528,6 +528,6 @@
         } else {
             swal.fire('Failed', 'Please enter reference no to save', 'error');
         }
-    });
-</script>
+        });
+    </script>
 @endsection
