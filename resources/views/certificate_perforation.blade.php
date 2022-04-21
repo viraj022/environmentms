@@ -13,16 +13,16 @@
 @section('content')
     @if ($pageAuth['is_read'] == 1 || false)
         <section class="content-header">
-        <div class="container-fluid">
+            <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-12 col-sm-6">
                     <h1>Certificate Preparation (<a id="cer_status"></a>)</h1>
                 </div>
             </div>
-        </div>
-        </section>
-        <section class="content-header">
-        <div class="card card-success card-outline card-outline-tabs">
+            </div>
+            </section>
+            <section class="content-header">
+            <div class="card card-success card-outline card-outline-tabs">
             <div class="card-header p-0 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
                     <li class="nav-item">
@@ -323,7 +323,7 @@
             <!--        <div class="overlay dark loadingRenderUI">
                                                             <i class="fas fa-2x fa-sync-alt"></i>
                                                         </div>-->
-        </div>
+            </div>
         </section>
         <!--//Tab Section END//-->
     @endif
