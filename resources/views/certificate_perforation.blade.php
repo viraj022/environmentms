@@ -468,42 +468,6 @@
         });
     }
 
-    $('#uploadcorrectedFile').click(function() { //upload corrected file
-        $('#uploadcorrectedFile').prop('disabled', true);
-        let url_upload = '';
-        if (isNaN(CERTIFICATE_ID)) {
-            $('#uploadcorrectedFile').prop('disabled', false);
-            alert('Certificate ID Error!');
-            return false;
-        }
-        let file = $('#correctedFile')[0].files[0];
-        let DATA = {
-            file: file
-        }
-        if ($('#correctedFile')[0].files.length === 0) {
-            $('#uploadcorrectedFile').prop('disabled', false);
-            alert('No File Selected!');
-            return false;
-        }
-        url_upload = '/api/certificate/corrected_file/';
-        submitDataWithFile(url_upload + CERTIFICATE_ID, DATA, function(resp) {
-            $('#uploadcorrectedFile').prop('disabled', false);
-            show_mesege(resp);
-            if (resp.id == 1) {
-                getCertificateDetails(PROFILE_ID, function(resp) {
-                    CERTIFICATE_ID = parseInt(resp.id);
-                    FILE_STATUS = parseInt(resp.client.file_status);
-                    $('#correctedFile').val('');
-                });
-            } else {
-                // show errors
-
-                // location.reload();
-            }
-        });
-
-    });
-
     $('.complCertificate').click(function() {
         if (confirm('Are you sure you want to complete this certificate?')) {
             var dataB = {
