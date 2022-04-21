@@ -128,7 +128,7 @@ class ReportController extends Controller
             $array[] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'] . "\n" . $row['address'];
             $array[] = $row['category_name'];
             $array[] = $row['industry_address'];
-            $array[] = 'Fee : ' . $row['amount'] . ' ' . "Invoice No : " . $row['invoice_no'] . "\nDate : " . Carbon::parse($row['billed_at'])->format('Y-m-d');
+            $array[] = 'Fee : ' . $row['amount'] . ' ' . "\nInvoice No : " . $row['invoice_no'] . "\nDate : " . Carbon::parse($row['billed_at'])->format('Y-m-d');
             $array[] = Carbon::parse($row['issue_date'])->format('Y-m-d');
             $array[] = Carbon::parse($row['created_at'])->format('Y-m-d');
             array_push($data, $array);
