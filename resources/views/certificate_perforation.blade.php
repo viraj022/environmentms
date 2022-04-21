@@ -5,14 +5,10 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('pageStyles')
-<!-- Select2 -->
-<link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
-<link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-<!-- Bootstrap4 Duallistbox -->
-<link rel="stylesheet" href="/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
-<!-- Theme style -->
-<link rel="stylesheet" href="/dist/css/adminlte.min.css">
-<!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+  <!-- Google Font: Source Sans Pro -->
 @endsection
 @section('content')
 @if ($pageAuth['is_read'] == 1 || false)

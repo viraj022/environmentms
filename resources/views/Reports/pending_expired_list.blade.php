@@ -84,7 +84,7 @@
     $(function () {
 //Load table
         loadAssDirCombo();
-        getPendingExpireCerByAssDir(null);
+        getPendingExpireCerByAssDir();
 //select button action 
         $(document).on('click', '#getByAssDirGenBtn', function () {
             if ($('#getByAssDir').is(":checked")) {

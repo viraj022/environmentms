@@ -60,7 +60,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if($data != null)
+                                    @if(isset($data))
                                     @foreach($data as $value)
                                     @if(!isset($value->client->industry_name))
                                     @continue

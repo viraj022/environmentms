@@ -1447,19 +1447,17 @@ class ClientController extends Controller
 
     public function getPendingExpiredCertificates(Request $request)
     {
-        $is_checked = $request->ad_check;
-        $ad_id = $request->ad_id;
-
-            $responses = EPL::With(['client.pradesheeyasaba', 'client.environmentOfficer.user']);
-            // ->selectRaw('max(id) as id, client_id, expire_date,cetificate_number, certificate_type')         
-            
-            $responses->when($is_checked == 'on', function ($q) use ($ad_id) {
-                return $q->whereHas('Client.environmentOfficer.assistantDirector', function ($query) use ($ad_id) {
-                    $query->where('assistant_directors.id', '=', $ad_id);
-                });
+        $is_checked = $request->is_checked;
+        $ad_id = $request->id;
+        $responses = EPL::With(['client.pradesheeyasaba', 'client.environmentOfficer.user']);
+        // ->selectRaw('max(id) as id, client_id, expire_date,cetificate_number, certificate_type') 
+        $responses->when($is_checked == 'true', function ($q) use ($ad_id) {
+            return $q->whereHas('client.environmentOfficer.assistantDirector', function ($query) use ($ad_id) {
+                $query->where('assistant_directors.id', '=', $ad_id);
             });
-            
-            $responses = $responses->where('expire_date', '=', null)
+        });
+
+        $responses = $responses->where('expire_date', '=', null)
             ->groupBy('client_id')
             ->orderBy('id', 'desc')
             ->get();
