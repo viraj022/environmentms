@@ -160,6 +160,7 @@ class ReportController extends Controller
         $data['results'] = [];
         $num = 0;
         foreach ($result as $row) {
+            // dd($row);
             $array = [];
             $array['#'] = ++$num;
             $array['submitted_date'] = Carbon::parse($row['submitted_date'])->format('Y-m-d');
@@ -192,15 +193,15 @@ class ReportController extends Controller
         $data = [];
         $num = 0;
         foreach ($result as $row) {
-            // dd($row['epls']);
+            // dd($row);
             $array = [];
             $array['#'] = ++$num;
-            $array['submitted_date'] = Carbon::parse($row['epls'][0]['submitted_date'])->format('d-m-Y');
-            $array['code'] = $row['epls'][0]['code'];
-            $array['name_title'] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'] . "\n" . $row['address'];
-            $array['category_name'] = $row['category_name'];
-            $array['industry_address'] = $row['industry_address'];
-            if (count($row['site_clearence_sessions']) > 0) {
+            $array['submitted_date'] = Carbon::parse($row['submitted_date'])->format('d-m-Y');
+            $array['code'] = $row['code'];
+            $array['name_title'] = $row['client']['name_title'] . ' ' . $row['client']['first_name'] . ' ' . $row['client']['last_name'] . "\n" . $row['client']['address'];
+            $array['category_name'] = $row['client']['industry_category']['name'];
+            $array['industry_address'] = $row['client']['industry_address'];
+            if (count($row['client']['site_clearence_sessions']) > 0) {
                 $array['nature'] = "SC -> EPL";
             } else {
                 $array['nature'] = "EPL";
@@ -928,7 +929,6 @@ class ReportController extends Controller
         $data['results'] = [];
         $num = 0;
         foreach ($result as $row) {
-                       dd($row);
             $array = [];
             $array['#'] = ++$num;
             $array['industry_start_date'] = Carbon::parse($row['created_at'])->format('Y-m-d');

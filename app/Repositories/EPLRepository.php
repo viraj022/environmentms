@@ -34,7 +34,7 @@ class EPLRepository {
      */
     public function getEPLReport($from, $to) {
         $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
-        $query = EPL::with('client.industryCategory')
+        $query = EPL::with(['client.industryCategory', 'client.siteClearenceSessions'])
         ->with(['client.transactions.transactionItems' => function ($query) use ($inspectionTypes) {
             $query->where('payment_type_id', $inspectionTypes->id)->where('transaction_type', Transaction::TRANS_TYPE_EPL);
         }])
