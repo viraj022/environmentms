@@ -60,6 +60,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @if($data != null)
                                     @foreach($data as $value)
                                     @if(!isset($value->client->industry_name))
                                     @continue
@@ -74,6 +75,7 @@
                                     </tr>
                                     @endif
                                     @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>

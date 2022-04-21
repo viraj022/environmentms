@@ -366,6 +366,22 @@
             @endif
             @if($pre['id']===config('auth.privileges.clientSpace'))
             <li class="nav-item">
+                <a href="{{ url('/expired_epl') }}" class="nav-link {{ Request::is('expired_epl') ? 'active' : '' }}">
+                    <i class="fas fa-clock nav-icon"></i>
+                    <p>Expired  EPL</p>
+                </a>
+            </li>
+            @endif
+            @if($pre['id']===config('auth.privileges.clientSpace'))
+            <li class="nav-item">
+                <a href="{{ url('/pending_expired_cert') }}" class="nav-link {{ Request::is('pending_expired_cert') ? 'active' : '' }}">
+                    <i class="fas fa-clock nav-icon"></i>
+                    <p>Pending expired list</p>
+                </a>
+            </li>
+            @endif
+            @if($pre['id']===config('auth.privileges.clientSpace'))
+            <li class="nav-item">
                 <a href="{{ url('/act_status/id/1') }}" class="nav-link {{ Request::is('act_status') ? 'active' : '' }}">
                     <i class="fas fa-clock nav-icon"></i>
                     <p>Activity Status</p>
