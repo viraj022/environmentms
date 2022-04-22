@@ -84,7 +84,7 @@
                     </p>
                 </div>
                 <div style="margin-top: 60mm">
-                    <span><b>Note: This is an authenticated system generated document, hence this document does not require signature.</b></span>  
+                    <span><b>Note: This is an authenticated system generated document.</b></span>  
                 </div>
             </section>
         </div><!-- /.container-fluid -->
