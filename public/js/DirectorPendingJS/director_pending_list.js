@@ -29,6 +29,7 @@ function loadDirectorPendingListTable() {
         if (result.length == 0) {
             tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
         } else {
+            $('#tblPendingAdList').DataTable().destroy();
             $.each(result, function (index, row) {
                 var myDate = new Date(row.created_at);
                 var fixMydate = myDate.toISOString().split('T')[0];
@@ -67,6 +68,7 @@ function loadDirectorApprovedListTable(callBack) {
         if (result.length == 0) {
             tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
         } else {
+            $('#tblApprovedAdList').DataTable().destroy();
             $.each(result, function(index, row) {
                 tbl += '<tr>';
                 tbl += '<td>' + ++index + '</td>';
@@ -88,7 +90,9 @@ function loadDirectorApprovedListTable(callBack) {
             });
         }
         $('#tblApprovedAdList tbody').html(tbl);
-
+        $('#tblApprovedAdList').DataTable({
+            stateSave: true
+        });
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }

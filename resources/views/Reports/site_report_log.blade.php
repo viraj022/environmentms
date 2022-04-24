@@ -24,7 +24,7 @@
                 <th>Site Clearance Code</th>
                 <th>Applications Name and Address</th>
                 <th>Industry</th>
-                <th>Location</th>
+                {{-- <th>Location</th> --}}
                 <th>Nature</th>
             </tr>
         </thead>
@@ -36,7 +36,7 @@
                 <td>{{$row['code_site']}}</td>                                                                                                
                 <td>{{$row['name_title']}}</td>                                                 
                 <td>{{$row['category_name']}}</td>                                                 
-                <td>{{$row['industry_address']}}</td>                                                      
+                {{-- <td>{{$row['industry_address']}}</td>                                                       --}}
                 <td>{{$row['nature']}}</td> 
              </tr>
             @endforeach
