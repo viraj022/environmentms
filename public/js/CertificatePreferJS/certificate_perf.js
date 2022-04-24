@@ -89,7 +89,7 @@ function getCertificateDetails(file_id, callBack) {
             $('#ref_Num').html('<b>Reference Number: </b>' + resp.refference_no);
             $('#created_at').html('<b>Created At: </b>' + resp.created_at);
             $('#updated_at').html('<b>Updated At: </b>' + resp.updated_at);
-            $('#fileUpDiv').addClass('d-none');
+            // $('#fileUpDiv').addClass('d-none');
             if (resp.cetificate_number != null) {
                 $('.genCertificateNum').addClass('d-none');
             }
@@ -115,9 +115,9 @@ function getCertificateDetails(file_id, callBack) {
                     $('.showCorrectedFileUi').removeClass('d-none');
                     $('.originalCertificateShowUi').addClass('d-none');
                     // $('.correctedFileShowUi').removeClass('d-none');
-                    $('.fileUpDiv').addClass('d-none');
+                    // $('.fileUpDiv').addClass('d-none');
                 } else {
-                    $('.fileUpDiv').removeClass('d-none');
+                    // $('.fileUpDiv').removeClass('d-none');
                     $('#certificateSubmittedLable').addClass('d-none');
                     $('#uploadFileSection').removeClass('d-none');
                     $('.showCorrectedFileUi').addClass('d-none');

@@ -59,7 +59,7 @@
         <div class="container-fluid">
             <section id="warn_letter" class="A4-paper mt-5">
                 <button onclick="print()" class="btn btn-success float-right" id="print-btn">Print</button>
-                <p style="font-size: 18px" id="letter_address"></p>
+                <p style="font-size: 18px; line-height: 1.5" id="letter_address"></p>
                 <p class="mt-5" style="text-decoration:underline; font-size: 21px; text-align: center">පාරිසරික ආරක්ෂණ බලපත්‍රය අළුත් කිරීම - {{$warn_let_data->client->industry_address.' - '. $warn_let_data->client->industryCategory->name}}</p>
                 <div class="mt-5" style="font-size: 18px">
                     <p class="text-justify">
@@ -80,13 +80,16 @@
                     </p>
                 </div>
                 <div class="mt-5">
-                    <p style="font-size: 18px; line-height: 0.5cm">
+                    <p style="font-size: 18px; line-height: 1.5">
                         <img src="" /><br>
                         එස්.කේ.ඒ. ලේනදූව,<br>
                         අධ්‍යක්ෂ,<br>
                         පළාත් පරිසර අධිකාරිය,<br>
                         කුරුණෑගල
                     </p>
+                </div>
+                <div style="margin-top: 60mm">
+                    <span><b>Note: This is an authenticated system generated document.</b></span>  
                 </div>
             </section>
         </div><!-- /.container-fluid -->
