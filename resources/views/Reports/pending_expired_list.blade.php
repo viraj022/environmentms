@@ -49,15 +49,13 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="card-body table-responsive" style="height: 700px;">
-                            <table class="table table-condensed" id="tblExpiredCertificate">
+                            <table class="table table-condensed" id="tblPendingExpList">
                                 <thead>
                                     <tr>
                                         <th style="width: 5em">#</th>
-                                        <th style="width: 20em">Industry Name</th>
+                                        <th style="width: 20em">EPL Code</th>
                                         <th style="width: 25em">File No</th>
-                                        <th style="width: 25em">Pradeshiya Sabha</th>
-                                        <th style="width: 20em">Status</th>
-                                        <th style="width: 20em">Action</th>
+                                        <th style="width: 25em">EO</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -80,20 +78,20 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
-<script src="../../js/CertificatePreferJS/expired_certificate.js" type="text/javascript"></script>
+<script src="../../js/CertificatePreferJS/pending_exp_list.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
     $(function () {
 //Load table
         loadAssDirCombo();
-        getExpireCerByAssDir(null);
+        getPendingExpireCerByAssDir();
 //select button action 
         $(document).on('click', '#getByAssDirGenBtn', function () {
             if ($('#getByAssDir').is(":checked")) {
 //                alert();
-                getExpireCerByAssDir($('#getAsDirect').val());
+                getPendingExpireCerByAssDir($('#getAsDirect').val());
             } else {
-                getExpireCerByAssDir(null);
+                getPendingExpireCerByAssDir();
             }
         });
     });

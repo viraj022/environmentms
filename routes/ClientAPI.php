@@ -435,5 +435,6 @@ Route::middleware('auth:api')->get('/files/confirmed', 'ClientController@getCofi
 
 Route::middleware('auth:api')->get('/files/approved/director', 'ClientController@getDirectorApprovedList'); //  get director approved list
 Route::middleware('auth:api')->post('/certificate/word/cert_id/{cert_id}', 'ClientController@uploadDocumentFile'); //  upload document file
+Route::middleware('auth:api')->post('/pendingExpiredCert', 'ClientController@getPendingExpiredCertificates'); //  get all Expired Certificates and certificate that expired within  a month by environment
 
 

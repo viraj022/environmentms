@@ -12,62 +12,41 @@
     <body class="hold-transition sidebar-mini layout-fixed text-sm">
           <center>
           <h1>EPL Report </h1>
-           <h5>From: {{$from}} .To: {{$to}}</h5>
+           <h5>Filtered by created at - From: {{$from}} - To: {{$to}}</h5>
           </center>
-              <h4>Report Genaration Time :{{$time_elapsed_secs}} seconds</h4>
+          <h4>Report Genaration Time :{{$time_elapsed_secs}} seconds</h4>
      {{-- @dump($data['results'][2]); --}}
 <table class="table cell-border compact stripe">
                                             <thead>
                                                 <tr>
                                                     <th style="width: 10px">#</th>
-                                                    <th>Date</th>
                                                     <th>EPL Code</th>
                                                     <th>Applications Name and Address</th>
                                                     <th>Industry</th>
-                                                    <th>Location</th>
                                                     <th>Inspection Fee</th>
                                                     <th>Inspection Bill Date</th>
-                                                    <th>Site Clearence Code</th>                                                           
-                                                    <th>Licence No/Isue Date</th>
-                                                     @for ($i = 0; $i < $data['header_count']; $i++)
+                                                    <th>Licence No</th>
+                                                    <th>Created Date</th>
+                                                    <th>Submitted Date</th>
+                                                    <th>Issued Date</th>
+                                                     {{-- @for ($i = 0; $i < $data['header_count']; $i++)
                                                          <th>Renewals</th>                           
-                                                     @endfor                                                              
+                                                     @endfor                                                               --}}
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach($data['results'] as $indexKey=>$row)
                                                 <tr>
                                                     <td>{{$indexKey+1}}.</td>
-                                                    <td>{{$row['submitted_date']}}</td>
                                                     <td>{{$row['code']}}</td>                                                 
                                                     <td>{{$row['name_title']}}</td>                                                 
                                                     <td>{{$row['category_name']}}</td>                                                 
-                                                    <td>{{$row['industry_address']}}</td>                                                 
                                                     <td>{{$row['inspection_fee']}}</td>                                                 
                                                     <td>{{$row['inspection_pay_date']}}</td>                                                 
-                                                    <td>{{$row['site_code']}}</td>                                                       
-                                                    @if($row['epls'][0]['count']==0)
-                                                    <td>{{$row['epls'][0]['certificate_no']}} - {{date('d-m-Y', strtotime($row['epls'][0]['issue_date']))}}</td>  
-                                                     @for ($i = 1; $i < $data['header_count']; $i++)
-                                                     @if(isset($row['epls'][$i]))
-                                                      <td>({{$row['epls'][$i]['count']}}) {{$row['epls'][$i]['certificate_no']}} - {{date('d-m-Y', strtotime($row['epls'][$i]['issue_date']))}}</td>
-                                                     @else
-                                                          <td>N/A</td>
-                                                     @endif
-                                                           <td>N/A</td>                   
-                                                     @endfor   
-                                                      <td>N/A</td> 
-                                                     @else
-                                                     <td>N/A</td>
-                                                     @for ($i = 0; $i < $data['header_count']; $i++)
-                                                     @if(isset($row['epls'][$i]))
-                                                      <td>({{$row['epls'][$i]['count']}}) {{$row['epls'][$i]['certificate_no']}} - {{date('d-m-Y', strtotime($row['epls'][$i]['issue_date']))}}</td>
-                                                     @else
-                                                          <td>N/A</td>
-                                                     @endif
-                                                                              
-                                                     @endfor   
-                                                     @endif                                              
+                                                    <td>{{$row['license_number']}}</td>                                                 
+                                                    <td>{{$row['created_at']}}</td>
+                                                    <td>{{$row['submitted_date']}}</td>
+                                                    <td>{{$row['issue_date']}}</td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>

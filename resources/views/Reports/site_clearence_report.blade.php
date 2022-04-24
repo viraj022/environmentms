@@ -20,26 +20,26 @@
                                             <thead>
                                                 <tr>
                                                     <th style="width: 10px">#</th>
-                                                    <th>Date</th>
                                                     <th>File Number</th>
                                                     <th>Applications Name and Address</th>
                                                     <th>Industry</th>
-                                                    <th>Location</th>
                                                     <th>Inspection Fee</th>
+                                                    <th>Submited Date</th>
                                                     <th>Letter Issued Date</th>                                     
+                                                    <th>Created Date</th>                                     
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach($data as $indexKey=>$row)
                                                 <tr>
                                                     <td>{{$indexKey+1}}.</td>
-                                                    <td>{{$row[1]}}</td>
                                                     <td>{{$row[2]}}</td>                                                 
                                                     <td>{{$row[3]}}</td>                                                 
                                                     <td>{{$row[4]}}</td>                                                 
-                                                    <td>{{$row[5]}}</td>                                                 
                                                     <td>{{$row[6]}}</td>                                                 
+                                                    <td>{{$row[1]}}</td>
                                                     <td>{{$row[7]}}</td> 
+                                                    <td>{{$row[8]}}</td> 
                                                 </tr>
                                                 @endforeach
                                             </tbody>
