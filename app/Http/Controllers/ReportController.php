@@ -123,13 +123,14 @@ class ReportController extends Controller
         foreach ($result as $row) {
             $array = [];
             $array[] = ++$num;
-            $array[] = Carbon::parse($row['submit_date'])->format('d-m-Y');
+            $array[] = Carbon::parse($row['submit_date'])->format('Y-m-d');
             $array[] = $row['code'];
             $array[] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'] . "\n" . $row['address'];
             $array[] = $row['category_name'];
             $array[] = $row['industry_address'];
             $array[] = 'Fee : ' . $row['amount'] . ' ' . "\nInvoice No : " . $row['invoice_no'] . "\nDate : " . Carbon::parse($row['billed_at'])->format('Y-m-d');
-            $array[] = $row['issue_date'];
+            $array[] = Carbon::parse($row['issue_date'])->format('Y-m-d');
+            $array[] = Carbon::parse($row['created_at'])->format('Y-m-d');
             array_push($data, $array);
         }
         switch ($type) {
@@ -159,30 +160,32 @@ class ReportController extends Controller
         $data['results'] = [];
         $num = 0;
         foreach ($result as $row) {
-            // dd($row['epls']);
+            // dd($row);
             $array = [];
             $array['#'] = ++$num;
-            $array['submitted_date'] = Carbon::parse($row['epls'][0]['submitted_date'])->format('d-m-Y');
-            $array['code'] = $row['epls'][0]['code'];
-            $array['name_title'] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'] . "\n" . $row['address'];
-            $array['category_name'] = $row['category_name'];
-            $array['industry_address'] = $row['industry_address'];
-            if (count($row['transactions']) > 0 && count($row['transactions'][0]['transaction_items']) > 0) {
-                $array['inspection_fee'] = $row['transactions'][0]['transaction_items'][0]['amount'];
-                $array['inspection_pay_date'] = Carbon::parse($row['transactions'][0]['billed_at'])->format('d-m-Y');
+            $array['submitted_date'] = Carbon::parse($row['submitted_date'])->format('Y-m-d');
+            $array['issue_date'] = Carbon::parse($row['issue_date'])->format('Y-m-d');
+            $array['created_at'] = Carbon::parse($row['created_at'])->format('Y-m-d');
+            $array['code'] = $row['code'];
+            $client = $row['client'];
+            $name_title = isset($client['name_title']) ? $client['name_title'] : 'N/A';
+            $first_name = isset($client['first_name']) ? $client['first_name'] : 'N/A';
+            $last_name = isset($client['last_name']) ? $client['first_name'] : 'N/A';
+            $client_address = isset($client['address']) ? $client['address'] : 'N/A';
+            $industry_category = isset($client['industry_category']['name']) ? $client['industry_category']['name'] : 'N/A';
+            $industry_address = isset($client['industry_address']) ? $client['industry_address'] : '-';
+            $array['name_title'] =  $name_title. ' ' . $first_name . ' ' . $last_name . "\n" . $client_address;
+            $array['category_name'] = $industry_category;
+            $array['industry_address'] = $industry_address;
+            if (isset($client['transactions']) && count($client['transactions']) > 0 && count( $client['transactions'][0]['transaction_items']) > 0) {
+                $array['inspection_fee'] = $client['transactions'][0]['transaction_items'][0]['amount'];
+                $array['inspection_pay_date'] = Carbon::parse($client['transactions'][0]['billed_at'])->format('Y-m-d');
             } else {
                 $array['inspection_fee'] = "N/A";
                 $array['inspection_pay_date'] = "N/A";
             }
-            if (count($row['site_clearence_sessions']) > 0) {
-                $array['site_code'] = $row['site_clearence_sessions'][0]['code'];
-            } else {
-                $array['site_code'] = "N/A";
-            }
-            $array['epls'] = $row['epls'];
-            if ($data['header_count'] < count($row['epls'])) {
-                $data['header_count'] = count($row['epls']);
-            }
+            $certificate_no = isset($row['certificate_no']) ? $row['certificate_no'] : 'N/A';
+            $array['license_number'] = $certificate_no;
             array_push($data['results'], $array);
         }
         // dd($data);
@@ -198,15 +201,24 @@ class ReportController extends Controller
         $data = [];
         $num = 0;
         foreach ($result as $row) {
-            // dd($row['epls']);
+            // dd($row);
             $array = [];
             $array['#'] = ++$num;
-            $array['submitted_date'] = Carbon::parse($row['epls'][0]['submitted_date'])->format('d-m-Y');
-            $array['code'] = $row['epls'][0]['code'];
-            $array['name_title'] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'] . "\n" . $row['address'];
-            $array['category_name'] = $row['category_name'];
-            $array['industry_address'] = $row['industry_address'];
-            if (count($row['site_clearence_sessions']) > 0) {
+            $array['submitted_date'] = Carbon::parse($row['submitted_date'])->format('d-m-Y');
+            $array['code'] = $row['code'];
+
+            $client = $row['client'];
+            $name_title = isset($client['name_title']) ? $client['name_title'] : 'N/A';
+            $first_name = isset($client['first_name']) ? $client['first_name'] : 'N/A';
+            $last_name = isset($client['last_name']) ? $client['first_name'] : 'N/A';
+            $client_address = isset($client['address']) ? $client['address'] : 'N/A';
+            $industry_category = isset($client['industry_category']['name']) ? $client['industry_category']['name'] : 'N/A';
+            $industry_address = isset($client['industry_address']) ? $client['industry_address'] : '-';
+
+            $array['name_title'] = $name_title . ' ' . $first_name . ' ' . $last_name . "\n" . $client_address;
+            $array['category_name'] = $industry_category;
+            $array['industry_address'] = $industry_address;
+            if (isset($row['client']['site_clearence_sessions']) && count($row['client']['site_clearence_sessions']) > 0) {
                 $array['nature'] = "SC -> EPL";
             } else {
                 $array['nature'] = "EPL";
@@ -934,7 +946,6 @@ class ReportController extends Controller
         $data['results'] = [];
         $num = 0;
         foreach ($result as $row) {
-            //            dd($row);
             $array = [];
             $array['#'] = ++$num;
             $array['industry_start_date'] = Carbon::parse($row['created_at'])->format('Y-m-d');

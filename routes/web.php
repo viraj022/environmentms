@@ -59,7 +59,7 @@ Route::get('/certificate_perforation/id/{id}', 'ClientController@certificatePref
 Route::get('/director_pending_list', 'AssistantDirectorController@directorPendingListIndex');
 Route::get('/site_clearance/client/{client}/profile/{profile}', 'SiteClearanceController@index');
 Route::get('/expired_certificates', 'ClientController@expireCertificatesUi');
-Route::get('/expired_cert', 'ClientController@expireCertUi');
+Route::get('/confirmed_files', 'ClientController@confirmedFiles');
 Route::get('/committee/id/{id}', 'WebRouteController@indexCommittee');
 Route::get('/committee_remarks/id/{id}', 'WebRouteController@indexCommitteeRemarks');
 Route::get('/act_status/id/{file_id}', 'WebRouteController@actStatus');
@@ -100,3 +100,6 @@ Route::get('/show/{userNotification}', 'UserNotificationsController@show')->name
 Route::get('/notifications/all', 'UserNotificationsController@index')->name('userNotification.all');
 Route::get('/warning_letters', 'WarningLetterController@index')->name('warning_letters.index');
 Route::get('/warn_view/id/{warn_let_id}', 'WarningLetterController@warnLetView')->name('warning_letters.view');
+Route::get('/expired_epl', 'ClientController@expiredEplView');
+Route::get('/expired_epl_data', 'ClientController@getExpiredEpl');
+Route::get('/pending_expired_cert', 'ClientController@getPendingExpiredView');

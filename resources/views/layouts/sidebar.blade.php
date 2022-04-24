@@ -360,7 +360,23 @@
             <li class="nav-item">
                 <a href="{{ url('/expired_certificates') }}" class="nav-link {{ Request::is('expired_certificates') ? 'active' : '' }}">
                     <i class="fas fa-clock nav-icon"></i>
-                    <p>Expired List</p>
+                    <p>Expired  certificates</p>
+                </a>
+            </li>
+            @endif
+            @if($pre['id']===config('auth.privileges.clientSpace'))
+            <li class="nav-item">
+                <a href="{{ url('/expired_epl') }}" class="nav-link {{ Request::is('expired_epl') ? 'active' : '' }}">
+                    <i class="fas fa-clock nav-icon"></i>
+                    <p>Expired  EPL</p>
+                </a>
+            </li>
+            @endif
+            @if($pre['id']===config('auth.privileges.clientSpace'))
+            <li class="nav-item">
+                <a href="{{ url('/pending_expired_cert') }}" class="nav-link {{ Request::is('pending_expired_cert') ? 'active' : '' }}">
+                    <i class="fas fa-clock nav-icon"></i>
+                    <p>Pending expired list</p>
                 </a>
             </li>
             @endif
@@ -386,7 +402,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/expired_cert') }}" class="nav-link {{ Request::is('expired_cert') ? 'active' : '' }}">
+                <a href="{{ url('/confirmed_files') }}" class="nav-link {{ Request::is('confirmed_files') ? 'active' : '' }}">
                     <i class="fas fa-clock nav-icon"></i>
                     <p>Confirmed Files</p>
                 </a>
