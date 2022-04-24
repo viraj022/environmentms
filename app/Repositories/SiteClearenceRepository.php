@@ -43,23 +43,24 @@ class SiteClearenceRepository {
                 ->leftJoin('transactions', 'site_clearence_sessions.id', 'transactions.type_id')
                 ->join('transaction_items', 'transactions.id', 'transaction_items.transaction_id')
                 ->select(
-                        'site_clearances.submit_date',
-                        'site_clearence_sessions.code',
-                        'clients.name_title',
-                        'clients.first_name',
-                        'clients.last_name',
-                        'clients.address',
-                        'industry_categories.name as category_name',
-                        'clients.industry_address',
-                        'transaction_items.amount',
-                        'transactions.invoice_no',
-                        'transactions.billed_at',
-                        'site_clearence_sessions.issue_date'
+            'site_clearances.submit_date',
+            'site_clearence_sessions.code',
+            'clients.name_title',
+            'clients.first_name',
+            'clients.last_name',
+            'clients.address',
+            'industry_categories.name as category_name',
+            'clients.industry_address',
+            'transaction_items.amount',
+            'transactions.invoice_no',
+            'transactions.billed_at',
+            'site_clearence_sessions.issue_date',
+            'site_clearence_sessions.created_at'
                 )
-                ->whereBetween('site_clearances.submit_date', [$from, $to])
+                ->whereBetween('site_clearence_sessions.issue_date', [$from, $to])
                 ->where('transactions.type', Transaction::TRANS_SITE_CLEARANCE)
                 ->where('transaction_items.payment_type_id', $inspectionTypes->id)
-                ->orderBy('site_clearances.submit_date', 'DESC');
+                ->orderBy('site_clearence_sessions.created_at', 'DESC');
 
         switch ($instance) {
             case 'all':
@@ -205,23 +206,10 @@ class SiteClearenceRepository {
     }
 
     public function getSiteReport($from, $to) {
-        $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
+        // $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
 
-//        $query = Client::whereHas('siteClearenceSessions')
-//                ->with('siteClearenceSessions')
-//                ->with('epls')
-//                ->with(['transactions.transactionItems' => function ($query) use ($inspectionTypes) {
-//                        $query->where('payment_type_id', $inspectionTypes->id)->where('transaction_type', Transaction::TRANS_TYPE_EPL);
-//                    }])
-//                ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
-////                ->select('clients.id', 'clients.name_title', 'clients.first_name', 'clients.last_name', 'clients.address', 'industry_categories.name as category_name', 'clients.industry_address', 'industry_start_date')
-//                ->whereBetween('industry_start_date', [$from, $to]);
-//
-//        $query = $query->get();
         
         $query = SiteClearenceSession::with('client.industryCategory')
-//                ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
-//                ->select('clients.id', 'clients.name_title', 'clients.first_name', 'clients.last_name', 'clients.address', 'industry_categories.name as category_name', 'clients.industry_address', 'industry_start_date')
                 ->whereBetween('created_at', [$from, $to]);
 
         $query = $query->get()->toArray();

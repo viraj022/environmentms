@@ -121,11 +121,11 @@ class ClientController extends Controller
         return view('expired_certificates', ['pageAuth' => $pageAuth]);
     }
 
-    public function expireCertUi()
+    public function confirmedFiles()
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        return view('expired_cert', ['pageAuth' => $pageAuth]);
+        return view('confirmed_files', ['pageAuth' => $pageAuth]);
     }
 
     public function certificatePrefer($id)
@@ -1408,4 +1408,67 @@ class ClientController extends Controller
         return $client_data;
     }
 
+    public function expiredEplView()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('Reports.expired_epl', ['pageAuth' => $pageAuth]);
+    }
+
+    public function getExpiredEpl(Request $request)
+    {
+
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+
+        $date = Carbon::now();
+        // $date = $date->addDays(30);
+
+        $is_checked = $request->ad_check;
+        $ad_id = $request->ad_id;
+
+            $responses = EPL::With(['client.pradesheeyasaba']);
+            // ->selectRaw('max(id) as id, client_id, expire_date,cetificate_number, certificate_type')         
+            
+            $responses->when($is_checked == 'on', function ($q) use ($ad_id) {
+                return $q->whereHas('Client.environmentOfficer.assistantDirector', function ($query) use ($ad_id) {
+                    $query->where('assistant_directors.id', '=', $ad_id);
+                });
+            });
+            
+            $responses = $responses->where('expire_date', '<', $date)
+            ->whereNotNull('expire_date')
+            // ->where('expire_date', '!=', null)
+            ->groupBy('client_id')
+            ->orderBy('id', 'desc')
+            ->get();
+            return view('Reports.expired_epl', ["data" => $responses, "pageAuth" => $pageAuth]);
+    }
+
+    public function getPendingExpiredCertificates(Request $request)
+    {
+        $is_checked = $request->is_checked;
+        $ad_id = $request->id;
+        $responses = EPL::With(['client.pradesheeyasaba', 'client.environmentOfficer.user']);
+        // ->selectRaw('max(id) as id, client_id, expire_date,cetificate_number, certificate_type') 
+        $responses->when($is_checked == 'true', function ($q) use ($ad_id) {
+            return $q->whereHas('client.environmentOfficer.assistantDirector', function ($query) use ($ad_id) {
+                $query->where('assistant_directors.id', '=', $ad_id);
+            });
+        });
+
+        $responses = $responses->where('expire_date', '=', null)
+            ->groupBy('client_id')
+            ->orderBy('id', 'desc')
+            ->get();
+            //to all get expired certificates and certificates that expired within a month by env officer id
+        return $responses;
+    }
+
+    public function getPendingExpiredView()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('Reports.pending_expired_list', ['pageAuth' => $pageAuth]);
+    }
 }
