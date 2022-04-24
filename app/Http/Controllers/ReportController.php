@@ -22,6 +22,7 @@ use App\Repositories\EnvironmentOfficerRepository;
 use App\Repositories\PradesheeyasabaRepository;
 use PhpParser\Node\Expr\Print_;
 use Illuminate\Http\Request;
+use App\Certificate;
 
 class ReportController extends Controller
 {
@@ -987,5 +988,44 @@ class ReportController extends Controller
             'file_type_status' => $file_type_status,
             'file_status' => $file_status,
         ]);
+    }
+
+    public function warnReport(Request $request){
+
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        $date = Carbon::now();
+        $date = $date->addDays(30);
+        $ad_id = $request->ad_id;
+        $ad_check = $request->ad_check;
+
+        $responses = Certificate::With(['Client.pradesheeyasaba', 'Client.warningLetters'])->selectRaw('max(id) as id, client_id, expire_date,cetificate_number,certificate_type');
+
+        if($ad_check == 'on'){
+            $responses = $responses->whereHas('Client.environmentOfficer.assistantDirector', function ($query) use ($ad_id) {
+                $query->where('assistant_directors.id', '=', $ad_id);
+            });
+        }else{
+            $responses = $responses->where('certificate_type', '=', 0);
+        }
+        $responses = $responses->where('expire_date', '<', $date)
+            ->groupBy('client_id')
+            ->get();
+
+        $reses = $responses->toArray();
+
+        foreach ($reses as $k => $res) {
+            $origin = date_create(date("Y-m-d"));
+            $target = date_create(date($res['expire_date']));
+            $interval = date_diff($origin, $target);
+
+            if ($interval->format('%R%a days') > 0) {
+                $reses[$k]['due_date'] = $interval->format('Expire within %a days');
+            } else {
+                $reses[$k]['due_date'] = "expired";
+            }
+        }
+
+        return view('Reports.warn_report', ['warn_let_data' => $reses]);
     }
 }

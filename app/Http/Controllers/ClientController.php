@@ -1407,4 +1407,5 @@ class ClientController extends Controller
         }
         return $client_data;
     }
+
 }
