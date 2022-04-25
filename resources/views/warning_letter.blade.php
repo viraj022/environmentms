@@ -192,7 +192,7 @@ $(document).on('click', '.send_sms', function(){
         }).then((result) => {
          if (result.value) {
            let data = {
-           "SmsMessage": 'Industry name of '+ $(this).data('industry-name') +' has expired on '+ $(this).data('expire-date')+'.',
+           "expire_date": $(this).data('expire-date'),
            "PhoneNumber": $(this).data('tel'),
            "client_id": $(this).data('client')
          };
