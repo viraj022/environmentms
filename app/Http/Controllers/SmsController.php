@@ -4,16 +4,32 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Client;
 
 class SmsController extends Controller
 {
-    public function send_sms(Request $request){
-
-       $tel_no = preg_replace('/^\+?1|\|1|\D/', '', ($request->PhoneNumber));
+    public function sendSms(Request $request)
+    {
+        $client_details = Client::find($request->client_id);
+        $tel_no = preg_replace('/^\+?1|\|1|\D/', '', ($client_details->contact_no));
+        $sms_message = 'Obage ' . $client_details->industry_name . ' anka darana parisara arakshana balapathraya '."\n"
+        .  $request->expire_date .' wana dina kal ikuth weemata niyamithawa etha.'."\n"
+        . 'Ebawin balapathraya aluth kirima sadaha "parisarika '."\n"
+        . 'arakshana balapathraya warshikawa aluth kirima ' ."\n"
+        . 'sadaha wu illumpathraya"'."\n"
+        .'idiripath karana men '."\n"
+        .'kaarunikawa danwami.'."\n"
+        .'Danatamath oba wisin'."\n"
+        .'ayadumpathak idiripath kara'."\n"
+        .'athnam meya nosalakaa harina men danwaa sitimi.'."\n"
+        .'Wayamba Palath Parisara Adikariya'."\n"
+        .'(Provicial Environment Authority-NWP)'."\n"
+        .'037-2225236'."\n"
+        .'(This is a system generated message)';
 
        if(isset($request->PhoneNumber)){
         $data = array(
-            'SmsMessage' => $request->SmsMessage,
+            'SmsMessage' => $sms_message,
             'PhoneNumber' => $tel_no,
             'CompanyId' => 'CEYTECHAPI394',
             'Pword' => 'aQyp7glqK0',
