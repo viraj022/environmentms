@@ -46,6 +46,10 @@
             background: initial;
             page-break-after: always;
         }
+        
+        #print-btn {
+            display: none;
+        }
     }
 </style>
 @endsection
@@ -54,6 +58,7 @@
     <section class="content">
         <div class="container-fluid">
             <section id="warn_letter" class="A4-paper mt-5">
+                <button onclick="print()" class="btn btn-success float-right" id="print-btn">Print</button>
                 <p style="font-size: 18px; line-height: 1.5" id="letter_address"></p>
                 <p class="mt-5" style="text-decoration:underline; font-size: 21px; text-align: center">පාරිසරික ආරක්ෂණ බලපත්‍රය අළුත් කිරීම - {{$warn_let_data->client->industry_address.' - '. $warn_let_data->client->industryCategory->name}}</p>
                 <div class="mt-5" style="font-size: 18px">
@@ -97,6 +102,7 @@
 
 <script>
     var address = '{{ $warn_let_data->client->address }}';
+    var generated_date = "{{ Carbon\Carbon::parse($warn_let_data->created_at)->format('Y-m-d') }}";
 
     var address_array = address.split(",");
 
@@ -104,6 +110,9 @@
     $.each(address_array, function(index, item) {
         html += '<span style="line-height: 0.5cm">'+item+' , </span><br>';
     });
+
+    html +=generated_date;
+    
     $('#letter_address').html(html);
 </script>
 @endsection

@@ -135,46 +135,37 @@
         });
     }
 
-    function getWarnAssDir(id, callBack) {
-        var url = "/api/certificate/expiredCertificates";
-        if (id != null) {
-            url = "/api/certificate/expiredCertificates/id/" + id;
-        }
-        //    console.log(url);
-        //    var certificate_status = {0: 'pending', 1: 'Drafting', 2: 'Drafted', 3: 'AD Pending', 4: 'Director Pending', 5: 'Director Approved', 6: 'Issued', '-1': 'Hold'};
-        //    var certificate_type = {0: 'pending', 1: 'New EPL', 2: 'Renew EPL', 3: 'New Site Clearance', 4: 'Site Clearance Extended'};
-        ajaxRequest('GET', url, null, function(result) {
-            var tbl = '';
-            if (result.length == 0) {
-                tbl += '<td colspan="5">Data Not Found</td>';
-            } else {
-                $('#tbl_warn_let_exp').DataTable().destroy();
-                $.each(result, function(index, row) {
-                    tbl += '<tr>';
-                    tbl += '<td>' + ++index + '</td>';
-                    tbl += '<td>' + row.client.industry_name + '</td>';
-                    tbl += '<td>' + row.cetificate_number + ' (<a href="/industry_profile/id/' + row.client_id + '" target="_blank">' + row.client.file_no + '</a>)</td>';
-                    tbl += '<td>' + row.client.pradesheeyasaba.name + '</td>';
-                    tbl += '<td>(' + row.expire_date + ')' + row.due_date + '</td>';
-                    tbl += '<td>';
-                    if (row.client.warning_letters.length == 0) {
-                        tbl += '<button type="button" class="btn btn-success gen-warn-letter" data-client="' + row.client_id + '" data-expire-date="' + row.expire_date + '" data-file-type="' + row.certificate_type + '">Generate Warning Letter</button>';
-                        tbl += '<button type="button" class="btn btn-info send_sms ml-1" data-expire-date="' + row.expire_date + '" data-industry-name="' + row.client.industry_name + '" data-tel="' + row.client.contact_no + '">Send SMS</button>';
-                    } else {
-                        tbl += '<a href="/warn_view/id/' + row.client.warning_letters[0].id + '" class="btn btn-primary">View Warning Letter</a>';
-                        tbl += '<button type="button" class="btn btn-info send_sms ml-1" data-expire-date="' + row.expire_date + '" data-industry-name="' + row.client.industry_name + '" data-tel="' + row.client.contact_no + '">Send SMS</button>';
-                    }
-                    tbl += '</td>';
-                    tbl += '</tr>';
-                });
-            }
-            $('#tbl_warn_let_exp tbody').html(tbl);
-            $('#tbl_warn_let_exp').DataTable({
-                stateSave: true,
-                dom: 'Bfrtip',
-                buttons: [
-                    'print'
-                ]
+    function getExpiredCerByAssDir(id, callBack) {
+    var url = "/api/certificate/expiredCertificates";
+    if (id != null) {
+        url = "/api/certificate/expiredCertificates/id/" + id;
+    }
+//    console.log(url);
+//    var certificate_status = {0: 'pending', 1: 'Drafting', 2: 'Drafted', 3: 'AD Pending', 4: 'Director Pending', 5: 'Director Approved', 6: 'Issued', '-1': 'Hold'};
+//    var certificate_type = {0: 'pending', 1: 'New EPL', 2: 'Renew EPL', 3: 'New Site Clearance', 4: 'Site Clearance Extended'};
+    ajaxRequest('GET', url, null, function (result) {
+        var tbl = '';
+        if (result.length == 0) {
+            tbl += '<td colspan="5">Data Not Found</td>';
+        } else {
+            $('#tblExpiredCertificate').DataTable().destroy();
+            $.each(result, function (index, row) {
+                tbl += '<tr>';
+                tbl += '<td>' + ++index + '</td>';
+                tbl += '<td>' + row.client.industry_name + '</td>';
+                tbl += '<td>' + row.cetificate_number + ' (<a href="/industry_profile/id/' + row.client_id + '" target="_blank">' + row.client.file_no + '</a>)</td>';
+                tbl += '<td>' + row.client.pradesheeyasaba.name + '</td>';
+                tbl += '<td>(' + row.expire_date + ')' + row.due_date + '</td>';
+                tbl += '<td>';
+                if(row.client.warning_letters.length == 0){
+                  tbl += '<button type="button" class="btn btn-success gen-warn-letter" data-client="'+row.client_id+'" data-expire-date="'+row.expire_date+'" data-file-type="'+row.certificate_type+'">Generate Warning Letter</button>';
+                  tbl += '<button type="button" class="btn btn-info send_sms ml-1" data-client="'+row.client_id+'" data-expire-date="'+row.expire_date+'" data-industry-name="'+row.client.industry_name+'" data-tel="'+row.client.contact_no+'">Send SMS</button>';
+                }else{
+                  tbl += '<a href="/warn_view/id/'+row.client.warning_letters[0].id+'" class="btn btn-primary">View Warning Letter</a>';
+                  tbl += '<button type="button" class="btn btn-info send_sms ml-1" data-client="'+row.client_id+'" data-expire-date="'+row.expire_date+'" data-industry-name="'+row.client.industry_name+'" data-tel="'+row.client.contact_no+'">Send SMS</button>';
+                }
+                tbl += '</td>';
+                tbl += '</tr>';
             });
             if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
                 callBack(result);
@@ -190,11 +181,40 @@
         send_sms(data);
     });
 
-    function send_sms(data) {
-        let url = '/api/send_sms';
-        ajaxRequest('POST', url, data, function(resp) {
-            console.log(resp);
-        });
+$(document).on('click', '.send_sms', function(){
+    if($(this).data('tel') != ''){
+        Swal.fire({
+         title: 'Are you sure?',
+         text: "Message will be send!",
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonColor: '#3085d6',
+         cancelButtonColor: '#d33',
+         confirmButtonText: 'Yes, send it!'
+        }).then((result) => {
+         if (result.value) {
+           let data = {
+           "SmsMessage": 'Industry name of '+ $(this).data('industry-name') +' has expired on '+ $(this).data('expire-date')+'.',
+           "PhoneNumber": $(this).data('tel'),
+           "client_id": $(this).data('client')
+         };
+         send_sms(data);
+        }
+       });
+    }else{
+        swal.fire('warning', "There is no telephone number for this file", 'error');
     }
+});
+
+function send_sms(data){
+    let url = '/api/send_sms';
+    ajaxRequest('POST', url, data, function(resp){
+        if(resp.status == 1){
+            swal.fire('Success', 'Message sending successful', 'success');
+        }else{
+            swal.fire('Error', 'Message sending was unsuccessful', 'error');
+        }
+    });
+}
 </script>
 @endsection
