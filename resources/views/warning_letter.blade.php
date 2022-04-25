@@ -148,11 +148,11 @@
                 tbl += '<td>(' + row.expire_date + ')' + row.due_date + '</td>';
                 tbl += '<td>';
                 if(row.client.warning_letters.length == 0){
-                  tbl += '<button type="button" class="btn btn-success gen-warn-letter" data-client="'+row.client_id+'" data-expire-date="'+row.expire_date+'" data-file-type="'+row.certificate_type+'">Generate Warning Letter</button>';
-                  tbl += '<button type="button" class="btn btn-info send_sms ml-1" data-expire-date="'+row.expire_date+'" data-industry-name="'+row.client.industry_name+'" data-tel="'+row.client.contact_no+'">Send SMS</button>';
+                  tbl += '<button type="button" class="btn btn-success gen-warn-letter" data-client="'+row.client_id+'" data-file-type="'+row.certificate_type+'">Generate Warning Letter</button>';
+                  tbl += '<button type="button" class="btn btn-info send_sms ml-1" data-client="'+row.client_id+'" data-expire-date="'+row.expire_date+'">Send SMS</button>';
                 }else{
                   tbl += '<a href="/warn_view/id/'+row.client.warning_letters[0].id+'" class="btn btn-primary">View Warning Letter</a>';
-                  tbl += '<button type="button" class="btn btn-info send_sms ml-1" data-expire-date="'+row.expire_date+'" data-industry-name="'+row.client.industry_name+'" data-tel="'+row.client.contact_no+'">Send SMS</button>';
+                  tbl += '<button type="button" class="btn btn-info send_sms ml-1" data-client="'+row.client_id+'" data-expire-date="'+row.expire_date+'">Send SMS</button>';
                 }
                 tbl += '</td>';
                 tbl += '</tr>';
@@ -170,8 +170,8 @@
 
 $(document).on('click', '.send_sms', function(){
     let data = {
-        "SmsMessage": 'Industry name of '+ $(this).data('industry-name') +' has expired on '+ $(this).data('expire-date')+'.',
-        "PhoneNumber": $(this).data('tel'),
+        "client_id": $(this).data('client'),
+        "expire_date": $(this).data('expire-date')
     };
     send_sms(data);
 });
