@@ -27,6 +27,7 @@ class SmsController extends Controller
         .'037-2225236'."\n"
         .'(This is a system generated message)';
 
+       if(isset($request->PhoneNumber)){
         $data = array(
             'SmsMessage' => $sms_message,
             'PhoneNumber' => $tel_no,
@@ -50,6 +51,9 @@ class SmsController extends Controller
 
         // Close cURL resource
         curl_close($ch);
-        return $result;
+        return array('status' => 1, 'mesg' => 'SMS successfully sent');
+       }else{
+        return array('status' => 2, 'mesg' => 'No telephone number found');
+       }
     }
 }
