@@ -18,30 +18,32 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="">
-                            <div class="">
-                                <div class="col-md-4">
+                        <form action="/warn_report" target="_blank" method="get">
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div class="form-check">
-                                        <input id="getByAssDir" class="form-check-input" type="checkbox">
+                                        <input id="getByAssDir" class="form-check-input" type="checkbox" name="ad_check">
                                         <label class="form-check-label">Search By Assistant Director</label>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <select id="getAsDirect" class="form-control form-control-sm">
+                                        <select id="getAsDirect" class="form-control form-control-sm" name="ad_id">
                                             <option value="0">Loading..</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <button id="getByAssDirGenBtn" type="button" class="btn btn-block btn-primary btn-xs">Generate</button>
+                                <div class="col-md-6">
+                                    <button class="btn btn-primary float-right">print</button>
                                 </div>
                             </div>
+                        </form>
+
+                        <div class="col-md-2">
+                            <button id="getByAssDirGenBtn" type="button" class="btn btn-block btn-primary btn-xs">Generate</button>
                         </div>
                     </div>
                     <div class="card-body p-0">
                         <div class="card-body table-responsive" style="height: 700px;">
-                            <table class="table table-condensed" id="tblExpiredCertificate">
+                            <table class="table table-condensed" id="tbl_warn_let_exp">
                                 <thead>
                                     <tr>
                                         <th style="width: 5em">#</th>
@@ -61,8 +63,8 @@
             </div>
         </div>
     </div>
-</div>
-</div>
+    </div>
+    </div>
 </section>
 @endif
 @endsection
@@ -73,55 +75,63 @@
 <script src="../../js/CertificatePreferJS/expired_certificate.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
-    $(function () {
-//Load table
+    $(function() {
+        //Load table
         loadAssDirCombo();
-        getExpiredCerByAssDir(null);
-//select button action 
-        $(document).on('click', '#getByAssDirGenBtn', function () {
+        getWarnAssDir(null);
+
+        $('#getAsDirect').change(function() {
             if ($('#getByAssDir').is(":checked")) {
-//                alert();
-                getExpiredCerByAssDir($('#getAsDirect').val());
+                getWarnAssDir($('#getAsDirect').val());
             } else {
-                getExpiredCerByAssDir(null);
+                getWarnAssDir(null);
             }
         });
 
-        $(document).on('click', '.gen-warn-letter', function(){
+        //select button action 
+        $(document).on('click', '#getByAssDirGenBtn', function() {
+            if ($('#getByAssDir').is(":checked")) {
+                getWarnAssDir($('#getAsDirect').val());
+            } else {
+                getWarnAssDir(null);
+            }
+        });
+
+        $(document).on('click', '.gen-warn-letter', function() {
             Swal.fire({
-               title: 'Are you sure?',
-               text: "Warning letter will be created!",
-               icon: 'warning',
-               showCancelButton: true,
-               confirmButtonColor: '#3085d6',
-               cancelButtonColor: '#d33',
-               confirmButtonText: 'Yes, create letter!'
+                title: 'Are you sure?',
+                text: "Warning letter will be created!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, create letter!'
             }).then((result) => {
                 if (result.value) {
-                  var data = {
-                  "client_id": $(this).data('client'),
-                  "expired_date": $(this).data('expire-date'),
-                  "file_type": $(this).data('file-type')
-                };
-                  create_warn_letter(data, function(){
-                    getExpiredCerByAssDir();
-                  });
+                    var data = {
+                        "client_id": $(this).data('client'),
+                        "expired_date": $(this).data('expire-date'),
+                        "file_type": $(this).data('file-type')
+                    };
+                    create_warn_letter(data, function() {
+                        getWarnAssDir(null);
+                    });
                 }
             });
         });
     });
 
-    function create_warn_letter(data, callBack){
+    function create_warn_letter(data, callBack) {
         var url = "/api/save_warning_letter";
-        ajaxRequest('POST', url, data, function (result) {
-           if(result.status == 1){
-               swal.fire('Success', result.message, 'success');
-           }else{
-               swal.fire('Error', result.message, 'error');
-           }
-           if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
-               callBack(result);
-           }
+        ajaxRequest('POST', url, data, function(result) {
+            if (result.status == 1) {
+                swal.fire('Success', result.message, 'success');
+            } else {
+                swal.fire('Error', result.message, 'error');
+            }
+            if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
+                callBack(result);
+            }
         });
     }
 
@@ -157,16 +167,19 @@
                 tbl += '</td>';
                 tbl += '</tr>';
             });
-        }
-        $('#tblExpiredCertificate tbody').html(tbl);
-        $('#tblExpiredCertificate').DataTable({
-            stateSave: true
+            if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
+                callBack(result);
+            }
         });
-        if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
-            callBack(result);
-        }
+    }
+
+    $(document).on('click', '.send_sms', function() {
+        let data = {
+            "SmsMessage": 'Industry name of ' + $(this).data('industry-name') + ' has expired on ' + $(this).data('expire-date') + '.',
+            "PhoneNumber": $(this).data('tel'),
+        };
+        send_sms(data);
     });
-}
 
 $(document).on('click', '.send_sms', function(){
     if($(this).data('tel') != ''){
