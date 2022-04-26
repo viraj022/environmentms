@@ -138,13 +138,13 @@
 
         function getWarnAssDir(id, callBack) {
             var url = "/api/certificate/expiredCertificates";
-            if (id != null) {
-                url = "/api/certificate/expiredCertificates/id/" + id;
+            let data = null;
+            if (id!=null) {
+                data = {
+                    "ad_id": id
+                };
             }
-            //    console.log(url);
-            //    var certificate_status = {0: 'pending', 1: 'Drafting', 2: 'Drafted', 3: 'AD Pending', 4: 'Director Pending', 5: 'Director Approved', 6: 'Issued', '-1': 'Hold'};
-            //    var certificate_type = {0: 'pending', 1: 'New EPL', 2: 'Renew EPL', 3: 'New Site Clearance', 4: 'Site Clearance Extended'};
-            ajaxRequest('GET', url, null, function(result) {
+            ajaxRequest('GET', url, data, function(result) {
                 var tbl = '';
                 if (result.length == 0) {
                     tbl += '<td colspan="5">Data Not Found</td>';
