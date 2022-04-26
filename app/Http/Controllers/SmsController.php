@@ -4,15 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Client;
 
 class SmsController extends Controller
 {
-    public function send_sms(Request $request){
+    public function sendSms(Request $request)
+    {
+        $client_details = Client::find($request->client_id);
+        $tel_no = preg_replace('/^\+?1|\|1|\D/', '', ($client_details->contact_no));
+        $sms_message = 'Obage ' . $client_details->industry_name . ' anka darana parisara arakshana balapathraya '."\n"
+        .  $request->expire_date .' wana dina kal ikuth weemata niyamithawa etha. Ebawin balapathraya aluth kirima sadaha "parisarika arakshana balapathraya warshikawa aluth kirima sadaha wu illumpathraya" idiripath karana men kaarunikawa danwami. Danatamath oba wisin ayadumpathak idiripath kara athnam meya nosalakaa harina men danwaa sitimi.'."\n"
+        .'Wayamba Palath Parisara Adikariya'."\n"
+        .'(Provicial Environment Authority-NWP)'."\n"
+        .'037-2225236'."\n"
+        .'(This is a system generated message)';
 
-       $tel_no = preg_replace('/^\+?1|\|1|\D/', '', ($request->PhoneNumber));
-
+       if(isset($request->PhoneNumber)){
         $data = array(
-            'SmsMessage' => $request->SmsMessage,
+            'SmsMessage' => $sms_message,
             'PhoneNumber' => $tel_no,
             'CompanyId' => 'CEYTECHAPI394',
             'Pword' => 'aQyp7glqK0',
@@ -34,6 +43,9 @@ class SmsController extends Controller
 
         // Close cURL resource
         curl_close($ch);
-        return $result;
+        return array('status' => 1, 'mesg' => 'SMS successfully sent');
+       }else{
+        return array('status' => 2, 'mesg' => 'No telephone number found');
+       }
     }
 }

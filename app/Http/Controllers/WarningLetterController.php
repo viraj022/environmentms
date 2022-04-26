@@ -26,9 +26,17 @@ class WarningLetterController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $warn_letter = WarningLetter::where('id', $id)->with('client.certificates', 'client.industryCategory')->first();
-        return view('warn_letter_view', ['pageAuth' => $pageAuth, 'warn_let_data' => $warn_letter]);
+        // dd($warn_letter);
+        $address = explode(',', $warn_letter->client->address);
+        return view('warn_letter_view', ['pageAuth' => $pageAuth, 'warn_let_data' => $warn_letter, 'client_address' => $address]);
     }
-
+    public function warningLetterLog()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        $warn_letter = WarningLetter::with('client.industryCategory')->get();
+        return view('Reports.warning_letter_log', ['pageAuth' => $pageAuth, 'warn_let_data' => $warn_letter]);
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -48,7 +56,7 @@ class WarningLetterController extends Controller
             "user_id" => $user,
             "client_id" => $client_id,
             "expired_days" => $expired_days,
-            "file_type" => $file_type 
+            "file_type" => $file_type
         ]);
 
         if ($warning_letter == true) {

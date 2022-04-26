@@ -1065,4 +1065,4 @@ Route::get('/epl_site_count', [ResetSettingsController::class, 'get_epl_site_cou
 Route::put('/reset_counts', [ResetSettingsController::class, 'reset_site_counts']);
 
 Route::middleware('auth:api')->post('/save_notification', 'UserNotificationsController@create');
-Route::middleware('auth:api')->post('/send_sms', 'SmsController@send_sms');
+Route::middleware('auth:api')->post('/send_sms', 'SmsController@sendSms');
