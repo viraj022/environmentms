@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 //   return $request->user();
 // });
 //api
-    Route::middleware('auth:api')->get('/files/all/officer/id/{id}', 'ClientController@getAllFiles'); // get all files by environment officer
+Route::middleware('auth:api')->get('/files/all/officer/id/{id}', 'ClientController@getAllFiles'); // get all files by environment officer
 Route::middleware('auth:api')->get('/files/certificate/officer/id/{id}', 'ClientController@certificatePath'); // get all files by certificate Path
 
 
@@ -424,7 +424,6 @@ Route::middleware('auth:api')->patch('/certificate/issue/{id}', 'ClientControlle
 
 Route::middleware('auth:api')->patch('/certificate/complete/{id}', 'ClientController@completeCertificate'); //  complete certificate
 Route::middleware('auth:api')->get('/certificate/expiredCertificates', 'ClientController@getExpiredCertificates'); //  get all Expired Certificates and certificate that expired within  a month by environment
-Route::middleware('auth:api')->get('/certificate/expiredCertificates/id/{id}', 'ClientController@getExpiredCertificatesByEnvOfficer'); //  get Expired Certificates and certificate that expired within  a month by environment officer id
 Route::middleware('auth:api')->get('/old_files/count_by_date', 'ClientController@oldFilesCountByDate');
 
 Route::middleware('auth:api')->patch('/reject/file/{file_id}', 'AssistantDirectorController@rejectFileAll'); //   reject file and current working file type
@@ -436,5 +435,3 @@ Route::middleware('auth:api')->get('/files/confirmed', 'ClientController@getCofi
 Route::middleware('auth:api')->get('/files/approved/director', 'ClientController@getDirectorApprovedList'); //  get director approved list
 Route::middleware('auth:api')->post('/certificate/word/cert_id/{cert_id}', 'ClientController@uploadDocumentFile'); //  upload document file
 Route::middleware('auth:api')->post('/pendingExpiredCert', 'ClientController@getPendingExpiredCertificates'); //  get all Expired Certificates and certificate that expired within  a month by environment
-
-

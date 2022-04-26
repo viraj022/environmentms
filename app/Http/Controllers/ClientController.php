@@ -1097,54 +1097,20 @@ class ClientController extends Controller
         }
     }
 
-    public function getExpiredCertificatesByEnvOfficer($id)
-    { //to get expired certificates and certificates that expired within a month by env officer id
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        $date = Carbon::now();
-        $date = $date->addDays(30);
-        if ($pageAuth['is_read']) {
-
-            $responses = Certificate::With(['Client.pradesheeyasaba', 'Client.warningLetters'])->selectRaw('max(id) as id, client_id, expire_date,cetificate_number,certificate_type')
-                ->whereHas('Client.environmentOfficer.assistantDirector', function ($query) use ($id) {
-                    $query->where('assistant_directors.id', '=', $id);
-                })
-                ->where('expire_date', '<', $date)
-                ->groupBy('client_id')
-                ->get();
-
-            $reses = $responses->toArray();
-
-            foreach ($reses as $k => $res) {
-                $origin = date_create(date("Y-m-d"));
-                $target = date_create(date($res['expire_date']));
-                $interval = date_diff($origin, $target);
-
-                if ($interval->format('%R%a days') > 0) {
-                    $reses[$k]['due_date'] = $interval->format('Expire within %a days');
-                } else {
-                    $reses[$k]['due_date'] = "expired";
-                }
-            }
-
-            return $reses;
-        } else {
-            abort(401);
-        }
-    }
 
     //end to get expired certificates and certificates that expired within a month by env officer id
 
-    public function getExpiredCertificates()
+    public function getExpiredCertificates(Request $request)
     { //to all get expired certificates and certificates that expired within a month by env officer id
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
+        $ad_id = $request->input('ad_id');
         $date = Carbon::now();
         $date = $date->addDays(30);
 
         if ($pageAuth['is_read']) {
-            $responses = \DB::select("SELECT
+            $q = "SELECT
             e_p_l_s.id,
             e_p_l_s.client_id,
             e_p_l_s.expire_date,
@@ -1156,20 +1122,20 @@ class ClientController extends Controller
 	        (SELECT MAX(warning_letters.id) FROM warning_letters WHERE warning_letters.client_id = e_p_l_s.client_id ) AS last_letter
         FROM e_p_l_s
             INNER JOIN clients ON e_p_l_s.client_id = clients.id
-            INNER JOIN pradesheeyasabas ON clients.pradesheeyasaba_id = pradesheeyasabas.id
-        WHERE e_p_l_s.id IN (
+            INNER JOIN pradesheeyasabas ON clients.pradesheeyasaba_id = pradesheeyasabas.id";
+            if (isset($ad_id)) {
+                $q .= " INNER JOIN environment_officers ON clients.environment_officer_id = environment_officers.id";
+            }
+            $q .= " WHERE e_p_l_s.id IN (
                 SELECT  MAX( e_p_l_s.id )
                 FROM  e_p_l_s
-                GROUP BY  e_p_l_s.client_id )
-        HAVING DATE( e_p_l_s.expire_date ) < '{$date}'
-            AND e_p_l_s.expire_date IS NOT NULL");
-            // $responses = EPL::With(['Client.pradesheeyasaba', 'Client.warningLetters'])
-            //     ->selectRaw('max(id) as id, client_id, expire_date, code')
-            //     ->having('expire_date', '<', $date)
-            //     ->havingRaw('`expire_date` IS NOT NULL')
-            //     ->groupBy('client_id')
-            //     ->toSql();
-
+                GROUP BY  e_p_l_s.client_id )";
+            if (isset($ad_id)) {
+                $q .= " AND environment_officers.assistant_director_id = {$ad_id}";
+            }
+            $q .= " HAVING DATE( e_p_l_s.expire_date ) < '{$date}'
+            AND e_p_l_s.expire_date IS NOT NULL";
+            $responses = \DB::select($q);
             foreach ($responses as &$res) {
                 $res->due_date = Carbon::parse($res->expire_date)->diffForHumans();
                 $res->expire_date = Carbon::parse($res->expire_date)->format('Y-m-d');
