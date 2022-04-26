@@ -1161,7 +1161,7 @@ class ClientController extends Controller
                 SELECT  MAX( e_p_l_s.id )
                 FROM  e_p_l_s
                 GROUP BY  e_p_l_s.client_id )
-        HAVING DATE( e_p_l_s.expire_date ) < '2022-01-01'
+        HAVING DATE( e_p_l_s.expire_date ) < '{$date}'
             AND e_p_l_s.expire_date IS NOT NULL");
             // $responses = EPL::With(['Client.pradesheeyasaba', 'Client.warningLetters'])
             //     ->selectRaw('max(id) as id, client_id, expire_date, code')
