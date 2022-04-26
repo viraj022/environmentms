@@ -1133,6 +1133,7 @@ class ClientController extends Controller
             if (isset($ad_id)) {
                 $q .= " AND environment_officers.assistant_director_id = {$ad_id}";
             }
+            $q .= " AND clients.deleted_at IS NULL";
             $q .= " HAVING DATE( e_p_l_s.expire_date ) < '{$date}'
             AND e_p_l_s.expire_date IS NOT NULL";
             $responses = \DB::select($q);
