@@ -118,6 +118,8 @@ class ReportController extends Controller
     {
         $start = microtime(true);
         $site = new SiteClearenceRepository();
+        // $result = $site->getSiteClearenceReport($from, $to, $type);
+        // dd($result);
         $result = $site->getSiteClearenceReport($from, $to, $type)->toArray();
         $data = [];
         $num = 0;
@@ -175,10 +177,10 @@ class ReportController extends Controller
             $client_address = isset($client['address']) ? $client['address'] : 'N/A';
             $industry_category = isset($client['industry_category']['name']) ? $client['industry_category']['name'] : 'N/A';
             $industry_address = isset($client['industry_address']) ? $client['industry_address'] : '-';
-            $array['name_title'] =  $name_title. ' ' . $first_name . ' ' . $last_name . "\n" . $client_address;
+            $array['name_title'] =  $name_title . ' ' . $first_name . ' ' . $last_name . "\n" . $client_address;
             $array['category_name'] = $industry_category;
             $array['industry_address'] = $industry_address;
-            if (isset($client['transactions']) && count($client['transactions']) > 0 && count( $client['transactions'][0]['transaction_items']) > 0) {
+            if (isset($client['transactions']) && count($client['transactions']) > 0 && count($client['transactions'][0]['transaction_items']) > 0) {
                 $array['inspection_fee'] = $client['transactions'][0]['transaction_items'][0]['amount'];
                 $array['inspection_pay_date'] = Carbon::parse($client['transactions'][0]['billed_at'])->format('Y-m-d');
             } else {
@@ -1001,7 +1003,8 @@ class ReportController extends Controller
         ]);
     }
 
-    public function warnReport(Request $request){
+    public function warnReport(Request $request)
+    {
 
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
@@ -1012,11 +1015,11 @@ class ReportController extends Controller
 
         $responses = Certificate::With(['Client.pradesheeyasaba', 'Client.warningLetters'])->selectRaw('max(id) as id, client_id, expire_date,cetificate_number,certificate_type');
 
-        if($ad_check == 'on'){
+        if ($ad_check == 'on') {
             $responses = $responses->whereHas('Client.environmentOfficer.assistantDirector', function ($query) use ($ad_id) {
                 $query->where('assistant_directors.id', '=', $ad_id);
             });
-        }else{
+        } else {
             $responses = $responses->where('certificate_type', '=', 0);
         }
         $responses = $responses->where('expire_date', '<', $date)

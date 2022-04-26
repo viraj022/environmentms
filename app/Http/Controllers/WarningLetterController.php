@@ -25,10 +25,18 @@ class WarningLetterController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        $warn_letter = WarningLetter::where('id', $id)->with('client.certificates', 'client.industryCategory')->first();
+        $warn_letter = WarningLetter::where('id', $id)->with('client.certificates', 'client.industryCategory', 'client.epls')->first();
         // dd($warn_letter);
         $address = explode(',', $warn_letter->client->address);
-        return view('warn_letter_view', ['pageAuth' => $pageAuth, 'warn_let_data' => $warn_letter, 'client_address' => $address]);
+        $epl_count = count($warn_letter->client->epls);
+        $certificate_count = count($warn_letter->client->certificates);
+        $exp_date = $warn_letter->client->epls[$epl_count - 1]->expiry_date;
+        $cert_no = '';
+        if ($certificate_count > 0) {
+            $exp_date = $warn_letter->client->certificates[$epl_count - 1]->expire_date;
+            $cert_no = $warn_letter->client->certificates[$epl_count - 1]->certificate_no;
+        }
+        return view('warn_letter_view', ['pageAuth' => $pageAuth, 'warn_let_data' => $warn_letter, 'client_address' => $address, 'expire_date' => $exp_date, 'cert_no' => $cert_no]);
     }
     public function warningLetterLog()
     {
