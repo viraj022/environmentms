@@ -1144,30 +1144,39 @@ class ClientController extends Controller
         $date = $date->addDays(30);
 
         if ($pageAuth['is_read']) {
-            $responses = Certificate::With(['Client.pradesheeyasaba', 'Client.warningLetters'])->selectRaw('max(id) as id, client_id, expire_date,cetificate_number, certificate_type')
-                ->where('expire_date', '<', $date)
-                ->where('certificate_type', '=', 0)
+            $responses = EPL::With(['Client.pradesheeyasaba', 'Client.warningLetters'])
+                ->selectRaw('max(id) as id, client_id, expire_date, code')
+                ->having('expire_date', '<', $date)
+                ->havingRaw('`expire_date` IS NOT NULL')
                 ->groupBy('client_id')
                 ->get();
 
             $reses = $responses->toArray();
 
-            foreach ($reses as $k => $res) {
-                $origin = date_create(date("Y-m-d"));
-                $target = date_create(date($res['expire_date']));
-                $interval = date_diff($origin, $target);
-
-                if ($interval->format('%R%a days') > 0) {
-                    $reses[$k]['due_date'] = $interval->format('Expire within %a days');
-                } else {
-                    $reses[$k]['due_date'] = "expired";
-                }
+            foreach ($reses as &$res) {
+                $res['due_date'] = Carbon::parse($res['expire_date'])->diffForHumans();
+                $res['expire_date'] = Carbon::parse($res['expire_date'])->format('Y-m-d');
             }
 
             return $reses;
         } else {
             abort(401);
         }
+        /*
+        $responses = EPL::selectRaw('MAX(id), client_id, expire_date')
+            ->With(['client.pradesheeyasaba']);
+
+        $responses->when($is_checked == 'on', function ($q) use ($ad_id) {
+            return $q->whereHas('Client.environmentOfficer.assistantDirector', function ($query) use ($ad_id) {
+                $query->where('assistant_directors.id', '=', $ad_id);
+            });
+        });
+
+        $responses = $responses->having('expire_date', '<', $date)
+            ->havingRaw('`expire_date` IS NOT NULL')
+            ->groupBy('client_id')
+            ->get();
+            */
     }
 
     public function getCofirmedFiles()
@@ -1310,13 +1319,14 @@ class ClientController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
-        $date = Carbon::now();
+        $date = Carbon::now()->format('Y-m-d');
         // $date = $date->addDays(30);
 
         $is_checked = $request->ad_check;
         $ad_id = $request->ad_id;
 
-        $responses = EPL::With(['client.pradesheeyasaba']);
+        $responses = EPL::selectRaw('MAX(id), client_id, expire_date')
+            ->With(['client.pradesheeyasaba']);
         // ->selectRaw('max(id) as id, client_id, expire_date,cetificate_number, certificate_type')
 
         $responses->when($is_checked == 'on', function ($q) use ($ad_id) {
@@ -1326,8 +1336,8 @@ class ClientController extends Controller
         });
 
         $responses = $responses->having('expire_date', '<', $date)
+            ->havingRaw('`expire_date` IS NOT NULL')
             ->groupBy('client_id')
-            ->orderBy('id', 'desc')
             ->get();
         return view('Reports.expired_epl', ["data" => $responses, "pageAuth" => $pageAuth]);
     }
