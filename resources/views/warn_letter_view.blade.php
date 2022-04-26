@@ -61,10 +61,10 @@
                 <section id="warn_letter" class="A4-paper mt-5">
                     <button onclick="print()" class="btn btn-success float-right" id="print-btn">Print</button>
                     <p style="font-size: 18px; line-height: 1.5" id="letter_address">
+                        <span
+                            style="line-height: 0.5cm">{{ $warn_let_data->client->first_name . ' ' . $warn_let_data->client->last_name }}
+                            , </span><br>
                         @forelse ($client_address as $add)
-                            <span
-                                style="line-height: 0.5cm">{{ $warn_let_data->client->first_name . ' ' . $warn_let_data->client->last_name }}
-                                , </span><br>
                             <span style="line-height: 0.5cm">{{ $add }} , </span><br>
                         @empty
                         @endforelse
