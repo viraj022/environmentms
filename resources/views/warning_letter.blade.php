@@ -152,19 +152,15 @@
                     $('#tbl_warn_let_exp').DataTable().destroy();
                     $.each(result, function(index, row) {
                         console.log(row);
-
-                        if (row.client == null) {
-                            return;
-                        }
                         tbl += '<tr>';
                         tbl += '<td>' + ++index + '</td>';
                         tbl += '<td><a href="/industry_profile/id/' + row.client_id + '" target="_blank">' +
-                            row.client.industry_name + '</a></td>';
+                            row.industry_name + '</a></td>';
                         tbl += '<td>' + row.code + '</td>';
-                        tbl += '<td>' + row.client.pradesheeyasaba.name + '</td>';
+                        tbl += '<td>' + row.pradesheeyasaba_name + '</td>';
                         tbl += '<td>' + row.expire_date + ' (' + row.due_date + ')</td>';
                         tbl += '<td>';
-                        if (row.client.warning_letters.length == 0) {
+                        if (row.warning_count == 0) {
                             tbl +=
                                 '<button type="button" class="btn btn-success gen-warn-letter" data-client="' +
                                 row.client_id + '" data-expire-date="' + row.expire_date +
@@ -173,16 +169,16 @@
                             tbl +=
                                 '<button type="button" class="btn btn-info send_sms ml-1" data-client="' +
                                 row.client_id + '" data-expire-date="' + row.expire_date +
-                                '" data-industry-name="' + row.client.industry_name + '" data-tel="' + row
-                                .client.contact_no + '">Send SMS</button>';
+                                '" data-industry-name="' + row.industry_name + '" data-tel="' + row
+                                .contact_no + '">Send SMS</button>';
                         } else {
-                            tbl += '<a href="/warn_view/id/' + row.client.warning_letters[0].id +
+                            tbl += '<a href="/warn_view/id/' + row.last_letter +
                                 '" class="btn btn-primary">View Warning Letter</a>';
                             tbl +=
                                 '<button type="button" class="btn btn-info send_sms ml-1" data-client="' +
                                 row.client_id + '" data-expire-date="' + row.expire_date +
-                                '" data-industry-name="' + row.client.industry_name + '" data-tel="' + row
-                                .client.contact_no + '">Send SMS</button>';
+                                '" data-industry-name="' + row.industry_name + '" data-tel="' + row
+                                .contact_no + '">Send SMS</button>';
                         }
                         tbl += '</td>';
                         tbl += '</tr>';

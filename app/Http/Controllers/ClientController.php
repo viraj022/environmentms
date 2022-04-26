@@ -1144,39 +1144,41 @@ class ClientController extends Controller
         $date = $date->addDays(30);
 
         if ($pageAuth['is_read']) {
-            $responses = EPL::With(['Client.pradesheeyasaba', 'Client.warningLetters'])
-                ->selectRaw('max(id) as id, client_id, expire_date, code')
-                ->having('expire_date', '<', $date)
-                ->havingRaw('`expire_date` IS NOT NULL')
-                ->groupBy('client_id')
-                ->get();
+            $responses = \DB::select("SELECT
+            e_p_l_s.id,
+            e_p_l_s.client_id,
+            e_p_l_s.expire_date,
+            e_p_l_s.`code`,
+            clients.industry_name,
+	        clients.contact_no,
+            pradesheeyasabas.`name` AS pradesheeyasaba_name,
+            (SELECT COUNT( warning_letters.id ) FROM warning_letters WHERE warning_letters.client_id = e_p_l_s.client_id ) AS warning_count,
+	        (SELECT MAX(warning_letters.id) FROM warning_letters WHERE warning_letters.client_id = e_p_l_s.client_id ) AS last_letter
+        FROM e_p_l_s
+            INNER JOIN clients ON e_p_l_s.client_id = clients.id
+            INNER JOIN pradesheeyasabas ON clients.pradesheeyasaba_id = pradesheeyasabas.id
+        WHERE e_p_l_s.id IN (
+                SELECT  MAX( e_p_l_s.id )
+                FROM  e_p_l_s
+                GROUP BY  e_p_l_s.client_id )
+        HAVING DATE( e_p_l_s.expire_date ) < '2022-01-01'
+            AND e_p_l_s.expire_date IS NOT NULL");
+            // $responses = EPL::With(['Client.pradesheeyasaba', 'Client.warningLetters'])
+            //     ->selectRaw('max(id) as id, client_id, expire_date, code')
+            //     ->having('expire_date', '<', $date)
+            //     ->havingRaw('`expire_date` IS NOT NULL')
+            //     ->groupBy('client_id')
+            //     ->toSql();
 
-            $reses = $responses->toArray();
-
-            foreach ($reses as &$res) {
-                $res['due_date'] = Carbon::parse($res['expire_date'])->diffForHumans();
-                $res['expire_date'] = Carbon::parse($res['expire_date'])->format('Y-m-d');
+            foreach ($responses as &$res) {
+                $res->due_date = Carbon::parse($res->expire_date)->diffForHumans();
+                $res->expire_date = Carbon::parse($res->expire_date)->format('Y-m-d');
             }
 
-            return $reses;
+            return $responses;
         } else {
             abort(401);
         }
-        /*
-        $responses = EPL::selectRaw('MAX(id), client_id, expire_date')
-            ->With(['client.pradesheeyasaba']);
-
-        $responses->when($is_checked == 'on', function ($q) use ($ad_id) {
-            return $q->whereHas('Client.environmentOfficer.assistantDirector', function ($query) use ($ad_id) {
-                $query->where('assistant_directors.id', '=', $ad_id);
-            });
-        });
-
-        $responses = $responses->having('expire_date', '<', $date)
-            ->havingRaw('`expire_date` IS NOT NULL')
-            ->groupBy('client_id')
-            ->get();
-            */
     }
 
     public function getCofirmedFiles()
