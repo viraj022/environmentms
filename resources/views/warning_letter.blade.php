@@ -32,6 +32,9 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
+                                            <a href="{{ url('/warning_letter_log') }}" class="btn btn-dark  float-right"
+                                                target="_blank">View Letter
+                                                Log</a>
                                             <button class="btn btn-primary float-right">print</button>
                                         </div>
                                     </div>
@@ -139,7 +142,7 @@
         function getWarnAssDir(id, callBack) {
             var url = "/api/certificate/expiredCertificates";
             let data = null;
-            if (id!=null) {
+            if (id != null) {
                 data = {
                     "ad_id": id
                 };
@@ -173,7 +176,7 @@
                                 .contact_no + '">Send SMS</button>';
                         } else {
                             tbl += '<a href="/warn_view/id/' + row.last_letter +
-                                '" class="btn btn-primary">View Warning Letter</a>';
+                                '" class="btn btn-primary"  target="_blank">View Warning Letter</a>';
                             tbl +=
                                 '<button type="button" class="btn btn-info send_sms ml-1" data-client="' +
                                 row.client_id + '" data-expire-date="' + row.expire_date +

@@ -103,3 +103,4 @@ Route::get('/warn_view/id/{warn_let_id}', 'WarningLetterController@warnLetView')
 Route::get('/expired_epl', 'ClientController@expiredEplView');
 Route::get('/expired_epl_data', 'ClientController@getExpiredEpl');
 Route::get('/pending_expired_cert', 'ClientController@getPendingExpiredView');
+Route::get('/warning_letter_log', 'WarningLetterController@warningLetterLog');
