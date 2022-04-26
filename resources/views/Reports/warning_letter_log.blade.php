@@ -28,8 +28,12 @@
         </thead>
         {{-- {{ dd($warn_let_data) }} --}}
         <tbody>
+            {{-- {{ dd($warn_let_data) }} --}}
             @foreach ($warn_let_data as $key => $value)
                 <tr>
+                    @if (!isset($value->client->id))
+                        @continue
+                    @endif
                     <td>{{ $key + 1 }}</td>
                     <td><a href="{{ $value->client->id }}">{{ $value->client->file_no }}</a></td>
                     <td>{{ $value->client->first_name . ' ' . $value->client->last_name }}</td>
