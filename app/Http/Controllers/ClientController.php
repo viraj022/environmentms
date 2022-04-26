@@ -1144,27 +1144,38 @@ class ClientController extends Controller
         $date = $date->addDays(30);
 
         if ($pageAuth['is_read']) {
-            $responses = Certificate::With(['Client.pradesheeyasaba', 'Client.warningLetters'])->selectRaw('max(id) as id, client_id, expire_date,cetificate_number, certificate_type')
-                ->where('expire_date', '<', $date)
-                ->where('certificate_type', '=', 0)
-                ->groupBy('client_id')
-                ->get();
+            $responses = \DB::select("SELECT
+            e_p_l_s.id,
+            e_p_l_s.client_id,
+            e_p_l_s.expire_date,
+            e_p_l_s.`code`,
+            clients.industry_name,
+	        clients.contact_no,
+            pradesheeyasabas.`name` AS pradesheeyasaba_name,
+            (SELECT COUNT( warning_letters.id ) FROM warning_letters WHERE warning_letters.client_id = e_p_l_s.client_id ) AS warning_count,
+	        (SELECT MAX(warning_letters.id) FROM warning_letters WHERE warning_letters.client_id = e_p_l_s.client_id ) AS last_letter
+        FROM e_p_l_s
+            INNER JOIN clients ON e_p_l_s.client_id = clients.id
+            INNER JOIN pradesheeyasabas ON clients.pradesheeyasaba_id = pradesheeyasabas.id
+        WHERE e_p_l_s.id IN (
+                SELECT  MAX( e_p_l_s.id )
+                FROM  e_p_l_s
+                GROUP BY  e_p_l_s.client_id )
+        HAVING DATE( e_p_l_s.expire_date ) < '{$date}'
+            AND e_p_l_s.expire_date IS NOT NULL");
+            // $responses = EPL::With(['Client.pradesheeyasaba', 'Client.warningLetters'])
+            //     ->selectRaw('max(id) as id, client_id, expire_date, code')
+            //     ->having('expire_date', '<', $date)
+            //     ->havingRaw('`expire_date` IS NOT NULL')
+            //     ->groupBy('client_id')
+            //     ->toSql();
 
-            $reses = $responses->toArray();
-
-            foreach ($reses as $k => $res) {
-                $origin = date_create(date("Y-m-d"));
-                $target = date_create(date($res['expire_date']));
-                $interval = date_diff($origin, $target);
-
-                if ($interval->format('%R%a days') > 0) {
-                    $reses[$k]['due_date'] = $interval->format('Expire within %a days');
-                } else {
-                    $reses[$k]['due_date'] = "expired";
-                }
+            foreach ($responses as &$res) {
+                $res->due_date = Carbon::parse($res->expire_date)->diffForHumans();
+                $res->expire_date = Carbon::parse($res->expire_date)->format('Y-m-d');
             }
 
-            return $reses;
+            return $responses;
         } else {
             abort(401);
         }
@@ -1194,118 +1205,7 @@ class ClientController extends Controller
         return $locations;
     }
 
-    //    public function getConfirmedClients() {
-    //        $clients = Client::where('deleted_at', '=', null)->where('is_old', '!=', 0)->get();
-    //        return $clients;
-    //    }
-    //    public function showListOfRegistrations() {
-    //        $search_txt = '';
-    ////        $filter_main_payment_category_id = $this->input->post_get('main_payment_category_id');
-    //        $this - > db - > select('user_tbl_id', false);
-    //        $this - > db - > from('user_registrations');
-    //        $this - > db - > join('master_classes_of_membership', 'master_classes_of_membership.class_of_membership_id = user_registrations.user_member_class', 'left');
-    //        $this - > db - > join('master_core_engineering_disciplines', 'master_core_engineering_disciplines.core_engineering_discipline_id = user_registrations.user_member_discipline', 'left');
-    //
-    //        if (!empty($search['value'])) {
-    //            $this - >db - > group_start();
-    //            $this - > db - > like('reg_application_id', $search['value'], 'both');
-    //            $this - > db - > or_like('user_name_w_initials', $search['value'], 'both');
-    //            $this - > db - > or_like('user_nic', $search['value'], 'both');
-    //            $this - > db - > group_end();
-    //            $search_txt = $search['value'];
-    //        }
-    //
-    //        $result = FALSE;
-    //        $totalData = $this - > db - > count_all_results();
-    //        $totalFiltered = $totalData;
-    //        $data_result = array();
-    //        $q = '';
-    //        if (!empty($totalData)) {
-    //            $columns = array(
-    //                'reg_application_id',
-    //                'class_of_membership_name',
-    //                'core_engineering_discipline_name',
-    //                'user_picture',
-    //                'user_name_w_initials',
-    //                'user_nic',
-    //                'applied_date',
-    //                'final_approval'
-    //            );
-    //
-    //            $search = $this - > input - > post_get('search');
-    //            $order = $this - > input - > post_get('order');
-    //            $start = $this - > input - > post_get('start');
-    //            $limit = $this - > input - > post_get('length');
-    //
-    //            $this - > db - > select(implode(",", array(
-    //                'reg_application_id',
-    //                'class_of_membership_name',
-    //                'core_engineering_discipline_name',
-    //                'user_picture',
-    //                'user_name_w_initials',
-    //                'user_nic',
-    //                'DATE(user_registrations.created_datetime) AS applied_date',
-    //                'user_tbl_id',
-    //                'final_approval'
-    //                    )), false);
-    //            $this - > db - > from('user_registrations');
-    //            $this - > db - > join('master_classes_of_membership', 'master_classes_of_membership.class_of_membership_id = user_registrations.user_member_class', 'left');
-    //            $this - > db - > join('master_core_engineering_disciplines', 'master_core_engineering_disciplines.core_engineering_discipline_id = user_registrations.user_member_discipline', 'left');
-    //            if (!empty($search['value'])) {
-    //                $this - > db - > group_start();
-    //                $this - > db - > like('reg_application_id', $search['value'], 'both');
-    //                $this - > db - > or_like('user_name_w_initials', $search['value'], 'both');
-    //                $this - > db - > or_like('user_nic', $search['value'], 'both');
-    //                $this - > db - > group_end();
-    //            }
-    //            $this - > db - > order_by($columns[$order[0]['column']], $order[0]['dir']);
-    //            if (!empty($limit)) {
-    //                $this - > db - > limit($limit, $start);
-    //            }
-    //            $query = $this - > db - > get();
-    //            if (empty($query)) {
-    //                return false;
-    //            } else {
-    //                $data_result = $query - > result();
-    //            }
-    //            if (!empty($search['value'])) {
-    //                $totalFiltered = $query - > num_rows();
-    //            }
-    //        }
-    //        $json_data = array(
-    //        "draw" => intval($this- > input - > post_get('draw')), // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw.
-    //        "recordsTotal" => intval($totalData), // total number of records
-    //        "recordsFiltered" => intval($totalFiltered), // total number of records after searching, if there is no searching then totalFiltered = totalData
-    //        "data" => $data_result // total data array
-    //        );
-    //
-    //        return $json_data;
-    //    }
-    //    public function server_side_process_two(Request $request) {
-    //        //only sorts by one column
-    ////        $orderby = $request->input('order_column');
-    ////        $sort['col'] = $request->input('columns.' . $orderby . '.data');
-    ////        $sort['dir'] = $request->input('order_dir');
-    //
-    //        $query = Client::where('file_no', 'like', '%' . $request->input('search.value') . '%')
-    //                ->where('deleted_at', '=', null)
-    //                ->where('is_old', '!=', 0)
-    //                ->orWhere('first_name', 'like', '%' . $request->input('search.value') . '%')
-    //                ->orWhere('industry_name', 'like', '%' . $request->input('search.value') . '%');
-    //
-    //        $output['recordsTotal'] = $query->count();
-    //
-    //        $output['data'] = $query
-    ////                ->orderBy($sort['col'], $sort['dir'])
-    //                ->skip($request->input('start'))
-    //                ->take($request->input('length', 10))
-    //                ->get();
-    //
-    //        $output['recordsFiltered'] = $output['recordsTotal'];
-    //
-    //        $output['draw'] = intval($request->input('draw'));
-    //        return $output;
-    //    }
+
 
     public function server_side_process(Request $request)
     {
@@ -1421,28 +1321,27 @@ class ClientController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
-        $date = Carbon::now();
+        $date = Carbon::now()->format('Y-m-d');
         // $date = $date->addDays(30);
 
         $is_checked = $request->ad_check;
         $ad_id = $request->ad_id;
 
-            $responses = EPL::With(['client.pradesheeyasaba']);
-            // ->selectRaw('max(id) as id, client_id, expire_date,cetificate_number, certificate_type')         
-            
-            $responses->when($is_checked == 'on', function ($q) use ($ad_id) {
-                return $q->whereHas('Client.environmentOfficer.assistantDirector', function ($query) use ($ad_id) {
-                    $query->where('assistant_directors.id', '=', $ad_id);
-                });
+        $responses = EPL::selectRaw('MAX(id), client_id, expire_date')
+            ->With(['client.pradesheeyasaba']);
+        // ->selectRaw('max(id) as id, client_id, expire_date,cetificate_number, certificate_type')
+
+        $responses->when($is_checked == 'on', function ($q) use ($ad_id) {
+            return $q->whereHas('Client.environmentOfficer.assistantDirector', function ($query) use ($ad_id) {
+                $query->where('assistant_directors.id', '=', $ad_id);
             });
-            
-            $responses = $responses->where('expire_date', '<', $date)
-            ->whereNotNull('expire_date')
-            // ->where('expire_date', '!=', null)
+        });
+
+        $responses = $responses->having('expire_date', '<', $date)
+            ->havingRaw('`expire_date` IS NOT NULL')
             ->groupBy('client_id')
-            ->orderBy('id', 'desc')
             ->get();
-            return view('Reports.expired_epl', ["data" => $responses, "pageAuth" => $pageAuth]);
+        return view('Reports.expired_epl', ["data" => $responses, "pageAuth" => $pageAuth]);
     }
 
     public function getPendingExpiredCertificates(Request $request)
@@ -1450,7 +1349,7 @@ class ClientController extends Controller
         $is_checked = $request->is_checked;
         $ad_id = $request->id;
         $responses = EPL::With(['client.pradesheeyasaba', 'client.environmentOfficer.user']);
-        // ->selectRaw('max(id) as id, client_id, expire_date,cetificate_number, certificate_type') 
+        // ->selectRaw('max(id) as id, client_id, expire_date,cetificate_number, certificate_type')
         $responses->when($is_checked == 'true', function ($q) use ($ad_id) {
             return $q->whereHas('client.environmentOfficer.assistantDirector', function ($query) use ($ad_id) {
                 $query->where('assistant_directors.id', '=', $ad_id);
@@ -1461,7 +1360,7 @@ class ClientController extends Controller
             ->groupBy('client_id')
             ->orderBy('id', 'desc')
             ->get();
-            //to all get expired certificates and certificates that expired within a month by env officer id
+        //to all get expired certificates and certificates that expired within a month by env officer id
         return $responses;
     }
 
