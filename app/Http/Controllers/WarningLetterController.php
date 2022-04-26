@@ -26,6 +26,7 @@ class WarningLetterController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $warn_letter = WarningLetter::where('id', $id)->with('client.certificates', 'client.industryCategory')->first();
+        // dd($warn_letter);
         $address = explode(',', $warn_letter->client->address);
         return view('warn_letter_view', ['pageAuth' => $pageAuth, 'warn_let_data' => $warn_letter, 'client_address' => $address]);
     }
