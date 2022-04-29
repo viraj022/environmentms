@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class EPL extends Model
 {
     use SoftDeletes;
-    
+
     public const FINEDATE = '2012-01-01';
     public const EPL = 'epl';
     public const INSPECTION = 'inspection';
@@ -17,6 +17,7 @@ class EPL extends Model
     protected $appends = ['epl_instantNumber', 'expire_date_only', 'issue_date_only', 'submit_date_only'];
 
     public const INSPECTION_FEE = 'Inspection Fee';
+
 
     public function client()
     {
