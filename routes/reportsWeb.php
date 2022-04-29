@@ -80,3 +80,5 @@ Route::get('/attachments/{client}', 'ReportController@downloadContents');
 
 Route::get('/site_clearence_log/{from}/{to}', 'ReportController@siteClearanceApplicationLog');
 Route::get('/warn_report', 'ReportController@warnReport');
+Route::get('/pending_site_clear_report', 'ReportController@pendingSiteClearReport');//site clearence report
+Route::get('/pending_epl_report', 'ReportController@pendingEplReport');//pending epl report

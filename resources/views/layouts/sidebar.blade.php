@@ -477,6 +477,24 @@
                                 </a>
                             </li>
                         @endif
+                        @if ($pre['id'] === config('auth.privileges.clientSpace'))
+                            <li class="nav-item">
+                                <a href="{{ url('/pending_site_clear_report') }}"
+                                    class="nav-link {{ Request::is('pending_site_clear_report') ? 'active' : '' }}">
+                                    <i class="fas fa-file-archive nav-icon"></i>
+                                    <p>Pending Site Clearence Report</p>
+                                </a>
+                            </li>
+                        @endif
+                        @if ($pre['id'] === config('auth.privileges.clientSpace'))
+                        <li class="nav-item">
+                            <a href="{{ url('/pending_epl_report') }}"
+                                class="nav-link {{ Request::is('pending_epl_report') ? 'active' : '' }}">
+                                <i class="fas fa-file-archive nav-icon"></i>
+                                <p>Pending EPL Report</p>
+                            </a>
+                        </li>
+                    @endif
                     @endforeach
                 </ul>
             </li>
