@@ -23,6 +23,7 @@ use App\Repositories\PradesheeyasabaRepository;
 use PhpParser\Node\Expr\Print_;
 use Illuminate\Http\Request;
 use App\Certificate;
+use App\EPL;
 
 class ReportController extends Controller
 {
@@ -1041,5 +1042,28 @@ class ReportController extends Controller
         }
 
         return view('Reports.warn_report', ['warn_let_data' => $reses]);
+    }
+
+    // return site clearence data of expired date is null 
+    public function pendingSiteClearReport()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+
+        $pending_site_clear_data = SiteClearance::where('expire_date', null)
+            ->with('siteClearenceSession.client.pradesheeyasaba', 'siteClearenceSession.client.environmentOfficer.user')
+            ->get();
+        return view('Reports.pending_site_clearence_report', ['pending_site_clear_data' => $pending_site_clear_data, 'pageAuth' => $pageAuth]);
+    }
+
+    public function pendingEplReport()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+
+        $pending_epl_data = Epl::where('expire_date', null)
+            ->with('client.pradesheeyasaba', 'client.environmentOfficer.user')
+            ->get();
+        return view('Reports.pending_epl_report', ['pending_epl_data' => $pending_epl_data, 'pageAuth' => $pageAuth]);
     }
 }
