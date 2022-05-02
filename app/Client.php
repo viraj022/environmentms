@@ -24,6 +24,18 @@ class Client extends Model
         'password', 'api_token',
     ];
 
+    public const FILE_STATUS = [
+        0 => 'pending',
+        1 => 'AD File Approval Pending',
+        2 => 'Certificate Preparation',
+        3 => 'AD Certificate Prenidng Approval',
+        4 => 'D Certificate Approval Prenidng',
+        5 => 'Complete',
+        6 => 'Issued',
+        '-1' => 'Rejected',
+        '-2' => 'Hold'
+    ];
+
     public function getStartDateOnlyAttribute()
     {
         //return strtotime($this->schedule_date)->toDateString();
