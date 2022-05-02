@@ -149,18 +149,30 @@ class EPL extends Model
     public function getIssueDateOnlyAttribute()
     {
         //return strtotime($this->schedule_date)->toDateString();
-        return Carbon::parse($this->issue_date)->format('Y-m-d');
+        if($this->issue_date != null){
+            return Carbon::parse($this->issue_date)->format('Y-m-d');
+        }else{
+            return 'N/A';
+        }
     }
 
     public function getExpireDateOnlyAttribute()
     {
         //return strtotime($this->schedule_date)->toDateString();
-        return Carbon::parse($this->expire_date)->format('Y-m-d');
+        if($this->expire_date != null){
+            return Carbon::parse($this->expire_date)->format('Y-m-d');
+        }else{
+            return 'N/A';
+        }
     }
     public function getSubmitDateOnlyAttribute()
     {
         //return strtotime($this->schedule_date)->toDateString();
-        return Carbon::parse($this->submitted_date)->format('Y-m-d');
+        if ($this->expire_date != null) {
+            return Carbon::parse($this->submitted_date)->format('Y-m-d');
+        } else {
+            return  'N/A';
+        }
     }
     public function minutes()
     {
