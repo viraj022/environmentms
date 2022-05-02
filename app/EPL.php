@@ -18,6 +18,7 @@ class EPL extends Model
 
     public const INSPECTION_FEE = 'Inspection Fee';
 
+
     public function client()
     {
         return $this->belongsTo(Client::class);

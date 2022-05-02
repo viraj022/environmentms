@@ -1066,4 +1066,19 @@ class ReportController extends Controller
             ->get();
         return view('Reports.pending_epl_report', ['pending_epl_data' => $pending_epl_data, 'pageAuth' => $pageAuth]);
     }
+
+    public function statusMismatchEpl()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        $file_status = Client::FILE_STATUS;
+        $status_mismatch_data = Epl::join('clients', 'e_p_l_s.client_id', '=', 'clients.id')
+            ->leftjoin('environment_officers', 'clients.environment_officer_id', '=', 'environment_officers.id')
+            ->leftjoin('users', 'environment_officers.user_id', '=', 'users.id')
+            ->where('e_p_l_s.status', 0)
+            ->where('clients.file_status', '=', 5)
+            ->select('clients.id', 'clients.file_no', 'clients.industry_name', 'clients.file_status', 'e_p_l_s.submitted_date', 'users.first_name', 'users.last_name')
+            ->get();
+        return view('Reports.status_mismatch_report', ['status_mismatch_data' => $status_mismatch_data, 'pageAuth' => $pageAuth, 'file_status' => $file_status]);
+    }
 }
