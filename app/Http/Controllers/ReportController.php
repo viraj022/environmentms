@@ -1087,7 +1087,7 @@ class ReportController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $file_status = Client::FILE_STATUS;
-        $missing_cert_data = Epl::with('client')
+        $missing_cert_data = Epl::with('client.environmentOfficer.user')
         ->whereNotIn('e_p_l_s.client_id', Certificate::select('client_id')->groupBy('client_id')->get()->toArray())
         ->groupBy('client_id')
         ->get()

@@ -45,7 +45,7 @@
                                                 <td>{{ ++$loop->index }}</td>
                                                 <td><a href="/industry_profile/id/{{$data['client']['id'] }}" class="btn btn-dark" target="_blank">{{ !isset($data['client']['file_no']) ? 'N/A' : $data['client']['file_no'] }}</a></td>
                                                 <td>{{ !isset($data['client']['industry_name']) ? '-' : $data['client']['industry_name'] }}</td>
-                                                <td>{{ !isset($data['client']['first_name']) && !isset($data['client']['last_name']) ? 'N/A' : $data['client']['first_name'] . ' ' . $data['client']['last_name'] }}</td>
+                                                <td>{{ !isset($data['client']['environment_officer']['user']['first_name']) && !isset($data['client']['environment_officer']['user']['last_name']) ? 'N/A' : $data['client']['environment_officer']['user']['first_name'] . ' ' . $data['client']['environment_officer']['user']['last_name'] }}</td>
                                                 <td>{{ $file_status[$data['client']['file_status']] }}</td>
                                                 <td>{{ Carbon\Carbon::parse($data['submitted_date'])->format('Y/m/d') }}</td>
                                             </tr>
