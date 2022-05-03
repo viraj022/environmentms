@@ -88,10 +88,7 @@
                                     </h6>
                                     <p>Add Comments</p>
                                 </div>
-                                <!--                        <div class="callout callout-danger">
-                                                                                                                                        <h6><a href="/issue_certificate/id/{{ $profile }}" class="text-success ">Certificate Information</a></h6>
-                                                                                                                                        <p>Issue Certificate / Certificate Information</p>
-                                                                                                                                    </div>-->
+                             
                             </div>
                             <!-- /.card-body -->
 

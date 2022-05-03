@@ -503,7 +503,16 @@
                                 <p>Status Mismatch Report</p>
                             </a>
                         </li>
-                    @endif
+                        @endif
+                        @if ($pre['id'] === config('auth.privileges.clientSpace'))
+                        <li class="nav-item">
+                            <a href="{{ url('/cert_missing_report') }}"
+                                class="nav-link {{ Request::is('cert_missing_report') ? 'active' : '' }}">
+                                <i class="fas fa-file-archive nav-icon"></i>
+                                <p>Missing Certificate Report</p>
+                            </a>
+                        </li>
+                        @endif
                     @endforeach
                 </ul>
             </li>

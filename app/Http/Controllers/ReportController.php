@@ -1081,4 +1081,17 @@ class ReportController extends Controller
             ->get();
         return view('Reports.status_mismatch_report', ['status_mismatch_data' => $status_mismatch_data, 'pageAuth' => $pageAuth, 'file_status' => $file_status]);
     }
+
+    public function certMissingReport()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        $file_status = Client::FILE_STATUS;
+        $missing_cert_data = Epl::with('client')
+        ->whereNotIn('e_p_l_s.client_id', Certificate::select('client_id')->groupBy('client_id')->get()->toArray())
+        ->groupBy('client_id')
+        ->get()
+        ->toArray();
+        return view('Reports.cert_missing_report', ['missing_cert_data' => $missing_cert_data, 'pageAuth' => $pageAuth, 'file_status' => $file_status]);
+    }
 }
