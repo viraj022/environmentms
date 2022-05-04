@@ -33,7 +33,6 @@
                                                 <th style="width: 25em">EO</th>
                                                 <th style="width: 25em">File Status</th>
                                                 <th style="width: 25em">Submitted Date</th>
-                                                <th style="width: 25em">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -48,10 +47,6 @@
                                                 <td>{{ !isset($data['client']['environment_officer']['user']['first_name']) && !isset($data['client']['environment_officer']['user']['last_name']) ? 'N/A' : $data['client']['environment_officer']['user']['first_name'] . ' ' . $data['client']['environment_officer']['user']['last_name'] }}</td>
                                                 <td>{{ $file_status[$data['client']['file_status']] }}</td>
                                                 <td>{{ Carbon\Carbon::parse($data['submitted_date'])->format('Y/m/d') }}</td>
-                                                <?php 
-                                                 $client_id = $data['client']['id'];
-                                                ?>
-                                                <td><button class="btn btn-success ch-file-status" data-id="{{$client_id}}"> Change </button></td>
                                             </tr>
                                             @endif
                                             @endforeach
@@ -106,23 +101,6 @@
                 }, "excel", "csv"],
 
             });
-
-            $(document).on('click', '.ch-file-status', function(event, className) {
-                let id = $(this).data('id');
-                change_status(id);
-            });
-
-            function change_status(client_id){
-                let url = '/api/change_file_status/id/'+client_id;
-
-                ajaxRequest('POST', url, null, function(resp){
-                    if(resp.status == 1){
-                        swal.fire('Success', resp.message);
-                    }else{
-                        swal.fire('Error', resp.message);
-                    }
-                });
-            }
         });
 
     </script>
