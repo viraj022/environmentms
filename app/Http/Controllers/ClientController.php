@@ -1338,7 +1338,8 @@ class ClientController extends Controller
         return view('Reports.pending_expired_list', ['pageAuth' => $pageAuth]);
     }
 
-    public function changeStatus($client_id){
+    public function changeStatus($client_id)
+    {
         $client = Client::find($client_id);
 
         if($client->file_status != 5){

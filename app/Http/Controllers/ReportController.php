@@ -127,14 +127,14 @@ class ReportController extends Controller
         foreach ($result as $row) {
             $array = [];
             $array[] = ++$num;
-            $array[] = Carbon::parse($row['submit_date'])->format('Y-m-d');
             $array[] = $row['code'];
             $array[] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'] . "\n" . $row['address'];
             $array[] = $row['category_name'];
             $array[] = $row['industry_address'];
             $array[] = 'Fee : ' . $row['amount'] . ' ' . "\nInvoice No : " . $row['invoice_no'] . "\nDate : " . Carbon::parse($row['billed_at'])->format('Y-m-d');
-            $array[] = Carbon::parse($row['issue_date'])->format('Y-m-d');
-            $array[] = Carbon::parse($row['created_at'])->format('Y-m-d');
+            ($row['submit_date'] != null) ? $array[] = Carbon::parse($row['submit_date'])->format('Y-m-d') : $array[] = 'N/A';
+            ($row['issue_date'] != null) ? $array[] = Carbon::parse($row['issue_date'])->format('Y-m-d') : $array[] = 'N/A';
+            ($row['created_at'] != null) ? $array[] = Carbon::parse($row['created_at'])->format('Y-m-d') : $array[] = 'N/A';
             array_push($data, $array);
         }
         switch ($type) {
