@@ -167,9 +167,12 @@ class ReportController extends Controller
             // dd($row);
             $array = [];
             $array['#'] = ++$num;
-            $array['submitted_date'] = Carbon::parse($row['submitted_date'])->format('Y-m-d');
-            $array['issue_date'] = Carbon::parse($row['issue_date'])->format('Y-m-d');
-            $array['created_at'] = Carbon::parse($row['created_at'])->format('Y-m-d');
+
+            //validate and set dates of the report
+            (isset($row['submitted_date'])) ? $array['submitted_date'] =  Carbon::parse($row['submitted_date'])->format('Y-m-d') : $array['submitted_date'] = 'N/A';
+            (isset($row['issue_date'])) ? $array['issue_date'] = Carbon::parse($row['issue_date'])->format('Y-m-d') : $array['issue_date'] = 'N/A';
+            (isset($row['created_at'])) ? $array['created_at'] = Carbon::parse($row['created_at'])->format('Y-m-d') : $array['created_at'] = 'N/A';
+            
             $array['code'] = $row['code'];
             $client = $row['client'];
             $name_title = isset($client['name_title']) ? $client['name_title'] : 'N/A';
@@ -208,7 +211,7 @@ class ReportController extends Controller
             // dd($row);
             $array = [];
             $array['#'] = ++$num;
-            $array['submitted_date'] = Carbon::parse($row['submitted_date'])->format('d-m-Y');
+            (isset($row['submitted_date'])) ? $array['submitted_date'] = Carbon::parse($row['submitted_date'])->format('d-m-Y'): 'N/A';
             $array['code'] = $row['code'];
 
             $client = $row['client'];
@@ -952,7 +955,7 @@ class ReportController extends Controller
         foreach ($result as $row) {
             $array = [];
             $array['#'] = ++$num;
-            $array['industry_start_date'] = Carbon::parse($row['created_at'])->format('Y-m-d');
+            (isset($row['created_at']))?  $array['industry_start_date'] = Carbon::parse($row['created_at'])->format('Y-m-d'): $array['industry_start_date'] = 'N/A';
             $array['code_site'] = $row['code'];
             $array['name_title'] = $row['client']['name_title'] . ' ' . $row['client']['first_name'] . ' ' . $row['client']['last_name'] . "\n" . $row['client']['address'];
             $array['category_name'] = $row['client']['industry_category']['name'];
