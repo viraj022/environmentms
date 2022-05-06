@@ -221,8 +221,7 @@
 
                 </ul>
             </li>
-            <li
-                class="nav-item has-treeview {{ Request::is('application_payment', 'pending_certificates') ? 'menu-open' : '' }}">
+            <li class="nav-item has-treeview {{ Request::is('application_payment') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-address-card"></i>
                     <p>Application <i class="right fas fa-angle-left"></i></p>
@@ -260,7 +259,7 @@
                     @endforeach
                 </ul>
             </li>
-            <li class="nav-item has-treeview {{ Request::is('industry_files') ? 'menu-open' : '' }}">
+            <li class="nav-item has-treeview {{ Request::is('industry_files', 'schedule') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-chalkboard-teacher"></i>
                     <p>Environment Officer <i class="right fas fa-angle-left"></i></p>
@@ -298,7 +297,7 @@
                     @endforeach
                 </ul>
             </li>
-            <li class="nav-item has-treeview {{ Request::is('ad_pending_list') ? 'menu-open' : '' }}">
+            <li class="nav-item has-treeview {{ Request::is('ad_pending_list', 'schedule', 'epl_assign') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-chalkboard-teacher"></i>
                     <p>Assistant Director <i class="right fas fa-angle-left"></i></p>
@@ -335,7 +334,7 @@
                     @endforeach
                 </ul>
             </li>
-            <li class="nav-item has-treeview {{ Request::is('director_pending_list') ? 'menu-open' : '' }}">
+            <li class="nav-item has-treeview {{ Request::is('director_pending_list', 'director_approved_list') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-user-tie"></i>
                     <p>Director <i class="right fas fa-angle-left"></i></p>
@@ -381,7 +380,7 @@
                 </ul>
             </li>
             <li
-                class="nav-item has-treeview {{ Request::is('expired_certificates', 'act_status', 'old_data_summary', 'expired_cert') ? 'menu-open' : '' }}">
+                class="nav-item has-treeview {{ Request::is('expired_certificates', 'pending_expired_cert', 'expired_epl', 'act_status/id/1','report_dashboard', 'old_data_summary', 'confirmed_files', 'reverse_confirm', 'eo_report', 'file_progress_report', 'warning_letters', 'pending_site_clear_report', 'pending_epl_report') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-user-tie"></i>
                     <p>Report <i class="right fas fa-angle-left"></i></p>
@@ -418,7 +417,7 @@
                         @if ($pre['id'] === config('auth.privileges.clientSpace'))
                             <li class="nav-item">
                                 <a href="{{ url('/act_status/id/1') }}"
-                                    class="nav-link {{ Request::is('act_status') ? 'active' : '' }}">
+                                    class="nav-link {{ Request::is('act_status/id/1') ? 'active' : '' }}">
                                     <i class="fas fa-clock nav-icon"></i>
                                     <p>Activity Status</p>
                                 </a>
@@ -427,7 +426,7 @@
                         @if ($pre['id'] === config('auth.privileges.clientSpace'))
                             <li class="nav-item">
                                 <a href="{{ url('/report_dashboard') }}"
-                                    class="nav-link {{ Request::is('old_data_summary') ? 'active' : '' }}">
+                                    class="nav-link {{ Request::is('report_dashboard') ? 'active' : '' }}">
                                     <i class="fas fa-clock nav-icon"></i>
                                     <p>Report Dashboard</p>
                                 </a>
@@ -522,7 +521,7 @@
                                 <a href="{{ url('/rolls') }}"
                                     class="nav-link {{ Request::is('rolls') ? 'active' : '' }}">
                                     <i class="fas fa-users-cog nav-icon"></i>
-                                    <p>ROll Create</p>
+                                    <p>Roll Create</p>
                                 </a>
                             </li>
                         @endif

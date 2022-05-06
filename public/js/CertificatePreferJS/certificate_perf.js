@@ -27,6 +27,7 @@ function setProfileDetails(obj) {
     $('#client_amil').html(obj.email);
     $('#client_nic').html(obj.nic);
     $('#obj_name').html(obj.industry_name);
+    $('#industry_address').html(obj.industry_address);
     $('#obj_regno').html(obj.industry_registration_no);
     $('#obj_invest').html(obj.industry_investment);
     $('#cer_status').text(certificate_Status[obj.cer_type_status]);
@@ -83,7 +84,6 @@ function getCertificateDetails(file_id, callBack) {
         if (resp.length == 0) {
             $('.genCertificateNum').removeClass('d-none');
         } else {
-            console.log(resp);
             $('.certificateDetails').remove();
             $('#certificate_Num').html('<b>Application/Licence Number: </b>' + resp.cetificate_number);
             $('#ref_Num').html('<b>Reference Number: </b>' + resp.refference_no);

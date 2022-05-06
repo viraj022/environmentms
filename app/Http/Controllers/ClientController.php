@@ -142,79 +142,87 @@ class ClientController extends Controller
      */
     public function create()
     {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        request()->validate([
-            'first_name' => 'required|string',
-            'last_name' => 'nullable|string',
-            'address' => 'nullable',
-            'contact_no' => ['nullable', new contactNo],
-            'email' => 'nullable|sometimes',
-            'nic' => ['sometimes', 'nullable', 'unique:clients', new nationalID],
-            'industry_name' => 'required|string',
-            'industry_category_id' => 'required|integer',
-            'business_scale_id' => 'required|integer',
-            'industry_contact_no' => ['nullable', new contactNo],
-            'industry_address' => 'required|string',
-            'industry_email' => 'nullable|email',
-            'industry_coordinate_x' => ['numeric', 'required', 'between:-180,180'],
-            'industry_coordinate_y' => ['numeric', 'required', 'between:-90,90'],
-            'pradesheeyasaba_id' => 'required|integer',
-            'industry_is_industry' => 'required|integer',
-            'industry_investment' => 'required|numeric',
-            'industry_start_date' => 'required|date',
-            'industry_registration_no' => 'nullable|string',
-            'is_old' => 'required|integer',
-            'name_title' => 'required|string',
-            'industry_sub_category' => 'nullable|string',
-            // 'password' => 'required',
-        ]);
-        if ($pageAuth['is_create']) {
-            $client = new Client();
-            $client->name_title = \request('name_title');
-            $client->first_name = \request('first_name');
-            $client->last_name = \request('last_name');
-            $client->address = \request('address');
-            $client->contact_no = \request('contact_no');
-            $client->email = \request('email');
-            $client->nic = \request('nic');
-            $client->password = Hash::make(request('nic'));
-            $client->api_token = Str::random(80);
-
-            $client->industry_name = \request('industry_name');
-            $client->industry_category_id = \request('industry_category_id');
-            $client->business_scale_id = \request('business_scale_id');
-            $client->industry_contact_no = \request('industry_contact_no');
-            $client->industry_address = \request('industry_address');
-            $client->industry_email = \request('industry_email');
-            $client->industry_coordinate_x = \request('industry_coordinate_x');
-            $client->industry_coordinate_y = \request('industry_coordinate_y');
-            $client->pradesheeyasaba_id = \request('pradesheeyasaba_id');
-            $client->industry_is_industry = \request('industry_is_industry');
-            $client->industry_investment = \request('industry_investment');
-            $client->industry_start_date = \request('industry_start_date');
-            $client->industry_registration_no = \request('industry_registration_no');
-            $client->industry_sub_category = \request('industry_sub_category');
-            $client->created_user = $user->id;
-            $client->is_old = \request('is_old');
-            if ($client->is_old == 0) {
-                $client->need_inspection = 'Inspection Not Needed';
-            }
-            $code = $this->generateCode($client);
-            if (!$code || $code == null) {
-                return array('id' => 0, 'message' => 'Error Generating file code!');
-            }
-            $client->file_no = $code;
-            $client->save();
-            if ($client) {
-                LogActivity::fileLog($client->id, 'File', "Create New File", 1);
-                LogActivity::addToLog('Create new file', $client);
-                return array('id' => 1, 'message' => 'true', 'id' => $client->id);
+        try{
+            $user = Auth::user();
+            $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+            request()->validate([
+                'first_name' => 'required|string',
+                'last_name' => 'nullable|string',
+                'address' => 'nullable',
+                'contact_no' => ['nullable', new contactNo],
+                'email' => 'nullable|sometimes',
+                'nic' => ['sometimes', 'nullable', 'unique:clients', new nationalID],
+                'industry_name' => 'required|string',
+                'industry_category_id' => 'required|integer',
+                'business_scale_id' => 'required|integer',
+                'industry_contact_no' => ['nullable', new contactNo],
+                'industry_address' => 'required|string',
+                'industry_email' => 'nullable|email',
+                'industry_coordinate_x' => ['numeric', 'required', 'between:-180,180'],
+                'industry_coordinate_y' => ['numeric', 'required', 'between:-90,90'],
+                'pradesheeyasaba_id' => 'required|integer',
+                'industry_is_industry' => 'required|integer',
+                'industry_investment' => 'required|numeric',
+                'industry_start_date' => 'required|date',
+                'industry_registration_no' =>  ['sometimes', 'nullable', 'string', 'unique:clients'],
+                'is_old' => 'required|integer',
+                'name_title' => 'required|string',
+                'industry_sub_category' => 'nullable|string',
+                // 'password' => 'required',
+            ]);
+            if ($pageAuth['is_create']) {
+                $client = new Client();
+                $client->name_title = \request('name_title');
+                $client->first_name = \request('first_name');
+                $client->last_name = \request('last_name');
+                $client->address = \request('address');
+                $client->contact_no = \request('contact_no');
+                $client->email = \request('email');
+                $client->nic = \request('nic');
+                $client->password = Hash::make(request('nic'));
+                $client->api_token = Str::random(80);
+    
+                $client->industry_name = \request('industry_name');
+                $client->industry_category_id = \request('industry_category_id');
+                $client->business_scale_id = \request('business_scale_id');
+                $client->industry_contact_no = \request('industry_contact_no');
+                $client->industry_address = \request('industry_address');
+                $client->industry_email = \request('industry_email');
+                $client->industry_coordinate_x = \request('industry_coordinate_x');
+                $client->industry_coordinate_y = \request('industry_coordinate_y');
+                $client->pradesheeyasaba_id = \request('pradesheeyasaba_id');
+                $client->industry_is_industry = \request('industry_is_industry');
+                $client->industry_investment = \request('industry_investment');
+                $client->industry_start_date = \request('industry_start_date');
+                $client->industry_registration_no = \request('industry_registration_no');
+                $client->industry_sub_category = \request('industry_sub_category');
+                $client->created_user = $user->id;
+                $client->is_old = \request('is_old');
+                if ($client->is_old == 0) {
+                    $client->need_inspection = 'Inspection Not Needed';
+                }
+                $code = $this->generateCode($client);
+                if (!$code || $code == null) {
+                    return array('id' => 0, 'message' => 'Error Generating file code!');
+                }
+                $client->file_no = $code;
+                $client->save();
+                if ($client) {
+                    LogActivity::fileLog($client->id, 'File', "Create New File", 1);
+                    LogActivity::addToLog('Create new file', $client);
+                    return array('id' => 1, 'message' => 'true', 'id' => $client->id);
+                } else {
+                    return array('id' => 0, 'message' => 'false');
+                }
             } else {
-                return array('id' => 0, 'message' => 'false');
+                abort(401);
             }
-        } else {
-            abort(401);
+        }catch(Exception $ex){
+            if(isset($ex->validator)){
+                return array('id' => 0, 'message' => $ex->validator->errors());
+            }else{
+                return array('id' => 0, 'message' => $ex->getMessage());
+            }
         }
     }
 
