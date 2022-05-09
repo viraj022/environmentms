@@ -93,7 +93,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Attachment: </label>
+                                    <label>Attachment: </label><br>
                                     <input type="file" id="complain_attach" name="complain_attach"
                                         accept=".png, .jpg, .jpeg" multiple>
                                     <div id="complain_attach_valid" class="d-none">

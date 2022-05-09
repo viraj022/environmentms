@@ -513,7 +513,6 @@
 
 //    renew_chart, new_file_chart, file_category_chart, new_job_chart, pra_table, env_officer_table, industry_category_table, file_status_lable
     getDashboardData(['renew_chart', 'new_file_chart', 'pra_table', 'industry_category_table', 'env_officer_table', 'file_category_chart'], {from: '2020-01-01', to: '2020-12-31'}, function (p) {
-        console.log(p);
         //--EPL Renewal Chart Open--//
         eplRenewalChart(p.renew_chart.months, p.renew_chart.renew, p.renew_chart.expire);
         //--EPL Renewal Chart END--//
