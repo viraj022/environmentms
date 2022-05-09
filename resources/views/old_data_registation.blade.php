@@ -375,14 +375,12 @@
                         $('#getsubmitDate').val(result.submit_date_only);
                         $('#btnUpdate').val(result.id);
                         $('#btnshowDelete').val(result.id);
-                        if (result.path.split('.')[1] == 'pdf') {
-                            $('.lastCertificatePath').attr('src', '/dist/img/pdf-view.png');
-                        } else {
-                            $('.lastCertificatePath').attr('src', '/' + result.path);
-                        }
-                        $('#addCertificateURL').attr('href', '/' + result.path);
-                        if (result.path !== null && result.path.length > 0) {
-                            $('.lastIssuedCer').removeClass('d-none');
+                        if(result.path != null){
+                            (result.path.split('.')[1] == 'pdf') ?  $('.lastCertificatePath').attr('src', '/dist/img/pdf-view.png') : $('.lastCertificatePath').attr('src', '/' + result.path) 
+                            $('#addCertificateURL').attr('href', '/' + result.path);
+                            if (result.path !== null && result.path.length > 0) {
+                                $('.lastIssuedCer').removeClass('d-none');
+                            }
                         }
                         showUpdate();
                         $('.eplSection').removeClass('d-none');
