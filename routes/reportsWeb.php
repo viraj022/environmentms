@@ -83,3 +83,4 @@ Route::get('/warn_report', 'ReportController@warnReport');
 Route::get('/pending_site_clear_report', 'ReportController@pendingSiteClearReport');//site clearence report
 Route::get('/pending_epl_report', 'ReportController@pendingEplReport');//pending epl report
 Route::get('/status_mismatch_report', 'ReportController@statusMismatchEpl');//status mismatch report
+Route::get('/cert_missing_report', 'ReportController@certMissingReport');//status mismatch report

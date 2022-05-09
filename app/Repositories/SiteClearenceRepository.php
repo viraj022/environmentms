@@ -60,6 +60,7 @@ class SiteClearenceRepository
                 'site_clearence_sessions.created_at'
             )
             ->whereBetween('site_clearence_sessions.issue_date', [$from, $to])
+            ->orWhere('site_clearence_sessions.issue_date', '=', null)
             ->where('transactions.type', Transaction::TRANS_SITE_CLEARANCE)
             ->where('transaction_items.payment_type_id', $inspectionTypes->id)
             ->orderBy('site_clearence_sessions.created_at', 'DESC');

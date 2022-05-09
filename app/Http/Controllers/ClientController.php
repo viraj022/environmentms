@@ -1337,4 +1337,20 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('Reports.pending_expired_list', ['pageAuth' => $pageAuth]);
     }
+
+    public function changeStatus($client_id)
+    {
+        $client = Client::find($client_id);
+
+        if($client->file_status != 5){
+          return array('status' => 0, 'message' => 'File not completed');
+        }
+        $client->file_status = 0;
+        $client->save();
+        if($client == true){
+            return array('status' => 1, 'message' => 'Successfully changed the file status');
+        }else{
+            return array('status' => 0, 'message' => 'File status changing was unsuccessfull');
+        }
+    }
 }

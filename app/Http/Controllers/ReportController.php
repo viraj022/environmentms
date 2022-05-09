@@ -127,14 +127,14 @@ class ReportController extends Controller
         foreach ($result as $row) {
             $array = [];
             $array[] = ++$num;
-            $array[] = Carbon::parse($row['submit_date'])->format('Y-m-d');
             $array[] = $row['code'];
             $array[] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'] . "\n" . $row['address'];
             $array[] = $row['category_name'];
             $array[] = $row['industry_address'];
             $array[] = 'Fee : ' . $row['amount'] . ' ' . "\nInvoice No : " . $row['invoice_no'] . "\nDate : " . Carbon::parse($row['billed_at'])->format('Y-m-d');
-            $array[] = Carbon::parse($row['issue_date'])->format('Y-m-d');
-            $array[] = Carbon::parse($row['created_at'])->format('Y-m-d');
+            ($row['submit_date'] != null) ? $array[] = Carbon::parse($row['submit_date'])->format('Y-m-d') : $array[] = 'N/A';
+            ($row['issue_date'] != null) ? $array[] = Carbon::parse($row['issue_date'])->format('Y-m-d') : $array[] = 'N/A';
+            ($row['created_at'] != null) ? $array[] = Carbon::parse($row['created_at'])->format('Y-m-d') : $array[] = 'N/A';
             array_push($data, $array);
         }
         switch ($type) {
@@ -167,9 +167,12 @@ class ReportController extends Controller
             // dd($row);
             $array = [];
             $array['#'] = ++$num;
-            $array['submitted_date'] = Carbon::parse($row['submitted_date'])->format('Y-m-d');
-            $array['issue_date'] = Carbon::parse($row['issue_date'])->format('Y-m-d');
-            $array['created_at'] = Carbon::parse($row['created_at'])->format('Y-m-d');
+
+            //validate and set dates of the report
+            (isset($row['submitted_date'])) ? $array['submitted_date'] =  Carbon::parse($row['submitted_date'])->format('Y-m-d') : $array['submitted_date'] = 'N/A';
+            (isset($row['issue_date'])) ? $array['issue_date'] = Carbon::parse($row['issue_date'])->format('Y-m-d') : $array['issue_date'] = 'N/A';
+            (isset($row['created_at'])) ? $array['created_at'] = Carbon::parse($row['created_at'])->format('Y-m-d') : $array['created_at'] = 'N/A';
+            
             $array['code'] = $row['code'];
             $client = $row['client'];
             $name_title = isset($client['name_title']) ? $client['name_title'] : 'N/A';
@@ -208,7 +211,7 @@ class ReportController extends Controller
             // dd($row);
             $array = [];
             $array['#'] = ++$num;
-            $array['submitted_date'] = Carbon::parse($row['submitted_date'])->format('d-m-Y');
+            (isset($row['submitted_date'])) ? $array['submitted_date'] = Carbon::parse($row['submitted_date'])->format('d-m-Y'): 'N/A';
             $array['code'] = $row['code'];
 
             $client = $row['client'];
@@ -952,7 +955,7 @@ class ReportController extends Controller
         foreach ($result as $row) {
             $array = [];
             $array['#'] = ++$num;
-            $array['industry_start_date'] = Carbon::parse($row['created_at'])->format('Y-m-d');
+            (isset($row['created_at']))?  $array['industry_start_date'] = Carbon::parse($row['created_at'])->format('Y-m-d'): $array['industry_start_date'] = 'N/A';
             $array['code_site'] = $row['code'];
             $array['name_title'] = $row['client']['name_title'] . ' ' . $row['client']['first_name'] . ' ' . $row['client']['last_name'] . "\n" . $row['client']['address'];
             $array['category_name'] = $row['client']['industry_category']['name'];
@@ -1080,5 +1083,18 @@ class ReportController extends Controller
             ->select('clients.id', 'clients.file_no', 'clients.industry_name', 'clients.file_status', 'e_p_l_s.submitted_date', 'users.first_name', 'users.last_name')
             ->get();
         return view('Reports.status_mismatch_report', ['status_mismatch_data' => $status_mismatch_data, 'pageAuth' => $pageAuth, 'file_status' => $file_status]);
+    }
+
+    public function certMissingReport()
+    {
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        $file_status = Client::FILE_STATUS;
+        $missing_cert_data = Epl::with('client.environmentOfficer.user')
+        ->whereNotIn('e_p_l_s.client_id', Certificate::select('client_id')->groupBy('client_id')->get()->toArray())
+        ->groupBy('client_id')
+        ->get()
+        ->toArray();
+        return view('Reports.cert_missing_report', ['missing_cert_data' => $missing_cert_data, 'pageAuth' => $pageAuth, 'file_status' => $file_status]);
     }
 }

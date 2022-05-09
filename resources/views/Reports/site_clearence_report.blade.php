@@ -14,7 +14,7 @@
 <body class="hold-transition sidebar-mini layout-fixed text-sm">
     <center>
         <h1>{{ $title }}</h1>
-        <h5>From: {{ $from }} .To: {{ $to }}</h5>
+        <h5>From: {{ $from }} To: {{ $to }}</h5>
     </center>
     <h4>Report Genaration Time :{{ $time_elapsed_secs }} seconds</h4>
     {{-- @dump($data); --}}
