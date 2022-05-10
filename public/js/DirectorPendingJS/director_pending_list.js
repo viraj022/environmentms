@@ -23,7 +23,7 @@ function loadDirectorPendingListTable() {
     getDirectorPendingList(function (result) {
         var dataObj = {0: 'pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Pending Approval', 4: 'D Certificate Approval Peniding', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold'};
         var cer_type_status = { 0: 'pending', 1: 'New EPL', 2: 'EPL Renew', 3: 'Site Clearance', 4: 'Extend Site Clearance' };
-
+        
         var tbl = "";
         var id = 1;
         if (result.length == 0) {
