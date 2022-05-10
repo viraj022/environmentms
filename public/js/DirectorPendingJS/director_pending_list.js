@@ -33,7 +33,7 @@ function loadDirectorPendingListTable() {
                 stateSave: true
             });
             t.destroy();
-            $.each(result, function(index, row) {
+            $.each(result, function (index, row) {
                 var myDate = new Date(row.created_at);
                 var fixMydate = myDate.toISOString().split('T')[0];
                 tbl += '<tr>';
