@@ -48,7 +48,7 @@ function loadDirectorPendingListTable() {
                 tbl += '<td><a href="/industry_profile/id/' + row.id + '" target="_blank">' + row.file_no + '</a></td>';
                 tbl += '<td class="">' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
                 tbl += '<td>' + dataObj[row.file_status] + '</td>';
-                if(row.file_status != 0) {
+                if (row.file_status != 0) {
                     tbl += '<td><button value="' + escape(JSON.stringify(row)) + '" class="btn btn-success actionDetails">Action</button></td>';
                 } else {
                     tbl += '<td>N/A</td>';
