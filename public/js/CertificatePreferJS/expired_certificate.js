@@ -23,16 +23,16 @@
 //    });
 //}
 
-var cer_status = { 0: 'pending', 1: 'Drafting', 2: 'Drafted', 3: 'AD Approval Pending', 4: 'Director Approval pending', 5: 'Director Approved', 6: 'Certificate Issued', '-1': 'Certificate Director Holded' };
+var cer_status = {0: 'pending', 1: 'Drafting', 2: 'Drafted', 3: 'AD Approval Pending', 4: 'Director Approval pending', 5: 'Director Approved', 6: 'Certificate Issued', '-1': 'Certificate Director Holded' };
 
 function loadAssDirCombo(callBack) {
     var url = '/api/AssistantDirector/active';
     let cbo = '';
-    ajaxRequest('GET', url, null, function(dataSet) {
+    ajaxRequest('GET', url, null, function (dataSet) {
         if (dataSet.length == 0) {
             cbo = "<option value=''>No Data Found</option>";
         } else {
-            $.each(dataSet, function(index, row) {
+            $.each(dataSet, function (index, row) {
                 cbo += '<option value="' + row.id + '">' + row.first_name + " " + row.last_name + '</option>';
             });
         }
@@ -51,16 +51,16 @@ function getExpireCerByAssDir(id, callBack) {
             "ad_id": id
         };
     }
-    //    console.log(url);
-    //    var certificate_status = {0: 'pending', 1: 'Drafting', 2: 'Drafted', 3: 'AD Pending', 4: 'Director Pending', 5: 'Director Approved', 6: 'Issued', '-1': 'Hold'};
-    //    var certificate_type = {0: 'pending', 1: 'New EPL', 2: 'Renew EPL', 3: 'New Site Clearance', 4: 'Site Clearance Extended'};
+//    console.log(url);
+//    var certificate_status = {0: 'pending', 1: 'Drafting', 2: 'Drafted', 3: 'AD Pending', 4: 'Director Pending', 5: 'Director Approved', 6: 'Issued', '-1': 'Hold'};
+//    var certificate_type = {0: 'pending', 1: 'New EPL', 2: 'Renew EPL', 3: 'New Site Clearance', 4: 'Site Clearance Extended'};
     ajaxRequest('get', url, data, function(result) {
         var tbl = '';
         if (result.length == 0) {
             tbl += '<td colspan="5">Data Not Found</td>';
         } else {
             $('#tblExpiredCertificate').DataTable().destroy();
-            $.each(result, function(index, row) {
+            $.each(result, function (index, row) {
                 tbl += '<tr>';
                 tbl += '<td>' + ++index + '</td>';
                 tbl += '<td>' + row.industry_name + '</td>';

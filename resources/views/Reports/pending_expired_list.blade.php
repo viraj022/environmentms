@@ -69,8 +69,8 @@
             </div>
         </div>
     </div>
-    </div>
-    </div>
+</div>
+</div>
 </section>
 @endif
 @endsection
@@ -84,13 +84,13 @@
 <!-- AdminLTE App -->
 <script>
     $(function() {
-        //Load table
+//Load table
         loadAssDirCombo();
         getPendingExpireCerByAssDir();
-        //select button action 
+//select button action 
         $(document).on('click', '#getByAssDirGenBtn', function() {
             if ($('#getByAssDir').is(":checked")) {
-                //                alert();
+//                alert();
                 getPendingExpireCerByAssDir($('#getAsDirect').val());
             } else {
                 getPendingExpireCerByAssDir();

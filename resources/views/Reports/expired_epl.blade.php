@@ -70,11 +70,11 @@
 
                                     @else
                                     <tr>
-                                        <td>{{$loop->iteration}}</td>
-                                        <td>{{$value->client->industry_name}}</td>
-                                        <td>{{$value->client->file_no}}</td>
-                                        <td>{{$value->client->pradesheeyasaba->name}}</td>
-                                        <td>{{\Carbon\Carbon::parse($value->expire_date)->diffForHumans()}}</td>
+                                    <td>{{$loop->iteration}}</td>
+                                    <td>{{$value->client->industry_name}}</td>
+                                    <td>{{$value->client->file_no}}</td>
+                                    <td>{{$value->client->pradesheeyasaba->name}}</td>
+                                    <td>{{\Carbon\Carbon::parse($value->expire_date)->diffForHumans()}}</td>
                                     </tr>
                                     @endif
                                     @endforeach
@@ -87,8 +87,8 @@
             </div>
         </div>
     </div>
-    </div>
-    </div>
+</div>
+</div>
 </section>
 @endif
 @endsection
@@ -101,21 +101,21 @@
 <script src="../../js/CertificatePreferJS/expired_epl.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
-    $(function() {
+    $(function () {
 
         $('#tblExpiredEpl').DataTable();
-        //Load table
+//Load table
         loadAssDirCombo();
-        // getExpireEplByAssDir(null);
-        //select button action 
-        //         $(document).on('click', '#getByAssDirGenBtn', function () {
-        //             if ($('#getByAssDir').is(":checked")) {
-        // //                alert();
-        //                 getExpireEplByAssDir($('#getAsDirect').val());
-        //             } else {
-        //                 getExpireEplByAssDir();
-        //             }
-        //         });
+// getExpireEplByAssDir(null);
+//select button action 
+//         $(document).on('click', '#getByAssDirGenBtn', function () {
+//             if ($('#getByAssDir').is(":checked")) {
+// //                alert();
+//                 getExpireEplByAssDir($('#getAsDirect').val());
+//             } else {
+//                 getExpireEplByAssDir();
+//             }
+//         });
     });
 </script>
 @endsection

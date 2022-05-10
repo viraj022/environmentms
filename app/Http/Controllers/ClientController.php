@@ -1130,7 +1130,7 @@ class ClientController extends Controller
             pradesheeyasabas.`name` AS pradesheeyasaba_name,
             (SELECT COUNT( warning_letters.id ) FROM warning_letters WHERE warning_letters.client_id = e_p_l_s.client_id ) AS warning_count,
 	        (SELECT MAX(warning_letters.id) FROM warning_letters WHERE warning_letters.client_id = e_p_l_s.client_id ) AS last_letter
-            FROM e_p_l_s
+        FROM e_p_l_s
             INNER JOIN clients ON e_p_l_s.client_id = clients.id
             INNER JOIN pradesheeyasabas ON clients.pradesheeyasaba_id = pradesheeyasabas.id";
             if (isset($ad_id)) {

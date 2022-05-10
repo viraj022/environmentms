@@ -21,7 +21,7 @@ function DirectorFinalApproval(file_id, data, callBack) {
 
 function loadDirectorPendingListTable() {
     getDirectorPendingList(function(result) {
-        var dataObj = { 0: 'pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Pending Approval', 4: 'D Certificate Approval Peniding', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold' };
+        var dataObj = {0: 'pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Pending Approval', 4: 'D Certificate Approval Peniding', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold' };
         var cer_type_status = { 0: 'pending', 1: 'New EPL', 2: 'EPL Renew', 3: 'Site Clearance', 4: 'Extend Site Clearance' };
 
         var tbl = "";
@@ -48,7 +48,7 @@ function loadDirectorPendingListTable() {
                 tbl += '<td><a href="/industry_profile/id/' + row.id + '" target="_blank">' + row.file_no + '</a></td>';
                 tbl += '<td class="">' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
                 tbl += '<td>' + dataObj[row.file_status] + '</td>';
-                if (row.file_status != 0) {
+                if(row.file_status != 0) {
                     tbl += '<td><button value="' + escape(JSON.stringify(row)) + '" class="btn btn-success actionDetails">Action</button></td>';
                 } else {
                     tbl += '<td>N/A</td>';
