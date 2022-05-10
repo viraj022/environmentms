@@ -67,7 +67,7 @@
                                     @foreach($data as $value)
                                     @if(!isset($value->client->industry_name))
                                     @continue
-
+                                    
                                     @else
                                     <tr>
                                     <td>{{$loop->iteration}}</td>
