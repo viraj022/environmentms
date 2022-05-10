@@ -239,6 +239,7 @@ class ReportController extends Controller
             } else {
                 $array['nature'] = "EPL";
             }
+            
             $array['nature'] = $array['nature'].'('.$type.')';
             array_push($data, $array);
         }
