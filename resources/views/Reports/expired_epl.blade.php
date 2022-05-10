@@ -106,7 +106,7 @@
         $('#tblExpiredEpl').DataTable();
 //Load table
         loadAssDirCombo();
-// getExpireEplByAssDir(null);
+        // getExpireEplByAssDir(null);
 //select button action 
 //         $(document).on('click', '#getByAssDirGenBtn', function () {
 //             if ($('#getByAssDir').is(":checked")) {

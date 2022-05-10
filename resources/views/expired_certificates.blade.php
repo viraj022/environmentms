@@ -82,12 +82,12 @@
 <script src="../../js/CertificatePreferJS/expired_certificate.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
-    $(function() {
+    $(function () {
 //Load table
         loadAssDirCombo();
         getExpireCerByAssDir(null);
 //select button action 
-        $(document).on('click', '#getByAssDirGenBtn', function() {
+        $(document).on('click', '#getByAssDirGenBtn', function () {
             if ($('#getByAssDir').is(":checked")) {
 //                alert();
                 getExpireCerByAssDir($('#getAsDirect').val());

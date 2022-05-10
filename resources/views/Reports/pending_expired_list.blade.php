@@ -83,12 +83,12 @@
 <script src="../../js/CertificatePreferJS/pending_exp_list.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script>
-    $(function() {
+    $(function () {
 //Load table
         loadAssDirCombo();
         getPendingExpireCerByAssDir();
 //select button action 
-        $(document).on('click', '#getByAssDirGenBtn', function() {
+        $(document).on('click', '#getByAssDirGenBtn', function () {
             if ($('#getByAssDir').is(":checked")) {
 //                alert();
                 getPendingExpireCerByAssDir($('#getAsDirect').val());
