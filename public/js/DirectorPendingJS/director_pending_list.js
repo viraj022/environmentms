@@ -20,24 +20,27 @@ function DirectorFinalApproval(file_id, data, callBack) {
 }
 
 function loadDirectorPendingListTable() {
-    getDirectorPendingList(function (result) {
-        var dataObj = {0: 'pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Pending Approval', 4: 'D Certificate Approval Peniding', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold'};
+    getDirectorPendingList(function(result) {
+        var dataObj = { 0: 'pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Pending Approval', 4: 'D Certificate Approval Peniding', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold' };
         var cer_type_status = { 0: 'pending', 1: 'New EPL', 2: 'EPL Renew', 3: 'Site Clearance', 4: 'Extend Site Clearance' };
-        
+
         var tbl = "";
         var id = 1;
         if (result.length == 0) {
             tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
         } else {
-            $('#tblPendingAdList').DataTable().destroy();
-            $.each(result, function (index, row) {
+            var t = $('#tblPendingAdList').DataTable({
+                stateSave: true
+            });
+            t.destroy();
+            $.each(result, function(index, row) {
                 var myDate = new Date(row.created_at);
                 var fixMydate = myDate.toISOString().split('T')[0];
                 tbl += '<tr>';
                 tbl += '<td>' + ++index + '</td>';
                 tbl += '<td>' + row.industry_name + '</td>';
                 tbl += '<td>' + row.first_name + ' ' + row.last_name + '</td>';
-                if(row.epls.length != 0){
+                if (row.epls.length != 0) {
                     tbl += '<td>' + row.epls[0].code + '</td>';
                 } else {
                     tbl += '<td>-</td>';
@@ -54,9 +57,7 @@ function loadDirectorPendingListTable() {
             });
         }
         $('#tblPendingAdList tbody').html(tbl);
-        $('#tblPendingAdList').DataTable({
-            stateSave: true
-        });
+        $('#tblPendingAdList').DataTable();
     });
 }
 

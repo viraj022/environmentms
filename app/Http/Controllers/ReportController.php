@@ -192,6 +192,11 @@ class ReportController extends Controller
                 $array['inspection_pay_date'] = "N/A";
             }
             $certificate_no = isset($row['certificate_no']) ? $row['certificate_no'] : 'N/A';
+            $file_no = isset($row['client']['file_no']) ? $row['client']['file_no'] : 'N/A';
+            $ref_no = isset($row['client']['certificates'][0]['refference_no']) ? $row['client']['certificates'][0]['refference_no'] : 'N/A';
+
+            $array['file_no'] = $file_no;
+            $array['ref_no'] = $ref_no;
             $array['license_number'] = $certificate_no;
             array_push($data['results'], $array);
         }
@@ -225,12 +230,17 @@ class ReportController extends Controller
             $array['name_title'] = $name_title . ' ' . $first_name . ' ' . $last_name . "\n" . $client_address;
             $array['category_name'] = $industry_category;
             $array['industry_address'] = $industry_address;
+            
+            $type = '';
+            ($row['count'] > 0) ? $type = 'Renew' : $type = 'New';
+
             if (isset($row['client']['site_clearence_sessions']) && count($row['client']['site_clearence_sessions']) > 0) {
                 $array['nature'] = "SC -> EPL";
             } else {
                 $array['nature'] = "EPL";
             }
-
+            
+            $array['nature'] = $array['nature'].'('.$type.')';
             array_push($data, $array);
         }
         $time_elapsed_secs = round(microtime(true) - $start, 5);
@@ -258,7 +268,7 @@ class ReportController extends Controller
         $siteExtendCount = $site->ReceivedSiteCount($from, $to, 0);
 
         $result[] = array('type' => 'received', 'name' => 'SC(New)', 'application' => $this->prepareApplicationTotal($siteNewCount->toArray()), 'object' => $this->prepareCount($siteNewCount->toArray(), $assistanceDirectors));
-        $result[] = array('type' => 'received', 'name' => 'SC(R)', 'application' => $this->prepareApplicationTotal($siteExtendCount->toArray()), 'object' => $this->prepareCount($siteExtendCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => 'received', 'name' => 'SC(EX)', 'application' => $this->prepareApplicationTotal($siteExtendCount->toArray()), 'object' => $this->prepareCount($siteExtendCount->toArray(), $assistanceDirectors));
         $result[] = array('type' => 'received', 'name' => 'EPL(New)', 'application' => $this->prepareApplicationTotal($newEplCount->toArray()), 'object' => $this->prepareCount($newEplCount->toArray(), $assistanceDirectors));
         $result[] = array('type' => 'received', 'name' => 'EPL(R)', 'application' => $this->prepareApplicationTotal($renewEplCount->toArray()), 'object' => $this->prepareCount($renewEplCount->toArray(), $assistanceDirectors));
         $result[] = array('type' => 'received', 'name' => 'Agrarian Services', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
@@ -284,7 +294,7 @@ class ReportController extends Controller
 
         $result[] = array('type' => 'Inspection', 'name' => 'SC(New)', 'application' => "", 'object' => $this->prepareCount($siteInspectionNewCount->toArray(), $assistanceDirectors));
 
-        $result[] = array('type' => 'Inspection', 'name' => 'SC(R)', 'application' => "", 'object' => $this->prepareCount($siteInspectionRenewCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => 'Inspection', 'name' => 'SC(EX)', 'application' => "", 'object' => $this->prepareCount($siteInspectionRenewCount->toArray(), $assistanceDirectors));
 
         $result[] = array('type' => 'Inspection', 'name' => 'EPL(New)', 'application' => "", 'object' => $this->prepareCount($eplInspectionNewCount->toArray(), $assistanceDirectors));
 
@@ -313,7 +323,7 @@ class ReportController extends Controller
 
         $result[] = array('type' => 'Issued', 'name' => 'SC(New)', 'application' => "", 'object' => $this->prepareCount($completedNewSiteCount->toArray(), $assistanceDirectors));
 
-        $result[] = array('type' => 'Issued', 'name' => 'SC(R)', 'application' => "", 'object' => $this->prepareCount($completedRenewSiteCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => 'Issued', 'name' => 'SC(EX)', 'application' => "", 'object' => $this->prepareCount($completedRenewSiteCount->toArray(), $assistanceDirectors));
 
         $result[] = array('type' => 'Issued', 'name' => 'EPL(New)', 'application' => "", 'object' => $this->prepareCount($completedNewEplCount->toArray(), $assistanceDirectors));
 
@@ -955,13 +965,16 @@ class ReportController extends Controller
         foreach ($result as $row) {
             $array = [];
             $array['#'] = ++$num;
-            (isset($row['created_at']))?  $array['industry_start_date'] = Carbon::parse($row['created_at'])->format('Y-m-d'): $array['industry_start_date'] = 'N/A';
+            (isset($row['site_clearances'][0]['submit_date'])) ? $array['submit_date'] = Carbon::parse($row['site_clearances'][0]['submit_date'])->format('Y-m-d') : $array['submit_date'] = 'N/A';
             $array['code_site'] = $row['code'];
             $array['name_title'] = $row['client']['name_title'] . ' ' . $row['client']['first_name'] . ' ' . $row['client']['last_name'] . "\n" . $row['client']['address'];
             $array['category_name'] = $row['client']['industry_category']['name'];
             $array['industry_address'] = $row['client']['industry_address'];
-            $array['nature'] = $row['site_clearance_type'];
+            $site_type = '';
+            (count($row['site_clearances']) > 1) ? $site_type = "EXT": $site_type = 'NEW';
+            $array['nature'] = $row['site_clearance_type'].'('.$site_type.')';
             $array['code'] = $row['code'];
+            // (isset($row['created_at']))?  $array['industry_start_date'] = Carbon::parse($row['created_at'])->format('Y-m-d'): $array['industry_start_date'] = 'N/A';
             array_push($data['results'], $array);
         }
 
@@ -991,10 +1004,10 @@ class ReportController extends Controller
             '-2' => 'Hold'
         ];
         $clients = Client::select('id', 'first_name', 'last_name', 'updated_at', 'deleted_at', 'industry_name', 'file_no', 'file_status', 'cer_type_status', 'cer_status', 'industry_category_id', 'environment_officer_id', 'created_at')->with('industryCategory')
+            ->with('epls', 'siteClearenceSessions.siteClearances')
             ->where('file_status', '<>', 5)
             ->where('file_status', '<>', 6)
             ->orderBy('updated_at', 'ASC')
-            // ->limit(10)
             ->get();
 
         $user = Auth::user();
