@@ -20,9 +20,11 @@
                                             <thead>
                                                 <tr>
                                                     <th style="width: 10px">#</th>
-                                                    <th>EPL Code</th>
                                                     <th>Applications Name and Address</th>
                                                     <th>Industry</th>
+                                                    <th>EPL Code</th>
+                                                    <th>File No</th>
+                                                    <th>Ref No</th>
                                                     <th>Inspection Fee</th>
                                                     <th>Inspection Bill Date</th>
                                                     <th>Licence No</th>
@@ -38,9 +40,11 @@
                                                 @foreach($data['results'] as $indexKey=>$row)
                                                 <tr>
                                                     <td>{{$indexKey+1}}.</td>
-                                                    <td>{{$row['code']}}</td>                                                 
                                                     <td>{{$row['name_title']}}</td>                                                 
                                                     <td>{{$row['category_name']}}</td>                                                 
+                                                    <td>{{$row['code']}}</td>   
+                                                    <td>{{$row['file_no']}}</td>                                                 
+                                                    <td>{{$row['ref_no']}}</td>                                                 
                                                     <td>{{$row['inspection_fee']}}</td>                                                 
                                                     <td>{{$row['inspection_pay_date']}}</td>                                                 
                                                     <td>{{$row['license_number']}}</td>                                                 

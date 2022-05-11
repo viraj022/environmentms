@@ -29,7 +29,10 @@ function loadDirectorPendingListTable() {
         if (result.length == 0) {
             tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
         } else {
-            $('#tblPendingAdList').DataTable().destroy();
+            var t = $('#tblPendingAdList').DataTable({
+                stateSave: true
+            });
+            t.destroy();
             $.each(result, function (index, row) {
                 var myDate = new Date(row.created_at);
                 var fixMydate = myDate.toISOString().split('T')[0];
@@ -54,9 +57,7 @@ function loadDirectorPendingListTable() {
             });
         }
         $('#tblPendingAdList tbody').html(tbl);
-        $('#tblPendingAdList').DataTable({
-            stateSave: true
-        });
+        $('#tblPendingAdList').DataTable();
     });
 }
 

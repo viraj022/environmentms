@@ -34,13 +34,13 @@
                               <div class="form-group">
                                   <label>Report*</label>
                                   <select id="report_type_cmbo" class="form-control form-control-sm">
-                                    <option value="1">Site Clearance</option>
+                                    <option value="1">Site Clearance Report</option>
+                                    <option value="7">Site Clearance Application Log Report </option>
                                     <option value="2">EPL Report</option>
-                                    <option value="3">EPL Application Log</option>
+                                    <option value="3">EPL Application Log Report</option>
                                     <option value="4">Progress Report</option>
                                     <option value="5">EO Inspection Report</option>
-                                    <option value="6">File Count By Category</option>
-                                    <option value="7">Site Clearance Log</option>
+                                    <option value="6">File Count By Category Report</option>
                                   </select>
                                 </div>
                             </div>

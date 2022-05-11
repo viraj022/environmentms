@@ -31,13 +31,13 @@
                             <thead>
                                 <tr class="tblTrsec">
                                     <th style="width: 10px">#</th>
-                                    <th style='width: 15em'>File</th>
-                                    <th style='width: 8em'>Type</th>
-                                    <th style='width: 20em'>Client Name</th>
-                                    <th style='width: 20em'>Industry Category</th>
-                                    <th style='width: 10em'>Created Date</th>
-                                    <th style='width: 10em'>File Updated Date</th>
-                                    <th style='width: 10em'>File Status</th>
+                                    <th>File</th>
+                                    <th>Type</th>
+                                    <th>Client Name</th>
+                                    <th>Industry Category</th>
+                                    <th>Submitted Date</th>
+                                    <th>File Updated Date</th>
+                                    <th>File Status</th>
 
                                     <!--<th class="inspectTbl" style="width: 180px">Inspection</th>-->
                                 </tr>
@@ -50,7 +50,13 @@
                                     <td>{{ $file_type_status[$data->cer_type_status] }}</td>
                                     <td>{{ $data->first_name }} {{ $data->last_name }}</td>
                                     <td>{{ $data->industryCategory->name }}</td>
-                                    <td>{{ $data->created_at }}</td>
+                                    @if(isset($data->epls[0]->submitted_date))
+                                    <td>{{ $data->epls[0]->submitted_date }}</td>
+                                    @elseif(isset($data->siteClearenceSessions->siteClearances))
+                                    <td>{{ $data->siteClearenceSessions->siteClearances[0]->submit_date }}</td>
+                                    @else
+                                    <td>N/A</td>
+                                    @endif
                                     <td>{{ $data->updated_at->format('Y/m/d H:i') }}</td>
                                     @if($data->environment_officer_id != null)
                                     <td>{{ $file_status[$data->file_status] }}</td>

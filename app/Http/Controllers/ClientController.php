@@ -1125,6 +1125,8 @@ class ClientController extends Controller
             e_p_l_s.`code`,
             clients.industry_name,
 	        clients.contact_no,
+            clients.file_no,
+            e_p_l_s.certificate_no,
             pradesheeyasabas.`name` AS pradesheeyasaba_name,
             (SELECT COUNT( warning_letters.id ) FROM warning_letters WHERE warning_letters.client_id = e_p_l_s.client_id ) AS warning_count,
 	        (SELECT MAX(warning_letters.id) FROM warning_letters WHERE warning_letters.client_id = e_p_l_s.client_id ) AS last_letter
@@ -1296,14 +1298,17 @@ class ClientController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
-        $date = Carbon::now()->format('Y-m-d');
-        // $date = $date->addDays(30);
+        $date = Carbon::now();
+        $formatted_date = $date->addDays(30)->format('Y-m-d');
 
         $is_checked = $request->ad_check;
         $ad_id = $request->ad_id;
 
         $responses = EPL::selectRaw('MAX(id), client_id, expire_date')
-            ->With(['client.pradesheeyasaba']);
+            ->With(['client.pradesheeyasaba'])
+            ->whereHas('Client', function ($query){
+                $query->where('clients.file_status', '!=', 0);
+            });
         // ->selectRaw('max(id) as id, client_id, expire_date,cetificate_number, certificate_type')
 
         $responses->when($is_checked == 'on', function ($q) use ($ad_id) {
@@ -1312,7 +1317,7 @@ class ClientController extends Controller
             });
         });
 
-        $responses = $responses->having('expire_date', '<', $date)
+        $responses = $responses->having('expire_date', '<', $formatted_date)
             ->havingRaw('`expire_date` IS NOT NULL')
             ->groupBy('client_id')
             ->get();
