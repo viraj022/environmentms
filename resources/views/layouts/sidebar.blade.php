@@ -478,6 +478,15 @@
                         @endif
                         @if ($pre['id'] === config('auth.privileges.clientSpace'))
                             <li class="nav-item">
+                                <a href="{{ url('/warning_letter_log') }}"
+                                    class="nav-link {{ Request::is('warning_letter_log') ? 'active' : '' }}">
+                                    <i class="fas fa-file-archive nav-icon"></i>
+                                    <p>Warning Letter Log Report</p>
+                                </a>
+                            </li>
+                        @endif
+                        @if ($pre['id'] === config('auth.privileges.clientSpace'))
+                            <li class="nav-item">
                                 <a href="{{ url('/pending_site_clear_report') }}"
                                     class="nav-link {{ Request::is('pending_site_clear_report') ? 'active' : '' }}">
                                     <i class="fas fa-file-archive nav-icon"></i>
