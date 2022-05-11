@@ -7,7 +7,8 @@
 @section('pageStyles')
     <!-- Theme style -->
     <link rel="stylesheet" href="/dist/css/adminlte.min.css">
-    <link rel="stylesheet" type="text/css" href="/dataTable/datatables.min.css" />
+    <link rel="stylesheet" type="text/css" href="/dataTable/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/dataTable/Buttons-1.6.5/css/buttons.dataTables.min.css"/>
 
     <!-- Google Font: Source Sans Pro -->
 @endsection
@@ -40,9 +41,9 @@
                                             @foreach ($pending_epl_data as $data)
                                                 <tr>
                                                     <td>{{ ++$loop->index }}</td>
-                                                    @if (!isset($data->client))
+                                                    <!-- @if (!isset($data->client))
                                                         @continue
-                                                    @endif
+                                                    @endif -->
                                                     <td><a href="/industry_profile/id/{{ $data->client->id }}"
                                                             class="btn btn-dark"
                                                             target="_blank">{{ !isset($data->client->file_no) ? 'N/A' : $data->client->file_no }}</a></td>
@@ -74,6 +75,7 @@
     <script src="../../dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script type="text/javascript" src="/dataTable/datatables.min.js"></script>
+    <script type="text/javascript" src="/dataTable/Buttons-1.6.5/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="/js/image.js"></script>
 
     <!-- AdminLTE App -->
