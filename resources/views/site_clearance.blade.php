@@ -441,14 +441,12 @@
             });
             //Tor Upload Event
             $("#uploadTOR").click(function() {
-                $("#uploadTOR").prop('disabled', true);
                 let data = {
                     expire_date: $('#expireDateTor').val(),
                     valid_date: $('#validDateTor').val(),
                     file: $('#fileUploadTor')[0].files[0]
                 };
                 setUploadTorAPI(PROFILE, data, function(rest) {
-                    $("#uploadTOR").prop('disabled', false);
                     show_mesege(rest);
                     if (rest.id == 1) {
                         getSiteClearanceAPI(PROFILE, function(resp) {
@@ -461,13 +459,11 @@
             });
             //Client Report Upload Event
             $("#uploadClReport").click(function() {
-                $("#uploadClReport").prop('disabled', true);
                 let data = {
                     expire_date: $('#expireClientReport').val(),
                     file: $('#fileUploadClient')[0].files[0]
                 };
                 setUploadClientAPI(PROFILE, data, function(rest) {
-                    $("#uploadClReport").prop('disabled', false);
                     show_mesege(rest);
                     if (rest.id == 1) {
                         getSiteClearanceAPI(PROFILE, function(resp) {
@@ -480,14 +476,12 @@
             });
             //Site Clearance Extention
             $("#uploadExten").click(function() {
-                $("#uploadExten").prop('disabled', true);
                 let data = {
                     submit_date: $('#submitDateExten').val(),
                     file: $('#fileUploadExten')[0].files[0],
                     client_id: CLIENT
                 };
                 setSiteClearanceExtenAPI(PROFILE, data, function(rest) {
-                    $("#uploadExten").prop('disabled', false);
                     show_mesege(rest);
                     if (rest.id == 1) {
                         location.reload();
@@ -550,7 +544,7 @@
         }
 
         function change_file() {
-            $('#change_file_btn').prop('disabled', true);
+
             let file = $('#change_file_input').get(0).files[0];
             if (file != undefined) {
                 const data = {
@@ -559,7 +553,7 @@
                 };
 
                 ulploadFileWithData("/api/change_file", data, function(resp) {
-                    $('#change_file_btn').prop('disabled', false);
+
                     if (resp.status == 1) {
                         Swal.fire({
                             type: 'success',
@@ -574,7 +568,6 @@
                     location.reload();
                 }, metod = 'POST', file_list = [file]);
             } else {
-                $('#change_file_btn').prop('disabled', false);
                 Swal.fire({
                     type: 'error',
                     title: 'Please select a file!',

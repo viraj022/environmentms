@@ -19,7 +19,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>EO Report</h1>
+                <h1>Industry Files</h1>
             </div>
         </div>
     </div>

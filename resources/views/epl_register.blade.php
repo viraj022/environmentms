@@ -145,7 +145,6 @@ $("#getisOld").click(function () {
 });
 
 $("#btnSave").click(function () {
-    $('#btnSave').addClass('d-none');
     var data = fromValues();
     if (requiredFieldHandler(data, '.cutenzReq')) {
         var data = fromValues(SITE_TYPE);

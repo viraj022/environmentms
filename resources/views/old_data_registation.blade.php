@@ -334,13 +334,11 @@
         });
 //click save button
         $('#btnSave').click(function () {
-            $('#btnSave').prop('disabled', true);
             var is_valid = $("#old_data_form").valid();
             let TYPE = $('#getIndustryType').val();
             var data = fromValues();
             if (is_valid) {
                 saveEPLOldFiles(PROFILE, data, TYPE, function (result) {
-                    $('#btnSave').prop('disabled', false);
                     show_mesege(result);
                     visibleUploads(result);
                     regenCLientData(PROFILE);
@@ -348,8 +346,6 @@
                     hideAllErrors();
                     $("#btnLoadAc").click();
                 });
-            }else{
-                $('#btnSave').prop('disabled', false);
             }
         });
         //Load Sections Button
@@ -486,7 +482,6 @@
         });
 //click update button
         $('#btnUpdate').click(function () {
-            $('#btnUpdate').prop('disabled', true);
             var load_val = $('#getIndustryType').val();
             //get form data
             var data = fromValues();
@@ -495,14 +490,11 @@
             }
             if (Validiteinsert(data)) {
                 updateEPLOldFiles($(this).val(), data, load_val, function (result) {
-                    $('#btnUpdate').prop('disabled', false);
                     show_mesege(result);
                     hideAllErrors();
                     resetinputFields();
                     $("#btnLoadAc").click();
                 });
-            }else{
-                $('#btnUpdate').prop('disabled', false);
             }
         });
 //click delete button
@@ -558,10 +550,8 @@
     });
     $(document).ready(function () {
         $('#btnUpload').click(function () {
-            $('#btnUpload').prop('disabled', true);
             var file = $('#otherFiles')[0].files[0];
             uploadOldAttacments(PROFILE, 'file', file, function (result) {
-                $('#btnUpload').prop('disabled', false);
                 show_mesege(result);
                 regenCLientData(PROFILE);
                 resetinputFields();
