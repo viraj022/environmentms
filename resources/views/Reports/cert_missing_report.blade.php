@@ -7,8 +7,7 @@
 @section('pageStyles')
     <!-- Theme style -->
     <link rel="stylesheet" href="/dist/css/adminlte.min.css">
-    <link rel="stylesheet" type="text/css" href="/dataTable/datatables.min.css"/>
-    <link rel="stylesheet" type="text/css" href="/dataTable/Buttons-1.6.5/css/buttons.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/dataTable/datatables.min.css" />
 
     <!-- Google Font: Source Sans Pro -->
 @endsection
@@ -24,37 +23,32 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body p-0">
-                                <div class="card-body table-responsive" style="height: 700px;">
-                                    <table class="table table-condensed" id="pending_epl_report">
+                                <div class="card-body table-responsive" style="height: 800px;">
+                                    <table class="table table-condensed" id="cert_missing_report">
                                         <thead>
                                             <tr>
                                                 <th style="width: 5em">#</th>
                                                 <th style="width: 20em">File No</th>
                                                 <th style="width: 20em">Industry Name</th>
-                                                <th style="width: 25em">Pradesheeya Sabha</th>
                                                 <th style="width: 25em">EO</th>
-                                                <th style="width: 25em">Submit Date</th>
-
+                                                <th style="width: 25em">File Status</th>
+                                                <th style="width: 25em">Submitted Date</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($pending_epl_data as $data)
-                                                <tr>
-                                                    <td>{{ ++$loop->index }}</td>
-                                                    <!-- @if (!isset($data->client))
-                                                        @continue
-                                                    @endif -->
-                                                    <td><a href="/industry_profile/id/{{ $data->client->id }}"
-                                                            class="btn btn-dark"
-                                                            target="_blank">{{ !isset($data->client->file_no) ? 'N/A' : $data->client->file_no }}</a></td>
-                                                    <td>{{ !isset($data->client) ? '-' : $data->client->industry_name }}
-                                                    </td>
-                                                    <td>{{ !isset($data->client->pradesheeyasaba) ? '-' : $data->client->pradesheeyasaba->name }}
-                                                    </td>
-                                                    <td>{{ !isset($data->client->environmentOfficer->user)? 'Not Assigned': $data->client->environmentOfficer->user->first_name . ' ' . $data->client->environmentOfficer->user->last_name }}
-                                                    </td>
-                                                    <td>{{ Carbon\Carbon::parse($data->submitted_date)->format('Y/m/d') }}</td>
-                                                </tr>
+                                            @foreach ($missing_cert_data as $data)
+                                            @if(!isset($data['client']))
+                                            @continue
+                                            @else
+                                            <tr>
+                                                <td>{{ ++$loop->index }}</td>
+                                                <td><a href="/industry_profile/id/{{$data['client']['id'] }}" class="btn btn-dark" target="_blank">{{ !isset($data['client']['file_no']) ? 'N/A' : $data['client']['file_no'] }}</a></td>
+                                                <td>{{ !isset($data['client']['industry_name']) ? '-' : $data['client']['industry_name'] }}</td>
+                                                <td>{{ !isset($data['client']['environment_officer']['user']['first_name']) && !isset($data['client']['environment_officer']['user']['last_name']) ? 'N/A' : $data['client']['environment_officer']['user']['first_name'] . ' ' . $data['client']['environment_officer']['user']['last_name'] }}</td>
+                                                <td>{{ $file_status[$data['client']['file_status']] }}</td>
+                                                <td>{{ Carbon\Carbon::parse($data['submitted_date'])->format('Y/m/d') }}</td>
+                                            </tr>
+                                            @endif
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -75,8 +69,8 @@
     <script src="../../dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script type="text/javascript" src="/dataTable/datatables.min.js"></script>
-    <script type="text/javascript" src="/dataTable/Buttons-1.6.5/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="/js/image.js"></script>
+    <script type="text/javascript" src="/js/commonFunctions/functions.js"></script>
 
     <!-- AdminLTE App -->
     <script>
@@ -84,7 +78,7 @@
         // $('.table').DataTable();
         $(document).ready(function() {
             // alert(123);
-            $('#pending_epl_report').DataTable({
+            $('#cert_missing_report').DataTable({
                 colReorder: true,
                 responsive: true,
                 select: true,
@@ -97,7 +91,7 @@
                         $(win.document.body)
                             .css('font-size', '10pt')
                             .prepend(
-                                '<center><H1>Pending EPL Report</h1></center><img src=' + img +
+                                '<center><H1>Status Mismatch Report</h1></center><img src=' + img +
                                 ' style="position:absolute; filter: grayscale(100%); opacity: 0.5; top:0; left:0;" />'
                             );
                         $(win.document.body).find('table')
@@ -107,7 +101,7 @@
                 }, "excel", "csv"],
 
             });
-
         });
+
     </script>
 @endsection

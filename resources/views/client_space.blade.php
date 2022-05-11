@@ -525,22 +525,13 @@
                     // if validiated
                     AddClient(data, function(result) {
                         if (result.message == 'true') {
-                            //                                                            Toast.fire({
-                            //                                                                type: 'success',
-                            //                                                                title: 'Enviremontal MS</br>Saved'
-                            //                                                            });
                             alert('Enviremontal MS Saved');
                             getaClientbyId(result.id, function(result) {
                                 window.location = "/industry_profile/id/" + result.id;
                             });
                         } else {
-                            //                                                            Toast.fire({
-                            //                                                                type: 'error',
-                            //                                                                title: 'Enviremontal MS</br>Error'
-                            //                                                            });
-                            alert('Enviremontal MS Error');
+                            alert('Enviremontal MS Error ('+ Object.values(result.message)+')');
                         }
-                        //                                                        loadTable();
                         resetinputFields();
                         hideAllErrors();
                     });
@@ -606,7 +597,6 @@
                 var id = 1;
                 $('#tblSiteClear').DataTable().destroy();
                 $.each(obje, function(index, clientData) {
-                    console.log(clientData);
                     table += "<tr>";
                     table += "<td>" + ++index + "</td>";
                     table += "<td>" + clientData.code + "</td>";
@@ -647,7 +637,6 @@
                 };
                 if (data2.value.length != 0 && data2.value != null) {
                     getClientbyNic($('#getDtaType').val(), data2, function(result) {
-                        console.log(result);
                         switch ($('#getDtaType').val()) {
                             case 'name':
                                 if (result != 0) {

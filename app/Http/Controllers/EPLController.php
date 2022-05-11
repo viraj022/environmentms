@@ -249,6 +249,10 @@ class EPLController extends Controller {
                 }
                 $msg = \DB::transaction(function () use ($request) {
                             $client = Client::find(\request('client_id'));
+                            $file_status = $client->file_status;
+                    if ($file_status != 5) {
+                        return array('id' => 0, 'message' => 'File not completed');
+                    }
                             request()->validate([
                                 'client_id' => 'required|integer',
                                 'remark' => ['sometimes', 'nullable'],

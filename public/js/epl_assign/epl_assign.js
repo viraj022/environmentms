@@ -11,9 +11,9 @@ function loadAssistantDirectorCombo(callBack) {
         dataType: "json",
         cache: false,
         processDaate: false,
-        success: function (result) {
+        success: function(result) {
             var combo = "";
-            $.each(result, function (index, value) {
+            $.each(result, function(index, value) {
                 combo += "<option value='" + value.id + "'>" + value.user.first_name + ' ' + value.user.last_name + "</option>";
             });
             $('.combo_AssistantDirector').html(combo);
@@ -38,12 +38,12 @@ function loadEnvOfficers_combo(ass_dir_id, callBack) {
         dataType: "json",
         cache: false,
         processDaate: false,
-        success: function (result) {
+        success: function(result) {
             var combo = "";
             if (result.length == 0 || result == undefined) {
                 combo = "<option value=''>-No data Found-</option>";
             } else {
-                $.each(result, function (index, value) {
+                $.each(result, function(index, value) {
                     combo += "<option value='" + value.id + "'>" + value.first_name + ' ' + value.last_name + "</option>";
                 });
             }
@@ -112,65 +112,65 @@ function assigned_EPL_table(officer_id, callBack) {
             },
         },
         "columns": [{
-            "data": ""
-        },
-        {
-            "data": "",
-            render: function (data, type, row) {
-
-                let CODE = '';
-                let TYPE = '';
-
-                if (row.epls.length != 0) {
-                    CODE += '<br>' + row.epls[0].code;
-                    TYPE += 'EPL';
-                }
-
-                if (row.siteClearenceSessions != null) {
-                    CODE += '<br>' + row.siteClearenceSessions[0].code;
-                    TYPE += ' SiteClearance';
-                }
-
-                if (row.file_no != null) {
-                    CODE += '<br>' + row.file_no;
-                    TYPE += ' FileNo';
-                }
-
-                // let CODE = row.code_epl;
-                // let TYPE = 'EPL';
-                // if (CODE == 'N/A') {
-                //     CODE = row.code_site;
-                //     TYPE = 'Site Clearance';
-                //     if (CODE == 'N/A') {
-                //         CODE = row.file_no;
-                //         TYPE = 'File No';
-                //     }
-                // }
-                return "<td>" + row.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + row.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='" + TYPE + "'>" + CODE + "</a></td>";
+                "data": null,
             },
-            "defaultContent": "-"
-        },
-        {
-            "data": "created_at",
-            "defaultContent": "-"
-        },
-        {
-            "data": "",
-            render: function (data, type, row) {
-                return '<td><button type="button" class="btn btn-danger removePendingEpl" value="' + row.id + '">Remove</button></td>';
+            {
+                "data": "",
+                render: function(data, type, row) {
+
+                    let CODE = '';
+                    let TYPE = '';
+
+                    if (row.epls.length != 0) {
+                        CODE += '<br>' + row.epls[0].code;
+                        TYPE += 'EPL';
+                    }
+
+                    if (row.siteClearenceSessions != null) {
+                        CODE += '<br>' + row.siteClearenceSessions[0].code;
+                        TYPE += ' SiteClearance';
+                    }
+
+                    if (row.file_no != null) {
+                        CODE += '<br>' + row.file_no;
+                        TYPE += ' FileNo';
+                    }
+
+                    // let CODE = row.code_epl;
+                    // let TYPE = 'EPL';
+                    // if (CODE == 'N/A') {
+                    //     CODE = row.code_site;
+                    //     TYPE = 'Site Clearance';
+                    //     if (CODE == 'N/A') {
+                    //         CODE = row.file_no;
+                    //         TYPE = 'File No';
+                    //     }
+                    // }
+                    return "<td>" + row.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + row.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='" + TYPE + "'>" + CODE + "</a></td>";
+                },
+                "defaultContent": "-"
             },
-            "defaultContent": "-"
-        },
+            {
+                "data": "created_at",
+                "defaultContent": "-"
+            },
+            {
+                "data": "",
+                render: function(data, type, row) {
+                    return '<td><button type="button" class="btn btn-danger removePendingEpl" value="' + row.id + '">Remove</button></td>';
+                },
+                "defaultContent": "-"
+            },
         ],
         "order": [
             [2, "asc"]
         ],
     });
 
-    $(function () {
+    $(function() {
         var t = $("#assigned_epl_table").DataTable();
-        t.on('order.dt search.dt', function () {
-            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+        t.on('order.dt search.dt', function() {
+            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function(cell, i) {
                 cell.innerHTML = i + 1;
             });
         }).draw();
@@ -178,7 +178,7 @@ function assigned_EPL_table(officer_id, callBack) {
 
     //data table error handling
     $.fn.dataTable.ext.errMode = 'none';
-    $('#assigned_epl_table').on('error.dt', function (e, settings, techNote, message) {
+    $('#assigned_epl_table').on('error.dt', function(e, settings, techNote, message) {
         console.log('DataTables error: ', message);
     });
 }
@@ -209,54 +209,54 @@ function pending_EPL_table(director_id, callBack) {
             },
         },
         "columns": [{
-            "data": "id"
-        },
-        {
-            "data": "file_no",
-            render: function (data, type, row) {
-                let CODE = '';
-                let TYPE = '';
-
-                if (row.file_no != null) {
-                    CODE += '<br>' + row.file_no;
-                    TYPE += ' FileNo';
-                }
-
-                if (row.site_clearence_sessions.length != 0) {
-                    CODE += '<br>' + row.site_clearence_sessions[0].code;
-                    TYPE += ' SiteClearance';
-                }
-
-                if (row.epls.length != 0) {
-                    CODE += '<br>' + row.epls[0].code;
-                    TYPE += 'EPL';
-                }
-
-                return "<td>" + row.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + row.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='" + TYPE + "'>" + CODE + "</a></td>";
+                "data": "id"
             },
-            "defaultContent": "-"
-        },
-        {
-            "data": "created_at",
-            "defaultContent": "-"
-        },
-        {
-            "data": "id",
-            render: function (data, type, row) {
-                return '<td><button type="button" class="btn btn-success selPendingEpl" value="' + row.id + '">Add</button></td>';
+            {
+                "data": "file_no",
+                render: function(data, type, row) {
+                    let CODE = '';
+                    let TYPE = '';
+
+                    if (row.file_no != null) {
+                        CODE += '<br>' + row.file_no;
+                        TYPE += ' FileNo';
+                    }
+
+                    if (row.site_clearence_sessions.length != 0) {
+                        CODE += '<br>' + row.site_clearence_sessions[0].code;
+                        TYPE += ' SiteClearance';
+                    }
+
+                    if (row.epls.length != 0) {
+                        CODE += '<br>' + row.epls[0].code;
+                        TYPE += 'EPL';
+                    }
+
+                    return "<td>" + row.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + row.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='" + TYPE + "'>" + CODE + "</a></td>";
+                },
+                "defaultContent": "-"
             },
-            "defaultContent": "-"
-        },
+            {
+                "data": "created_at",
+                "defaultContent": "-"
+            },
+            {
+                "data": "id",
+                render: function(data, type, row) {
+                    return '<td><button type="button" class="btn btn-success selPendingEpl" value="' + row.id + '">Add</button></td>';
+                },
+                "defaultContent": "-"
+            },
         ],
         "order": [
             [2, "asc"]
         ],
     });
 
-    $(function () {
+    $(function() {
         var t = $('#pending_epl_table').DataTable();
-        t.on('order.dt search.dt', function () {
-            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+        t.on('order.dt search.dt', function() {
+            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function(cell, i) {
                 cell.innerHTML = i + 1;
             });
         }).draw();
@@ -264,7 +264,7 @@ function pending_EPL_table(director_id, callBack) {
 
     //data table error handling
     $.fn.dataTable.ext.errMode = 'none';
-    $('#pending_epl_table').on('error.dt', function (e, settings, techNote, message) {
+    $('#pending_epl_table').on('error.dt', function(e, settings, techNote, message) {
         console.log('DataTables error: ', message);
     });
 }
@@ -293,12 +293,12 @@ function assign_epl_to_officer(data, callBack) {
         dataType: "json",
         cache: false,
         processDaate: false,
-        success: function (result) {
+        success: function(result) {
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
             }
         },
-        error: function (xhr, textStatus, errorThrown) {
+        error: function(xhr, textStatus, errorThrown) {
             alert(textStatus + ':' + errorThrown);
         }
     });
@@ -320,12 +320,12 @@ function remove_epl_from_officer(epl_id, callBack) {
         dataType: "json",
         cache: false,
         processDaate: false,
-        success: function (result) {
+        success: function(result) {
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
             }
         },
-        error: function (xhr, textStatus, errorThrown) {
+        error: function(xhr, textStatus, errorThrown) {
             alert(textStatus + ':' + errorThrown);
         }
     });

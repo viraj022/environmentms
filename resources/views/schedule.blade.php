@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="../plugins/fullcalendar-daygrid/main.min.css">
 <link rel="stylesheet" href="../plugins/fullcalendar-timegrid/main.min.css">
 <link rel="stylesheet" href="../plugins/fullcalendar-bootstrap/main.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="/dist/css/adminlte.min.css">
 <style>
     /* SHADE DAYS IN THE PAST */
     td.fc-day.fc-past {
