@@ -12,6 +12,9 @@
 <link rel="stylesheet" href="/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
 <!-- Theme style -->
 <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+<link rel="stylesheet" type="text/css" href="/dataTable/datatables.min.css"/>
+<link rel="stylesheet" type="text/css" href="/dataTable/Buttons-1.6.5/css/buttons.dataTables.min.css"/>
+
 <!-- Google Font: Source Sans Pro -->
 @endsection
 @section('content')
@@ -96,23 +99,37 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
 <script src="../../js/CertificatePreferJS/expired_epl.js" type="text/javascript"></script>
+<script type="text/javascript" src="/dataTable/datatables.min.js"></script>
+<script type="text/javascript" src="/dataTable/Buttons-1.6.5/dataTables.buttons.min.js"></script>
+
 <!-- AdminLTE App -->
 <script>
     $(function () {
 
-        $('#tblExpiredEpl').DataTable();
-//Load table
         loadAssDirCombo();
         // getExpireEplByAssDir(null);
-//select button action 
-//         $(document).on('click', '#getByAssDirGenBtn', function () {
-//             if ($('#getByAssDir').is(":checked")) {
-// //                alert();
-//                 getExpireEplByAssDir($('#getAsDirect').val());
-//             } else {
-//                 getExpireEplByAssDir();
-//             }
-//         });
+        $('#tblExpiredEpl').DataTable({
+    colReorder: true,
+     responsive: true,
+     select: true,
+    dom: "Bfrtip",
+    // buttons: ["csv", "excel", "print",],
+    buttons: [{
+            extend: 'print',
+            title : '',
+            customize: function ( win ) {                  
+                $(win.document.body)
+                    .css( 'font-size', '10pt' )
+                    .prepend(
+                        '<center><H1>Expired EPL</h1></center><img src='+img+' style="position:absolute; filter: grayscale(100%); opacity: 0.5; top:0; left:0;" />'
+                    ); 
+                $(win.document.body).find( 'table' )
+                    .addClass( 'compact' )
+                    .css( 'font-size', 'inherit' );
+            }
+        },"excel","csv"],
+    
+});
     });
 
 </script>
