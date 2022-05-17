@@ -55,14 +55,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group" id="generateBy_section">
-                            <label>Get*</label>
-                            <select id="rep_type" class="form-control form-control-sm">
-                                <option value="all">All Files</option>
-                                <option value="new">New Files</option>
-                                <option value="extend">Extend Files</option>
-                            </select>
-                        </div>
                         <div class="form-group col-md-6">
                             <label>From Date*</label>
                             <input id="startDate" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">

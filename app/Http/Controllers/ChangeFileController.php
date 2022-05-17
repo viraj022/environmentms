@@ -78,8 +78,8 @@ class ChangeFileController extends Controller
         if (File::exists(public_path($file_path))) {
             $delete_status = unlink(public_path($file_path));
         }
- 
-        $delete_file->path = '';
+
+        $delete_file->application_path = '';
         $delete_file->save();
  
         if($delete_status == true && $delete_file == true){
