@@ -198,6 +198,7 @@ class ReportController extends Controller
             $array['file_no'] = $file_no;
             $array['ref_no'] = $ref_no;
             $array['license_number'] = $certificate_no;
+            $array['client_id'] =  $client['id'];
             array_push($data['results'], $array);
         }
         // dd($data);

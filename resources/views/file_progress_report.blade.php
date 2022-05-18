@@ -46,7 +46,7 @@
                                 @forelse($report_data as $data)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td><a href="/industry_profile/id/{{ $data->id }}" target="_blank">{{ $data->file_no }}</a></td>
+                                    <td><a href="/industry_profile/id/{{ $data->id }}" class="btn btn-dark" target="_blank">{{ $data->file_no }}</a></td>
                                     <td>{{ $file_type_status[$data->cer_type_status] }}</td>
                                     <td>{{ $data->first_name }} {{ $data->last_name }}</td>
                                     <td>{{ $data->industryCategory->name }}</td>

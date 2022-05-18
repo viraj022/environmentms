@@ -75,7 +75,7 @@
                                     <tr>
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{$value->client->industry_name}}</td>
-                                    <td>{{$value->client->file_no}}</td>
+                                    <td><a href="/industry_profile/id/{{ $value->client->id }}" class="btn btn-dark" target="_blank">{{$value->client->file_no}}</a></td>
                                     <td>{{$value->client->pradesheeyasaba->name}}</td>
                                     <td>{{\Carbon\Carbon::parse($value->expire_date)->diffForHumans()}}</td>
                                     </tr>
