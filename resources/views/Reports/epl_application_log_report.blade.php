@@ -21,7 +21,7 @@
             <tr>
                 <th>#</th>
                 <th>Date</th>
-                <th>File No</th>
+                <th>File Number</th>
                 <th>Applications Name and Address</th>
                 <th>Industry</th>
                 <th>Location</th>
