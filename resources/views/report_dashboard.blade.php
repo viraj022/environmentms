@@ -87,8 +87,8 @@
             </div>
         </div>
     </div>
-    </div>
-    </div>
+</div>
+</div>
 </section>
 @endif
 @endsection
@@ -116,14 +116,14 @@
 <!-- AdminLTE for demo purposes -->
 <!-- AdminLTE App -->
 <script>
-    $(function() {
+    $(function () {
         loadAssDirCombo(function() {
             env_officer_byAD(parseInt($('#getAsDirect').val()));
         });
-        $('#getAsDirect').change(function() {
+        $('#getAsDirect').change(function () {
             env_officer_byAD(parseInt($('#getAsDirect').val()));
         });
-        $('#report_type_cmbo').change(function() {
+        $('#report_type_cmbo').change(function () {
             $('#officer_section').addClass('d-none');
             $('#generateBy_section').addClass('d-none');
             let rep = parseInt($(this).val());
@@ -136,8 +136,8 @@
                     break;
             }
         });
-        //select button action 
-        $(document).on('click', '#getByAssDirGenBtn', function() {
+//select button action 
+        $(document).on('click', '#getByAssDirGenBtn', function () {
             let rep = parseInt($('#report_type_cmbo').val());
             let URL = '';
             let date_from = $('#startDate').val().trim();
@@ -171,7 +171,7 @@
                     break;
             }
             console.log('url: ' + URL);
-            //            return false;
+//            return false;
             window.open(URL, '_blank');
         });
     });
