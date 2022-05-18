@@ -117,7 +117,7 @@
 <!-- AdminLTE App -->
 <script>
     $(function () {
-        loadAssDirCombo(function() {
+        loadAssDirCombo(function () {
             env_officer_byAD(parseInt($('#getAsDirect').val()));
         });
         $('#getAsDirect').change(function () {
