@@ -103,7 +103,7 @@
                         "data": "file_no",
                         render: function(data, type, row) {
                             return '<a href="/industry_profile/id/' + row.id +
-                                '" class="btn btn-dark" target="_blank">' + row
+                                '" target="_blank">' + row
                                 .file_no + '</a>';
                         }
                     },
