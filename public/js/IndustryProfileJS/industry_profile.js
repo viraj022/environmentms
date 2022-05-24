@@ -228,7 +228,12 @@ function loadAllSiteClearTable(dataSet, callBack) {
         $.each(dataSet, function(index, row) {
             tbl += "<tr>";
             tbl += "<td>" + ++index + "</td>";
-            tbl += '<td><a type="button" href="/site_clearance/client/' + PROFILE_ID + "/profile/" + row.id + '" class="btn btn-primary">' + row.code + "</a></td>";
+            // tbl += '<td><a type="button" href="/site_clearance/client/' + PROFILE_ID + "/profile/" + row.id + '" class="btn btn-primary">' + row.code + "</a></td>";
+            if(row.client.certificates.length > 0){
+                tbl += '<td><a type="button" target="_blank" href="../../'+row.client.certificates[row.client.certificates.length-1].signed_certificate_path+'" class="btn btn-primary">' + row.code + "</a></td>";
+            }else{
+                tbl +=  '<td><a type="button" href="/site_clearance/client/' + PROFILE_ID + "/profile/" + row.id + '" class="btn btn-primary">' + row.code + "</a></td>";
+            }
             if (row.expire_date != null) {
                 tbl += "<td>" + row.expire_date + "</td>";
             } else {
@@ -504,7 +509,6 @@ function setCurrentFileStatus(api_result) {
             status_Lable = '(' + api_result.need_inspection + ')';
         }
     }
-    console.log(api_result);
     $('.setCurrentFstatus').text(file_status_list[api_result.file_status] + status_Lable);
 }
 

@@ -45,7 +45,6 @@
                                                         @continue
                                                     @endif -->
                                                     <td><a href="/industry_profile/id/{{ $data->client->id }}"
-                                                            class="btn btn-dark"
                                                             target="_blank">{{ !isset($data->client->file_no) ? 'N/A' : $data->client->file_no }}</a></td>
                                                     <td>{{ !isset($data->client) ? '-' : $data->client->industry_name }}
                                                     </td>

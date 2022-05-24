@@ -43,7 +43,6 @@
                                            @continue
                                          @endif -->
                                          <td><a href="/industry_profile/id/{{ $data->siteClearenceSession->client->id }}"
-                                             class="btn btn-dark"
                                              target="_blank">{{ !isset($data->siteClearenceSession->client->file_no) ? 'N/A' : $data->siteClearenceSession->client->file_no }}</a></td>
 
                                          <td>{{ (!isset($data->siteClearenceSession->client)) ? '-' : $data->siteClearenceSession->client->industry_name}}</td>
