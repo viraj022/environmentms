@@ -35,6 +35,7 @@
             @foreach ($data as $indexKey => $row)
                 <tr>
                     <td>{{ $indexKey + 1 }}.</td>
+                    <td>{{ $row[1] }}</td>
                     <td>{{ $row[2] }}</td>
                     <td>{{ $row[3] }}</td>
                     <td>{{ $row[5] }}</td>
