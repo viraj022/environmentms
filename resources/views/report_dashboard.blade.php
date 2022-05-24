@@ -55,16 +55,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label>From Date*</label>
-                                <input id="startDate" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>To Date*</label>
-                                <input id="endDate" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">
-                            </div>
-                        </div>
                         <div class="col-md-6 d-none" id="officer_section">
                             <div class="form-group">
                                 <label>Assistant Director:</label>
