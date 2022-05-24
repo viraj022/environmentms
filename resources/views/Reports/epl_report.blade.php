@@ -43,7 +43,7 @@
                                                     <td>{{$row['name_title']}}</td>                                                 
                                                     <td>{{$row['category_name']}}</td>                                                 
                                                     <td>{{$row['code']}}</td>   
-                                                    <td>{{$row['file_no']}}</td>                                                 
+                                                    <td><a href="/industry_profile/id/{{$row['client_id']}}" target="_blank">{{$row['file_no']}}</a></td>                                                 
                                                     <td>{{$row['ref_no']}}</td>                                                 
                                                     <td>{{$row['inspection_fee']}}</td>                                                 
                                                     <td>{{$row['inspection_pay_date']}}</td>                                                 

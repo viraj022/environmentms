@@ -22,10 +22,10 @@
         <thead>
             <tr>
                 <th style="width: 10px">#</th>
-                <th>File Number</th>
                 <th>Applications Name and Address</th>
                 <th>Industry</th>
                 <th>Inspection Fee</th>
+                <th>Site Clearance Number</th>
                 <th>Submited Date</th>
                 <th>Issued Date</th>
                 <th>Created Date</th>
@@ -37,9 +37,9 @@
                     <td>{{ $indexKey + 1 }}.</td>
                     <td>{{ $row[2] }}</td>
                     <td>{{ $row[3] }}</td>
-                    <td>{{ $row[4] }}</td>
+                    <td>{{ $row[5] }}</td>
+                    <td><a href="/industry_profile/id/{{ $row[9] }}" target="_blank">{{ $row[1] }}</a></td>
                     <td>{{ $row[6] }}</td>
-                    <td>{{ $row[1] }}</td>
                     <td>{{ $row[7] }}</td>
                     <td>{{ $row[8] }}</td>
                 </tr>

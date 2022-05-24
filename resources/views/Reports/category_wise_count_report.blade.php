@@ -25,7 +25,7 @@
                                                     <th>SC Extend</th>
                                                     <th>EPL New</th>
                                                     <th>EPL Renew</th>                              
-                                                    <th>Certificate Issued</th>                              
+                                                    <!-- <th>Certificate Issued</th>                               -->
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -37,7 +37,7 @@
                                                     <td>{{$row['sc_extend']}}</td>                                                 
                                                     <td>{{$row['epl_new']}}</td>                                                 
                                                     <td>{{$row['epl_renew']}}</td>                                           
-                                                    <td>{{$row['certificates']}}</td>                                           
+                                                    <!-- <td>{{$row['certificates']}}</td>                                            -->
                                                 </tr>
                                                 @endforeach
                                             </tbody>

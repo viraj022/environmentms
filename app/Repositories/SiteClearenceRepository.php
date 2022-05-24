@@ -57,7 +57,8 @@ class SiteClearenceRepository
                 'transactions.invoice_no',
                 'transactions.billed_at',
                 'site_clearence_sessions.issue_date',
-                'site_clearence_sessions.created_at'
+                'site_clearence_sessions.created_at',
+                'clients.id as client_id'
             )
             ->whereBetween('site_clearence_sessions.issue_date', [$from, $to])
             ->orWhere('site_clearence_sessions.issue_date', '=', null)

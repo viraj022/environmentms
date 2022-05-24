@@ -63,6 +63,7 @@
                                         <th style="width: 25em">File No</th>
                                         <th style="width: 25em">Pradeshiya Sabha</th>
                                         <th style="width: 20em">Due Days</th>
+                                        <th style="width: 20em">Expire Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -75,9 +76,10 @@
                                     <tr>
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{$value->client->industry_name}}</td>
-                                    <td>{{$value->client->file_no}}</td>
+                                    <td><a href="/industry_profile/id/{{ $value->client->id }}" target="_blank">{{$value->client->file_no}}</a></td>
                                     <td>{{$value->client->pradesheeyasaba->name}}</td>
                                     <td>{{\Carbon\Carbon::parse($value->expire_date)->diffForHumans()}}</td>
+                                    <td>{{\Carbon\Carbon::parse($value->expire_date)->format('Y/m/d')}}</td>
                                     </tr>
                                     @endif
                                     @endforeach
