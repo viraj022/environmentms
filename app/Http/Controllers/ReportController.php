@@ -135,6 +135,7 @@ class ReportController extends Controller
             ($row['submit_date'] != null) ? $array[] = Carbon::parse($row['submit_date'])->format('Y-m-d') : $array[] = 'N/A';
             ($row['issue_date'] != null) ? $array[] = Carbon::parse($row['issue_date'])->format('Y-m-d') : $array[] = 'N/A';
             ($row['created_at'] != null) ? $array[] = Carbon::parse($row['created_at'])->format('Y-m-d') : $array[] = 'N/A';
+            $array[] = $row['client_id'];
             array_push($data, $array);
         }
         switch ($type) {
@@ -198,6 +199,7 @@ class ReportController extends Controller
             $array['file_no'] = $file_no;
             $array['ref_no'] = $ref_no;
             $array['license_number'] = $certificate_no;
+            $array['client_id'] =  $client['id'];
             array_push($data['results'], $array);
         }
         // dd($data);
@@ -216,7 +218,7 @@ class ReportController extends Controller
             // dd($row);
             $array = [];
             $array['#'] = ++$num;
-            (isset($row['submitted_date'])) ? $array['submitted_date'] = Carbon::parse($row['submitted_date'])->format('d-m-Y'): 'N/A';
+            (isset($row['submitted_date'])) ? $array['submitted_date'] = Carbon::parse($row['submitted_date'])->format('Y-m-d'): 'N/A';
             $array['code'] = $row['code'];
 
             $client = $row['client'];
@@ -240,6 +242,7 @@ class ReportController extends Controller
                 $array['nature'] = "EPL";
             }
             $array['nature'] = $array['nature'].'('.$type.')';
+            $array['client_id'] = $client['id'];
             array_push($data, $array);
         }
         $time_elapsed_secs = round(microtime(true) - $start, 5);
@@ -583,16 +586,16 @@ class ReportController extends Controller
                 ->whereBetween('epl_submitted_date', [$from, $to])
                 ->where('epl_count', '>', 0)->count();
 
-            $eplCertificate = $data->where('industry_category_id', $category->id)
-                ->whereBetween('epl_issue_date', [$from, $to])->count();
-            $siteCertificate = $data->where('industry_category_id', $category->id)
-                ->whereBetween('site_issue_date', [$from, $to])->count();
+            // $eplCertificate = $data->where('industry_category_id', $category->id)
+            //     ->whereBetween('epl_issue_date', [$from, $to])->count();
+            // $siteCertificate = $data->where('industry_category_id', $category->id)
+            //     ->whereBetween('site_issue_date', [$from, $to])->count();
 
             $row['sc_new'] = $siteNew;
             $row['sc_extend'] = $siteExtend;
             $row['epl_new'] = $eplNew;
             $row['epl_renew'] = $eplRenew;
-            $row['certificates'] = $eplCertificate + $siteCertificate;
+            // $row['certificates'] = $eplCertificate + $siteCertificate;
             array_push($rows, $row);
         }
         $time_elapsed_secs = round(microtime(true) - $start, 5);
@@ -974,6 +977,7 @@ class ReportController extends Controller
             $array['nature'] = $row['site_clearance_type'].'('.$site_type.')';
             $array['code'] = $row['code'];
             // (isset($row['created_at']))?  $array['industry_start_date'] = Carbon::parse($row['created_at'])->format('Y-m-d'): $array['industry_start_date'] = 'N/A';
+            $array['client_id'] = $row['client']['id'];
             array_push($data['results'], $array);
         }
 

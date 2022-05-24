@@ -34,10 +34,10 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 10px">#</th>
-                                        <th>Industry Name</th>
-                                        <th>File No</th>
-                                        <th>File Problem Status</th>
-                                        <th style="width: 140px">Action</th>
+                                        <th style="width: 40em">Industry Name</th>
+                                        <th style="width: 10em">File No</th>
+                                        <th style="width: 20em">File Problem Status</th>
+                                        <th style="width: 10em">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>

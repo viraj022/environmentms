@@ -31,45 +31,29 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                              <div class="form-group">
-                                  <label>Report*</label>
-                                  <select id="report_type_cmbo" class="form-control form-control-sm">
-                                    <option value="1">Site Clearance Report</option>
-                                    <option value="7">Site Clearance Application Log Report </option>
-                                    <option value="2">EPL Report</option>
-                                    <option value="3">EPL Application Log Report</option>
-                                    <option value="4">Progress Report</option>
-                                    <option value="5">EO Inspection Report</option>
-                                    <option value="6">File Count By Category Report</option>
-                                  </select>
+                                <div class="form-group">
+                                    <label>Report*</label>
+                                    <select id="report_type_cmbo" class="form-control form-control-sm">
+                                        <option value="1">Site Clearance Report</option>
+                                        <option value="7">Site Clearance Application Log Report </option>
+                                        <option value="2">EPL Report</option>
+                                        <option value="3">EPL Application Log Report</option>
+                                        <option value="4">Progress Report</option>
+                                        <option value="5">EO Inspection Report</option>
+                                        <option value="6">File Count By Category Report</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group" id="generateBy_section">
-                                   <label>Get*</label>
-                                   <select id="rep_type" class="form-control form-control-sm">
-                                    <option value="all">All Files</option>
-                                    <option value="new">New Files</option>
-                                    <option value="extend">Extend Files</option>
-                                   </select>
+                                    <label>Get*</label>
+                                    <select id="rep_type" class="form-control form-control-sm">
+                                        <option value="all">All Files</option>
+                                        <option value="new">New Files</option>
+                                        <option value="extend">Extend Files</option>
+                                    </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group" id="generateBy_section">
-                            <label>Get*</label>
-                            <select id="rep_type" class="form-control form-control-sm">
-                                <option value="all">All Files</option>
-                                <option value="new">New Files</option>
-                                <option value="extend">Extend Files</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>From Date*</label>
-                            <input id="startDate" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>To Date*</label>
-                            <input id="endDate" type="date" max="2999-12-31" class="form-control form-control-sm" placeholder="Enter Date..." value="">
                         </div>
                         <div class="col-md-6 d-none" id="officer_section">
                             <div class="form-group">
@@ -181,6 +165,5 @@
             window.open(URL, '_blank');
         });
     });
-
 </script>
 @endsection

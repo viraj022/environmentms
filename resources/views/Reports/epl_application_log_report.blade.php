@@ -20,11 +20,11 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Date</th>
-                <th>File Number</th>
                 <th>Applications Name and Address</th>
+                <th>EPL No</th>
                 <th>Industry</th>
                 <th>Location</th>
+                <th>Submitted Date</th>
                 <th>Inspection Nature</th>
             </tr>
         </thead>
@@ -32,11 +32,11 @@
             @foreach($data as $indexKey=>$row)
             <tr>
                 <td>{{$indexKey+1}}.</td>
-                <td>{{$row['submitted_date']}}</td>
-                <td>{{$row['code']}}</td>                                                 
                 <td>{{$row['name_title']}}</td>                                                 
+                <td><a href="/industry_profile/id/{{$row['client_id']}}" target="_blank">{{$row['code']}}</a></td>                                                
                 <td>{{$row['category_name']}}</td>                                                 
                 <td>{{$row['industry_address']}}</td>  
+                <td>{{$row['submitted_date']}}</td>
                 <td>{{$row['nature']}}</td>  
             </tr>
             @endforeach

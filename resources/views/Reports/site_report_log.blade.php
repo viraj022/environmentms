@@ -20,8 +20,8 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Site Clearance Code</th>
                 <th>Applications Name and Address</th>
+                <th>Site Clearance Code</th>
                 <th>Industry</th>
                 {{-- <th>Location</th> --}}
                 <th style="width: 4em">Submitted Date</th>
@@ -32,8 +32,8 @@
             @foreach($data['results'] as $indexKey=>$row)
             <tr>
                 <td>{{$indexKey+1}}.</td>
-                <td>{{$row['code_site']}}</td>                                                                                                
                 <td>{{$row['name_title']}}</td>                                                 
+                <td><a href="/industry_profile/id/{{$row['client_id']}}" target="_blank">{{$row['code_site']}}</a></td>                                                 
                 <td>{{$row['category_name']}}</td>                                                 
                 {{-- <td>{{$row['industry_address']}}</td>                                                       --}}
                 <td>{{$row['submit_date']}}</td>

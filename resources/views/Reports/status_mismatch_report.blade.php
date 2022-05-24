@@ -40,7 +40,7 @@
                                             @foreach ($status_mismatch_data as $data)
                                             <tr>
                                                 <td>{{ ++$loop->index }}</td>
-                                                <td><a href="/industry_profile/id/{{ $data->id }}" class="btn btn-dark" target="_blank">{{ !isset($data->file_no) ? 'N/A' : $data->file_no }}</a></td>
+                                                <td><a href="/industry_profile/id/{{ $data->id }}" target="_blank">{{ !isset($data->file_no) ? 'N/A' : $data->file_no }}</a></td>
                                                 <td>{{ !isset($data->industry_name) ? '-' : $data->industry_name }}</td>
                                                 <td>{{ !isset($data->first_name) && !isset($data->last_name) ? 'N/A' : $data->first_name . ' ' . $data->last_name }}</td>
                                                 <td>{{ $file_status[$data->file_status] }}</td>

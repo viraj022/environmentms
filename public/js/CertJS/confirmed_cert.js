@@ -33,7 +33,7 @@ function getConfirmedCerByAssDir(id, callBack) {
                 tbl += '<tr>';
                 tbl += '<td>' + ++index + '</td>';
                 tbl += '<td>' + row.industry_name + '</td>';
-                tbl += '<td>' + row.file_no + '</a></td>';
+                tbl += '<td><a href="/industry_profile/id/' + row.id + '" target="_blank">' + row.file_no + '</a></a></td>';
                 tbl += '<td>' + row.file_problem_status + '</td>';
                 tbl += '<td><a href="/certificate_perforation/id/' + row.id + '" class="btn btn-success">Certificate<a></td>';
                 tbl += '</tr>';
