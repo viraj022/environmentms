@@ -34,7 +34,7 @@ class WarningLetterController extends Controller
         $cert_no = '';
         if ($certificate_count > 0) {
             $exp_date = $warn_letter->client->certificates[$epl_count - 1]->expire_date;
-            $cert_no = $warn_letter->client->certificates[$epl_count - 1]->certificate_no;
+            $cert_no = $warn_letter->client->epls[$epl_count - 1]->certificate_no;
         }
         return view('warn_letter_view', ['pageAuth' => $pageAuth, 'warn_let_data' => $warn_letter, 'client_address' => $address, 'expire_date' => $exp_date, 'cert_no' => $cert_no]);
     }
