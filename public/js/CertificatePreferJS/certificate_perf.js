@@ -89,6 +89,8 @@ function getCertificateDetails(file_id, callBack) {
             $('#ref_Num').html('<b>Reference Number: </b>' + resp.refference_no);
             $('#created_at').html('<b>Created At: </b>' + resp.created_at);
             $('#updated_at').html('<b>Updated At: </b>' + resp.updated_at);
+            $('#issue_date').val(resp.issue_date);
+            $('#expire_date').val(resp.expire_date);
             // $('#fileUpDiv').addClass('d-none');
             if (resp.cetificate_number != null) {
                 $('.genCertificateNum').addClass('d-none');
@@ -180,7 +182,6 @@ function completeCertificateAPI(certificate_id, FILE_STATUS, data, callBack) {
         url = "/api/certificate/drafted/";
     } else if (FILE_STATUS == 5) {
         url = "/api/certificate/issue/";
-        //        url = "/api/certificate/complete/";
     }
 
     url += certificate_id;

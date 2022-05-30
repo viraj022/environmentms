@@ -120,8 +120,6 @@ class ReportController extends Controller
     {
         $start = microtime(true);
         $site = new SiteClearenceRepository();
-        // $result = $site->getSiteClearenceReport($from, $to, $type);
-        // dd($result);
         $result = $site->getSiteClearenceReport($from, $to, $type)->toArray();
         $data = [];
         $num = 0;
@@ -141,13 +139,13 @@ class ReportController extends Controller
         }
         switch ($type) {
             case 'all':
-                $title = "Site Clearence Report (All)";
+                $title = "Site Clearance Report (All)";
                 break;
             case 'new':
-                $title = "Site Clearence Report (New)";
+                $title = "Site Clearance Report (New)";
                 break;
             case 'extend':
-                $title = "Site Clearence Report (Extend)";
+                $title = "Site Clearance Report (Extend)";
                 break;
             default:
                 abort('404', 'Report Type Not Defined - Ceytech internal error log');
@@ -602,7 +600,6 @@ class ReportController extends Controller
             ->groupBy('clients.industry_category_id')
             ->get()->keyBy('industry_category_id')->toArray();
 
-        // dd($siteRenew);
 
         foreach ($category as $key => $value) {
             $row = array(
@@ -997,7 +994,8 @@ class ReportController extends Controller
             $array['#'] = ++$num;
             (isset($row['site_clearances'][0]['submit_date'])) ? $array['submit_date'] = Carbon::parse($row['site_clearances'][0]['submit_date'])->format('Y-m-d') : $array['submit_date'] = 'N/A';
             $array['code_site'] = $row['code'];
-            $array['name_title'] = $row['client']['name_title'] . ' ' . $row['client']['first_name'] . ' ' . $row['client']['last_name'] . "\n" . $row['client']['address'];
+            $array['name_title'] = $row['client']['name_title'] . ' ' . $row['client']['first_name'] . ' ' . $row['client']['last_name'];
+            $array['address'] = $row['client']['address'];
             $array['category_name'] = $row['client']['industry_category']['name'];
             $array['industry_address'] = $row['client']['industry_address'];
             $site_type = '';
