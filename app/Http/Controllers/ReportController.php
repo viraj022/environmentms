@@ -24,6 +24,7 @@ use PhpParser\Node\Expr\Print_;
 use Illuminate\Http\Request;
 use App\Certificate;
 use App\EPL;
+use App\EPLNew;
 
 class ReportController extends Controller
 {
@@ -173,7 +174,7 @@ class ReportController extends Controller
             (isset($row['submitted_date'])) ? $array['submitted_date'] =  Carbon::parse($row['submitted_date'])->format('Y-m-d') : $array['submitted_date'] = 'N/A';
             (isset($row['issue_date'])) ? $array['issue_date'] = Carbon::parse($row['issue_date'])->format('Y-m-d') : $array['issue_date'] = 'N/A';
             (isset($row['created_at'])) ? $array['created_at'] = Carbon::parse($row['created_at'])->format('Y-m-d') : $array['created_at'] = 'N/A';
-            
+
             $array['code'] = $row['code'];
             $client = $row['client'];
             $name_title = isset($client['name_title']) ? $client['name_title'] : 'N/A';
@@ -218,7 +219,7 @@ class ReportController extends Controller
             // dd($row);
             $array = [];
             $array['#'] = ++$num;
-            (isset($row['submitted_date'])) ? $array['submitted_date'] = Carbon::parse($row['submitted_date'])->format('Y-m-d'): 'N/A';
+            (isset($row['submitted_date'])) ? $array['submitted_date'] = Carbon::parse($row['submitted_date'])->format('Y-m-d') : 'N/A';
             $array['code'] = $row['code'];
 
             $client = $row['client'];
@@ -232,7 +233,7 @@ class ReportController extends Controller
             $array['name_title'] = $name_title . ' ' . $first_name . ' ' . $last_name . "\n" . $client_address;
             $array['category_name'] = $industry_category;
             $array['industry_address'] = $industry_address;
-            
+
             $type = '';
             ($row['count'] > 0) ? $type = 'Renew' : $type = 'New';
 
@@ -241,7 +242,7 @@ class ReportController extends Controller
             } else {
                 $array['nature'] = "EPL";
             }
-            $array['nature'] = $array['nature'].'('.$type.')';
+            $array['nature'] = $array['nature'] . '(' . $type . ')';
             $array['client_id'] = $client['id'];
             array_push($data, $array);
         }
@@ -561,45 +562,72 @@ class ReportController extends Controller
     {
         $start = microtime(true);
         $rows = [];
-        $client = new ClientRepository();
         $categoryRepo = new IndustryCategoryRepository();
-        $data = $client->allPlain($from, $to);
-        foreach ($categoryRepo->all() as $category) {
+        $category = $categoryRepo->all()->keyBy('id')->toArray();
+        // new epls
+        $eplNew = EPL::selectRaw('Count(e_p_l_s.issue_date) AS new_epl_count, clients.industry_category_id')
+            ->whereNotNull('issue_date')
+            ->where('count', '=', 0)
+            ->whereBetween('issue_date', [$from, $to])
+            ->join('clients', 'e_p_l_s.client_id', '=', 'clients.id')
+            ->groupBy('clients.industry_category_id')
+            ->get()->keyBy('industry_category_id')->toArray();
+        // epl renew count
+        $eplRenew = EPL::selectRaw('Count(e_p_l_s.issue_date) AS renew_epl_count, clients.industry_category_id')
+            ->whereNotNull('issue_date')
+            ->where('count', '>', 0)
+            ->whereBetween('issue_date', [$from, $to])
+            ->join('clients', 'e_p_l_s.client_id', '=', 'clients.id')
+            ->groupBy('clients.industry_category_id')
+            ->get()->keyBy('industry_category_id')->toArray();
+        // site new count
+        $siteNew = SiteClearance::selectRaw('Count(site_clearances.issue_date) AS site_new_count, clients.industry_category_id')
+            ->whereNotNull('site_clearances.issue_date')
+            ->whereNull('site_clearances.deleted_at')
+            ->where('count', '=', 0)
+            ->whereBetween('site_clearances.issue_date', [$from, $to])
+            ->join('site_clearence_sessions', 'site_clearances.site_clearence_session_id', '=', 'site_clearence_sessions.id')
+            ->join('clients', 'site_clearence_sessions.client_id', '=', 'clients.id')
+            ->groupBy('clients.industry_category_id')
+            ->get()->keyBy('industry_category_id')->toArray();
+
+        // site renew count
+        $siteRenew = SiteClearance::selectRaw('Count(site_clearances.issue_date) AS site_extend_count, clients.industry_category_id')
+            ->whereNotNull('site_clearances.issue_date')
+            ->whereNull('site_clearances.deleted_at')
+            ->where('count', '>', 0)
+            ->whereBetween('site_clearances.issue_date', [$from, $to])
+            ->join('site_clearence_sessions', 'site_clearances.site_clearence_session_id', '=', 'site_clearence_sessions.id')
+            ->join('clients', 'site_clearence_sessions.client_id', '=', 'clients.id')
+            ->groupBy('clients.industry_category_id')
+            ->get()->keyBy('industry_category_id')->toArray();
+
+        // dd($siteRenew);
+
+        foreach ($category as $key => $value) {
             $row = array(
-                "name" => $category->name,
+                "name" => $value['name'],
                 "sc_new" => 0,
                 "sc_extend" => 0,
                 "epl_new" => 0,
                 "epl_renew" => 0,
                 "certificates" => 0,
             );
-            $siteNew = $data->where('industry_category_id', $category->id)
-                ->whereBetween('site_submit_date', [$from, $to])
-                ->where('site_count', 0)->count();
-            $siteExtend = $data->where('industry_category_id', $category->id)
-                ->whereBetween('site_submit_date', [$from, $to])
-                ->where('site_count', '>', 0)->count();
-            $eplNew = $data->where('industry_category_id', $category->id)
-                ->whereBetween('epl_submitted_date', [$from, $to])
-                ->where('epl_count', 0)->count();
-            $eplRenew = $data->where('industry_category_id', $category->id)
-                ->whereBetween('epl_submitted_date', [$from, $to])
-                ->where('epl_count', '>', 0)->count();
-
-            // $eplCertificate = $data->where('industry_category_id', $category->id)
-            //     ->whereBetween('epl_issue_date', [$from, $to])->count();
-            // $siteCertificate = $data->where('industry_category_id', $category->id)
-            //     ->whereBetween('site_issue_date', [$from, $to])->count();
-
-            $row['sc_new'] = $siteNew;
-            $row['sc_extend'] = $siteExtend;
-            $row['epl_new'] = $eplNew;
-            $row['epl_renew'] = $eplRenew;
-            // $row['certificates'] = $eplCertificate + $siteCertificate;
+            if (isset($siteNew[$key])) {
+                $row['sc_new'] = $siteNew[$key]['site_new_count'];
+            }
+            if (isset($siteRenew[$key])) {
+                $row['sc_extend'] = $siteRenew[$key]['site_extend_count'];
+            }
+            if (isset($eplNew[$key])) {
+                $row['epl_new'] = $eplNew[$key]['new_epl_count'];
+            }
+            if (isset($eplRenew[$key])) {
+                $row['epl_renew'] = $eplRenew[$key]['renew_epl_count'];
+            }
             array_push($rows, $row);
         }
         $time_elapsed_secs = round(microtime(true) - $start, 5);
-        // dd($rows, $time_elapsed_secs);
         return view('Reports.category_wise_count_report', compact('rows', 'time_elapsed_secs', 'from', 'to'));
     }
 
@@ -973,8 +1001,8 @@ class ReportController extends Controller
             $array['category_name'] = $row['client']['industry_category']['name'];
             $array['industry_address'] = $row['client']['industry_address'];
             $site_type = '';
-            (count($row['site_clearances']) > 1) ? $site_type = "EXT": $site_type = 'NEW';
-            $array['nature'] = $row['site_clearance_type'].'('.$site_type.')';
+            (count($row['site_clearances']) > 1) ? $site_type = "EXT" : $site_type = 'NEW';
+            $array['nature'] = $row['site_clearance_type'] . '(' . $site_type . ')';
             $array['code'] = $row['code'];
             // (isset($row['created_at']))?  $array['industry_start_date'] = Carbon::parse($row['created_at'])->format('Y-m-d'): $array['industry_start_date'] = 'N/A';
             $array['client_id'] = $row['client']['id'];
@@ -1063,7 +1091,7 @@ class ReportController extends Controller
         return view('Reports.warn_report', ['warn_let_data' => $reses]);
     }
 
-    // return site clearence data of expired date is null 
+    // return site clearence data of expired date is null
     public function pendingSiteClearReport()
     {
         $user = Auth::user();
@@ -1107,10 +1135,10 @@ class ReportController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $file_status = Client::FILE_STATUS;
         $missing_cert_data = Epl::with('client.environmentOfficer.user')
-        ->whereNotIn('e_p_l_s.client_id', Certificate::select('client_id')->groupBy('client_id')->get()->toArray())
-        ->groupBy('client_id')
-        ->get()
-        ->toArray();
+            ->whereNotIn('e_p_l_s.client_id', Certificate::select('client_id')->groupBy('client_id')->get()->toArray())
+            ->groupBy('client_id')
+            ->get()
+            ->toArray();
         return view('Reports.cert_missing_report', ['missing_cert_data' => $missing_cert_data, 'pageAuth' => $pageAuth, 'file_status' => $file_status]);
     }
 }
