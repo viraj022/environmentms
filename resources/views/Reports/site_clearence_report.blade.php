@@ -16,7 +16,7 @@
         <h1>{{ $title }}</h1>
         <h5>From: {{ $from }} To: {{ $to }}</h5>
     </center>
-    <h4>Report Genaration Time :{{ $time_elapsed_secs }} seconds</h4>
+    <h4>Report Genaration Time :{{ $time_elapsed_secs }} seconds, (Filter by Issue Date)</h4>
     {{-- @dump($data); --}}
     <table class="table cell-border compact stripe">
         <thead>
@@ -35,11 +35,11 @@
             @foreach ($data as $indexKey => $row)
                 <tr>
                     <td>{{ $indexKey + 1 }}.</td>
-                    <td>{{ $row[1] }}</td>
                     <td>{{ $row[2] }}</td>
                     <td>{{ $row[3] }}</td>
                     <td>{{ $row[5] }}</td>
-                    <td><a href="/industry_profile/id/{{ $row[9] }}" target="_blank">{{ $row[1] }}</a></td>
+                    <td><a href="/industry_profile/id/{{ $row[9] }}" target="_blank">{{ $row[1] }}</a>
+                    </td>
                     <td>{{ $row[6] }}</td>
                     <td>{{ $row[7] }}</td>
                     <td>{{ $row[8] }}</td>

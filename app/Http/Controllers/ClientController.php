@@ -142,7 +142,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        try{
+        try {
             $user = Auth::user();
             $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
             request()->validate([
@@ -181,7 +181,7 @@ class ClientController extends Controller
                 $client->nic = \request('nic');
                 $client->password = Hash::make(request('nic'));
                 $client->api_token = Str::random(80);
-    
+
                 $client->industry_name = \request('industry_name');
                 $client->industry_category_id = \request('industry_category_id');
                 $client->business_scale_id = \request('business_scale_id');
@@ -217,10 +217,10 @@ class ClientController extends Controller
             } else {
                 abort(401);
             }
-        }catch(Exception $ex){
-            if(isset($ex->validator)){
+        } catch (Exception $ex) {
+            if (isset($ex->validator)) {
                 return array('id' => 0, 'message' => $ex->validator->errors());
-            }else{
+            } else {
                 return array('id' => 0, 'message' => $ex->getMessage());
             }
         }
@@ -893,6 +893,7 @@ class ClientController extends Controller
         if (!$certificate) {
             return array();
         } else {
+            $certificate->issue_date = ($certificate->issue_date != null) ? Carbon::parse($certificate->issue_date)->format('Y-m-d') : date('Y-m-d');
             return $certificate;
         }
     }
@@ -1001,67 +1002,83 @@ class ClientController extends Controller
         }
     }
 
-    public function issueCertificate($cer_id)
+    public function issueCertificate(Request $request, $cer_id)
     {
-        return DB::transaction(function () use ($cer_id) {
-            $user = Auth::user();
-            $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-            $certificate = Certificate::findOrFail($cer_id);
-            if ($certificate->issue_status == 0) {
-                $file = Client::findOrFail($certificate->client_id);
-                $msg = setFileStatus($file->id, 'file_status', 5);
-                $msg = $msg && setFileStatus($file->id, 'cer_status', 6);
-                $certificate->issue_status = 1;
-                $certificate->user_id = $user->id;
-                $msg = $msg && $certificate->save();
-                $file = $certificate->client;
 
-                // check if => 1=new epl, 2=epl renew
-                if ($file->cer_type_status == 1 || $file->cer_type_status == 2) {
-                    $epl = EPL::where('client_id', $certificate->client_id)->whereNull('issue_date')->where('status', 0)->first();
-                    $epl->issue_date = $certificate->issue_date;
-                    $epl->expire_date = $certificate->expire_date;
-                    $epl->certificate_no = $certificate->cetificate_number;
-                    $epl->status = 1;
-                    $msg = $msg && $epl->save();
+        $issue_date = Carbon::parse($request->issue_date)->format('Y-m-d');
+        $expire_date = Carbon::parse($request->expire_date)->format('Y-m-d');
+        if (empty($request->issue_date) || empty($request->expire_date)) {
+            return array('id' => 0, 'message' => 'issue date and expire date are required');
+        }
+        if ($issue_date >= $expire_date) {
+            return array('id' => 0, 'message' => 'issue date must be less than expire date');
+        }
+        try {
+            return DB::transaction(function () use ($cer_id, $issue_date, $expire_date) {
+                $user = Auth::user();
+                $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+                $certificate = Certificate::findOrFail($cer_id);
+                if ($certificate->issue_status == 0) {
+                    $file = Client::findOrFail($certificate->client_id);
+                    $msg = setFileStatus($file->id, 'file_status', 5);
+                    $msg = $msg && setFileStatus($file->id, 'cer_status', 6);
+                    $certificate->issue_status = 1;
+                    $certificate->issue_date = $issue_date;
+                    $certificate->expire_date = $expire_date;
+                    $certificate->updated_at = Carbon::now();
+                    $certificate->user_id = $user->id;
+                    $msg = $msg && $certificate->save();
+                    $file = $certificate->client;
 
-                    //check if 3=site clearance
-                } else if ($file->cer_type_status == 3) {
-                    $site = SiteClearenceSession::where('client_id', $certificate->client_id)->whereNull('issue_date')->first();
-                    $site->issue_date = $certificate->issue_date;
-                    $site->expire_date = $certificate->expire_date;
-                    $site->licence_no = $certificate->cetificate_number;
-                    $site->status = 1;
+                    // check if => 1=new epl, 2=epl renew
+                    if ($file->cer_type_status == 1 || $file->cer_type_status == 2) {
+                        $epl = EPL::where('client_id', $certificate->client_id)->whereNull('issue_date')->where('status', 0)->first();
+                        $epl->issue_date = $issue_date;
+                        $epl->expire_date = $expire_date;
+                        $epl->certificate_no = $certificate->cetificate_number;
+                        $epl->status = 1;
+                        $msg = $msg && $epl->save();
 
-                    $s = SiteClearance::where('site_clearence_session_id', $site->id)->where('status', 0)->first();
-                    $s->status = 1;
-                    $msg = $msg && $s->save();
-                    $msg = $msg && $site->save();
+                        //check if 3=site clearance
+                    } else if ($file->cer_type_status == 3) {
+                        $site = SiteClearenceSession::where('client_id', $certificate->client_id)->whereNull('issue_date')->first();
+                        $site->issue_date = $issue_date;
+                        $site->expire_date = $expire_date;
+                        $site->licence_no = $certificate->cetificate_number;
+                        $site->status = 1;
 
-                    //                            check if 4=site clearance renew
-                } else if ($file->cer_type_status == 4) {
-                    $site = SiteClearenceSession::where('client_id', $certificate->client_id)->orderBy('id', 'desc')->first();
-                    $site->issue_date = $certificate->issue_date;
-                    $site->expire_date = $certificate->expire_date;
-                    $site->status = 1; //status already 1
-                    $site->save();
-                    $s = SiteClearance::where('site_clearence_session_id', $site->id)->where('status', 0)->first();
-                    $s->status = 1;
-                    $s->save();
+                        $s = SiteClearance::where('site_clearence_session_id', $site->id)->where('status', 0)->first();
+                        $s->status = 1;
+                        $s->issue_date = $issue_date;
+                        $s->expire_date = $expire_date;
+                        $msg = $msg && $s->save();
+                        $msg = $msg && $site->save();
+
+                        //                            check if 4=site clearance renew
+                    } else if ($file->cer_type_status == 4) {
+                        $site = SiteClearenceSession::where('client_id', $certificate->client_id)->orderBy('id', 'desc')->first();
+                        $site->issue_date = $issue_date;
+                        $site->expire_date = $expire_date;
+                        $site->status = 1; //status already 1
+                        $site->save();
+                        $s = SiteClearance::where('site_clearence_session_id', $site->id)->where('status', 0)->orderBy('id', 'desc')->first();
+                        $s->status = 1;
+                        $s->issue_date = $issue_date;
+                        $s->expire_date = $expire_date;
+                        $s->save();
+                    } else {
+                        abort(501, "Invalid File Status - error code");
+                    }
                 } else {
-                    abort(501, "Invalid File Status - error code");
+                    abort(422, "Certificate Already Issued");
                 }
-            } else {
-                abort(422, "Certificate Already Issued");
-            }
-            fileLog($file->id, 'certificate', 'User (' . $user->last_name . ') Issued the Certificate', 0);
-            LogActivity::addToLog("Issue certificate", $certificate);
-            if ($msg) {
-                return array('id' => 1, 'message' => 'true');
-            } else {
-                return array('id' => 0, 'message' => 'false');
-            }
-        });
+                fileLog($file->id, 'certificate', 'User (' . $user->last_name . ') Issued the Certificate', 0);
+                LogActivity::addToLog("Issue certificate", $certificate);
+                return array('id' => 1, 'message' => 'Successfully Issued Certificate');
+            });
+        } catch (\Throwable $th) {
+            return array('id' => 0, 'message' => 'Unable to issue certificate');
+        }
     }
 
     public function completeDraftingCertificate($id)
@@ -1306,7 +1323,7 @@ class ClientController extends Controller
 
         $responses = EPL::selectRaw('MAX(id), client_id, expire_date')
             ->With(['client.pradesheeyasaba'])
-            ->whereHas('Client', function ($query){
+            ->whereHas('Client', function ($query) {
                 $query->where('clients.file_status', '!=', 0);
             });
         // ->selectRaw('max(id) as id, client_id, expire_date,cetificate_number, certificate_type')
@@ -1355,14 +1372,14 @@ class ClientController extends Controller
     {
         $client = Client::find($client_id);
 
-        if($client->file_status != 5){
-          return array('status' => 0, 'message' => 'File not completed');
+        if ($client->file_status != 5) {
+            return array('status' => 0, 'message' => 'File not completed');
         }
         $client->file_status = 0;
         $client->save();
-        if($client == true){
+        if ($client == true) {
             return array('status' => 1, 'message' => 'Successfully changed the file status');
-        }else{
+        } else {
             return array('status' => 0, 'message' => 'File status changing was unsuccessfull');
         }
     }
