@@ -124,49 +124,6 @@ class ClientRepository
 
     public function allPlain($from, $to)
     {
-
-        //         $psArray=array(
-        //             1=>'kurunegala',
-        //             2=>'2',
-        //             10=>'puttlam',
-        //         );
-        //         $eplArray = array(
-        //             'industry_file_id' => 10,
-        //             'new' => 10,
-        //             'renew' => 2,
-        //             'ps' => 2,
-        //             'cat' => 2,
-        //         );
-        //         $SiteArray = array(
-        //             10 => array(
-        //                 'new' => 10,
-        //                 'renew' => 2,
-        //                 'type' => 2,
-        //             )
-        //         );
-        //         $req_st = array(
-        //             10 => array(
-        //                 'clint_id' => 10,
-        //                 'epl_new' => 10,
-        //                 'epl_renew' => 10,
-        //                 'site_new' => 10,
-        //                 'site_renew' => 10,
-        //                 'ps' => 10,
-        //                 'cat' => 10,
-        //             )
-        //         );
-        // foreach($req_st as $ke)
-        // array(
-        //     1=>array(
-        //         'psName'=> $psArray[$ke['ps']],
-        //         'cat'=>array(
-        //             'cat_name'=>'cat 1',
-        //             'epl'=>10,
-        //             'epl_renew'=>10,
-        //         )
-        //         )
-        // )
-
         // echo $client;
         $file = FileView::orWhereBetween('epl_issue_date', [$from, $to])
             ->orWhereBetween('epl_expire_date', [$from, $to])
@@ -201,9 +158,9 @@ class ClientRepository
             'industry_coordinate_x as GPS coordinate(X)',
             'industry_coordinate_y as GPS coordinate(Y) ',
             \DB::raw(
-                '(CASE 
-            WHEN industry_is_industry = "1" THEN "Industry Zone"            
-            ELSE "Normal Zone" 
+                '(CASE
+            WHEN industry_is_industry = "1" THEN "Industry Zone"
+            ELSE "Normal Zone"
             END) as `Industry Zone`'
             ),
             'industry_investment as Industry Investment',
@@ -220,9 +177,9 @@ class ClientRepository
             'officer_last_name as EO Last Name',
             'epl_code as EPL code',
             \DB::raw(
-                '(CASE 
-            WHEN epl_count = "0" THEN "New"            
-            ELSE "Renew" 
+                '(CASE
+            WHEN epl_count = "0" THEN "New"
+            ELSE "Renew"
             END) as `EPL Status`'
             ),
             'epl_issue_date as Issue Date',
@@ -233,19 +190,19 @@ class ClientRepository
             'epl_rejected_date',
             'site_code',
             \DB::raw(
-                '(CASE 
-            WHEN site_count = "0" THEN "New"            
-            ELSE "Extend" 
+                '(CASE
+            WHEN site_count = "0" THEN "New"
+            ELSE "Extend"
             END) as `Site Status`'
             ),
             'site_site_clearance_type as Site Clearance Type',
             \DB::raw(
-                '(CASE 
-            WHEN site_processing_status = "0" THEN "Pending"  
+                '(CASE
+            WHEN site_processing_status = "0" THEN "Pending"
             WHEN site_processing_status = "1" THEN "Site Clearance"
-            WHEN site_processing_status = "2" THEN "EIA"   
-            WHEN site_processing_status = "2" THEN "IEE"       
-            ELSE null 
+            WHEN site_processing_status = "2" THEN "EIA"
+            WHEN site_processing_status = "2" THEN "IEE"
+            ELSE null
             END) as `SC Processing Status`'
             ),
             'site_submit_date as SC Submit Date',
