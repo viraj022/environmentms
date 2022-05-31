@@ -134,6 +134,11 @@ class ReportController extends Controller
             ($row['submit_date'] != null) ? $array[] = Carbon::parse($row['submit_date'])->format('Y-m-d') : $array[] = 'N/A';
             ($row['issue_date'] != null) ? $array[] = Carbon::parse($row['issue_date'])->format('Y-m-d') : $array[] = 'N/A';
             ($row['created_at'] != null) ? $array[] = Carbon::parse($row['created_at'])->format('Y-m-d') : $array[] = 'N/A';
+            if ($row['count'] > 0) {
+                $array[] = 'Extend';
+            } else {
+                $array[] = 'New';
+            }
             $array[] = $row['client_id'];
             array_push($data, $array);
         }
@@ -199,6 +204,12 @@ class ReportController extends Controller
             $array['ref_no'] = $ref_no;
             $array['license_number'] = $certificate_no;
             $array['client_id'] =  $client['id'];
+            if ($row['count'] > 0) {
+                $array['nature'] = 'Renew';
+            } else {
+                $array['nature'] = 'New';
+            }
+
             array_push($data['results'], $array);
         }
         // dd($data);
@@ -210,7 +221,7 @@ class ReportController extends Controller
     {
         $start = microtime(true);
         $epls = new EPLRepository();
-        $result = $epls->getEPLReport($from, $to)->toArray();
+        $result = $epls->getEPLApplicationLog($from, $to)->toArray();
         $data = [];
         $num = 0;
         foreach ($result as $row) {

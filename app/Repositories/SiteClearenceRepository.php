@@ -46,6 +46,7 @@ class SiteClearenceRepository
             ->leftJoin('transaction_items', 'transactions.id', 'transaction_items.transaction_id')
             ->select(
                 'site_clearances.submit_date',
+                'site_clearances.count',
                 'site_clearence_sessions.code',
                 'clients.name_title',
                 'clients.first_name',
@@ -60,6 +61,7 @@ class SiteClearenceRepository
                 'site_clearence_sessions.created_at',
                 'clients.id as client_id'
             )
+            ->whereNotNull('site_clearence_sessions.issue_date')
             ->whereBetween('site_clearence_sessions.issue_date', [$from, $to])
             ->orWhere('site_clearence_sessions.issue_date', '=', null)
             ->where('transactions.type', Transaction::TRANS_SITE_CLEARANCE)

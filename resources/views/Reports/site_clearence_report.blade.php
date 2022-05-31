@@ -29,6 +29,7 @@
                 <th>Submited Date</th>
                 <th>Issued Date</th>
                 <th>Created Date</th>
+                <th>Nature</th>
             </tr>
         </thead>
         <tbody>
@@ -43,6 +44,8 @@
                     <td>{{ $row[6] }}</td>
                     <td>{{ $row[7] }}</td>
                     <td>{{ $row[8] }}</td>
+                    <td>{{ $row[9] }}</td>
+
                 </tr>
             @endforeach
         </tbody>
