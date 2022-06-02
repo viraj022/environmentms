@@ -128,13 +128,13 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label>Minute</label>
-                                <textarea id="getMinutes" type="text" class="form-control form-control-sm"
-                                    placeholder="Enter Minute..." value=""></textarea>
+                                <textarea id="getMinutes" type="text" class="form-control form-control-sm" placeholder="Enter Minute..."
+                                    value=""></textarea>
                             </div>
                             <div class="form-group d-none" id="nominate_certificate">
                                 <label>For Certificate Prepare</label>
-                                <textarea id="cert_nominate" type="text" class="form-control form-control-sm"
-                                    placeholder="Add Comment" value=""></textarea>
+                                <textarea id="cert_nominate" type="text" class="form-control form-control-sm" placeholder="Add Comment"
+                                    value=""></textarea>
                             </div>
                         </div>
                         <div class="modal-footer justify-content-between">
@@ -150,8 +150,8 @@
                                     class="fa fa-check"></i>Upload Certificate</button>
                             <button type="button" id="viewCertificateBtn" class="btn btn-success d-none"><i
                                     class="fa fa-file"></i> View Certificate</button>
-                            <button type="button" id="downloadDocumentBtn" class="btn btn-info d-none"><i
-                                    class="fa fa-file"></i> Download Document</button>
+                            {{-- <button type="button" id="downloadDocumentBtn" class="btn btn-info d-none"><i
+                                    class="fa fa-file"></i> Download Document</button> --}}
                         </div>
                     </div>
                 </div>
@@ -203,7 +203,6 @@
     <script src="../../dist/js/demo.js"></script>
     <!-- AdminLTE App -->
     <script>
-
         var file_status = {
             0: 'pending',
             1: 'AD File Approval Pending',
@@ -300,7 +299,7 @@
                 .val()); //<-- Share this button value to submitAdCerApproval button
             $('#setInspectionVal2').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
             $('#viewCertificateBtn').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
-            $('#downloadDocumentBtn').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
+            // $('#downloadDocumentBtn').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
             $('#upCertificate').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
             $('#modalTitlex2').html(fileData.file_no);
             if (fileData.need_inspection != null && f_Status == 0) {
@@ -312,10 +311,10 @@
             $('#needApproval,#submitAdCerApproval,#rejectAdCerApproval,#setInspectionVal2,#viewCertificateBtn,#downloadDocumentBtn')
                 .addClass('d-none');
 
-            if(fileData.cer_status == 1){
+            if (fileData.cer_status == 1) {
                 $('.showCorrectedFileUi').removeClass('d-none');
                 $('.correctedFileShowUi').removeClass('d-none');
-            }else{
+            } else {
                 $('.showCorrectedFileUi').addClass('d-none');
                 $('.correctedFileShowUi').addClass('d-none');
             }
@@ -335,7 +334,7 @@
                     $('#submitAdCerApproval').removeClass('d-none');
                     $('#rejectAdCerApproval').removeClass('d-none');
                     $('#viewCertificateBtn').removeClass('d-none');
-                    $('#downloadDocumentBtn').removeClass('d-none');
+                    // $('#downloadDocumentBtn').removeClass('d-none');
                     $('#upCertificate').removeClass('d-none');
                 }
             } else if (f_Status == -1) {
@@ -408,14 +407,14 @@
             });
         });
 
-         //View document when btn click
-        $(document).on('click', '#downloadDocumentBtn', function() {
-            var fileData = JSON.parse(unescape($(this).val()));
-            loadCertificatePathsApi(parseInt(fileData.id), function(set) {
-               let path = set.corrected_file;
-               window.open(path, '_blank');
-            });
-        });
+        //View document when btn click
+        // $(document).on('click', '#downloadDocumentBtn', function() {
+        //     var fileData = JSON.parse(unescape($(this).val()));
+        //     loadCertificatePathsApi(parseInt(fileData.id), function(set) {
+        //        let path = set.corrected_file;
+        //        window.open(path, '_blank');
+        //     });
+        // });
 
         $(document).on('click', '#upCertificate', function() {
             var fileData = JSON.parse(unescape($(this).val()));

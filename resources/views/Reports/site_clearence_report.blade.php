@@ -22,13 +22,15 @@
         <thead>
             <tr>
                 <th style="width: 10px">#</th>
-                <th>Applications Name and Address</th>
+                <th>Applications Name</th>
+                <th>Address</th>
                 <th>Industry</th>
                 <th>Inspection Fee</th>
                 <th>Site Clearance Number</th>
                 <th>Submited Date</th>
                 <th>Issued Date</th>
                 <th>Created Date</th>
+                <th>Nature</th>
             </tr>
         </thead>
         <tbody>
@@ -36,6 +38,7 @@
                 <tr>
                     <td>{{ $indexKey + 1 }}.</td>
                     <td>{{ $row[2] }}</td>
+                    <td>{{ $row[11] }}</td>
                     <td>{{ $row[3] }}</td>
                     <td>{{ $row[5] }}</td>
                     <td><a href="/industry_profile/id/{{ $row[9] }}" target="_blank">{{ $row[1] }}</a>
@@ -43,6 +46,8 @@
                     <td>{{ $row[6] }}</td>
                     <td>{{ $row[7] }}</td>
                     <td>{{ $row[8] }}</td>
+                    <td>{{ $row[9] }}</td>
+
                 </tr>
             @endforeach
         </tbody>

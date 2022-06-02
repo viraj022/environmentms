@@ -46,6 +46,7 @@ class SiteClearenceRepository
             ->leftJoin('transaction_items', 'transactions.id', 'transaction_items.transaction_id')
             ->select(
                 'site_clearances.submit_date',
+                'site_clearances.count',
                 'site_clearence_sessions.code',
                 'clients.name_title',
                 'clients.first_name',
@@ -60,8 +61,52 @@ class SiteClearenceRepository
                 'site_clearence_sessions.created_at',
                 'clients.id as client_id'
             )
+            ->whereNotNull('site_clearence_sessions.issue_date')
             ->whereBetween('site_clearence_sessions.issue_date', [$from, $to])
             ->orWhere('site_clearence_sessions.issue_date', '=', null)
+            ->where('transactions.type', Transaction::TRANS_SITE_CLEARANCE)
+            ->where('transaction_items.payment_type_id', $inspectionTypes->id)
+            ->orderBy('site_clearence_sessions.created_at', 'DESC');
+
+        switch ($instance) {
+            case 'all':
+                return $query->get();
+            case 'new':
+                return $query->where('site_clearances.count', 1)->get();
+            case 'extend':
+                return $query->where('site_clearances.count', '>', 1)->get();
+            default:
+                abort('404', 'Report Instance Not Defined - Ceytech internal error log');
+        }
+    }
+    public function getSiteClearenceReportBySubmitDate($from, $to, $instance)
+    {
+        $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
+        $query = Client::join('site_clearence_sessions', 'clients.id', 'site_clearence_sessions.client_id')
+            ->join('site_clearances', 'site_clearence_sessions.id', 'site_clearances.site_clearence_session_id')
+            ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+            ->leftJoin('transactions', 'site_clearence_sessions.id', 'transactions.type_id')
+            ->leftJoin('transaction_items', 'transactions.id', 'transaction_items.transaction_id')
+            ->select(
+                'site_clearances.submit_date',
+                'site_clearances.count',
+                'site_clearence_sessions.code',
+                'clients.name_title',
+                'clients.first_name',
+                'clients.last_name',
+                'clients.address',
+                'industry_categories.name as category_name',
+                'clients.industry_address',
+                'transaction_items.amount',
+                'transactions.invoice_no',
+                'transactions.billed_at',
+                'site_clearence_sessions.issue_date',
+                'site_clearence_sessions.created_at',
+                'clients.id as client_id',
+                'clients.industry_sub_category'
+            )
+            ->whereNotNull('site_clearence_sessions.issue_date')
+            ->whereBetween('site_clearence_sessions.issue_date', [$from, $to])
             ->where('transactions.type', Transaction::TRANS_SITE_CLEARANCE)
             ->where('transaction_items.payment_type_id', $inspectionTypes->id)
             ->orderBy('site_clearence_sessions.created_at', 'DESC');
@@ -220,10 +265,38 @@ class SiteClearenceRepository
         // $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
 
 
-        $query = SiteClearenceSession::with('client.industryCategory', 'siteClearances')
-            ->whereBetween('created_at', [$from, $to]);
+        // $query = SiteClearenceSession::with('client.industryCategory', 'siteClearances')
+        //     ->join('site_clearances', 'site_clearence_sessions.id', 'site_clearances.site_clearence_session_id')
+        //     ->where('site_clearances.status', 1)
+        //     ->whereNotNull('site_clearances.submit_date')
+        //     ->whereBetween('site_clearances.submit_date', [$from, $to]);
 
-        $query = $query->get()->toArray();
+        // $query = $query->get()->toArray();
+        // return $query;
+        $query = SiteClearance::join('site_clearence_sessions', 'site_clearances.site_clearence_session_id', 'site_clearence_sessions.id')
+            ->join('clients', 'site_clearence_sessions.client_id', 'clients.id')
+            ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+            ->select(
+                'clients.id',
+                'clients.first_name',
+                'clients.last_name',
+                'clients.name_title',
+                'clients.address',
+                'clients.industry_sub_category',
+                'clients.industry_address',
+                'site_clearances.submit_date',
+                'site_clearances.issue_date',
+                'site_clearances.count',
+                'site_clearence_sessions.code',
+                'site_clearence_sessions.site_clearance_type',
+                'site_clearence_sessions.issue_date as session_issue_date',
+                'industry_categories.name as industry_category',
+            )
+            ->whereNotNull('site_clearances.submit_date')
+            ->whereBetween('site_clearances.submit_date', [$from, $to])
+            ->get()->toArray();
+        // ->toSql();
+        // dd($query);
         return $query;
     }
 }

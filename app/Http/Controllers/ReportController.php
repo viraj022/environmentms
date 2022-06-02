@@ -47,48 +47,6 @@ class ReportController extends Controller
         return $fileLogRepository->getFIleLogById($client_id);
     }
 
-    /**
-     * DO NOT DELETE
-     * fpdf multi cell report don not delete
-     */
-    // public function siteClearanceApplicationReport()
-    // {
-    //     $site =   new SiteClearenceRepository();
-    //     $result = $site->getSiteClearenceReport('2010-01-01', '2021-01-01', 'All')->toArray();
-    //     // dd($result);
-    //     $data = [];
-    //     $num = 0;
-    //     foreach ($result as $row) {
-    //         $array = [];
-    //         $array[] = ++$num;
-    //         $array[] = Carbon::parse($row['submit_date'])->format('d-m-Y');
-    //         $array[] = $row['code'];
-    //         $array[] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'] . '\r\n' . $row['address'];
-    //         $array[] = $row['category_name'];
-    //         $array[] = $row['industry_address'];
-    //         $array[] = $row['amount'] . ' ' . $row['invoice_no'] . ' ' . Carbon::parse($row['billed_at'])->format('d-m-Y');
-    //         $array[] = $row['issue_date'];
-    //         array_push($data, $array);
-    //     }
-    //     // dd($data);
-    //     $fpdf =  new ReportTemplate('l', 'mm', 'A3', 'Site Clearence Application');
-    //     $fpdf->AddPage();
-    //     $fpdf->SetFont('Times', '', 12);
-    //     if ($result) {
-    //         $fpdf->headers =  ['#', 'Date', 'File Number', 'Applications Name and Address', 'Industry', "Location", 'Inspection Feee', "SC Certificate Issued Date"];
-    //         $fpdf->widths =  [10, 30, 60, 70,  50,  50, 50,  50];
-    //         $fpdf->data =  $data;
-    //         $fpdf->ImprovedTable();
-    //     } else {
-    //     }
-    //     $fpdf->Output();
-    //     exit;
-    // }
-
-    /**
-     * DO NOT DELETE
-     * fpdf multi cell report don not delete
-     */
     public function siteClearanceApplicationReport()
     {
         $start = microtime(true);
@@ -120,21 +78,28 @@ class ReportController extends Controller
     {
         $start = microtime(true);
         $site = new SiteClearenceRepository();
-        $result = $site->getSiteClearenceReport($from, $to, $type)->toArray();
+        $result = $site->getSiteClearenceReportBySubmitDate($from, $to, $type)->toArray();
         $data = [];
         $num = 0;
         foreach ($result as $row) {
             $array = [];
             $array[] = ++$num;
             $array[] = $row['code'];
-            $array[] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'] . "\n" . $row['address'];
-            $array[] = $row['category_name'];
+            $array[] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'];
+            $array[] = $row['category_name'] . (($row['industry_sub_category'] != '') ? ' (' . $row['industry_sub_category'] . ')' : '');
             $array[] = $row['industry_address'];
             $array[] = 'Fee : ' . $row['amount'] . ' ' . "\nInvoice No : " . $row['invoice_no'] . "\nDate : " . Carbon::parse($row['billed_at'])->format('Y-m-d');
             ($row['submit_date'] != null) ? $array[] = Carbon::parse($row['submit_date'])->format('Y-m-d') : $array[] = 'N/A';
             ($row['issue_date'] != null) ? $array[] = Carbon::parse($row['issue_date'])->format('Y-m-d') : $array[] = 'N/A';
             ($row['created_at'] != null) ? $array[] = Carbon::parse($row['created_at'])->format('Y-m-d') : $array[] = 'N/A';
+            if ($row['count'] > 0) {
+                $array[] = 'Extend';
+            } else {
+                $array[] = 'New';
+            }
             $array[] = $row['client_id'];
+            $array[] = $row['address'];
+
             array_push($data, $array);
         }
         switch ($type) {
@@ -175,15 +140,10 @@ class ReportController extends Controller
 
             $array['code'] = $row['code'];
             $client = $row['client'];
-            $name_title = isset($client['name_title']) ? $client['name_title'] : 'N/A';
-            $first_name = isset($client['first_name']) ? $client['first_name'] : 'N/A';
-            $last_name = isset($client['last_name']) ? $client['first_name'] : 'N/A';
-            $client_address = isset($client['address']) ? $client['address'] : 'N/A';
-            $industry_category = isset($client['industry_category']['name']) ? $client['industry_category']['name'] : 'N/A';
-            $industry_address = isset($client['industry_address']) ? $client['industry_address'] : '-';
-            $array['name_title'] =  $name_title . ' ' . $first_name . ' ' . $last_name . "\n" . $client_address;
-            $array['category_name'] = $industry_category;
-            $array['industry_address'] = $industry_address;
+            $array['name_title'] =  $client['name_title'] . ' ' . $client['first_name'] . ' ' . $client['last_name'] . "\n";
+            $array['address'] = $client['address'];
+            $array['category_name'] = $client['industry_category']['name'] . (($client['industry_sub_category'] != '') ? ' (' . $client['industry_sub_category'] . ')' : '');
+            $array['industry_address'] = $client['industry_address'];
             if (isset($client['transactions']) && count($client['transactions']) > 0 && count($client['transactions'][0]['transaction_items']) > 0) {
                 $array['inspection_fee'] = $client['transactions'][0]['transaction_items'][0]['amount'];
                 $array['inspection_pay_date'] = Carbon::parse($client['transactions'][0]['billed_at'])->format('Y-m-d');
@@ -199,6 +159,12 @@ class ReportController extends Controller
             $array['ref_no'] = $ref_no;
             $array['license_number'] = $certificate_no;
             $array['client_id'] =  $client['id'];
+            if ($row['count'] > 0) {
+                $array['nature'] = 'Renew';
+            } else {
+                $array['nature'] = 'New';
+            }
+
             array_push($data['results'], $array);
         }
         // dd($data);
@@ -210,11 +176,10 @@ class ReportController extends Controller
     {
         $start = microtime(true);
         $epls = new EPLRepository();
-        $result = $epls->getEPLReport($from, $to)->toArray();
+        $result = $epls->getEPLApplicationLog($from, $to)->toArray();
         $data = [];
         $num = 0;
         foreach ($result as $row) {
-            // dd($row);
             $array = [];
             $array['#'] = ++$num;
             (isset($row['submitted_date'])) ? $array['submitted_date'] = Carbon::parse($row['submitted_date'])->format('Y-m-d') : 'N/A';
@@ -223,13 +188,13 @@ class ReportController extends Controller
             $client = $row['client'];
             $name_title = isset($client['name_title']) ? $client['name_title'] : 'N/A';
             $first_name = isset($client['first_name']) ? $client['first_name'] : 'N/A';
-            $last_name = isset($client['last_name']) ? $client['first_name'] : 'N/A';
+            $last_name = isset($client['last_name']) ? $client['last_name'] : 'N/A';
             $client_address = isset($client['address']) ? $client['address'] : 'N/A';
-            $industry_category = isset($client['industry_category']['name']) ? $client['industry_category']['name'] : 'N/A';
+            $industry_category = $client['industry_category']['name'] . (($client['industry_sub_category'] != '') ? ' (' . $client['industry_sub_category'] . ')' : '');
             $industry_address = isset($client['industry_address']) ? $client['industry_address'] : '-';
-
-            $array['name_title'] = $name_title . ' ' . $first_name . ' ' . $last_name . "\n" . $client_address;
+            $array['name_title'] = $name_title . ' ' . $first_name . ' ' . $last_name;
             $array['category_name'] = $industry_category;
+            $array['address'] = $client_address;
             $array['industry_address'] = $industry_address;
 
             $type = '';
@@ -984,26 +949,24 @@ class ReportController extends Controller
         $start = microtime(true);
         $site = new SiteClearenceRepository();
         $result = $site->getSiteReport($from, $to);
-        //        dd($result);
         $data = [];
         $data['header_count'] = 0;
         $data['results'] = [];
         $num = 0;
         foreach ($result as $row) {
+            // dd($row);
             $array = [];
             $array['#'] = ++$num;
-            (isset($row['site_clearances'][0]['submit_date'])) ? $array['submit_date'] = Carbon::parse($row['site_clearances'][0]['submit_date'])->format('Y-m-d') : $array['submit_date'] = 'N/A';
+            $array['submit_date'] = Carbon::parse($row['submit_date'])->format('Y-m-d');
             $array['code_site'] = $row['code'];
-            $array['name_title'] = $row['client']['name_title'] . ' ' . $row['client']['first_name'] . ' ' . $row['client']['last_name'];
-            $array['address'] = $row['client']['address'];
-            $array['category_name'] = $row['client']['industry_category']['name'];
-            $array['industry_address'] = $row['client']['industry_address'];
-            $site_type = '';
-            (count($row['site_clearances']) > 1) ? $site_type = "EXT" : $site_type = 'NEW';
+            $array['name_title'] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'];
+            $array['address'] = $row['address'];
+            $array['category_name'] = $row['industry_category'] . (($row['industry_sub_category'] != '') ? ' (' . $row['industry_sub_category'] . ')' : '');
+            $array['industry_address'] = $row['industry_address'];
+            $site_type = ($row['count'] > 1) ? $site_type = "EXT" : $site_type = 'NEW';
             $array['nature'] = $row['site_clearance_type'] . '(' . $site_type . ')';
             $array['code'] = $row['code'];
-            // (isset($row['created_at']))?  $array['industry_start_date'] = Carbon::parse($row['created_at'])->format('Y-m-d'): $array['industry_start_date'] = 'N/A';
-            $array['client_id'] = $row['client']['id'];
+            $array['client_id'] = $row['id'];
             array_push($data['results'], $array);
         }
 

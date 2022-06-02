@@ -13,10 +13,10 @@
 
 <body class="hold-transition sidebar-mini layout-fixed text-sm">
     <center>
-        <h1>Site Clearance Log Report </h1>
+        <h1>Site Clearance Application Log Report </h1>
         <h5>From: {{ $from }} .To: {{ $to }}</h5>
     </center>
-    <h4>Report Genaration Time :{{ $time_elapsed_secs }} seconds, (Filter By Created Date)</h4>
+    <h4>Report Genaration Time :{{ $time_elapsed_secs }} seconds, (Filter By Submitted Date)</h4>
     {{-- @dump($data['results'][2]); --}}
     <table class="table cell-border compact stripe">
         <thead>
