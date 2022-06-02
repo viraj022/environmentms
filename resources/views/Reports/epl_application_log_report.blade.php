@@ -13,7 +13,7 @@
 
 <body class="hold-transition sidebar-mini layout-fixed text-sm">
     <center>
-        <h1>Envrionment Protection Licence Log </h1>
+        <h1>Envrionment Protection Licence Application Log </h1>
         <h5>From: {{ $from }} - To: {{ $to }}</h5>
     </center>
     <h4>Report Genaration Time :{{ $time_elapsed_secs }} seconds, (filter By Submit Date)</h4>
@@ -22,7 +22,8 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Applications Name and Address</th>
+                <th>Applications Name</th>
+                <th>Address</th>
                 <th>EPL No</th>
                 <th>Industry</th>
                 <th>Location</th>
@@ -35,6 +36,7 @@
                 <tr>
                     <td>{{ $indexKey + 1 }}.</td>
                     <td>{{ $row['name_title'] }}</td>
+                    <td>{{ $row['address'] }}</td>
                     <td><a href="/industry_profile/id/{{ $row['client_id'] }}"
                             target="_blank">{{ $row['code'] }}</a>
                     </td>

@@ -22,7 +22,8 @@
         <thead>
             <tr>
                 <th style="width: 10px">#</th>
-                <th>Applications Name and Address</th>
+                <th>Applications Name</th>
+                <th>Address</th>
                 <th>Industry</th>
                 <th>EPL Code</th>
                 <th>File No</th>
@@ -41,6 +42,7 @@
                 <tr>
                     <td>{{ $indexKey + 1 }}.</td>
                     <td>{{ $row['name_title'] }}</td>
+                    <td>{{ $row['address'] }}</td>
                     <td>{{ $row['category_name'] }}</td>
                     <td>{{ $row['code'] }}</td>
                     <td><a href="/industry_profile/id/{{ $row['client_id'] }}"
