@@ -33,19 +33,27 @@
                                                 <th style="width: 25em">EO</th>
                                                 <th style="width: 25em">File Status</th>
                                                 <th style="width: 25em">Submitted Date</th>
+                                                <th></th>
 
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($status_mismatch_data as $data)
-                                            <tr>
-                                                <td>{{ ++$loop->index }}</td>
-                                                <td><a href="/industry_profile/id/{{ $data->id }}" target="_blank">{{ !isset($data->file_no) ? 'N/A' : $data->file_no }}</a></td>
-                                                <td>{{ !isset($data->industry_name) ? '-' : $data->industry_name }}</td>
-                                                <td>{{ !isset($data->first_name) && !isset($data->last_name) ? 'N/A' : $data->first_name . ' ' . $data->last_name }}</td>
-                                                <td>{{ $file_status[$data->file_status] }}</td>
-                                                <td>{{ Carbon\Carbon::parse($data->submitted_date)->format('Y/m/d') }}</td>
-                                            </tr>
+                                                <tr>
+                                                    <td>{{ ++$loop->index }}</td>
+                                                    <td><a href="/industry_profile/id/{{ $data->id }}"
+                                                            target="_blank">{{ !isset($data->file_no) ? 'N/A' : $data->file_no }}</a>
+                                                    </td>
+                                                    <td>{{ !isset($data->industry_name) ? '-' : $data->industry_name }}
+                                                    </td>
+                                                    <td>{{ !isset($data->first_name) && !isset($data->last_name) ? 'N/A' : $data->first_name . ' ' . $data->last_name }}
+                                                    </td>
+                                                    <td>{{ $file_status[$data->file_status] }}</td>
+                                                    <td>{{ Carbon\Carbon::parse($data->submitted_date)->format('Y/m/d') }}
+                                                    </td>
+                                                    <td><button type="button" value="{{ $data->id }}"
+                                                            class="btn btn-primary btn-sm actionBtn">Button</button></td>
+                                                </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -87,7 +95,8 @@
                         $(win.document.body)
                             .css('font-size', '10pt')
                             .prepend(
-                                '<center><H1>Status Mismatch Report</h1></center><img src=' + img +
+                                '<center><H1>Status Mismatch Report</h1></center><img src=' +
+                                img +
                                 ' style="position:absolute; filter: grayscale(100%); opacity: 0.5; top:0; left:0;" />'
                             );
                         $(win.document.body).find('table')
@@ -97,6 +106,23 @@
                 }, "excel", "csv"],
 
             });
+            $('.actionBtn').click(function() {
+                alert($(this).val());
+                fixFileStatus($(this).val());
+            });
+
+            // function fixFileStatus(clinet_id) {
+            //     $.post('/api/fix_file_status', {clint_id:clinet_id}, function(response) {
+            //         // Log the response to the console
+            //         console.log("Response: " + response);
+            //     });
+            // }
+            function fixFileStatus(clinet_id) {
+                ajaxRequest('POST','/api/fix_file_status',{clint_id:clinet_id},function(resp){
+                    show_mesege(resp);
+                });
+            }
+
 
         });
     </script>
