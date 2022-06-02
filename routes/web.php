@@ -34,7 +34,7 @@ Route::get('/epl_profile/client/{client}/profile/{profile}', 'EPLController@prof
 Route::get('/epl_profile/atachments/{epl_id}', 'EPLController@attachment_upload_view');
 Route::get('/client_space', 'ClientController@index');
 Route::get('/search_files', 'ClientController@search_files');
-Route::get('/industry_files', 'ClientController@allClientsindex');
+Route::get('/industry_files', 'ClientController@allClientsindex')->middleware('auth');
 Route::get('/committee_pool', 'CommetyPoolController@index');
 Route::get('/epl_assign', 'EnvironmentOfficerController@index2');
 Route::get('/env_officer', 'EnvOfficerController@index');

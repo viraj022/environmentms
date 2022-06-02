@@ -1383,4 +1383,15 @@ class ClientController extends Controller
             return array('status' => 0, 'message' => 'File status changing was unsuccessfull');
         }
     }
+    public function fixFileStatus(Request $request)
+    {
+        $client = Client::whereId($request->clint_id)->first();
+        $client->file_status = 0;
+        $client->save();
+        if ($client == true) {
+            return array('id' => 1, 'message' => 'Successfully changed the file status');
+        } else {
+            return array('id' => 0, 'message' => 'File status changing was unsuccessfull');
+        }
+    }
 }
