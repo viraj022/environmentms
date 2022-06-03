@@ -402,7 +402,7 @@ class ClientRepository
     {
         return Client::where('clients.need_inspection', Client::STATUS_INSPECTION_NEEDED)
             ->where('clients.file_status', 0)
-            ->join('environment_officers', 'clients.id', 'environment_officers.client_id')
+            ->join('environment_officers', 'clients.environment_officer_id', 'environment_officers.id')
             ->where('environment_officers.user_id', $eo_id)
             ->get();
     }
