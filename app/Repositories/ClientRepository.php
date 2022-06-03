@@ -400,8 +400,7 @@ class ClientRepository
     }
     public function inspectionListForEo($eo_id)
     {
-        return Client::Where('inspection_sessions.status', '0')
-            ->where('clients.need_inspection', Client::STATUS_INSPECTION_NEEDED)
+        return Client::where('clients.need_inspection', Client::STATUS_INSPECTION_NEEDED)
             ->where('clients.file_status', 0)
             ->join('environment_officers', 'clients.id', 'environment_officers.client_id')
             ->where('environment_officers.user_id', $eo_id)
