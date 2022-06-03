@@ -394,6 +394,8 @@ class ClientRepository
             ->with('inspectionSessions.inspectionSessionAttachments')
             ->Where('inspection_sessions.status', '0')
             ->Where('inspection_sessions.environment_officer_id', $id)
+            ->where('clients.need_inspection', Client::STATUS_INSPECTION_NEEDED)
+            ->where('clients.file_status', 0)
             ->get();
     }
 }
