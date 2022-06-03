@@ -36,4 +36,5 @@ Route::prefix('mobile')->middleware('auth:sanctum')->group(function () {
     Route::get('all_inspection_list', 'MobileController@inspectionFiles');
     Route::get('inspection_list/id/{id}', 'MobileController@inspectionFilesById');
     Route::post('images/{id}', 'MobileController@uploadImage');
+    Route::post('eo_inspections/{id}', 'MobileController@inspectionListForEo');
 });

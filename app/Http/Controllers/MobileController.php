@@ -33,6 +33,11 @@ class MobileController extends Controller
     {
         return $this->clientRepository->GetInspectionListByUser($id);
     }
+    public function inspectionListForEo($id)
+    {
+        return $this->clientRepository->inspectionListForEo($id);
+    }
+
     public function uploadImage(Request $request, $id)
     {
         $user = Auth::user();
