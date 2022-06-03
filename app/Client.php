@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Client extends Model
 {
-//is old = 0 => old , 1 => new , 2 => confirmed
+    //is old = 0 => old , 1 => new , 2 => confirmed
     public const STATUS_INSPECTION_NEEDED = 'Inspection Needed';
     public const STATUS_INSPECTION_NOT_NEEDED = 'Inspection Not Needed';
     public const STATUS_PENDING = 'Pending';
@@ -135,10 +135,10 @@ class Client extends Model
         return $file->with('environmentOfficer.assistantDirector')
             ->with('epls')
             ->with('siteClearenceSessions');
-            // ->with('oldFiles')
-            // ->with('industryCategory')
-            // ->with('businessScale')
-            // ->with('pradesheeyasaba');
+        // ->with('oldFiles')
+        // ->with('industryCategory')
+        // ->with('businessScale')
+        // ->with('pradesheeyasaba');
     }
 
     public function generateCertificateNumber()
