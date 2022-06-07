@@ -446,7 +446,13 @@ class ClientRepository
             ->with(['minutes' => function ($query) {
                 $query->orderBy('created_at', 'desc');
             }])
-            ->with('oldFiles')
+            ->with('inspectionSessions.inspectionSessionAttachments')
+            // ->whereRelation('inspectionSessions', function ($query) {
+            //     $query->whereNotNull('deleted_at');
+            // })
+            ->with(['oldFiles' => function ($query) {
+                $query->orderBy('created_at', 'desc')->limit(1);
+            }])
             ->with('certificates')
             ->with('siteClearenceSessions.siteClearances')
             ->where('inspection_sessions.status', '0')

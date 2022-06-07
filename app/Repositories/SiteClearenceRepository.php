@@ -138,9 +138,9 @@ class SiteClearenceRepository
             ->orderBy('zones.name');
         switch ($isNew) {
             case 1:
-                return $query->where('count', 1)->get();
+                return $query->where('count', 0)->get();
             case 0:
-                return $query->where('count', '>', 1)->get();
+                return $query->where('count', '>', 0)->get();
             default:
                 abort(422, "invalid Argument for the if HCE-log");
         }
@@ -148,6 +148,7 @@ class SiteClearenceRepository
 
     public function IssuedSiteCount($from, $to, $isNew)
     {
+        // dd($isNew);
         $query = SiteClearance::join('site_clearence_sessions', 'site_clearances.site_clearence_session_id', 'site_clearence_sessions.id')
             ->join('clients', 'site_clearence_sessions.client_id', 'clients.id')
             ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
@@ -162,12 +163,18 @@ class SiteClearenceRepository
             ->orderBy('zones.name');
         switch ($isNew) {
             case 1:
-                return $query->where('count', 1)->get();
+                $query = $query->where('count', 0);
+                break;
             case 0:
-                return $query->where('count', '>', 1)->get();
+                $query = $query->where('count', '>', 0);
+                break;
             default:
                 abort(422, "invalid Argument for the if HCE-log");
+                break;
         }
+        // $query = $query->toSql();
+        // dd($query);
+        return $query->get();
     }
 
     public function SiteCount($from, $to, $isNew = -1, $issueStatus = 0, $SiteType = 0)
@@ -295,6 +302,25 @@ class SiteClearenceRepository
             ->whereNotNull('site_clearances.submit_date')
             ->whereBetween('site_clearances.submit_date', [$from, $to])
             ->get()->toArray();
+        // ->toSql();
+        // dd($query);
+        return $query;
+    }
+    public function telicomTowerCount($from, $to, $type)
+    {
+        $query = SiteClearance::join('site_clearence_sessions', 'site_clearances.site_clearence_session_id', 'site_clearence_sessions.id')
+            ->join('clients', 'site_clearence_sessions.client_id', 'clients.id')
+            ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
+            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
+            ->join('users', 'assistant_directors.user_id', 'users.id')
+            ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(site_clearances.id) as total'))
+            ->whereNotNull('site_clearances.submit_date')
+            ->whereBetween('site_clearances.submit_date', [$from, $to])
+            ->where('clients.industry_category_id', '=', '76')
+            ->groupBy('zones.id')
+            ->get();
         // ->toSql();
         // dd($query);
         return $query;

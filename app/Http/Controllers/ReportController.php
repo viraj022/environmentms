@@ -308,7 +308,7 @@ class ReportController extends Controller
         /**
          * Rejected Section
          */
-        $rejectedEplCount = $epl->EPlPLCount($from, $to, 0, 2);
+        $rejectedEplCount = $epl->EPlPLCount($from, $to, 3, 2);
         $rejectedNewSiteCount = $site->SiteCount($from, $to, 0, 2);
 
         $result[] = array('type' => 'Rejected', 'name' => 'SC', 'application' => "", 'object' => $this->prepareCount($rejectedNewSiteCount->toArray(), $assistanceDirectors));
@@ -323,10 +323,11 @@ class ReportController extends Controller
         /**
          * Others
          */
-        $telecommunicationCount = $site->SiteCount($from, $to, -1, 0, SiteClearance::SITE_TELECOMMUNICATION);
+        $telecommunicationCount = $site->telicomTowerCount($from, $to, 'Application');
         $towerEplNewCount = $epl->TowerEPlPLCount($from, $to, 1, 0);
         $towerEplRenewCount = $epl->TowerEPlPLCount($from, $to, 0, 0);
         // dd($towerEplNewCount);
+        // dd($telecommunicationCount);
 
         $result[] = array('type' => '', 'name' => 'Meeting/Test Blast', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
         $result[] = array('type' => '', 'name' => 'Joint Inspection', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
