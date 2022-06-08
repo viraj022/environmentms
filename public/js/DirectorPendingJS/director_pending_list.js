@@ -24,10 +24,7 @@ function loadDirectorPendingListTable() {
         var dataObj = { 0: 'pending', 1: 'AD File Approval Pending', 2: 'Certificate Preparation', 3: 'AD Certificate Pending Approval', 4: 'D Certificate Approval Peniding', 5: 'Complete', 6: 'Issued', '-1': 'Rejected', '-2': 'Hold' };
         var cer_type_status = { 0: 'pending', 1: 'New EPL', 2: 'EPL Renew', 3: 'Site Clearance', 4: 'Extend Site Clearance' };
 
-        var t = $('#tblPendingAdList').DataTable({
-            stateSave: true
-        });
-        t.clear().destroy();
+
         var tbl = "";
         if (result.length == 0) {
             tbl = "<tr><td colspan='8'>No Data Found</td></tr>";
@@ -61,6 +58,10 @@ function loadDirectorPendingListTable() {
                 tbl += '</tr>';
             });
         }
+        var t = $('#tblPendingAdList').DataTable({
+            stateSave: true
+        });
+        t.clear().destroy();
         $('#tblPendingAdList tbody').html(tbl);
         $('#tblPendingAdList').DataTable();
     });
