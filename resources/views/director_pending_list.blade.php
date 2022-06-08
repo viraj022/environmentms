@@ -116,7 +116,6 @@
                 $('#approveCertificate,#prepareCertificate,#holdCertificate,#uNholdCertificate,#rejectCertificate')
                     .addClass('d-none'); //hide all buttons
                 if (f_Status == 4) {
-                    //                $("#viewCertificate").attr("href", "https://www.w3schools.com/jquery/");
                     $('#prepareCertificate').removeClass('d-none');
                     $('#approveCertificate').removeClass('d-none').val(fileData.id);
                     $('#holdCertificate').removeClass('d-none');
