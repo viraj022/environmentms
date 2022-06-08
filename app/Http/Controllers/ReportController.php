@@ -88,7 +88,8 @@ class ReportController extends Controller
             $array[] = $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'];
             $array[] = $row['category_name'] . (($row['industry_sub_category'] != '') ? ' (' . $row['industry_sub_category'] . ')' : '');
             $array[] = $row['industry_address'];
-            $array[] = 'Fee : ' . $row['amount'] . ' ' . "\nInvoice No : " . $row['invoice_no'] . "\nDate : " . Carbon::parse($row['billed_at'])->format('Y-m-d');
+            $array[] = '';
+            // $array[] = 'Fee : ' . $row['amount'] . ' ' . "\nInvoice No : " . $row['invoice_no'] . "\nDate : " . Carbon::parse($row['billed_at'])->format('Y-m-d');
             ($row['submit_date'] != null) ? $array[] = Carbon::parse($row['submit_date'])->format('Y-m-d') : $array[] = 'N/A';
             ($row['issue_date'] != null) ? $array[] = Carbon::parse($row['issue_date'])->format('Y-m-d') : $array[] = 'N/A';
             ($row['created_at'] != null) ? $array[] = Carbon::parse($row['created_at'])->format('Y-m-d') : $array[] = 'N/A';

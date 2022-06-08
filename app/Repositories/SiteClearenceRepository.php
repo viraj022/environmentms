@@ -81,12 +81,12 @@ class SiteClearenceRepository
     }
     public function getSiteClearenceReportBySubmitDate($from, $to, $instance)
     {
-        $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
+        // $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
         $query = Client::join('site_clearence_sessions', 'clients.id', 'site_clearence_sessions.client_id')
             ->join('site_clearances', 'site_clearence_sessions.id', 'site_clearances.site_clearence_session_id')
             ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
-            ->leftJoin('transactions', 'site_clearence_sessions.id', 'transactions.type_id')
-            ->leftJoin('transaction_items', 'transactions.id', 'transaction_items.transaction_id')
+            // ->leftJoin('transactions', 'site_clearence_sessions.id', 'transactions.type_id')
+            // ->leftJoin('transaction_items', 'transactions.id', 'transaction_items.transaction_id')
             ->select(
                 'site_clearances.submit_date',
                 'site_clearances.count',
@@ -97,30 +97,32 @@ class SiteClearenceRepository
                 'clients.address',
                 'industry_categories.name as category_name',
                 'clients.industry_address',
-                'transaction_items.amount',
-                'transactions.invoice_no',
-                'transactions.billed_at',
+                // 'transaction_items.amount',
+                // 'transactions.invoice_no',
+                // 'transactions.billed_at',
                 'site_clearence_sessions.issue_date',
                 'site_clearence_sessions.created_at',
                 'clients.id as client_id',
                 'clients.industry_sub_category'
             )
-            ->whereNotNull('site_clearence_sessions.issue_date')
-            ->whereBetween('site_clearence_sessions.issue_date', [$from, $to])
-            ->where('transactions.type', Transaction::TRANS_SITE_CLEARANCE)
-            ->where('transaction_items.payment_type_id', $inspectionTypes->id)
+            ->whereNotNull('site_clearances.issue_date')
+            ->whereBetween('site_clearances.issue_date', [$from, $to])
+            // ->where('transactions.type', Transaction::TRANS_SITE_CLEARANCE)
+            // ->where('transaction_items.payment_type_id', $inspectionTypes->id)
             ->orderBy('site_clearence_sessions.created_at', 'DESC');
 
         switch ($instance) {
             case 'all':
+                // dd($query->toSql());
                 return $query->get();
             case 'new':
-                return $query->where('site_clearances.count', 1)->get();
+                $query = $query->where('site_clearances.count', 0);
             case 'extend':
-                return $query->where('site_clearances.count', '>', 1)->get();
+                $query = $query->where('site_clearances.count', '>', 0);
             default:
                 abort('404', 'Report Instance Not Defined - Ceytech internal error log');
         }
+        return $query->get();
     }
 
     public function ReceivedSiteCount($from, $to, $isNew)

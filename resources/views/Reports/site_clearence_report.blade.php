@@ -25,7 +25,7 @@
                 <th>Applications Name</th>
                 <th>Address</th>
                 <th>Industry</th>
-                <th>Inspection Fee</th>
+                {{-- <th>Inspection Fee</th> --}}
                 <th>Site Clearance Number</th>
                 <th>Submited Date</th>
                 <th>Issued Date</th>
@@ -40,7 +40,7 @@
                     <td>{{ $row[2] }}</td>
                     <td>{{ $row[11] }}</td>
                     <td>{{ $row[3] }}</td>
-                    <td>{{ $row[5] }}</td>
+                    {{-- <td>{{ $row[5] }}</td> --}}
                     <td><a href="/industry_profile/id/{{ $row[9] }}" target="_blank">{{ $row[1] }}</a>
                     </td>
                     <td>{{ $row[6] }}</td>

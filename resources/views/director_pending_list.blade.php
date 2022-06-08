@@ -29,7 +29,7 @@
                                             <th style="width: 10px">#</th>
                                             <th>Industry Name</th>
                                             <th style='width: 25em'>Client Name</th>
-                                            <th>EPL Code</th>
+                                            <th>Code</th>
                                             <th>File No</th>
                                             <th style='width: 25em'>#</th>
                                             <th>Status</th>
