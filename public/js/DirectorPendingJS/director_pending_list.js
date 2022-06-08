@@ -58,12 +58,10 @@ function loadDirectorPendingListTable() {
                 tbl += '</tr>';
             });
         }
-        var t = $('#tblPendingAdList').DataTable({
-            stateSave: true
-        });
+        var t = $('#tblPendingAdList').DataTable();
         t.clear().destroy();
         $('#tblPendingAdList tbody').html(tbl);
-        $('#tblPendingAdList').DataTable();
+        $('#tblPendingAdList').DataTable({ stateSave: true });
     });
 }
 
