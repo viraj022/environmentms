@@ -250,7 +250,6 @@ class ReportController extends Controller
         $eplInspectionRenewCount = $inspection->getEPLInspection($from, $to, 0);
         $siteInspectionNewCount = $inspection->getSiteInspection($from, $to, 1);
         $siteInspectionRenewCount = $inspection->getSiteInspection($from, $to, 0);
-
         $totalCount = $this->generateTotalField(array(
             $eplInspectionNewCount,
             $eplInspectionRenewCount,

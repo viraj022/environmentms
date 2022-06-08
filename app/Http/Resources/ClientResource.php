@@ -48,6 +48,7 @@ class ClientResource extends JsonResource
             'need_inspection' => $this->need_inspection,
             'cer_status' => $this->cer_status,
             'is_old' => $this->is_old,
+            'environment_officer_id' => $this->environment_officer_id,
             'epl_code' => $latestEpl ? $latestEpl->code : '',
             'site_clearance_code' => $lastSiteClearanceSession ? $lastSiteClearanceSession->code : '',
             'date_to_show' => $date,
