@@ -17,6 +17,7 @@ use App\Rules\nationalID;
 use App\EnvironmentOfficer;
 use Illuminate\Support\Str;
 use App\Helpers\LogActivity;
+use App\Http\Resources\ClientResource;
 use App\Repositories\UserNotificationsRepositary;
 use App\SiteClearance;
 use Illuminate\Http\Request;
@@ -452,14 +453,16 @@ class ClientController extends Controller
 
     public function getAllFiles($id)
     {
-        //        dd('ffff');
         $data = array();
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        $data = Client::select('clients.*', 'site_clearence_sessions.code AS code_site', 'e_p_l_s.code AS code_epl')
-            ->leftJoin('e_p_l_s', 'clients.id', '=', 'e_p_l_s.client_id')
-            ->leftJoin('site_clearence_sessions', 'clients.id', '=', 'site_clearence_sessions.client_id');
-
+        $data = Client::with(['epls' => function ($query) {
+            $query->orderBy('submitted_date', 'desc');
+        }, 'siteClearenceSessions', 'siteClearenceSessions.siteClearances' => function ($query) {
+            $query->orderBy('submit_date', 'desc');
+        }]);
+        // ->leftJoin('e_p_l_s', 'clients.id', '=', 'e_p_l_s.client_id')
+        // ->leftJoin('site_clearence_sessions', 'clients.id', '=', 'site_clearence_sessions.client_id')
         if ($user->roll->level->name == Level::DIRECTOR) {
             $data->where('environment_officer_id', $id);
         } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
@@ -474,8 +477,12 @@ class ClientController extends Controller
         } else {
             abort(401);
         }
-        $data->groupBy('clients.id');
-        return $data->get();
+        // $data->where('id', 592);
+        // $data->groupBy('clients.id');
+        $data = $data->get();
+        // return $data;
+        // dd($data->toArray());
+        return clientResource::collection($data);
     }
 
     public function certificatePath($id)
