@@ -39,7 +39,7 @@ class MobileController extends Controller
 
     public function usersList()
     {
-        $allUsers = User::select('id', 'first_name', 'last_name')->wherenull('deleted_at')->get();
+        $allUsers = User::select('users.*')->wherenull('deleted_at')->get();
         return $allUsers;
     }
 
