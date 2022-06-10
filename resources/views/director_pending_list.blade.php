@@ -29,7 +29,7 @@
                                             <th style="width: 10px">#</th>
                                             <th>Industry Name</th>
                                             <th style='width: 25em'>Client Name</th>
-                                            <th>EPL Code</th>
+                                            <th>Code</th>
                                             <th>File No</th>
                                             <th style='width: 25em'>#</th>
                                             <th>Status</th>
@@ -116,7 +116,6 @@
                 $('#approveCertificate,#prepareCertificate,#holdCertificate,#uNholdCertificate,#rejectCertificate')
                     .addClass('d-none'); //hide all buttons
                 if (f_Status == 4) {
-                    //                $("#viewCertificate").attr("href", "https://www.w3schools.com/jquery/");
                     $('#prepareCertificate').removeClass('d-none');
                     $('#approveCertificate').removeClass('d-none').val(fileData.id);
                     $('#holdCertificate').removeClass('d-none');

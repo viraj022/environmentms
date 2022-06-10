@@ -394,6 +394,70 @@ class ClientRepository
             ->with('inspectionSessions.inspectionSessionAttachments')
             ->Where('inspection_sessions.status', '0')
             ->Where('inspection_sessions.environment_officer_id', $id)
+            ->where('clients.need_inspection', Client::STATUS_INSPECTION_NEEDED)
+            ->where('clients.file_status', 0)
             ->get();
+    }
+    public function inspectionListForEo($eo_id)
+    {
+        return Client::select(
+            'clients.id',
+            'clients.name_title',
+            'clients.first_name',
+            'clients.last_name',
+            'clients.address',
+            'clients.contact_no',
+            'clients.nic',
+            'clients.industry_name',
+            'clients.industry_contact_no',
+            'clients.industry_address',
+            'clients.industry_coordinate_x',
+            'clients.industry_coordinate_y',
+            'clients.industry_investment',
+            'clients.industry_start_date',
+            'clients.industry_registration_no',
+            'clients.application_path',
+            'clients.file_01',
+            'clients.file_02',
+            'clients.file_03',
+            'clients.file_no',
+            'clients.is_old',
+            'clients.file_problem_status',
+            'clients.industry_sub_category',
+            'industry_categories.name as industry_category',
+            'pradesheeyasabas.name as pradesheeyasaba',
+            'inspection_sessions.id as inspection_session_id',
+            'inspection_sessions.schedule_date as inspection_schedule_date',
+            'inspection_sessions.application_type as inspection_application_type',
+            'business_scales.name as business_scale',
+        )
+            ->join('environment_officers', 'clients.environment_officer_id', 'environment_officers.id')
+            ->join('inspection_sessions', 'clients.id', 'inspection_sessions.client_id')
+            ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('business_scales', 'clients.business_scale_id', 'business_scales.id')
+            ->where('clients.file_status', 0)
+            ->where('environment_officers.user_id', $eo_id)
+            ->whereNull('inspection_sessions.deleted_at')
+            ->where('clients.need_inspection', Client::STATUS_PENDING)
+            ->with(['epls' => function ($query) {
+                $query->orderBy('count', 'desc');
+            }])
+            ->with(['minutes' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            }])
+            ->with('inspectionSessions.inspectionSessionAttachments')
+            // ->whereRelation('inspectionSessions', function ($query) {
+            //     $query->whereNotNull('deleted_at');
+            // })
+            ->with(['oldFiles' => function ($query) {
+                $query->orderBy('created_at', 'desc')->limit(1);
+            }])
+            ->with('certificates')
+            ->with('siteClearenceSessions.siteClearances')
+            ->where('inspection_sessions.status', '0')
+            ->groupBy('inspection_sessions.client_id')
+            ->get();
+        // ->toSql();
     }
 }

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\InspectionSessionAttachment;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\ClientRepository;
+use App\User;
 
 class MobileController extends Controller
 {
@@ -21,18 +22,27 @@ class MobileController extends Controller
         $this->clientRepository = $clientRepository;
     }
 
-    public function test()
-    {
-    }
-
     public function inspectionFiles()
     {
         return $this->clientRepository->GetInspectionList();
     }
+
     public function inspectionFilesById($id)
     {
         return $this->clientRepository->GetInspectionListByUser($id);
     }
+
+    public function inspectionListForEo($id)
+    {
+        return $this->clientRepository->inspectionListForEo($id);
+    }
+
+    public function usersList()
+    {
+        $allUsers = User::select('users.*')->wherenull('deleted_at')->get();
+        return $allUsers;
+    }
+
     public function uploadImage(Request $request, $id)
     {
         $user = Auth::user();

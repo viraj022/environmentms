@@ -81,12 +81,12 @@ class SiteClearenceRepository
     }
     public function getSiteClearenceReportBySubmitDate($from, $to, $instance)
     {
-        $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
+        // $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
         $query = Client::join('site_clearence_sessions', 'clients.id', 'site_clearence_sessions.client_id')
             ->join('site_clearances', 'site_clearence_sessions.id', 'site_clearances.site_clearence_session_id')
             ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
-            ->leftJoin('transactions', 'site_clearence_sessions.id', 'transactions.type_id')
-            ->leftJoin('transaction_items', 'transactions.id', 'transaction_items.transaction_id')
+            // ->leftJoin('transactions', 'site_clearence_sessions.id', 'transactions.type_id')
+            // ->leftJoin('transaction_items', 'transactions.id', 'transaction_items.transaction_id')
             ->select(
                 'site_clearances.submit_date',
                 'site_clearances.count',
@@ -97,30 +97,32 @@ class SiteClearenceRepository
                 'clients.address',
                 'industry_categories.name as category_name',
                 'clients.industry_address',
-                'transaction_items.amount',
-                'transactions.invoice_no',
-                'transactions.billed_at',
+                // 'transaction_items.amount',
+                // 'transactions.invoice_no',
+                // 'transactions.billed_at',
                 'site_clearence_sessions.issue_date',
                 'site_clearence_sessions.created_at',
                 'clients.id as client_id',
                 'clients.industry_sub_category'
             )
-            ->whereNotNull('site_clearence_sessions.issue_date')
-            ->whereBetween('site_clearence_sessions.issue_date', [$from, $to])
-            ->where('transactions.type', Transaction::TRANS_SITE_CLEARANCE)
-            ->where('transaction_items.payment_type_id', $inspectionTypes->id)
+            ->whereNotNull('site_clearances.issue_date')
+            ->whereBetween('site_clearances.issue_date', [$from, $to])
+            // ->where('transactions.type', Transaction::TRANS_SITE_CLEARANCE)
+            // ->where('transaction_items.payment_type_id', $inspectionTypes->id)
             ->orderBy('site_clearence_sessions.created_at', 'DESC');
 
         switch ($instance) {
             case 'all':
+                // dd($query->toSql());
                 return $query->get();
             case 'new':
-                return $query->where('site_clearances.count', 1)->get();
+                $query = $query->where('site_clearances.count', 0);
             case 'extend':
-                return $query->where('site_clearances.count', '>', 1)->get();
+                $query = $query->where('site_clearances.count', '>', 0);
             default:
                 abort('404', 'Report Instance Not Defined - Ceytech internal error log');
         }
+        return $query->get();
     }
 
     public function ReceivedSiteCount($from, $to, $isNew)
@@ -138,9 +140,9 @@ class SiteClearenceRepository
             ->orderBy('zones.name');
         switch ($isNew) {
             case 1:
-                return $query->where('count', 1)->get();
+                return $query->where('count', 0)->get();
             case 0:
-                return $query->where('count', '>', 1)->get();
+                return $query->where('count', '>', 0)->get();
             default:
                 abort(422, "invalid Argument for the if HCE-log");
         }
@@ -148,6 +150,7 @@ class SiteClearenceRepository
 
     public function IssuedSiteCount($from, $to, $isNew)
     {
+        // dd($isNew);
         $query = SiteClearance::join('site_clearence_sessions', 'site_clearances.site_clearence_session_id', 'site_clearence_sessions.id')
             ->join('clients', 'site_clearence_sessions.client_id', 'clients.id')
             ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
@@ -162,12 +165,18 @@ class SiteClearenceRepository
             ->orderBy('zones.name');
         switch ($isNew) {
             case 1:
-                return $query->where('count', 1)->get();
+                $query = $query->where('count', 0);
+                break;
             case 0:
-                return $query->where('count', '>', 1)->get();
+                $query = $query->where('count', '>', 0);
+                break;
             default:
                 abort(422, "invalid Argument for the if HCE-log");
+                break;
         }
+        // $query = $query->toSql();
+        // dd($query);
+        return $query->get();
     }
 
     public function SiteCount($from, $to, $isNew = -1, $issueStatus = 0, $SiteType = 0)
@@ -295,6 +304,25 @@ class SiteClearenceRepository
             ->whereNotNull('site_clearances.submit_date')
             ->whereBetween('site_clearances.submit_date', [$from, $to])
             ->get()->toArray();
+        // ->toSql();
+        // dd($query);
+        return $query;
+    }
+    public function telicomTowerCount($from, $to, $type)
+    {
+        $query = SiteClearance::join('site_clearence_sessions', 'site_clearances.site_clearence_session_id', 'site_clearence_sessions.id')
+            ->join('clients', 'site_clearence_sessions.client_id', 'clients.id')
+            ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
+            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
+            ->join('users', 'assistant_directors.user_id', 'users.id')
+            ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(site_clearances.id) as total'))
+            ->whereNotNull('site_clearances.submit_date')
+            ->whereBetween('site_clearances.submit_date', [$from, $to])
+            ->where('clients.industry_category_id', '=', '76')
+            ->groupBy('zones.id')
+            ->get();
         // ->toSql();
         // dd($query);
         return $query;
