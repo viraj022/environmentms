@@ -83,12 +83,12 @@ class EPL extends Model
         }
     }
 
-    public  function getNextRnumber()
+    public function getNextRnumber()
     {
         $count = EPLRenew::where('e_p_l_id', $this->id)->count();
         return 'R' . ($count + 1);
     }
-    public  function getRenewCount()
+    public function getRenewCount()
     {
         abort(404, "Method removed-hcw code");
     }
@@ -152,7 +152,7 @@ class EPL extends Model
         //return strtotime($this->schedule_date)->toDateString();
         if ($this->issue_date == null) {
             return 'N/A';
-        } 
+        }
         return Carbon::parse($this->issue_date)->format('Y-m-d');
     }
 
