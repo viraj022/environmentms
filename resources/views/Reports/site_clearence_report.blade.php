@@ -41,7 +41,7 @@
                     <td>{{ $row[11] }}</td>
                     <td>{{ $row[3] }}</td>
                     {{-- <td>{{ $row[5] }}</td> --}}
-                    <td><a href="/industry_profile/id/{{ $row[9] }}" target="_blank">{{ $row[1] }}</a>
+                    <td><a href="/industry_profile/id/{{ $row[10] }}" target="_blank">{{ $row[1] }}</a>
                     </td>
                     <td>{{ $row[6] }}</td>
                     <td>{{ $row[7] }}</td>
