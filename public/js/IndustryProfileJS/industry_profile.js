@@ -7,7 +7,7 @@ function getaProfilebyId(id, callBack) {
         return false;
     }
     var url = "/api/client/id/" + id;
-    ajaxRequest("GET", url, null, function(result) {
+    ajaxRequest("GET", url, null, function (result) {
         if (
             typeof callBack !== "undefined" &&
             callBack !== null &&
@@ -50,15 +50,15 @@ function setProfileDetails(obj) {
     obj.last_name == null ?
         $("#client_name").html(obj.first_name) :
         $("#client_name").html(obj.first_name + " " + obj.last_name);
-    (obj.address != null) ? $("#client_address").html(obj.address): $("#client_address").html('--');
-    (obj.contact_no != null) ? $("#client_cont").html(obj.contact_no): $("#client_cont").html('--');
-    (obj.email != null) ? $("#client_amil").html(obj.email): $("#client_amil").html('--');
+    (obj.address != null) ? $("#client_address").html(obj.address) : $("#client_address").html('--');
+    (obj.contact_no != null) ? $("#client_cont").html(obj.contact_no) : $("#client_cont").html('--');
+    (obj.email != null) ? $("#client_amil").html(obj.email) : $("#client_amil").html('--');
     $("#client_nic").html(obj.nic);
     $("#obj_name").html(obj.industry_name);
-    (obj.industry_registration_no != null) ? $("#obj_regno").html(obj.industry_registration_no): $("#obj_regno").html('--');
+    (obj.industry_registration_no != null) ? $("#obj_regno").html(obj.industry_registration_no) : $("#obj_regno").html('--');
     let invest = format(obj.industry_investment);
     $("#obj_invest").html(invest);
-    (obj.industry_address != null) ? $("#obj_industrySub").html(obj.industry_address): $("#obj_industrySub").html('-');
+    (obj.industry_address != null) ? $("#obj_industrySub").html(obj.industry_address) : $("#obj_industrySub").html('-');
     initMap(
         parseFloat(obj.industry_coordinate_x),
         parseFloat(obj.industry_coordinate_y)
@@ -154,23 +154,23 @@ function setIndustryAndClientDb(get) {
     //    alert(get.industry_start_date); <--someone changed tbl col name
     var con_assign_Date = or_assign_Date.toISOString().split("T")[0];
     $(".assign_date").html(con_assign_Date);
-    (get.address != null) ? $(".cl_address").html(get.address): $(".cl_address").html('--');
-    (get.email != null) ? $(".cl_email").html(get.email): $(".cl_email").html('--');
-    (get.contact_no != null) ? $(".cl_contact_no").html(get.contact_no): $(".cl_contact_no").html('--');
-    (get.nic != null) ? $(".cl_nic").html(get.nic): $(".cl_nic").html('--');
+    (get.address != null) ? $(".cl_address").html(get.address) : $(".cl_address").html('--');
+    (get.email != null) ? $(".cl_email").html(get.email) : $(".cl_email").html('--');
+    (get.contact_no != null) ? $(".cl_contact_no").html(get.contact_no) : $(".cl_contact_no").html('--');
+    (get.nic != null) ? $(".cl_nic").html(get.nic) : $(".cl_nic").html('--');
     //Industry
     $(".tabf_industry_name").html(get.industry_name);
     $(".tabf_industry_cat_name").html(get.industry_category.name);
     $(".tabf_business_scale").html(get.business_scale.name);
     $(".tabf_pradesheeyasaba").html(get.pradesheeyasaba.name);
-    (get.industry_registration_no != null) ? $(".tabf_industry_registration_no").html(get.industry_registration_no): $(".tabf_industry_registration_no").html('--');
+    (get.industry_registration_no != null) ? $(".tabf_industry_registration_no").html(get.industry_registration_no) : $(".tabf_industry_registration_no").html('--');
     $(".tabf_industry_start_date").html(get.start_date_only);
     let invest_tabf = format(get.industry_investment);
     $(".tabf_industry_investment").html(invest_tabf);
     $(".tabf_subindustry_cat").html(get.industry_sub_category);
     $(".tabf_industry_address").html(get.industry_address);
-    (get.industry_email != null) ? $(".tabf_industry_email").html(get.industry_email): $(".tabf_industry_email").html('--');
-    (get.industry_contact_no != null) ? $(".tabf_industry_contact_no").html(get.industry_contact_no): $(".tabf_industry_contact_no").html('--');
+    (get.industry_email != null) ? $(".tabf_industry_email").html(get.industry_email) : $(".tabf_industry_email").html('--');
+    (get.industry_contact_no != null) ? $(".tabf_industry_contact_no").html(get.industry_contact_no) : $(".tabf_industry_contact_no").html('--');
     let env_officer = "Not Assinged";
     if (!(get.environment_officer == null)) {
         if (get.environment_officer.user != null) {
@@ -190,7 +190,7 @@ function loadAllEPLTable(dataSet, callBack) {
     if (dataSet.length == 0) {
         tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
     } else {
-        $.each(dataSet, function(index, row) {
+        $.each(dataSet, function (index, row) {
             tbl += "<tr>";
             tbl += "<td>" + ++index + "</td>";
             tbl +=
@@ -225,14 +225,14 @@ function loadAllSiteClearTable(dataSet, callBack) {
     if (dataSet.length == 0) {
         tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
     } else {
-        $.each(dataSet, function(index, row) {
+        $.each(dataSet, function (index, row) {
             tbl += "<tr>";
             tbl += "<td>" + ++index + "</td>";
             // tbl += '<td><a type="button" href="/site_clearance/client/' + PROFILE_ID + "/profile/" + row.id + '" class="btn btn-primary">' + row.code + "</a></td>";
-            if(row.client.certificates.length > 0){
-                tbl += '<td><a type="button" target="_blank" href="../../'+row.client.certificates[row.client.certificates.length-1].signed_certificate_path+'" class="btn btn-primary">' + row.code + "</a></td>";
-            }else{
-                tbl +=  '<td><a type="button" href="/site_clearance/client/' + PROFILE_ID + "/profile/" + row.id + '" class="btn btn-primary">' + row.code + "</a></td>";
+            if (row.client.certificates.length > 0) {
+                tbl += '<td><a type="button" target="_blank" href="../../' + row.client.certificates[row.client.certificates.length - 1].signed_certificate_path + '" class="btn btn-primary">' + row.code + "</a></td>";
+            } else {
+                tbl += '<td><a type="button" href="/site_clearance/client/' + PROFILE_ID + "/profile/" + row.id + '" class="btn btn-primary">' + row.code + "</a></td>";
             }
             if (row.expire_date != null) {
                 tbl += "<td>" + row.expire_date + "</td>";
@@ -240,10 +240,10 @@ function loadAllSiteClearTable(dataSet, callBack) {
                 tbl += "<td> ----- No Data ----- </td>";
             }
             tbl += "</tr>";
-            $.each(row.site_clearances, function(index2, row2) {
+            $.each(row.site_clearances, function (index2, row2) {
                 tbl += "<tr>";
-                tbl += "<td></td>";
                 tbl += "<td>" + ++index2 + "</td>";
+                tbl += "<td><a href='/" + row2.certificate_path + "'>View Certificate</a></td>";
                 tbl += "<td colspan='2'>issued: " + row2.issue_date + ", Expired: " + row2.expire_date + ", Session: " + row2.count + "</td>";
                 tbl += "</tr>";
             });
@@ -279,7 +279,7 @@ function getAllInspectionAPI(id, callBack) {
         return false;
     }
     var url = "/api/inspections/file/id/" + id;
-    ajaxRequest("GET", url, null, function(result) {
+    ajaxRequest("GET", url, null, function (result) {
         if (
             typeof callBack !== "undefined" &&
             callBack !== null &&
@@ -291,13 +291,13 @@ function getAllInspectionAPI(id, callBack) {
 }
 
 function loadAllSiteInspectionTable(id) {
-    getAllInspectionAPI(id, function(result) {
+    getAllInspectionAPI(id, function (result) {
         var tbl = "";
         var id = 1;
         if (result.length == 0) {
             tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
         } else {
-            $.each(result, function(index, row) {
+            $.each(result, function (index, row) {
                 tbl += "<tr>";
                 tbl += "<td>" + ++index + "</td>";
                 if (row.status == 0) {
@@ -323,7 +323,7 @@ function checkInspectionStatus(id, btn_val, callBack) {
         "PATCH",
         "/api/inspection/" + btn_val + "/file/" + id,
         null,
-        function(dataSet) {
+        function (dataSet) {
             if (
                 typeof callBack !== "undefined" &&
                 callBack != null &&
@@ -340,7 +340,7 @@ function reportFileIssueAPI(id, data, callBack) {
     if (isNaN(id)) {
         return false;
     }
-    ulploadFileWithData("/api/files/file_problem_status/id/" + id, data, function(resp) {
+    ulploadFileWithData("/api/files/file_problem_status/id/" + id, data, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
         }
@@ -371,7 +371,7 @@ function removeClientFileAPI(id, callBack) {
     if (isNaN(id)) {
         return false;
     }
-    ajaxRequest("DELETE", "/api/client/id/" + id, null, function(dataSet) {
+    ajaxRequest("DELETE", "/api/client/id/" + id, null, function (dataSet) {
         if (
             typeof callBack !== "undefined" &&
             callBack != null &&
@@ -387,7 +387,7 @@ function removeEPLPaymentAPI(id, callBack) {
     if (isNaN(id)) {
         return false;
     }
-    ajaxRequest("DELETE", "/api/epl/regPayment/id/" + id, null, function(
+    ajaxRequest("DELETE", "/api/epl/regPayment/id/" + id, null, function (
         dataSet
     ) {
         if (
@@ -402,7 +402,7 @@ function removeEPLPaymentAPI(id, callBack) {
 
 //Pending Payments API
 function pendingPaymentsAPI(id, callBack) {
-    ajaxRequest("GET", "/api/payment/history/file/" + id, null, function(
+    ajaxRequest("GET", "/api/payment/history/file/" + id, null, function (
         dataSet
     ) {
         if (
@@ -416,13 +416,13 @@ function pendingPaymentsAPI(id, callBack) {
 }
 //Pending Payment Table
 function pendingPaymentsTable(id) {
-    pendingPaymentsAPI(id, function(result) {
+    pendingPaymentsAPI(id, function (result) {
         var tbl = "";
         var id = 1;
         if (result.length == 0) {
             tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
         } else {
-            $.each(result, function(index, row) {
+            $.each(result, function (index, row) {
                 tbl += "<tr>";
                 tbl += "<td>" + ++index + "</td>";
                 if (row.cashier_name !== null) {
