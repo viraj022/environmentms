@@ -29,7 +29,7 @@
                 <th>Site Clearance Number</th>
                 <th>Submited Date</th>
                 <th>Issued Date</th>
-                <th>Created Date</th>
+                {{-- <th>Created Date</th> --}}
                 <th>Nature</th>
             </tr>
         </thead>
@@ -46,7 +46,7 @@
                     <td>{{ $row[6] }}</td>
                     <td>{{ $row[7] }}</td>
                     <td>{{ $row[8] }}</td>
-                    <td>{{ $row[9] }}</td>
+                    {{-- <td>{{ $row[9] }}</td> --}}
 
                 </tr>
             @endforeach

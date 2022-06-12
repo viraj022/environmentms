@@ -101,7 +101,7 @@ class SiteClearenceRepository
                 // 'transactions.invoice_no',
                 // 'transactions.billed_at',
                 'site_clearence_sessions.issue_date',
-                'site_clearence_sessions.created_at',
+                // 'site_clearence_sessions.created_at',
                 'clients.id as client_id',
                 'clients.industry_sub_category'
             )
@@ -113,7 +113,6 @@ class SiteClearenceRepository
 
         switch ($instance) {
             case 'all':
-                // dd($query->toSql());
                 return $query->get();
             case 'new':
                 $query = $query->where('site_clearances.count', 0);
