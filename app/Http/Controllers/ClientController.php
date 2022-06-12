@@ -94,8 +94,9 @@ class ClientController extends Controller
         }
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        $client = Client::find($id);
         if ($pageAuth['is_read']) {
-            return view('industry_profile', ['pageAuth' => $pageAuth, 'id' => $id]);
+            return view('industry_profile', ['pageAuth' => $pageAuth, 'id' => $id, 'client' => $client]);
         } else {
             abort(401);
         }
