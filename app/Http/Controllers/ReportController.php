@@ -92,7 +92,8 @@ class ReportController extends Controller
             // $array[] = 'Fee : ' . $row['amount'] . ' ' . "\nInvoice No : " . $row['invoice_no'] . "\nDate : " . Carbon::parse($row['billed_at'])->format('Y-m-d');
             ($row['submit_date'] != null) ? $array[] = Carbon::parse($row['submit_date'])->format('Y-m-d') : $array[] = 'N/A';
             ($row['issue_date'] != null) ? $array[] = Carbon::parse($row['issue_date'])->format('Y-m-d') : $array[] = 'N/A';
-            ($row['created_at'] != null) ? $array[] = Carbon::parse($row['created_at'])->format('Y-m-d') : $array[] = 'N/A';
+            $array[] = '';
+            // ($row['created_at'] != null) ? $array[] = Carbon::parse($row['created_at'])->format('Y-m-d') : $array[] = 'N/A';
             if ($row['count'] > 0) {
                 $array[] = 'Extend';
             } else {
