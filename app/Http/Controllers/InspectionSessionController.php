@@ -265,15 +265,34 @@ class InspectionSessionController extends Controller
 
     public function updateMobileInspection(Request $request)
     {
-
+        $request->validate([
+            'session_id' => 'required',
+            'remarks' => 'nullable',
+            'inspection_attachments' => 'nullable|array',
+            'sketch_file' => 'required|mimes:jpeg,jpg,png',
+            'inspectionInterviewers' => 'nullable',
+            'inspectionPersonals' => 'nullable',
+            'proposed_land_ext' => 'nullable',
+            'project_area_type' => 'nullable',
+            'land_use' => 'nullable',
+            'house_within_100' => 'nullable',
+            'ownersip' => 'nullable',
+            'adj_land_n' => 'nullable',
+            'adj_land_s' => 'nullable',
+            'adj_land_e' => 'nullable',
+            'adj_land_w' => 'nullable',
+            'sensitive_area_desc' => 'nullable',
+            'special_issue_desc' => 'nullable',
+        ]);
+        // dd($request->all());
         $inspectionSession = InspectionSession::findOrFail($request->session_id);
         $inspectionSession->remark = $request->remark;
         $inspectionSession->updated_at = Carbon::now()->format('Y-m-d H:i:s');
-        $inspectionInterviewers = $inspectionSession->inspectionPersonals;
+        $inspectionInterviewers = $request->inspectionInterviewers;
         $InspectionPersonals = $request->inspectionPersonals;
 
-        if (($request->hasFile('sketch_path'))) {
-            $sketchPath = $request->file('sketch_path')->store('public/uploads/industry_files/' . $inspectionSession->client_id . '/inspections/' . $inspectionSession->id);
+        if (($request->hasFile('sketch_file'))) {
+            $sketchPath = $request->file('sketch_file')->store('public/uploads/industry_files/' . $inspectionSession->client_id . '/inspections/' . $inspectionSession->id);
             $inspectionSession->sketch_path = str_replace('public/', '', $sketchPath);
         }
 
@@ -293,17 +312,20 @@ class InspectionSessionController extends Controller
         if ($request->hasFile('inspection_attachments')) {
             $InspectionAttathments = $request->file('inspection_attachments');
             foreach ($InspectionAttathments as $attachment) {
+                $type = $attachment->extension();
                 $inspectionSessionAttachment = new InspectionSessionAttachment();
                 $inspectionSessionAttachment->inspection_session_id = $request->session_id;
                 $attachmentPath = $attachment->store('public/uploads/industry_files/' . $inspectionSession->client_id . '/inspections/' . $inspectionSession->id);
                 if ($attachmentPath) {
-                    $inspectionSessionAttachment->attachment_path = str_replace('public/', '', $attachmentPath);
+                    $inspectionSessionAttachment->path = str_replace('public/', '', $attachmentPath);
+                    $inspectionSessionAttachment->type = $type;
                     $inspectionSessionAttachment->save();
                 }
             }
         }
 
-        if (count($inspectionInterviewers) > 0) {
+        if (!empty($inspectionInterviewers)) {
+            $inspectionInterviewers = explode(',', $inspectionInterviewers);
             foreach ($inspectionInterviewers as $inspectionInterviewer) {
                 $inspectionInterviewer = new inspection_interviewers();
                 $inspectionInterviewer->inspection_session_id = $request->session_id;
@@ -311,7 +333,8 @@ class InspectionSessionController extends Controller
             }
         }
 
-        if (count($InspectionPersonals) > 0) {
+        if (!empty($InspectionPersonals)) {
+            $InspectionPersonals = explode(',', $InspectionPersonals);
             foreach ($InspectionPersonals as $inspectionPersonal) {
                 $inspectionPersonal = new InspectionPersonal();
                 $inspectionPersonal->inspection_session_id = $request->session_id;
