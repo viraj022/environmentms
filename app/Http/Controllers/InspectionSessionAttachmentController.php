@@ -61,6 +61,7 @@ class InspectionSessionAttachmentController extends Controller
                 $inspectionSessionAttachment->path = $path;
                 $inspectionSessionAttachment->type = $type;
                 $msg = $inspectionSessionAttachment->save();
+                dd($path);
 
 
                 if ($msg) {

@@ -451,7 +451,7 @@ class ClientRepository
             //     $query->whereNotNull('deleted_at');
             // })
             ->with(['oldFiles' => function ($query) {
-                $query->orderBy('created_at', 'desc')->limit(1);
+                $query->orderBy('created_at', 'desc');
             }])
             ->with('certificates')
             ->with('siteClearenceSessions.siteClearances')
