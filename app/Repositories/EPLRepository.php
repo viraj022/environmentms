@@ -156,7 +156,7 @@ class EPLRepository
             ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
             ->join('users', 'assistant_directors.user_id', 'users.id')
             ->where('assistant_directors.active_status', 1)
-            ->where('site_clearence_sessions.site_clearance_type', SiteClearance::SITE_TELECOMMUNICATION)
+            ->where('clients.industry_category_id', 76)
             ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(e_p_l_s.id) as total'))
             ->groupBy('zones.id')
             ->orderBy('zones.name');
@@ -185,6 +185,7 @@ class EPLRepository
                 abort(422, "invalid Argument for the isIssueStatus HCE-log");
         }
 
+        // dd($query->toSql());
         return $query->get();
     }
 }

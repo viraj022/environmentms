@@ -38,7 +38,7 @@ class CommitteeRepository
 
     public function update($request, $id)
     {
-        // should remove client_id if present 
+        // should remove client_id if present
         // dd($id);
         $committee = Committee::findOrFail($id);
         $committeeResult = $committee->update($request->all());
@@ -71,7 +71,7 @@ class CommitteeRepository
     }
 
     // committee remarks ----
-    public function saveRemarksByCommittee($committee, $requestData, $file = null, $extension)
+    public function saveRemarksByCommittee($committee, $requestData, $file = null, $extension = null)
     {
         return  DB::transaction(function () use ($committee, $requestData, $file, $extension) {
             $committee = Committee::findOrFail($committee);
