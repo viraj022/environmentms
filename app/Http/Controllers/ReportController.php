@@ -117,6 +117,7 @@ class ReportController extends Controller
             default:
                 abort('404', 'Report Type Not Defined - Ceytech internal error log');
         }
+
         $time_elapsed_secs = round(microtime(true) - $start, 5);
         return view('Reports.site_clearence_report', ['data' => $data, 'time_elapsed_secs' => $time_elapsed_secs, 'title' => $title, 'from' => $from, 'to' => $to]);
     }
@@ -335,7 +336,7 @@ class ReportController extends Controller
         $result[] = array('type' => '', 'name' => 'Trainings', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
         $result[] = array('type' => '', 'name' => 'SWML', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
         $result[] = array('type' => '', 'name' => 'Tower (EPL R)', 'application' => $this->prepareApplicationTotal($towerEplRenewCount->toArray()), 'object' => $this->prepareCount($towerEplRenewCount->toArray(), $assistanceDirectors));
-        $result[] = array('type' => '', 'name' => 'Tower (EPL N)', 'application' => $this->prepareApplicationTotal($telecommunicationCount->toArray()), 'object' => $this->prepareCount($towerEplNewCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => '', 'name' => 'Tower (EPL N)', 'application' => $this->prepareApplicationTotal($towerEplNewCount->toArray()), 'object' => $this->prepareCount($towerEplNewCount->toArray(), $assistanceDirectors));
         $result[] = array('type' => '', 'name' => 'Tower SC', 'application' => $this->prepareApplicationTotal($telecommunicationCount->toArray()), 'object' => $this->prepareCount($telecommunicationCount->toArray(), $assistanceDirectors));
         $result[] = array('type' => '', 'name' => 'Expert Committee Meetings', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
         // dd($result);
@@ -965,7 +966,7 @@ class ReportController extends Controller
             $array['address'] = $row['address'];
             $array['category_name'] = $row['industry_category'] . (($row['industry_sub_category'] != '') ? ' (' . $row['industry_sub_category'] . ')' : '');
             $array['industry_address'] = $row['industry_address'];
-            $site_type = ($row['count'] > 1) ? $site_type = "EXT" : $site_type = 'NEW';
+            $site_type = ($row['count'] > 0) ? $site_type = "EXT" : $site_type = 'NEW';
             $array['nature'] = $row['site_clearance_type'] . '(' . $site_type . ')';
             $array['code'] = $row['code'];
             $array['client_id'] = $row['id'];

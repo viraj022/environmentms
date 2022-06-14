@@ -45,8 +45,8 @@
                     </td>
                     <td>{{ $row[6] }}</td>
                     <td>{{ $row[7] }}</td>
-                    <td>{{ $row[8] }}</td>
-                    {{-- <td>{{ $row[9] }}</td> --}}
+                    {{-- <td>{{ $row[8] }}</td> --}}
+                    <td>{{ $row[9] }}</td>
 
                 </tr>
             @endforeach

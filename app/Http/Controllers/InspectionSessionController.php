@@ -283,9 +283,17 @@ class InspectionSessionController extends Controller
             'adj_land_w' => 'nullable',
             'sensitive_area_desc' => 'nullable',
             'special_issue_desc' => 'nullable',
+            'latitude' => 'nullable',
+            'longitude' => 'nullable',
         ]);
         // dd($request->all());
         $inspectionSession = InspectionSession::findOrFail($request->session_id);
+        if (!empty($request->latitude) && !empty($request->longitude)) {
+            $client = Client::findOrFail($inspectionSession->client_id);
+            $client->industry_coordinate_x = $request->latitude;
+            $client->industry_coordinate_y = $request->longitude;
+            $client->save();
+        }
         $inspectionSession->remark = $request->remark;
         $inspectionSession->updated_at = Carbon::now()->format('Y-m-d H:i:s');
         $inspectionInterviewers = $request->inspectionInterviewers;
