@@ -270,6 +270,7 @@
                 $('#setInspectionVal').val($(this).val());
             });
             $(document).on('click', '#setInspectionVal', function() {
+                document.querySelector('#setInspectionVal').disabled = true;
                 var fileData = JSON.parse(unescape($(this).val()));
                 let f_id = fileData.id;
                 checkInspectionStatus(f_id, $('#getInspection').val(), function(rep) {

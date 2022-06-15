@@ -173,6 +173,7 @@
         });
         $(document).on('click', '#approveCertificate', function () { // approve certificate btn
             if ($('#getMinutes').val() != '') {
+                document.querySelector('#approveCertificate').disabled = true;
                 var fileData = JSON.parse(unescape($(this).val()));
                 if (confirm('Are you sure you want to approve?')) {
                     certificateApproveApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
@@ -189,6 +190,7 @@
         });
         $(document).on('click', '#rejectCertificate', function () { // reject certificate btn
             if ($('#getMinutes').val() != '') {
+                document.querySelector('#rejectCertificate').disabled = true;
                 var fileData = JSON.parse(unescape($(this).val()));
                 if (confirm('Are you sure you want to reject?')) {
                     certificateRejectApi(fileData.id, $('#getAssistantDirector').val(), minute(), function (resp) {
