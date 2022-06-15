@@ -61,9 +61,6 @@ class InspectionSessionAttachmentController extends Controller
                 $inspectionSessionAttachment->path = $path;
                 $inspectionSessionAttachment->type = $type;
                 $msg = $inspectionSessionAttachment->save();
-                dd($path);
-
-
                 if ($msg) {
                     LogActivity::addToLog('Add Inspection attachment', $inspectionSessionAttachment);
                     return array('id' => 1, 'message' => 'true');
