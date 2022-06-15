@@ -147,8 +147,6 @@
                                             <hr>
                                             <div class="form-group">
                                                 <label>File Code*</label>
-                                                <input disabled id="file_code_active" type="text"
-                                                    class="form-control form-control-sm cutenzReq d-none" placeholder="">
                                                 <input disabled id="file_code_change" type="text"
                                                     class="form-control form-control-sm cutenzReq " placeholder="">
                                             </div>
@@ -186,8 +184,10 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Investment(Rs)*</label>
-                                            <input id="inventsment" pattern="/^-?\d+\.?\d*$/" onKeyPress="if (this.value.length == 12)
-                                                            return false;" class="form-control form-control-sm cutenzReq"
+                                            <input id="inventsment" pattern="/^-?\d+\.?\d*$/"
+                                                onKeyPress="if (this.value.length == 12)
+                                                                                                                                                                                                            return false;"
+                                                class="form-control form-control-sm cutenzReq"
                                                 placeholder="Enter investment" value="">
                                         </div>
                                         <div class="form-group">
@@ -210,16 +210,16 @@
                                             </div>
                                         </div>
                                         <!--                                <div class="form-group">
-                                                                                <label>Submitted Date*</label>
-                                                                                <div class="input-group">
-                                                                                    <div class="input-group-prepend">
-                                                                                        <span class="input-group-text">
-                                                                                            <i class="far fa-calendar-alt"></i>
-                                                                                        </span>
-                                                                                    </div>
-                                                                                    <input id="submittedDate" name="datepickerUi" max="2999-12-31" class="form-control form-control-sm cutenzReq" placeholder="Enter Date..." value="">
-                                                                                </div>
-                                                                            </div>-->
+                                                                                                                                                                                                                                <label>Submitted Date*</label>
+                                                                                                                                                                                                                                <div class="input-group">
+                                                                                                                                                                                                                                    <div class="input-group-prepend">
+                                                                                                                                                                                                                                        <span class="input-group-text">
+                                                                                                                                                                                                                                            <i class="far fa-calendar-alt"></i>
+                                                                                                                                                                                                                                        </span>
+                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                    <input id="submittedDate" name="datepickerUi" max="2999-12-31" class="form-control form-control-sm cutenzReq" placeholder="Enter Date..." value="">
+                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                            </div>-->
                                         <div class="form-group">
                                             <label>Contact No</label>
                                             <input id="getContactn" type="text" class="form-control form-control-sm"
@@ -232,13 +232,12 @@
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                        @if ($pageAuth['is_create'] == 1 || false)
-                                            <button id="btnUpdate" type="button" class="btn btn-success"><i
-                                                    class="fas fa-check"></i> Update</button>
-                                            <button id="btnGenNewFileCode" type="button"
-                                                class="btn float-right btn-warning"><i
-                                                    class="fas fa-exclamation-triangle"></i> Change File Category</button>
-                                        @endif
+                                        <button id="btnUpdate" type="button" class="btn btn-success"><i
+                                                class="fas fa-check"></i> Update</button>
+                                        <button id="genCode" type="button" class="btn float-right btn-danger"><i
+                                                class="fas fa-exclamation-triangle"></i> Generate Code</button>
+                                        <button id="btnGenNewFileCode" type="button" class="btn float-right btn-warning"><i
+                                                class="fas fa-exclamation-triangle"></i> Change File Category</button>
                                     </div>
                                     <div class="overlay dark loadingRenderUI">
                                         <i class="fas fa-2x fa-sync-alt"></i>
@@ -256,22 +255,6 @@
 @endsection
 
 @section('pageScripts')
-    <!-- Page script -->
-
-    <!-- Bootstrap4 Duallistbox -->
-    <script src="../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
-    <!-- InputMask -->
-    <script src="../../plugins/moment/moment.min.js"></script>
-    <script src="../../plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
-    <!-- date-range-picker -->
-    <script src="../../plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- bootstrap color picker -->
-    <script src="../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Bootstrap Switch -->
-    <script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-    <script src="../../dist/js/adminlte.min.js"></script>
     <script src="../../js/IndustryProfileJS/update_industry_profile.js" type="text/javascript"></script>
     <!-- AdminLTE for demo purposes -->
     <script async="" defer=""
@@ -280,9 +263,8 @@
         var _Latitude = 7.489050;
         var _Longitude = 80.349985;
         var PROFILE = '{{ $id }}';
-        var fCODER = '';
-        var CUTE = '';
         var FILE_NUMBER = '';
+        var FILE_YEAR = '{{ $file_year }}';
         // Initialize and add the map
         function initMap() {
             // The location of CeyTech
@@ -317,10 +299,9 @@
             BusinessScaleCombo();
 
             getaClientbyId(PROFILE, function(set) {
-                console.log(set.name_title);
+                console.log(set);
                 //Client
                 $(".fileNoDbzz").html(set.file_no);
-                $("#file_code_active").val(set.file_no);
                 $("#file_code_change").val(set.file_no);
                 FILE_NUMBER = set.file_no;
                 $("#getisOld").val(set.is_old);
@@ -389,7 +370,10 @@
                 assign_date: $('#submittedDate').val(),
                 file_no: $('#file_code_change').val()
             };
-
+            if ($("#file_code_change").val() == '') {
+                alert('Please Generate File Number');
+                return;
+            }
             if (requiredFieldHandler(dataz, ".cutenzReq")) {
                 updateClientFileAPI($(this).val(), dataz, function(resp) {
                     // show_mesege(resp);
@@ -405,16 +389,16 @@
             }
         });
 
+        $('#genCode').click(function() {
+            gen_fileCode();
+        });
         $('#btnGenNewFileCode').click(function() {
             if (!confirm(
                     'Are you sure you want to change this categories?,it will change EPL,File,Site Clearance codes'
                 )) {
                 return false;
             }
-
-            if ($("#file_code_active").val() != '' && $("#file_code_change").val() != '') {
-                gen_fileCode();
-            }
+            $("#file_code_change").val('');
 
             $('.genNewFileCodeAcc').removeClass('d-none');
             $('.editingDetectedFCode').addClass('bg-gradient-secondary');
@@ -433,8 +417,8 @@
             let ps_code = $('#prsdeshiySb :selected').data('ps_code');
             let cat_code = $('#industryCat :selected').data('cat_code');
             let bc_code = $('#businesScale :selected').data('bc_code');
-            let postFix = FILE_NUMBER.split('/');
-            let code = 'PEA/' + ps_code + '/' + cat_code + '/' + bc_code + '/' + postFix[4] + '/' + postFix[5];
+            let code = 'PEA/' + ps_code + '/' + cat_code + '/' + bc_code + '/' + PROFILE + '/' + FILE_YEAR;
+            console.log(code);
             $('#file_code_change').val(code);
         }
 
@@ -444,10 +428,5 @@
                 callBack();
             }
         }
-        $('#prsdeshiySb,#industryCat,#businesScale').on('change', function() {
-            if ($("#file_code_active").val() != '' && $("#file_code_change").val() != '') {
-                gen_fileCode();
-            }
-        });
     </script>
 @endsection

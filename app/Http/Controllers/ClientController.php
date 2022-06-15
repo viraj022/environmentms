@@ -106,7 +106,9 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        return view('update_industry_file', ['pageAuth' => $pageAuth, 'id' => $id]);
+        $CLIENT = Client::find($id);
+        $FileCrateYear = carbon::parse($CLIENT->created_at)->format('Y');
+        return view('update_industry_file', ['pageAuth' => $pageAuth, 'id' => $id, 'file_year' => $FileCrateYear]);
     }
 
     public function certificatesUi()
