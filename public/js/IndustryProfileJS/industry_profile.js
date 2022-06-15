@@ -226,16 +226,11 @@ function loadAllSiteClearTable(dataSet, callBack) {
     if (dataSet.length == 0) {
         tbl = "<tr><td colspan='4'>No Data Found</td></tr>";
     } else {
+        console.log(dataSet);
         $.each(dataSet, function (index, row) {
             tbl += "<tr>";
             tbl += "<td>" + ++index + "</td>";
-            // tbl += '<td><a type="button" href="/site_clearance/client/' + PROFILE_ID + "/profile/" + row.id + '" class="btn btn-primary">' + row.code + "</a></td>";
             tbl += '<td><a type="button" href="site_clearance/client/' + dataSet.client_id + '/profile/' + dataSet.id + '" class="btn btn-primary">' + row.code + "</a></td>";
-            // if (row.client.certificates.length > 0) {
-
-            // } else {
-            //     // tbl += '<td><a type="button" href="/site_clearance/client/' + PROFILE_ID + "/profile/" + row.id + '" class="btn btn-primary">' + row.code + "</a></td>";
-            // }
             if (row.expire_date != null) {
                 tbl += "<td>" + row.expire_date + "</td>";
             } else {
@@ -245,7 +240,7 @@ function loadAllSiteClearTable(dataSet, callBack) {
             $.each(row.site_clearances, function (index2, row2) {
                 tbl += "<tr>";
                 tbl += "<td>" + ++index2 + "</td>";
-                if (row2.certificate_path.length != 0 || row2.certificate_path != null || row2.certificate_path != undefined) {
+                if (row2.certificate_path != null || row2.certificate_path != undefined) {
                     tbl += "<td><a href='/" + row2.certificate_path + "' target='_blank'>View Certificate</a></td>";
                 } else {
                     tbl += "<td>No Certificate</td>";
