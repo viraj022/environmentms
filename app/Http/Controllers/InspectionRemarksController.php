@@ -29,7 +29,7 @@ class InspectionRemarksController extends Controller
             if ($InspectionSession !== null) {
                 $file = Client::find($InspectionSession->client_id);
                 $inspection_attachments = InspectionSessionAttachment::where('inspection_session_id', '=', $id)->get();
-                return view('inspection_remarks', ['pageAuth' => $pageAuth, 'id' => $id, "inspec_date" => date("Y-m-d", strtotime($InspectionSession->schedule_date)), "file_no" => $file->file_no, "file_id" => $file->id, "inspect_file_attach" => $inspection_attachments]);
+                return view('inspection_remarks', ['pageAuth' => $pageAuth, 'InspectionSession' => $InspectionSession, 'id' => $id, "inspec_date" => date("Y-m-d", strtotime($InspectionSession->schedule_date)), "file_no" => $file->file_no, "file_id" => $file->id, "inspect_file_attach" => $inspection_attachments]);
             } else {
                 abort(404);
             }
