@@ -182,7 +182,18 @@
                                                 <h4 class="card-title">Sketch</h4>
                                             </div>
                                             <div class="card-body">
-                                                <div class="row">{{ $InspectionSession->sketch_path }}</div>
+                                                <div class="row">
+                                                    @if(strpos($InspectionSession->sketch_path, 'storage/') === 0)
+                                                    <a href="{{ asset($InspectionSession->sketch_path) }}" data-fancybox="sketch">
+                                                    <img src="{{ asset($InspectionSession->sketch_path) }}" alt="sketch image" height="128">
+                                                    </a>
+                                                    @else
+                                                    <a href="{{ asset('storage/' . $InspectionSession->sketch_path) }}" data-fancybox="sketch">
+                                                    <img src="{{ asset('storage/' . $InspectionSession->sketch_path) }}" alt="sketch image" height="128">
+                                                    </a>
+                                                    @endif
+                                                    
+                                                </div>
                                             </div>
                                         </div>
 
@@ -220,17 +231,14 @@
                                     <h5><a href="/inspection_attachment/id/{{ $id }}"
                                             class="text-success font-weight-bold ">Add Attachments</a></h5>
 
-                                    <p>Add images, attachment in inspection</p>
-                                </div>
-                                <div class="callout callout-success inspectConfStatus d-none">
-                                    <button type="button" id="completeInsBtn" class="btn btn-block btn-dark btn-lg"><i
-                                            class="fa fa-check"></i> Complete Inspection</button>
-                                </div>
-                                <div class="callout callout-success compDoneUi d-none">
-                                    <h4><i class="text-success fa fa-check"></i> Completed</h4>
-                                </div>
-                                <!-- /.card-body -->
-                            </div>
+                            <p>Add images, attachment in inspection</p>
+                        </div>
+                        <div class="callout callout-success inspectConfStatus d-none">
+                            <button type="button" id="completeInsBtn" class="btn btn-block btn-dark btn-lg"><i class="fa fa-check"></i> Complete Inspection</button>
+                            <a href="{{ route('inspection_site_report', $id) }}" class="btn btn-block btn-success btn-lg">View Site Inspection Report</a>
+                        </div>
+                        <div class="callout callout-success compDoneUi d-none">
+                            <h4><i class="text-success fa fa-check"></i> Completed</h4> 
                         </div>
                     </div>
 

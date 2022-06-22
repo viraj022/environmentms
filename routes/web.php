@@ -106,4 +106,4 @@ Route::get('/pending_expired_cert', 'ClientController@getPendingExpiredView');
 Route::get('/warning_letter_log', 'WarningLetterController@warningLetterLog');
 
 
-Route::get('inspection_site_report', 'InspectionController@siteInspectionReportView');
+Route::get('/inspection_site_report/{id}', 'InspectionController@siteInspectionReportView')->name('inspection_site_report');
