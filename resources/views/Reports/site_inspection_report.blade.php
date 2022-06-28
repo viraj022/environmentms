@@ -9,22 +9,22 @@
 @section('content')
     <div class="container mt-3">
         <center>
-            <h5>Report of Site Inspection</h5>
+            <u><h5>Report of Site Inspection</h5></u>
         </center>
         <table class="table table-borderless">
             <tbody>
                 <tr>
-                    <th width="30%">01).Date</th>
-                    <td colspan="3">{{ Carbon\Carbon::parse($inspectionSession->schedule_date)->format('Y-m-d') }}</td>
+                    <td width="35%">01).Date</td>
+                    <th colspan="3">{{ Carbon\Carbon::parse($inspectionSession->schedule_date)->format('Y-m-d') }}</th>
                 </tr>
                 <tr>
-                    <th>02).Tel</th>
-                    <td colspan="3">{{ $inspectionSession->client->industry_contact_no }}</td>
+                    <td>02).Tel</td>
+                    <th colspan="3">{{ $inspectionSession->client->industry_contact_no }}</th>
                 </tr>
                 <tr>
-                    <th rowspan="2">03).Persons Interviewed</th>
+                    <td rowspan="2">03).Persons Interviewed</td>
                         @foreach ($inspectionSession->inspection_interviewers as $persons)
-                        <td>{{ $loop->iteration }}- {{ $persons->name }}</td>
+                        <th>{{ $loop->iteration }}- {{ $persons->name }}</th>
                             @if ($loop->iteration % 2 == 0)
                                 </tr>
                                 <tr>
@@ -32,57 +32,57 @@
                         @endforeach
                 </tr>
                 <tr>
-                    <th>04).Inspected By</th>
+                    <td>04).Inspected By</td>
                     @php
                         $eo = $inspectionSession->environmentOfficer->user;
                     @endphp
-                    <td colspan="3">{{ $eo->first_name }} {{ $eo->last_name }}</td>
+                    <th colspan="3">{{ $eo->first_name }} {{ $eo->last_name }}</th>
                 </tr>
                 <tr>
-                    <th>05).Project Description</th>
+                    <td>05).Project Description</td>
                 </tr>
                 <tr>
-                    <td>i). Project Type</td>
-                    <td>{{ $inspectionSession->project_area_type }}</td>
+                    <td style="padding-left: 32px !important;">i). Project Type</td>
+                    <th><b>{{ $inspectionSession->project_area_type }}<b></td>
                     <td>ii).Project Name</td>
-                    <td></td>
+                    <th></th>
                 </tr>
                 <tr>
-                    <td>iii). Location</td>
-                    <td></td>
+                    <td style="padding-left: 32px !important;">iii). Location</td>
+                    <th></th>
                     <td>iv).GPS</td>
-                    <td>{{  $inspectionSession->client->industry_coordinate_x }} - {{  $inspectionSession->client->industry_coordinate_y }}</td>
+                    <th>{{  $inspectionSession->client->industry_coordinate_x }} - {{  $inspectionSession->client->industry_coordinate_y }}</th>
                 </tr>
                 <tr>
-                    <td>v). Proposed Land</td>
-                    <td>a.Extent- {{ $inspectionSession->proposed_land_ext }}</td>
-                    <td>b.Use- {{ $inspectionSession->land_use }}</td>
-                    <td>c.Ownership- {{ $inspectionSession->ownersip }}</td>
+                    <td style="padding-left: 32px !important;">v). Proposed Land</td>
+                    <th>a.Extent- {{ $inspectionSession->proposed_land_ext }}</th>
+                    <th>b.Use- {{ $inspectionSession->land_use }}</th>
+                    <th>c.Ownership- {{ $inspectionSession->ownersip }}</th>
                 </tr>
                 <tr>
-                    <td>vi). Adjoining Lnads</td>
-                    <td>N-  {{ $inspectionSession->adj_land_n }}</td>
-                    <td>E-  {{ $inspectionSession->adj_land_e }}</td>
+                    <td style="padding-left: 32px !important;">vi). Adjoining Lnads</td>
+                    <th>N-  {{ $inspectionSession->adj_land_n }}</th>
+                    <th>E-  {{ $inspectionSession->adj_land_e }}</th>
                 </tr>
                 <tr>
                     <td></td>
-                    <td>S-  {{ $inspectionSession->adj_land_s }}</td>
-                    <td>W-  {{ $inspectionSession->adj_land_w }}</td>
+                    <th>S-  {{ $inspectionSession->adj_land_s }}</th>
+                    <th>W-  {{ $inspectionSession->adj_land_w }}</th>
                 </tr>
                 <tr>
-                    <td>vii). Distance to the residence and of house within </td>
-                    <td colspan="3">{{ $inspectionSession->house_within_100 }} 50m</td>
+                    <td style="padding-left: 32px !important;">vii). Distance to the residence and of house within </td>
+                    <th colspan="3">{{ $inspectionSession->house_within_100 }} 50m</th>
                 </tr>
                 <tr>
-                    <td>viii). Sensitive areas and public places (with distance) </td>
-                    <td colspan="3">{{ $inspectionSession->sensitive_area_desc }}</td>
+                    <td style="padding-left: 32px !important;">viii). Sensitive areas and public places (with distance) </td>
+                    <th colspan="3">{{ $inspectionSession->sensitive_area_desc }}</th>
                 </tr>
                 <tr>
-                    <td>ix). Observations & Special issues </td>
-                    <td colspan="3">{{ $inspectionSession->special_issue_desc }}</td>
+                    <td style="padding-left: 32px !important;">ix). Observations & Special issues </td>
+                    <th colspan="3">{{ $inspectionSession->special_issue_desc }}</th>
                 </tr>
                 <tr>
-                    <th>06). Sketch of the project site </th>
+                    <td>06). Sketch of the project site </td>
                 </tr>
                 <tr>
                     <td colspan="4">
@@ -93,7 +93,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>07). Recommendations </th>
+                    <td>07). Recommendations </td>
                     <td colspan="3"></td>
                 </tr>
                 <tr>
