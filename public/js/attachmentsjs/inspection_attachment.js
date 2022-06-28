@@ -31,9 +31,10 @@ function iterateSavedImages(url_list) {
         content = '';
     } else {
         $.each(url_list, function (index, value) {
-            content += '<div class="col-sm-2">';
-            content += '<a href="/' + value.path + '" data-toggle="lightbox" data-title="' + value.id + '" data-gallery="gallery">';
-            content += '<img src="/' + value.path + '" class="img-fluid mb-2" alt="white sample"/>';
+            let prefix = value.path.startsWith('storage/') ? '' : 'storage/';
+            content += '<div>';
+            content += '<a href="/' + prefix + value.path + '"  data-title="' + value.id + '" data-fancybox="gallery">';
+            content += '<div class="m-3" style="width: 120px; height:120px; background-size: cover; background-image:url(/' + prefix + value.path + ')"></div>';
             content += '</a>';
             content += '</div>';
         });
