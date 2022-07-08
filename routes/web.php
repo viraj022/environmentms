@@ -77,8 +77,6 @@ Route::get('/client_reg', function () {
     return view('client_space_expose');
 });
 
-Route::get('/client_space', 'ClientController@index');
-
 Route::get('/reverse_confirm', 'EPLController@index4');
 
 Route::get('/eo_report', function () {
@@ -105,6 +103,8 @@ Route::get('/expired_epl_data', 'ClientController@getExpiredEpl');
 Route::get('/pending_expired_cert', 'ClientController@getPendingExpiredView');
 Route::get('/warning_letter_log', 'WarningLetterController@warningLetterLog');
 
+Route::get('/inspection_site_report/{id}', 'InspectionController@siteInspectionReportView')
+    ->name('inspection_site_report');
 
 Route::get('/inspection_site_report/{id}', 'InspectionController@siteInspectionReportView')->name('inspection_site_report');
 

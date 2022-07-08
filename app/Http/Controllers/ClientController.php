@@ -18,6 +18,7 @@ use App\EnvironmentOfficer;
 use Illuminate\Support\Str;
 use App\Helpers\LogActivity;
 use App\Http\Resources\ClientResource;
+use App\OnlineNewApplicationRequest;
 use App\Repositories\UserNotificationsRepositary;
 use App\SiteClearance;
 use Illuminate\Http\Request;
@@ -45,7 +46,35 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        return view('client_space', ['pageAuth' => $pageAuth]);
+        return view('client_space', [
+            'pageAuth' => $pageAuth,
+            'newApplicationRequest' => null,
+            'salutations' => $this->getSalutations(),
+        ]);
+    }
+
+    public function getSalutations()
+    {
+        return ['-' => 'N/A', 'Mr' => 'Mr.', 'Mrs' => 'Mrs.', 'Ms' => 'Ms.', 'Miss' => 'Miss', 'Rev' => 'Rev'];
+    }
+
+    public function fromOnlineNewApplicationRequest(Request $request)
+    {
+        $newApplicationRequest = null;
+        if ($request->has('new_application_request')) {
+            $req = OnlineNewApplicationRequest::find($request->post('new_application_request'));
+            if ($req) {
+                $newApplicationRequest = $req;
+            }
+        }
+
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('client_space', [
+            'pageAuth' => $pageAuth,
+            'newApplicationRequest' => $newApplicationRequest,
+            'salutations' => $this->getSalutations(),
+        ]);
     }
 
     public function search_files()

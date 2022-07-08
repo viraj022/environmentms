@@ -582,6 +582,24 @@
                     </li>
                 </ul>
             </li>
+            <li class="nav-item has-treeview {{ Request::is('online-requests') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link active">
+                    <i class="nav-icon fas fa-user-shield"></i>
+                    <p>
+                        Online-Requests
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ url('/online-requests') }}"
+                            class="nav-link {{ Request::is('online-requests') ? 'active' : '' }}">
+                            <i class="fas fa-user-plus nav-icon"></i>
+                            <p>List all Online Requests</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
         </ul>
     </nav>
     <!-- /.sidebar-menu -->

@@ -76,10 +76,10 @@
         .tt-suggestion p {
             margin: 0;
         }
-
     </style>
 @endsection
 @section('content')
+    {{-- @dd($newApplicationRequest) --}}
     @if ($pageAuth['is_read'] == 1 || false)
         <section class="content-header">
             <div class="container-fluid">
@@ -93,7 +93,7 @@
         </section>
         <section class="content">
             <!--    Register New Client START-->
-            <div class="container-fluid reg-newClient d-none">
+            <div class="container-fluid reg-newClient {{ empty($newApplicationRequest) ? 'd-none' : '' }}">
                 <div class="row">
 
                     <div class="col-md-12">
@@ -108,7 +108,8 @@
                                             <label>Is New*</label>
                                             <select id="getisOld" class="form-control form-control-sm cutenzReq"
                                                 style="width: 100%;">
-                                                <option value="1">New</option>
+                                                <option value="1"
+                                                    {{ !empty($newApplicationRequest) ? 'selected' : '' }}>New</option>
                                                 <option value="0">Old</option>
                                             </select>
                                         </div>
@@ -116,16 +117,20 @@
                                             <label>Title*</label>
                                             <select id="getTitle" class="form-control form-control-sm cutenzReq"
                                                 style="width: 100%;">
-                                                <option value="Mr">Mr.</option>
-                                                <option value="Mrs">Mrs.</option>
-                                                <option value="-">-</option>
+                                                @foreach ($salutations as $salK => $salV)
+                                                    <option value="{{ $salK }}"
+                                                        {{ empty($newApplicationRequest) ?: ($salK == $newApplicationRequest->title ? 'selected' : '') }}>
+                                                        {{ $salV }}
+                                                    </option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label>First Name*</label>
                                             <input id="getfName" type="text" maxlength="45"
                                                 class="form-control form-control-sm cutenzReq"
-                                                placeholder="Enter FirstName..." value="">
+                                                placeholder="Enter FirstName..."
+                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->firstname }}">
                                             <div id="valName" class="d-none">
                                                 <p class="text-danger">Name is required</p>
                                             </div>
@@ -134,7 +139,7 @@
                                             <label>Last Name</label>
                                             <input id="getlName" type="text" maxlength="45"
                                                 class="form-control form-control-sm" placeholder="Enter LastName..."
-                                                value="">
+                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->lastname }}">
                                             <div id="valLName" class="d-none">
                                                 <p class="text-danger">Last Name is required</p>
                                             </div>
@@ -142,16 +147,20 @@
                                         <div class="form-group">
                                             <label>Address</label>
                                             <input id="getAddress" type="text" class="form-control form-control-sm"
-                                                placeholder="Enter Address..." value="">
+                                                placeholder="Enter Address..."
+                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->address }}">
                                             <div id="valAddName" class="d-none">
                                                 <p class="text-danger">Address is required</p>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label>Contact Number</label>
-                                            <input id="getContact" onKeyDown="if (this.value.length == 10 && event.keyCode != 8)
-                                                    return false;" type="number" class="form-control form-control-sm"
-                                                placeholder="Enter Contact Number..." value="">
+                                            <input id="getContact"
+                                                onKeyDown="if (this.value.length == 10 && event.keyCode != 8)
+                                                    return false;"
+                                                type="number" class="form-control form-control-sm"
+                                                placeholder="Enter Contact Number..."
+                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->mobile_number }}">
                                             <div id="valConName" class="d-none">
                                                 <p class="text-danger">Contact Number is required</p>
                                             </div>
@@ -159,16 +168,20 @@
                                         <div class="form-group">
                                             <label>Email</label>
                                             <input id="getEmail" type="text" class="form-control form-control-sm"
-                                                placeholder="Enter Email..." value="">
+                                                placeholder="Enter Email..."
+                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->email_address }}">
                                             <div id="valNam1e" class="d-none">
                                                 <p class="text-danger">Email is required</p>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label>NIC</label>
-                                            <input id="getNicSave" onKeyDown="if (this.value.length == 12 && event.keyCode != 8)
-                                                    return false;" type="text" class="form-control form-control-sm"
-                                                maxlength="12" minlength="10" placeholder="Enter NIC..." value="">
+                                            <input id="getNicSave"
+                                                onKeyDown="if (this.value.length == 12 && event.keyCode != 8)
+                                                    return false;"
+                                                type="text" class="form-control form-control-sm" maxlength="12"
+                                                minlength="10" placeholder="Enter NIC..."
+                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->nic_number }}">
                                             <div id="valnicName" class="d-none">
                                                 <p class="text-danger">NIC is required</p>
                                             </div>
@@ -208,62 +221,75 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Industry Sub-Category</label>
-                                            <input id="industry_sub_cat" type="text" class="form-control form-control-sm "
-                                                placeholder="Enter Text." value="">
+                                            <input id="industry_sub_cat" type="text"
+                                                class="form-control form-control-sm" placeholder="Enter Text."
+                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->industry_sub_category }}">
                                         </div>
                                         <div class="form-group">
                                             <label>Business Registration Number</label>
-                                            <input id="business_regno" type="text" class="form-control form-control-sm"
-                                                placeholder="Enter Number" value="">
+                                            <input id="business_regno" type="text"
+                                                class="form-control form-control-sm" placeholder="Enter Number"
+                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->business_registration_number }}">
                                         </div>
                                         <div class="form-group">
                                             <label>Business Name*</label>
                                             <input id="business_name" type="text"
                                                 class="form-control form-control-sm cutenzReq" placeholder="Enter Name..."
-                                                value="">
+                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->business_name }}">
                                         </div>
                                         <div class="form-group">
-                                            <label>Is this Industry Zone</label>
-                                            <select id="getZone" class="form-control form-control-sm" style="width: 100%;">
-                                                <option value="0">No</option>
-                                                <option value="1">Yes</option>
+                                            <label>Is this in Industry Zone?</label>
+                                            <select id="getZone" class="form-control form-control-sm"
+                                                style="width: 100%;">
+                                                <option value="0"
+                                                    {{ empty($newApplicationRequest) ?: ($newApplicationRequest->is_in_industry_zone == '0' ? 'selected' : '') }}>
+                                                    No</option>
+                                                <option value="1"
+                                                    {{ empty($newApplicationRequest) ?: ($newApplicationRequest->is_in_industry_zone == '1' ? 'selected' : '') }}>
+                                                    Yes</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label>Investment(Rs)*</label>
-                                            <input id="inventsment" pattern="/^-?\d+\.?\d*$/" onkeypress="if (this.value.length == 12)
-                                                    return false;" type="number"
-                                                class="form-control form-control-sm cutenzReq"
-                                                placeholder="Enter investment Rs" value="">
+                                            <input id="inventsment" pattern="/^-?\d+\.?\d*$/"
+                                                onkeypress="if (this.value.length == 12)
+                                                    return false;"
+                                                type="number" class="form-control form-control-sm cutenzReq"
+                                                placeholder="Enter investment Rs"
+                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->investment_amount }}">
                                         </div>
                                         <div class="form-group">
                                             <label>Address*</label>
                                             <input id="getAddressT" type="text"
                                                 class="form-control form-control-sm cutenzReq"
-                                                placeholder="Enter Address..." value="">
+                                                placeholder="Enter Address..."
+                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->industry_address }}">
                                         </div>
                                         <div class="form-group">
                                             <label>Start Date*</label>
                                             <input id="startDate" type="date" max="2999-12-31"
                                                 class="form-control form-control-sm cutenzReq" placeholder="Enter Date..."
-                                                value="">
+                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->start_date }}">
                                         </div>
                                         <div class="form-group">
                                             <label>Submitted Date*</label>
                                             <input id="submittedDate" type="date" max="2999-12-31"
                                                 class="form-control form-control-sm cutenzReq" placeholder="Enter Date..."
-                                                value="">
+                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->submitted_date }}">
                                         </div>
                                         <div class="form-group">
                                             <label>Contact No</label>
-                                            <input id="getContactn" type="number" onKeyDown="if (this.value.length == 10 && event.keyCode != 8)
-                                                    return false;" class="form-control form-control-sm"
-                                                placeholder="Enter Contact Info..." value="">
+                                            <input id="getContactn" type="number"
+                                                onKeyDown="if (this.value.length == 10 && event.keyCode != 8)
+                                                    return false;"
+                                                class="form-control form-control-sm" placeholder="Enter Contact Info..."
+                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->industry_contact_no }}">
                                         </div>
                                         <div class="form-group">
                                             <label>Email</label>
                                             <input id="getEmailI" type="text" class="form-control form-control-sm"
-                                                placeholder="Enter Email..." value="">
+                                                placeholder="Enter Email..."
+                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->industry_email_address }}">
                                         </div>
                                     </div>
                                     <div class="card-footer">
@@ -293,7 +319,7 @@
             <!---------END ALL------------>
 
             <!--Search Client By NIC START-->
-            <div class="container-fluid search-Client">
+            <div class="container-fluid search-Client {{ empty($newApplicationRequest) ? '' : 'd-none' }}">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-12">
@@ -320,8 +346,9 @@
                                     <div class="form-group">
                                         <div id="the-basics">
                                             <input id="getNic" type="text"
-                                                class="form-control form-control-sm col-12 typeahead" style="width: 49.5em"
-                                                max-length="12" min-length="10" placeholder="Enter Here..." value="">
+                                                class="form-control form-control-sm col-12 typeahead"
+                                                style="width: 49.5em" max-length="12" min-length="10"
+                                                placeholder="Enter Here..." value="">
                                         </div>
                                         <div id="valName" class="d-none">
                                             <p class="text-danger">Name is required</p>
@@ -425,7 +452,8 @@
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                            <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete
+                            <button id="btnDelete" type="submit" class="btn btn-outline-light"
+                                data-dismiss="modal">Delete
                                 Permanently</button>
                         </div>
                     </div>
@@ -500,18 +528,26 @@
             });
             google.maps.event.addListener(marker, 'dragend', function(evt) {
                 _Latitude = evt.latLng.lat().toFixed(
-                6); //change  decimal point if have problam with location accuracy
+                    6); //change  decimal point if have problam with location accuracy
                 _Longitude = evt.latLng.lng().toFixed(
-                6); //change  decimal point if have problam with location accuracy
+                    6); //change  decimal point if have problam with location accuracy
             });
         }
 
-
         $(function() {
             //Load table
-            loadPradeshiyaSabha();
-            IndustryCategoryCombo();
-            BusinessScaleCombo();
+            loadPradeshiyaSabha(function() {
+                {!! empty($newApplicationRequest) ?:
+                    "$('#prsdeshiySb').val(" . $newApplicationRequest->pradesheeyasaba_id . "); $('#prsdeshiySb').trigger('change');" !!}
+            });
+            IndustryCategoryCombo(function() {
+                {!! empty($newApplicationRequest) ?:
+                    "$('#industryCat').val(" . $newApplicationRequest->industry_category_id . "); $('#industryCat').trigger('change');" !!}
+            });
+            BusinessScaleCombo(function() {
+                {!! empty($newApplicationRequest) ?:
+                    "$('#businesScale').val(" . $newApplicationRequest->business_scale . "); $('#businesScale').trigger('change');" !!}
+            });
             getClientSearchDetails('name', function(set) {
                 localStorage.setItem('clientData', JSON.stringify(set));
                 states.clear();
@@ -530,7 +566,7 @@
                                 window.location = "/industry_profile/id/" + result.id;
                             });
                         } else {
-                            alert('Enviremontal MS Error ('+ Object.values(result.message)+')');
+                            alert('Enviremontal MS Error (' + Object.values(result.message) + ')');
                         }
                         resetinputFields();
                         hideAllErrors();
@@ -644,7 +680,7 @@
                                     $('.view-Customer').removeClass('d-none');
                                 } else {
                                     if (confirm(
-                                        'Client Not Found!Do You Want Create New Client?')) {
+                                            'Client Not Found!Do You Want Create New Client?')) {
                                         setSectionVisible('reg-newClient');
                                     } else {
                                         return false;
@@ -656,7 +692,7 @@
                                     window.location = "/industry_profile/id/" + result.id;
                                 } else {
                                     if (confirm(
-                                        'Client Not Found!Do You Want Create New Client?')) {
+                                            'Client Not Found!Do You Want Create New Client?')) {
                                         setSectionVisible('reg-newClient');
                                     } else {
                                         return false;
@@ -668,7 +704,7 @@
                                     window.location = "/industry_profile/id/" + result.id;
                                 } else {
                                     if (confirm(
-                                        'Client Not Found!Do You Want Create New Client?')) {
+                                            'Client Not Found!Do You Want Create New Client?')) {
                                         setSectionVisible('reg-newClient');
                                     } else {
                                         return false;
@@ -684,7 +720,7 @@
                                     } else {
                                         if (confirm(
                                                 'Client Not Found!Do You Want Create New Client?'
-                                                )) {
+                                            )) {
                                             setSectionVisible('reg-newClient');
                                         } else {
                                             return false;
@@ -697,7 +733,7 @@
                                     window.location = "/industry_profile/id/" + result.id;
                                 } else {
                                     if (confirm(
-                                        'Client Not Found!Do You Want Create New Client?')) {
+                                            'Client Not Found!Do You Want Create New Client?')) {
                                         setSectionVisible('reg-newClient');
                                     } else {
                                         return false;
@@ -710,7 +746,7 @@
                                     $('.view-Customer').removeClass('d-none');
                                 } else {
                                     if (confirm(
-                                        'Client Not Found!Do You Want Create New Client?')) {
+                                            'Client Not Found!Do You Want Create New Client?')) {
                                         setSectionVisible('reg-newClient');
                                     } else {
                                         return false;
@@ -723,7 +759,7 @@
                                     $('.view-Customer').removeClass('d-none');
                                 } else {
                                     if (confirm(
-                                        'Client Not Found!Do You Want Create New Client?')) {
+                                            'Client Not Found!Do You Want Create New Client?')) {
                                         setSectionVisible('reg-newClient');
                                     } else {
                                         return false;
@@ -736,7 +772,7 @@
                                     $('.view-site-clear').removeClass('d-none');
                                 } else {
                                     if (confirm(
-                                        'Client Not Found!Do You Want Create New Client?')) {
+                                            'Client Not Found!Do You Want Create New Client?')) {
                                         setSectionVisible('reg-newClient');
                                     } else {
                                         return false;
