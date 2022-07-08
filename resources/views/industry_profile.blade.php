@@ -679,10 +679,10 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="callout callout-success">
-                                                    <button type="button" id="" class="btn btn-success"><i
-                                                        class="fas fa-file"></i> New Letter</button>
-                                                        <a href=""
-                                                        class="btn btn-primary text-white"><i class="far fa-edit"></i> View Letters</a>
+                                                        <a href="{{ route('create.file.letter', [$id]) }}"
+                                                        class="btn btn btn-primary text-white" style="text-decoration: none" target="_blank"><i class="far fa-edit"></i> New Letter</a>
+                                                        <a href="{{ route('file.letter.view', [$id]) }}"
+                                                        class="btn btn-success text-white" style="text-decoration: none" target="_blank"><i class="far fa-file"></i> View Letters</a>
                                                 </div>
                                             </div>
                                         </div>

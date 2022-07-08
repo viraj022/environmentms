@@ -108,4 +108,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserNotification::class);
     }
+    
+//file letters
+    public function fileLetters()
+    {
+        return $this->hasMany(FileLetter::class);
+    }
+
+    public function fileLetterMinutes()
+    {
+        return $this->hasMany(FileLetterAssignment::class);
+    }
+
+    public function fileLetterAssignments()
+    {
+        return $this->hasMany(FileLetterAssignment::class);
+    }
 }

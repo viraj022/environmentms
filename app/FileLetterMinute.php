@@ -10,4 +10,14 @@ class FileLetterMinute extends Model
     use SoftDeletes;
 
     protected $fillable = ['id', 'letter_id', 'user_id', 'description'];
+
+    public function fileLetter()
+    {
+        return $this->belongsTo(FileLetter::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
