@@ -8,12 +8,19 @@ use App\FileLetterAssignment;
 use App\FileLetterMinute;
 use App\Letter;
 use App\Level;
+use App\Repositories\UserNotificationsRepositary;
 use App\User;
 use Auth;
 use Illuminate\Http\Request;
 
 class FileLetterController extends Controller
 {
+    private $userNotificationsRepositary;
+    public function __construct(UserNotificationsRepositary $userNotificationsRepositary)
+    {
+        $this->userNotificationsRepositary = $userNotificationsRepositary;
+    }
+
     public function index($id)
     {
         $fileLetters = FileLetter::where('client_id', $id)->get();
@@ -28,27 +35,25 @@ class FileLetterController extends Controller
 
     public function storeFileLetter(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'letter_title' => 'required',
+            'letter_content' => 'required',
         ]);
 
-        if ($validated) {
-
-            $incompleteCount = FileLetter::where('client_id', $request->client_id)
-                ->where('letter_status', 'Incomplete')->count();
-            if ($incompleteCount > 0) {
-                return redirect()->route('file.letter.view', $request->client_id)
-                    ->with('letter_saved_error', 'There is one incomplete letter here, You have to complete it to add new one!');
-            } else {
-                $saveLetterContent = FileLetter::create([
-                    "client_id" => $request->client_id,
-                    "letter_title" => $request->letter_title,
-                    "letter_content" => $request->editor,
-                ]);
-                $saveLetterContent->save();
-                return redirect()->route('file.letter.view', $request->client_id)
-                    ->with('letter_saved', 'Letter saved successfully!');
-            }
+        $incompleteCount = FileLetter::where('client_id', $request->client_id)
+            ->where('letter_status', 'Incomplete')->count();
+        if ($incompleteCount > 0) {
+            return redirect()->route('file.letter.view', $request->client_id)
+                ->with('letter_saved_error', 'There is one incomplete letter here, You have to complete it to add new one!');
+        } else {
+            $saveLetterContent = FileLetter::create([
+                "client_id" => $request->client_id,
+                "letter_title" => $request->letter_title,
+                "letter_content" => $request->letter_content,
+            ]);
+            $saveLetterContent->save();
+            return redirect()->route('file.letter.view', $request->client_id)
+                ->with('letter_saved', 'Letter saved successfully!');
         }
     }
 
@@ -62,13 +67,18 @@ class FileLetterController extends Controller
 
     public function editFileLetter(Request $request, $client_id, $letter_id)
     {
+        $request->validate([
+            'letter_title' => 'required',
+            'letter_content' => 'required',
+        ]);
+
         $letter = FileLetter::where('id', $letter_id)->first();
 
         if ($letter->letter_status === 'Incomplete') {
             $letter->update([
                 "client_id" => $client_id,
                 "letter_title" => $request->get('letter_title'),
-                "letter_content" => $request->get('editor'),
+                "letter_content" => $request->get('letter_content'),
             ]);
             return redirect()->route('file.letter.view', $client_id)
                 ->with('letter_update_success', 'Letter updated successfully!');
@@ -106,7 +116,7 @@ class FileLetterController extends Controller
     {
         $letter = FileLetter::where('id', $letter)->first();
         $levels = Level::all();
-        $fileLetterAssigned = FileLetterAssignment::where('letter_id', $letter->id)->get();
+        $fileLetterAssigned = FileLetterAssignment::where('letter_id', $letter->id)->get(); 
 
         return view('file_letters.assign_letter', compact('levels', 'letter', 'fileLetterAssigned'));
     }
@@ -122,6 +132,15 @@ class FileLetterController extends Controller
         ]);
         $saveLetterAssignments->save();
 
+        $letters = FileLetter::where('id', $letter)->first();
+        $client = Client::where('id', $letters->client_id)->first();
+
+        $this->userNotificationsRepositary->makeNotification(
+            $saveLetterAssignments->assigned_to_id,
+            'File Letter Assigned for File No: "' . $client->file_no . '"',
+            $letters->client_id
+        );
+
         return redirect()->route('view.file.letter.assign', $letter)
             ->with('letter_assigned', 'Success!');
     }
@@ -132,6 +151,6 @@ class FileLetterController extends Controller
         $letter->letter_status = 'Completed';
         $letter->save();
         return redirect()->route('file.letter.view', $letter->client_id);
-            // ->with('file_letter_completed', 'Letter Completed!');
+        // ->with('file_letter_completed', 'Letter Completed!');
     }
 }

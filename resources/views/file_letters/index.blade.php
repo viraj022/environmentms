@@ -50,20 +50,21 @@
                             @endif
 
                             <td>
-                                <a href="{{ route('view.file.letter', $letter->id) }}" class="btn btn-success btn-sm">
+                                <a href="{{ route('view.file.letter', $letter->id) }}" class="btn btn-primary btn-sm">
                                     View & Print
                                 </a>
                                 @if ($letter->letter_status == 'Incomplete')
-                                <a href="{{ route('file.letter.edit.view', ['client_id' => $letter->client_id, 'letter_id' => $letter->id]) }}"
-                                    class="btn btn-warning btn-sm">
-                                    Edit
-                                </a>
+                                
                                 <a href="{{ route('view.file.letter.minutes', $letter->id) }}"
                                     class="btn btn-secondary btn-sm">
                                     Add Minutes
                                 </a>
                                 <a href="{{ route('view.file.letter.assign', $letter->id) }}" class="btn btn-info btn-sm">
                                     Assign Letter
+                                </a>
+                                <a href="{{ route('file.letter.edit.view', ['client_id' => $letter->client_id, 'letter_id' => $letter->id]) }}"
+                                    class="btn btn-warning btn-sm">
+                                    Edit
                                 </a>
                                     <form action="{{ route('store.letter.completed', $letter->id) }}" method="POST"
                                         class="d-inline" id="complete_form">
