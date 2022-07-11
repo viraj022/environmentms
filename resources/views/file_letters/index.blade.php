@@ -53,12 +53,18 @@
                                 <a href="{{ route('view.file.letter', $letter->id) }}" class="btn btn-primary btn-sm">
                                     View & Print
                                 </a>
-                                @if ($letter->letter_status == 'Incomplete')
-                                
+                                @if ($letter->letter_status == 'Completed')
+                                <a href="{{ route('completed.letter.minute', $letter->id) }}"
+                                    class="btn btn-secondary btn-sm">
+                                    Minutes
+                                </a>
+                                @else
                                 <a href="{{ route('view.file.letter.minutes', $letter->id) }}"
                                     class="btn btn-secondary btn-sm">
                                     Add Minutes
                                 </a>
+                                @endif
+                                @if ($letter->letter_status == 'Incomplete')
                                 <a href="{{ route('view.file.letter.assign', $letter->id) }}" class="btn btn-info btn-sm">
                                     Assign Letter
                                 </a>

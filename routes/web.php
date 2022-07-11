@@ -124,6 +124,7 @@ Route::get('/view_letter/letter/{letter}', 'FileLetterController@viewFileLetter'
 //file letter minutes
 Route::get('/letter_minutes/letter/{letter_id}', 'FileLetterController@viewLetterMinuest')->name('view.file.letter.minutes');
 Route::post('/save_letter_minutes/{letter_id}', 'FileLetterController@storeFileLetterMinutes')->name('store.file.letter.minutes');
+Route::get('/completed_letter_minute/{letter}', 'FileLetterController@viewCompletedLetterMinute')->name('completed.letter.minute');
 
 //assign file letters
 Route::get('/letter_assign/letter_id/{letter}', 'FileLetterController@viewFileLetterAssign')->name('view.file.letter.assign');
