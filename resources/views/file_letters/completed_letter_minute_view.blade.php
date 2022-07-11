@@ -43,7 +43,7 @@
                         </tr>
                         @empty
                             <tr>
-                                <td colspan="4">No Minute records</td>
+                                <td colspan="4">No Minute Records</td>
                             </tr>
                         @endforelse
                     </tbody>

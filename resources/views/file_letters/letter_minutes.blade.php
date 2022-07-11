@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <table class="table">
+                        <table class="table table-bordered">
                             <colgroup>
                                 <col style="width: 10%;">
                                 <col style="width: 50%;">
@@ -63,16 +63,20 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($letterMinutes as $letterMinute)
-                                    <tr>
-                                        <td style="width: 10%;">{{ $loop->iteration }}</td>
-                                        <td style="word-wrap: break-word; word-break: break-all;">
-                                            {{ $letterMinute->description }}
-                                        </td>
-                                        <td style="width: 20%;">{{ $letterMinute->user->user_name }}</td>
-                                        <td style="width: 20%;">{{ $letterMinute->updated_at }}</td>
-                                    </tr>
-                                @endforeach
+                                @forelse ($letterMinutes as $letterMinute)
+                                <tr>
+                                    <td style="width: 10%;">{{ $loop->iteration }}</td>
+                                    <td style="word-wrap: break-word; word-break: break-all;">
+                                        {{ $letterMinute->description }}
+                                    </td>
+                                    <td style="width: 20%;">{{ $letterMinute->user->user_name }}</td>
+                                    <td style="width: 20%;">{{ $letterMinute->updated_at }}</td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="4">No Minute Records</td>
+                                </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
