@@ -112,6 +112,13 @@ class FileLetterController extends Controller
             ->with('letter_minute_added', 'Success!');
     }
 
+    public function viewCompletedLetterMinute(FileLetter $letter)
+    {
+        $letterMinutes = FileLetterMinute::where('letter_id', $letter->id)->get();
+
+        return view('file_letters.completed_letter_minute_view', compact('letterMinutes'));
+    }
+
     public function viewFileLetterAssign($letter)
     {
         $letter = FileLetter::where('id', $letter)->first();

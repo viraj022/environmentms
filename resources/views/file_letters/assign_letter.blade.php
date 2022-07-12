@@ -50,7 +50,7 @@
                         </form>
                     </div>
                 </div>
-                <table class="table table-head-fixed text-nowrap" id="forward_history">
+                <table class="table table-bordered" id="forward_history">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -60,14 +60,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($fileLetterAssigned as $assigned)
-                            <tr>
-                                <td>{{ $loop->index + 1 }}</td>
-                                <td>{{ $assigned->assignedToUser->user_name }}</td>
-                                <td>{{ $assigned->assignedByUser->user_name }}</td>
-                                <td>{{ $assigned->updated_at }}</td>
-                            </tr>
-                        @endforeach
+                        @forelse ($fileLetterAssigned as $assigned)
+                        <tr>
+                            <td>{{ $loop->index + 1 }}</td>
+                            <td>{{ $assigned->assignedToUser->user_name }}</td>
+                            <td>{{ $assigned->assignedByUser->user_name }}</td>
+                            <td>{{ $assigned->updated_at }}</td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="4">No Assign Records</td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

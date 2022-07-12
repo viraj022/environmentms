@@ -6,6 +6,11 @@
 @extends('layouts.footer')
 
 @section('content')
+    <style>
+        .minute_content {
+            word-wrap: break-word;
+        }
+    </style>
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -31,8 +36,10 @@
                                 Minutes
                             </div>
                             <div class="card-body">
-                                <input type="text" name="description" id="description" class="form-control"
-                                    placeholder="Type Message ...">
+                                <div class="minute_content">
+                                    <textarea type="text" name="description" id="description" class="form-control" cols="3"
+                                        placeholder="Type Message ..."></textarea>
+                                </div>
                             </div>
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-dark">Add</button>
@@ -40,22 +47,36 @@
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <table class="table">
+                        <table class="table table-bordered">
+                            <colgroup>
+                                <col style="width: 10%;">
+                                <col style="width: 50%;">
+                                <col style="width: 20%;">
+                                <col style="width: 20%;">
+                            </colgroup>
                             <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>Minute Descriptions</th>
                                     <th>User</th>
+                                    <th>Date & Time</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($letterMinutes as $letterMinute)
-                                    <tr>
-                                        <td>{{ $loop->index + 1 }}</td>
-                                        <td>{{ $letterMinute->description }}</td>
-                                        <td>{{ $letterMinute->user->user_name }}</td>
-                                    </tr>
-                                @endforeach
+                                @forelse ($letterMinutes as $letterMinute)
+                                <tr>
+                                    <td style="width: 10%;">{{ $loop->iteration }}</td>
+                                    <td style="word-wrap: break-word; word-break: break-all;">
+                                        {{ $letterMinute->description }}
+                                    </td>
+                                    <td style="width: 20%;">{{ $letterMinute->user->user_name }}</td>
+                                    <td style="width: 20%;">{{ $letterMinute->updated_at }}</td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="4">No Minute Records</td>
+                                </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
