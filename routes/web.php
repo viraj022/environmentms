@@ -107,3 +107,27 @@ Route::get('/warning_letter_log', 'WarningLetterController@warningLetterLog');
 
 
 Route::get('/inspection_site_report/{id}', 'InspectionController@siteInspectionReportView')->name('inspection_site_report');
+
+//file letters
+Route::get('/file_letters/id/{id}', 'FileLetterController@index')->name('file.letter.view');
+Route::get('/create_file_letters/id/{id}','FileLetterController@createFileLetter' )->name('create.file.letter');
+
+Route::post('/save_letter', 'FileLetterController@storeFileLetter')->name('store.file.letter');
+
+//update file letter
+Route::get('/edit_letter/letter_id/{client_id}/{letter_id}', 'FileLetterController@editLetterView')->name('file.letter.edit.view');
+Route::post('/edit_file_letter/{client_id}/{letter_id}','FileLetterController@editFileLetter')->name('edit.file.letter');
+
+//view file letter
+Route::get('/view_letter/letter/{letter}', 'FileLetterController@viewFileLetter')->name('view.file.letter');
+
+//file letter minutes
+Route::get('/letter_minutes/letter/{letter_id}', 'FileLetterController@viewLetterMinuest')->name('view.file.letter.minutes');
+Route::post('/save_letter_minutes/{letter_id}', 'FileLetterController@storeFileLetterMinutes')->name('store.file.letter.minutes');
+Route::get('/completed_letter_minute/{letter}', 'FileLetterController@viewCompletedLetterMinute')->name('completed.letter.minute');
+
+//assign file letters
+Route::get('/letter_assign/letter_id/{letter}', 'FileLetterController@viewFileLetterAssign')->name('view.file.letter.assign');
+Route::post('/save_letter_assign/letter_id/{letter}', 'FileLetterController@storeFileLetterAssign')->name('store.file.letter.assign');
+
+Route::post('/file_letter_completed/{letter}', 'FileLetterController@storeLetterCompleted')->name('store.letter.completed');

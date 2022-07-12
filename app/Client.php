@@ -242,4 +242,9 @@ class Client extends Model
     {
         return $this->hasMany(Certificate::class);
     }
+
+    public function fileLetters()
+    {
+        return $this->hasMany(FileLetter::class);
+    }
 }
