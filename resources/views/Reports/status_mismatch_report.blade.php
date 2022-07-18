@@ -51,8 +51,10 @@
                                                     <td>{{ $file_status[$data->file_status] }}</td>
                                                     <td>{{ Carbon\Carbon::parse($data->submitted_date)->format('Y/m/d') }}
                                                     </td>
-                                                    <td><button type="button" value="{{ $data->id }}"
-                                                            class="btn btn-primary btn-sm actionBtn">Button</button></td>
+                                                    <td>
+                                                        <button type="button" value="{{ $data->id }}"
+                                                            class="btn btn-primary btn-sm actionBtn">Revert</button>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -106,9 +108,17 @@
                 }, "excel", "csv"],
 
             });
-            $('.actionBtn').click(function() {
-                alert($(this).val());
-                fixFileStatus($(this).val());
+
+            $(document).on('click', '.actionBtn', function() {
+                let _this = $(this);
+
+                fixFileStatus(_this.val(), function() {
+                    var table = $('#status_mismatch_report').DataTable();
+                    table
+                        .row(_this.parents('tr'))
+                        .remove()
+                        .draw();
+                });
             });
 
             // function fixFileStatus(clinet_id) {
@@ -117,9 +127,12 @@
             //         console.log("Response: " + response);
             //     });
             // }
-            function fixFileStatus(clinet_id) {
-                ajaxRequest('POST','/api/fix_file_status',{clint_id:clinet_id},function(resp){
+            function fixFileStatus(clinet_id, callback) {
+                ajaxRequest('POST', '/api/fix_file_status', {
+                    clint_id: clinet_id
+                }, function(resp) {
                     show_mesege(resp);
+                    if (typeof callback === 'function') callback();
                 });
             }
 
