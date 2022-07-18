@@ -110,8 +110,8 @@
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" id="setInspectionVal" class="btn btn-primary"><i
-                                    class="fa fa-check"></i> Submit</button>
+                            <button type="button" id="setInspectionVal" class="btn btn-primary"><i class="fa fa-check"></i>
+                                Submit</button>
                         </div>
                     </div>
                 </div>
@@ -276,6 +276,7 @@
                 checkInspectionStatus(f_id, $('#getInspection').val(), function(rep) {
                     show_mesege(rep);
                     $('#modal-xl').modal('hide');
+                    document.querySelector('#setInspectionVal').disabled = false;
                     forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(),
                         file_status);
                     //                $("#tblAllFiles").DataTable().ajax.reload(null, false);
