@@ -26,11 +26,13 @@
                             <div class="card-body">
                                 <div class="mb-2">
                                     <label for="title">Letter Title</label>
-                                    <input type="text" id="letter_title" name="letter_title" class="form-control @error('letter_title') is-invalid @enderror"
+                                    <input type="text" id="letter_title" name="letter_title"
+                                        class="form-control @error('letter_title') is-invalid @enderror"
                                         placeholder="Enter the letter title" value="{{ old('letter_title') }}">
-                                        @error('letter_title')
-                                        <div class="invalid-feedback d-block" style="font-size: 18px;">Letter title is required</div>
-                                        @enderror
+                                    @error('letter_title')
+                                        <div class="invalid-feedback d-block" style="font-size: 18px;">Letter title is required
+                                        </div>
+                                    @enderror
                                 </div>
                                 <div class="mb-2 mt-3">
                                     <button type="submit" class="btn btn-success" id="save">Save</button>
@@ -42,9 +44,6 @@
                         <div class="card">
                             <div class="card-body">
                                 <textarea name="letter_content" id="letter_content">{{ old('letter_content') }}</textarea>
-                                @error('letter_content')
-                                <div class="invalid-feedback d-block" style="font-size: 18px;">Letter Content is Needed</div>
-                                @enderror
                             </div>
                         </div>
                     </div>
@@ -121,6 +120,5 @@
         @if (session('letter_create_error'))
             Swal.fire('Error', '{{ session('letter_create_error') }}', 'error');
         @endif
-
     </script>
 @endsection

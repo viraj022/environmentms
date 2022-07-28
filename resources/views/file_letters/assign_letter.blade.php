@@ -61,16 +61,16 @@
                     </thead>
                     <tbody>
                         @forelse ($fileLetterAssigned as $assigned)
-                        <tr>
-                            <td>{{ $loop->index + 1 }}</td>
-                            <td>{{ $assigned->assignedToUser->user_name }}</td>
-                            <td>{{ $assigned->assignedByUser->user_name }}</td>
-                            <td>{{ $assigned->updated_at }}</td>
-                        </tr>
+                            <tr>
+                                <td>{{ $loop->index + 1 }}</td>
+                                <td>{{ $assigned->assignedToUser->user_name }}</td>
+                                <td>{{ $assigned->assignedByUser->user_name }}</td>
+                                <td>{{ Carbon\Carbon::parse($assigned->updated_at)->format('Y-m-d h:i A') }}</td>
+                            </tr>
                         @empty
-                        <tr>
-                            <td colspan="4">No Assign Records</td>
-                        </tr>
+                            <tr>
+                                <td colspan="4">No Assign Records</td>
+                            </tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -111,6 +111,5 @@
         @if (session('letter_assigned'))
             Swal.fire('Success', '{{ session('letter_assigned') }}', 'success');
         @endif
-
     </script>
 @endsection

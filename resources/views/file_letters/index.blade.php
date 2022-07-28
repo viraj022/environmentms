@@ -32,6 +32,7 @@
                                 <th>Letter Title</th>
                                 <th>Status</th>
                                 <th>Actions</th>
+                                <th>Finalized at</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,8 +45,11 @@
                                             <span class="badge badge-warning text-wrap"
                                                 style="font-size: 15px;">{{ $letter->letter_status }}</span>
                                     </td>
-                                @else
-                                    <span class="badge badge-success text-wrap"
+                                @elseif ($letter->letter_status == 'Finalized')
+                                    <span class="badge badge-warning text-wrap"
+                                        style="font-size: 15px;">{{ $letter->letter_status }}</span>
+                                        @else
+                                        <span class="badge badge-success text-wrap"
                                         style="font-size: 15px;">{{ $letter->letter_status }}</span></td>
                             @endif
 
@@ -53,31 +57,39 @@
                                 <a href="{{ route('view.file.letter', $letter->id) }}" class="btn btn-primary btn-sm">
                                     View & Print
                                 </a>
-                                @if ($letter->letter_status == 'Completed')
-                                <a href="{{ route('completed.letter.minute', $letter->id) }}"
-                                    class="btn btn-secondary btn-sm">
-                                    Minutes
-                                </a>
-                                @else
+                                @if ($letter->letter_status == 'Incomplete' || $letter->letter_status == 'Finalized')
                                 <a href="{{ route('view.file.letter.minutes', $letter->id) }}"
                                     class="btn btn-secondary btn-sm">
                                     Add Minutes
                                 </a>
-                                @endif
-                                @if ($letter->letter_status == 'Incomplete')
                                 <a href="{{ route('view.file.letter.assign', $letter->id) }}" class="btn btn-info btn-sm">
                                     Assign Letter
                                 </a>
+                                @endif
+                                @if ($letter->letter_status == 'Incomplete')
                                 <a href="{{ route('file.letter.edit.view', ['client_id' => $letter->client_id, 'letter_id' => $letter->id]) }}"
                                     class="btn btn-warning btn-sm">
                                     Edit
                                 </a>
-                                    <form action="{{ route('store.letter.completed', $letter->id) }}" method="POST"
-                                        class="d-inline" id="complete_form">
-                                        @csrf
-                                        <button class="btn btn-success btn-sm" type="button"
-                                            id="complete">Complete</button>
-                                    </form>
+                                <form action="{{ route('letter.finalize', $letter->id) }}" method="post" class="d-inline" id="finalize_form">
+                                    @csrf
+                                    <button class="btn btn-success btn-sm" type="button"
+                                    id="finalize">Letter Finalize</button>
+                                </form>
+                                @endif
+
+                                @if ($letter->letter_status == 'Finalized')
+                                <form action="{{ route('store.letter.completed', $letter->id) }}" method="POST"
+                                    class="d-inline" id="complete_form">
+                                    @csrf
+                                    <button class="btn btn-success btn-sm" type="button" id="complete">Complete</button>
+                                </form>
+                                @endif
+                                
+                            </td>
+                            <td>
+                                @if (!empty($letter->finalized_at))
+                                {{ Carbon\Carbon::parse($letter->finalized_at)->format('Y-m-d h:i A') }}
                                 @endif
                             </td>
                             </tr>
@@ -105,6 +117,23 @@
         //     Swal.fire('Success', '{{ session('file_letter_completed') }}', 'success');
         // @endif
 
+        $('#finalize').click(function(e) {
+            Swal.fire({
+                title: 'Are you sure You want to finalize this letter?',
+                html: 'If you finalize, you can\'t reverse it' ,
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.value === true) {
+                    $('#finalize_form').submit();
+                    Swal.fire('Letter Finalized!', '', 'success')
+                } else {
+                    return false;
+                }
+            });
+        });
+
         $('#complete').click(function(e) {
             Swal.fire({
                 title: 'Are you sure You want to complete this letter?',
@@ -115,7 +144,7 @@
                 /* Read more about isConfirmed, isDenied below */
                 if (result.value === true) {
                     $('#complete_form').submit();
-                    Swal.fire('Saved!', '', 'success')
+                    Swal.fire('Letter Completed!', '', 'success')
                 } else {
                     return false;
                 }

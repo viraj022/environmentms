@@ -13,7 +13,7 @@ class FileLetterMinute extends Model
 
     public function fileLetter()
     {
-        return $this->belongsTo(FileLetter::class);
+        return $this->belongsTo(FileLetter::class, 'letter_id');
     }
 
     public function user()

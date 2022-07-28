@@ -9,11 +9,11 @@ class FileLetterAssignment extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['id','letter_id','assigned_by_id','assigned_to_id'];
+    protected $fillable = ['id', 'letter_id', 'assigned_by_id', 'assigned_to_id'];
 
     public function fileLetter()
     {
-        return $this->belongsTo(FileLetter::class);
+        return $this->belongsTo(FileLetter::class, 'letter_id');
     }
 
     public function assignedByUser()

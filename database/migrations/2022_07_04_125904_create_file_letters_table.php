@@ -17,8 +17,9 @@ class CreateFileLettersTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('client_id');
             $table->string('letter_title');
-            $table->text('letter_content');
+            $table->text('letter_content')->nullable();
             $table->string('letter_status')->default('Incomplete');
+            $table->timestamp('finalized_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
