@@ -57,6 +57,13 @@
                                 <a href="{{ route('view.file.letter', $letter->id) }}" class="btn btn-primary btn-sm">
                                     View & Print
                                 </a>
+
+                                @if ($letter->letter_status == 'Finalized' || $letter->letter_status == 'Completed')
+                                <a href="{{ route('view.letter.minutes', $letter->id) }}" class="btn btn-success btn-sm">
+                                    View Minutes
+                                </a>
+                                @endif
+
                                 @if ($letter->letter_status == 'Incomplete' || $letter->letter_status == 'Finalized')
                                 <a href="{{ route('view.file.letter.minutes', $letter->id) }}"
                                     class="btn btn-secondary btn-sm">
@@ -66,6 +73,7 @@
                                     Assign Letter
                                 </a>
                                 @endif
+
                                 @if ($letter->letter_status == 'Incomplete')
                                 <a href="{{ route('file.letter.edit.view', ['client_id' => $letter->client_id, 'letter_id' => $letter->id]) }}"
                                     class="btn btn-warning btn-sm">
@@ -85,7 +93,7 @@
                                     <button class="btn btn-success btn-sm" type="button" id="complete">Complete</button>
                                 </form>
                                 @endif
-                                
+
                             </td>
                             <td>
                                 @if (!empty($letter->finalized_at))

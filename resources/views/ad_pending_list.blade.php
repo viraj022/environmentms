@@ -213,6 +213,7 @@
                                 if (resp.id == 1) {
                                     loadAdPendingListTable($('#getAssistantDirector').val());
                                     $('#modal-x2').modal('hide');
+                                    document.querySelector('#rejectCertificate').disabled = false;
                                 }
                             });
                     }
