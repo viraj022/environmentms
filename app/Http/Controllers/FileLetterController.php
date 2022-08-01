@@ -163,4 +163,11 @@ class FileLetterController extends Controller
         $letter->save();
         return redirect()->route('file.letter.view', $letter->client_id);
     }
+
+    public function viewLetterMinutes(FileLetter $letter)
+    {
+        $letterMinutes = FileLetterMinute::where('letter_id', $letter->id)->get();
+
+        return view('file_letters.view_letter_minutes', compact('letterMinutes'));
+    }
 }
