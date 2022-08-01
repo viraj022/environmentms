@@ -11,6 +11,7 @@ use App\Level;
 use App\Repositories\UserNotificationsRepositary;
 use App\User;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class FileLetterController extends Controller
@@ -23,7 +24,7 @@ class FileLetterController extends Controller
 
     public function index($id)
     {
-        $fileLetters = FileLetter::where('client_id', $id)->get();
+        $fileLetters = FileLetter::where('client_id', $id)->orderBy('created_at', 'desc')->get();
 
         return view('file_letters.index', compact('fileLetters'));
     }
@@ -37,14 +38,15 @@ class FileLetterController extends Controller
     {
         $request->validate([
             'letter_title' => 'required',
-            'letter_content' => 'required',
+            'letter_content' => 'nullable',
+            'completed_at' => 'nullable',
         ]);
 
         $incompleteCount = FileLetter::where('client_id', $request->client_id)
             ->where('letter_status', 'Incomplete')->count();
         if ($incompleteCount > 0) {
             return redirect()->route('file.letter.view', $request->client_id)
-                ->with('letter_saved_error', 'There is one incomplete letter here, You have to complete it to add new one!');
+                ->with('letter_saved_error', 'There is a processing letter in this file...');
         } else {
             $saveLetterContent = FileLetter::create([
                 "client_id" => $request->client_id,
@@ -69,7 +71,7 @@ class FileLetterController extends Controller
     {
         $request->validate([
             'letter_title' => 'required',
-            'letter_content' => 'required',
+            'letter_content' => 'nullable',
         ]);
 
         $letter = FileLetter::where('id', $letter_id)->first();
@@ -81,7 +83,7 @@ class FileLetterController extends Controller
                 "letter_content" => $request->get('letter_content'),
             ]);
             return redirect()->route('file.letter.view', $client_id)
-                ->with('letter_update_success', 'Letter updated successfully!');
+                ->with('success', 'Letter updated successfully!');
         }
     }
 
@@ -109,21 +111,14 @@ class FileLetterController extends Controller
         $letterMinute->save();
 
         return redirect()->route('view.file.letter.minutes', $letter_id)
-            ->with('letter_minute_added', 'Success!');
-    }
-
-    public function viewCompletedLetterMinute(FileLetter $letter)
-    {
-        $letterMinutes = FileLetterMinute::where('letter_id', $letter->id)->get();
-
-        return view('file_letters.completed_letter_minute_view', compact('letterMinutes'));
+            ->with('letter_minute_added', 'Minute added!');
     }
 
     public function viewFileLetterAssign($letter)
     {
         $letter = FileLetter::where('id', $letter)->first();
         $levels = Level::all();
-        $fileLetterAssigned = FileLetterAssignment::where('letter_id', $letter->id)->get(); 
+        $fileLetterAssigned = FileLetterAssignment::where('letter_id', $letter->id)->get();
 
         return view('file_letters.assign_letter', compact('levels', 'letter', 'fileLetterAssigned'));
     }
@@ -149,7 +144,7 @@ class FileLetterController extends Controller
         );
 
         return redirect()->route('view.file.letter.assign', $letter)
-            ->with('letter_assigned', 'Success!');
+            ->with('letter_assigned', 'Letter assigned!');
     }
 
     public function storeLetterCompleted($letter)
@@ -159,5 +154,20 @@ class FileLetterController extends Controller
         $letter->save();
         return redirect()->route('file.letter.view', $letter->client_id);
         // ->with('file_letter_completed', 'Letter Completed!');
+    }
+
+    public function letterFinalize(FileLetter $letter)
+    {
+        $letter->letter_status = 'Finalized';
+        $letter->finalized_at = Carbon::now()->format('Y-m-d H:i:s');
+        $letter->save();
+        return redirect()->route('file.letter.view', $letter->client_id);
+    }
+
+    public function viewLetterMinutes(FileLetter $letter)
+    {
+        $letterMinutes = FileLetterMinute::where('letter_id', $letter->id)->get();
+
+        return view('file_letters.view_letter_minutes', compact('letterMinutes'));
     }
 }

@@ -35,12 +35,14 @@
                     </thead>
                     <tbody>
                         @forelse ($letterMinutes as $letterMinute)
-                        <tr>
-                            <td style="width: 10%;">{{$loop->iteration}}</td>
-                            <td style="word-wrap: break-word; word-break: break-all;">{{$letterMinute->description}}</td>
-                            <td style="width: 20%;">{{$letterMinute->user->user_name }}</td>
-                            <td style="width: 20%;">{{$letterMinute->updated_at }}</td>
-                        </tr>
+                            <tr>
+                                <td style="width: 10%;">{{ $loop->iteration }}</td>
+                                <td style="word-wrap: break-word; word-break: break-all;">{{ $letterMinute->description }}
+                                </td>
+                                <td style="width: 20%;">{{ $letterMinute->user->user_name }}</td>
+                                <td style="width: 20%;">
+                                    {{ Carbon\Carbon::parse($letterMinute->updated_at)->format('Y-m-d h:i A') }}</td>
+                            </tr>
                         @empty
                             <tr>
                                 <td colspan="4">No Minute Records</td>
@@ -50,5 +52,5 @@
                 </table>
             </div>
         </div>
-    <section>
-@endsection
+        <section>
+        @endsection
