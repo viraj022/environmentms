@@ -291,7 +291,7 @@ class ClientController extends Controller
                 DB::beginTransaction();
 
                 $msg = Client::where('id', $id)->update($request->all());
-                $epl = EPL::where('client_id', $id)->first();
+                $epl = Epl::where('client_id', $id)->orderBy('created_at', 'desc')->first();
                 $site_clearsess = SiteClearenceSession::where('client_id', $id)->first();
 
                 //load and split new file no to generate new epl code
