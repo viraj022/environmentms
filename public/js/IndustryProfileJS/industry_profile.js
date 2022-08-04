@@ -456,7 +456,9 @@ function pendingPaymentsTable(id) {
                         row.id +
                         '" class="btn btn-primary printBarcode"><i class="fas fa-barcode"></i>  Re-Print BarCode </button> <button type="button" value="' +
                         row.id +
-                        '" class="btn btn-danger removeBarcode"><i class="fas fa-times"></i> Remove </button></td>';
+                        '" class="btn btn-danger removeBarcode"><i class="fas fa-times"></i> Remove </button> ' +
+                        '<a class="btn btn-info generate_online_payment"href="/transaction/create-online-payment/' + row.id + '" title="Create online payment for this payment transaction"><i class="fas fa-credit-card"></i> Create Online Payment</a>'
+                        + '</td>';
                 } else {
                     tbl += "<td><i class='fas fa-check text-success'></i></td>";
                 }
@@ -525,3 +527,10 @@ function format(n, sep, decimals) {
         sep +
         n.toFixed(decimals).split(sep)[1];
 }
+
+$(document).on('click', '.generate_online_payment', function (e) {
+    // get details of the payment entry
+    let transactionId = $(this).data('transaction_id');
+
+
+});
