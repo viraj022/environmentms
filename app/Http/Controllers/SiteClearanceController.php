@@ -7,6 +7,7 @@ use App\Client;
 use App\Setting;
 use Carbon\Carbon;
 use App\BusinessScale;
+use App\Certificate;
 use App\SiteClearance;
 use App\Pradesheeyasaba;
 use App\IndustryCategory;
@@ -37,9 +38,10 @@ class SiteClearanceController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        $certificate = Certificate::where('client_id', $client)->where('certificate_type', 1)->first();
         if ($pageAuth['is_read']) {
             if (Client::find($client) !== null && SiteClearenceSession::find($profile) !== null) {
-                return view('site_clearance', ['pageAuth' => $pageAuth, 'client' => $client, 'profile' => $profile, 'code' => SiteClearenceSession::find($profile)->code]);
+                return view('site_clearance', ['pageAuth' => $pageAuth, 'client' => $client, 'profile' => $profile, 'code' => SiteClearenceSession::find($profile)->code, 'certificate' => $certificate]);
             } else {
                 abort(404);
             }
