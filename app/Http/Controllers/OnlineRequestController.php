@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Certificate;
 use App\Client;
+use App\Helpers\SmsHelper;
 use App\Mail\OnlineApplicationPaymentLink;
 use App\OnlineNewApplicationRequest;
 use App\OnlinePayment;
@@ -23,12 +24,19 @@ use OCILob;
 class OnlineRequestController extends Controller
 {
     private $onlineRequests;
+
     public function __construct(OnlineRequestRepository $onlineRequestRepository)
     {
         $this->middleware('auth');
         $this->onlineRequests = $onlineRequestRepository;
     }
 
+    /**
+     * Show renewal request attachment file
+     *
+     * @param OnlineRenewalApplicationRequest $renewal
+     * @return RedirectResponse
+     */
     public function viewRenewalAttachmentFile(OnlineRenewalApplicationRequest $renewal)
     {
         $baseUrl = config('online-request.url');
@@ -42,7 +50,7 @@ class OnlineRequestController extends Controller
      * Show a page with all online requests received
      * and their current status as a list
      *
-     * @return void
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function index()
     {
@@ -144,6 +152,13 @@ class OnlineRequestController extends Controller
             ->with('success', 'Renewal request accepted successfully.');
     }
 
+    /**
+     * Sends payment link SMS and email for the given OnlineRequest
+     *
+     * @param Request $request
+     * @param OnlineRequest $onlineRequest
+     * @return RedirectResponse
+     */
     public function sendPaymentLink(Request $request, OnlineRequest $onlineRequest)
     {
         $data = $request->validate([
@@ -180,15 +195,9 @@ class OnlineRequestController extends Controller
         // generate a signed URL
         $paymentLink = URL::temporarySignedRoute(
             'online-request.pay',
-            now()->addWeek(),
+            now()->addWeek(), // will expire after 1 week/7 days
             ['id' => $onlineRequest->id, 'pid' => $onp->id]
         );
-
-        // for testing purposes
-        if (config('app.env') == 'local') {
-            $emailAddress = 'test@ceytech.lk';
-            $mobileNumber = '0712912826';
-        }
 
         if (!empty($emailAddress)) {
             // send email
@@ -207,29 +216,8 @@ class OnlineRequestController extends Controller
 
         if (!empty($mobileNumber)) {
             // send POST request with header key
-            $sms_message = "Hello,\nPlease follow the link to make your payment. ${paymentLink}\nEnvironment Authority NWP";
-            $sms_number = preg_replace('/^\+?1|\|1|\D/', '', $mobileNumber);
-            $data = array(
-                'SmsMessage' => $sms_message,
-                'PhoneNumber' => $sms_number,
-                'CompanyId' => 'CEYTECHAPI394',
-                'Pword' => 'aQyp7glqK0',
-            );
-
-            $json_data = json_encode($data);
-            $ch = curl_init('http://smsm.lankabell.com:4040/Sms.svc/PostSendSms');
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $result = curl_exec($ch);
-            curl_close($ch);
-
-            $smsResult = json_decode($result);
-            if ($smsResult->Status != "200") {
-                logger('failed to send SMS to ' . $sms_number);
-            } else {
-                logger('SMS sent to ' . $sms_number);
-            }
+            $smsMessage = "Hello,\nPlease follow the link to make your payment for " . $onlineRequest->request_type . " request.\n${paymentLink}\nEnvironment Authority NWP";
+            $isSent = SmsHelper::sendSms($mobileNumber, $smsMessage);
         }
 
         // set return route
@@ -252,7 +240,7 @@ class OnlineRequestController extends Controller
      * Show details of a new application request sent from the online requests portal
      *
      * @param OnlineNewApplicationRequest $request
-     * @return void
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function viewNewApplicationRequest(OnlineNewApplicationRequest $newApplication)
     {
@@ -268,34 +256,27 @@ class OnlineRequestController extends Controller
         );
     }
 
+    /**
+     * Register payment request from transaction and send payment links
+     *
+     * @param Request $request
+     * @param Transaction $transaction
+     * @return RedirectResponse
+     */
     public function registerAndSendOnlinePaymentLinksForTransaction(Request $request, Transaction $transaction)
     {
-        $validated = $request->validate([
+        $request->validate([
             'transaction_id' => 'required|exists:transactions,id',
             'payment_amount' => 'required|numeric',
         ], $request->all());
 
-        $transactionStatuses = [
-            0 => 'Unpaid', 1 => 'Paid', 2 => 'Processed', 3 => 'Cancelled'
-        ];
-        $transaction = Transaction::whereId($validated['transaction_id'])
-            ->with(
-                'client',
-                'client.industryCategory',
-                'client.businessScale',
-                'client.pradesheeyasaba',
-                'transactionItems',
-                'transactionItems.payment',
-                'transactionItems.paymentType'
-            )
-            ->first();
-        $client = $transaction->client;
-
+        // create online request for request type transaction with transaction id
         $onlineRequest = OnlineRequest::create([
             'request_type' => 'payment', 'status' => 'pending', 'request_id' => $transaction->id,
             'request_model' => Transaction::class,
         ]);
 
+        // send SMS and email
         return $this->sendPaymentLink($request, $onlineRequest);
     }
 }
