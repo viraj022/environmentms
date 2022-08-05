@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '' => [
+    'rest' => [
         'key' => env('LBSMS_KEY'),
         'username' => env('LBSMS_USERNAME'),
         'password' => env('LBSMS_PASSWORD'),
