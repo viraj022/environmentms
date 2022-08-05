@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\SmsHelper;
 use App\Mail\OnlinePaymentSuccessReceipt;
 use App\OnlineNewApplicationRequest;
 use App\OnlinePayment;
@@ -20,7 +21,7 @@ class OnlinePaymentController extends Controller
      * This is the receive point for the email payment link
      *
      * @param Request $request
-     * @return void
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function receiveRenewalPaymentLink(Request $request)
     {
@@ -34,6 +35,7 @@ class OnlinePaymentController extends Controller
         $onlineRequest = OnlineRequest::find($id);
         $paymentRequest = OnlinePayment::find($pid);
 
+        // block if payment request status is either failed or completed
         if (in_array($paymentRequest->status, ['failed', 'completed'])) {
             abort(400, 'Invalid request. Payment attempt denied.');
         }
@@ -81,64 +83,51 @@ class OnlinePaymentController extends Controller
         return view('online-requests.gateway-redirect', compact('initParams', 'onlineRequest', 'paymentRequest', 'orderId'));
     }
 
+    /**
+     * Send payment complete SMS and Email
+     *
+     * @param OnlinePayment $onlinePayment
+     * @return void
+     */
     public function sendPaymentCompleteSMS(OnlinePayment $onlinePayment)
     {
         $application = $onlinePayment->onlineRequest->applicationRequest();
         $client = $application->client;
+        // create person name from salutation, firstname, and lastname
         $personName = sprintf('%s %s %s', $client->name_title, $client->first_name, $client->last_name);
         $businessName = $client->industry_name;
 
+        // get email and mobile number from request entries
         if (get_class($application) === "App\\OnlineNewApplicationRequest") {
+            // get from new application request entry
             $requestType = OnlineRequest::NEW;
             $emailAddress = $application->email_address;
-            // $emailName = sprintf('%s %s %s', $application->title, $application->firstname, $application->lastname);
             $mobileNumber = $application->mobile_number;
         } elseif (get_class($application) === "App\\OnlineRenewalApplicationRequest") {
+            // get from renewal application request entry
             $requestType = OnlineRequest::RENEWAL;
             $emailAddress = $application->email;
-            // $emailName = $application->person_name;
             $mobileNumber = $application->mobile_no;
         } elseif (get_class($application) === "App\\Transaction") {
+            // get from transaction
             $requestType = OnlineRequest::PAYMENT;
             $client = $application->client;
             $emailAddress = $client->email;
-            // $emailName = $application->person_name;
             $mobileNumber = $client->contact_no;
         }
 
+        // check for mobile number existance and send SMS
         if (!empty($mobileNumber)) {
-            // send POST request with header key
             $famt = number_format($onlinePayment->amount, 2);
             $refNo = $onlinePayment->reference_no;
-            $sms_message = "Hello,\nThank you for your payment of {$famt}. Ref:{$refNo}\nEnvironment Authority NWP";
-            $sms_number = preg_replace('/^\+?1|\|1|\D/', '', $mobileNumber);
-            $sms_number = '0712912826';
-            $data = array(
-                'SmsMessage' => $sms_message,
-                'PhoneNumber' => $sms_number,
-                'CompanyId' => 'CEYTECHAPI394',
-                'Pword' => 'aQyp7glqK0',
-            );
+            $message = "Hello,\nThank you for your payment of {$famt}. Ref:{$refNo}\nEnvironment Authority NWP";
 
-            $json_data = json_encode($data);
-            $ch = curl_init('http://smsm.lankabell.com:4040/Sms.svc/PostSendSms');
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $result = curl_exec($ch);
-            curl_close($ch);
-
-            $smsResult = json_decode($result);
-            if ($smsResult->Status != "200") {
-                logger('failed to send SMS to ' . $sms_number);
-            } else {
-                logger('SMS sent to ' . $sms_number);
-            }
+            // send message
+            $isSent = SmsHelper::sendSms($mobileNumber, $message);
         }
 
         if (!empty($emailAddress)) {
             // send payment receipt email
-            // send email
             $successMail = new OnlinePaymentSuccessReceipt(
                 $requestType,
                 $businessName,
@@ -148,16 +137,17 @@ class OnlinePaymentController extends Controller
                 number_format($onlinePayment->amount, 2),
                 $refNo
             );
+            // send email
             Mail::to($emailAddress)->send($successMail);
         }
     }
 
     /**
-     * This is the return URL from the IPG with the payment result
+     * Receive IPG payment SUCCESS result
      *
      * @param Request $request
      * @param OnlinePayment $paymentRequest
-     * @return void
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function receivePaymentReturn(Request $request, OnlinePayment $onlinePayment)
     {
@@ -201,13 +191,28 @@ class OnlinePaymentController extends Controller
         return view($view, ['paymentRequest' => $onlinePayment]);
     }
 
+    /**
+     * Receive IPG payment cancelled result
+     *
+     * @param Request $request
+     * @param OnlinePayment $paymentRequest
+     * @return void
+     */
     public function receivePaymentCancelled(Request $request, OnlinePayment $paymentRequest)
     {
+        // update payment request status to cancelled
         $paymentRequest->status = 'cancelled';
         $paymentRequest->save();
+
         return view('online-requests.results.cancelled', compact('paymentRequest'));
     }
 
+    /**
+     * Generate receipt for payment request
+     *
+     * @param OnlinePayment $paymentRequest
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function generateReceipt(OnlinePayment $paymentRequest)
     {
         $application = $paymentRequest->onlineRequest->applicationRequest();
@@ -249,7 +254,7 @@ class OnlinePaymentController extends Controller
      * Show page to create an online payment request for the transaction
      *
      * @param Transaction $transaction
-     * @return void
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function createForTransaction(Transaction $transaction)
     {
