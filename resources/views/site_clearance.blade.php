@@ -19,7 +19,6 @@
             width: 100%;
             /* The width is the width of the web page */
         }
-
     </style>
     <!-- Google Font: Source Sans Pro -->
 @endsection
@@ -32,7 +31,7 @@
                         <h1>File No: (<a href="/industry_profile/id/{{ $client }}"
                                 class="setFileNoTitile">Loading..</a>) - Site Clearance Number: <span
                                 class="right badge badge-primary">{{ $code }}</span></h1>
-                                <input type="hidden" id="site_clear_sess_id" value="">
+                        <input type="hidden" id="site_clear_sess_id" value="">
                     </div>
                 </div>
             </div>
@@ -110,7 +109,7 @@
                                     <p>Add Comments</p>
                                 </div>
 
-                               
+
 
                             </div>
                             <!-- /.card-body -->
@@ -145,8 +144,16 @@
                                 <hr>
                                 <div class="row mt-3">
                                     <div class="col-md-6">
-                                        <a href="" class="btn btn-dark navTodownload" target="_blank">View Application</a>
-                                        <button id="delete_application" class="btn btn-danger d-none"  data-file="">Delete Application</button>
+                                        <a href="" class="btn btn-dark navTodownload" target="_blank">View
+                                            Application</a>
+                                        <button id="delete_application" class="btn btn-danger d-none"
+                                            data-file="">Delete Application</button>
+                                        @if (!empty($certificate))
+                                            <a href="{{ asset($certificate->certificate_path) }}" target="_blank"
+                                                class="btn btn-primary mt-2" data-toggle="tooltip" data-placement="top"
+                                                title="Click to get draft certificate" id="">
+                                                Draft Certificate </a>
+                                        @endif
                                     </div>
                                     <div class="col-md-6">
                                         <div class="input-group">
@@ -155,7 +162,8 @@
                                                     accept="image/*, .pdf">
                                             </div>
                                             <div class="input-group-append">
-                                                <button type="button" id="change_file_btn" class="btn btn-success">Change
+                                                <button type="button" id="change_file_btn"
+                                                    class="btn btn-success">Change
                                                     File</button>
                                             </div>
                                         </div>
@@ -276,7 +284,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Remark</label>
-                                    <input id="extendRemark" type="text" class="form-control form-control-sm" value="">
+                                    <input id="extendRemark" type="text" class="form-control form-control-sm"
+                                        value="">
                                 </div>
                                 <div class="form-group sectionExtenFile d-none">
                                     <a id="viewApplicationExten" target="_blank" href="#" class="btn btn-dark"><i
@@ -513,33 +522,33 @@
 
         $('#delete_application').click(function() {
             Swal.fire({
-              title: 'Are you sure?',
-              text: "You won't be able to revert this!",
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Yes, delete it!'
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
-              if (result.value) {
-                  delete_application();
-              }
+                if (result.value) {
+                    delete_application();
+                }
             });
 
         });
 
-        function delete_application(){
-          let data = {
-              "site_sess_id": $('#site_clear_sess_id').val(),
-              "file_path": $('#delete_application').attr('data-file')
-          };
-            ajaxRequest('DELETE', "/api/remove_site_application", data, function (dataSet) {
-              if(dataSet.status == 1){
-               swal.fire('Success', 'File Deleted Successfully!', 'success');
-               window.location.reload();
-              }else{
-                swal.fire('Error', 'File Not Deleted!', 'error');
-              }
+        function delete_application() {
+            let data = {
+                "site_sess_id": $('#site_clear_sess_id').val(),
+                "file_path": $('#delete_application').attr('data-file')
+            };
+            ajaxRequest('DELETE', "/api/remove_site_application", data, function(dataSet) {
+                if (dataSet.status == 1) {
+                    swal.fire('Success', 'File Deleted Successfully!', 'success');
+                    window.location.reload();
+                } else {
+                    swal.fire('Error', 'File Not Deleted!', 'error');
+                }
             });
         }
 
