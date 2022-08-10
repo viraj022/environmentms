@@ -86,7 +86,7 @@ function getCertificateDetails(file_id, callBack) {
         } else {
             $('.certificateDetails').remove();
             $('#certificate_Num').html('<b>Application/Licence Number: </b>' + resp.cetificate_number);
-            $('#ref_Num').html('<b>Reference Number: </b>' + resp.refference_no);
+            (resp.refference_no != null) ? $('#ref_Num').html('<b>Reference Number: </b>' + resp.refference_no) : $('#ref_Num').html('<b>Reference Number: </b>' + '&nbsp &nbsp -');
             $('#created_at').html('<b>Created At: </b>' + resp.created_at);
             $('#updated_at').html('<b>Updated At: </b>' + resp.updated_at);
             $('#issue_date').val(resp.issue_date);

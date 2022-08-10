@@ -52,7 +52,7 @@
                                                 <th>EPL Code</th>
                                                 <th>File No</th>
                                                 <th style='width: 25em'>#</th>
-                                                <th>Status</th>
+                                                <th>File Status</th>
                                                 <th style="width: 140px">Action</th>
                                             </tr>
                                         </thead>
@@ -76,7 +76,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
-                                <label>Minute</label>
+                                <label>Add Minute</label>
                                 <textarea id="getMinutes" type="text" class="form-control form-control-sm" placeholder="Enter Minute..."
                                     value=""></textarea>
                             </div>
@@ -147,7 +147,7 @@
             $(document).on('click', '.actionDetails', function() {
                 var fileData = JSON.parse(unescape($(this).val()));
                 let f_Status = fileData.file_status;
-                $('#modalTitlex2').html(fileData.file_no);
+                $('#modalTitlex2').html('File Number: ' + fileData.file_no);
                 $('#modal-x2').modal();
 
                 $('#prepareCertificate').val($(this).val()); //<-- Share this button value to this button

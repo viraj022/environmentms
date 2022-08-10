@@ -325,7 +325,7 @@
                         <div class="col-md-12">
                             <div class="card card-gray">
                                 <div class="card-header">
-                                    <h3 id="lblTitle" class="card-title">Search Client</h3>
+                                    <h3 id="lblTitle" class="card-title">Search Client & Add New Client</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
@@ -409,7 +409,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">
-                                <i class="fas fa-user"></i> Site Clearance Details
+                                <i class="fas fa-user"></i> <span class="details-title">Site Clearance Details</span>
 
                             </h3>
                         </div>
@@ -665,6 +665,47 @@
                 });
             }
 
+            /*
+             * Showing EPL search results in the data table
+             */
+            function showEplDetailsInDatatable(data) {
+                var table = "";
+                var id = 1;
+                $('#tblSiteClear').DataTable().destroy();
+                $.each(data, function(index, clientData) {
+                    table += "<tr>";
+                    table += "<td>" + ++index + "</td>";
+                    table += "<td>" + clientData.code + "</td>";
+                    let client_name = clientData.first_name + clientData.last_name;
+                    table += "<td>" + client_name + "</td>";
+                    table += "<td>" + clientData.industry_name + "</td>";
+                    table += "<td>" + clientData.remark + "</td>";
+                    let isComplete = clientData.status === 1 ? 'Complete' : 'Processing';
+                    table += "<td>" + isComplete + "</td>";
+                    table += "<td><a href='/industry_profile/id/" + clientData.id +
+                        "' class='btn btn-block btn-success btn-xs btnCustomerVa'>Select</a></td>";
+                    table += "</tr>";
+                });
+                $('#tblSiteClear tbody').html(table);
+                $(function() {
+                    var t = $("#tblSiteClear").DataTable();
+                    t.on('order.dt search.dt', function() {
+                        t.column(0, {
+                            search: 'applied',
+                            order: 'applied'
+                        }).nodes().each(function(cell, i) {
+                            cell.innerHTML = i + 1;
+                        });
+                    }).draw();
+                });
+
+                //data table error handling
+                $.fn.dataTable.ext.errMode = 'none';
+                $('#tblSiteClear').on('error.dt', function(e, settings, techNote, message) {
+                    console.log('DataTables error: ', message);
+                });
+            }
+
             //Search NIC Button
             $(document).on('click', '#btnSearch', function() {
 
@@ -712,19 +753,16 @@
                                 }
                                 break;
                             case 'epl':
-                                if (!!result.deleted_at) {
+                                if (result.deleted_at != null) {
                                     alert('Deleted Record!');
                                 } else {
                                     if (result != 0) {
-                                        window.location = "/industry_profile/id/" + result.id;
+                                        showEplDetailsInDatatable(result);
+                                        $('.details-title').html('EPL Details');
+                                        $('.view-site-clear').removeClass('d-none');
                                     } else {
-                                        if (confirm(
-                                                'Client Not Found!Do You Want Create New Client?'
-                                            )) {
-                                            setSectionVisible('reg-newClient');
-                                        } else {
-                                            return false;
-                                        }
+                                        alert('No EPLs found.');
+                                        $('.view-site-clear').addClass('d-none');
                                     }
                                 }
                                 break;
@@ -769,6 +807,7 @@
                             case 'site_clear_code':
                                 if (result != 0) {
                                     showSiteClearanceDetails(result);
+                                    $('.details-title').html('Site Clearance Details');
                                     $('.view-site-clear').removeClass('d-none');
                                 } else {
                                     if (confirm(

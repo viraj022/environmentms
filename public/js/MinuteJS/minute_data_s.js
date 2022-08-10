@@ -100,7 +100,7 @@ function getCardOfTableUI(callBack) {
         if (dataSet) {
             card += '<div class="card card-widget">';
             card += '<div class="card-header">';
-            card += ' <b class="username">Minutes List</b>';
+            card += ' <b class="username">Minutes for this file</b>';
             card += ' <div class="card-tools">';
             card += ' <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>';
             card += ' <button type="button" class="btn btn-primary" onClick="window.print()">Print</button>';

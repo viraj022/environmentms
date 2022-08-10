@@ -143,7 +143,7 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
                         tbl += '<td class="">' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
                         tbl += '<td>' + file_status_list[row.file_status] + status_Lable + '</td>';
                         if (row.file_status != 5) {
-                            tbl += '<td class="text-center"><button type="button" value="' + escape(JSON.stringify(row)) + '" class="btn btn-info detailsData">Details</button></td>';
+                            tbl += '<td class="text-center"><button type="button" value="' + escape(JSON.stringify(row)) + '" class="btn btn-info detailsData">Action</button></td>';
                         } else {
                             tbl += '<td class="text-center"><i class="fa fa-check fa-lg text-success"></i></td>';
                         }
