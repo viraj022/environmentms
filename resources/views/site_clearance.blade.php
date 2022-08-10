@@ -148,7 +148,7 @@
                                             Application</a>
                                         <button id="delete_application" class="btn btn-danger d-none"
                                             data-file="">Delete Application</button>
-                                        @if (!empty($certificate))
+                                        @if (!empty($certificate) && !empty($certificate->certificate_path))
                                             <a href="{{ asset($certificate->certificate_path) }}" target="_blank"
                                                 class="btn btn-primary mt-2" data-toggle="tooltip" data-placement="top"
                                                 title="Click to get draft certificate" id="">
