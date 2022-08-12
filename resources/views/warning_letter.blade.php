@@ -13,6 +13,17 @@
     @if ($pageAuth['is_read'] == 1 || false)
         <section class="content-header">
             <div class="container-fluid">
+                <div class="row mb-3">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">Issue Warning Letters</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Issue Warning Letters</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -26,7 +37,8 @@
                                                 <label class="form-check-label">Search By Assistant Director</label>
                                             </div>
                                             <div class="form-group">
-                                                <select id="getAsDirect" class="form-control form-control-sm" name="ad_id">
+                                                <select id="getAsDirect" class="form-control form-control-sm"
+                                                    name="ad_id">
                                                     <option value="0">Loading..</option>
                                                 </select>
                                             </div>

@@ -64,8 +64,8 @@
                                 Inspection</a>
                         </li>
                         <!--                <li class="nav-item">
-                                                                                                                                            <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
-                                                                                                                                        </li>-->
+                                                                                                                                                <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
+                                                                                                                                            </li>-->
                         <li class="nav-item">
                             <a class="nav-link paymentsTab" id="custom-tabs-three-paymentsTab-tab" data-toggle="pill"
                                 href="#custom-tabs-three-paymentsTab" role="tab"
@@ -100,9 +100,9 @@
                                                         <div class="card-body">
                                                             <!--                                                    <div class="callout callout-danger">
 
-                                                                                                                                                                                                                    <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change Environment Officer</button>
-                                                                                                                                                                                                                    <p>There is a problem that we need to</p>
-                                                                                                                                                                                                                </div>-->
+                                                                                                                                                                                                                        <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change Environment Officer</button>
+                                                                                                                                                                                                                        <p>There is a problem that we need to</p>
+                                                                                                                                                                                                                    </div>-->
 
                                                             <div class="newEPL d-none info-box mb-3 bg-success">
                                                                 <span class="info-box-icon">
@@ -157,14 +157,14 @@
                                                             </div>
 
                                                             <!--                                                    <div class="info-box mb-3 bg-info">
-                                                                                                                                                                                                                    <span class="info-box-icon">
-                                                                                                                                                                                                                        <button class="btn btn-lg btn-default" id="teli"><i class="fa fa-plus"></i></button></span>
-                                                                                                                                                                                                                    <div class="info-box-content">
-                                                                                                                                                                                                                        <span class="info-box-text">Create new telecommunication site clearance file</span>
-                                                                                                                                                                                                                        <span class="info-box-number">Telecommunication Site Clearance</span>
-                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                     /.info-box-content
-                                                                                                                                                                                                                </div>-->
+                                                                                                                                                                                                                        <span class="info-box-icon">
+                                                                                                                                                                                                                            <button class="btn btn-lg btn-default" id="teli"><i class="fa fa-plus"></i></button></span>
+                                                                                                                                                                                                                        <div class="info-box-content">
+                                                                                                                                                                                                                            <span class="info-box-text">Create new telecommunication site clearance file</span>
+                                                                                                                                                                                                                            <span class="info-box-number">Telecommunication Site Clearance</span>
+                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                         /.info-box-content
+                                                                                                                                                                                                                    </div>-->
 
                                                             <div class="info-box mb-3 bg-info">
                                                                 <span class="info-box-icon">
@@ -574,7 +574,7 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="callout callout-danger">
-                                                    <h4>Current Status: <a class="setupInspectStatus text-success"></a>
+                                                    <h4>Inspection Status: <a class="setupInspectStatus text-success"></a>
                                                     </h4>
                                                     <button type="button" onclick="location.href = '';"
                                                         class="btn btn-dark addToSiteIns d-none" data-dismiss="modal"><i

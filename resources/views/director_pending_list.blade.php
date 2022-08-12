@@ -32,7 +32,7 @@
                                             <th>Code</th>
                                             <th>File No</th>
                                             <th style='width: 25em'>#</th>
-                                            <th>Status</th>
+                                            <th>File Status</th>
                                             <th style="width: 140px">Action</th>
                                         </tr>
                                     </thead>
@@ -56,7 +56,7 @@
                         <div class="modal-body">
                             <!--<button type="button" id="prepareCertificate" class="btn btn-primary d-none"><i class="fa fa-check"></i> Approve Certificate</button>-->
                             <div class="form-group">
-                                <label>Minute</label>
+                                <label>Add Minute</label>
                                 <textarea id="getMinutes" type="text" class="form-control form-control-sm" placeholder="Enter Minute..."
                                     value=""></textarea>
                             </div>
@@ -112,7 +112,7 @@
                 $('#holdCertificate').val($(this).val()); //<-- Share this button value to this button
                 $('#uNholdCertificate').val($(this).val()); //<-- Share this button value to this button
                 $('#viewCertificateBtn').val($(this).val());
-                $('#modalTitlex2').html(fileData.file_no);
+                $('#modalTitlex2').html('File Number: ' + fileData.file_no);
                 $('#approveCertificate,#prepareCertificate,#holdCertificate,#uNholdCertificate,#rejectCertificate')
                     .addClass('d-none'); //hide all buttons
                 if (f_Status == 4) {

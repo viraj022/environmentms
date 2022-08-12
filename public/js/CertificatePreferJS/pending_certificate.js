@@ -113,7 +113,7 @@ function getaProfilebyId(callBack) {
                 "targets": 9,
                 "data": "0",
                 "render": function(data, type, full, meta) {
-                    return '<a href="/certificate_perforation/id/' + full['id'] + '" class="btn btn-success">Certificate<a>';
+                    return '<a href="/certificate_perforation/id/' + full['id'] + '" class="btn btn-success">Action<a>';
                 }
             }
         ],
