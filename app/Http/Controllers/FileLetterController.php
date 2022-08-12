@@ -25,7 +25,6 @@ class FileLetterController extends Controller
     public function index($id)
     {
         $fileLetters = FileLetter::where('client_id', $id)->orderBy('created_at', 'desc')->get();
-
         return view('file_letters.index', compact('fileLetters'));
     }
 
@@ -169,5 +168,14 @@ class FileLetterController extends Controller
         $letterMinutes = FileLetterMinute::where('letter_id', $letter->id)->get();
 
         return view('file_letters.view_letter_minutes', compact('letterMinutes'));
+    }
+
+    public function deleteLetter(FileLetter $letter)
+    {
+        $letter->fileLetterMinutes()->delete();
+        $letter->fileLetterAssignments()->delete();
+        $letter->delete();
+
+        return redirect()->route('file.letter.view', $letter->client_id);
     }
 }
