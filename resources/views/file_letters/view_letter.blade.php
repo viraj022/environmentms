@@ -9,7 +9,7 @@
     <style>
         #letter {
             width: 210mm;
-            height: 297mm;
+            /* height: 297mm; */
             border: 1px solid #212121;
             margin: 30px auto;
             box-shadow: 0px 0px 15px #000;

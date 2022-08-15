@@ -93,7 +93,13 @@
                                     <button class="btn btn-success btn-sm" type="button" id="complete">Complete</button>
                                 </form>
                                 @endif
-
+                                @if ($letter->letter_status == 'Incomplete')
+                                <form action="{{ route('letter.delete', $letter->id) }}" method="post" class="d-inline" id="deleted_form">
+                                    @method('delete')
+                                    @csrf
+                                    <button type="button" class="btn btn-sm btn-danger delete-letter">Delete</button>
+                                </form>
+                                @endif
                             </td>
                             <td>
                                 @if (!empty($letter->finalized_at))
@@ -153,6 +159,23 @@
                 if (result.value === true) {
                     $('#complete_form').submit();
                     Swal.fire('Letter Completed!', '', 'success')
+                } else {
+                    return false;
+                }
+            });
+        });
+
+        $('.delete-letter').click(function(e) {
+            Swal.fire({
+                title: 'Are you sure You want to delete this incomplete letter?',
+                html: 'If you delete, you can\'t reverse it' ,
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.value === true) {
+                    $('#deleted_form').submit();
+                    Swal.fire('Letter Deleted!', '', 'success')
                 } else {
                     return false;
                 }

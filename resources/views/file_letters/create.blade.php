@@ -26,9 +26,9 @@
                             <div class="card-body">
                                 <div class="mb-2">
                                     <label for="title">Letter Title</label>
-                                    <input type="text" id="letter_title" name="letter_title"
-                                        class="form-control @error('letter_title') is-invalid @enderror"
-                                        placeholder="Enter the letter title" value="{{ old('letter_title') }}">
+                                    <textarea name="letter_title" id="letter_title" cols="30" rows="4"
+                                        class="form-control @error('letter_title') is-invalid @enderror" placeholder="Enter the letter title"
+                                        value="{{ old('letter_title') }}"></textarea>
                                     @error('letter_title')
                                         <div class="invalid-feedback d-block" style="font-size: 18px;">Letter title is required
                                         </div>
