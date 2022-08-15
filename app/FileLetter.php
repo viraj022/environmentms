@@ -9,16 +9,16 @@ class FileLetter extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['id','client_id','letter_title','letter_content', 'letter_status'];
-    
+    protected $fillable = ['id', 'client_id', 'letter_title', 'letter_content', 'letter_status'];
+
     public function fileLetterMinutes()
     {
-        return $this->hasMany(FileLetterMinute::class);
+        return $this->hasMany(FileLetterMinute::class, 'letter_id', 'id');
     }
 
     public function fileLetterAssignments()
     {
-        return $this->hasMany(FileLetterAssignment::class);
+        return $this->hasMany(FileLetterAssignment::class, 'letter_id', 'id');
     }
 
     public function user()

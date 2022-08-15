@@ -25,7 +25,6 @@ class FileLetterController extends Controller
     public function index($id)
     {
         $fileLetters = FileLetter::where('client_id', $id)->orderBy('created_at', 'desc')->get();
-
         return view('file_letters.index', compact('fileLetters'));
     }
 
@@ -50,8 +49,8 @@ class FileLetterController extends Controller
         } else {
             $saveLetterContent = FileLetter::create([
                 "client_id" => $request->client_id,
-                "letter_title" => $request->letter_title,
-                "letter_content" => $request->letter_content,
+                "letter_title" => $request->post('letter_title'),
+                "letter_content" => $request->post('letter_content', '<p></p>'),
             ]);
             $saveLetterContent->save();
             return redirect()->route('file.letter.view', $request->client_id)
@@ -80,7 +79,7 @@ class FileLetterController extends Controller
             $letter->update([
                 "client_id" => $client_id,
                 "letter_title" => $request->get('letter_title'),
-                "letter_content" => $request->get('letter_content'),
+                "letter_content" => $request->get('letter_content', '<p></p>'),
             ]);
             return redirect()->route('file.letter.view', $client_id)
                 ->with('success', 'Letter updated successfully!');
@@ -169,5 +168,14 @@ class FileLetterController extends Controller
         $letterMinutes = FileLetterMinute::where('letter_id', $letter->id)->get();
 
         return view('file_letters.view_letter_minutes', compact('letterMinutes'));
+    }
+
+    public function deleteLetter(FileLetter $letter)
+    {
+        $letter->fileLetterMinutes()->delete();
+        $letter->fileLetterAssignments()->delete();
+        $letter->delete();
+
+        return redirect()->route('file.letter.view', $letter->client_id);
     }
 }

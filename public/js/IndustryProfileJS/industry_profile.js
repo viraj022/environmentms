@@ -148,7 +148,7 @@ function checkEPLstatus(epls) {
 
 function setIndustryAndClientDb(get) {
     //Client
-    $(".firstL_name").html(get.first_name + " " + get.last_name);
+    (get.last_name != null) ? $(".firstL_name").html(get.first_name + " " + get.last_name) : $(".firstL_name").html(get.first_name);
     $(".file_no").html(get.file_no);
     var or_assign_Date = new Date(get.industry_start_date);
     //    alert(get.industry_start_date); <--someone changed tbl col name

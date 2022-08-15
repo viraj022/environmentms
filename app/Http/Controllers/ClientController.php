@@ -162,8 +162,9 @@ class ClientController extends Controller
     public function certificatePrefer($id)
     {
         $user = Auth::user();
+        $cli = Client::where('id', $id)->first();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        return view('certificate_perforation', ['pageAuth' => $pageAuth, 'id' => $id]);
+        return view('certificate_perforation', ['pageAuth' => $pageAuth, 'id' => $id, 'cli' => $cli]);
     }
 
     /**

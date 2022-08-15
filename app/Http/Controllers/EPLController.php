@@ -78,7 +78,7 @@ class EPLController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-        $certificate = Certificate::where('client_id', $client)->where('certificate_type', 0)->first();
+        $certificate = Certificate::where('client_id', $client)->where('certificate_type', 0)->orderBy('created_at', 'desc')->first();
         if ($pageAuth['is_read']) {
             if (Client::find($client) !== null && EPL::find($profile) !== null) {
                 return view('epl_profile', ['pageAuth' => $pageAuth, 'client' => $client, 'profile' => $profile, 'certificate' => $certificate]);

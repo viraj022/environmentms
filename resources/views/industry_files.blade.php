@@ -72,7 +72,7 @@
                                             <th style='width: 20em'>Site Clearance Code</th>
                                             <th style='width: 25em'>File No</th>
                                             <th style='width: 25em'>#</th>
-                                            <th style='width: 25em'>Status</th>
+                                            <th style='width: 25em'>File Status</th>
                                             <!--<th class="inspectTbl" style="width: 180px">Inspection</th>-->
                                             <th style='width: 5em'>Action</th>
                                         </tr>
@@ -127,7 +127,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
-                                <label>Minute</label>
+                                <label>Add Minute</label>
                                 <textarea id="getMinutes" type="text" class="form-control form-control-sm" placeholder="Enter Minute..."
                                     value=""></textarea>
                             </div>
@@ -304,7 +304,7 @@
             $('#viewCertificateBtn').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
             // $('#downloadDocumentBtn').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
             $('#upCertificate').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
-            $('#modalTitlex2').html(fileData.file_no);
+            $('#modalTitlex2').html('File Number: ' + fileData.file_no);
             if (fileData.need_inspection != null && f_Status == 0) {
                 $('#nominate_certificate').removeClass('d-none');
             } else {

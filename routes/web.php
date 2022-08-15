@@ -133,3 +133,5 @@ Route::post('/save_letter_assign/letter_id/{letter}', 'FileLetterController@stor
 Route::post('/file_letter_completed/{letter}', 'FileLetterController@storeLetterCompleted')->name('store.letter.completed');
 
 Route::post('/letter_finalize/{letter}', 'FileLetterController@letterFinalize')->name('letter.finalize');
+
+Route::delete('/file_letter_delete/{letter}', 'FileLetterController@deleteLetter')->name('letter.delete');
