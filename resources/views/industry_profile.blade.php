@@ -64,8 +64,8 @@
                                 Inspection</a>
                         </li>
                         <!--                <li class="nav-item">
-                                                                                                                                                <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
-                                                                                                                                            </li>-->
+                                                                                                                                                                            <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
+                                                                                                                                                                        </li>-->
                         <li class="nav-item">
                             <a class="nav-link paymentsTab" id="custom-tabs-three-paymentsTab-tab" data-toggle="pill"
                                 href="#custom-tabs-three-paymentsTab" role="tab"
@@ -100,9 +100,9 @@
                                                         <div class="card-body">
                                                             <!--                                                    <div class="callout callout-danger">
 
-                                                                                                                                                                                                                        <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change Environment Officer</button>
-                                                                                                                                                                                                                        <p>There is a problem that we need to</p>
-                                                                                                                                                                                                                    </div>-->
+                                                                                                                                                                                                                                                    <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change Environment Officer</button>
+                                                                                                                                                                                                                                                    <p>There is a problem that we need to</p>
+                                                                                                                                                                                                                                                </div>-->
 
                                                             <div class="newEPL d-none info-box mb-3 bg-success">
                                                                 <span class="info-box-icon">
@@ -157,14 +157,14 @@
                                                             </div>
 
                                                             <!--                                                    <div class="info-box mb-3 bg-info">
-                                                                                                                                                                                                                        <span class="info-box-icon">
-                                                                                                                                                                                                                            <button class="btn btn-lg btn-default" id="teli"><i class="fa fa-plus"></i></button></span>
-                                                                                                                                                                                                                        <div class="info-box-content">
-                                                                                                                                                                                                                            <span class="info-box-text">Create new telecommunication site clearance file</span>
-                                                                                                                                                                                                                            <span class="info-box-number">Telecommunication Site Clearance</span>
-                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                         /.info-box-content
-                                                                                                                                                                                                                    </div>-->
+                                                                                                                                                                                                                                                    <span class="info-box-icon">
+                                                                                                                                                                                                                                                        <button class="btn btn-lg btn-default" id="teli"><i class="fa fa-plus"></i></button></span>
+                                                                                                                                                                                                                                                    <div class="info-box-content">
+                                                                                                                                                                                                                                                        <span class="info-box-text">Create new telecommunication site clearance file</span>
+                                                                                                                                                                                                                                                        <span class="info-box-number">Telecommunication Site Clearance</span>
+                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                     /.info-box-content
+                                                                                                                                                                                                                                                </div>-->
 
                                                             <div class="info-box mb-3 bg-info">
                                                                 <span class="info-box-icon">
@@ -206,7 +206,9 @@
                                                         </div>
                                                     </div>
                                                     <div class="card-body reportInfo" style="display: none;">
-                                                        Unknown Error!
+                                                        @if ($client->file_problem_status_description != null)
+                                                            {{ $client->file_problem_status_description }}
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
@@ -645,7 +647,7 @@
                                                             <label>Report File Problem</label>
                                                             <textarea class="form-control" id="reportTxtArea" rows="3" placeholder="Enter ..." autocomplete="off"></textarea>
                                                         </div>
-                                                        <div class="form-group">
+                                                        {{-- <div class="form-group">
                                                             <hr>
                                                             <input id="problemFileUpload" type="file" class=""
                                                                 accept="image/*, .pdf">
@@ -657,7 +659,7 @@
                                                                     <!--<span class="sr-only">40% Complete (success)</span>-->
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="form-group">
                                                             <button type="button" id="reportSubmit"
                                                                 class="btn btn-success"><i class="fa fa-check"></i>
@@ -989,7 +991,7 @@
             var data = {
                 file_problem_status_description: $('#reportTxtArea').val(),
                 file_problem_status: 'problem',
-                file: $('#problemFileUpload')[0].files[0],
+                // file: $('#problemFileUpload')[0].files[0],
                 file_catagory: 'PROBLEM'
             };
             reportFileIssueAPI(PROFILE_ID, data, function(resp) {

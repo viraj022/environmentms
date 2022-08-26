@@ -26,7 +26,7 @@
                                 <div class="mb-2">
                                     <label for="title">Letter Title</label>
                                     <textarea name="letter_title" id="letter_title" cols="30" rows="4" class="form-control" placeholder=""
-                                        value="{{ $letter->letter_title }}"></textarea>
+                                        value="">{{ $letter->letter_title }}</textarea>
                                     @error('letter_title')
                                         <div class="invalid-feedback d-block" style="font-size: 18px;">Letter title is required
                                         </div>
