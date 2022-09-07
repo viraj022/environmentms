@@ -21,7 +21,7 @@ use App\Repositories\UserNotificationsRepositary;
 
 class EnvironmentOfficerController extends Controller
 {
-    
+
     private $userNotificationsRepositary;
     public function __construct(UserNotificationsRepositary $userNotificationsRepositary)
     {
@@ -344,8 +344,7 @@ class EnvironmentOfficerController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         return Client::where('environment_officer_id', $id)
-            ->with('epls')
-            ->with('siteClearenceSessions')
+            ->with('epls', 'siteClearenceSessions')
             ->get();
     }
 
@@ -391,7 +390,7 @@ class EnvironmentOfficerController extends Controller
             $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
             $file = Client::findOrFail($file_id);
             $officer = EnvironmentOfficer::with(['user', 'assistantDirector'])->findOrFail($officerId);
-        
+
 
             $msg = setFileStatus($file_id, 'file_status', 1);
             fileLog($file->id, 'Approval', 'EO (' . $officer->user->last_name . ') Approve the file', 0);
@@ -487,7 +486,7 @@ class EnvironmentOfficerController extends Controller
             LogActivity::addToLog('EO reject certificate', $file);
 
             $this->userNotificationsRepositary->makeNotification(
-                 $file->environmentOfficer->user_id,
+                $file->environmentOfficer->user_id,
                 'Rejected "' . $file->industry_name . '"',
                 $file->id
             );
