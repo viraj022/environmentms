@@ -47,8 +47,10 @@
                                                     <tr>
                                                         <th>File No</th>
                                                         <th>Client Name</th>
-                                                        <th>Industry Name</th>
                                                         <th>BR No</th>
+                                                        <th>Certificate Number</th>
+                                                        <th>Industry Name</th>
+                                                        <th>Industry Address</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
@@ -111,10 +113,16 @@
                         "data": "client_name"
                     },
                     {
+                        "data": "industry_registration_no"
+                    },
+                    {
+                        "data": "certificate_number"
+                    },
+                    {
                         "data": "industry_name"
                     },
                     {
-                        "data": "industry_registration_no"
+                        "data": "industry_address"
                     },
                     {
                         "data": "id"

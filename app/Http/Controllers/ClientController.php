@@ -1248,6 +1248,8 @@ class ClientController extends Controller
             2 => 'first_name',
             3 => 'industry_name',
             4 => 'industry_registration_no',
+            5 => 'certificate_number',
+            6 => 'industry_address'
         );
         $totalData = Client::where('deleted_at', '=', null)->where('is_old', '!=', 0)->count();
 
@@ -1257,14 +1259,14 @@ class ClientController extends Controller
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
         if (empty($request->input('search.value'))) {
-            $clients = Client::where('is_old', '!=', 0)
+            $clients = Client::with('certificates')->where('is_old', '!=', 0)
                 ->offset($start)
                 ->limit($limit)
                 ->orderBy($order, $dir)
                 ->get();
         } else {
             $search = $request->input('search.value');
-            $clients = Client::where('is_old', '!=', 0)
+            $clients = Client::with('certificates')->where('is_old', '!=', 0)
                 //                    ->orWhere('id', 'LIKE', "%{$search}%")
                 ->Where('file_no', 'LIKE', "%{$search}%")
                 ->orWhere('first_name', 'LIKE', "%{$search}%")
@@ -1275,7 +1277,7 @@ class ClientController extends Controller
                 ->orderBy($order, $dir)
                 ->get();
             //dd($clients);
-            $totalFiltered = Client::where('is_old', '!=', 0)
+            $totalFiltered = Client::with('certificates')->where('is_old', '!=', 0)
                 //                    ->orWhere('id', 'LIKE', "%{$search}%")
                 ->Where('file_no', 'LIKE', "%{$search}%")
                 ->orWhere('first_name', 'LIKE', "%{$search}%")
@@ -1290,11 +1292,16 @@ class ClientController extends Controller
             foreach ($clients as $client) {
                 //                $show =  route('posts.show',$post->id);
                 //                $edit =  route('posts.edit',$post->id);
+                $cert = $client->certificates->first();
+                // dump($client->id);
+                // dd($cert->cetificate_number);
                 $nestedData['id'] = $client->id;
                 $nestedData['file_no'] = $client->file_no;
                 $nestedData['client_name'] = $client->first_name . $client->last_name;
                 $nestedData['industry_name'] = $client->industry_name;
                 $nestedData['industry_registration_no'] = $client->industry_registration_no;
+                $nestedData['certificate_number'] = !empty($cert) ? $cert->cetificate_number : '';
+                $nestedData['industry_address'] = $client->industry_address;
                 //                $nestedData['body'] = substr(strip_tags($post->body),0,50)."...";
                 //                $nestedData['created_at'] = date('j M Y h:i a',strtotime($post->created_at));
                 //                $nestedData['options'] = "&emsp;<a href='{$show}' title='SHOW' ><span class='glyphicon glyphicon-list'></span></a>
