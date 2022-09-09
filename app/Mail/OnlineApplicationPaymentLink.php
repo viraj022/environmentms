@@ -42,6 +42,7 @@ class OnlineApplicationPaymentLink extends Mailable
      */
     public function build()
     {
-        return $this->view('online-requests.emails.renewal');
+        return $this->view('online-requests.emails.renewal')
+            ->from(config('mail.from.address'), config('mail.from.name'));
     }
 }

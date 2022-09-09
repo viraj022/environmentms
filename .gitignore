@@ -22,3 +22,4 @@ composer.lock
 /public/storage/debugbar
 /.lh
 /.vscode
+composer.phar
