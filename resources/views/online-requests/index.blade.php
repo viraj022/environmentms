@@ -36,6 +36,12 @@
                                 href="#pills-new-applications" role="tab" aria-controls="pills-new-applications"
                                 aria-selected="false">New Applications</a>
                         </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="pills-rejected-new-applications-tab" data-toggle="pill"
+                                href="#pills-rejected-new-applications" role="tab"
+                                aria-controls="pills-rejected-new-applications" aria-selected="false">Rejected New
+                                Applications</a>
+                        </li>
                     </ul>
                     <div class="tab-content" id="pills-tabContent">
                         <div class="tab-pane fade show active" id="pills-renewals" role="tabpanel"
@@ -104,39 +110,131 @@
                                             <th>Industry Sub Category</th>
                                             <th>Business Name</th>
                                             <th>Start Date</th>
-                                            <th>Submitted Date</th>
-                                            <th>Industry Contact No</th>
+                                            <th>Contact No</th>
                                             <th>Status</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @php
+                                            $i = 1;
+                                        @endphp
                                         @forelse ($newApplications as $new)
+                                            @if (empty($new->rejected_at))
+                                                <tr class="{{ $new->isRejected() ? 'table-danger' : '' }}">
+                                                    <td>{{ $i++ }}</td>
+                                                    <td>
+                                                        {{ $new->title }} {{ $new->firstname }} {{ $new->lastname }}
+                                                    </td>
+                                                    <td>{{ $new->pradeshiyaSabha->name }}</td>
+                                                    <td>{{ $new->industryCategory->name }}</td>
+                                                    <td>{{ $businessScales[$new->business_scale] }}</td>
+                                                    <td>{{ $new->industry_sub_category }}</td>
+                                                    <td>{{ $new->business_name }}
+                                                        <br />Reg. No.: {{ $new->business_registration_number }}
+                                                    </td>
+                                                    <td>{{ $new->start_date }}</td>
+                                                    <td>
+                                                        {{ $new->mobile_number }}
+                                                        <br />
+                                                        {{ $new->industry_contact_no }}
+                                                    </td>
+                                                    <td>{!! $new->isRejected()
+                                                        ? '<span class="badge badge-danger">Rejected</span>'
+                                                        : ucwords(str_replace('_', ' ', $new->status)) !!}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ route('online-requests.new-application.view', $new) }}"
+                                                            class="btn btn-primary btn-sm">
+                                                            <span class="fa fa-eye"></span> View
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @empty
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>
-                                                    {{ $new->title }} {{ $new->firstname }} {{ $new->lastname }}
-                                                    <br />
-                                                    {{ $new->mobile_number }}
-                                                </td>
-                                                <td>{{ $new->pradeshiyaSabha->name }}</td>
-                                                <td>{{ $new->industryCategory->name }}</td>
-                                                <td>{{ $businessScales[$new->business_scale] }}</td>
-                                                <td>{{ $new->industry_sub_category }}</td>
-                                                <td>{{ $new->business_name }}
-                                                    <br />Reg. No.: {{ $new->business_registration_number }}
-                                                </td>
-                                                <td>{{ $new->start_date }}</td>
-                                                <td>{{ $new->submitted_date }}</td>
-                                                <td>{{ $new->industry_contact_no }}</td>
-                                                <td>{{ $new->status }}</td>
-                                                <td>
-                                                    <a href="{{ route('online-requests.new-application.view', $new) }}"
-                                                        class="btn btn-primary btn-sm">
-                                                        <span class="fa fa-eye"></span> View
-                                                    </a>
-                                                </td>
+                                                <td colspan="12">No new application requests received.</td>
                                             </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="pills-rejected-new-applications" role="tabpanel"
+                            aria-labelledby="pills-rejected-new-applications-tab">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-condensed table-hover"
+                                    id="rejected-new-applications-table">
+                                    <colgroup>
+                                        <col style="width: 3%">
+                                        <col style="width: 9%">
+                                        <col style="width: 6%">
+                                        <col style="width: 6%">
+                                        <col style="width: 6%">
+                                        <col style="width: 6%">
+                                        <col style="width: 8%">
+                                        <col style="width: 6%">
+                                        <col style="width: 6%">
+                                        <col style="width: 6%">
+                                        <col style="width: 20%;">
+                                        <col style="width: 10%">
+                                        <col style="width: 8%">
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Name</th>
+                                            <th>Pradeshiya Sabha</th>
+                                            <th>Industry Category</th>
+                                            <th>Business Scale</th>
+                                            <th>Industry Sub Category</th>
+                                            <th>Business Name</th>
+                                            <th>Start Date</th>
+                                            <th>Contact No</th>
+                                            <th>Status</th>
+                                            <th>Rejected Minute</th>
+                                            <th>Rejected Date</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                            $i = 1;
+                                        @endphp
+                                        @forelse ($newApplications as $new)
+                                            @if (!empty($new->rejected_at))
+                                                <tr class="{{ $new->isRejected() ? 'table-danger' : '' }}">
+                                                    <td>{{ $i++ }}</td>
+                                                    <td>
+                                                        {{ $new->title }} {{ $new->firstname }} {{ $new->lastname }}
+                                                    </td>
+                                                    <td>{{ $new->pradeshiyaSabha->name }}</td>
+                                                    <td>{{ $new->industryCategory->name }}</td>
+                                                    <td>{{ $businessScales[$new->business_scale] }}</td>
+                                                    <td>{{ $new->industry_sub_category }}</td>
+                                                    <td>{{ $new->business_name }}
+                                                        <br />Reg. No.: {{ $new->business_registration_number }}
+                                                    </td>
+                                                    <td>{{ $new->start_date }}</td>
+                                                    <td>
+                                                        {{ $new->mobile_number }} <br />
+                                                        {{ $new->industry_contact_no }}
+                                                    </td>
+                                                    <td>{!! $new->isRejected()
+                                                        ? '<span class="badge badge-danger">Rejected</span>'
+                                                        : ucwords(str_replace('_', ' ', $new->status)) !!}
+                                                    </td>
+                                                    <td>{{ Str::limit($new->rejected_minute, 100, '...') }}</td>
+                                                    <td>{{ Carbon\Carbon::parse($new->rejected_at)->format('Y-m-d h:i A') }}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ route('online-requests.new-application.view', $new) }}"
+                                                            class="btn btn-primary btn-sm">
+                                                            <span class="fa fa-eye"></span> View
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endif
                                         @empty
                                             <tr>
                                                 <td colspan="12">No new application requests received.</td>
@@ -163,5 +261,9 @@
         $(function() {
 
         });
+        @if (session('rejected_success'))
+            Swal.fire('Success', '{{ session('rejected_success') }}', 'success');
+            $('#pills-rejected-new-applications-tab').tab('show');
+        @endif
     </script>
 @endsection

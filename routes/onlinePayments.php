@@ -18,6 +18,8 @@ Route::post('/online-request/{onlineRequest}/send-link', 'OnlineRequestControlle
 # new-applications
 Route::get('/online-requests/new-application/{newApplication}', 'OnlineRequestController@viewNewApplicationRequest')
     ->name('online-requests.new-application.view');
+Route::post('/online-requests/new-application/reject/{newApplication}', 'OnlineRequestController@rejectNewRequest')
+    ->name('online-requests.new-application.reject');
 
 # online-payment-link-recieve
 Route::get('/online-request/pay', 'OnlinePaymentController@receiveRenewalPaymentLink')
