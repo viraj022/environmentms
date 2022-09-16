@@ -172,7 +172,7 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         try {
             $user = Auth::user();
@@ -239,7 +239,67 @@ class ClientController extends Controller
                 }
                 $client->file_no = $code;
                 $client->save();
+                // dd($client->id);
                 if ($client) {
+                    // bind client id to new application request if this is a new application request entry
+                    if ($request->new_application_request_id) {
+                        // set client id to new application request
+                        $newApplicationRequest = OnlineNewApplicationRequest::find($request->new_application_request_id);
+                        $newApplicationRequest->client_id = $client->id;
+                        $newApplicationRequest->status = 'complete'; // mark this as complete
+                        $newApplicationRequest->save();
+
+                        // import files from new application request to client profile
+                        if (!empty($newApplicationRequest->road_map)) {
+                            // import file 1/road map
+                            $file1Filepath = $newApplicationRequest->road_map;
+                            $file1FileName = basename($file1Filepath);
+                            $file1FileUrl = config('online-request.url') . '/storage/' . str_replace('public/', '', $file1Filepath);
+                            $targetDir = storage_path('app/public/uploads/industry_files/' . $client->id . '/application/file1');
+                            if (!file_exists($targetDir)) {
+                                mkdir($targetDir, 0644, true);
+                            }
+                            $targetFileName = $targetDir . '/' . $file1FileName;
+                            copy($file1FileUrl, $targetFileName);
+                            $client->file_01 = 'storage/uploads/industry_files/' . $client->id . '/application/file1/' . $file1FileName;
+                        }
+
+                        if (!empty($newApplicationRequest->deed_of_land)) {
+                            // import file 2/deed
+                            $file2Filepath = $newApplicationRequest->deed_of_land;
+                            $file2FileName = basename($file2Filepath);
+                            $file2FileUrl = config('online-request.url') . '/storage/' . str_replace('public/', '', $file2Filepath);
+                            $targetDir = storage_path('app/public/uploads/industry_files/' . $client->id . '/application/file2');
+                            if (!file_exists($targetDir)) {
+                                mkdir($targetDir, 0644, true);
+                            }
+                            $targetFileName = $targetDir . '/' . $file2FileName;
+                            copy($file2FileUrl, $targetFileName);
+                            $client->file_02 = 'storage/uploads/industry_files/' . $client->id . '/application/file2/' . $file2FileName;
+                        }
+
+                        if (!empty($newApplicationRequest->survey_plan)) {
+                            // import file 3/survey plan
+                            $file3Filepath = $newApplicationRequest->survey_plan;
+                            $file3FileName = basename($file3Filepath);
+                            $file3FileUrl = config('online-request.url') . '/storage/' . str_replace('public/', '', $file3Filepath);
+                            $targetDir = storage_path('app/public/uploads/industry_files/' . $client->id . '/application/file3');
+                            if (!file_exists($targetDir)) {
+                                mkdir($targetDir, 0644, true);
+                            }
+                            $targetFileName = $targetDir . '/' . $file3FileName;
+                            copy($file3FileUrl, $targetFileName);
+                            $client->file_03 = 'storage/uploads/industry_files/' . $client->id . '/application/file3/' . $file3FileName;
+                        }
+
+                        $client->save();
+
+                        // set online request for the new application request as complete
+                        $onlineRequest = $newApplicationRequest->onlineRequest;
+                        $onlineRequest->status = 'complete'; // mark this as complete
+                        $onlineRequest->save();
+                    }
+
                     LogActivity::fileLog($client->id, 'File', "Create New File", 1);
                     LogActivity::addToLog('Create new file', $client);
                     return array('id' => 1, 'message' => 'true', 'id' => $client->id);

@@ -35,6 +35,9 @@ class OnlineNewApplicationRequest extends Model
         'status',
         'rejected_at',
         'rejected_minute',
+        'road_map',
+        'deed_of_land',
+        'survey_plan',
     ];
 
     public function onlineRequest()

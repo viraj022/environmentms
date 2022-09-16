@@ -35,7 +35,8 @@ function fromValues() {
         industry_registration_no: $('#business_regno').val().trim(),
         industry_coordinate_x: _Latitude,
         industry_coordinate_y: _Longitude,
-        industry_created_date: $('#submittedDate').val()
+        industry_created_date: $('#submittedDate').val(),
+        new_application_request_id: $('#new_application_request_id').val(),
             //password: $('#gefkfg').val(),
             //conpassword: $('#getfffk').val()
     };
