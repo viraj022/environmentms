@@ -96,6 +96,11 @@
             <div class="container-fluid reg-newClient {{ empty($newApplicationRequest) ? 'd-none' : '' }}">
                 <div class="row">
 
+                    @isset($newApplicationRequest)
+                        <input type="hidden" name="new_application_request_id" value="{{ $newApplicationRequest->id }}"
+                            id="new_application_request_id" />
+                    @endisset
+
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6">
@@ -561,12 +566,12 @@
                     // if validiated
                     AddClient(data, function(result) {
                         if (result.message == 'true') {
-                            alert('Enviremontal MS Saved');
+                            alert('Environmental MS Saved');
                             getaClientbyId(result.id, function(result) {
                                 window.location = "/industry_profile/id/" + result.id;
                             });
                         } else {
-                            alert('Enviremontal MS Error (' + Object.values(result.message) + ')');
+                            alert('Environmental MS Error (' + Object.values(result.message) + ')');
                         }
                         resetinputFields();
                         hideAllErrors();
@@ -582,12 +587,12 @@
                         if (result.id == 1) {
                             Toast.fire({
                                 type: 'success',
-                                title: 'Enviremontal MS</br>Updated'
+                                title: 'Environmental MS</br>Updated'
                             });
                         } else {
                             Toast.fire({
                                 type: 'error',
-                                title: 'Enviremontal MS</br>Error'
+                                title: 'Environmental MS</br>Error'
                             });
                         }
                         //                                                        loadTable();
@@ -603,12 +608,12 @@
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
-                            title: 'Enviremontal MS</br>Removed!'
+                            title: 'Environmental MS</br>Removed!'
                         });
                     } else {
                         Toast.fire({
                             type: 'error',
-                            title: 'Enviremontal MS</br>Error'
+                            title: 'Environmental MS</br>Error'
                         });
                     }
                     //                                                    loadTable();
