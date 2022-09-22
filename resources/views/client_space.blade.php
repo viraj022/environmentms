@@ -96,6 +96,11 @@
             <div class="container-fluid reg-newClient {{ empty($newApplicationRequest) ? 'd-none' : '' }}">
                 <div class="row">
 
+                    @isset($newApplicationRequest)
+                        <input type="hidden" name="new_application_request_id" value="{{ $newApplicationRequest->id }}"
+                            id="new_application_request_id" />
+                    @endisset
+
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6">
@@ -130,7 +135,7 @@
                                             <input id="getfName" type="text" maxlength="45"
                                                 class="form-control form-control-sm cutenzReq"
                                                 placeholder="Enter FirstName..."
-                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->firstname }}">
+                                                value="{{ empty($newApplicationRequest) ? '' : $newApplicationRequest->firstname }}">
                                             <div id="valName" class="d-none">
                                                 <p class="text-danger">Name is required</p>
                                             </div>
@@ -139,7 +144,7 @@
                                             <label>Last Name</label>
                                             <input id="getlName" type="text" maxlength="45"
                                                 class="form-control form-control-sm" placeholder="Enter LastName..."
-                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->lastname }}">
+                                                value="{{ empty($newApplicationRequest) ? '' : $newApplicationRequest->lastname }}">
                                             <div id="valLName" class="d-none">
                                                 <p class="text-danger">Last Name is required</p>
                                             </div>
@@ -148,7 +153,7 @@
                                             <label>Address</label>
                                             <input id="getAddress" type="text" class="form-control form-control-sm"
                                                 placeholder="Enter Address..."
-                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->address }}">
+                                                value="{{ empty($newApplicationRequest) ? '' : $newApplicationRequest->address }}">
                                             <div id="valAddName" class="d-none">
                                                 <p class="text-danger">Address is required</p>
                                             </div>
@@ -160,7 +165,7 @@
                                                     return false;"
                                                 type="number" class="form-control form-control-sm"
                                                 placeholder="Enter Contact Number..."
-                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->mobile_number }}">
+                                                value="{{ empty($newApplicationRequest) ? '' : $newApplicationRequest->mobile_number }}">
                                             <div id="valConName" class="d-none">
                                                 <p class="text-danger">Contact Number is required</p>
                                             </div>
@@ -169,7 +174,7 @@
                                             <label>Email</label>
                                             <input id="getEmail" type="text" class="form-control form-control-sm"
                                                 placeholder="Enter Email..."
-                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->email_address }}">
+                                                value="{{ empty($newApplicationRequest) ? '' : $newApplicationRequest->email_address }}">
                                             <div id="valNam1e" class="d-none">
                                                 <p class="text-danger">Email is required</p>
                                             </div>
@@ -181,7 +186,7 @@
                                                     return false;"
                                                 type="text" class="form-control form-control-sm" maxlength="12"
                                                 minlength="10" placeholder="Enter NIC..."
-                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->nic_number }}">
+                                                value="{{ empty($newApplicationRequest) ? '' : $newApplicationRequest->nic_number }}">
                                             <div id="valnicName" class="d-none">
                                                 <p class="text-danger">NIC is required</p>
                                             </div>
@@ -223,29 +228,29 @@
                                             <label>Industry Sub-Category</label>
                                             <input id="industry_sub_cat" type="text"
                                                 class="form-control form-control-sm" placeholder="Enter Text."
-                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->industry_sub_category }}">
+                                                value="{{ empty($newApplicationRequest) ? '' : $newApplicationRequest->industry_sub_category }}">
                                         </div>
                                         <div class="form-group">
                                             <label>Business Registration Number</label>
                                             <input id="business_regno" type="text"
                                                 class="form-control form-control-sm" placeholder="Enter Number"
-                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->business_registration_number }}">
+                                                value="{{ empty($newApplicationRequest) ? '' : $newApplicationRequest->business_registration_number }}">
                                         </div>
                                         <div class="form-group">
                                             <label>Business Name*</label>
                                             <input id="business_name" type="text"
                                                 class="form-control form-control-sm cutenzReq" placeholder="Enter Name..."
-                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->business_name }}">
+                                                value="{{ empty($newApplicationRequest) ? '' : $newApplicationRequest->business_name }}">
                                         </div>
                                         <div class="form-group">
                                             <label>Is this in Industry Zone?</label>
                                             <select id="getZone" class="form-control form-control-sm"
                                                 style="width: 100%;">
                                                 <option value="0"
-                                                    {{ empty($newApplicationRequest) ?: ($newApplicationRequest->is_in_industry_zone == '0' ? 'selected' : '') }}>
+                                                    {{ empty($newApplicationRequest) ? '' : ($newApplicationRequest->is_in_industry_zone == '0' ? 'selected' : '') }}>
                                                     No</option>
                                                 <option value="1"
-                                                    {{ empty($newApplicationRequest) ?: ($newApplicationRequest->is_in_industry_zone == '1' ? 'selected' : '') }}>
+                                                    {{ empty($newApplicationRequest) ? '' : ($newApplicationRequest->is_in_industry_zone == '1' ? 'selected' : '') }}>
                                                     Yes</option>
                                             </select>
                                         </div>
@@ -256,26 +261,26 @@
                                                     return false;"
                                                 type="number" class="form-control form-control-sm cutenzReq"
                                                 placeholder="Enter investment Rs"
-                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->investment_amount }}">
+                                                value="{{ empty($newApplicationRequest) ? '' : $newApplicationRequest->investment_amount }}">
                                         </div>
                                         <div class="form-group">
                                             <label>Address*</label>
                                             <input id="getAddressT" type="text"
                                                 class="form-control form-control-sm cutenzReq"
                                                 placeholder="Enter Address..."
-                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->industry_address }}">
+                                                value="{{ empty($newApplicationRequest) ? '' : $newApplicationRequest->industry_address }}">
                                         </div>
                                         <div class="form-group">
                                             <label>Start Date*</label>
                                             <input id="startDate" type="date" max="2999-12-31"
                                                 class="form-control form-control-sm cutenzReq" placeholder="Enter Date..."
-                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->start_date }}">
+                                                value="{{ empty($newApplicationRequest) ? '' : $newApplicationRequest->start_date }}">
                                         </div>
                                         <div class="form-group">
                                             <label>Submitted Date*</label>
                                             <input id="submittedDate" type="date" max="2999-12-31"
                                                 class="form-control form-control-sm cutenzReq" placeholder="Enter Date..."
-                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->submitted_date }}">
+                                                value="{{ empty($newApplicationRequest) ? '' : $newApplicationRequest->submitted_date }}">
                                         </div>
                                         <div class="form-group">
                                             <label>Contact No</label>
@@ -283,13 +288,13 @@
                                                 onKeyDown="if (this.value.length == 10 && event.keyCode != 8)
                                                     return false;"
                                                 class="form-control form-control-sm" placeholder="Enter Contact Info..."
-                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->industry_contact_no }}">
+                                                value="{{ empty($newApplicationRequest) ? '' : $newApplicationRequest->industry_contact_no }}">
                                         </div>
                                         <div class="form-group">
                                             <label>Email</label>
                                             <input id="getEmailI" type="text" class="form-control form-control-sm"
                                                 placeholder="Enter Email..."
-                                                value="{{ empty($newApplicationRequest) ?: $newApplicationRequest->industry_email_address }}">
+                                                value="{{ empty($newApplicationRequest) ? '' : $newApplicationRequest->industry_email_address }}">
                                         </div>
                                     </div>
                                     <div class="card-footer">
@@ -561,12 +566,12 @@
                     // if validiated
                     AddClient(data, function(result) {
                         if (result.message == 'true') {
-                            alert('Enviremontal MS Saved');
+                            alert('Environmental MS Saved');
                             getaClientbyId(result.id, function(result) {
                                 window.location = "/industry_profile/id/" + result.id;
                             });
                         } else {
-                            alert('Enviremontal MS Error (' + Object.values(result.message) + ')');
+                            alert('Environmental MS Error (' + Object.values(result.message) + ')');
                         }
                         resetinputFields();
                         hideAllErrors();
@@ -582,12 +587,12 @@
                         if (result.id == 1) {
                             Toast.fire({
                                 type: 'success',
-                                title: 'Enviremontal MS</br>Updated'
+                                title: 'Environmental MS</br>Updated'
                             });
                         } else {
                             Toast.fire({
                                 type: 'error',
-                                title: 'Enviremontal MS</br>Error'
+                                title: 'Environmental MS</br>Error'
                             });
                         }
                         //                                                        loadTable();
@@ -603,12 +608,12 @@
                     if (result.id == 1) {
                         Toast.fire({
                             type: 'success',
-                            title: 'Enviremontal MS</br>Removed!'
+                            title: 'Environmental MS</br>Removed!'
                         });
                     } else {
                         Toast.fire({
                             type: 'error',
-                            title: 'Enviremontal MS</br>Error'
+                            title: 'Environmental MS</br>Error'
                         });
                     }
                     //                                                    loadTable();

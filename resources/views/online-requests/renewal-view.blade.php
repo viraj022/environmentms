@@ -89,6 +89,29 @@
                                     <th>Status</th>
                                     <td>{{ ucwords(str_replace('_', ' ', $renewal->status)) }}</td>
                                 </tr>
+                                <tr>
+                                    <th>View Attachments</th>
+                                    <td>
+                                        @php
+                                            $attachmentUrl = config('online-request.url');
+                                        @endphp
+                                        @if (empty($renewal->road_map) && empty($renewal->deed_of_land) && empty($renewal->survey_plan))
+                                            No documents uploaded.
+                                        @endif
+                                        @if (isset($renewal->road_map))
+                                            <a href="{{ $attachmentUrl . '/storage/' . str_replace('public/', '', $renewal->road_map) }}"
+                                                class="btn btn-primary btn-sm mx-2" target="_blank">Road Map</a>
+                                        @endif
+                                        @if (isset($renewal->deed_of_land))
+                                            <a href="{{ $attachmentUrl . '/storage/' . str_replace('public/', '', $renewal->deed_of_land) }}"
+                                                class="btn btn-primary btn-sm mx-2" target="_blank">Deed of Land</a>
+                                        @endif
+                                        @if (isset($renewal->survey_plan))
+                                            <a href="{{ $attachmentUrl . '/storage/' . str_replace('public/', '', $renewal->survey_plan) }}"
+                                                class="btn btn-primary btn-sm" target="_blank">Survey Plan</a>
+                                        @endif
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

@@ -46,6 +46,7 @@ class SearchController extends Controller
     public function getClientByEPL($code)
     {
         $epls = EPL::join('clients', 'e_p_l_s.client_id', 'clients.id')
+            ->whereNull('clients.deleted_at')
             ->where('code', 'like', '%' . $code . '%')
             ->select('code', 'remark', 'status', 'first_name', 'last_name', 'address', 'industry_name', 'clients.id')
             ->get();
@@ -169,6 +170,7 @@ class SearchController extends Controller
     public function getClientBySite($name)
     {
         $client_site = SiteClearenceSession::join('clients', 'site_clearence_sessions.client_id', 'clients.id')
+            ->whereNull('clients.deleted_at')
             ->where('code', 'like', '%' . $name . '%')
             ->select('code', 'remark', 'site_clearance_type', 'first_name', 'last_name', 'address', 'industry_name', 'clients.id')
             ->get();

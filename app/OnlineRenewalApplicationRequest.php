@@ -22,6 +22,9 @@ class OnlineRenewalApplicationRequest extends Model
         'attachment_file',
         'status',
         'client_id',
+        'road_map',
+        'deed_of_land',
+        'survey_plan',
     ];
 
     public function onlineRequest()

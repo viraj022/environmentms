@@ -33,6 +33,11 @@ class OnlineNewApplicationRequest extends Model
         'industry_email_address',
         'client_id',
         'status',
+        'rejected_at',
+        'rejected_minute',
+        'road_map',
+        'deed_of_land',
+        'survey_plan',
     ];
 
     public function onlineRequest()
@@ -53,5 +58,9 @@ class OnlineNewApplicationRequest extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+    public function isRejected()
+    {
+        return $this->rejected_at != null; // should be null if not rejected
     }
 }

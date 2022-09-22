@@ -64,6 +64,14 @@
                             </table>
                         </div>
                     </div>
+                    <div class="card">
+                        <div class="card-header bg-success">
+                            <strong>Minute</strong>
+                        </div>
+                        <div class="card-body">
+                            {{ $newApplication->rejected_minute }}
+                        </div>
+                    </div>
                 </div>
                 <div class="col-lg-8">
                     <div class="card border border-success">
@@ -129,20 +137,91 @@
                                         <th>Email Address</th>
                                         <td>{{ $newApplication->industry_email_address }}</td>
                                     </tr>
+                                    <tr>
+                                        <th>View Attachments</th>
+                                        <td>
+                                            @php
+                                                $attachmentUrl = config('online-request.url');
+                                            @endphp
+                                            @if (empty($newApplication->road_map) &&
+                                                empty($newApplication->deed_of_land) &&
+                                                empty($newApplication->survey_plan))
+                                                No documents uploaded.
+                                            @endif
+
+                                            @if (isset($newApplication->road_map))
+                                                <a href="{{ $attachmentUrl . '/storage/' . str_replace('public/', '', $newApplication->road_map) }}"
+                                                    class="btn btn-primary btn-sm mx-2" target="_blank">View Road Map</a>
+                                            @endif
+                                            @if (isset($newApplication->deed_of_land))
+                                                <a href="{{ $attachmentUrl . '/storage/' . str_replace('public/', '', $newApplication->deed_of_land) }}"
+                                                    class="btn btn-primary btn-sm mx-2" target="_blank">View Deed of
+                                                    Land</a>
+                                            @endif
+                                            @if (isset($newApplication->survey_plan))
+                                                <a href="{{ $attachmentUrl . '/storage/' . str_replace('public/', '', $newApplication->survey_plan) }}"
+                                                    class="btn btn-primary btn-sm" target="_blank">View Survey Plan</a>
+                                            @endif
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12">
+            </div>
+            <div class="row">
+                @if ($newApplication->status == 'complete')
+                    <div class="alert alert-success">This new application request has been processed and completed.</div>
+                @else
                     <form action="{{ route('client-space') }}" method="post">
                         @csrf
 
                         <input type="hidden" name="new_application_request" value="{{ $newApplication->id }}">
 
-                        <button type="submit" class="btn btn-success">Send to create new industry profile</button>
+                        @if (empty($newApplication->rejected_at))
+                            <button type="submit" class="btn btn-success">Send to create new industry profile</button>
+                        @endif
                     </form>
-                </div>
+
+                    <!-- Button trigger modal -->
+                    @if (empty($newApplication->rejected_at))
+                        <button type="button" class="btn btn-danger mx-3" data-toggle="modal" data-target="#exampleModal">
+                            Reject New Application
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Add Minute</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form
+                                            action="{{ route('online-requests.new-application.reject', $newApplication->id) }}"
+                                            method="post">
+                                            @csrf
+                                            <textarea name="rejected_minute" id="rejected_minute" cols="30" rows="2" class="form-control"
+                                                placeholder="Enter minute here" required></textarea>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Add Minute</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    @if (!empty($newApplication->rejected_at))
+                        <a class="btn btn-warning mx-3" href="{{ route('online-requests.index') }}">Go Back to Online
+                            Requests</a>
+                    @endif
+                @endif
             </div>
         </div>
     </section>

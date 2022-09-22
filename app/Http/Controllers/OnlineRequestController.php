@@ -13,6 +13,7 @@ use App\OnlineRequest;
 use App\OnlineRequestStatus;
 use App\Repositories\OnlineRequestRepository;
 use App\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Mailable;
@@ -278,5 +279,22 @@ class OnlineRequestController extends Controller
 
         // send SMS and email
         return $this->sendPaymentLink($request, $onlineRequest);
+    }
+
+    /**
+     * Reject new application request
+     *
+     * @param Request $request
+     * @param OnlineNewApplicationRequest $newApplication
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
+    public function rejectNewRequest(Request $request, OnlineNewApplicationRequest $newApplication)
+    {
+        $newApplication->rejected_at = Carbon::now()->format('Y-m-d H:i:s');
+        $newApplication->rejected_minute = $request->rejected_minute;
+        $newApplication->status = 'rejected';
+        $newApplication->save();
+
+        return redirect()->route('online-requests.index')->with('rejected_success', 'New application request rejected.');
     }
 }
