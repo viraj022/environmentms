@@ -43,9 +43,9 @@ function paymentDetals_table() {
             tbl = "<tr><td>No data found</td></tr>";
         } else {
             $.each(r, function (index, row) {
-//                tbl += '<tr>';
-//                tbl += '<td>'+row.+'</td>';
-//                tbl += '</tr>';
+                //                tbl += '<tr>';
+                //                tbl += '<td>'+row.+'</td>';
+                //                tbl += '</tr>';
             });
         }
 
@@ -70,6 +70,7 @@ function set_application_amount() {
 }
 
 function loadTable() {
+    $("#tbl_pendingpays").dataTable().fnDestroy();
     ajaxRequest('GET', 'api/application/pendingPayments', null, function (data) {
         var table = "";
         var id = 1;
@@ -98,9 +99,7 @@ function loadTable() {
             table += "</tr>";
         });
         $('#tbl_pendingpays tbody').html(table);
-        $("#tbl_pendingpays").DataTable({
-            "order": [[1, "asc"]]
-        });
+        $("#tbl_pendingpays").DataTable();
     });
 }
 

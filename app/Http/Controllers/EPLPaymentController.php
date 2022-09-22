@@ -139,6 +139,8 @@ class EPLPaymentController extends Controller
             ->with('applicationClient')
             ->where('status', '<', 2)
             ->where('type', Transaction::APPLICATION_FEE)
+            ->where('created_at', '>=', date('Y-m-d', strtotime('-1 month')))
+            ->orderBy('created_at', 'desc')
             ->get();
     }
 
@@ -494,7 +496,7 @@ class EPLPaymentController extends Controller
             if (is_null($epl->site_clearance_file)) {
                 $transaction = array();
                 if (strtotime($epl->start_date) >= strtotime(EPL::FINEDATE)) {
-                    //  after            
+                    //  after
                     $amount = request('inspection_fee') * 2;
                 } else {
 
