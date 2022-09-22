@@ -116,8 +116,6 @@ class ClientRepository
                  */
                 'eo_users.first_name as officer_first_name',
                 'eo_users.last_name as officer_last_name'
-
-
             )
             ->get();
     }
