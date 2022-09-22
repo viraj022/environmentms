@@ -78,9 +78,10 @@ class EPLController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        $certificate = Certificate::where('client_id', $client)->where('certificate_type', 0)->orderBy('created_at', 'desc')->first();
         if ($pageAuth['is_read']) {
             if (Client::find($client) !== null && EPL::find($profile) !== null) {
-                return view('epl_profile', ['pageAuth' => $pageAuth, 'client' => $client, 'profile' => $profile]);
+                return view('epl_profile', ['pageAuth' => $pageAuth, 'client' => $client, 'profile' => $profile, 'certificate' => $certificate]);
             } else {
                 abort(404);
             }
@@ -324,11 +325,6 @@ class EPLController extends Controller
         if ($client) {
             $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
             switch ($type) {
-                case 'file':
-                    // $fileUrl = '/uploads/industry_files/' . $client->id . '/application';
-                    // $client->application_path = "storage" . $fileUrl . "/" . $file_name;
-                    // break;
-                    abort(405, "HCW process aborted by hansana");
                 case 'file1':
                     $fileUrl = '/uploads/' . FieUploadController::getRoadMapPath($client);
                     $client->file_01 = "storage" . $fileUrl . "/" . $file_name;
@@ -361,10 +357,17 @@ class EPLController extends Controller
 
     public function getDeadList($id)
     {
+        $client = Client::where('id', $id)->first();
+        $clientFile2 = $client->file_02;
         $files = Storage::files("public/uploads/industry_files/{$id}/application/file2");
         $links = array();
         foreach ($files as $file) {
-            array_push($links, str_replace("public", "storage", $file));
+            $fileName = str_replace("public", "storage", $file);
+            $isLatest = basename($clientFile2) == basename($fileName);
+            $links[] = [
+                'file_name' => $fileName,
+                'is_latest' => $isLatest,
+            ];
         }
         return $links;
     }

@@ -7,6 +7,8 @@
     <meta name="api-token" content="{{ auth()->user()->api_token }}" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="{{ asset('dist/img/favicon.ico') }}">
+
     <title>Environemnt Authority | North Western Province</title>
     @yield('styles')
     @yield('pageStyles')
@@ -21,6 +23,7 @@
         </nav>
         <!-- Navbar -->
         <!-- Main Sidebar Container -->
+        <!--  <aside class="main-sidebar sidebar-dark-primary elevation-4 nn">-->
         <aside class="main-sidebar sidebar-dark-olive elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link">

@@ -26,10 +26,12 @@ function deedList(profile_id, callBack) {
     var obj = '';
     ajaxRequest('GET', '/api/files/client/id/' + profile_id, null, function(respo) {
         if (respo.length == 0) {
-            obj += '<li><a>No Result Found</a></li>';
+            obj += '<li><a>No Files Found</a></li>';
         } else {
             $.each(respo, function(index, row) {
-                obj += '<li><a target="_blank" href="/' + row + '">File ' + ++index + '</a></li>';
+                obj += '<li class="'+(row.is_latest ? 'text-success' : '')+'">\
+                <a target="_blank" href="/' + row.file_name + '" class="'+(row.is_latest ? 'text-success' : '')+'">'+(row.is_latest ? '<strong>' : '')+'File ' + ++index +  (row.is_latest ? ' (Latest)' : '') +(row.is_latest ? '<strong>' : '')+'</a>\
+                </li>';
             });
         }
         $('.deedListUsr').html(obj);

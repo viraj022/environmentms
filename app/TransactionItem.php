@@ -17,4 +17,9 @@ class TransactionItem extends Model
     {
         return $this->belongsTo(Transaction::class);
     }
+
+    public function paymentType()
+    {
+        return $this->belongsTo(PaymentType::class);
+    }
 }

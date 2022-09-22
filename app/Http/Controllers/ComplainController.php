@@ -34,7 +34,7 @@ class ComplainController extends Controller
         request()->validate([
             "complainer_name_ipt" => 'required|max:255|string',
             "complainer_address_ipt" => 'required|max:255|string',
-            "contact_complainer_ipt" => ['required', 'numeric', 'nullable', 'min:10'],
+            "contact_complainer_ipt" => 'nullable|numeric|min:10',
             "recieve_type_ipt" => 'required',
             "complain_desc_ipt" => 'required|max:255|string',
             "complainer_code" => 'required|max:255|string',
@@ -45,7 +45,7 @@ class ComplainController extends Controller
         $save_complain = Complain::create([
             "complainer_name" => $request->complainer_name_ipt,
             "complainer_address" => $request->complainer_address_ipt,
-            "comp_contact_no" => $request->contact_complainer_ipt,
+            "comp_contact_no" => isset($request->contact_complainer_ipt) ? $request->contact_complainer_ipt : '-',
             "recieve_type" => $request->recieve_type_ipt,
             "complain_des" => $request->complain_desc_ipt,
             "complainer_code" => $request->complainer_code,
@@ -81,7 +81,7 @@ class ComplainController extends Controller
         request()->validate([
             "complainer_name_ipt" => 'required|max:255|string',
             "complainer_address_ipt" => 'required|max:255|string',
-            "contact_complainer_ipt" => ['required', 'numeric', 'nullable', 'min:10'],
+            "contact_complainer_ipt" => 'nullable|numeric|min:10',
             "recieve_type_ipt" => 'required',
             "complain_desc_ipt" => 'required|max:255|string',
             "complainer_code" => 'required|max:255|string',
@@ -92,7 +92,7 @@ class ComplainController extends Controller
         $update_complain = Complain::find($id);
         $update_complain->complainer_name = $request->complainer_name_ipt;
         $update_complain->complainer_address = $request->complainer_address_ipt;
-        $update_complain->comp_contact_no = $request->contact_complainer_ipt;
+        $update_complain->comp_contact_no = isset($request->contact_complainer_ipt) ? $request->contact_complainer_ipt : '-';
         $update_complain->recieve_type = $request->recieve_type_ipt;
         $update_complain->complain_des = $request->complain_desc_ipt;
         $update_complain->complainer_code = $request->complainer_code;

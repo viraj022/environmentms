@@ -18,6 +18,7 @@ use App\EnvironmentOfficer;
 use Illuminate\Support\Str;
 use App\Helpers\LogActivity;
 use App\Http\Resources\ClientResource;
+use App\OnlineNewApplicationRequest;
 use App\Repositories\UserNotificationsRepositary;
 use App\SiteClearance;
 use Illuminate\Http\Request;
@@ -45,7 +46,35 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        return view('client_space', ['pageAuth' => $pageAuth]);
+        return view('client_space', [
+            'pageAuth' => $pageAuth,
+            'newApplicationRequest' => null,
+            'salutations' => $this->getSalutations(),
+        ]);
+    }
+
+    public function getSalutations()
+    {
+        return ['-' => 'N/A', 'Mr' => 'Mr.', 'Mrs' => 'Mrs.', 'Ms' => 'Ms.', 'Miss' => 'Miss', 'Rev' => 'Rev'];
+    }
+
+    public function fromOnlineNewApplicationRequest(Request $request)
+    {
+        $newApplicationRequest = null;
+        if ($request->has('new_application_request')) {
+            $req = OnlineNewApplicationRequest::find($request->post('new_application_request'));
+            if ($req) {
+                $newApplicationRequest = $req;
+            }
+        }
+
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('client_space', [
+            'pageAuth' => $pageAuth,
+            'newApplicationRequest' => $newApplicationRequest,
+            'salutations' => $this->getSalutations(),
+        ]);
     }
 
     public function search_files()
@@ -135,8 +164,9 @@ class ClientController extends Controller
     public function certificatePrefer($id)
     {
         $user = Auth::user();
+        $cli = Client::where('id', $id)->first();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        return view('certificate_perforation', ['pageAuth' => $pageAuth, 'id' => $id]);
+        return view('certificate_perforation', ['pageAuth' => $pageAuth, 'id' => $id, 'cli' => $cli]);
     }
 
     /**
@@ -144,7 +174,7 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         try {
             $user = Auth::user();
@@ -211,7 +241,67 @@ class ClientController extends Controller
                 }
                 $client->file_no = $code;
                 $client->save();
+                // dd($client->id);
                 if ($client) {
+                    // bind client id to new application request if this is a new application request entry
+                    if ($request->new_application_request_id) {
+                        // set client id to new application request
+                        $newApplicationRequest = OnlineNewApplicationRequest::find($request->new_application_request_id);
+                        $newApplicationRequest->client_id = $client->id;
+                        $newApplicationRequest->status = 'complete'; // mark this as complete
+                        $newApplicationRequest->save();
+
+                        // import files from new application request to client profile
+                        if (!empty($newApplicationRequest->road_map)) {
+                            // import file 1/road map
+                            $file1Filepath = $newApplicationRequest->road_map;
+                            $file1FileName = basename($file1Filepath);
+                            $file1FileUrl = config('online-request.url') . '/storage/' . str_replace('public/', '', $file1Filepath);
+                            $targetDir = storage_path('app/public/uploads/industry_files/' . $client->id . '/application/file1');
+                            if (!file_exists($targetDir)) {
+                                mkdir($targetDir, 0644, true);
+                            }
+                            $targetFileName = $targetDir . '/' . $file1FileName;
+                            copy($file1FileUrl, $targetFileName);
+                            $client->file_01 = 'storage/uploads/industry_files/' . $client->id . '/application/file1/' . $file1FileName;
+                        }
+
+                        if (!empty($newApplicationRequest->deed_of_land)) {
+                            // import file 2/deed
+                            $file2Filepath = $newApplicationRequest->deed_of_land;
+                            $file2FileName = basename($file2Filepath);
+                            $file2FileUrl = config('online-request.url') . '/storage/' . str_replace('public/', '', $file2Filepath);
+                            $targetDir = storage_path('app/public/uploads/industry_files/' . $client->id . '/application/file2');
+                            if (!file_exists($targetDir)) {
+                                mkdir($targetDir, 0644, true);
+                            }
+                            $targetFileName = $targetDir . '/' . $file2FileName;
+                            copy($file2FileUrl, $targetFileName);
+                            $client->file_02 = 'storage/uploads/industry_files/' . $client->id . '/application/file2/' . $file2FileName;
+                        }
+
+                        if (!empty($newApplicationRequest->survey_plan)) {
+                            // import file 3/survey plan
+                            $file3Filepath = $newApplicationRequest->survey_plan;
+                            $file3FileName = basename($file3Filepath);
+                            $file3FileUrl = config('online-request.url') . '/storage/' . str_replace('public/', '', $file3Filepath);
+                            $targetDir = storage_path('app/public/uploads/industry_files/' . $client->id . '/application/file3');
+                            if (!file_exists($targetDir)) {
+                                mkdir($targetDir, 0644, true);
+                            }
+                            $targetFileName = $targetDir . '/' . $file3FileName;
+                            copy($file3FileUrl, $targetFileName);
+                            $client->file_03 = 'storage/uploads/industry_files/' . $client->id . '/application/file3/' . $file3FileName;
+                        }
+
+                        $client->save();
+
+                        // set online request for the new application request as complete
+                        $onlineRequest = $newApplicationRequest->onlineRequest;
+                        $onlineRequest->status = 'complete'; // mark this as complete
+                        $onlineRequest->save();
+                    }
+
                     LogActivity::fileLog($client->id, 'File', "Create New File", 1);
                     LogActivity::addToLog('Create new file', $client);
                     return array('id' => 1, 'message' => 'true', 'id' => $client->id);
@@ -293,7 +383,7 @@ class ClientController extends Controller
                 DB::beginTransaction();
 
                 $msg = Client::where('id', $id)->update($request->all());
-                $epl = EPL::where('client_id', $id)->first();
+                $epl = Epl::where('client_id', $id)->orderBy('created_at', 'desc')->first();
                 $site_clearsess = SiteClearenceSession::where('client_id', $id)->first();
 
                 //load and split new file no to generate new epl code
@@ -761,21 +851,22 @@ class ClientController extends Controller
                 'file_problem_status_description' => 'required|string',
                 'file' => $request->file != null ? 'sometimes|required|min:8' : ''
             ]);
+
             $file = Client::findOrFail($id);
-            if (!($request->file == null || isset($request->file))) {
-                $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                $fileUrl = '/uploads/' . FieUploadController::getOldFilePath($file);
-                $storePath = 'public' . $fileUrl;
-                $path = $request->file('file')->storeAs($storePath, $file_name);
-                $oldFiles = new OldFiles();
-                $oldFiles->path = "storage" . $fileUrl . "/" . $file_name;
-                $oldFiles->type = $request->file->extension();
-                $oldFiles->client_id = $file->id;
-                $oldFiles->description = \request('description');
-                $oldFiles->file_catagory = \request('file_catagory');
-                $file->complain_attachment = "storage" . $fileUrl . "/" . $file_name;
-                $msg = $oldFiles->save();
-            }
+            // if (!($request->file == null || isset($request->file))) {
+            //     $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
+            //     $fileUrl = '/uploads/' . FieUploadController::getOldFilePath($file);
+            //     $storePath = 'public' . $fileUrl;
+            //     $path = $request->file('file')->storeAs($storePath, $file_name);
+            //     $oldFiles = new OldFiles();
+            //     $oldFiles->path = "storage" . $fileUrl . "/" . $file_name;
+            //     $oldFiles->type = $request->file->extension();
+            //     $oldFiles->client_id = $file->id;
+            //     $oldFiles->description = \request('description');
+            //     $oldFiles->file_catagory = \request('file_catagory');
+            //     $file->complain_attachment = "storage" . $fileUrl . "/" . $file_name;
+            //     $msg = $oldFiles->save();
+            // }
             if (\request('file_problem_status') == 'clean') {
                 $file->complain_attachment = null;
             }
@@ -1219,6 +1310,8 @@ class ClientController extends Controller
             2 => 'first_name',
             3 => 'industry_name',
             4 => 'industry_registration_no',
+            5 => 'certificate_number',
+            6 => 'industry_address'
         );
         $totalData = Client::where('deleted_at', '=', null)->where('is_old', '!=', 0)->count();
 
@@ -1228,14 +1321,15 @@ class ClientController extends Controller
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
         if (empty($request->input('search.value'))) {
-            $clients = Client::where('is_old', '!=', 0)
+            $clients = Client::with('certificates', 'epls')->where('is_old', '!=', 0)
                 ->offset($start)
                 ->limit($limit)
                 ->orderBy($order, $dir)
                 ->get();
         } else {
             $search = $request->input('search.value');
-            $clients = Client::where('is_old', '!=', 0)
+            $clients = Client::with('certificates', 'epls')
+                ->where('is_old', '!=', 0)
                 //                    ->orWhere('id', 'LIKE', "%{$search}%")
                 ->Where('file_no', 'LIKE', "%{$search}%")
                 ->orWhere('first_name', 'LIKE', "%{$search}%")
@@ -1243,10 +1337,10 @@ class ClientController extends Controller
                 ->orWhere('industry_name', 'LIKE', "%{$search}%")
                 ->offset($start)
                 ->limit($limit)
-                ->orderBy($order, $dir)
+                ->orderBy('clients.' . $order, $dir)
                 ->get();
-            //dd($clients);
-            $totalFiltered = Client::where('is_old', '!=', 0)
+            // dd($clients);
+            $totalFiltered = Client::with('certificates', 'epls')->where('is_old', '!=', 0)
                 //                    ->orWhere('id', 'LIKE', "%{$search}%")
                 ->Where('file_no', 'LIKE', "%{$search}%")
                 ->orWhere('first_name', 'LIKE', "%{$search}%")
@@ -1261,11 +1355,17 @@ class ClientController extends Controller
             foreach ($clients as $client) {
                 //                $show =  route('posts.show',$post->id);
                 //                $edit =  route('posts.edit',$post->id);
+                $cert = $client->certificates->first();
+                $epl_cert = !empty($client->epls->first()) ? $client->epls->first() : '';
+                // dump($client->id);
+                // dd($cert->cetificate_number);
                 $nestedData['id'] = $client->id;
                 $nestedData['file_no'] = $client->file_no;
                 $nestedData['client_name'] = $client->first_name . $client->last_name;
                 $nestedData['industry_name'] = $client->industry_name;
                 $nestedData['industry_registration_no'] = $client->industry_registration_no;
+                $nestedData['certificate_number'] = !empty($cert) ? $cert->cetificate_number : $epl_cert->certificate_no;
+                $nestedData['industry_address'] = $client->industry_address;
                 //                $nestedData['body'] = substr(strip_tags($post->body),0,50)."...";
                 //                $nestedData['created_at'] = date('j M Y h:i a',strtotime($post->created_at));
                 //                $nestedData['options'] = "&emsp;<a href='{$show}' title='SHOW' ><span class='glyphicon glyphicon-list'></span></a>

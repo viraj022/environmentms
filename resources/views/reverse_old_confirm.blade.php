@@ -20,7 +20,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-12 col-sm-6">
-                        <h1>Comfirmed Files</h1>
+                        <h1>Pending Revert Files</h1>
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@
                             <div class="col-md-12">
                                 <div class="card card-dark">
                                     <div class="card-header">
-                                        <h3 class="card-title">Confirmed Files</h3>
+                                        <h3 class="card-title">Revert File List</h3>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <!--                                <button class="btn btn-sm btn-primary" id="tblRefresh"><i class="fa fa-refresh"></i> Refresh</button>&nbsp;-->
                                     </div>
@@ -47,8 +47,10 @@
                                                     <tr>
                                                         <th>File No</th>
                                                         <th>Client Name</th>
-                                                        <th>Industry Name</th>
                                                         <th>BR No</th>
+                                                        <th>Certificate Number</th>
+                                                        <th>Industry Name</th>
+                                                        <th>Industry Address</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
@@ -111,10 +113,16 @@
                         "data": "client_name"
                     },
                     {
+                        "data": "industry_registration_no"
+                    },
+                    {
+                        "data": "certificate_number"
+                    },
+                    {
                         "data": "industry_name"
                     },
                     {
-                        "data": "industry_registration_no"
+                        "data": "industry_address"
                     },
                     {
                         "data": "id"

@@ -126,8 +126,8 @@ function assigned_EPL_table(officer_id, callBack) {
                         TYPE += 'EPL';
                     }
 
-                    if (row.siteClearenceSessions != null) {
-                        CODE += '<br>' + row.siteClearenceSessions[0].code;
+                    if (row.site_clearence_sessions.length != 0) {
+                        CODE += '<br>' + row.site_clearence_sessions[0].code;
                         TYPE += ' SiteClearance';
                     }
 

@@ -64,8 +64,8 @@
                                 Inspection</a>
                         </li>
                         <!--                <li class="nav-item">
-                                                                                            <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
-                                                                                        </li>-->
+                                                                                                                                                                                <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
+                                                                                                                                                                            </li>-->
                         <li class="nav-item">
                             <a class="nav-link paymentsTab" id="custom-tabs-three-paymentsTab-tab" data-toggle="pill"
                                 href="#custom-tabs-three-paymentsTab" role="tab"
@@ -73,8 +73,8 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link minutesTab" id="custom-tabs-three-minutesTab-tab" data-toggle="pill"
-                                href="#custom-tabs-three-minutesTab" role="tab" aria-controls="custom-tabs-three-minutesTab"
-                                aria-selected="false">Minutes</a>
+                                href="#custom-tabs-three-minutesTab" role="tab"
+                                aria-controls="custom-tabs-three-minutesTab" aria-selected="false">Minutes</a>
                         </li>
                     </ul>
                 </div>
@@ -100,13 +100,14 @@
                                                         <div class="card-body">
                                                             <!--                                                    <div class="callout callout-danger">
 
-                                                                                                                                                                    <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change Environment Officer</button>
-                                                                                                                                                                    <p>There is a problem that we need to</p>
-                                                                                                                                                                </div>-->
+                                                                                                                                                                                                                                                        <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change Environment Officer</button>
+                                                                                                                                                                                                                                                        <p>There is a problem that we need to</p>
+                                                                                                                                                                                                                                                    </div>-->
 
                                                             <div class="newEPL d-none info-box mb-3 bg-success">
                                                                 <span class="info-box-icon">
-                                                                    <button class="btn btn-lg btn-default" id="newEPL"><i
+                                                                    <button class="btn btn-lg btn-default"
+                                                                        id="newEPL"><i
                                                                             class="fa fa-plus"></i></button></span>
                                                                 <div class="info-box-content">
                                                                     <span class="info-box-text">Create new environment
@@ -156,14 +157,14 @@
                                                             </div>
 
                                                             <!--                                                    <div class="info-box mb-3 bg-info">
-                                                                                                                                                                    <span class="info-box-icon">
-                                                                                                                                                                        <button class="btn btn-lg btn-default" id="teli"><i class="fa fa-plus"></i></button></span>
-                                                                                                                                                                    <div class="info-box-content">
-                                                                                                                                                                        <span class="info-box-text">Create new telecommunication site clearance file</span>
-                                                                                                                                                                        <span class="info-box-number">Telecommunication Site Clearance</span>
-                                                                                                                                                                    </div>
-                                                                                                                                                                     /.info-box-content
-                                                                                                                                                                </div>-->
+                                                                                                                                                                                                                                                        <span class="info-box-icon">
+                                                                                                                                                                                                                                                            <button class="btn btn-lg btn-default" id="teli"><i class="fa fa-plus"></i></button></span>
+                                                                                                                                                                                                                                                        <div class="info-box-content">
+                                                                                                                                                                                                                                                            <span class="info-box-text">Create new telecommunication site clearance file</span>
+                                                                                                                                                                                                                                                            <span class="info-box-number">Telecommunication Site Clearance</span>
+                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                         /.info-box-content
+                                                                                                                                                                                                                                                    </div>-->
 
                                                             <div class="info-box mb-3 bg-info">
                                                                 <span class="info-box-icon">
@@ -205,7 +206,9 @@
                                                         </div>
                                                     </div>
                                                     <div class="card-body reportInfo" style="display: none;">
-                                                        Unknown Error!
+                                                        @if ($client->file_problem_status_description != null)
+                                                            {{ $client->file_problem_status_description }}
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
@@ -239,7 +242,8 @@
                                                         </div>
                                                     </div>
                                                     <hr>
-                                                    <span style='font-size: 18px; color: green'><b>Client Details</b></span>
+                                                    <span style='font-size: 18px; color: green'><b>Client
+                                                            Details</b></span>
                                                     <div class="card">
                                                         <div class="card-body">
                                                             <dl class="row">
@@ -257,11 +261,14 @@
                                                     <hr>
                                                     <dt>Download & Upload Application :</dt>
 
-                                                    <a href="" class="btn btn-dark navToFile1" target="_blank">View Road
+                                                    <a href="" class="btn btn-dark navToFile1"
+                                                        target="_blank">View Road
                                                         Map</a>
-                                                    <a href="" class="btn btn-dark navToFile2" target="_blank">View Deed of
+                                                    <a href="" class="btn btn-dark navToFile2"
+                                                        target="_blank">View Deed of
                                                         the land</a>
-                                                    <a href="" class="btn btn-dark navToFile3" target="_blank">View Survey
+                                                    <a href="" class="btn btn-dark navToFile3"
+                                                        target="_blank">View Survey
                                                         Plan</a>
 
                                                     <button type="button" class="btn btn-primary d-none"
@@ -566,82 +573,123 @@
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="card-body">
-                                        <div class="callout callout-danger">
-                                            <button type="button" onclick="location.href = '/epl_assign';"
-                                                class="btn btn-dark" data-dismiss="modal">Assign/Change Environment
-                                                Officer</button>
-                                            <!--<p>There is a problem that we need to</p>-->
-                                        </div>
-                                        <div class="callout callout-danger">
-                                            <button type="button" class="btn btn-danger reportIssueView"><i
-                                                    class="fa fa-file"></i> Report Problem</button>
-                                            <button type="button" class="btn btn-success markIssueClean d-none"><i
-                                                    class="fa fa-file"></i> Mark Problem Cleared</button>
-                                            <div class="reportView d-none">
-                                                <div class="form-group">
-                                                    <label>Report File Problem</label>
-                                                    <textarea class="form-control" id="reportTxtArea" rows="3" placeholder="Enter ..." autocomplete="off"></textarea>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="callout callout-danger">
+                                                    <h4>Inspection Status: <a class="setupInspectStatus text-success"></a>
+                                                    </h4>
+                                                    <button type="button" onclick="location.href = '';"
+                                                        class="btn btn-dark addToSiteIns d-none" data-dismiss="modal"><i
+                                                            class="fa fa-plus"></i>&nbsp Add To Site Inspection</button>
+                                                    <button type="button" value="needed"
+                                                        class="btn btn-info setInspectUI d-none"><i
+                                                            class="fa fa-plus"></i>&nbsp Set Inspection</button>
+                                                    <button type="button" value="no_needed"
+                                                        class="btn btn-warning noNeedInspect d-none"><i
+                                                            class="fa fa-exclamation"></i>&nbsp No Need Inspection</button>
                                                 </div>
-                                                <div class="form-group">
-                                                    <hr>
-                                                    <input id="problemFileUpload" type="file" class=""
-                                                        accept="image/*, .pdf">
-                                                    <div class="progress d-none">
-                                                        <div class="progress-bar bg-primary progress-bar-striped Uploadprogress"
-                                                            id="Uploadprogress" role="progressbar" aria-valuenow="40"
-                                                            aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                                                            <!--<span class="sr-only">40% Complete (success)</span>-->
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="callout callout-info">
+                                                    <dt>Update Uploaded Applications :</dt>
+                                                    <button type="button" class="btn btn-warning upld_roadMap"
+                                                        data-upload_file="Road Map">Update Road Map</button>
+                                                    <button type="button" class="btn btn-warning upld_deed"
+                                                        data-upload_file="Deed Of The Land">Update Deed of the land
+                                                    </button>
+                                                    <button type="button" class="btn btn-warning upld_SurveyPlan"
+                                                        data-upload_file="Survey Plan">Update Survey Plan</button>
+                                                    <div class="form-group fileUpDiv d-none">
+                                                        <hr>
+                                                        <label class="uploadLabel">File Upload </label>
+                                                        <input type="file" class="fileUploadInput"
+                                                            accept=".png,.jpg,.jpeg, .pdf">
+                                                        <div class="progress d-none">
+                                                            <div class="progress-bar bg-primary progress-bar-striped Uploadprogress"
+                                                                role="progressbar" aria-valuenow="40" aria-valuemin="0"
+                                                                aria-valuemax="100" style="width: 0%">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <button type="button" id="reportSubmit" class="btn btn-success"><i
-                                                            class="fa fa-check"></i> Submit</button>
-                                                </div>
                                             </div>
                                         </div>
-                                        <div class="callout callout-danger">
-                                            <h4>Current Status: <a class="setupInspectStatus text-success"></a></h4>
-                                            <button type="button" onclick="location.href = '';"
-                                                class="btn btn-dark addToSiteIns d-none" data-dismiss="modal"><i
-                                                    class="fa fa-plus"></i>&nbsp Add To Site Inspection</button>
-                                            <button type="button" value="needed"
-                                                class="btn btn-info setInspectUI d-none"><i
-                                                    class="fa fa-plus"></i>&nbsp Set Inspection</button>
-                                            <button type="button" value="no_needed"
-                                                class="btn btn-warning noNeedInspect d-none"><i
-                                                    class="fa fa-exclamation"></i>&nbsp No Need Inspection</button>
-                                        </div>
-                                        <div class="callout callout-info">
-                                            <dt>Update Uploaded Applications :</dt>
-                                            <button type="button" class="btn btn-warning upld_roadMap"
-                                                data-upload_file="Road Map">Update Road Map</button>
-                                            <button type="button" class="btn btn-warning upld_deed"
-                                                data-upload_file="Deed Of The Land">Update Deed of the land </button>
-                                            <button type="button" class="btn btn-warning upld_SurveyPlan"
-                                                data-upload_file="Survey Plan">Update Survey Plan</button>
-                                            <div class="form-group fileUpDiv d-none">
-                                                <hr>
-                                                <label class="uploadLabel">File Upload </label>
-                                                <input type="file" class="fileUploadInput" accept=".png,.jpg,.jpeg, .pdf">
-                                                <div class="progress d-none">
-                                                    <div class="progress-bar bg-primary progress-bar-striped Uploadprogress"
-                                                        role="progressbar" aria-valuenow="40" aria-valuemin="0"
-                                                        aria-valuemax="100" style="width: 0%">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="callout callout-info">
+                                                    <dt>Deed List :</dt>
+                                                    <div class="deedListUsr">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="callout callout-info">
-                                            <dt>Deed List :</dt>
-                                            <div class="deedListUsr">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="callout callout-danger">
+                                                    <button type="button" onclick="location.href = '/epl_assign';"
+                                                        class="btn btn-dark" data-dismiss="modal">Assign/Change
+                                                        Environment
+                                                        Officer</button>
+                                                    <!--<p>There is a problem that we need to</p>-->
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="callout callout-danger">
+                                                    <button type="button" class="btn btn-danger reportIssueView"><i
+                                                            class="fa fa-file"></i> Report Problem</button>
+                                                    <button type="button"
+                                                        class="btn btn-success markIssueClean d-none"><i
+                                                            class="fa fa-file"></i> Mark Problem Cleared</button>
+                                                    <div class="reportView d-none">
+                                                        <div class="form-group">
+                                                            <label>Report File Problem</label>
+                                                            <textarea class="form-control" id="reportTxtArea" rows="3" placeholder="Enter ..." autocomplete="off"></textarea>
+                                                        </div>
+                                                        {{-- <div class="form-group">
+                                                            <hr>
+                                                            <input id="problemFileUpload" type="file" class=""
+                                                                accept="image/*, .pdf">
+                                                            <div class="progress d-none">
+                                                                <div class="progress-bar bg-primary progress-bar-striped Uploadprogress"
+                                                                    id="Uploadprogress" role="progressbar"
+                                                                    aria-valuenow="40" aria-valuemin="0"
+                                                                    aria-valuemax="100" style="width: 0%">
+                                                                    <!--<span class="sr-only">40% Complete (success)</span>-->
+                                                                </div>
+                                                            </div>
+                                                        </div> --}}
+                                                        <div class="form-group">
+                                                            <button type="button" id="reportSubmit"
+                                                                class="btn btn-success"><i class="fa fa-check"></i>
+                                                                Submit</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="callout callout-danger">
+                                                    <button type="button" id="removeFileBtn" class="btn btn-danger"><i
+                                                            class="fas fa-times"></i> Remove File</button>
+                                                    <a href="/update_client/id/{{ $id }}"
+                                                        class="btn btn-warning"><i class="far fa-edit"></i> Update This
+                                                        Client</a>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="callout callout-danger">
-                                            <button type="button" id="removeFileBtn" class="btn btn-danger"><i
-                                                    class="fas fa-times"></i> Remove File</button>
-                                            <a href="/update_client/id/{{ $id }}" class="btn btn-warning"><i
-                                                    class="far fa-edit"></i> Update This Client</a>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="callout callout-success">
+                                                    <a href="{{ route('create.file.letter', [$id]) }}"
+                                                        class="btn btn btn-primary text-white"
+                                                        style="text-decoration: none" target="_blank"><i
+                                                            class="far fa-edit"></i> New Letter</a>
+                                                    <a href="{{ route('file.letter.view', [$id]) }}"
+                                                        class="btn btn-success text-white" style="text-decoration: none"
+                                                        target="_blank"><i class="far fa-file"></i> View Letters</a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -695,14 +743,15 @@
                                     <div class="card-body p-0">
                                         <div class="card-body table-responsive" style="height: 450px;">
                                             <table class="table table-condensed" id="tblAllPayments">
+
                                                 <thead>
                                                     <tr>
-                                                        <th style="width: 10px">#</th>
+                                                        <th>#</th>
                                                         <th>Cashier Name</th>
                                                         <th>Invoice No</th>
                                                         <th>Status</th>
                                                         <th>Total</th>
-                                                        <th style="width: 290px">Action</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -942,7 +991,7 @@
             var data = {
                 file_problem_status_description: $('#reportTxtArea').val(),
                 file_problem_status: 'problem',
-                file: $('#problemFileUpload')[0].files[0],
+                // file: $('#problemFileUpload')[0].files[0],
                 file_catagory: 'PROBLEM'
             };
             reportFileIssueAPI(PROFILE_ID, data, function(resp) {
