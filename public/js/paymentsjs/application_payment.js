@@ -24,6 +24,7 @@ function selectedApplication_table(obj, callBack) {
             tbl += '<tr>';
             tbl += '<td>' + ++index + '</td>';
             tbl += '<td>' + row.name + '</td>';
+            tbl += '<td>' + row.type + '</td>';
             tbl += '<td>' + row.qty + '</td>';
             tbl += '<td>' + row.amount + '</td>';
             tbl += '<td><button value="' + row.id + '" type="button" class="btn btn-danger app_removeBtn">Remove</button></td>';
@@ -79,12 +80,12 @@ function loadTable() {
             table += "<td>" + id++ + "</td>";
             table += "<td>" + value.application_client.name + "</td>";
             if (value.application_client.nic == null) {
-                table += "<td>N/A</td>";
+                table += "<td>-</td>";
             } else {
                 table += "<td>" + value.application_client.nic + "</td>";
             }
             if (value.application_client.contact_no == null) {
-                table += "<td>N/A</td>";
+                table += "<td>-</td>";
             } else {
                 table += "<td>" + value.application_client.contact_no + "</td>";
             }

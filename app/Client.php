@@ -133,7 +133,7 @@ class Client extends Model
                 abort('422', 'unknown status type');
         }
         return $file->with('environmentOfficer.assistantDirector')
-            ->with('epls')
+            ->with('epls')->orderBy('created_at', 'desc')
             ->with('siteClearenceSessions');
         // ->with('oldFiles')
         // ->with('industryCategory')
