@@ -160,6 +160,10 @@ function displayClientDataFromEvent(u_id, callBack) {
             tbl += ' <th>Pradesheeyasaba:</th>';
             tbl += ' <td>' + dataSet.pradesheeyasaba.name + '</td>';
             tbl += '</tr>';
+            tbl += '<tr>';
+            tbl += ' <th>Scheduled Date:</th>';
+            tbl += ' <td>' + '<input type="date" name="" id="inspectionDate" class="form-control form-control-sm"> <br> <button type="button" class="btn btn-primary" value="'+u_id+'" id="setInspectionDateButton">Set Inspection Date</button>'  + '</td>';
+            tbl += '</tr>';
         }
         $('#tblUserData').html(tbl);
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
