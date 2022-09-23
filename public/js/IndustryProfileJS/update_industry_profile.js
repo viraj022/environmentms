@@ -1,9 +1,9 @@
 function loadPradeshiyaSabha(callBack) {
     var cbo = "";
-    ajaxRequest('GET', "/api/pradesheeyasabas",null, function (dataSet) {
+    ajaxRequest('GET', "/api/pradesheeyasabas", null, function (dataSet) {
         if (dataSet) {
             $.each(dataSet, function (index, row) {
-                cbo += '<option data-ps_code="'+ row.code +'" value="' + row.id + '">' + row.code + ' - ' + row.name + '</option>';
+                cbo += '<option data-ps_code="' + row.code + '" value="' + row.id + '">' + row.code + ' - ' + row.name + '</option>';
             });
         } else {
             cbo = "<option value=''>No Data Found</option>";
@@ -16,10 +16,10 @@ function loadPradeshiyaSabha(callBack) {
 }
 function IndustryCategoryCombo(callBack) {
     var cbo = "";
-    ajaxRequest('GET', "/api/industrycategories",null, function (dataSet) {
+    ajaxRequest('GET', "/api/industrycategories", null, function (dataSet) {
         if (dataSet) {
             $.each(dataSet, function (index, row) {
-                cbo += '<option data-cat_code="'+row.code +'" value="' + row.id + '">' + row.name + '</option>';
+                cbo += '<option data-cat_code="' + row.code + '" value="' + row.id + '">' + row.name + '</option>';
             });
         } else {
             cbo = "<option value=''>No Data Found</option>";
@@ -32,10 +32,10 @@ function IndustryCategoryCombo(callBack) {
 }
 function BusinessScaleCombo(callBack) {
     var cbo = "";
-    ajaxRequest('GET', "/api/business_scale",null, function (dataSet) {
+    ajaxRequest('GET', "/api/business_scale", null, function (dataSet) {
         if (dataSet) {
             $.each(dataSet, function (index, row) {
-                cbo += '<option data-bc_code="'+row.code +'" value="' + row.id + '">' + row.name + '</option>';
+                cbo += '<option data-bc_code="' + row.code + '" value="' + row.id + '">' + row.name + '</option>';
             });
         } else {
             cbo = "<option value=''>No Data Found</option>";
@@ -63,10 +63,10 @@ function updateClientFileAPI(id, data, callBack) {
 //Required Field
 function requiredFieldHandler(frm_data, required_class) {
     var response = true;
-//    if (frm_data.is_old.length == 0) {
-//        toastr.error('Is Old Required!');
-//        response = false;
-//    }
+    //    if (frm_data.is_old.length == 0) {
+    //        toastr.error('Is Old Required!');
+    //        response = false;
+    //    }
     if (frm_data.first_name.length == 0) {
         toastr.error('First Name Required!');
         response = false;
@@ -87,10 +87,10 @@ function requiredFieldHandler(frm_data, required_class) {
         toastr.error('Start Date Required!');
         response = false;
     }
-//    if (frm_data.assign_date.length == 0) {
-//        toastr.error('Submitted Required!');
-//        response = false;
-//    }
+    //    if (frm_data.assign_date.length == 0) {
+    //        toastr.error('Submitted Required!');
+    //        response = false;
+    //    }
     $(required_class).each(function () {
         if ($(this).val().length === 0) {
             $(this).addClass("is-invalid");

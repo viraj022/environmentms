@@ -24,6 +24,7 @@ function selectedApplication_table(obj, callBack) {
             tbl += '<tr>';
             tbl += '<td>' + ++index + '</td>';
             tbl += '<td>' + row.name + '</td>';
+            tbl += '<td>' + row.type + '</td>';
             tbl += '<td>' + row.qty + '</td>';
             tbl += '<td>' + row.amount + '</td>';
             tbl += '<td><button value="' + row.id + '" type="button" class="btn btn-danger app_removeBtn">Remove</button></td>';
@@ -43,9 +44,9 @@ function paymentDetals_table() {
             tbl = "<tr><td>No data found</td></tr>";
         } else {
             $.each(r, function (index, row) {
-//                tbl += '<tr>';
-//                tbl += '<td>'+row.+'</td>';
-//                tbl += '</tr>';
+                //                tbl += '<tr>';
+                //                tbl += '<td>'+row.+'</td>';
+                //                tbl += '</tr>';
             });
         }
 
@@ -70,6 +71,7 @@ function set_application_amount() {
 }
 
 function loadTable() {
+    $("#tbl_pendingpays").dataTable().fnDestroy();
     ajaxRequest('GET', 'api/application/pendingPayments', null, function (data) {
         var table = "";
         var id = 1;
@@ -78,12 +80,12 @@ function loadTable() {
             table += "<td>" + id++ + "</td>";
             table += "<td>" + value.application_client.name + "</td>";
             if (value.application_client.nic == null) {
-                table += "<td>N/A</td>";
+                table += "<td>-</td>";
             } else {
                 table += "<td>" + value.application_client.nic + "</td>";
             }
             if (value.application_client.contact_no == null) {
-                table += "<td>N/A</td>";
+                table += "<td>-</td>";
             } else {
                 table += "<td>" + value.application_client.contact_no + "</td>";
             }
@@ -98,9 +100,7 @@ function loadTable() {
             table += "</tr>";
         });
         $('#tbl_pendingpays tbody').html(table);
-        $("#tbl_pendingpays").DataTable({
-            "order": [[1, "asc"]]
-        });
+        $("#tbl_pendingpays").DataTable();
     });
 }
 

@@ -328,8 +328,7 @@ class ReportController extends Controller
         $telecommunicationCount = $site->telicomTowerCount($from, $to, 'Application');
         $towerEplNewCount = $epl->TowerEPlPLCount($from, $to, 1, 0);
         $towerEplRenewCount = $epl->TowerEPlPLCount($from, $to, 0, 0);
-        // dd($towerEplNewCount);
-        // dd($telecommunicationCount);
+
 
         $result[] = array('type' => '', 'name' => 'Meeting/Test Blast', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
         $result[] = array('type' => '', 'name' => 'Joint Inspection', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
@@ -339,18 +338,13 @@ class ReportController extends Controller
         $result[] = array('type' => '', 'name' => 'Tower (EPL N)', 'application' => $this->prepareApplicationTotal($towerEplNewCount->toArray()), 'object' => $this->prepareCount($towerEplNewCount->toArray(), $assistanceDirectors));
         $result[] = array('type' => '', 'name' => 'Tower SC', 'application' => $this->prepareApplicationTotal($telecommunicationCount->toArray()), 'object' => $this->prepareCount($telecommunicationCount->toArray(), $assistanceDirectors));
         $result[] = array('type' => '', 'name' => 'Expert Committee Meetings', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
-        // dd($result);
-        // dd($assistanceDirectors->toArray());
         $time_elapsed_secs = round(microtime(true) - $start, 5);
-        // dd($time_elapsed_secs);
         return view('Reports.monthly_progress_report', compact('result', 'assistanceDirectors', 'time_elapsed_secs', 'from', 'to'));
     }
 
     private function prepareCount($array, $assistanceDirectors, $flag = true)
     {
         $rtn = [];
-        // dd($array);
-        // dd($assistanceDirectors->toArray());
         foreach ($assistanceDirectors as $assistanceDirector) {
             if ($flag) {
                 $data = array('total' => 0);

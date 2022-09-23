@@ -35,7 +35,7 @@ function ajaxRequest(Method, url, data, callBack) {
             } else if (exception === 'abort') {
                 msg = 'Ajax request aborted.';
             } else {
-                msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                msg = 'Uncaught Error.\n' + jqXHR.responseJSON.message;
             }
             //            Toast.fire({
             //                type: 'error',
@@ -62,6 +62,7 @@ function submitDataWithFile(url, frmDta, callBack, metod = false) {
 }
 
 function show_mesege(resp_id) {
+    console.log(resp_id);
     if (resp_id.id == 1) {
         Swal.fire({
             type: 'success',
@@ -70,7 +71,7 @@ function show_mesege(resp_id) {
     } else {
         Swal.fire({
             type: 'error',
-            title: 'Enviremontal MS</br>' + resp_id.message
+            title: 'Enviremontal MS</br>' + resp_id
         });
     }
 }

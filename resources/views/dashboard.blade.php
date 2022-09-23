@@ -8,20 +8,20 @@
 @section('content')
     <!-- Content Header (Page header) -->
     <!--<div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Dashboard</h1>
-                    </div> /.col
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Dashboard v1</li>
-                        </ol>
-                    </div> /.col
-                </div> /.row
-            </div> /.container-fluid
-        </div>-->
+                                    <div class="container-fluid">
+                                        <div class="row mb-2">
+                                            <div class="col-sm-6">
+                                                <h1 class="m-0 text-dark">Dashboard</h1>
+                                            </div> /.col
+                                            <div class="col-sm-6">
+                                                <ol class="breadcrumb float-sm-right">
+                                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                                    <li class="breadcrumb-item active">Dashboard v1</li>
+                                                </ol>
+                                            </div> /.col
+                                        </div> /.row
+                                    </div> /.container-fluid
+                                </div>-->
     <!-- /.content-header -->
     <link href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <!-- Main content -->
@@ -429,40 +429,40 @@
                     <!-- /.row -->
 
                     <!--                <div class="card">
-                                            <div class="card-header">
-                                                <h3 class="card-title"><b>File Category</b></h3>
-                        
-                                                <div class="card-tools">
-                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                                                    </button>
-                                                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                             /.card-header
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-md-8">
-                                                        <div class="chart-responsive">
-                                                            <canvas id="pieChart2" height="150"></canvas>
-                                                        </div>
-                                                         ./chart-responsive
-                                                    </div>
-                                                     /.col
-                                                    <div class="col-md-4">
-                                                        <ul class="chart-legend clearfix">
-                                                            <li><i class="far fa-circle text-danger"></i> EPL</li>
-                                                            <li><i class="far fa-circle text-success"></i> Site Clearance</li>
-                                                            <li><i class="far fa-circle text-warning"></i> Telecommunication</li>
-                                                            <li><i class="far fa-circle text-info"></i> Schedule Waste</li>
-                                                        </ul>
-                                                    </div>
-                                                     /.col
-                                                </div>
-                                                 /.row
-                                            </div>
-                                             /.card-body
-                                        </div>-->
+                                                                    <div class="card-header">
+                                                                        <h3 class="card-title"><b>File Category</b></h3>
+
+                                                                        <div class="card-tools">
+                                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                                                            </button>
+                                                                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                     /.card-header
+                                                                    <div class="card-body">
+                                                                        <div class="row">
+                                                                            <div class="col-md-8">
+                                                                                <div class="chart-responsive">
+                                                                                    <canvas id="pieChart2" height="150"></canvas>
+                                                                                </div>
+                                                                                 ./chart-responsive
+                                                                            </div>
+                                                                             /.col
+                                                                            <div class="col-md-4">
+                                                                                <ul class="chart-legend clearfix">
+                                                                                    <li><i class="far fa-circle text-danger"></i> EPL</li>
+                                                                                    <li><i class="far fa-circle text-success"></i> Site Clearance</li>
+                                                                                    <li><i class="far fa-circle text-warning"></i> Telecommunication</li>
+                                                                                    <li><i class="far fa-circle text-info"></i> Schedule Waste</li>
+                                                                                </ul>
+                                                                            </div>
+                                                                             /.col
+                                                                        </div>
+                                                                         /.row
+                                                                    </div>
+                                                                     /.card-body
+                                                                </div>-->
                     <!-- /.card -->
                 </div>
             </div>
@@ -520,8 +520,8 @@
         getDashboardData(['renew_chart', 'new_file_chart', 'pra_table', 'industry_category_table', 'env_officer_table',
             'file_category_chart'
         ], {
-            from: '2020-01-01',
-            to: '2020-12-31'
+            from: (yyyy - 1) + '-' + today.getMonth() + '-' + dd,
+            to: yyyy + '-' + today.getMonth() + '-' + dd
         }, function(p) {
             //--EPL Renewal Chart Open--//
             eplRenewalChart(p.renew_chart.months, p.renew_chart.renew, p.renew_chart.expire);

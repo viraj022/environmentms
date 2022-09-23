@@ -2,8 +2,8 @@
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <!--    <div class="image">
-                                <img src="/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                            </div>-->
+                                            <img src="/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                                        </div>-->
         <div class="info">
             <a href="#" class="d-block">Welcome, {{ auth()->user()->first_name }}!</a>
         </div>
@@ -13,7 +13,7 @@
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
-                                 with font-awesome or any other icon font library -->
+                                             with font-awesome or any other icon font library -->
             <li class="nav-item has-treeview">
                 <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -29,22 +29,10 @@
                             <p>Summery</p>
                         </a>
                     </li>
-                    <!--                <li class="nav-item">
-                                        <a href="./index2.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Dashboard v2</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="./index3.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Dashboard v3</p>
-                                        </a>
-                                    </li>-->
                 </ul>
             </li>
             <li
-                class="nav-item has-treeview {{ Request::is('attachments','attachment_map','pradesheyasaba','industry_category','payment_type','payments','payment_range','zone','assistant_director','environment_officer','committee_pool')? 'menu-open': '' }}">
+                class="nav-item has-treeview {{ Request::is('attachments', 'attachment_map', 'pradesheyasaba', 'industry_category', 'payment_type', 'payments', 'payment_range', 'zone', 'assistant_director', 'environment_officer', 'committee_pool') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-pencil-ruler"></i>
                     <p>
@@ -115,8 +103,7 @@
                         @endif
                         @if ($pre['id'] === config('auth.privileges.zone'))
                             <li class="nav-item">
-                                <a href="{{ url('/zone') }}"
-                                    class="nav-link {{ Request::is('zone') ? 'active' : '' }}">
+                                <a href="{{ url('/zone') }}" class="nav-link {{ Request::is('zone') ? 'active' : '' }}">
                                     <i class="fas fa-file-archive nav-icon"></i>
                                     <p>Zone</p>
                                 </a>
@@ -162,7 +149,7 @@
                 </ul>
             </li>
             <li
-                class="nav-item has-treeview {{ Request::is('client_space', 'industry_files', 'epl_assign', 'old_file_list', 'env_officer', 'search_files')? 'menu-open': '' }}">
+                class="nav-item has-treeview {{ Request::is('client_space', 'industry_files', 'epl_assign', 'old_file_list', 'env_officer', 'search_files') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-user-shield"></i>
                     <p>
@@ -297,7 +284,8 @@
                     @endforeach
                 </ul>
             </li>
-            <li class="nav-item has-treeview {{ Request::is('ad_pending_list', 'schedule', 'epl_assign') ? 'menu-open' : '' }}">
+            <li
+                class="nav-item has-treeview {{ Request::is('ad_pending_list', 'schedule', 'epl_assign') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-chalkboard-teacher"></i>
                     <p>Assistant Director <i class="right fas fa-angle-left"></i></p>
@@ -334,7 +322,8 @@
                     @endforeach
                 </ul>
             </li>
-            <li class="nav-item has-treeview {{ Request::is('director_pending_list', 'director_approved_list') ? 'menu-open' : '' }}">
+            <li
+                class="nav-item has-treeview {{ Request::is('director_pending_list', 'director_approved_list') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-user-tie"></i>
                     <p>Director <i class="right fas fa-angle-left"></i></p>
@@ -380,7 +369,7 @@
                 </ul>
             </li>
             <li
-                class="nav-item has-treeview {{ Request::is('expired_certificates', 'pending_expired_cert', 'expired_epl', 'act_status/id/1','report_dashboard', 'old_data_summary', 'confirmed_files', 'reverse_confirm', 'eo_report', 'file_progress_report', 'warning_letters', 'pending_site_clear_report', 'pending_epl_report') ? 'menu-open' : '' }}">
+                class="nav-item has-treeview {{ Request::is('expired_certificates', 'pending_expired_cert', 'expired_epl', 'act_status/id/1', 'report_dashboard', 'old_data_summary', 'confirmed_files', 'reverse_confirm', 'eo_report', 'file_progress_report', 'warning_letters', 'pending_site_clear_report', 'pending_epl_report') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-user-tie"></i>
                     <p>Report <i class="right fas fa-angle-left"></i></p>
@@ -495,31 +484,31 @@
                             </li>
                         @endif
                         @if ($pre['id'] === config('auth.privileges.clientSpace'))
-                        <li class="nav-item">
-                            <a href="{{ url('/pending_epl_report') }}"
-                                class="nav-link {{ Request::is('pending_epl_report') ? 'active' : '' }}">
-                                <i class="fas fa-file-archive nav-icon"></i>
-                                <p>Pending EPL Report</p>
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a href="{{ url('/pending_epl_report') }}"
+                                    class="nav-link {{ Request::is('pending_epl_report') ? 'active' : '' }}">
+                                    <i class="fas fa-file-archive nav-icon"></i>
+                                    <p>Pending EPL Report</p>
+                                </a>
+                            </li>
                         @endif
                         @if ($pre['id'] === config('auth.privileges.clientSpace'))
-                        <li class="nav-item">
-                            <a href="{{ url('/status_mismatch_report') }}"
-                                class="nav-link {{ Request::is('status_mismatch_report') ? 'active' : '' }}">
-                                <i class="fas fa-file-archive nav-icon"></i>
-                                <p>Status Mismatch Report</p>
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a href="{{ url('/status_mismatch_report') }}"
+                                    class="nav-link {{ Request::is('status_mismatch_report') ? 'active' : '' }}">
+                                    <i class="fas fa-file-archive nav-icon"></i>
+                                    <p>Status Mismatch Report</p>
+                                </a>
+                            </li>
                         @endif
                         @if ($pre['id'] === config('auth.privileges.clientSpace'))
-                        <li class="nav-item">
-                            <a href="{{ url('/cert_missing_report') }}"
-                                class="nav-link {{ Request::is('cert_missing_report') ? 'active' : '' }}">
-                                <i class="fas fa-file-archive nav-icon"></i>
-                                <p>Missing Certificate Report</p>
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a href="{{ url('/cert_missing_report') }}"
+                                    class="nav-link {{ Request::is('cert_missing_report') ? 'active' : '' }}">
+                                    <i class="fas fa-file-archive nav-icon"></i>
+                                    <p>Missing Certificate Report</p>
+                                </a>
+                            </li>
                         @endif
                     @endforeach
                 </ul>
