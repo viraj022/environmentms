@@ -180,23 +180,27 @@
                     <!-- /.card -->
                 </div>
             </div>
-            <div class="modal fade" id="modal-danger">
+            <div class="modal fade" id="qrCode">
                 <div class="modal-dialog">
-                    <div class="modal-content bg-danger">
+                    <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Delete Selected Payment</h4>
+                            <h4 class="modal-title">Payment Barcode</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p><b>Are you sure you want to permanently delete this Payment? </b></p>
-                            <p>Once you continue, this process can not be undone. Please Procede with care.</p>
+                            <div id="qrTokenArea">
+                                <div id="qrImage"></div>
+                                <p id="Payment_Name"></p>
+                                <p id="timeStamp"></p>
+                            </div>
+
                         </div>
                         <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                            <button id="btnDelete" type="submit" class="btn btn-outline-light"
-                                data-dismiss="modal">Delete Permanently</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button id="btnPrint" type="button" class="btn btn-success" data-dismiss="modal"><i
+                                    class="fa fa-print"></i> Print</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -211,24 +215,7 @@
 
 @section('pageScripts')
     <!-- Page script -->
-
-    <!-- Select2 -->
-    <script src="../../plugins/select2/js/select2.full.min.js"></script>
-    <!-- Bootstrap4 Duallistbox -->
-    <script src="../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
-    <!-- InputMask -->
-    <script src="../../plugins/moment/moment.min.js"></script>
-    <script src="../../plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
-    <!-- date-range-picker -->
-    <script src="../../plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- bootstrap color picker -->
-    <script src="../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Bootstrap Switch -->
-    <script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-    <script src="../../dist/js/adminlte.min.js"></script>
-    <!-- AdminLTE for demo purposes -->
+    <script type="text/JavaScript" src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.6.0/jQuery.print.js"></script>
     <script src="../../js/paymentsjs/application_payment.js" type="text/javascript"></script>
     <!-- AdminLTE App -->
     <script>
@@ -238,14 +225,25 @@
                 set_application_amount();
             });
             window.setInterval(function() {
-                paymentDetals_table();
+                if ($(".tab-pane:visible").attr("id") == 'custom-tabs-two-profile') {
+                    paymentDetals_table();
+                }
             }, 10000);
-            paymentDetals_table();
+            // paymentDetals_table();
             $('#application_combo').change(function() {
                 set_application_amount();
             });
             $('#tblRefresh').click(function() {
                 paymentDetals_table();
+            });
+
+            $('#custom-tabs-two-profile-tab').click(function() {
+                paymentDetals_table();
+            });
+
+            //trigger barcode print
+            $(document).on('click', '#btnPrint', function() {
+                $('#qrTokenArea').print();
             });
 
             //click save button
@@ -336,21 +334,7 @@
                     if (r.id == 1) {
                         ITEM_LIST = [];
                         selectedApplication_table(ITEM_LIST);
-                        $.ajax({
-                            url: 'http://127.0.0.1:8081/hansana',
-                            data: {
-                                code: r.code,
-                                name: r.name
-                            },
-                            headers: {
-                                "Authorization": "Bearer " + $('meta[name=api-token]').attr(
-                                    "content"),
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                                    'content'),
-                                "Accept": "application/json"
-                            },
-                            success: function(result) {}
-                        });
+                        generateQrCode(r);
                         loadTable();
                         resetFormData();
                     }
