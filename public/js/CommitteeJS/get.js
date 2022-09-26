@@ -54,7 +54,11 @@ function loadTableUI() {
             table += "<tr>";
             table += "<td>" + id++ + "</td>";
             table += "<td>" + committee.first_name + "</td>";
-            table += "<td>" + committee.nic + "</td>";
+            if(committee.nic == null) {
+                table += "<td>" +  '-' + "</td>";
+            } else {
+                table += "<td>" +  committee.nic + "</td>";
+            }
             table += "<td><button id='" + committee.id + "' type='button' class='btn btn-block btn-success btn-xs btnAction'>Select</button></td>";
             table += "</tr>";
         });
