@@ -16,12 +16,15 @@ use App\Helpers\LogActivity;
 use App\SiteClearenceSession;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Milon\Barcode\DNS1D;
+use Picqer\Barcode\BarcodeGeneratorHTML;
+use Picqer\Barcode\BarcodeGeneratorPNG;
+use Picqer\Barcode\BarcodeGeneratorSVG;
+use Request;
 
 class EPLPaymentController extends Controller
 {
-    public
-
-    const REG_FEE = 'EPL Application Fee';
+    public const REG_FEE = 'EPL Application Fee';
 
     public function index($id, $type)
     {
@@ -561,5 +564,12 @@ class EPLPaymentController extends Controller
         } else {
             abort(404);
         }
+    }
+    public function generatePaymentBarCode($code, $name)
+    {
+        $barcode = $code;
+        $generator = new BarcodeGeneratorPNG();
+        $code = '<img src="data:image/png;base64,' . base64_encode($generator->getBarcode($barcode, $generator::TYPE_CODE_128)) . '">';
+        return ['BarCode' => $code, 'BarCodeVal' => $barcode, 'name' => $name, 'time' => date('Y-m-d H:i:s')];
     }
 }

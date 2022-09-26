@@ -121,3 +121,19 @@ function deleteIssueApplication(id, callBack) {
         loadTable();
     })
 }
+function generateQrCode(params, callBack) {
+    console.log(params.code);
+    let url = 'api/get_barcode/code/' + params.code + '/name/' + params.name;
+    ajaxRequest('GET', url, null, function (resp) {
+        showQrCode(resp, params);
+        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+            callBack(resp);
+        }
+    })
+}
+function showQrCode(data, refData) {
+    $('#qrImage').html(data.BarCode);
+    $('#timeStamp').html(data.time);
+    $('#Payment_Name').html(data.name);
+    $('#qrCode').modal('show');
+}
