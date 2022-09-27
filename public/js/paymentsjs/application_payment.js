@@ -38,19 +38,7 @@ function selectedApplication_table(obj, callBack) {
 }
 
 function paymentDetals_table() {
-    let tbl = "";
-    ajaxRequest('GET', "/api/application/pendingPayments", null, function (r) {
-        if (r.length == 0) {
-            tbl = "<tr><td>No data found</td></tr>";
-        } else {
-            $.each(r, function (index, row) {
-                //                tbl += '<tr>';
-                //                tbl += '<td>'+row.+'</td>';
-                //                tbl += '</tr>';
-            });
-        }
-
-    });
+    loadTable();
 }
 
 function saveApplicationPayment(data, callBack) {
@@ -91,7 +79,10 @@ function loadTable() {
             }
             table += "<td>" + value.application_client.created_at + "</td>";
             if (value.status == 0) {
-                table += "<td><button value='" + value.id + "' type='button' class='btn btn-block btn-danger btn-xs btnRemove'>Delete</button></td>";
+                let v = encodeURIComponent(JSON.stringify(value));
+                table += "<td><button value='" + value.id + "' type='button' class='btn btn-danger btn-xs btnRemove'>Delete</button> \
+                <button data-row='" + v + "' value='" + value.id + "' type='button' class='btn btn-default printBtn'>\
+                <i class='fa fa-barcode'></i></button></td>";
             } else if (value.status == 1) {
                 table += "<td><button id='getIssuedId' value='" + value.id + "' type='button' class='btn btn-block btn-dark btn-xs btnIssue'>Issue Application</button></td>";
             } else {
@@ -125,14 +116,15 @@ function generateQrCode(params, callBack) {
     console.log(params.code);
     let url = 'api/get_barcode/code/' + params.code + '/name/' + params.name;
     ajaxRequest('GET', url, null, function (resp) {
-        showQrCode(resp, params);
+        showQrCode(resp);
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
         }
     })
 }
-function showQrCode(data, refData) {
+function showQrCode(data) {
     $('#qrImage').html(data.BarCode);
+    $('#barcode_id').html(data.BarCodeVal);
     $('#timeStamp').html(data.time);
     $('#Payment_Name').html(data.name);
     $('#qrCode').modal('show');

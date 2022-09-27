@@ -13,6 +13,13 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="/dist/css/adminlte.min.css">
     <!-- Google Font: Source Sans Pro -->
+    <style>
+        @media print {
+            #qrTokenArea {
+                height: 8cm;
+            }
+        }
+    </style>
 @endsection
 @section('content')
     @if ($pageAuth['is_read'] == 1 || false)
@@ -190,10 +197,12 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div id="qrTokenArea">
-                                <div id="qrImage"></div>
-                                <p id="Payment_Name"></p>
-                                <p id="timeStamp"></p>
+                            <div id="qrTokenArea" style="height: 6cm;">
+                                <div class="text-center" id="qrImage"></div>
+                                <p class="text-center" id="barcode_id"></p>
+                                <p class="text-center" id="Payment_Name"></p>
+                                <p class="text-center">Provincial Environmental Authority NWP</p>
+                                <p class="text-center" id="timeStamp"></p>
                             </div>
 
                         </div>
@@ -228,7 +237,7 @@
                 if ($(".tab-pane:visible").attr("id") == 'custom-tabs-two-profile') {
                     paymentDetals_table();
                 }
-            }, 10000);
+            }, 60000);
             // paymentDetals_table();
             $('#application_combo').change(function() {
                 set_application_amount();
@@ -243,11 +252,21 @@
 
             //trigger barcode print
             $(document).on('click', '#btnPrint', function() {
-                $('#qrTokenArea').print();
+                $('#qrTokenArea').print({
+                    globalStyles: true
+                });
+            });
+            //trigger barcode print
+            $(document).on('click', '.printBtn', function() {
+                let data = decodeURIComponent($(this).data('row'));
+                let parsedData = JSON.parse(data);
+                console.log(parsedData);
+                generateQrCode({
+                    "code": parsedData.id,
+                    "name": parsedData.name,
+                });
             });
 
-            //click save button
-            loadTable();
 
             function getFormData() {
                 let data = {
