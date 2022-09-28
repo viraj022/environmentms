@@ -1364,7 +1364,7 @@ class ClientController extends Controller
                 $nestedData['client_name'] = $client->first_name . $client->last_name;
                 $nestedData['industry_name'] = $client->industry_name;
                 $nestedData['industry_registration_no'] = $client->industry_registration_no;
-                $nestedData['certificate_number'] = !empty($cert) ? $cert->cetificate_number : $epl_cert->certificate_no;
+                $nestedData['certificate_number'] = !empty($cert) ? $cert->cetificate_number : (empty($epl_cert) ? '' : $epl_cert->certificate_no);
                 $nestedData['industry_address'] = $client->industry_address;
                 //                $nestedData['body'] = substr(strip_tags($post->body),0,50)."...";
                 //                $nestedData['created_at'] = date('j M Y h:i a',strtotime($post->created_at));
