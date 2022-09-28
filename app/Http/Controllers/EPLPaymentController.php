@@ -569,7 +569,7 @@ class EPLPaymentController extends Controller
     {
         $barcode = $code;
         $generator = new BarcodeGeneratorPNG();
-        $code = '<img src="data:image/png;base64,' . base64_encode($generator->getBarcode($barcode, $generator::TYPE_CODE_128)) . '">';
+        $code = '<img src="data:image/png;base64,' . base64_encode($generator->getBarcode($barcode, $generator::TYPE_CODE_128, 3, 50)) . '">';
         return ['BarCode' => $code, 'BarCodeVal' => $barcode, 'name' => $name, 'time' => date('Y-m-d H:i:s')];
     }
 }

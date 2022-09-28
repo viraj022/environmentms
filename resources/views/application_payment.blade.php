@@ -13,6 +13,16 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="/dist/css/adminlte.min.css">
     <!-- Google Font: Source Sans Pro -->
+    <style>
+        @media print {
+            @page {
+                height: 5cm;
+                width: 7.5cm;
+            }
+
+            #qrTokenArea {}
+        }
+    </style>
 @endsection
 @section('content')
     @if ($pageAuth['is_read'] == 1 || false)
@@ -190,12 +200,15 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div id="qrTokenArea">
+                            <div id="qrTokenArea" class="" style="margin-left: 3cm;">
                                 <div id="qrImage"></div>
-                                <p id="Payment_Name"></p>
-                                <p id="timeStamp"></p>
+                                <p>
+                                    <span id="barcode_id"></span> <br>
+                                    <span id="Payment_Name"></span> <br>
+                                    <span>Provincial Environmental Authority NWP</span> <br>
+                                    <span id="timeStamp"></span>
+                                </p>
                             </div>
-
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -228,7 +241,7 @@
                 if ($(".tab-pane:visible").attr("id") == 'custom-tabs-two-profile') {
                     paymentDetals_table();
                 }
-            }, 10000);
+            }, 60000);
             // paymentDetals_table();
             $('#application_combo').change(function() {
                 set_application_amount();
@@ -243,11 +256,21 @@
 
             //trigger barcode print
             $(document).on('click', '#btnPrint', function() {
-                $('#qrTokenArea').print();
+                $('#qrTokenArea').print({
+                    mediaPrint: true
+                });
+            });
+            //trigger barcode print
+            $(document).on('click', '.printBtn', function() {
+                let data = decodeURIComponent($(this).data('row'));
+                let parsedData = JSON.parse(data);
+                console.log(parsedData);
+                generateQrCode({
+                    "code": parsedData.id,
+                    "name": parsedData.name,
+                });
             });
 
-            //click save button
-            loadTable();
 
             function getFormData() {
                 let data = {
