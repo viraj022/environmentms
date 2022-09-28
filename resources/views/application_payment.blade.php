@@ -15,9 +15,12 @@
     <!-- Google Font: Source Sans Pro -->
     <style>
         @media print {
-            #qrTokenArea {
-                height: 8cm;
+            @page {
+                height: 5cm;
+                width: 7.5cm;
             }
+
+            #qrTokenArea {}
         }
     </style>
 @endsection
@@ -197,14 +200,15 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div id="qrTokenArea" style="height: 6cm;">
-                                <div class="text-center" id="qrImage"></div>
-                                <p class="text-center" id="barcode_id"></p>
-                                <p class="text-center" id="Payment_Name"></p>
-                                <p class="text-center">Provincial Environmental Authority NWP</p>
-                                <p class="text-center" id="timeStamp"></p>
+                            <div id="qrTokenArea" class="" style="margin-left: 3cm;">
+                                <div id="qrImage"></div>
+                                <p>
+                                    <span id="barcode_id"></span> <br>
+                                    <span id="Payment_Name"></span> <br>
+                                    <span>Provincial Environmental Authority NWP</span> <br>
+                                    <span id="timeStamp"></span>
+                                </p>
                             </div>
-
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -253,7 +257,7 @@
             //trigger barcode print
             $(document).on('click', '#btnPrint', function() {
                 $('#qrTokenArea').print({
-                    globalStyles: true
+                    mediaPrint: true
                 });
             });
             //trigger barcode print
