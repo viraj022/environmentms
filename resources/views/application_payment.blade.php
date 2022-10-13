@@ -260,6 +260,7 @@
                     mediaPrint: true
                 });
             });
+
             //trigger barcode print
             $(document).on('click', '.printBtn', function() {
                 let data = decodeURIComponent($(this).data('row'));

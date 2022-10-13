@@ -26,7 +26,15 @@ use App\SiteClearenceSession;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Endroid\QrCode\Writer\PngWriter;
+
 use Exception;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Label\Label;
 
 class ClientController extends Controller
 {
@@ -124,11 +132,42 @@ class ClientController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $client = Client::find($id);
+        $qrCode = $this->fileQr($client->file_no);
         if ($pageAuth['is_read']) {
-            return view('industry_profile', ['pageAuth' => $pageAuth, 'id' => $id, 'client' => $client]);
+            return view('industry_profile', ['pageAuth' => $pageAuth, 'id' => $id, 'client' => $client, 'qrCode' => $qrCode]);
         } else {
             abort(401);
         }
+    }
+
+    public function fileQr($fileCode)
+    {
+        $writer = new PngWriter();
+
+        // Create QR code
+        $qrCode = QRcode::create($fileCode)
+            ->setEncoding(new Encoding('UTF-8'))
+            ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+            ->setSize(200)
+            ->setMargin(10)
+            ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
+            ->setForegroundColor(new Color(0, 0, 0))
+            ->setBackgroundColor(new Color(255, 255, 255));
+        // Create generic label
+        $label = Label::create($fileCode);
+
+        $result = $writer->write($qrCode, null, $label);
+
+        // Generate a data URI to include image data inline (i.e. inside an <img> tag)
+        $dataUri = $result->getDataUri();
+        return '<img src="' . $dataUri . '" />';
+    }
+
+    public function generateFileQrCode($id)
+    {
+        $client = Client::find($id);
+        $qrCode = $this->fileQr($client->file_no);
+        return $qrCode;
     }
 
     public function updateClient($id)

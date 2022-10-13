@@ -64,8 +64,8 @@
                                 Inspection</a>
                         </li>
                         <!--                <li class="nav-item">
-                                                                                                                                                                                <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
-                                                                                                                                                                            </li>-->
+                                                                                                                                                                                                                                                                                        <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
+                                                                                                                                                                                                                                                                                    </li>-->
                         <li class="nav-item">
                             <a class="nav-link paymentsTab" id="custom-tabs-three-paymentsTab-tab" data-toggle="pill"
                                 href="#custom-tabs-three-paymentsTab" role="tab"
@@ -98,12 +98,6 @@
                                                         <!-- /.card-header -->
 
                                                         <div class="card-body">
-                                                            <!--                                                    <div class="callout callout-danger">
-
-                                                                                                                                                                                                                                                        <button type="button" onclick="location.href = '/epl_assign';" class="btn btn-dark" data-dismiss="modal">Assign/Change Environment Officer</button>
-                                                                                                                                                                                                                                                        <p>There is a problem that we need to</p>
-                                                                                                                                                                                                                                                    </div>-->
-
                                                             <div class="newEPL d-none info-box mb-3 bg-success">
                                                                 <span class="info-box-icon">
                                                                     <button class="btn btn-lg btn-default"
@@ -157,14 +151,14 @@
                                                             </div>
 
                                                             <!--                                                    <div class="info-box mb-3 bg-info">
-                                                                                                                                                                                                                                                        <span class="info-box-icon">
-                                                                                                                                                                                                                                                            <button class="btn btn-lg btn-default" id="teli"><i class="fa fa-plus"></i></button></span>
-                                                                                                                                                                                                                                                        <div class="info-box-content">
-                                                                                                                                                                                                                                                            <span class="info-box-text">Create new telecommunication site clearance file</span>
-                                                                                                                                                                                                                                                            <span class="info-box-number">Telecommunication Site Clearance</span>
-                                                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                                                         /.info-box-content
-                                                                                                                                                                                                                                                    </div>-->
+                                                                                                                                                                                                                                                                                                                                                                <span class="info-box-icon">
+                                                                                                                                                                                                                                                                                                                                                                    <button class="btn btn-lg btn-default" id="teli"><i class="fa fa-plus"></i></button></span>
+                                                                                                                                                                                                                                                                                                                                                                <div class="info-box-content">
+                                                                                                                                                                                                                                                                                                                                                                    <span class="info-box-text">Create new telecommunication site clearance file</span>
+                                                                                                                                                                                                                                                                                                                                                                    <span class="info-box-number">Telecommunication Site Clearance</span>
+                                                                                                                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                                                                                                                                 /.info-box-content
+                                                                                                                                                                                                                                                                                                                                                            </div>-->
 
                                                             <div class="info-box mb-3 bg-info">
                                                                 <span class="info-box-icon">
@@ -187,7 +181,13 @@
                                                             <a class="text-white">Not Allowed To Add New EPL For Old
                                                                 Profile!</a>
                                                         </div>
-
+                                                        <div class="card-body">
+                                                            <div class="text-center" id="fileQr">
+                                                                {!! $qrCode !!}
+                                                            </div>
+                                                            <button class="btn btn-sm btn-dark" type="button"
+                                                                id="printQr"><i class="fa fa-qrcode"></i> Print</button>
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -798,6 +798,9 @@
     <script src="../../js/IndustryProfileJS/upload_old_attachment.js" type="text/javascript"></script>
     <script src="../../js/MinuteJS/minute_data_s.js" type="text/javascript"></script>
     <!-- AdminLTE App -->
+
+    <script type="text/JavaScript" src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.6.0/jQuery.print.js"></script>
+
     <script async="" defer=""
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
     <script>
@@ -830,6 +833,13 @@
                 checkCompletedStatus(parameters.file_status, parameters.epls, parameters
                     .site_clearence_sessions);
                 // $(".loadingRenderUI").remove(); //<--Check Loading Status
+            });
+
+            //trigger barcode print
+            $(document).on('click', '#printQr', function() {
+                $('#fileQr').print({
+                    mediaPrint: true
+                });
             });
 
             $('#newEPL').click(function() {

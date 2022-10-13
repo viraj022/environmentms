@@ -1,5 +1,6 @@
 <?php
 
+
 /*
   |--------------------------------------------------------------------------
   | API Routes
@@ -14,3 +15,6 @@
 
 //api
 Route::get('/get_barcode/code/{code}/name/{name}', 'EPLPaymentController@generatePaymentBarCode');
+
+//client file qr code
+Route::get('qr_code', 'clientController@generateFileQrCode');
