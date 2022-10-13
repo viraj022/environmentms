@@ -156,7 +156,8 @@ class ClientController extends Controller
         // Create generic label
         $label = Label::create($fileCode);
 
-        $result = $writer->write($qrCode, null, $label);
+        // $result = $writer->write($qrCode, null, $label);
+        $result = $writer->write($qrCode, null, null);
 
         // Generate a data URI to include image data inline (i.e. inside an <img> tag)
         $dataUri = $result->getDataUri();
