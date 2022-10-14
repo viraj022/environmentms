@@ -138,6 +138,9 @@ class SearchController extends Controller
             case 'site_clear_code':
                 $column = 'code';
                 break;
+            case 'reference_number':
+                $column = 'code';
+                break;
             default:
                 $column = 'first_name';
                 break;
@@ -155,6 +158,8 @@ class SearchController extends Controller
         } elseif ($type == 'site_clear_code') {
             $client_data = SiteClearenceSession::pluck($column)->toArray();
             //            Client::find()
+        } elseif ($type == 'reference_number') {
+            $client_data = Certificate::whereNotNull('refference_no')->pluck('refference_no')->toArray();
         } else {
             $client_data = Client::pluck($column)->toArray();
         }
@@ -175,6 +180,13 @@ class SearchController extends Controller
             ->select('code', 'remark', 'site_clearance_type', 'first_name', 'last_name', 'address', 'industry_name', 'clients.id')
             ->get();
         return $client_site;
+    }
+
+    public function getClientByReferenceNumber($code)
+    {
+        $certificate = Certificate::where('refference_no', $code)->first();
+        $client = Client::where('id', $certificate->client_id)->get();
+        return $client;
     }
 
     public function search($type)
@@ -202,8 +214,10 @@ class SearchController extends Controller
                 return $this->getClientByIndustryName($value);
             case 'site_clear_code':
                 return $this->getClientBySite($value);
+            case 'reference_number':
+                return $this->getClientByReferenceNumber($value);
             default:
-                abort(422);
+                // abort(422);
                 return response(array('message' => 'Invalid Code', 422));
         }
     }

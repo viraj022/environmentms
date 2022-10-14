@@ -346,6 +346,7 @@
                                             <option value="by_industry_name">Business Name</option>
                                             <option value="business_reg">Business Registration Number</option>
                                             <option value="by_address">Address</option>
+                                            <option value="reference_number">Reference Number</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -719,6 +720,7 @@
                 };
                 if (data2.value.length != 0 && data2.value != null) {
                     getClientbyNic($('#getDtaType').val(), data2, function(result) {
+                        console.log(result);
                         switch ($('#getDtaType').val()) {
                             case 'name':
                                 if (result != 0) {
@@ -814,6 +816,19 @@
                                     showSiteClearanceDetails(result);
                                     $('.details-title').html('Site Clearance Details');
                                     $('.view-site-clear').removeClass('d-none');
+                                } else {
+                                    if (confirm(
+                                            'Client Not Found!Do You Want Create New Client?')) {
+                                        setSectionVisible('reg-newClient');
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                                break;
+                            case 'reference_number':
+                                if (result != 0) {
+                                    showCustomerDetails(result);
+                                    $('.view-Customer').removeClass('d-none');
                                 } else {
                                     if (confirm(
                                             'Client Not Found!Do You Want Create New Client?')) {

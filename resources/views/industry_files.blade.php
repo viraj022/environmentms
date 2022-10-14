@@ -71,7 +71,7 @@
                                             <th style='width: 20em'>EPL Code</th>
                                             <th style='width: 20em'>Site Clearance Code</th>
                                             <th style='width: 25em'>File No</th>
-                                            <th style='width: 25em'>#</th>
+                                            <th style='width: 25em'>Application log date</th>
                                             <th style='width: 25em'>File Status</th>
                                             <!--<th class="inspectTbl" style="width: 180px">Inspection</th>-->
                                             <th style='width: 5em'>Action</th>

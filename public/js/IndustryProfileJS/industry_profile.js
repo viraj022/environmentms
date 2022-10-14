@@ -183,8 +183,19 @@ function setIndustryAndClientDb(get) {
     $(".tabf_environment_officer").html(env_officer);
 }
 
-function loadAllEPLTable(dataSet, callBack) {
-    //EPLS as dataSet
+function loadAllEPLTable(data, callBack) {
+    let dataSet = data.epls;
+    let certificates = data.certificates;
+
+    let certs = {};
+
+    for (const key in certificates) {
+        if (Object.hasOwnProperty.call(certificates, key)) {
+            const cert = certificates[key];
+            certs[cert.cetificate_number] = cert;
+        }
+    }
+
     var tbl = "";
     var i = 0;
     if (dataSet.length == 0) {
@@ -207,6 +218,11 @@ function loadAllEPLTable(dataSet, callBack) {
             } else {
                 tbl += "<td>" + row.certificate_no.toUpperCase() + "</td>";
             }
+            if (row.certificate_no != null) {
+                tbl += "<td>" + certs[row.certificate_no].refference_no + "</td>";
+            } else {
+                tbl += "<td>-</td>";
+            }
             tbl += "<td>" + row.issue_date_only + "</td>";
             tbl += "<td>" + row.expire_date_only + "</td>";
             tbl += "</tr>";
@@ -219,7 +235,9 @@ function loadAllEPLTable(dataSet, callBack) {
 }
 
 function loadAllSiteClearTable(dataSet, callBack) {
+    console.log('hi');
     console.log(dataSet);
+    console.log('hi');
     //SiteClears as dataSet
     var tbl = "";
     var i = 0;
