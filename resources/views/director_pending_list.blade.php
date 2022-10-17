@@ -31,7 +31,7 @@
                                             <th style='width: 25em'>Client Name</th>
                                             <th>Code</th>
                                             <th>File No</th>
-                                            <th style='width: 25em'>#</th>
+                                            <th style='width: 25em'>Application log date</th>
                                             <th>File Status</th>
                                             <th style="width: 140px">Action</th>
                                         </tr>

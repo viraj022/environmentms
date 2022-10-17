@@ -61,7 +61,8 @@ function loadDirectorPendingListTable() {
         var t = $('#tblPendingAdList').DataTable();
         t.clear().destroy();
         $('#tblPendingAdList tbody').html(tbl);
-        $('#tblPendingAdList').DataTable({ stateSave: true });
+        t = $('#tblPendingAdList').DataTable({ stateSave: true });
+        t.search('').columns().search('').draw();
     });
 }
 

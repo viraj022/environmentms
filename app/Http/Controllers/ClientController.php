@@ -578,9 +578,16 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
         //    PaymentType::get();
-        $file = Client::with('epls')->with('siteClearenceSessions.siteClearances')->with('environmentOfficer.user')->with('oldFiles')->with('industryCategory')->with('businessScale')->with('pradesheeyasaba')->find($id)->toArray();
+        $file = Client::with('epls')->with('siteClearenceSessions.siteClearances')
+            ->with('environmentOfficer.user')
+            ->with('oldFiles')
+            ->with('industryCategory')
+            ->with('businessScale')
+            ->with('certificates')
+            ->with('pradesheeyasaba')->find($id)->toArray();
         $file['created_at'] = date('Y-m-d', strtotime($file['created_at']));
         $file['industry_start_date'] = date('Y-m-d', strtotime($file['industry_start_date']));
+        // dd($ref);
         return $file;
     }
 
