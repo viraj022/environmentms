@@ -11,6 +11,7 @@
   |
  */
 
+use App\Http\Controllers\ReportController;
 use Doctrine\DBAL\Schema\View;
 
 Route::get('/', 'HomeController@index');
@@ -135,3 +136,7 @@ Route::post('/file_letter_completed/{letter}', 'FileLetterController@storeLetter
 Route::post('/letter_finalize/{letter}', 'FileLetterController@letterFinalize')->name('letter.finalize');
 
 Route::delete('/file_letter_delete/{letter}', 'FileLetterController@deleteLetter')->name('letter.delete');
+
+//completed files
+Route::get('/completed_files', [ReportController::class, 'viewCompletedFiles'])
+    ->name('completed-files-list');
