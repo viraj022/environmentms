@@ -1099,4 +1099,16 @@ class ReportController extends Controller
             ->toArray();
         return view('Reports.cert_missing_report', ['missing_cert_data' => $missing_cert_data, 'pageAuth' => $pageAuth, 'file_status' => $file_status]);
     }
+
+    //get completed files list
+    public function viewCompletedFiles()
+    {
+        $completedFiles = Client::where('file_status', 5)->where('cer_status', 6)
+            ->with('epls', 'siteClearenceSessions.siteClearances')
+            ->with('certificates')
+            ->get();
+        //     ->first();
+        // dd($completedFiles);
+        return view('Reports.completed_files', compact('completedFiles'));
+    }
 }
