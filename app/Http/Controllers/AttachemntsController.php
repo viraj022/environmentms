@@ -224,7 +224,7 @@ class AttachemntsController extends Controller
                     ]
                 );
                 LogActivity::addToLog('attachment added to file', $attachment);
-                LogActivity::fileLog($e->client_id, 'Attachments', "File attached", 1);
+                LogActivity::fileLog($e->client_id, 'Attachments', "File attached", 1, 'epl', $e->id);
                 return array('id' => 1, 'message' => 'true');
             });
         } else {
@@ -238,7 +238,7 @@ class AttachemntsController extends Controller
         $e = EPL::findOrFail($epl);
         $e->attachemnts()->detach($attachment);
         LogActivity::addToLog('File detached', $attachment);
-        LogActivity::fileLog($e->client_id, 'Attachments', "File detached", 1);
+        LogActivity::fileLog($e->client_id, 'Attachments', "File detached", 1, 'epl', $e->id);
         return array('id' => 1, 'message' => 'true');
     }
 

@@ -342,7 +342,7 @@ class ClientController extends Controller
                         $onlineRequest->save();
                     }
 
-                    LogActivity::fileLog($client->id, 'File', "Create New File", 1);
+                    LogActivity::fileLog($client->id, 'File', "Create New File", 1, 'new file', '');
                     LogActivity::addToLog('Create new file', $client);
                     return array('id' => 1, 'message' => 'true', 'id' => $client->id);
                 } else {
@@ -457,7 +457,7 @@ class ClientController extends Controller
                 }
 
                 DB::commit();
-                LogActivity::fileLog($id, 'File', "Update file", 1);
+                LogActivity::fileLog($id, 'File', "Update file", 1, 'update file', '');
                 LogActivity::addToLog('Update file', $msg);
                 return array('id' => 1, 'message' => 'File Number, EPL Number, Site clearence Number has updated successful');
             } catch (\Exception $ex) {
@@ -551,7 +551,7 @@ class ClientController extends Controller
                 $msg1 = EPL::where('client_id', $id)->delete();
             }
             LogActivity::addToLog("Delete fIle", $client);
-            LogActivity::fileLog($client->id, 'File', "Delete file", 1);
+            LogActivity::fileLog($client->id, 'File', "Delete file", 1, 'delete file', '');
             if ($msg1) {
                 return array('id' => 1, 'message' => 'true');
             } else {
@@ -757,7 +757,7 @@ class ClientController extends Controller
             $client->file_status = 5; // set file status
             $client->cer_status = 6; // set certificate status
             LogActivity::addToLog("Old file complete" . $id, $client);
-            LogActivity::fileLog($client->id, 'File', "Old file complete", 1);
+            LogActivity::fileLog($client->id, 'File', "Old file complete", 1, 'old file complete', '');
             if ($client->save()) {
                 return array('id' => 1, 'message' => 'true');
             } else {
@@ -780,7 +780,7 @@ class ClientController extends Controller
                 ->where('client_id', '=', $id)
                 ->delete();
             LogActivity::addToLog("Old file confirm revert" . $id, $client);
-            LogActivity::fileLog($client->id, 'File', "Old file confirm revert", 1);
+            LogActivity::fileLog($client->id, 'File', "Old file confirm revert", 1, 'old file revert', '');
             if ($client == true) {
                 return array('id' => 1, 'message' => 'true');
             } else {
@@ -871,11 +871,11 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $client = Client::findOrFail($id);
         if ($inspectionNeed == 'needed') {
-            LogActivity::fileLog($client->id, 'Inspection', "Mark inspection needed", 1);
+            LogActivity::fileLog($client->id, 'Inspection', "Mark inspection needed", 1, 'inspection', '');
             LogActivity::addToLog("Mark inspection needed", $client);
             $client->need_inspection = CLIENT::STATUS_INSPECTION_NEEDED;
         } else if ($inspectionNeed == 'no_needed') {
-            LogActivity::fileLog($client->id, 'Inspection', "Mark inspection no need", 1);
+            LogActivity::fileLog($client->id, 'Inspection', "Mark inspection no need", 1, 'inspection', '');
             LogActivity::addToLog("Mark inspection no need", $client);
             $client->need_inspection = CLIENT::STATUS_INSPECTION_NOT_NEEDED;
         } else {
@@ -919,7 +919,7 @@ class ClientController extends Controller
             }
             $file->file_problem_status = \request('file_problem_status');
             $file->file_problem_status_description = \request('file_problem_status_description');
-            LogActivity::fileLog($file->id, 'File', "set File problem status " . $file->file_problem_status, 1);
+            LogActivity::fileLog($file->id, 'File', "set File problem status " . $file->file_problem_status, 1, 'file problem status', '');
             LogActivity::addToLog("Mark file problem status", $file);
             if ($file->save()) {
                 return array('id' => 1, 'message' => 'true');

@@ -298,7 +298,7 @@ class EPLPaymentController extends Controller
                         }
                     }
                     LogActivity::addToLog('Add EPL payment', $transaction);
-                    LogActivity::fileLog($epl->client_id, 'Transaction', $user->last_name . " Add EPL payment", 1);
+                    LogActivity::fileLog($epl->client_id, 'Transaction', $user->last_name . " Add EPL payment", 1, 'epl', $epl->id);
                     if ($msg) {
                         return array('id' => 1, 'message' => 'true', 'code' => $transaction->id, 'name' => $epl->client->first_name);
                     } else {
@@ -343,7 +343,7 @@ class EPLPaymentController extends Controller
                         }
                     }
                     LogActivity::addToLog('Add site clearance payment', $transaction);
-                    LogActivity::fileLog($site->client_id, 'Transaction', $user->last_name . "Add site clearance payment", 1);
+                    LogActivity::fileLog($site->client_id, 'Transaction', $user->last_name . "Add site clearance payment", 1, 'sc', $site->id);
                     if ($msg) {
                         return array('id' => 1, 'message' => 'true', 'code' => $transaction->id, 'name' => $site->client->first_name);
                     } else {

@@ -34,7 +34,7 @@ class LogActivity
         LogActivityModel::create($log);
     }
 
-    public static function fileLog($id, $code, $description,  $authlevel)
+    public static function fileLog($id, $code, $description,  $authlevel, $fileType, $fileTypeReference)
     {
         $log = [];
         $log['client_id'] = $id;
@@ -42,6 +42,8 @@ class LogActivity
         $log['description'] = $description;
         $log['auth_level'] = $authlevel;
         $log['user_id'] = auth()->check() ? auth()->user()->id : "N/A";
+        $log['file_type'] = $fileType;
+        $log['file_type_reference'] = $fileTypeReference;
         FileLog::create($log);
     }
 

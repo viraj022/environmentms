@@ -276,7 +276,7 @@ class EnvironmentOfficerController extends Controller
                 $officeLog->assistant_director_id = $environmentOfficer->assistant_director_id;
                 $msg = $msg && $officeLog->save();
                 if ($msg) {
-                    LogActivity::fileLog($client->id, 'File', "Assign an EO", 1);
+                    LogActivity::fileLog($client->id, 'File', "Assign an EO", 1, 'assign officer', '');
                     LogActivity::addToLog('Assign an EO', $client);
                     $this->userNotificationsRepositary->makeNotification(
                         $environmentOfficer->user_id,
@@ -306,7 +306,7 @@ class EnvironmentOfficerController extends Controller
                 $epl->environment_officer_id = null;
                 $msg = $epl->save();
                 if ($msg) {
-                    LogActivity::fileLog($epl->id, 'FileAssignEPL', "Environment Officer Removed from EPL", 1);
+                    LogActivity::fileLog($epl->id, 'FileAssignEPL', "Environment Officer Removed from EPL", 1, 'remove officer', '');
                     LogActivity::addToLog('Environment Officer Removed from EPL', $epl);
                     return array('id' => 1, 'message' => 'true');
                 } else {
