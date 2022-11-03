@@ -25,6 +25,8 @@ use Illuminate\Http\Request;
 use App\Certificate;
 use App\EPL;
 use App\EPLNew;
+use App\SiteClearenceSession;
+use DB;
 
 class ReportController extends Controller
 {
@@ -1101,14 +1103,36 @@ class ReportController extends Controller
     }
 
     //get completed files list
-    public function viewCompletedFiles()
+    public function viewCompletedFiles(Request $request)
     {
-        $completedFiles = Client::where('file_status', 5)->where('cer_status', 6)
-            ->with('epls', 'siteClearenceSessions.siteClearances')
-            ->with('certificates')
-            ->get();
-        //     ->first();
-        // dd($completedFiles);
-        return view('Reports.completed_files', compact('completedFiles'));
+        $start_data = $request->start_data;
+        $end_date = $request->end_date;
+
+        // $completedEPL = EPL::where('status', '1')
+        // ->with('client')
+        //     ->whereBetween('issue_date', [$start_data, $end_date])
+        //     ->orderBy('created_at', 'desc')
+        //     ->get();
+        // $completedSC = SiteClearenceSession::where('status', '1')->with('siteClearances', 'client')
+        //     ->whereBetween('issue_date', [$start_data, $end_date])
+        //     ->orderBy('created_at', 'desc')->get();
+
+        $completedFiles = DB::table('clients')
+        ->join('e_p_l_s', 'clients.id', '=', 'e_p_l_s.client_id')
+        ->join('site_clearence_sessions', 'clients.id', '=', 'site_clearence_sessions.client_id')
+        ->join('certificates', 'clients.id', '=', 'certificates.client_id')
+        ->where('e_p_l_s.status', 1)
+        ->orWhere('site_clearence_sessions.status', 1)
+        ->whereBetween('e_p_l_s.issue_date', [$start_data, $end_date])
+        ->whereBetween('site_clearence_sessions.issue_date', [$start_data, $end_date])
+        ->select('clients.*', 'e_p_l_s.code as epl_code', 'site_clearence_sessions.code as sc_code', 
+        'e_p_l_s.issue_date as epl_issue_date', 'e_p_l_s.expire_date as epl_expire_date',
+        'site_clearence_sessions.issue_date as sc_issue_date', 'site_clearence_sessions.expire_date as sc_expire_date',
+        'certificates.cetificate_number as certificate_number')
+        ->get();
+        dd($completedFiles);
+        // dd($completedEPL);
+
+        return view('Reports.completed_files', compact('completedEPL'));
     }
 }
