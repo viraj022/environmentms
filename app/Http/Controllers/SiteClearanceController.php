@@ -110,7 +110,7 @@ class SiteClearanceController extends Controller
             // sending response
             if ($msg) {
                 LogActivity::addToLog('create old site clearance', $client);
-                LogActivity::fileLog($client->id, 'site_clearance', "create old site clearance", 1, 'sc',);
+                LogActivity::fileLog($client->id, 'site_clearance', "create old site clearance", 1, 'sc', $siteSessions->id);
                 return array('id' => 1, 'message' => 'true');
             } else {
                 return array('id' => 0, 'message' => 'false');

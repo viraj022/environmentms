@@ -391,9 +391,24 @@ class EnvironmentOfficerController extends Controller
             $file = Client::findOrFail($file_id);
             $officer = EnvironmentOfficer::with(['user', 'assistantDirector'])->findOrFail($officerId);
 
+            $file_type = $file->cer_type_status;
+            if ($file_type == 1 || $file_type == 2) {
+                $fileTypeName = 'epl';
+            } elseif ($file_type == 3 || $file_type == 4) {
+                $fileTypeName = 'sc';
+            } else {
+                $fileTypeName = '';
+            }
 
             $msg = setFileStatus($file_id, 'file_status', 1);
-            fileLog($file->id, 'Approval', 'EO (' . $officer->user->last_name . ') Approve the file', 0);
+            fileLog(
+                $file->id,
+                'Approval',
+                'EO (' . $officer->user->last_name . ') Approve the file',
+                0,
+                $fileTypeName,
+                ''
+            );
             LogActivity::addToLog('EO approve', $file);
             $this->userNotificationsRepositary->makeNotification(
                 $officer->assistantDirector->user_id,
@@ -429,7 +444,14 @@ class EnvironmentOfficerController extends Controller
             $officer = EnvironmentOfficer::with('user')->findOrFail($officerId);
 
             $msg = setFileStatus($file_id, 'file_status', -1);
-            fileLog($file->id, 'Rejection', 'EO (' . $officer->user->last_name . ') rejected the file', 0);
+            fileLog(
+                $file->id,
+                'Rejection',
+                'EO (' . $officer->user->last_name . ') rejected the file',
+                0,
+                'reject file',
+                ''
+            );
             LogActivity::addToLog('EO reject', $file);
             if ($request->has('minutes')) {
                 $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ENV_REJECT_FILE, $user->id));
@@ -456,7 +478,23 @@ class EnvironmentOfficerController extends Controller
             $msg = setFileStatus($file_id, 'file_status', 3);
             $msg = $msg && setFileStatus($file_id, 'cer_status', 3);
 
-            fileLog($file->id, 'Approval', 'EO (' . $officer->user->last_name . ') Approve the certificate', 0);
+            $file_type = $file->cer_type_status;
+            if ($file_type == 1 || $file_type == 2) {
+                $fileTypeName = 'epl';
+            } elseif ($file_type == 3 || $file_type == 4) {
+                $fileTypeName = 'sc';
+            } else {
+                $fileTypeName = '';
+            }
+
+            fileLog(
+                $file->id,
+                'Approval',
+                'EO (' . $officer->user->last_name . ') Approve the certificate',
+                0,
+                $fileTypeName,
+                ''
+            );
             LogActivity::addToLog('EO approve certificate', $file);
             if ($request->has('minutes')) {
                 $minutesRepository->save(prepareMinutesArray($file, $request->minutes, Minute::DESCRIPTION_ENV_APPROVE_CERTIFICATE, $user->id));
@@ -482,7 +520,25 @@ class EnvironmentOfficerController extends Controller
             $officer = EnvironmentOfficer::with('user')->findOrFail($officerId);
             $msg = setFileStatus($file_id, 'file_status', 2);
             $msg = $msg && setFileStatus($file_id, 'cer_status', 1);
-            fileLog($file->id, 'Rejection', 'EO (' . $officer->user->last_name . ') Rejected the certificate', 0);
+
+            $file_type = $file->cer_type_status;
+            if ($file_type == 1 || $file_type == 2) {
+                $fileTypeName = 'epl';
+            } elseif ($file_type == 3 || $file_type == 4) {
+                $fileTypeName = 'sc';
+            } else {
+                $fileTypeName = '';
+            }
+
+            fileLog(
+                $file->id,
+                'Rejection',
+                'EO (' . $officer->user->last_name . ') Rejected the certificate',
+                0,
+                'Rejection',
+                $fileTypeName,
+                ''
+            );
             LogActivity::addToLog('EO reject certificate', $file);
 
             $this->userNotificationsRepositary->makeNotification(

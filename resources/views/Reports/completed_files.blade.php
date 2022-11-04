@@ -23,19 +23,22 @@
                             <div class="card-body">
                                 <div class="mb-3">
                                     <label for="start_data">Start Date</label>
-                                    <input type="date" name="start_data" id="start_data" class="form-control">
+                                    <input type="date" name="start_data" id="start_data" class="form-control"
+                                        value="{{ $start_data }}">
                                 </div>
                                 <div class="mb-3">
                                     <label for="end_date">End Date</label>
-                                    <input type="date" name="end_date" id="end_date" class="form-control">
+                                    <input type="date" name="end_date" id="end_date" class="form-control"
+                                        value="{{ $end_date }}">
                                 </div>
                                 <button type="submit" class="btn btn-primary">Search</button>
                             </div>
                         </form>
                     </div>
                 </div>
+                {{-- @dd($result) --}}
                 <div class="col-lg-12">
-                    @if (empty($completedEPL))
+                    @if (empty($result))
                         <div class="alert alert-info">
                             Please select a date to view completed Files.
                         </div>
@@ -48,10 +51,9 @@
                                             <th>#</th>
                                             <th>Industry Name</th>
                                             <th>File no</th>
-                                            <th>EPL</th>
-                                            <th>SC</th>
+                                            <th>EPL/Sc</th>
                                             <th>License no</th>
-                                            <th>Pradeshiya sabhawa</th>
+                                            <th>Pradeshiya sabha</th>
                                             <th>File category</th>
                                             <th>File subcategory</th>
                                             <th>Assistant director</th>
@@ -61,25 +63,25 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($completedEPL as $completedEPLs)
+                                        @forelse ($result as $key => $value)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $completedEPLs->client->industry_name }}</td>
-                                                <td>{{ $completedEPLs->client->file_no }}</td>
-                                                <td>{{ $completedEPLs->code }}</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td>{{ $completedEPLs->client->pradesheeyasaba->name }}</td>
-                                                <td>{{ $completedEPLs->client->industryCategory->name }}</td>
-                                                <td>{{ $completedEPLs->client->industry_sub_category }}</td>
-                                                <td></td>
-                                                <td>{{ $completedEPLs->issue_date }}</td>
-                                                <td>{{ $completedEPLs->expire_date }}</td>
-                                                <td></td>
+                                                <td>{{ $value->industry_name }}</td>
+                                                <td>{{ $value->file_number }}</td>
+                                                <td>{{ $value->code }}</td>
+                                                <td>{{ $value->certificate_number }}</td>
+                                                <td>{{ $value->pradesheeyasaba }}</td>
+                                                <td>{{ $value->industry_category }}</td>
+                                                <td>{{ $value->industry_sub_category }}</td>
+                                                <td>{{ $value->Ad_name }}</td>
+                                                <td>{{ Carbon\Carbon::parse($value->issue_date)->format('Y-m-d') }}</td>
+                                                <td>{{ Carbon\Carbon::parse($value->expire_date)->format('Y-m-d') }}</td>
+                                                <td>{{ Carbon\Carbon::parse($value->director_approve_date)->format('Y-m-d') }}
+                                                </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="13">No available completed files</td>
+                                                <td colspan="12">No available completed files</td>
                                             </tr>
                                         @endforelse
                                     </tbody>

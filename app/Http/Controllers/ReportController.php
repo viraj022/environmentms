@@ -899,7 +899,14 @@ class ReportController extends Controller
             // dd($fileLog->user->last_name);
             if ($fileLog->user) {
 
-                $fpdf->Cell(50, 7, $fileLog->user->first_name . " " . $fileLog->user->last_name, 1, 0, 'L');
+                $fpdf->Cell(
+                    50,
+                    7,
+                    $fileLog->user->first_name . " " . $fileLog->user->last_name,
+                    1,
+                    0,
+                    'L'
+                );
             } else {
                 $fpdf->Cell(50, 7, "N/A", 1, 0, 'L');
             }
@@ -1108,39 +1115,81 @@ class ReportController extends Controller
         $start_data = $request->start_data;
         $end_date = $request->end_date;
 
-        $completedEPL = EPL::where('status', '1')
-            ->with('client', 'certificateInfo')
-            ->whereBetween('issue_date', [$start_data, $end_date])
-            ->orderBy('created_at', 'desc')
+        // $completedEPL = EPL::where('status', '1')
+        //     ->with('client')
+        //     ->whereBetween('issue_date', [$start_data, $end_date])
+        //     ->orderBy('created_at', 'desc')
+        //     ->limit(1)
+        //     ->get();
+        // $completedSC = SiteClearenceSession::where('status', '1')
+        //     ->with('siteClearances', 'client')
+        //     ->whereBetween('issue_date', [$start_data, $end_date])
+        //     ->orderBy('created_at', 'desc')
+        //     ->limit(1)
+        //     ->get();
+
+        // $merged = $completedSC->merge($completedEPL);
+
+        // $result = $merged->all();
+
+        $completedEPL = DB::table('e_p_l_s')
+            ->join('clients', 'e_p_l_s.client_id', '=', 'clients.id')
+            ->join('certificates', 'clients.id', '=', 'certificates.client_id')
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', '=', 'pradesheeyasabas.id')
+            ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
+            ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+            ->join('file_logs', 'clients.id', 'file_logs.client_id')
+            ->where('e_p_l_s.status', 1)
+            ->whereBetween('e_p_l_s.issue_date', [$start_data, $end_date])
+            // ->where('file_logs.file_type', 'epl')
+            ->where('file_logs.description', 'like', 'Director%Approve the Certificate')
+            ->orderBy('file_logs.created_at', 'desc')
+            ->select(
+                'clients.industry_name as industry_name',
+                'clients.file_no as file_number',
+                'clients.industry_sub_category as industry_sub_category',
+                'pradesheeyasabas.name as pradesheeyasaba',
+                'e_p_l_s.code as code',
+                'e_p_l_s.issue_date as issue_date',
+                'e_p_l_s.expire_date as expire_date',
+                'certificates.cetificate_number as certificate_number',
+                'zones.name as Ad_name',
+                'industry_categories.name as industry_category',
+                'file_logs.created_at as director_approve_date',
+                'file_logs.id as file_log_id'
+            )
             ->get();
-        $completedSC = SiteClearenceSession::where('status', '1')
-            ->with('siteClearances', 'client')
-            ->whereBetween('issue_date', [$start_data, $end_date])
-            ->orderBy('created_at', 'desc')
+        $completedSC = DB::table('site_clearence_sessions')
+            ->join('clients', 'site_clearence_sessions.client_id', '=', 'clients.id')
+            ->join('certificates', 'clients.id', '=', 'certificates.client_id')
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', '=', 'pradesheeyasabas.id')
+            ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
+            ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+            ->join('file_logs', 'clients.id', 'file_logs.client_id')
+            ->where('site_clearence_sessions.status', 1)
+            // ->where('file_logs.file_type', 'sc')
+            ->where('file_logs.description', 'like', 'Director%Approve the Certificate')
+            ->orderBy('file_logs.created_at', 'desc')
+            ->whereBetween('site_clearence_sessions.issue_date', [$start_data, $end_date])
+            ->select(
+                'clients.industry_name as industry_name',
+                'clients.file_no as file_number',
+                'clients.industry_sub_category as industry_sub_category',
+                'pradesheeyasabas.name as pradesheeyasaba',
+                'site_clearence_sessions.code as code',
+                'site_clearence_sessions.issue_date as issue_date',
+                'site_clearence_sessions.expire_date as expire_date',
+                'certificates.cetificate_number as certificate_number',
+                'zones.name as Ad_name',
+                'industry_categories.name as industry_category',
+                'file_logs.created_at as director_approve_date',
+            )
             ->get();
 
-        // $completedFiles = DB::table('clients')
-        // ->join('e_p_l_s', 'clients.id', '=', 'e_p_l_s.client_id')
-        // ->join('site_clearence_sessions', 'clients.id', '=', 'site_clearence_sessions.client_id')
-        // ->join('certificates', 'clients.id', '=', 'certificates.client_id')
-        // ->where('e_p_l_s.status', 1)
-        // ->orWhere('site_clearence_sessions.status', 1)
-        // ->whereBetween('e_p_l_s.issue_date', [$start_data, $end_date])
-        // ->whereBetween('site_clearence_sessions.issue_date', [$start_data, $end_date])
-        // ->select(
-        //     'clients.*',
-        //     'e_p_l_s.code as epl_code',
-        //     'site_clearence_sessions.code as sc_code',
-        //     'e_p_l_s.issue_date as epl_issue_date',
-        //     'e_p_l_s.expire_date as epl_expire_date',
-        //     'site_clearence_sessions.issue_date as sc_issue_date',
-        //     'site_clearence_sessions.expire_date as sc_expire_date',
-        //     'certificates.cetificate_number as certificate_number'
-        // )
-        // ->get();
-        // dd($completedFiles);
-        // dd($completedEPL);
+        $merged = $completedSC->merge($completedEPL);
 
-        return view('Reports.completed_files', compact('completedEPL'));
+        $result = $merged->all();
+
+        return view('Reports.completed_files', compact('result', 'start_data', 'end_date'));
     }
 }
