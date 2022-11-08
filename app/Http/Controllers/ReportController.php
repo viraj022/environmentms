@@ -25,6 +25,7 @@ use Illuminate\Http\Request;
 use App\Certificate;
 use App\EPL;
 use App\EPLNew;
+use App\FileLog;
 use App\SiteClearenceSession;
 use DB;
 
@@ -1115,75 +1116,56 @@ class ReportController extends Controller
         $start_data = $request->start_data;
         $end_date = $request->end_date;
 
-        // $completedEPL = EPL::where('status', '1')
-        //     ->with('client')
-        //     ->whereBetween('issue_date', [$start_data, $end_date])
-        //     ->orderBy('created_at', 'desc')
-        //     ->limit(1)
-        //     ->get();
-        // $completedSC = SiteClearenceSession::where('status', '1')
-        //     ->with('siteClearances', 'client')
-        //     ->whereBetween('issue_date', [$start_data, $end_date])
-        //     ->orderBy('created_at', 'desc')
-        //     ->limit(1)
-        //     ->get();
-
-        // $merged = $completedSC->merge($completedEPL);
-
-        // $result = $merged->all();
-
         $completedEPL = DB::table('e_p_l_s')
+            ->select(
+                'clients.industry_name AS industry_name',
+                'clients.file_no AS file_number',
+                'clients.industry_sub_category AS industry_sub_category',
+                'pradesheeyasabas.name AS pradesheeyasaba',
+                'e_p_l_s.code AS code',
+                'e_p_l_s.issue_date AS issue_date',
+                'e_p_l_s.expire_date AS expire_date',
+                'e_p_l_s.certificate_no AS certificate_number',
+                'zones.name AS Ad_name',
+                'industry_categories.name AS industry_category',
+                DB::raw('( SELECT created_at FROM file_logs WHERE client_id = e_p_l_s.client_id AND description LIKE \'Director % Approve the Certificate\' ORDER BY created_at DESC LIMIT 1 ) AS director_approve_date'),
+                DB::raw('( SELECT id FROM file_logs WHERE client_id = e_p_l_s.client_id AND description LIKE \'Director % Approve the Certificate\' ORDER BY created_at DESC LIMIT 1 ) AS file_log_id')
+            )
             ->join('clients', 'e_p_l_s.client_id', '=', 'clients.id')
-            ->join('certificates', 'clients.id', '=', 'certificates.client_id')
             ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', '=', 'pradesheeyasabas.id')
             ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
             ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
             ->join('file_logs', 'clients.id', 'file_logs.client_id')
             ->where('e_p_l_s.status', 1)
             ->whereBetween('e_p_l_s.issue_date', [$start_data, $end_date])
-            // ->where('file_logs.file_type', 'epl')
-            ->where('file_logs.description', 'like', 'Director%Approve the Certificate')
-            ->orderBy('file_logs.created_at', 'desc')
-            ->select(
-                'clients.industry_name as industry_name',
-                'clients.file_no as file_number',
-                'clients.industry_sub_category as industry_sub_category',
-                'pradesheeyasabas.name as pradesheeyasaba',
-                'e_p_l_s.code as code',
-                'e_p_l_s.issue_date as issue_date',
-                'e_p_l_s.expire_date as expire_date',
-                'certificates.cetificate_number as certificate_number',
-                'zones.name as Ad_name',
-                'industry_categories.name as industry_category',
-                'file_logs.created_at as director_approve_date',
-                'file_logs.id as file_log_id'
-            )
+            ->groupBy('e_p_l_s.code')
+            ->orderBy('clients.industry_name')
             ->get();
+
         $completedSC = DB::table('site_clearence_sessions')
+            ->select(
+                'clients.industry_name AS industry_name',
+                'clients.file_no AS file_number',
+                'clients.industry_sub_category AS industry_sub_category',
+                'pradesheeyasabas.name AS pradesheeyasaba',
+                'site_clearence_sessions.code AS code',
+                'site_clearence_sessions.issue_date AS issue_date',
+                'site_clearence_sessions.expire_date AS expire_date',
+                'site_clearence_sessions.licence_no AS certificate_number',
+                'zones.name AS Ad_name',
+                'industry_categories.name AS industry_category',
+                DB::raw('( SELECT created_at FROM file_logs WHERE client_id = site_clearence_sessions.client_id AND description LIKE \'Director % Approve the Certificate\' ORDER BY created_at DESC LIMIT 1 ) AS director_approve_date'),
+                DB::raw('( SELECT id FROM file_logs WHERE client_id = site_clearence_sessions.client_id AND description LIKE \'Director % Approve the Certificate\' ORDER BY created_at DESC LIMIT 1 ) AS file_log_id')
+            )
             ->join('clients', 'site_clearence_sessions.client_id', '=', 'clients.id')
-            ->join('certificates', 'clients.id', '=', 'certificates.client_id')
             ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', '=', 'pradesheeyasabas.id')
             ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
             ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
             ->join('file_logs', 'clients.id', 'file_logs.client_id')
             ->where('site_clearence_sessions.status', 1)
-            // ->where('file_logs.file_type', 'sc')
-            ->where('file_logs.description', 'like', 'Director%Approve the Certificate')
-            ->orderBy('file_logs.created_at', 'desc')
             ->whereBetween('site_clearence_sessions.issue_date', [$start_data, $end_date])
-            ->select(
-                'clients.industry_name as industry_name',
-                'clients.file_no as file_number',
-                'clients.industry_sub_category as industry_sub_category',
-                'pradesheeyasabas.name as pradesheeyasaba',
-                'site_clearence_sessions.code as code',
-                'site_clearence_sessions.issue_date as issue_date',
-                'site_clearence_sessions.expire_date as expire_date',
-                'certificates.cetificate_number as certificate_number',
-                'zones.name as Ad_name',
-                'industry_categories.name as industry_category',
-                'file_logs.created_at as director_approve_date',
-            )
+            ->groupBy('site_clearence_sessions.code')
+            ->orderBy('clients.industry_name')
             ->get();
 
         $merged = $completedSC->merge($completedEPL);

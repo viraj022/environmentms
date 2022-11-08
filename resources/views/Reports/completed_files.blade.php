@@ -45,7 +45,7 @@
                     @else
                         <div class="card">
                             <div class="card-body">
-                                <table class="table">
+                                <table class="table" id="completed_files_table">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -73,7 +73,8 @@
                                                 <td>{{ $value->pradesheeyasaba }}</td>
                                                 <td>{{ $value->industry_category }}</td>
                                                 <td>{{ $value->industry_sub_category }}</td>
-                                                <td>{{ $value->Ad_name }}</td>
+                                                <td>{{ substr(str_replace('and the team', '', $value->Ad_name), 18) }}
+                                                </td>
                                                 <td>{{ Carbon\Carbon::parse($value->issue_date)->format('Y-m-d') }}</td>
                                                 <td>{{ Carbon\Carbon::parse($value->expire_date)->format('Y-m-d') }}</td>
                                                 <td>{{ Carbon\Carbon::parse($value->director_approve_date)->format('Y-m-d') }}
@@ -93,4 +94,12 @@
             </div>
         </div>
     </section>
+@endsection
+
+@section('pageScripts')
+    <script>
+        $(document).ready(function() {
+            $('#completed_files_table').DataTable();
+        });
+    </script>
 @endsection
