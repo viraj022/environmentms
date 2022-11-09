@@ -1120,6 +1120,7 @@ class ReportController extends Controller
             ->select(
                 'clients.industry_name AS industry_name',
                 'clients.file_no AS file_number',
+                'clients.id AS clientid',
                 'clients.industry_sub_category AS industry_sub_category',
                 'pradesheeyasabas.name AS pradesheeyasaba',
                 'e_p_l_s.code AS code',
@@ -1128,7 +1129,7 @@ class ReportController extends Controller
                 'e_p_l_s.certificate_no AS certificate_number',
                 'zones.name AS Ad_name',
                 'industry_categories.name AS industry_category',
-                DB::raw('( SELECT created_at FROM file_logs WHERE client_id = e_p_l_s.client_id AND description LIKE \'Director % Approve the Certificate\' ORDER BY created_at DESC LIMIT 1 ) AS director_approve_date'),
+                DB::raw('( SELECT created_at FROM file_logs WHERE client_id = e_p_l_s.client_id  AND description LIKE \'Director % Approve the Certificate\' ORDER BY created_at DESC LIMIT 1 ) AS director_approve_date'),
                 DB::raw('( SELECT id FROM file_logs WHERE client_id = e_p_l_s.client_id AND description LIKE \'Director % Approve the Certificate\' ORDER BY created_at DESC LIMIT 1 ) AS file_log_id')
             )
             ->join('clients', 'e_p_l_s.client_id', '=', 'clients.id')
@@ -1137,6 +1138,8 @@ class ReportController extends Controller
             ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
             ->join('file_logs', 'clients.id', 'file_logs.client_id')
             ->where('e_p_l_s.status', 1)
+            ->where('file_logs.code', 'Approval')
+            ->where('file_logs.file_type', 'epl')
             ->whereBetween('e_p_l_s.issue_date', [$start_data, $end_date])
             ->groupBy('e_p_l_s.code')
             ->orderBy('clients.industry_name')
@@ -1163,6 +1166,8 @@ class ReportController extends Controller
             ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
             ->join('file_logs', 'clients.id', 'file_logs.client_id')
             ->where('site_clearence_sessions.status', 1)
+            ->where('file_logs.file_type', 'sc')
+            ->where('file_logs.code', 'Approval')
             ->whereBetween('site_clearence_sessions.issue_date', [$start_data, $end_date])
             ->groupBy('site_clearence_sessions.code')
             ->orderBy('clients.industry_name')
