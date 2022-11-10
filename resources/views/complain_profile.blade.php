@@ -11,7 +11,6 @@
         table.dataTable td {
             word-break: break-word;
         }
-
     </style>
 @endsection
 
@@ -41,9 +40,9 @@
                             aria-selected="false">Attachments</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-messages-tab" data-toggle="pill"
-                            href="#complain-assign" role="tab" aria-controls="custom-tabs-two-messages"
-                            aria-selected="false">Assign Complaint</a>
+                        <a class="nav-link" id="custom-tabs-two-messages-tab" data-toggle="pill" href="#complain-assign"
+                            role="tab" aria-controls="custom-tabs-two-messages" aria-selected="false">Assign
+                            Complaint</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-letters-tab" data-toggle="pill" href="#letters"
@@ -77,8 +76,7 @@
                                             <b>Complainer Name :</b> <a class="float-right" id="comp_name"></a>
                                         </li>
                                         <li class="list-group-item">
-                                            <b>Complainer Contact No:</b> <a class="float-right"
-                                                id="comp_contact_no"></a>
+                                            <b>Complainer Contact No:</b> <a class="float-right" id="comp_contact_no"></a>
                                         </li>
                                         <li class="list-group-item">
                                             <b>Description</b> <a class="float-right" id="comp_desc"></a>
@@ -115,7 +113,8 @@
                                         </div>
                                         <div class="col-12">
                                             <button type="button" class="btn btn-primary mt-2"
-                                                data-upload_file="attachments" id="upld_attach"> Upload Attachment </button>
+                                                data-upload_file="attachments" id="upld_attach"> Upload Attachment
+                                            </button>
                                         </div>
                                     </div>
                                     <hr>
@@ -139,20 +138,22 @@
                                             <div class="form-group">
                                                 <label for="client_id">File No: </label>
                                                 <select class="custom-select select2" id="client_id"></select>
-                                                <button type="button" id="assign_file" class="btn btn-success mt-1">Assign
+                                                <button type="button" id="assign_file"
+                                                    class="btn btn-success mt-1">Assign
                                                     File</button>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="card card-gray">
-                                       <div class="card-header">Actions</div>
-                                       <div class="card-body">
-                                        <div class="form-group">
-                                            <button id="confirm" class="btn btn-info d-none">Confirm</button>
-                                            <button id="reject" class="btn btn-warning d-none">Reject</button>
-                                            <button id="forward_letter_preforation" class="btn btn-success">Forward to letter preforation</button>
+                                        <div class="card-header">Actions</div>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <button id="confirm" class="btn btn-info d-none">Confirm</button>
+                                                <button id="reject" class="btn btn-warning d-none">Reject</button>
+                                                <button id="forward_letter_preforation" class="btn btn-success">Forward to
+                                                    letter preforation</button>
+                                            </div>
                                         </div>
-                                       </div>
                                     </div>
                                 </div>
                                 <div class="col-md-9">
@@ -162,33 +163,34 @@
                                         </div>
                                         <div class="card-body">
                                             <form id="complain_assign_frm" class="w-100">
-                                              <div class="row">
-                                                <label>User Level: </label>
-                                                <div class="form-group col-md-2">
-                                                    <select id="user_level" class="custom-select">
-                                                        <option value="1">Local</option>
-                                                        <option value="2">Director</option>
-                                                        <option value="3">Assistant Director</option>
-                                                        <option value="4">Environment Officer</option>
-                                                    </select>
+                                                <div class="row">
+                                                    <label>User Level: </label>
+                                                    <div class="form-group col-md-2">
+                                                        <select id="user_level" class="custom-select">
+                                                            <option value="1">Local</option>
+                                                            <option value="2">Director</option>
+                                                            <option value="3">Assistant Director</option>
+                                                            <option value="4">Environment Officer</option>
+                                                        </select>
+                                                    </div>
+                                                    <label for="user">User: </label>
+                                                    <div class="form-group col-md-3">
+                                                        <select id="user" class="custom-select"></select>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <button type="button" class="btn btn-primary form-control"
+                                                            id="assign_complain"> Assign To </button>
+                                                    </div>
                                                 </div>
-                                                <label for="user">User: </label>
-                                                <div class="form-group col-md-3">
-                                                    <select id="user" class="custom-select"></select>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <button type="button" class="btn btn-primary form-control" id="assign_complain"> Assign To </button>
-                                                </div>
-                                              </div>
                                             </form>
                                             <table class="table table-head-fixed text-nowrap" id="forward_history">
                                                 <thead>
-                                                  <tr>
-                                                    <th style="width: 8%">#</th>
-                                                    <th>Assignee</th>
-                                                    <th>Assignor</th>
-                                                    <th>Assigned Time</th>
-                                                   </tr>
+                                                    <tr>
+                                                        <th style="width: 8%">#</th>
+                                                        <th>Assignee</th>
+                                                        <th>Assignor</th>
+                                                        <th>Assigned Time</th>
+                                                    </tr>
                                                 </thead>
                                                 <tbody></tbody>
                                             </table>
@@ -252,8 +254,10 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <section class="content-header">
-                                    <button id="create_letter_btn" type="button" class="btn btn-secondary">Create
-                                        Letter</button>
+                                    @if ($complainDetails->status != 1)
+                                        <button id="create_letter_btn" type="button" class="btn btn-secondary">Create
+                                            Letter</button>
+                                    @endif
                                     <div id="letter_title_frm" class="form-group d-none">
                                         <label for="letter_title">Letter Title: </label>
                                         <input type="text" id="letter_title" class="form-control"
@@ -480,8 +484,8 @@
                 var letter_view_tbl = "";
                 $.each(resp, function(key, value2) {
                     key++;
-
-                    let edit_btn = (value2.status != 'COMPLETED') ? '<a href="/get_letter_content/letter/' +
+                    let edit_btn = (value2.status != 'COMPLETED') ?
+                        '<a href="/get_letter_content/letter/' +
                         value2.id + '" class="btn btn-success">Edit</a>' : '';
                     letter_view_tbl += "<tr><td>" + key + "</td><td>" + value2.letter_title + "</td><td>" +
                         value2.status + "</td><td>" + value2.user_name + "</td><td>" +
