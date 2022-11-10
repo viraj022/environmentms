@@ -137,8 +137,9 @@ class ComplainController extends Controller
     public function complainProfile($id)
     {
         $user = Auth::user();
+        $complainDetails = Complain::where('id', $id)->first();
         $pageAuth = $user->authentication(config('auth.privileges.complains'));
-        return view('complain_profile', ['complain_id' => $id, 'pageAuth' => $pageAuth, 'user' => $user]);
+        return view('complain_profile', ['complain_id' => $id, 'pageAuth' => $pageAuth, 'user' => $user, 'complainDetails' => $complainDetails]);
     }
 
     public function complainProfileData($id)
@@ -359,5 +360,11 @@ class ComplainController extends Controller
         } else {
             return array('status' => 0, 'msg' => 'File assigning was unsuccessful');
         }
+    }
+
+    public function viewComplainReport()
+    {
+        $complains = Complain::where('status', '=', 1)->get();
+        return view('Reports.complains_report', compact('complains'));
     }
 }

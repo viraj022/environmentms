@@ -11,6 +11,7 @@
   |
  */
 
+use App\Http\Controllers\ComplainController;
 use App\Http\Controllers\ReportController;
 use Doctrine\DBAL\Schema\View;
 
@@ -140,3 +141,7 @@ Route::delete('/file_letter_delete/{letter}', 'FileLetterController@deleteLetter
 //completed files
 Route::get('/completed_files', [ReportController::class, 'viewCompletedFiles'])
     ->name('completed-files-list');
+
+//complains report
+Route::get('/complains_report', [ComplainController::class, 'viewComplainReport'])
+    ->name('complains-report');
