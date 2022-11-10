@@ -66,7 +66,7 @@ class EPLRenewController extends Controller
                     $ePLRenew->renew_application_path = $this->makeApplicationPath($epl->id) . $epl->getNextRnumber() . "." . $type;
                     $msg = $ePLRenew->save();
                     if ($msg) {
-                        LogActivity::fileLog($ePLRenew->id, 'EPLrenew', "EPLRenew Created", 1);
+                        LogActivity::fileLog($ePLRenew->id, 'EPLrenew', "EPLRenew Created", 1, 'epl', $epl->id);
                         LogActivity::addToLog('EPLRenew Created', $ePLRenew);
                         return array('id' => 1, 'message' => 'true');
                     } else {

@@ -47,7 +47,7 @@ function setFileStatus($fileId, $statusType, $statusCode, $statusValue = '')
     return $file->save();
 }
 
-function fileLog($id, $code, $description,  $authlevel)
+function fileLog($id, $code, $description,  $authlevel, $fileType, $fileTypeReference)
 {
     $log = [];
     $log['client_id'] = $id;
@@ -55,6 +55,8 @@ function fileLog($id, $code, $description,  $authlevel)
     $log['description'] = $description;
     $log['auth_level'] = $authlevel;
     $log['user_id'] = auth()->check() ? auth()->user()->id : "N/A";
+    $log['file_type'] = $fileType;
+    $log['file_type_reference'] = $fileTypeReference;
     FileLog::create($log);
 }
 
