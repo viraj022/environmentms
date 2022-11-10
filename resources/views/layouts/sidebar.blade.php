@@ -369,7 +369,7 @@
                 </ul>
             </li>
             <li
-                class="nav-item has-treeview {{ Request::is('expired_certificates', 'pending_expired_cert', 'expired_epl', 'act_status/id/1', 'report_dashboard', 'old_data_summary', 'confirmed_files', 'reverse_confirm', 'eo_report', 'file_progress_report', 'warning_letters', 'pending_site_clear_report', 'pending_epl_report', 'completed_files') ? 'menu-open' : '' }}">
+                class="nav-item has-treeview {{ Request::is('expired_certificates', 'pending_expired_cert', 'expired_epl', 'act_status/id/1', 'report_dashboard', 'old_data_summary', 'confirmed_files', 'reverse_confirm', 'eo_report', 'file_progress_report', 'warning_letters', 'pending_site_clear_report', 'pending_epl_report', 'completed_files', 'complains_report') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-user-tie"></i>
                     <p>Report <i class="right fas fa-angle-left"></i></p>
@@ -516,6 +516,15 @@
                                     class="nav-link {{ Request::is('completed_files') ? 'active' : '' }}">
                                     <i class="fas fa-file-archive nav-icon"></i>
                                     <p>Completed File Report</p>
+                                </a>
+                            </li>
+                        @endif
+                        @if ($pre['id'] === config('auth.privileges.clientSpace'))
+                            <li class="nav-item">
+                                <a href="{{ url('/complains_report') }}"
+                                    class="nav-link {{ Request::is('complains_report') ? 'active' : '' }}">
+                                    <i class="fas fa-file-archive nav-icon"></i>
+                                    <p>Complains</p>
                                 </a>
                             </li>
                         @endif
