@@ -96,6 +96,8 @@
                                     class="fa fa-check"></i> Approve File</button>
                             <button type="button" id="rejectFile" class="btn btn-danger d-none"><i class="fa fa-times"></i>
                                 Reject File</button>
+                            <button type="button" id="upCertificate" class="btn btn-primary d-none"><i
+                                    class="fa fa-check"></i>Upload Certificate</button>
                         </div>
                     </div>
                 </div>
@@ -157,7 +159,8 @@
                 $('#approveFile').val($(this).val()); //<-- Share this button value to this button
                 $('#rejectFile').val($(this).val()); //<-- Share this button value to this button
                 $('#viewCertificateBtn').val($(this).val());
-                $('#prepareCertificate,#approveFile,#rejectFile,#approveCertificate,#rejectCertificate,#viewCertificateBtn')
+                $('#upCertificate').val($(this).val());
+                $('#prepareCertificate,#approveFile,#rejectFile,#approveCertificate,#rejectCertificate,#viewCertificateBtn,#upCertificate')
                     .addClass('d-none');
                 if (f_Status == 1) {
                     $('#approveFile').removeClass('d-none');
@@ -166,6 +169,7 @@
                     $('#viewCertificateBtn').removeClass('d-none');
                     $('#approveCertificate').removeClass('d-none');
                     $('#rejectCertificate').removeClass('d-none');
+                    $('#upCertificate').removeClass('d-none');
                 } else {
                     $('#prepareCertificate').addClass('d-none');
                 }
@@ -263,6 +267,11 @@
                 loadCertificatePathsApi(parseInt(fileData.id), function(set) {
                     window.open(set.certificate_path, '_blank');
                 });
+            });
+
+            $(document).on('click', '#upCertificate', function() {
+                var fileData = JSON.parse(unescape($(this).val()));
+                window.open('certificate_perforation/id/' + fileData.id, '_blank');
             });
 
         });
