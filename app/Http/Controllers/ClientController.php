@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use App\Certificate;
 use App\OldFiles;
 use App\BusinessScale;
+use App\ChangeOwner;
 use App\Pradesheeyasaba;
 use App\Rules\contactNo;
 use App\IndustryCategory;
@@ -132,9 +133,10 @@ class ClientController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $client = Client::find($id);
+        $oldOwnerDetails = ChangeOwner::where('client_id', $client->id)->orderBy('created_at', 'desc')->first();
         $qrCode = $this->fileQr($client->file_no);
         if ($pageAuth['is_read']) {
-            return view('industry_profile', ['pageAuth' => $pageAuth, 'id' => $id, 'client' => $client, 'qrCode' => $qrCode]);
+            return view('industry_profile', ['pageAuth' => $pageAuth, 'id' => $id, 'client' => $client, 'qrCode' => $qrCode, 'oldOwnerDetails' => $oldOwnerDetails]);
         } else {
             abort(401);
         }
@@ -1585,6 +1587,44 @@ class ClientController extends Controller
             return array('id' => 1, 'message' => 'Successfully changed the file status');
         } else {
             return array('id' => 0, 'message' => 'File status changing was unsuccessfull');
+        }
+    }
+
+    public function changeOwner(Request $request)
+    {
+        $request->validate([
+            'name_title' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'nullable',
+            'address' => 'nullable',
+            'email' => 'nullable|email',
+            'nic' => 'nullable',
+            'contact_no' => 'nullable',
+            'industry_name' => 'required',
+            'industry_contact_no' => 'nullable',
+            'industry_address' => 'required',
+            'industry_email' => 'nullable|email',
+        ]);
+
+        $ownerchange = ChangeOwner::create([
+            'client_id' => $request->client_id,
+            'name_title' => $request->name_title,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'address' => $request->address,
+            'email' => $request->email,
+            'nic' => $request->nic,
+            'contact_no' => $request->contact_no,
+            'industry_name' => $request->industry_name,
+            'industry_contact_no' => $request->industry_contact_no,
+            'industry_address' => $request->industry_address,
+            'industry_email' => $request->industry_email,
+        ]);
+
+        if ($ownerchange == true) {
+            return array('status' => 1, 'message' => 'Successfully changed the owner details');
+        } else {
+            return array('status' => 0, 'message' => 'Ownership changing was unsuccessfull');
         }
     }
 }

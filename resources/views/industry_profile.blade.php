@@ -64,8 +64,8 @@
                                 Inspection</a>
                         </li>
                         <!--                <li class="nav-item">
-                                                                                                                                                                                                                                                                                                                                                <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
-                                                                                                                                                                                                                                                                                                                                            </li>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </li>-->
                         <li class="nav-item">
                             <a class="nav-link paymentsTab" id="custom-tabs-three-paymentsTab-tab" data-toggle="pill"
                                 href="#custom-tabs-three-paymentsTab" role="tab"
@@ -151,14 +151,14 @@
                                                             </div>
 
                                                             <!--                                                    <div class="info-box mb-3 bg-info">
-                                                                                                                                                                                                                                                                                                                                                                                                                        <span class="info-box-icon">
-                                                                                                                                                                                                                                                                                                                                                                                                                            <button class="btn btn-lg btn-default" id="teli"><i class="fa fa-plus"></i></button></span>
-                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="info-box-content">
-                                                                                                                                                                                                                                                                                                                                                                                                                            <span class="info-box-text">Create new telecommunication site clearance file</span>
-                                                                                                                                                                                                                                                                                                                                                                                                                            <span class="info-box-number">Telecommunication Site Clearance</span>
-                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                         /.info-box-content
-                                                                                                                                                                                                                                                                                                                                                                                                                    </div>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <span class="info-box-icon">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <button class="btn btn-lg btn-default" id="teli"><i class="fa fa-plus"></i></button></span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <div class="info-box-content">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <span class="info-box-text">Create new telecommunication site clearance file</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <span class="info-box-number">Telecommunication Site Clearance</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             /.info-box-content
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>-->
 
                                                             <div class="info-box mb-3 bg-info">
                                                                 <span class="info-box-icon">
@@ -695,6 +695,101 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @if ($oldOwnerDetails)
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="callout callout-info">
+                                                        <h4>Old Profile Details</h4>
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <table class="table border">
+                                                                    <tr>
+                                                                        <th colspan="2">
+                                                                            <h5>Client Details</h5>
+                                                                        </th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Name</th>
+                                                                        <td>{{ $oldOwnerDetails->name_title }}
+                                                                            {{ $oldOwnerDetails->first_name }}
+                                                                            {{ $oldOwnerDetails->last_name }}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Address</th>
+                                                                        @if ($oldOwnerDetails->address)
+                                                                            <td>{{ $oldOwnerDetails->address }}</td>
+                                                                        @else
+                                                                            <td>-</td>
+                                                                        @endif
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Email</th>
+                                                                        @if ($oldOwnerDetails->email)
+                                                                            <td>{{ $oldOwnerDetails->email }}</td>
+                                                                        @else
+                                                                            <td>-</td>
+                                                                        @endif
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>NIC</th>
+                                                                        @if ($oldOwnerDetails->nic)
+                                                                            <td>{{ $oldOwnerDetails->nic }}</td>
+                                                                        @else
+                                                                            <td>-</td>
+                                                                        @endif
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Contact Number</th>
+                                                                        @if ($oldOwnerDetails->contact_no)
+                                                                            <td>{{ $oldOwnerDetails->contact_no }}</td>
+                                                                        @else
+                                                                            <td>-</td>
+                                                                        @endif
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <table class="table border">
+                                                                    <tr>
+                                                                        <th colspan="2">
+                                                                            <h5>Industry Details</h5>
+                                                                        </th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Industry Name</th>
+                                                                        <td>{{ $oldOwnerDetails->industry_name }}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Industry Contact Number</th>
+                                                                        @if ($oldOwnerDetails->industry_contact_no)
+                                                                            <td>{{ $oldOwnerDetails->industry_contact_no }}
+                                                                            </td>
+                                                                        @else
+                                                                            <td>-</td>
+                                                                        @endif
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Industry Address</th>
+                                                                        <td>{{ $oldOwnerDetails->industry_address }}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Industry Email</th>
+                                                                        @if ($oldOwnerDetails->industry_email)
+                                                                            <td>{{ $oldOwnerDetails->industry_email }}</td>
+                                                                        @else
+                                                                            <td>-</td>
+                                                                        @endif
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
