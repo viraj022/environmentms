@@ -69,7 +69,7 @@
                                                             </dl>
                                                         </div>
                                                         <!--                                                <button class="btn btn-primary genCertificateNum d-none"><i class="fa fa-gear"></i> Generate Certificate Number</button>
-                                                                                                                                                                                 /.card-body -->
+                                                                                                                                                                                     /.card-body -->
                                                     </div>
                                                     <div class="card card-success">
                                                         <div class="card-header">
@@ -206,18 +206,18 @@
                                                             </div>
                                                         </div>
                                                         <!-- <div class="form-group showCorrectedFileUi d-none">
-                                                                                                                                                        <label for="uploadLabel">Word File Upload: </label><br>
-                                                                                                                                                        <input id="correctedFile" type="file" class="" accept=".doc, .docx, .pdf">
-                                                                                                                                                        <button id="uploadcorrectedFile" class="btn btn-success"><i
-                                                                                                                                                            class="fas fa-file-upload"></i> Upload</button>
-                                                                                                                                                        <div class="progress d-none">
-                                                                                                                                                            <div class="progress-bar bg-primary progress-bar-striped Uploadprogress"
-                                                                                                                                                            id="Uploadprogress" role="progressbar" aria-valuenow="40"
-                                                                                                                                                            aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                                                                                                                                                            <!--<span class="sr-only">40% Complete (success)</span>-->
+                                                                                                                                                            <label for="uploadLabel">Word File Upload: </label><br>
+                                                                                                                                                            <input id="correctedFile" type="file" class="" accept=".doc, .docx, .pdf">
+                                                                                                                                                            <button id="uploadcorrectedFile" class="btn btn-success"><i
+                                                                                                                                                                class="fas fa-file-upload"></i> Upload</button>
+                                                                                                                                                            <div class="progress d-none">
+                                                                                                                                                                <div class="progress-bar bg-primary progress-bar-striped Uploadprogress"
+                                                                                                                                                                id="Uploadprogress" role="progressbar" aria-valuenow="40"
+                                                                                                                                                                aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                                                                                                                                                <!--<span class="sr-only">40% Complete (success)</span>-->
                                                         <!-- </div>
-                                                                                                                                                        </div>
-                                                                                                                                                    </div> -->
+                                                                                                                                                            </div>
+                                                                                                                                                        </div> -->
                                                         <h4 class="text-success d-none" id="certificateSubmittedLable">
                                                             Certificate Submitted</h4>
                                                         <button class="btn btn-primary complCertificate d-none"><i
@@ -256,19 +256,19 @@
                                                                 </div>
                                                             </div>
                                                             <!-- <div class="col-4">
-                                                                                                                                                            <div class="correctedFileShowUi d-none" style=" height: 200px;">
-                                                                                                                                                                <hr>
-                                                                                                                                                                <a data-toggle="tooltip" data-placement="top"
-                                                                                                                                                                title="Click to view file" id="correctedCertificatePath"
-                                                                                                                                                                href="" target="_blank">
-                                                                                                                                                                    <p>Corrected File</p>
-                                                                                                                                                                    <img class="img-fluid rounded" id="file_view" alt="PDF"
-                                                                                                                                                                    style="width: 128px; height: 128px;"
-                                                                                                                                                                    src=""
-                                                                                                                                                                    data-holder-rendered="true">
-                                                                                                                                                                </a>
-                                                                                                                                                            </div>
-                                                                                                                                                        </div> -->
+                                                                                                                                                                <div class="correctedFileShowUi d-none" style=" height: 200px;">
+                                                                                                                                                                    <hr>
+                                                                                                                                                                    <a data-toggle="tooltip" data-placement="top"
+                                                                                                                                                                    title="Click to view file" id="correctedCertificatePath"
+                                                                                                                                                                    href="" target="_blank">
+                                                                                                                                                                        <p>Corrected File</p>
+                                                                                                                                                                        <img class="img-fluid rounded" id="file_view" alt="PDF"
+                                                                                                                                                                        style="width: 128px; height: 128px;"
+                                                                                                                                                                        src=""
+                                                                                                                                                                        data-holder-rendered="true">
+                                                                                                                                                                    </a>
+                                                                                                                                                                </div>
+                                                                                                                                                            </div> -->
                                                         </div>
                                                     </div>
 
@@ -376,8 +376,8 @@
                     </div>
                 </div>
                 <!--        <div class="overlay dark loadingRenderUI">
-                                                                                                                                                    <i class="fas fa-2x fa-sync-alt"></i>
-                                                                                                                                                </div>-->
+                                                                                                                                                        <i class="fas fa-2x fa-sync-alt"></i>
+                                                                                                                                                    </div>-->
             </div>
         </section>
         <!--//Tab Section END//-->
@@ -517,7 +517,7 @@
                     alert('Invalid Date !');
                     return false
                 }
-            } else if (FILE_STATUS == 2) {
+            } else if (FILE_STATUS == 2 || FILE_STATUS == 3) {
                 url_upload = '/api/certificate/draft/';
 
             }
