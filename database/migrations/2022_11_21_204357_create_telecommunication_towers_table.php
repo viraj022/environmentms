@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTelecommiunicationTowersTable extends Migration
+class CreateTelecommunicationTowersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTelecommiunicationTowersTable extends Migration
      */
     public function up()
     {
-        Schema::create('telecommiunication_towers', function (Blueprint $table) {
+        Schema::create('telecommunication_towers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
             $table->text('address');
@@ -50,6 +50,6 @@ class CreateTelecommiunicationTowersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('telecommiunication_towers');
+        Schema::dropIfExists('telecommunication_towers');
     }
 }

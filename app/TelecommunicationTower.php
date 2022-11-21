@@ -3,8 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TelecommiunicationTower extends Model
+class TelecommunicationTower extends Model
 {
     use HasFactory, SoftDeletes;
 
