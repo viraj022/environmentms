@@ -23,6 +23,14 @@ class AlterTreeFellingsChange extends Migration
             $table->string('deed_number')->nullable()->change();
             $table->string('survey_plan_number')->nullable()->change();
         });
+
+        Schema::table('state_land_leases', function (Blueprint $table) {
+            $table->text('purpose')->nullable()->change();
+        });
+
+        Schema::table('online_site_clearances', function (Blueprint $table) {
+            $table->string('contact_person_designation')->nullable()->change();
+        });
     }
 
     /**
@@ -41,6 +49,14 @@ class AlterTreeFellingsChange extends Migration
             $table->string('extent_of_land')->nullable(false)->change();
             $table->string('deed_number')->nullable(false)->change();
             $table->string('survey_plan_number')->nullable(false)->change();
+        });
+
+        Schema::table('state_land_leases', function (Blueprint $table) {
+            $table->string('purpose')->nullable()->change();
+        });
+
+        Schema::table('online_site_clearances', function (Blueprint $table) {
+            $table->string('contact_person_designation')->nullable(false)->change();
         });
     }
 }
