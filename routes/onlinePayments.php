@@ -1,5 +1,8 @@
 <?php
 # online requests
+
+use App\Http\Controllers\OnlinePaymentController;
+
 Route::get('/online-requests', 'OnlineRequestController@index')
     ->name('online-requests.index');
 
@@ -42,3 +45,7 @@ Route::post(
     '/transactions/payment/send-link/{transaction}',
     'OnlineRequestController@registerAndSendOnlinePaymentLinksForTransaction'
 )->name('transactions.payment.send-link');
+
+
+Route::get('/online-request/tree-felling', [OnlinePaymentController::class, 'onlineTreeFellingRequests'])
+    ->name('online-tree-felling');
