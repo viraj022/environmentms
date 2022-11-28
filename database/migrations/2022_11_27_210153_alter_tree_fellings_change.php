@@ -41,14 +41,14 @@ class AlterTreeFellingsChange extends Migration
     public function down()
     {
         Schema::table('tree_fellings', function (Blueprint $table) {
-            $table->string('current_land_use')->nullable(false)->change();
-            $table->text('tree_felling_reason')->nullable(false)->change();
-            $table->text('land_pattern_within_100m')->nullable(false)->change();
+            $table->string('current_land_use')->change();
+            $table->text('tree_felling_reason')->change();
+            $table->text('land_pattern_within_100m')->change();
             $table->string('rehabilitation_plan')->nullable()->change();
-            $table->string('email')->nullable(false)->change();
-            $table->string('extent_of_land')->nullable(false)->change();
-            $table->string('deed_number')->nullable(false)->change();
-            $table->string('survey_plan_number')->nullable(false)->change();
+            $table->string('email')->change();
+            $table->string('extent_of_land')->change();
+            $table->string('deed_number')->change();
+            $table->string('survey_plan_number')->change();
         });
 
         Schema::table('state_land_leases', function (Blueprint $table) {
@@ -56,7 +56,7 @@ class AlterTreeFellingsChange extends Migration
         });
 
         Schema::table('online_site_clearances', function (Blueprint $table) {
-            $table->string('contact_person_designation')->nullable(false)->change();
+            $table->string('contact_person_designation')->change();
         });
     }
 }
