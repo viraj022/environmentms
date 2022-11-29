@@ -41,4 +41,14 @@ class WasteManagement extends Model
         'detail_operation',
         'disposal_des',
     ];
+
+    public function onlineRequest()
+    {
+        return $this->belongsTo(OnlineRequest::class);
+    }
+
+    public function pradeshiyaSabha()
+    {
+        return $this->belongsTo(Pradesheeyasaba::class, 'pradeshiya_sabha');
+    }
 }

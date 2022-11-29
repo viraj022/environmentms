@@ -19,11 +19,21 @@ class OnlineRenewalEpl extends Model
         'applicant_email',
         'pradeshiya_sabha',
         'epl_number',
-        'epl_issued', 
+        'epl_issued',
         'epl_expired',
         'changes_after_last_epl',
         'production_changes',
         'other_department_report',
         'other_details',
     ];
+
+    public function onlineRequest()
+    {
+        return $this->belongsTo(OnlineRequest::class);
+    }
+
+    public function pradeshiyaSabha()
+    {
+        return $this->belongsTo(Pradesheeyasaba::class, 'pradeshiya_sabha');
+    }
 }

@@ -32,4 +32,14 @@ class TreeFelling extends Model
         'survey_plan',
         'landowners_affidavit',
     ];
+
+    public function onlineRequest()
+    {
+        return $this->belongsTo(OnlineRequest::class);
+    }
+
+    public function pradeshiyaSabha()
+    {
+        return $this->belongsTo(Pradesheeyasaba::class, 'pradeshiya_sabha');
+    }
 }

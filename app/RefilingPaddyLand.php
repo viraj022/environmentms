@@ -29,4 +29,13 @@ class RefilingPaddyLand extends Model
         'survey_plan',
         'add_issue_letter',
     ];
+
+    public function onlineRequest()
+    {
+        return $this->belongsTo(OnlineRequest::class);
+    }
+    public function pradeshiyaSabha()
+    {
+        return $this->belongsTo(Pradesheeyasaba::class, 'pradeshiya_sabha');
+    }
 }
