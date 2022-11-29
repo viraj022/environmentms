@@ -27,6 +27,7 @@ class AlterTreeFellingsAddRequestId extends Migration
 
         Schema::table('telecommunication_towers', function (Blueprint $table) {
             $table->unsignedBigInteger('online_request_id')->after('id');
+            $table->string('land_address')->after('pradeshiya_sabha');
         });
 
         Schema::table('waste_managements', function (Blueprint $table) {
@@ -35,6 +36,7 @@ class AlterTreeFellingsAddRequestId extends Migration
 
         Schema::table('online_site_clearances', function (Blueprint $table) {
             $table->unsignedBigInteger('online_request_id')->after('id');
+            $table->string('industry_address')->after('other_industry_type');
         });
 
         Schema::table('online_renewal_epls', function (Blueprint $table) {
@@ -67,6 +69,7 @@ class AlterTreeFellingsAddRequestId extends Migration
 
         Schema::table('telecommunication_towers', function (Blueprint $table) {
             $table->dropColumn('online_request_id');
+            $table->dropColumn('land_address');
         });
 
         Schema::table('waste_managements', function (Blueprint $table) {
@@ -75,6 +78,7 @@ class AlterTreeFellingsAddRequestId extends Migration
 
         Schema::table('online_site_clearances', function (Blueprint $table) {
             $table->dropColumn('online_request_id');
+            $table->dropColumn('industry_address');
         });
 
         Schema::table('online_renewal_epls', function (Blueprint $table) {

@@ -13,6 +13,7 @@ class OnlineSiteClearance extends Model
         'industry_name',
         'industry_type',
         'other_industry_type',
+        'industry_address',
         'industry_location',
         'pradeshiya_sabha',
         'divisional_secretariat_division',

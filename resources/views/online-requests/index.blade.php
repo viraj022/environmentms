@@ -164,7 +164,12 @@
                                                 <tr class="{{ $new->isRejected() ? 'table-danger' : '' }}">
                                                     <td>{{ $i++ }}</td>
                                                     <td>
-                                                        {{ $new->title }} {{ $new->firstname }} {{ $new->lastname }}
+                                                        {{ $new->title }} 
+                                                        @if (!empty($new->lastname))
+                                                        {{ $new->firstname }} {{ $new->lastname }}   
+                                                        @else
+                                                        {{ $new->firstname }}                          
+                                                        @endif
                                                     </td>
                                                     <td>{{ $new->pradeshiyaSabha->name }}</td>
                                                     <td>{{ $new->industryCategory->name }}</td>
@@ -200,7 +205,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="pills-tree-felling-applications" role="tabpanel"
+                        {{-- <div class="tab-pane fade" id="pills-tree-felling-applications" role="tabpanel"
                             aria-labelledby="pills-tree-felling-applications-tab">
                             <div class="table-responsive">
                                 <table class="table table-striped table-condensed table-hover"
@@ -518,7 +523,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="tab-pane fade" id="pills-rejected-new-applications" role="tabpanel"
                             aria-labelledby="pills-rejected-new-applications-tab">
                             <div class="table-responsive">
@@ -565,7 +570,12 @@
                                                 <tr class="{{ $new->isRejected() ? 'table-danger' : '' }}">
                                                     <td>{{ $i++ }}</td>
                                                     <td>
-                                                        {{ $new->title }} {{ $new->firstname }} {{ $new->lastname }}
+                                                        {{ $new->title }}
+                                                        @if (!empty($new->lastname))
+                                                        {{ $new->firstname }} {{ $new->lastname }}   
+                                                        @else
+                                                        {{ $new->firstname }}                          
+                                                        @endif
                                                     </td>
                                                     <td>{{ $new->pradeshiyaSabha->name }}</td>
                                                     <td>{{ $new->industryCategory->name }}</td>

@@ -20,6 +20,7 @@ class TelecommunicationTower extends Model
         'land_owner_address',
         'land_owner_phone',
         'pradeshiya_sabha',
+        'land_address',
         'sketch_of_road',
         'investment_amount',
         'tower_height',
