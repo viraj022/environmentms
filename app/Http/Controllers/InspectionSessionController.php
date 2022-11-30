@@ -79,7 +79,7 @@ class InspectionSessionController extends Controller
 
                 if ($msg) {
                     LogActivity::addToLog('Inspection Session Created', $inspectionSession);
-                    LogActivity::fileLog($inspectionSession->client_id, 'Inspection', $user->last_name . " Add inspection", 1);
+                    LogActivity::fileLog($inspectionSession->client_id, 'Inspection', $user->last_name . " Add inspection", 1, 'inspection', '');
                     return array('id' => 1, 'message' => 'true');
                 } else {
                     return array('id' => 0, 'message' => 'false');
@@ -198,7 +198,7 @@ class InspectionSessionController extends Controller
 
             if ($msg) {
                 LogActivity::addToLog('Inspection Session Deleted', $inspectionSession);
-                LogActivity::fileLog($inspectionSession->client_id, 'Inspection', $user->last_name . "cancel inspection", 1);
+                LogActivity::fileLog($inspectionSession->client_id, 'Inspection', $user->last_name . "cancel inspection", 1, 'inspection', '');
                 return array('id' => 1, 'message' => 'true');
             } else {
                 return array('id' => 0, 'message' => 'false');
@@ -235,7 +235,7 @@ class InspectionSessionController extends Controller
 
         if ($msg) {
             LogActivity::addToLog('Inspection Session Mark as complete', $inspectionSession);
-            LogActivity::fileLog($inspectionSession->client_id, 'Inspection', $user->last_name . " Complete inspection", 1);
+            LogActivity::fileLog($inspectionSession->client_id, 'Inspection', $user->last_name . " Complete inspection", 1, 'inspection', '');
             return array('id' => 1, 'message' => 'true');
         } else {
             return array('id' => 0, 'message' => 'false');
@@ -256,7 +256,7 @@ class InspectionSessionController extends Controller
 
         if ($msg) {
             LogActivity::addToLog('Inspection Session Mark as pending', $inspectionSession);
-            LogActivity::fileLog($inspectionSession->client_id, 'Inspection', $user->last_name . " Add inspection to pending", 1);
+            LogActivity::fileLog($inspectionSession->client_id, 'Inspection', $user->last_name . " Add inspection to pending", 1, 'inspection', '');
             return array('id' => 1, 'message' => 'true');
         } else {
             return array('id' => 0, 'message' => 'false');

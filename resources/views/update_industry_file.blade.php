@@ -57,7 +57,8 @@
                                         </div>
                                         <div class="form-group">
                                             <label>First Name*</label>
-                                            <input id="getfName" type="text" class="form-control form-control-sm cutenzReq"
+                                            <input id="getfName" type="text"
+                                                class="form-control form-control-sm cutenzReq"
                                                 placeholder="Enter FirstName..." value="">
                                             <div id="valName" class="d-none">
                                                 <p class="text-danger">Name is required</p>
@@ -151,8 +152,9 @@
                                                     class="form-control form-control-sm cutenzReq " placeholder="">
                                             </div>
                                             <div class="form-group">
-                                                <button id="btnSaveFileCode" type="submit" class="btn btn-success d-none"><i
-                                                        class="fas fa-check"></i> Change File Code</button>
+                                                <button id="btnSaveFileCode" type="submit"
+                                                    class="btn btn-success d-none"><i class="fas fa-check"></i> Change
+                                                    File Code</button>
                                                 <button onClick="location.href = location.href" type="submit"
                                                     class="btn btn-info d-none"><i class="fas fa-times"></i>
                                                     Cancel</button>
@@ -161,13 +163,15 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Industry Sub-Category</label>
-                                            <input id="industry_sub_cat" type="text" class="form-control form-control-sm "
-                                                placeholder="Enter Text." value="">
+                                            <input id="industry_sub_cat" type="text"
+                                                class="form-control form-control-sm " placeholder="Enter Text."
+                                                value="">
                                         </div>
                                         <div class="form-group">
                                             <label>Business Registration Number</label>
-                                            <input id="business_regno" type="text" class="form-control form-control-sm"
-                                                placeholder="Enter Number" value="">
+                                            <input id="business_regno" type="text"
+                                                class="form-control form-control-sm" placeholder="Enter Number"
+                                                value="">
                                         </div>
                                         <div class="form-group">
                                             <label>Business Name*</label>
@@ -177,7 +181,8 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Is this Industry Zone</label>
-                                            <select id="getZone" class="form-control form-control-sm" style="width: 100%;">
+                                            <select id="getZone" class="form-control form-control-sm"
+                                                style="width: 100%;">
                                                 <option value="0">No</option>
                                                 <option value="1">Yes</option>
                                             </select>
@@ -204,22 +209,22 @@
                                                         <i class="far fa-calendar-alt"></i>
                                                     </span>
                                                 </div>
-                                                <input id="startDate" name="datepickerUi" type="text" max="2999-12-31"
-                                                    class="form-control form-control-sm" placeholder="Enter Date..."
-                                                    value="">
+                                                <input id="startDate" name="datepickerUi" type="text"
+                                                    max="2999-12-31" class="form-control form-control-sm"
+                                                    placeholder="Enter Date..." value="">
                                             </div>
                                         </div>
                                         <!--                                <div class="form-group">
-                                                                                                                                                                                                                                <label>Submitted Date*</label>
-                                                                                                                                                                                                                                <div class="input-group">
-                                                                                                                                                                                                                                    <div class="input-group-prepend">
-                                                                                                                                                                                                                                        <span class="input-group-text">
-                                                                                                                                                                                                                                            <i class="far fa-calendar-alt"></i>
-                                                                                                                                                                                                                                        </span>
-                                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                                    <input id="submittedDate" name="datepickerUi" max="2999-12-31" class="form-control form-control-sm cutenzReq" placeholder="Enter Date..." value="">
-                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                            </div>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <label>Submitted Date*</label>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="input-group">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <div class="input-group-prepend">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <span class="input-group-text">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="far fa-calendar-alt"></i>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <input id="submittedDate" name="datepickerUi" max="2999-12-31" class="form-control form-control-sm cutenzReq" placeholder="Enter Date..." value="">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>-->
                                         <div class="form-group">
                                             <label>Contact No</label>
                                             <input id="getContactn" type="text" class="form-control form-control-sm"
@@ -234,9 +239,13 @@
                                     <div class="card-footer">
                                         <button id="btnUpdate" type="button" class="btn btn-success"><i
                                                 class="fas fa-check"></i> Update</button>
-                                        <button id="genCode" type="button" class="btn float-right btn-danger"><i
+                                        <button id="changeOwnership" type="button"
+                                            class="btn btn-info float-right mx-1 btn-changeOwnership">Change
+                                            Ownership</button>
+                                        <button id="genCode" type="button" class="btn float-right mx-2 btn-danger"><i
                                                 class="fas fa-exclamation-triangle"></i> Generate Code</button>
-                                        <button id="btnGenNewFileCode" type="button" class="btn float-right btn-warning"><i
+                                        <button id="btnGenNewFileCode" type="button"
+                                            class="btn float-right btn-warning"><i
                                                 class="fas fa-exclamation-triangle"></i> Change File Category</button>
                                     </div>
                                     <div class="overlay dark loadingRenderUI">
@@ -428,5 +437,53 @@
                 callBack();
             }
         }
+
+        //if change ownership
+        function changeOwner(id, data, callBack) {
+            var url = "/api/change_ownership";
+            ajaxRequest("POST", url, data, function(dataSet) {
+                if (
+                    typeof callBack !== "undefined" &&
+                    callBack != null &&
+                    typeof callBack === "function"
+                ) {
+                    callBack(dataSet);
+                }
+            });
+        }
+
+        $('#changeOwnership').click(function() {
+            var data = {
+                client_id: PROFILE,
+                name_title: $('#getTitle').val(),
+                first_name: $('#getfName').val(),
+                last_name: $('#getlName').val(),
+                address: $('#getAddress').val(),
+                contact_no: $('#getContact').val(),
+                email: $('#getEmail').val(),
+                nic: $('#getNicSave').val(),
+                industry_name: $('#business_name').val().trim(),
+                industry_contact_no: $('#getContactn').val().trim(),
+                industry_address: $('#getAddressT').val().trim(),
+                industry_email: $('#getEmailI').val(),
+            };
+
+            var url = "/api/change_ownership";
+            ajaxRequest('POST', url, data, function(response) {
+                if (response.status == 1) {
+                    swal.fire('Successfull', response.message, 'success');
+                } else {
+                    if (changeOwnerRequiredFieldHandler(data, ".cutenzReq")) {
+                        changeOwner($(this).val(), data, function(resp) {
+                            if (resp.id === 1) {
+                                swal.fire('Successfull', resp.message, 'success');
+                            } else {
+                                swal.fire('Failed', resp.message, 'warning');
+                            }
+                        });
+                    }
+                }
+            });
+        });
     </script>
 @endsection

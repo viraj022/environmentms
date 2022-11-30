@@ -1066,3 +1066,5 @@ Route::put('/reset_counts', [ResetSettingsController::class, 'reset_site_counts'
 
 Route::middleware('auth:api')->post('/save_notification', 'UserNotificationsController@create');
 Route::middleware('auth:api')->post('/send_sms', 'SmsController@sendSms');
+
+Route::middleware('auth:api')->post('/change_ownership', 'ClientController@changeOwner'); //  change owner

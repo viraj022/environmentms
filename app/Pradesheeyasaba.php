@@ -10,4 +10,9 @@ class Pradesheeyasaba extends Model
     {
         return $this->belongsTo(Zone::class);
     }
+
+    public function complains()
+    {
+        return $this->hasMany(Complain::class);
+    }
 }

@@ -298,7 +298,7 @@ class EPLPaymentController extends Controller
                         }
                     }
                     LogActivity::addToLog('Add EPL payment', $transaction);
-                    LogActivity::fileLog($epl->client_id, 'Transaction', $user->last_name . " Add EPL payment", 1);
+                    LogActivity::fileLog($epl->client_id, 'Transaction', $user->last_name . " Add EPL payment", 1, 'epl', $epl->id);
                     if ($msg) {
                         return array('id' => 1, 'message' => 'true', 'code' => $transaction->id, 'name' => $epl->client->first_name);
                     } else {
@@ -343,7 +343,7 @@ class EPLPaymentController extends Controller
                         }
                     }
                     LogActivity::addToLog('Add site clearance payment', $transaction);
-                    LogActivity::fileLog($site->client_id, 'Transaction', $user->last_name . "Add site clearance payment", 1);
+                    LogActivity::fileLog($site->client_id, 'Transaction', $user->last_name . "Add site clearance payment", 1, 'sc', $site->id);
                     if ($msg) {
                         return array('id' => 1, 'message' => 'true', 'code' => $transaction->id, 'name' => $site->client->first_name);
                     } else {
@@ -417,17 +417,18 @@ class EPLPaymentController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $site = SiteClearenceSession::find($id);
+
         if ($site) {
             $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
-            // dd($inspectionTypes);
+            // dd($inspectionTypes);+
             $inspection = TransactionItem::with('transaction')->where('transaction_type', Transaction::TRANS_SITE_CLEARANCE)
-                ->where('client_id', $id)
+                ->where('client_id', $site->client_id)
                 ->where('payment_type_id', $inspectionTypes->id)
                 ->first();
 
             $license_fee = PaymentType::getpaymentByTypeName(PaymentType::LICENCE_FEE);
             $certificate_fee = TransactionItem::with('transaction')
-                ->where('transaction_type', Transaction::TRANS_TYPE_EPL)
+                ->where('transaction_type', Transaction::TRANS_SITE_CLEARANCE)
                 ->where('transaction_type_id', $id)
                 ->where('payment_type_id', $license_fee->id)
                 ->first();

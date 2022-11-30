@@ -132,7 +132,7 @@ class EPLController extends Controller
 
                             $client = Client::find($epl->client_id);
                             $msg = $msg && $client->save();
-                            LogActivity::fileLog($client->id, 'EPL', "EPL Certificate Issued", 1);
+                            LogActivity::fileLog($client->id, 'EPL', "EPL Certificate Issued", 1, 'epl', $epl->id);
                             LogActivity::addToLog('Issue EPL Certificate', $epl);
                             if ($msg) {
                                 $issueLog = new IssueLog();
@@ -224,7 +224,7 @@ class EPLController extends Controller
                         // setFileStatus($epl->client_id, 'file_problem', 0); // set file problem status to 0
 
                         LogActivity::addToLog('New EPL created', $epl);
-                        LogActivity::fileLog($epl->client_id, 'EPL', "New EPL Added", 1);
+                        LogActivity::fileLog($epl->client_id, 'EPL', "New EPL Added", 1, 'epl added', '');
 
                         return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
                     } else {
@@ -292,7 +292,7 @@ class EPLController extends Controller
                         $epl->application_path = "storage/" . $fileUrl . "/" . $file_name;
                         $client->save();
                         $epl->save();
-                        LogActivity::fileLog($client->id, 'EPL', "Add EPL renewal", 1);
+                        LogActivity::fileLog($client->id, 'EPL', "Add EPL renewal", 1, 'epl', $epl->id);
                         LogActivity::addToLog('EPL Renewal ' . $epl->id, $epl);
                         return array('id' => 1, 'message' => 'true', 'rout' => "/epl_profile/client/" . $epl->client_id . "/profile/" . $epl->id);
                     } else {
@@ -344,7 +344,7 @@ class EPLController extends Controller
             $path = $request->file('file')->storeAs($storePath, $file_name);
             $msg = $client->save();
             if ($msg) {
-                LogActivity::fileLog($client->id, 'File', "Attachment saved", 1);
+                LogActivity::fileLog($client->id, 'File', "Attachment saved", 1, 'epl', $epl->id);
                 LogActivity::addToLog('Attachment saved', $client);
                 return array('id' => 1, 'message' => 'true');
             } else {
@@ -534,7 +534,7 @@ class EPLController extends Controller
                 $transaction['type'] = EPL::INSPECTION;
                 $msg = TransactionController::create($transaction);
                 if ($msg) {
-                    LogActivity::fileLog($epl->client_id, 'Payment', "Inspection payment added", 1);
+                    LogActivity::fileLog($epl->client_id, 'Payment', "Inspection payment added", 1, 'epl', $epl->id);
                     LogActivity::addToLog('Inspection payment added', $epl);
                     return $this->addInspectionFine($epl);
                 } else {
@@ -586,7 +586,7 @@ class EPLController extends Controller
                 $epl->site_clearance_file = \request('site_clearance_file');
                 $msg = $epl->save();
                 if ($msg) {
-                    LogActivity::fileLog($epl->client_id, 'site_clearance', "Site Clearance Added", 1);
+                    LogActivity::fileLog($epl->client_id, 'site_clearance', "Site Clearance Added", 1, 'epl', $epl->id);
                     LogActivity::addToLog('Site Clearance Added', $epl);
                     return array('id' => 1, 'message' => 'true');
                 } else {
@@ -652,7 +652,7 @@ class EPLController extends Controller
             // sending response
             if ($msg) {
                 LogActivity::addToLog('Save old epl data', $epl);
-                LogActivity::fileLog($client->id, 'Old_data', "Save old EPL data", 1);
+                LogActivity::fileLog($client->id, 'Old_data', "Save old EPL data", 1, 'epl', $epl->id);
                 return array('id' => 1, 'message' => 'true');
             } else {
                 return array('id' => 0, 'message' => 'false');
@@ -671,7 +671,7 @@ class EPLController extends Controller
             abort(404);
         } else if (count($epls) == 1) {
             if ($epls[0]->delete()) {
-                LogActivity::fileLog($client->id, 'Old_data', "Delete Old EPL Data", 1);
+                LogActivity::fileLog($client->id, 'Old_data', "Delete Old EPL Data", 1, 'epl', $epls->id);
                 LogActivity::addToLog('Delete old data EPL data', $client);
                 return array('id' => 1, 'message' => 'true');
             } else {
@@ -726,7 +726,7 @@ class EPLController extends Controller
             // sending response
             if ($msg) {
                 LogActivity::addToLog('Update old EPL data', $epl);
-                LogActivity::fileLog($epl->client_id, 'Old_data', "Update old EPL data", 1);
+                LogActivity::fileLog($epl->client_id, 'Old_data', "Update old EPL data", 1, 'epl', $epl->id);
                 return array('id' => 1, 'message' => 'true');
             } else {
                 return array('id' => 0, 'message' => 'false');

@@ -63,10 +63,28 @@ class OnlineRequestController extends Controller
 
         $renewalApplications = $this->onlineRequests->getAllRenewalApplications();
         $newApplications = $this->onlineRequests->getAllNewApplications();
+        $treeFellingApplications = $this->onlineRequests->getAllTreeFellingApplications();
+        $refilingPaddyApplications = $this->onlineRequests->getAllRefilingPaddyApplications();
+        $stateLandLeasesApplications = $this->onlineRequests->getAllStateLandLeasesApplications();
+        $onlineScApplications = $this->onlineRequests->getAllSiteClearanceApplications();
+        $teleTowerApplications = $this->onlineRequests->getAllTelecommunicationTowerApplications();
+        $newEplApplications = $this->onlineRequests->getAllNewEplApplications();
+        $renewalEplApplications = $this->onlineRequests->getAllRenewalEplApplications();
 
         return view(
             'online-requests.index',
-            compact('renewalApplications', 'newApplications', 'businessScales')
+            compact(
+                'renewalApplications',
+                'newApplications',
+                'businessScales',
+                'treeFellingApplications',
+                'refilingPaddyApplications',
+                'stateLandLeasesApplications',
+                'onlineScApplications',
+                'teleTowerApplications',
+                'newEplApplications',
+                'renewalEplApplications'
+            )
         );
     }
 

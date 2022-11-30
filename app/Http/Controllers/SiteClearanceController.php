@@ -91,7 +91,7 @@ class SiteClearanceController extends Controller
             $siteClearance->site_clearence_session_id = $siteSessions->id;
             $siteClearance->status = 1;
             $msg = $msg && $siteClearance->save();
-            LogActivity::fileLog($client->id, 'SiteClear', "Save old data :SiteClearanceController", 1);
+            LogActivity::fileLog($client->id, 'SiteClear', "Save old data :SiteClearanceController", 1, 'sc', $siteSessions->id);
             // save old data file
             if ($msg) {
                 if ($request->file('file') != null) {
@@ -110,7 +110,7 @@ class SiteClearanceController extends Controller
             // sending response
             if ($msg) {
                 LogActivity::addToLog('create old site clearance', $client);
-                LogActivity::fileLog($client->id, 'site_clearance', "create old site clearance", 1);
+                LogActivity::fileLog($client->id, 'site_clearance', "create old site clearance", 1, 'sc', $siteSessions->id);
                 return array('id' => 1, 'message' => 'true');
             } else {
                 return array('id' => 0, 'message' => 'false');
@@ -166,7 +166,7 @@ class SiteClearanceController extends Controller
             // sending response
             if ($msg) {
                 LogActivity::addToLog('update old site clearance', $siteClearance);
-                LogActivity::fileLog($siteClearanceSession->client_id, 'site_clearance', "update old site clearance", 1);
+                LogActivity::fileLog($siteClearanceSession->client_id, 'site_clearance', "update old site clearance", 1, 'sc', $siteClearanceSession->id);
                 return array('id' => 1, 'message' => 'true');
             } else {
                 return array('id' => 0, 'message' => 'false');
@@ -184,10 +184,11 @@ class SiteClearanceController extends Controller
             } else if (count($sites) == 1) {
                 $sites[0]->delete();
                 $siteClearance = SiteClearance::findOrFail($sites[0]->siteClearances[0]->id);
+                $siteClearanceSession = SiteClearenceSession::where('id', $siteClearance->site_clearence_session_id)->first();
                 $msg = $siteClearance->delete();
                 if ($msg) {
                     LogActivity::addToLog('delete old site clearanceer', $siteClearance);
-                    LogActivity::fileLog($sites->client_id, 'site_clearance', "delete old site clearance", 1);
+                    LogActivity::fileLog($sites->client_id, 'site_clearance', "delete old site clearance", 1, 'sc', $siteClearanceSession->id);
                     return array('id' => 1, 'message' => 'true');
                 } else {
                     return array('id' => 0, 'message' => 'false');
@@ -281,7 +282,7 @@ class SiteClearanceController extends Controller
                 setFileStatus($siteSessions->client_id, 'file_problem', 0); // set file problem status to 0
                 // $file = #ssiteClearenceSession->client;
                 LogActivity::addToLog('create new site clearance', $siteSessions);
-                LogActivity::fileLog($siteSessions->client_id, 'site_clearance', "create new site clearance", 1);
+                LogActivity::fileLog($siteSessions->client_id, 'site_clearance', "create new site clearance", 1, 'sc', $siteSessions->id);
                 if ($siteSessions) {
                     return response(array("id" => 1, "message" => "ok", 'rout' => "/site_clearance/client/" . $siteSessions->client_id . "/profile/" . $siteSessions->id));
                 } else {
@@ -353,7 +354,7 @@ class SiteClearanceController extends Controller
             }
             if ($siteClearenceSession->save()) {
                 LogActivity::addToLog('tor uploaded', $siteClearenceSession);
-                LogActivity::fileLog($siteClearenceSession->client_id, 'site_clearance', "tor uploaded", 1);
+                LogActivity::fileLog($siteClearenceSession->client_id, 'site_clearance', "tor uploaded", 1, 'sc', $siteClearenceSession->id);
                 return response(array("id" => 1, "message" => "ok"));
             } else {
                 return response(array("id" => 0, "message" => "fail"));
