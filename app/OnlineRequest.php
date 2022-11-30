@@ -62,4 +62,84 @@ class OnlineRequest extends Model
                 ->firstOrFail();
         }
     }
+
+    /**
+     * Online request has many online tree felling application requests
+     *
+     * @return HasMany
+     */
+    public function onlineTreeFellingRequests()
+    {
+        return $this->hasMany(TreeFelling::class);
+    }
+
+    /**
+     * Online request has many online state land lease application requests
+     *
+     * @return HasMany
+     */
+    public function onlineStateLandLeaseRequests()
+    {
+        return $this->hasMany(StateLandLease::class);
+    }
+
+    /**
+     * Online request has many online refiling paddy land application requests
+     *
+     * @return HasMany
+     */
+    public function onlineRefilingPaddyLandRequests()
+    {
+        return $this->hasMany(RefilingPaddyLand::class);
+    }
+
+    /**
+     * Online request has many online telecommunication tower application requests
+     *
+     * @return HasMany
+     */
+    public function onlineTelecommunicationTowerRequests()
+    {
+        return $this->hasMany(TelecommunicationTower::class);
+    }
+
+    /**
+     * Online request has many online waste management application requests
+     *
+     * @return HasMany
+     */
+    public function onlineWasteManagementRequests()
+    {
+        return $this->hasMany(WasteManagement::class);
+    }
+
+    /**
+     * Online request has many online site clearance application requests
+     *
+     * @return HasMany
+     */
+    public function onlineSiteClearanceRequests()
+    {
+        return $this->hasMany(OnlineSiteClearance::class);
+    }
+
+    /**
+     * Online request has many online renewal epl application requests
+     *
+     * @return HasMany
+     */
+    public function onlineRenewalEplRequests()
+    {
+        return $this->hasMany(OnlineRenewalEpl::class);
+    }
+
+    /**
+     * Online request has many online new epl application requests
+     *
+     * @return HasMany
+     */
+    public function onlineNewEplRequests()
+    {
+        return $this->hasMany(OnlineNewEpl::class);
+    }
 }

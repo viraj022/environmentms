@@ -13,6 +13,7 @@ class OnlineSiteClearance extends Model
         'industry_name',
         'industry_type',
         'other_industry_type',
+        'industry_address',
         'industry_location',
         'pradeshiya_sabha',
         'divisional_secretariat_division',
@@ -69,4 +70,14 @@ class OnlineSiteClearance extends Model
         'recycling',
         'plan_description',
     ];
+
+    public function onlineRequest()
+    {
+        return $this->belongsTo(OnlineRequest::class);
+    }
+
+    public function pradeshiyaSabha()
+    {
+        return $this->belongsTo(Pradesheeyasaba::class, 'pradeshiya_sabha');
+    }
 }

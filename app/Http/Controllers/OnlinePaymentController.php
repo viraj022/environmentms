@@ -278,4 +278,9 @@ class OnlinePaymentController extends Controller
             compact('transaction', 'transactionStatuses', 'client')
         );
     }
+
+    public function onlineTreeFellingRequests()
+    {
+        return view('online-requests.tree-felling-request');
+    }
 }

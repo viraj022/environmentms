@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TelecommunicationTower extends Model
 {
-    use HasFactory, SoftDeletes;
+    use SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -20,6 +20,7 @@ class TelecommunicationTower extends Model
         'land_owner_address',
         'land_owner_phone',
         'pradeshiya_sabha',
+        'land_address',
         'sketch_of_road',
         'investment_amount',
         'tower_height',
@@ -34,4 +35,14 @@ class TelecommunicationTower extends Model
         'nearest_residence_distance',
         'houses_within_50m',
     ];
+
+    public function onlineRequest()
+    {
+        return $this->belongsTo(OnlineRequest::class);
+    }
+
+    public function pradeshiyaSabha()
+    {
+        return $this->belongsTo(Pradesheeyasaba::class, 'pradeshiya_sabha');
+    }
 }
