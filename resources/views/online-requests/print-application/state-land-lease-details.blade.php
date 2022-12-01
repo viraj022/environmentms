@@ -53,48 +53,24 @@
                     <td>{{ $applicationData->pradeshiyaSabha->name }}</td>
                 </tr>
                 <tr>
-                    <th>Divisional Secretariat</th>
-                    <td>{{ $applicationData->division_secretariat }}</td>
-                </tr>
-                <tr>
-                    <th>GS Division</th>
-                    <td>{{ $applicationData->gs_division }}</td>
-                </tr>
-                <tr>
-                    <th>Agrarian Service Division</th>
-                    <td>{{ $applicationData->agrarian_service_division }}</td>
-                </tr>
-                <tr>
-                    <th>Name of the paddy land owner</th>
-                    <td>{{ $applicationData->paddy_land_owner_name }}</td>
-                </tr>
-                <tr>
-                    <th>Deed Number</th>
-                    <td>{{ $applicationData->deed_number }}</td>
-                </tr>
-                <tr>
-                    <th>Survey Plan Number</th>
-                    <td>{{ $applicationData->survey_plan_number }}</td>
-                </tr>
-                <tr>
-                    <th>Extent of the land to be refilled</th>
+                    <th>Extent of the land</th>
                     <td>{{ $applicationData->extent_of_land }}</td>
                 </tr>
                 <tr>
-                    <th>Current utility of the land</th>
-                    <td>{{ ucwords($applicationData->utility_of_land) }}</td>
+                    <th>Survey plan number</th>
+                    <td>{{ $applicationData->survey_plan_number }}</td>
                 </tr>
                 <tr>
-                    <th>Current utilities of bounded lands</th>
-                    <td>{{ $applicationData->utility_of_bounded_land }}</td>
+                    <th>Existing utility of the land</th>
+                    <td>{{ $applicationData->utility_of_land }}</td>
                 </tr>
                 <tr>
-                    <th>Proposed utility of the land</th>
-                    <td>{{ $applicationData->proposed_land_utility }}</td>
+                    <th>Purpose of lease</th>
+                    <td>{{ $applicationData->purpose }}</td>
                 </tr>
                 <tr>
-                    <th>Reasons for abandonment paddy land</th>
-                    <td>{{ $applicationData->reason }}</td>
+                    <th>Any sensitive areas within 100m from the boundary of the land</th>
+                    <td>{{ $applicationData->sensitive_area_100m }}</td>
                 </tr>
             </table>
         </div>
