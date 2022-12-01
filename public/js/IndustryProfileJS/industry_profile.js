@@ -236,16 +236,19 @@ function setIndustryAndClientDb(get) {
 function loadAllEPLTable(data, callBack) {
     let dataSet = data.epls;
     let certificates = data.certificates;
+    // console.log(certificates);
 
-    let certs = {};
+    let certs = [];
 
     for (const key in certificates) {
         if (Object.hasOwnProperty.call(certificates, key)) {
             const cert = certificates[key];
-            certs[cert.cetificate_number] = cert;
+            let c_split = cert.cetificate_number.split("/");
+            let certKey = c_split[0] + "/" + c_split[1];
+            certs[certKey] = cert;
         }
     }
-
+    // console.log(certs);
     var tbl = "";
     var i = 0;
     if (dataSet.length == 0) {
@@ -268,9 +271,15 @@ function loadAllEPLTable(data, callBack) {
             } else {
                 tbl += "<td>" + row.certificate_no.toUpperCase() + "</td>";
             }
-            if (row.certificate_no != null) {
+            if (
+                row.certificate_no != null &&
+                Object.hasOwnProperty.call(certs, row.certificate_no)
+            ) {
                 tbl +=
-                    "<td>" + certs[row.certificate_no].refference_no + "</td>";
+                    "<td>" +
+                    certs[row.certificate_no].cetificate_number +
+                    "</td>";
+                // "<td>" + row.certificate_no + "</td>";
             } else {
                 tbl += "<td>-</td>";
             }

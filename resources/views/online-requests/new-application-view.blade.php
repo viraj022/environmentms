@@ -45,8 +45,13 @@
                                 <tbody>
                                     <tr>
                                         <th>Name</th>
-                                        <td>{{ $newApplication->title }} {{ $newApplication->firstname }}
-                                            {{ $newApplication->lastname }}</td>
+                                        <td>{{ $newApplication->title }}
+                                            @if (!empty($newApplication->lastname))
+                                                {{ $newApplication->firstname }} {{ $newApplication->lastname }}
+                                            @else
+                                                {{ $newApplication->firstname }}
+                                            @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Address</th>
@@ -62,6 +67,13 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                    <div class="card border border-success">
+                        <div class="card-header bg-success">
+                            <strong>Other Attachments</strong>
+                        </div>
+                        <div class="card-body">
                         </div>
                     </div>
                     <div class="card">
@@ -90,12 +102,24 @@
                                     </tr>
                                     <tr>
                                         <th>Industry Category</th>
-                                        <td>{{ $newApplication->industryCategory->name }} -
-                                            {{ $newApplication->industryCategory->code }}</td>
+                                        <td>
+                                            @if (!empty($newApplication->industryCategory->name) && !empty($newApplication->industryCategory->code))
+                                                {{ $newApplication->industryCategory->name }} -
+                                                {{ $newApplication->industryCategory->code }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Business Scale</th>
-                                        <td>{{ $businessScales[$newApplication->business_scale] }}</td>
+                                        <td>
+                                            @if (!empty($businessScales[$newApplication->business_scale]))
+                                                {{ $businessScales[$newApplication->business_scale] }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Industry Sub-category</th>
@@ -154,12 +178,12 @@
                                                     class="btn btn-primary btn-sm mx-2" target="_blank">View Road Map</a>
                                             @endif
                                             @if (isset($newApplication->deed_of_land))
-                                                <a href="{{ $attachmentUrl . '/storage/' . str_replace('public/', '', $newApplication->deed_of_land) }}"
+                                                <a href="{{ $attachmentUrl . '/storage/new-attachments/deed-of-lands/' . str_replace('public/', '', $newApplication->deed_of_land) }}"
                                                     class="btn btn-primary btn-sm mx-2" target="_blank">View Deed of
                                                     Land</a>
                                             @endif
                                             @if (isset($newApplication->survey_plan))
-                                                <a href="{{ $attachmentUrl . '/storage/' . str_replace('public/', '', $newApplication->survey_plan) }}"
+                                                <a href="{{ $attachmentUrl . '/storage/new-attachments/survey-plans/' . str_replace('public/', '', $newApplication->survey_plan) }}"
                                                     class="btn btn-primary btn-sm" target="_blank">View Survey Plan</a>
                                             @endif
                                         </td>
@@ -222,8 +246,10 @@
                             Requests</a>
                     @endif
                 @endif
+
+                <a href="{{ route('online-requests.new-application-details.view', $newApplication->id) }}"
+                    class="btn btn-primary">View Submitted Form</a>
             </div>
-        </div>
     </section>
 @endsection
 

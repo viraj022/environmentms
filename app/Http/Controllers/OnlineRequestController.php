@@ -315,4 +315,35 @@ class OnlineRequestController extends Controller
 
         return redirect()->route('online-requests.index')->with('rejected_success', 'New application request rejected.');
     }
+
+    public function viewNewApplicationDetailsRequest(OnlineNewApplicationRequest $newApplication)
+    {
+        $onlineReq = OnlineRequest::where('id', $newApplication->online_request_id)->first();
+
+        $model = str_replace('\Models', '', $onlineReq->request_model);
+        $applicationData = $model::where('id', $onlineReq->request_id)->first();
+        // dd($applicationData);
+
+        // return $applicationData;
+        switch ($model) {
+            case 'App\RefilingPaddyLand':
+                return view('online-requests.print-application.refiling-paddy', compact('applicationData'));
+                break;
+            case 'App\TreeFelling':
+                return view('online-requests.print-application.tree-felling-details', compact('applicationData'));
+                break;
+            case 'App\StateLandLease':
+                return view('online-requests.print-application.state-land-lease-details', compact('applicationData'));
+                break;
+            case 'App\TelecommunicationTower':
+                return view('online-requests.print-application.telecommunication-tower-details', compact('applicationData'));
+                break;
+            case 'App\OnlineSiteClearance':
+                return view('online-requests.print-application.sc-details', compact('applicationData'));
+                break;
+            default:
+                # code...
+                break;
+        }
+    }
 }
