@@ -1009,6 +1009,8 @@ class ReportController extends Controller
             ->orderBy('updated_at', 'ASC')
             ->get();
 
+        // dd($clients);
+
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('file_progress_report', [

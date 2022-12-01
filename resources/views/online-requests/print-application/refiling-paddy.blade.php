@@ -1,5 +1,24 @@
 @extends('online-requests.print-application.application-print-layout')
 
+@section('attachments')
+    <div class="col-lg-4 mx-4 mt-4" id="attachmentCard">
+        <div class="card border border-secondary">
+            <div class="card-header bg-secondary text-white">
+                <strong>Other Attachments</strong>
+            </div>
+            <div class="card-body">
+                @php
+                    $attachmentUrl = config('online-request.url');
+                @endphp
+                @if (isset($applicationData->add_issue_letter))
+                    <a href="{{ $attachmentUrl . '/storage/new-attachments/add-issue-letter/' . str_replace('public/', '', $applicationData->add_issue_letter) }}"
+                        class="btn btn-sm btn-primary" data-fancybox>View Letter by Agrarian Development Department</a>
+                @endif
+            </div>
+        </div>
+    </div>
+@endsection
+
 @section('appheadertitle')
     <h4>
         <center>Application for Refiling of Paddy Lands</center>

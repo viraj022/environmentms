@@ -298,7 +298,7 @@ class ClientController extends Controller
                             // import file 1/road map
                             $file1Filepath = $newApplicationRequest->road_map;
                             $file1FileName = basename($file1Filepath);
-                            $file1FileUrl = config('online-request.url') . '/storage/' . str_replace('public/', '', $file1Filepath);
+                            $file1FileUrl = config('online-request.url') . '/storage/new-attachments/route-map/' . str_replace('public/', '', $file1Filepath);
                             $targetDir = storage_path('app/public/uploads/industry_files/' . $client->id . '/application/file1');
                             if (!file_exists($targetDir)) {
                                 mkdir($targetDir, 0644, true);
@@ -312,7 +312,7 @@ class ClientController extends Controller
                             // import file 2/deed
                             $file2Filepath = $newApplicationRequest->deed_of_land;
                             $file2FileName = basename($file2Filepath);
-                            $file2FileUrl = config('online-request.url') . '/storage/' . str_replace('public/', '', $file2Filepath);
+                            $file2FileUrl = config('online-request.url') . '/storage/new-attachments/deed-of-lands/' . str_replace('public/', '', $file2Filepath);
                             $targetDir = storage_path('app/public/uploads/industry_files/' . $client->id . '/application/file2');
                             if (!file_exists($targetDir)) {
                                 mkdir($targetDir, 0644, true);
@@ -326,7 +326,7 @@ class ClientController extends Controller
                             // import file 3/survey plan
                             $file3Filepath = $newApplicationRequest->survey_plan;
                             $file3FileName = basename($file3Filepath);
-                            $file3FileUrl = config('online-request.url') . '/storage/' . str_replace('public/', '', $file3Filepath);
+                            $file3FileUrl = config('online-request.url') . '/storage/new-attachments/survey-plans/' . str_replace('public/', '', $file3Filepath);
                             $targetDir = storage_path('app/public/uploads/industry_files/' . $client->id . '/application/file3');
                             if (!file_exists($targetDir)) {
                                 mkdir($targetDir, 0644, true);
