@@ -51,10 +51,16 @@
                                             <td>{{ $file_type_status[$data->cer_type_status] }}</td>
                                             <td>{{ $data->first_name }} {{ $data->last_name }}</td>
                                             <td>{{ $data->industryCategory->name }}</td>
-                                            @if (isset($data->epls[0]->submitted_date))
-                                                <td>{{ $data->epls[0]->submitted_date }}</td>
-                                            @elseif(isset($data->siteClearenceSessions[]))
-                                                <td>{{ $data->siteClearenceSessions->siteClearances[0]->submit_date }}</td>
+                                            @if (isset($data->epls->submitted_date))
+                                                <td>{{ $data->epls->submitted_date }}</td>
+                                            @elseif($data->siteClearenceSessions)
+                                                @if ($data->siteClearenceSessions->isEmpty())
+                                                    <td>N/A</td>
+                                                @else
+                                                    {{-- @dd($data->siteClearenceSessions) --}}
+                                                    <td>{{ \Carbon\Carbon::parse($data->siteClearenceSessions->first()->siteClearances->first()->submit_date)->format('Y-m-d') }}
+                                                    </td>
+                                                @endif
                                             @else
                                                 <td>N/A</td>
                                             @endif
