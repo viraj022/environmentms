@@ -364,7 +364,7 @@ class ComplainController extends Controller
 
     public function viewComplainReport()
     {
-        $complains = Complain::where('status', '=', 1)->get();
+        $complains = Complain::all();
         return view('Reports.complains_report', compact('complains'));
     }
 }
