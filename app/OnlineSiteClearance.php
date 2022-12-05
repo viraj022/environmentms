@@ -11,6 +11,7 @@ class OnlineSiteClearance extends Model
 
     protected $fillable = [
         'industry_name',
+        'sc_type',
         'industry_type',
         'other_industry_type',
         'industry_address',
@@ -59,6 +60,7 @@ class OnlineSiteClearance extends Model
         'other_emissions',
         'number_of_chimneys',
         'chimney_height',
+        'odour_abatement',
         'noise_abatement',
         'tot_inplant_gen',
         'tot_public_supply',

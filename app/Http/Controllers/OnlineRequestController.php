@@ -63,13 +63,6 @@ class OnlineRequestController extends Controller
 
         $renewalApplications = $this->onlineRequests->getAllRenewalApplications();
         $newApplications = $this->onlineRequests->getAllNewApplications();
-        $treeFellingApplications = $this->onlineRequests->getAllTreeFellingApplications();
-        $refilingPaddyApplications = $this->onlineRequests->getAllRefilingPaddyApplications();
-        $stateLandLeasesApplications = $this->onlineRequests->getAllStateLandLeasesApplications();
-        $onlineScApplications = $this->onlineRequests->getAllSiteClearanceApplications();
-        $teleTowerApplications = $this->onlineRequests->getAllTelecommunicationTowerApplications();
-        $newEplApplications = $this->onlineRequests->getAllNewEplApplications();
-        $renewalEplApplications = $this->onlineRequests->getAllRenewalEplApplications();
 
         return view(
             'online-requests.index',
@@ -77,13 +70,6 @@ class OnlineRequestController extends Controller
                 'renewalApplications',
                 'newApplications',
                 'businessScales',
-                'treeFellingApplications',
-                'refilingPaddyApplications',
-                'stateLandLeasesApplications',
-                'onlineScApplications',
-                'teleTowerApplications',
-                'newEplApplications',
-                'renewalEplApplications'
             )
         );
     }
@@ -337,6 +323,38 @@ class OnlineRequestController extends Controller
                 break;
             case 'App\TelecommunicationTower':
                 return view('online-requests.print-application.telecommunication-tower-details', compact('applicationData'));
+                break;
+            case 'App\OnlineSiteClearance':
+                return view('online-requests.print-application.sc-details', compact('applicationData'));
+                break;
+            case 'App\OnlineNewEpl':
+                return view('online-requests.print-application.epl-details', compact('applicationData'));
+                break;
+            case 'App\OnlineRenewalEpl':
+                return view('online-requests.print-application.renewal-epl-details', compact('applicationData'));
+                break;
+            case 'App\WasteManagement':
+                return view('online-requests.print-application.waste-management', compact('applicationData'));
+                break;
+            default:
+                # code...
+                break;
+        }
+    }
+
+    public function viewRenewalApplicationDetailsRequest(OnlineRenewalApplicationRequest $renewalApplication)
+    {
+        // dd($renewalApplication);
+        $onlineRenewalReq = OnlineRequest::where('id', $renewalApplication->online_request_id)->first();
+
+        $model = str_replace('\Models', '', $onlineRenewalReq->request_model);
+        $applicationData = $model::where('id', $onlineRenewalReq->request_id)->first();
+        // dd($applicationData);
+
+        // return $applicationData;
+        switch ($model) {
+            case 'App\OnlineRenewalEpl':
+                return view('online-requests.print-application.renewal-epl-details', compact('applicationData'));
                 break;
             case 'App\OnlineSiteClearance':
                 return view('online-requests.print-application.sc-details', compact('applicationData'));

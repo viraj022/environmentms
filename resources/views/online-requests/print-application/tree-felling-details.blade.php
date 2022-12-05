@@ -1,5 +1,24 @@
 @extends('online-requests.print-application.application-print-layout')
 
+@section('attachments')
+    <div class="col-lg-4 mx-4 mt-4" id="attachmentCard">
+        <div class="card border border-secondary">
+            <div class="card-header bg-secondary text-white">
+                <strong>Other Attachments</strong>
+            </div>
+            <div class="card-body">
+                @php
+                    $attachmentUrl = config('online-request.url');
+                @endphp
+                @if (isset($applicationData->landowners_affidavit))
+                    <a href="{{ $attachmentUrl . '/storage/new-attachments/landowners_affidavit/' . str_replace('public/', '', $applicationData->landowners_affidavit) }}"
+                        class="btn btn-sm btn-primary" data-fancybox>View Landowners affidavit</a>
+                @endif
+            </div>
+        </div>
+    </div>
+@endsection
+
 @section('appheadertitle')
     <h4>
         <center>Application for Tree Felling</center>

@@ -58,7 +58,7 @@
                                         <th>Contact No.</th>
                                         <th>Mobile No.</th>
                                         <th>Email</th>
-                                        <th>Attachment</th>
+                                        {{-- <th>Attachment</th> --}}
                                         <th>Status</th>
                                         <th></th>
                                     </tr>
@@ -75,11 +75,11 @@
                                             <td>{{ $renewal->contact_no }}</td>
                                             <td>{{ $renewal->mobile_no }}</td>
                                             <td>{{ $renewal->email }}</td>
-                                            <td>
+                                            {{-- <td>
                                                 <a href="{{ route('online-requests.renewal.view-attachment', $renewal) }}"
                                                     target="_blank">View
                                                     File</a>
-                                            </td>
+                                            </td> --}}
                                             <td>{{ ucwords(str_replace('_', ' ', $renewal->status)) }}</td>
                                             <td>
                                                 <a href="{{ route('online-requests.renewal.view', $renewal->id) }}"
@@ -240,10 +240,34 @@
                                                             {{ $new->firstname }}
                                                         @endif
                                                     </td>
-                                                    <td>{{ $new->pradeshiyaSabha->name }}</td>
-                                                    <td>{{ $new->industryCategory->name }}</td>
-                                                    <td>{{ $businessScales[$new->business_scale] }}</td>
-                                                    <td>{{ $new->industry_sub_category }}</td>
+                                                    <td>
+                                                        @if (!empty($new->pradeshiyaSabha->name))
+                                                            {{ $new->pradeshiyaSabha->name }}
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if (!empty($new->industryCategory->name))
+                                                            {{ $new->industryCategory->name }}
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if (!empty($businessScales[$new->business_scale]))
+                                                            {{ $businessScales[$new->business_scale] }}
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if (!empty($new->industry_sub_category))
+                                                            {{ $new->industry_sub_category }}
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </td>
                                                     <td>{{ $new->business_name }}
                                                         <br />Reg. No.: {{ $new->business_registration_number }}
                                                     </td>
@@ -291,7 +315,18 @@
     <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
     <script>
         $(function() {
-
+            $('#new-applications-table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'print'
+                ]
+            });
+            $('#renewals_table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'print'
+                ]
+            });
         });
         @if (session('rejected_success'))
             Swal.fire('Success', '{{ session('rejected_success') }}', 'success');
