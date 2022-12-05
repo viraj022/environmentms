@@ -23,6 +23,7 @@
                                     <th>Complainer address</th>
                                     <th>Received type</th>
                                     <th>Complained date</th>
+                                    <th>Status</th>
                                 </thead>
                                 <tbody>
                                     @forelse ($complains as $complain)
@@ -41,6 +42,17 @@
                                                 <td>verbal</td>
                                             @endif
                                             <td>{{ Carbon\Carbon::parse($complain->created_at)->format('Y-m-d') }}</td>
+                                            <td>
+                                                @if ($complain->status == 1)
+                                                    Confirmed
+                                                @elseif ($complain->status == -1)
+                                                    Rejected
+                                                @elseif ($complain->status == 4)
+                                                    Forwarded
+                                                @elseif ($complain->status == 0)
+                                                    Pending
+                                                @endif
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>

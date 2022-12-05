@@ -1140,10 +1140,14 @@ class ReportController extends Controller
             ->where('e_p_l_s.status', 1)
             ->where('file_logs.code', 'Approval')
             ->where('file_logs.file_type', 'epl')
-            ->whereBetween('e_p_l_s.issue_date', [$start_data, $end_date])
+            ->where('file_logs.description', 'like', 'Director % Approve the Certificate')
+            ->whereRaw('DATE(issue_date) BETWEEN ? AND ?', [$start_data, $end_date])
+            // ->whereBetween('e_p_l_s.issue_date', [$start_data, $end_date])
             ->groupBy('e_p_l_s.code')
             ->orderBy('clients.industry_name')
             ->get();
+
+        // dd($completedEPL);
 
         $completedSC = DB::table('site_clearence_sessions')
             ->select(
@@ -1167,11 +1171,15 @@ class ReportController extends Controller
             ->join('file_logs', 'clients.id', 'file_logs.client_id')
             ->where('site_clearence_sessions.status', 1)
             ->where('file_logs.file_type', 'sc')
+            ->where('file_logs.description', 'like', 'Director % Approve the Certificate')
             ->where('file_logs.code', 'Approval')
+            // ->whereRaw('DATE(issue_date) BETWEEN ? AND ?', [$start_data, $end_date])
             ->whereBetween('site_clearence_sessions.issue_date', [$start_data, $end_date])
             ->groupBy('site_clearence_sessions.code')
             ->orderBy('clients.industry_name')
             ->get();
+
+        // dd($completedSC);
 
         $merged = $completedSC->merge($completedEPL);
 
