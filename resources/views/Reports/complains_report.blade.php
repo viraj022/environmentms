@@ -21,6 +21,7 @@
                                     <th>Complaint code</th>
                                     <th>Contact number</th>
                                     <th>Complainer address</th>
+                                    <th>Description</th>
                                     <th>Received type</th>
                                     <th>Complained date</th>
                                     <th>Status</th>
@@ -34,6 +35,7 @@
                                             <td>{{ $complain->complainer_code }}</td>
                                             <td>{{ $complain->complainer_name }}</td>
                                             <td>{{ $complain->comp_contact_no }}</td>
+                                            <td>{{ $complain->complain_des }}</td>
                                             @if ($complain->recieve_type == 1)
                                                 <td>call</td>
                                             @elseif ($complain->recieve_type == 2)
