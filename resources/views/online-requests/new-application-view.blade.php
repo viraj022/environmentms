@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="{{ asset('plugins/fancybox/fancybox.css') }}">
     <!-- Google Font: Source Sans Pro -->
 @endsection
 @section('content')
@@ -67,13 +68,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
-                    </div>
-                    <div class="card border border-success">
-                        <div class="card-header bg-success">
-                            <strong>Other Attachments</strong>
-                        </div>
-                        <div class="card-body">
                         </div>
                     </div>
                     <div class="card">
@@ -174,17 +168,17 @@
                                             @endif
 
                                             @if (isset($newApplication->road_map))
-                                                <a href="{{ $attachmentUrl . '/storage/' . str_replace('public/', '', $newApplication->road_map) }}"
-                                                    class="btn btn-primary btn-sm mx-2" target="_blank">View Road Map</a>
+                                                <a href="{{ $attachmentUrl . '/storage/new-attachments/route-map/' . str_replace('public/', '', $newApplication->road_map) }}"
+                                                    class="btn btn-primary btn-sm mx-2" data-fancybox>View Road Map</a>
                                             @endif
                                             @if (isset($newApplication->deed_of_land))
                                                 <a href="{{ $attachmentUrl . '/storage/new-attachments/deed-of-lands/' . str_replace('public/', '', $newApplication->deed_of_land) }}"
-                                                    class="btn btn-primary btn-sm mx-2" target="_blank">View Deed of
+                                                    class="btn btn-primary btn-sm mx-2" data-fancybox>View Deed of
                                                     Land</a>
                                             @endif
                                             @if (isset($newApplication->survey_plan))
                                                 <a href="{{ $attachmentUrl . '/storage/new-attachments/survey-plans/' . str_replace('public/', '', $newApplication->survey_plan) }}"
-                                                    class="btn btn-primary btn-sm" target="_blank">View Survey Plan</a>
+                                                    class="btn btn-primary btn-sm" data-fancybox>View Survey Plan</a>
                                             @endif
                                         </td>
                                     </tr>
@@ -260,6 +254,7 @@
     <script src="{{ asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
     <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+    <script src="{{ asset('plugins/fancybox/fancybox.umd.js') }}"></script>
     <script>
         $(function() {
             // init clipboard

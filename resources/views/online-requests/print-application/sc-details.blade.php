@@ -1,8 +1,42 @@
 @extends('online-requests.print-application.application-print-layout')
 
+@section('attachments')
+    <div class="col-lg-4 mx-4 mt-4" id="attachmentCard">
+        <div class="card border border-secondary">
+            <div class="card-header bg-secondary text-white">
+                <strong>Other Attachments</strong>
+            </div>
+            <div class="card-body">
+                @php
+                    $attachmentUrl = config('online-request.url');
+                @endphp
+                @if ($applicationData->sc_type == 'new')
+                    @if (isset($applicationData->building_layout_plan))
+                        <a href="{{ $attachmentUrl . '/storage/new-attachments/building-layout-plan/' . str_replace('public/', '', $applicationData->building_layout_plan) }}"
+                            class="btn btn-sm btn-primary" data-fancybox>View building layout plan</a>
+                    @endif
+                    @if (isset($applicationData->process_flow_diagram))
+                        <a href="{{ $attachmentUrl . '/storage/new-attachments/process-flow-diagram/' . str_replace('public/', '', $applicationData->process_flow_diagram) }}"
+                            class="btn btn-sm btn-primary" data-fancybox>View process flow diagram</a>
+                    @endif
+                @else
+                    @if (isset($applicationData->building_layout_plan))
+                        <a href="{{ $attachmentUrl . '/storage/renewal-attachments/building-layout-plan/' . str_replace('public/', '', $applicationData->building_layout_plan) }}"
+                            class="btn btn-sm btn-primary" data-fancybox>View building layout plan</a>
+                    @endif
+                    @if (isset($applicationData->process_flow_diagram))
+                        <a href="{{ $attachmentUrl . '/storage/renewal-attachments/process-flow-diagram/' . str_replace('public/', '', $applicationData->process_flow_diagram) }}"
+                            class="btn btn-sm btn-primary" data-fancybox>View process flow diagram</a>
+                    @endif
+                @endif
+            </div>
+        </div>
+    </div>
+@endsection
+
 @section('appheadertitle')
     <h4>
-        <center>Form of Application for a Licence for Scheduled Waste Management</center>
+        <center>Environmental Impact Identification</center>
     </h4>
 @endsection
 
@@ -21,15 +55,19 @@
                 </tr>
                 <tr>
                     <th>Name of Industry</th>
-                    <td>{{ $applicationData->facility_name }}</td>
+                    <td>{{ $applicationData->industry_name }}</td>
                 </tr>
                 <tr>
                     <th>Type of Industry</th>
-                    <td>{{ $applicationData->address }}</td>
+                    <td>{{ $applicationData->industry_type }}</td>
+                </tr>
+                <tr>
+                    <th>Other Industry Type</th>
+                    <td>{{ $applicationData->other_industry_type }}</td>
                 </tr>
                 <tr>
                     <th>Industry Address</th>
-                    <td>{{ $applicationData->telephone }}</td>
+                    <td>{{ $applicationData->industry_address }}</td>
                 </tr>
                 <tr>
                     <th>Pradeshiya Sabha</th>
@@ -37,11 +75,11 @@
                 </tr>
                 <tr>
                     <th>Divisional Secretariat Division</th>
-                    <td>{{ $applicationData->district }}</td>
+                    <td>{{ $applicationData->divisional_secretariat_division }}</td>
                 </tr>
                 <tr>
                     <th>Is the site within an approval industrial zone?</th>
-                    <td>{{ $applicationData->province }}</td>
+                    <td>{{ ucwords($applicationData->approval_industrial_zone) }}</td>
                 </tr>
                 <tr>
                     <th colspan="2">
@@ -50,15 +88,15 @@
                 </tr>
                 <tr>
                     <th>Name of the applicant</th>
-                    <td>{{ $applicationData->emergency_name }}</td>
+                    <td>{{ $applicationData->applicant_name }}</td>
                 </tr>
                 <tr>
                     <th>Address of the applicant</th>
-                    <td>{{ $applicationData->emergency_number }}</td>
+                    <td>{{ $applicationData->applicant_address }}</td>
                 </tr>
                 <tr>
                     <th>Applicant telephone number</th>
-                    <td>{{ $applicationData->emergency_phone }}</td>
+                    <td>{{ $applicationData->applicant_number }}</td>
                 </tr>
                 <tr>
                     <th colspan="2">
@@ -67,19 +105,19 @@
                 </tr>
                 <tr>
                     <th>Name of the contact person</th>
-                    <td>{{ $applicationData->emergency_fax }}</td>
+                    <td>{{ $applicationData->contact_person_name }}</td>
                 </tr>
                 <tr>
                     <th>Contact Person Designation</th>
-                    <td>{{ $applicationData->emergency_email }}</td>
+                    <td>{{ $applicationData->contact_person_designation }}</td>
                 </tr>
                 <tr>
                     <th>Contact Person Address</th>
-                    <td>{{ $applicationData->emergency_address }}</td>
+                    <td>{{ $applicationData->contact_person_address }}</td>
                 </tr>
                 <tr>
                     <th>Contact Person Telephone number</th>
-                    <td>{{ $applicationData->activities }}</td>
+                    <td>{{ $applicationData->contact_person_number }}</td>
                 </tr>
                 <tr>
                     <th colspan="2">
@@ -88,35 +126,39 @@
                 </tr>
                 <tr>
                     <th>Local Amount</th>
-                    <td>{{ $applicationData->applicant_name }}</td>
+                    <td>{{ $applicationData->local_amount }}</td>
                 </tr>
                 <tr>
                     <th>Foreign Amount</th>
-                    <td>{{ $applicationData->applicant_address }}</td>
+                    <td>{{ $applicationData->foreign_amount }}</td>
                 </tr>
                 <tr>
                     <th>Date of commencement of operation</th>
-                    <td>{{ $applicationData->applicant_number }}</td>
+                    <td>{{ $applicationData->commencement_date }}</td>
                 </tr>
                 <tr>
                     <th>Number of shifts / day and times</th>
-                    <td>{{ $applicationData->applicant_fax }}</td>
+                    <td>{{ $applicationData->number_of_shifts }}</td>
                 </tr>
                 <tr>
                     <th>Number of workers in each shift</th>
-                    <td>{{ $applicationData->licence_number }}</td>
+                    <td>{{ $applicationData->number_of_workers }}</td>
                 </tr>
                 <tr>
                     <th>Land use of the area within five km radius</th>
-                    <td>{{ $applicationData->permit_qualifications }}</td>
+                    <td>
+                        @foreach (json_decode($applicationData->within5km, true) as $key => $value)
+                            {{ $value }} <br>
+                        @endforeach
+                    </td>
                 </tr>
                 <tr>
                     <th>List of existing Industries Institutions / Agricultural Land within 2 km</th>
-                    <td>{{ $applicationData->insurance }}</td>
+                    <td>{{ $applicationData->list_existing_industries }}</td>
                 </tr>
                 <tr>
                     <th>Present land use pattern</th>
-                    <td>{{ $applicationData->emergency_procedures }}</td>
+                    <td>{{ $applicationData->land_use_pattern }}</td>
                 </tr>
                 <tr>
                     <th colspan="2">
@@ -125,11 +167,11 @@
                 </tr>
                 <tr>
                     <th>List of main manufacturing products and capacities</th>
-                    <td>{{ $applicationData->accidents_info }}</td>
+                    <td>{{ $applicationData->manufacturing_products }}</td>
                 </tr>
                 <tr>
                     <th>List of by products</th>
-                    <td>{{ $applicationData->workers_health }}</td>
+                    <td>{{ $applicationData->products_list }}</td>
                 </tr>
                 <tr>
                     <th colspan="2">
@@ -138,7 +180,7 @@
                 </tr>
                 <tr>
                     <th>Raw materials to be used (State item wise quantity / day at all stages of manufacture)</th>
-                    <td>{{ $applicationData->waste_category }}</td>
+                    <td>{{ $applicationData->raw_materials }}</td>
                 </tr>
                 <tr>
                     <th colspan="2">
@@ -147,102 +189,128 @@
                 </tr>
                 <tr>
                     <th>Processing (m3/day)</th>
-                    <td>{{ $applicationData->waste_handle }}</td>
+                    <td>{{ $applicationData->processing_requirement }}</td>
                 </tr>
                 <tr>
                     <th>Cooling (m3/day)</th>
-                    <td>{{ $applicationData->detail_operation }}</td>
+                    <td>{{ $applicationData->cooling_requirement }}</td>
                 </tr>
                 <tr>
                     <th>Washing (m3/day)
                     </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
+                    <td>{{ $applicationData->washing_requirement }}</td>
                 </tr>
                 <tr>
                     <th>Domestic (m3/day)
                     </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
+                    <td>{{ $applicationData->demestic_requirement }}</td>
                 </tr>
                 <tr>
                     <th>Source of water
                     </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
+                    <td>
+                        @foreach (json_decode($applicationData->waterSource, true) as $key => $value)
+                            {{ $value }} <br>
+                        @endforeach
+                    </td>
                 </tr>
                 <tr>
                     <th>Total daily discharge and its quality
                     </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
+                    <td>{{ $applicationData->daily_tot_discharge }}</td>
                 </tr>
                 <tr>
                     <th>Method of discharge
                     </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
+                    <td>
+                        @foreach (json_decode($applicationData->waterDischargeMethod, true) as $key => $value)
+                            {{ $value }} <br>
+                        @endforeach
+                    </td>
                 </tr>
                 <tr>
                     <th>Final point of discharge of waste water
                     </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
+                    <td>{{ $applicationData->water_discharge_final_point }}</td>
                 </tr>
                 <tr>
                     <th>What other specific toxics substances are to be discharged? (Specify nature and concentration e.g.
                         Inorganics and organics including pesticides, organic chlorine compounds, heavy metals, etc.)
                     </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
+                    <td>{{ $applicationData->discharge_toxics_substances }}</td>
                 </tr>
                 <tr>
                     <th>Methods adopted for recording characteristics of waste water before and after treatment
                     </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
+                    <td>{{ $applicationData->characteristics_of_water }}</td>
                 </tr>
                 <tr>
                     <th> Give details of water re-cycling, if any
                     </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
+                    <td>{{ $applicationData->water_recycling }}</td>
                 </tr>
                 <tr>
                     <th>Type and nature of solid wastes
                     </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
+                    <td>{{ $applicationData->solid_waste_type }}</td>
                 </tr>
                 <tr>
                     <th>Total quantity of solid waste - kg / day
                     </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
+                    <td>{{ $applicationData->solid_waste_quantity }}</td>
                 </tr>
                 <tr>
                     <th>Methods of disposal of solid wastes
                     </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
+                    <td>
+                        @foreach (json_decode($applicationData->disposalMethods, true) as $key => $value)
+                            {{ $value }} <br>
+                        @endforeach
+                    </td>
                 </tr>
                 <tr>
-                    <th>Will there emission to the atmosphere?
+                    <th>Will there emission to the atmosphere? Possible emissions
                     </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
+                    <td>
+                        <table>
+                            <tr>
+                                <th>Oxides of nitrogen</th>
+                                <td>{{ $applicationData->nitrogen }}</td>
+                            </tr>
+                            <tr>
+                                <th>Oxides of sulphur</th>
+                                <td>{{ $applicationData->nitrogen }}</td>
+                            </tr>
+                            <tr>
+                                <th>Dust and shoot</th>
+                                <td>{{ $applicationData->dust }}</td>
+                            </tr>
+                            <tr>
+                                <th>Other</th>
+                                <td>{{ $applicationData->other_emissions }}</td>
+                            </tr>
+                        </table>
+                    </td>
                 </tr>
                 <tr>
                     <th>Number of stacks chimneys
                     </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
+                    <td>{{ $applicationData->number_of_chimneys }}</td>
                 </tr>
                 <tr>
                     <th>Height of chimney
                     </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
+                    <td>{{ $applicationData->chimney_height }}</td>
                 </tr>
                 <tr>
                     <th>Will your industry cause odour problems?
                     </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
+                    <td>{{ $applicationData->odour_abatement }}</td>
                 </tr>
                 <tr>
                     <th>Will your industry cause noise pollution?
                     </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
-                </tr>
-                <tr>
-                    <th>Will your industry cause odour problems?
-                    </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
+                    <td>{{ $applicationData->noise_abatement }}</td>
                 </tr>
                 <tr>
                     <th colspan="2">
@@ -250,14 +318,60 @@
                     </th>
                 </tr>
                 <tr>
-                    <th>Will your industry cause odour problems?
+                    <th>In-plant generation(in kw/h)
                     </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
+                    <td>{{ $applicationData->tot_inplant_gen }}</td>
                 </tr>
                 <tr>
-                    <th>Will your industry cause odour problems?
+                    <th>Public supply(in kw/h)
                     </th>
-                    <td>{{ $applicationData->disposal_des }}</td>
+                    <td>{{ $applicationData->tot_public_supply }}</td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <center>Details of machinery used in the industry and their horse power ratings</center>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Type
+                    </th>
+                    <td>{{ $applicationData->machine_type }}</td>
+                </tr>
+                <tr>
+                    <th>Horse power rating
+                    </th>
+                    <td>{{ $applicationData->machine_horse_power }}</td>
+                </tr>
+                <tr>
+                    <th>Number of units
+                    </th>
+                    <td>{{ $applicationData->machine_units }}</td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <center>Types of fuels to be used</center>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Purpose
+                    </th>
+                    <td>{{ $applicationData->fuel_use }}</td>
+                </tr>
+                <tr>
+                    <th>Daily consumption
+                    </th>
+                    <td>{{ $applicationData->fuel_daily_consumption }}</td>
+                </tr>
+                <tr>
+                    <th>Recycling / Re-use (possible salvage of any material for re-use)
+                    </th>
+                    <td>{{ $applicationData->recycling }}</td>
+                </tr>
+                <tr>
+                    <th>Describe your plans for future expansion of the proposed industry. State whether proposed expansion
+                        will alter the manufacturing process, raw material usage and finished products.
+                    </th>
+                    <td>{{ $applicationData->plan_description }}</td>
                 </tr>
             </table>
         </div>

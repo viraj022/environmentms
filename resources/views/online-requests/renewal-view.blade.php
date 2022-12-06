@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="{{ asset('plugins/fancybox/fancybox.css') }}">
     <!-- Google Font: Source Sans Pro -->
 @endsection
 @section('content')
@@ -78,13 +79,13 @@
                                     <th>Email</th>
                                     <td>{{ $renewal->email_address }}</td>
                                 </tr>
-                                <tr>
+                                {{-- <tr>
                                     <th>Attachment</th>
                                     <td>
                                         <a href="{{ route('online-requests.renewal.view-attachment', $renewal) }}"
                                             target="_blank">View File</a>
                                     </td>
-                                </tr>
+                                </tr> --}}
                                 <tr>
                                     <th>Status</th>
                                     <td>{{ ucwords(str_replace('_', ' ', $renewal->status)) }}</td>
@@ -99,17 +100,25 @@
                                             No documents uploaded.
                                         @endif
                                         @if (isset($renewal->road_map))
-                                            <a href="{{ $attachmentUrl . '/storage/' . str_replace('public/', '', $renewal->road_map) }}"
-                                                class="btn btn-primary btn-sm mx-2" target="_blank">Road Map</a>
+                                            <a href="{{ $attachmentUrl . '/storage/renewal-attachments/route-map/' . str_replace('public/', '', $renewal->road_map) }}"
+                                                class="btn btn-primary btn-sm mx-2" data-fancybox>Road Map</a>
                                         @endif
                                         @if (isset($renewal->deed_of_land))
-                                            <a href="{{ $attachmentUrl . '/storage/' . str_replace('public/', '', $renewal->deed_of_land) }}"
-                                                class="btn btn-primary btn-sm mx-2" target="_blank">Deed of Land</a>
+                                            <a href="{{ $attachmentUrl . '/storage/renewal-attachments/deed-of-lands/' . str_replace('public/', '', $renewal->deed_of_land) }}"
+                                                class="btn btn-primary btn-sm mx-2" data-fancybox>Deed of Land</a>
                                         @endif
                                         @if (isset($renewal->survey_plan))
-                                            <a href="{{ $attachmentUrl . '/storage/' . str_replace('public/', '', $renewal->survey_plan) }}"
-                                                class="btn btn-primary btn-sm" target="_blank">Survey Plan</a>
+                                            <a href="{{ $attachmentUrl . '/storage/renewal-attachments/survey-plans/' . str_replace('public/', '', $renewal->survey_plan) }}"
+                                                class="btn btn-primary btn-sm" data-fancybox>Survey Plan</a>
                                         @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Application</th>
+                                    <td>
+                                        <a href="{{ route('online-requests.renewal-application-details.view', $renewal->id) }}"
+                                            class="btn btn-primary btn-sm mx-2" target="_blank">View
+                                            Application</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -249,6 +258,7 @@
     <script src="{{ asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
     <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+    <script src="{{ asset('plugins/fancybox/fancybox.umd.js') }}"></script>
     <script>
         function searchClientByOldNumber() {
             let file_no = $('#search_file_no').val();

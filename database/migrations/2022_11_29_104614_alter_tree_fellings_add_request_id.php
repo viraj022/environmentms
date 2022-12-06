@@ -36,7 +36,9 @@ class AlterTreeFellingsAddRequestId extends Migration
 
         Schema::table('online_site_clearances', function (Blueprint $table) {
             $table->unsignedBigInteger('online_request_id')->after('id');
+            $table->string('sc_type')->nullable()->after('online_request_id');
             $table->string('industry_address')->after('other_industry_type');
+            $table->text('odour_abatement')->nullable()->after('noise_abatement');
         });
 
         Schema::table('online_renewal_epls', function (Blueprint $table) {
@@ -78,7 +80,9 @@ class AlterTreeFellingsAddRequestId extends Migration
 
         Schema::table('online_site_clearances', function (Blueprint $table) {
             $table->dropColumn('online_request_id');
+            $table->dropColumn('sc_type');
             $table->dropColumn('industry_address');
+            $table->dropColumn('odour_abatement');
         });
 
         Schema::table('online_renewal_epls', function (Blueprint $table) {

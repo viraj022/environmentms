@@ -21,8 +21,10 @@
                                     <th>Complaint code</th>
                                     <th>Contact number</th>
                                     <th>Complainer address</th>
+                                    <th>Description</th>
                                     <th>Received type</th>
                                     <th>Complained date</th>
+                                    <th>Status</th>
                                 </thead>
                                 <tbody>
                                     @forelse ($complains as $complain)
@@ -33,6 +35,7 @@
                                             <td>{{ $complain->complainer_code }}</td>
                                             <td>{{ $complain->complainer_name }}</td>
                                             <td>{{ $complain->comp_contact_no }}</td>
+                                            <td>{{ $complain->complain_des }}</td>
                                             @if ($complain->recieve_type == 1)
                                                 <td>call</td>
                                             @elseif ($complain->recieve_type == 2)
@@ -41,6 +44,17 @@
                                                 <td>verbal</td>
                                             @endif
                                             <td>{{ Carbon\Carbon::parse($complain->created_at)->format('Y-m-d') }}</td>
+                                            <td>
+                                                @if ($complain->status == 1)
+                                                    Confirmed
+                                                @elseif ($complain->status == -1)
+                                                    Rejected
+                                                @elseif ($complain->status == 4)
+                                                    Forwarded
+                                                @elseif ($complain->status == 0)
+                                                    Pending
+                                                @endif
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>
