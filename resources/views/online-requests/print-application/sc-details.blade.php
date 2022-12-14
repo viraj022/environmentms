@@ -13,20 +13,56 @@
                 @if ($applicationData->sc_type == 'new')
                     @if (isset($applicationData->building_layout_plan))
                         <a href="{{ $attachmentUrl . '/storage/new-attachments/building-layout-plan/' . str_replace('public/', '', $applicationData->building_layout_plan) }}"
-                            class="btn btn-sm btn-primary" data-fancybox>View building layout plan</a>
+                            class="btn btn-sm btn-primary mb-2" data-fancybox>View building layout plan</a>
                     @endif
                     @if (isset($applicationData->process_flow_diagram))
                         <a href="{{ $attachmentUrl . '/storage/new-attachments/process-flow-diagram/' . str_replace('public/', '', $applicationData->process_flow_diagram) }}"
-                            class="btn btn-sm btn-primary" data-fancybox>View process flow diagram</a>
+                            class="btn btn-sm btn-primary mb-2" data-fancybox>View process flow diagram</a>
+                    @endif
+                    @if (isset($applicationData->air_emission_report))
+                        <a href="{{ $attachmentUrl . '/storage/new-attachments/air-emission-report/' . str_replace('public/', '', $applicationData->air_emission_report) }}"
+                            class="btn btn-sm btn-primary mb-2" data-fancybox>View air emission report</a>
+                    @endif
+                    @if (isset($applicationData->building_plan))
+                        <a href="{{ $attachmentUrl . '/storage/new-attachments/building-plan/' . str_replace('public/', '', $applicationData->building_plan) }}"
+                            class="btn btn-sm btn-primary mb-2" data-fancybox>View building plan</a>
+                    @endif
+                    @if (isset($applicationData->business_reg_cer))
+                        <a href="{{ $attachmentUrl . '/storage/new-attachments/business-reg-certificate/' . str_replace('public/', '', $applicationData->business_reg_cer) }}"
+                            class="btn btn-sm btn-primary mb-2" data-fancybox>View business registration certificate</a>
+                    @endif
+                    @if (isset($applicationData->project_report))
+                        <a href="{{ $attachmentUrl . '/storage/new-attachments/project-report/' . str_replace('public/', '', $applicationData->project_report) }}"
+                            class="btn btn-sm btn-primary mb-2" data-fancybox>View project report</a>
                     @endif
                 @else
                     @if (isset($applicationData->building_layout_plan))
                         <a href="{{ $attachmentUrl . '/storage/renewal-attachments/building-layout-plan/' . str_replace('public/', '', $applicationData->building_layout_plan) }}"
-                            class="btn btn-sm btn-primary" data-fancybox>View building layout plan</a>
+                            class="btn btn-sm btn-primary mb-2" data-fancybox>View building layout plan</a>
                     @endif
                     @if (isset($applicationData->process_flow_diagram))
                         <a href="{{ $attachmentUrl . '/storage/renewal-attachments/process-flow-diagram/' . str_replace('public/', '', $applicationData->process_flow_diagram) }}"
-                            class="btn btn-sm btn-primary" data-fancybox>View process flow diagram</a>
+                            class="btn btn-sm btn-primary mb-2" data-fancybox>View process flow diagram</a>
+                    @endif
+                    @if (isset($applicationData->air_emission_report))
+                        <a href="{{ $attachmentUrl . '/storage/renewal-attachments/air-emission-report/' . str_replace('public/', '', $applicationData->air_emission_report) }}"
+                            class="btn btn-sm btn-primary mb-2" data-fancybox>View air emission report</a>
+                    @endif
+                    @if (isset($applicationData->building_plan))
+                        <a href="{{ $attachmentUrl . '/storage/renewal-attachments/building-plan/' . str_replace('public/', '', $applicationData->building_plan) }}"
+                            class="btn btn-sm btn-primary mb-2" data-fancybox>View building plan</a>
+                    @endif
+                    @if (isset($applicationData->business_reg_cer))
+                        <a href="{{ $attachmentUrl . '/storage/renewal-attachments/business-reg-certificate/' . str_replace('public/', '', $applicationData->business_reg_cer) }}"
+                            class="btn btn-sm btn-primary mb-2" data-fancybox>View business registration certificate</a>
+                    @endif
+                    @if (isset($applicationData->project_report))
+                        <a href="{{ $attachmentUrl . '/storage/renewal-attachments/project-report/' . str_replace('public/', '', $applicationData->project_report) }}"
+                            class="btn btn-sm btn-primary mb-2" data-fancybox>View project report</a>
+                    @endif
+                    @if (isset($applicationData->old_sc_cer))
+                        <a href="{{ $attachmentUrl . '/storage/renewal-attachments/old-sc/' . str_replace('public/', '', $applicationData->old_sc_cer) }}"
+                            class="btn btn-sm btn-primary mb-2" data-fancybox>View old sc certificate</a>
                     @endif
                 @endif
             </div>
@@ -120,6 +156,10 @@
                     <td>{{ $applicationData->contact_person_number }}</td>
                 </tr>
                 <tr>
+                    <th>Contact Person Email</th>
+                    <td>{{ $applicationData->contact_person_email }}</td>
+                </tr>
+                <tr>
                     <th colspan="2">
                         <center>Amount of capital investment</center>
                     </th>
@@ -145,15 +185,19 @@
                     <td>{{ $applicationData->number_of_workers }}</td>
                 </tr>
                 <tr>
-                    <th>Land use of the area within five km radius</th>
-                    <td>
-                        @foreach (json_decode($applicationData->within5km, true) as $key => $value)
-                            {{ $value }} <br>
-                        @endforeach
-                    </td>
+                    <th>Developing land area:(Acres/Hcc)</th>
+                    <td>{{ $applicationData->developing_land_area }}</td>
                 </tr>
                 <tr>
-                    <th>List of existing Industries Institutions / Agricultural Land within 2 km</th>
+                    <th>Land ownership</th>
+                    <td>{{ $applicationData->land_ownership_type }}</td>
+                </tr>
+                <tr>
+                    <th>List of existing Industries in industry within buffer zone aree(m)</th>
+                    <td>{{ $applicationData->within_buffer_zone_m }}</td>
+                </tr>
+                <tr>
+                    <th>Land use pattern of area within three km radius</th>
                     <td>{{ $applicationData->list_existing_industries }}</td>
                 </tr>
                 <tr>
@@ -177,6 +221,10 @@
                     <th colspan="2">
                         <center>Process details</center>
                     </th>
+                </tr>
+                <tr>
+                    <th>Brief description of the process</th>
+                    <td>{{ $applicationData->process_des }}</td>
                 </tr>
                 <tr>
                     <th>Raw materials to be used (State item wise quantity / day at all stages of manufacture)</th>
@@ -220,53 +268,90 @@
                     <td>{{ $applicationData->daily_tot_discharge }}</td>
                 </tr>
                 <tr>
-                    <th>Method of discharge
-                    </th>
-                    <td>
-                        @foreach (json_decode($applicationData->waterDischargeMethod, true) as $key => $value)
-                            {{ $value }} <br>
-                        @endforeach
-                    </td>
-                </tr>
-                <tr>
                     <th>Final point of discharge of waste water
                     </th>
                     <td>{{ $applicationData->water_discharge_final_point }}</td>
                 </tr>
                 <tr>
-                    <th>What other specific toxics substances are to be discharged? (Specify nature and concentration e.g.
-                        Inorganics and organics including pesticides, organic chlorine compounds, heavy metals, etc.)
+                    <th>Methods of discharging of waste water when no treatment adopted
                     </th>
-                    <td>{{ $applicationData->discharge_toxics_substances }}</td>
+                    <td>{{ $applicationData->w_discharge_method }}</td>
                 </tr>
                 <tr>
-                    <th>Methods adopted for recording characteristics of waste water before and after treatment
-                    </th>
-                    <td>{{ $applicationData->characteristics_of_water }}</td>
-                </tr>
-                <tr>
-                    <th> Give details of water re-cycling, if any
-                    </th>
-                    <td>{{ $applicationData->water_recycling }}</td>
-                </tr>
-                <tr>
-                    <th>Type and nature of solid wastes
-                    </th>
-                    <td>{{ $applicationData->solid_waste_type }}</td>
-                </tr>
-                <tr>
-                    <th>Total quantity of solid waste - kg / day
-                    </th>
-                    <td>{{ $applicationData->solid_waste_quantity }}</td>
-                </tr>
-                <tr>
-                    <th>Methods of disposal of solid wastes
+                    <th>Give details of solid waste generated daily in the Industry/Project
                     </th>
                     <td>
-                        @foreach (json_decode($applicationData->disposalMethods, true) as $key => $value)
-                            {{ $value }} <br>
-                        @endforeach
+                        Total quantity of solid waste - kg / day: {{ $applicationData->solid_waste_quantity }} <br>
+                        Nature of disposal solid waste: {{ $applicationData->solid_waste_type }}
                     </td>
+                </tr>
+                <tr>
+                    <th>Proposed program of disposal of solid waste
+                    </th>
+                    <td>{{ $applicationData->solid_disposal }}</td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <center>Total energy consumption</center>
+                    </th>
+                </tr>
+                <tr>
+                    <th>In-plant generation(in kw/h)
+                    </th>
+                    <td>{{ $applicationData->tot_inplant_gen }}</td>
+                </tr>
+                <tr>
+                    <th>Public supply(in kw/h)
+                    </th>
+                    <td>{{ $applicationData->tot_public_supply }}</td>
+                </tr>
+                <tr>
+                    <th>Other supply(in kw/h)
+                    </th>
+                    <td>{{ $applicationData->tot_other_supply }}</td>
+                </tr>
+                <tr>
+                    <th>Details of machinery used in the industry</th>
+                    <td>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Machine</th>
+                                <th>Operation</th>
+                                <th>Horse power rating</th>
+                                <th>Number of units</th>
+                            </tr>
+                            @if ($applicationData->machines != '[]')
+                                @foreach (json_decode($applicationData->machines, true) as $key => $value)
+                                    <tr>
+                                        <td>{{ $value['machine_name'] }}</td>
+                                        <td>{{ $value['machine_operation'] }}</td>
+                                        <td>{{ $value['machine_horse_power'] }}</td>
+                                        <td>{{ $value['machine_units'] }}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <center>Types of fuels to be used</center>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Type
+                    </th>
+                    <td>{{ $applicationData->fuel_type }}</td>
+                </tr>
+                <tr>
+                    <th>Purpose
+                    </th>
+                    <td>{{ $applicationData->fuel_use }}</td>
+                </tr>
+                <tr>
+                    <th>Daily consumption
+                    </th>
+                    <td>{{ $applicationData->fuel_daily_consumption }}</td>
                 </tr>
                 <tr>
                     <th>Will there emission to the atmosphere? Possible emissions
@@ -293,14 +378,25 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Number of stacks chimneys
-                    </th>
-                    <td>{{ $applicationData->number_of_chimneys }}</td>
-                </tr>
-                <tr>
-                    <th>Height of chimney
-                    </th>
-                    <td>{{ $applicationData->chimney_height }}</td>
+                    <th>Details of chimneys used in the industry</th>
+                    <td>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Quantity</th>
+                                <th>Height from the ground level</th>
+                                <th>Diameter-(m)</th>
+                            </tr>
+                            @if ($applicationData->chimney  != '[]')
+                                @foreach (json_decode($applicationData->chimney, true) as $key => $value)
+                                    <tr>
+                                        <td>{{ $value['number_of_chimneys'] }}</td>
+                                        <td>{{ $value['chimney_height'] }}</td>
+                                        <td>{{ $value['chimney_diameter'] }}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </table>
+                    </td>
                 </tr>
                 <tr>
                     <th>Will your industry cause odour problems?
@@ -311,56 +407,6 @@
                     <th>Will your industry cause noise pollution?
                     </th>
                     <td>{{ $applicationData->noise_abatement }}</td>
-                </tr>
-                <tr>
-                    <th colspan="2">
-                        <center>Total energy consumption</center>
-                    </th>
-                </tr>
-                <tr>
-                    <th>In-plant generation(in kw/h)
-                    </th>
-                    <td>{{ $applicationData->tot_inplant_gen }}</td>
-                </tr>
-                <tr>
-                    <th>Public supply(in kw/h)
-                    </th>
-                    <td>{{ $applicationData->tot_public_supply }}</td>
-                </tr>
-                <tr>
-                    <th colspan="2">
-                        <center>Details of machinery used in the industry and their horse power ratings</center>
-                    </th>
-                </tr>
-                <tr>
-                    <th>Type
-                    </th>
-                    <td>{{ $applicationData->machine_type }}</td>
-                </tr>
-                <tr>
-                    <th>Horse power rating
-                    </th>
-                    <td>{{ $applicationData->machine_horse_power }}</td>
-                </tr>
-                <tr>
-                    <th>Number of units
-                    </th>
-                    <td>{{ $applicationData->machine_units }}</td>
-                </tr>
-                <tr>
-                    <th colspan="2">
-                        <center>Types of fuels to be used</center>
-                    </th>
-                </tr>
-                <tr>
-                    <th>Purpose
-                    </th>
-                    <td>{{ $applicationData->fuel_use }}</td>
-                </tr>
-                <tr>
-                    <th>Daily consumption
-                    </th>
-                    <td>{{ $applicationData->fuel_daily_consumption }}</td>
                 </tr>
                 <tr>
                     <th>Recycling / Re-use (possible salvage of any material for re-use)
