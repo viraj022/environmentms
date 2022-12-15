@@ -105,7 +105,7 @@
                                         @endif
                                         @if (isset($renewal->deed_of_land))
                                             <a href="{{ $attachmentUrl . '/storage/renewal-attachments/deed-of-lands/' . str_replace('public/', '', $renewal->deed_of_land) }}"
-                                                class="btn btn-primary btn-sm" data-fancybox>Deed of Land</a>
+                                                class="btn btn-primary btn-sm" data-fancybox>Deed of Land</a> <br>
                                         @endif
                                         @if (isset($renewal->survey_plan))
                                             <a href="{{ $attachmentUrl . '/storage/renewal-attachments/survey-plans/' . str_replace('public/', '', $renewal->survey_plan) }}"
