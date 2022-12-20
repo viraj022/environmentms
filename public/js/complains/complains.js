@@ -5,7 +5,9 @@ function gen_complain_code() {
     var d = new Date();
     var date = d.getFullYear();
     var prs = $("#ps option:selected").data("ps_code");
-    $("#complainer_code").val(date + "/" + prs + "/" + code);
+    var pre = "PEA/NWP";
+    // $("#complainer_code").val(date + "/" + prs + "/" + code);
+    $("#complainer_code").val(pre + "/" + date + "/" + prs + "/compt/");
 }
 
 function load_complains() {
