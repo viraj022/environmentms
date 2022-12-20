@@ -13,6 +13,7 @@ use App\Client;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use App\Repositories\UserNotificationsRepositary;
+use Carbon\Carbon;
 
 class ComplainController extends Controller
 {
@@ -42,13 +43,28 @@ class ComplainController extends Controller
             "pradeshiya_saba_id" => 'required'
         ]);
 
+        $number = 1;
+
+        $searchStr = sprintf('^PEA/NWP/%s/[a-zA-Z]{3}/compt/', date('Y'));
+        $lastComplaintCode = Complain::select('complainer_code')
+            ->whereRaw("complainer_code REGEXP ?", $searchStr)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        if ($lastComplaintCode) {
+            $segments = explode('/', $lastComplaintCode->complainer_code);
+            $number = intval($segments[5]) + 1;
+        }
+
+        $nextComplaintCode = $request->complainer_code . $number;
+
         $save_complain = Complain::create([
             "complainer_name" => $request->complainer_name_ipt,
             "complainer_address" => $request->complainer_address_ipt,
             "comp_contact_no" => isset($request->contact_complainer_ipt) ? $request->contact_complainer_ipt : '-',
             "recieve_type" => $request->recieve_type_ipt,
             "complain_des" => $request->complain_desc_ipt,
-            "complainer_code" => $request->complainer_code,
+            "complainer_code" => $nextComplaintCode,
             "created_user" =>  $user,
             "pradeshiya_saba_id" => $request->pradeshiya_saba_id,
         ]);
