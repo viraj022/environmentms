@@ -26,6 +26,7 @@ use App\Certificate;
 use App\EPL;
 use App\EPLNew;
 use App\FileLog;
+use App\Repositories\ComplaintRepository;
 use App\SiteClearenceSession;
 use DB;
 
@@ -230,6 +231,7 @@ class ReportController extends Controller
         $ass = new AssistanceDirectorRepository();
         $inspection = new InspectionSessionRepository();
         $committee = new CommitteeRepository();
+        $complaints = new ComplaintRepository();
         $assistanceDirectors = $ass->getAssistanceDirectorWithZones();
         /**
          * Received Section
@@ -238,6 +240,7 @@ class ReportController extends Controller
         $renewEplCount = $epl->ReceivedPLCount($from, $to, 0);
         $siteNewCount = $site->ReceivedSiteCount($from, $to, 1);
         $siteExtendCount = $site->ReceivedSiteCount($from, $to, 0);
+        $complainCount = $complaints->getComplaints($from, $to);
 
         $result[] = array('type' => 'received', 'name' => 'SC(New)', 'application' => $this->prepareApplicationTotal($siteNewCount->toArray()), 'object' => $this->prepareCount($siteNewCount->toArray(), $assistanceDirectors));
         $result[] = array('type' => 'received', 'name' => 'SC(EX)', 'application' => $this->prepareApplicationTotal($siteExtendCount->toArray()), 'object' => $this->prepareCount($siteExtendCount->toArray(), $assistanceDirectors));
@@ -246,7 +249,7 @@ class ReportController extends Controller
         $result[] = array('type' => 'received', 'name' => 'Agrarian Services', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
         $result[] = array('type' => 'received', 'name' => 'Land Lease Out', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
         $result[] = array('type' => 'received', 'name' => 'Court Case', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
-        $result[] = array('type' => 'received', 'name' => 'Complaints', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+        $result[] = array('type' => 'received', 'name' => 'Complaints', 'application' => $this->prepareApplicationTotal($complainCount->toArray()), 'object' => $this->prepareCount($complainCount->toArray(), $assistanceDirectors));
         $result[] = array('type' => 'received', 'name' => 'Other', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
 
         /**
