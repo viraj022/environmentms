@@ -16,6 +16,7 @@ use App\Rules\contactNo;
 use App\IndustryCategory;
 use App\Rules\nationalID;
 use App\EnvironmentOfficer;
+use App\Helpers\ClientApplicationHelper;
 use Illuminate\Support\Str;
 use App\Helpers\LogActivity;
 use App\Http\Resources\ClientResource;
@@ -36,6 +37,7 @@ use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
 use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
 use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Label\Label;
+use Illuminate\Support\Facades\Storage;
 
 class ClientController extends Controller
 {
@@ -299,12 +301,23 @@ class ClientController extends Controller
                             $file1Filepath = $newApplicationRequest->road_map;
                             $file1FileName = basename($file1Filepath);
                             $file1FileUrl = config('online-request.url') . '/storage/new-attachments/route-map/' . str_replace('public/', '', $file1Filepath);
-                            $targetDir = storage_path('app/public/uploads/industry_files/' . $client->id . '/application/file1');
-                            if (!file_exists($targetDir)) {
-                                mkdir($targetDir, 0644, true);
+                            $targetDir = 'public/uploads/industry_files/' . $client->id . '/application/file1';
+
+                            if (!Storage::exists($targetDir)) {
+                                try {
+                                    Storage::makeDirectory($targetDir);
+                                } catch (\Throwable $th) {
+                                    throw $th;
+                                }
                             }
                             $targetFileName = $targetDir . '/' . $file1FileName;
-                            copy($file1FileUrl, $targetFileName);
+                            $file1Path = ClientApplicationHelper::downloadFile($file1FileUrl);
+                            try {
+                                Storage::copy($file1Path, $targetFileName);
+                                Storage::delete($file1Path);
+                            } catch (\Throwable $th) {
+                                throw $th;
+                            }
                             $client->file_01 = 'storage/uploads/industry_files/' . $client->id . '/application/file1/' . $file1FileName;
                         }
 
@@ -313,12 +326,23 @@ class ClientController extends Controller
                             $file2Filepath = $newApplicationRequest->deed_of_land;
                             $file2FileName = basename($file2Filepath);
                             $file2FileUrl = config('online-request.url') . '/storage/new-attachments/deed-of-lands/' . str_replace('public/', '', $file2Filepath);
-                            $targetDir = storage_path('app/public/uploads/industry_files/' . $client->id . '/application/file2');
-                            if (!file_exists($targetDir)) {
-                                mkdir($targetDir, 0644, true);
+                            $targetDir = 'public/uploads/industry_files/' . $client->id . '/application/file2';
+
+                            if (!Storage::exists($targetDir)) {
+                                try {
+                                    Storage::makeDirectory($targetDir);
+                                } catch (\Throwable $th) {
+                                    throw $th;
+                                }
                             }
                             $targetFileName = $targetDir . '/' . $file2FileName;
-                            copy($file2FileUrl, $targetFileName);
+                            $file2Path = ClientApplicationHelper::downloadFile($file2FileUrl);
+                            try {
+                                Storage::copy($file2Path, $targetFileName);
+                                Storage::delete($file2Path);
+                            } catch (\Throwable $th) {
+                                throw $th;
+                            }
                             $client->file_02 = 'storage/uploads/industry_files/' . $client->id . '/application/file2/' . $file2FileName;
                         }
 
@@ -327,12 +351,24 @@ class ClientController extends Controller
                             $file3Filepath = $newApplicationRequest->survey_plan;
                             $file3FileName = basename($file3Filepath);
                             $file3FileUrl = config('online-request.url') . '/storage/new-attachments/survey-plans/' . str_replace('public/', '', $file3Filepath);
-                            $targetDir = storage_path('app/public/uploads/industry_files/' . $client->id . '/application/file3');
-                            if (!file_exists($targetDir)) {
-                                mkdir($targetDir, 0644, true);
+                            $targetDir = 'public/uploads/industry_files/' . $client->id . '/application/file3';
+
+                            if (!Storage::exists($targetDir)) {
+                                try {
+                                    Storage::makeDirectory($targetDir);
+                                } catch (\Throwable $th) {
+                                    throw $th;
+                                }
                             }
                             $targetFileName = $targetDir . '/' . $file3FileName;
-                            copy($file3FileUrl, $targetFileName);
+                            $file3Path = ClientApplicationHelper::downloadFile($file3FileUrl);
+                            try {
+                                Storage::copy($file3Path, $targetFileName);
+                                Storage::delete($file3Path);
+                            } catch (\Throwable $th) {
+                                throw $th;
+                            }
+
                             $client->file_03 = 'storage/uploads/industry_files/' . $client->id . '/application/file3/' . $file3FileName;
                         }
 

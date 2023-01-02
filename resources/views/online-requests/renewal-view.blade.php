@@ -77,7 +77,7 @@
                                 </tr>
                                 <tr>
                                     <th>Email</th>
-                                    <td>{{ $renewal->email_address }}</td>
+                                    <td>{{ $renewal->email }}</td>
                                 </tr>
                                 {{-- <tr>
                                     <th>Attachment</th>
