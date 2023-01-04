@@ -1149,19 +1149,7 @@
             var btnValue = $(this).val();
             var btnName = $(this).data("name");
             toastr.info('Printing Barcode.Please Wait...');
-            $.ajax({
-                url: 'http://127.0.0.1:8081/hansana',
-                headers: {
-                    "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    "Accept": "application/json"
-                },
-                data: {
-                    code: btnValue,
-                    name: btnName
-                },
-                success: function(result) {}
-            });
+            
         });
         $(document).on('click', '.removeBarcode', function() { //<-- Remove Button In Payment Tab
             var btnValue = $(this).val();

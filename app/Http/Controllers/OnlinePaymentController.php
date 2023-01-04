@@ -175,11 +175,11 @@ class OnlinePaymentController extends Controller
 
         // complete payment status for request_id
         if ($onlineRequest->request_type == OnlineRequest::RENEWAL) {
-            $model = OnlineRenewalApplicationRequest::whereId($onlineRequest->request_id)->first();
+            $model = OnlineRenewalApplicationRequest::whereId($onlineRequest->online_request_id)->first();
             $model->status = 'complete';
             $model->save();
         } elseif ($onlineRequest->request_type == OnlineRequest::NEW) {
-            $model = OnlineNewApplicationRequest::whereId($onlineRequest->request_id)->first();
+            $model = OnlineNewApplicationRequest::whereId($onlineRequest->online_request_id)->first();
             $model->status = 'complete';
             $model->save();
         } elseif ($onlineRequest->request_type == OnlineRequest::PAYMENT) {
