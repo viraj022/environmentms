@@ -166,6 +166,7 @@ class OnlineRequestController extends Controller
      */
     public function sendPaymentLink(Request $request, OnlineRequest $onlineRequest)
     {
+        // dd($onlineRequest);
         $data = $request->validate([
             'payment_amount' => 'required|numeric'
         ], $request->all());
@@ -187,7 +188,7 @@ class OnlineRequestController extends Controller
         } elseif (get_class($application) === 'App\\Transaction') {
             $requestType = OnlineRequest::PAYMENT;
             $emailAddress = $application->client->email;
-            $mobileNumber = $application->client->mobile_no;
+            $mobileNumber = $application->client->contact_no;
         }
 
         // create online payment record
@@ -226,7 +227,7 @@ class OnlineRequestController extends Controller
         }
 
         // set return route
-        $returnId = $onlineRequest->request_id;
+        $returnId = $onlineRequest->online_request_id;
         if ($requestType == OnlineRequest::RENEWAL) {
             $routeName = 'online-requests.renewal.view';
         } elseif ($requestType == OnlineRequest::NEW) {
@@ -278,9 +279,10 @@ class OnlineRequestController extends Controller
         // create online request for request type transaction with transaction id
         $onlineRequest = OnlineRequest::create([
             'request_type' => 'payment', 'status' => 'pending', 'request_id' => $transaction->id,
-            'request_model' => Transaction::class,
+            'request_model' => Transaction::class, 'online_request_id' => $transaction->id,
         ]);
 
+        // dd($transaction);
         // send SMS and email
         return $this->sendPaymentLink($request, $onlineRequest);
     }

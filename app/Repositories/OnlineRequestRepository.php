@@ -27,7 +27,7 @@ class OnlineRequestRepository
     public function getAllRenewalApplications()
     {
         return OnlineRenewalApplicationRequest::with('onlineRequest')
-            ->orderBy('created_at')
+            ->orderBy('created_at', 'desc')
             ->get();
     }
 
@@ -41,7 +41,7 @@ class OnlineRequestRepository
     {
         return OnlineNewApplicationRequest::with('onlineRequest')
             ->with(['pradeshiyaSabha', 'industryCategory'])
-            ->orderBy('created_at')
+            ->orderBy('created_at', 'desc')
             ->get();
     }
 
