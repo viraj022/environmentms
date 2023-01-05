@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterOnlinePaymentsAddClientId extends Migration
+class AlterOnlineSiteClearanceAddOldScNumber extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AlterOnlinePaymentsAddClientId extends Migration
      */
     public function up()
     {
-        Schema::table('online_payments', function (Blueprint $table) {
-            $table->unsignedBigInteger('client_id')->nullable()->after('online_request_id');
+        Schema::table('online_site_clearances', function (Blueprint $table) {
+            $table->string('old_sc_number')->nullable()->after('sc_type');
         });
     }
 
@@ -25,8 +25,8 @@ class AlterOnlinePaymentsAddClientId extends Migration
      */
     public function down()
     {
-        Schema::table('online_payments', function (Blueprint $table) {
-            $table->dropColumn('client_id');
+        Schema::table('online_site_clearances', function (Blueprint $table) {
+            $table->dropColumn('old_sc_number');
         });
     }
 }

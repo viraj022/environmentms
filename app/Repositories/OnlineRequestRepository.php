@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Certificate;
 use App\Client;
+use App\EPL;
 use App\OnlineNewApplicationRequest;
 use App\OnlineNewEpl;
 use App\OnlineRenewalApplicationRequest;
@@ -12,6 +13,7 @@ use App\OnlineRequest;
 use App\OnlineRequestStatus;
 use App\OnlineSiteClearance;
 use App\RefilingPaddyLand;
+use App\SiteClearenceSession;
 use App\StateLandLease;
 use App\TelecommunicationTower;
 use App\TreeFelling;
@@ -45,9 +47,14 @@ class OnlineRequestRepository
             ->get();
     }
 
-    public function getCertificateByCertificateNumber($certificateNumber)
+    public function getCertificateByCertificateNumber($certificateNumber, $cerType)
     {
-        return Certificate::where('cetificate_number', $certificateNumber)->first();
+        if ($cerType == 'epl') {
+            return EPL::where('code', $certificateNumber)->first();
+        } else {
+            return SiteClearenceSession::where('code', $certificateNumber)->first();
+        }
+        // return Certificate::where('cetificate_number', $certificateNumber)->first();
     }
 
     public function getClientByFileNumber($fileNumber)

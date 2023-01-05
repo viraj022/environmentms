@@ -45,7 +45,13 @@
                                     <td>{{ ucwords(str_replace('_', ' ', $renewal->renewal_type)) }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Certificate/License No.</th>
+                                    <th>
+                                        @if ($renewal->renewal_type == 'epl')
+                                            Epl Number
+                                        @else
+                                            Site Clearance Number
+                                        @endif
+                                    </th>
                                     <td class="clearfix">
                                         <strong id="certificate_number">{{ $renewal->certificate_number }}</strong>
 
@@ -160,9 +166,13 @@
                                     </form>
                                 @else
                                     <div class="alert alert-warning">
-                                        Cannot find client by certificate number. Please assign client manually with file
-                                        number
-                                        below.
+                                        @if ($renewal->renewal_type == 'site_clearance')
+                                            Cannot find client by site clearance number. Please assign client manually with
+                                            file number below.
+                                        @else
+                                            Cannot find client by epl number. Please assign client manually with file number
+                                            below.
+                                        @endif
                                     </div>
 
                                     <div class="mb-2">
