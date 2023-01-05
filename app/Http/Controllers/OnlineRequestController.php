@@ -83,7 +83,7 @@ class OnlineRequestController extends Controller
     public function viewRenewalRequest(OnlineRenewalApplicationRequest $renewal)
     {
         $client = null;
-        $certificate = $this->onlineRequests->getCertificateByCertificateNumber($renewal->certificate_number);
+        $certificate = $this->onlineRequests->getCertificateByCertificateNumber($renewal->certificate_number, $renewal->renewal_type);
         if ($certificate) {
             $client = $certificate->client;
         }
@@ -190,7 +190,7 @@ class OnlineRequestController extends Controller
             $emailAddress = $application->client->email;
             $mobileNumber = $application->client->contact_no;
         }
-
+        // dd($application);
         // create online payment record
         $onp = OnlinePayment::create([
             'online_request_id' => $onlineRequest->id,

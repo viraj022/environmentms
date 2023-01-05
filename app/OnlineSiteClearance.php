@@ -12,6 +12,7 @@ class OnlineSiteClearance extends Model
     protected $fillable = [
         'industry_name',
         'sc_type',
+        'old_sc_number',
         'industry_type',
         'other_industry_type',
         'industry_address',
