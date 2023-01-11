@@ -2,25 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Certificate;
-use App\Client;
 use App\Helpers\SmsHelper;
 use App\Mail\OnlineApplicationPaymentLink;
 use App\OnlineNewApplicationRequest;
 use App\OnlinePayment;
 use App\OnlineRenewalApplicationRequest;
 use App\OnlineRequest;
-use App\OnlineRequestStatus;
 use App\Repositories\OnlineRequestRepository;
 use App\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
-use OCILob;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OnlineRequestController extends Controller
 {
@@ -301,6 +297,11 @@ class OnlineRequestController extends Controller
         $newApplication->status = 'rejected';
         $newApplication->save();
 
+        // if (!empty($newApplication->mobile_number)) {
+        //     $smsMessage = "Hello,\nPlease";
+        //     $isSent = SmsHelper::sendSms($newApplication->mobile_number, $smsMessage);
+        // }
+
         return redirect()->route('online-requests.index')->with('rejected_success', 'New application request rejected.');
     }
 
@@ -310,9 +311,7 @@ class OnlineRequestController extends Controller
 
         $model = str_replace('\Models', '', $onlineReq->request_model);
         $applicationData = $model::where('id', $onlineReq->request_id)->first();
-        // dd($applicationData);
 
-        // return $applicationData;
         switch ($model) {
             case 'App\RefilingPaddyLand':
                 return view('online-requests.print-application.refiling-paddy', compact('applicationData'));
