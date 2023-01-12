@@ -36,7 +36,6 @@
         </div>
         <div id="footer">
             <button type="button" class="btn btn-primary mx-5 my-4" id="printBtn">Print</button>
-            <button type="button" class="btn btn-primary mx-3" id="pdfBtn">Download</button>
         </div>
         <div id="contents">
             @yield('contents')

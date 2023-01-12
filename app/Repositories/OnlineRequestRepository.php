@@ -67,15 +67,30 @@ class OnlineRequestRepository
         return Client::where('id', $clientId)->first();
     }
 
-    public function getCertificateByClientIdAndCertificateNumber($clientId, $certificateNumber)
+    public function getCertificateByClientIdAndCertificateNumber($clientId, $certificateNumber, $type)
     {
-        return Certificate::where('client_id', $clientId)
-            ->where('cetificate_number', $certificateNumber)
-            ->first();
+        if ($type == 'epl') {
+            return EPL::where('client_id', $clientId)
+                ->where('code', $certificateNumber)
+                ->first();
+        } else {
+            return SiteClearenceSession::where('client_id', $clientId)
+                ->where('code', $certificateNumber)
+                ->first();
+        }
     }
 
     public function createOnlineRequestStatus($data)
     {
         return OnlineRequestStatus::create($data);
+    }
+
+    public function getNewCompletedApplications($status)
+    {
+        return OnlineRequest::with(['onlineNewApplicationRequest', 'onlineNewApplicationRequest.pradeshiyaSabha', 'onlineNewApplicationRequest.industryCategory'])
+            ->where('request_type', 'new')
+            ->where('status', $status)
+            ->orderBy('created_at')
+            ->get();
     }
 }

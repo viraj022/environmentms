@@ -98,94 +98,133 @@
                         </div>
                         <div class="tab-pane fade" id="pills-new-applications" role="tabpanel"
                             aria-labelledby="pills-new-applications-tab">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-condensed table-hover" id="new-applications-table">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Name</th>
-                                            <th>Pradeshiya Sabha</th>
-                                            <th>Industry Category</th>
-                                            <th>Business Scale</th>
-                                            <th>Industry Sub Category</th>
-                                            <th>Business Name</th>
-                                            <th>Start Date</th>
-                                            <th>Contact No</th>
-                                            <th>Status</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php
-                                            $i = 1;
-                                        @endphp
-                                        @forelse ($newApplications as $new)
-                                            @if (empty($new->rejected_at))
-                                                <tr class="{{ $new->isRejected() ? 'table-danger' : '' }}">
-                                                    <td>{{ $i++ }}</td>
-                                                    <td>
-                                                        {{ $new->title }}
-                                                        @if (!empty($new->lastname))
-                                                            {{ $new->firstname }} {{ $new->lastname }}
-                                                        @else
-                                                            {{ $new->firstname }}
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $new->pradeshiyaSabha->name }}</td>
-                                                    <td>
-                                                        @if (!empty($new->industryCategory->name))
-                                                            {{ $new->industryCategory->name }}
-                                                        @else
-                                                            -
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if (!empty($businessScales[$new->business_scale]))
-                                                            {{ $businessScales[$new->business_scale] }}
-                                                        @else
-                                                            -
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if (!empty($new->industry_sub_category))
-                                                            {{ $new->industry_sub_category }}
-                                                        @else
-                                                            -
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $new->business_name }}
-                                                        @if (!empty($new->business_registration_number))
-                                                            <br />Reg. No.: {{ $new->business_registration_number }}
-                                                        @else
-                                                            Reg. No.: -
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $new->start_date }}</td>
-                                                    <td>
-                                                        {{ $new->mobile_number }}
-                                                        <br />
-                                                        {{ $new->industry_contact_no }}
-                                                    </td>
-                                                    <td>{!! $new->isRejected()
-                                                        ? '<span class="badge badge-danger">Rejected</span>'
-                                                        : ucwords(str_replace('_', ' ', $new->status)) !!}
-                                                    </td>
-                                                    <td>
-                                                        <a href="{{ route('online-requests.new-application.view', $new) }}"
-                                                            class="btn btn-primary btn-sm">
-                                                            <span class="fa fa-eye"></span> View
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        @empty
-                                            <tr>
-                                                <td colspan="12">No new application requests received.</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="card border border-primary">
+                                        <div class="card-header bg-primary">
+                                            Search Application status
+                                        </div>
+                                        <div class="card-body">
+                                            <form action="{{ route('new-applications-by-status') }}" method="post">
+                                                @csrf
+                                                <div class="row">
+                                                    <div class="col-lg-8">
+                                                        <select class="form-select form-control"
+                                                            aria-label="Default select example" id="application_status"
+                                                            name="application_status">
+                                                            <option value="complete">Complete</option>
+                                                            <option value="pending">Pending</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <button type="submit" class="btn btn-primary">Search</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
+                            @if (!empty($completedNewApplications))
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-condensed table-hover"
+                                        id="new-applications-table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Name</th>
+                                                <th>Pradeshiya Sabha</th>
+                                                <th>Industry Category</th>
+                                                <th>Business Scale</th>
+                                                <th>Industry Sub Category</th>
+                                                <th>Business Name</th>
+                                                <th>Start Date</th>
+                                                <th>Contact No</th>
+                                                <th>Status</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php
+                                                $i = 1;
+                                            @endphp
+                                            @forelse ($completedNewApplications as $new)
+                                                @if (empty($new->onlineNewApplicationRequest->rejected_at))
+                                                    <tr
+                                                        class="{{ $new->onlineNewApplicationRequest->isRejected() ? 'table-danger' : '' }}">
+                                                        <td>{{ $i++ }}</td>
+                                                        <td>
+                                                            {{ $new->onlineNewApplicationRequest->title }}
+                                                            @if (!empty($new->onlineNewApplicationRequest->lastname))
+                                                                {{ $new->onlineNewApplicationRequest->firstname }}
+                                                                {{ $new->onlineNewApplicationRequest->lastname }}
+                                                            @else
+                                                                {{ $new->onlineNewApplicationRequest->firstname }}
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $new->onlineNewApplicationRequest->pradeshiyaSabha->name }}
+                                                        </td>
+                                                        <td>
+                                                            @if (!empty($new->onlineNewApplicationRequest->industryCategory->name))
+                                                                {{ $new->onlineNewApplicationRequest->industryCategory->name }}
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            @if (!empty($businessScales[$new->onlineNewApplicationRequest->business_scale]))
+                                                                {{ $businessScales[$new->onlineNewApplicationRequest->business_scale] }}
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            @if (!empty($new->onlineNewApplicationRequest->industry_sub_category))
+                                                                {{ $new->onlineNewApplicationRequest->industry_sub_category }}
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $new->onlineNewApplicationRequest->business_name }}
+                                                            @if (!empty($new->onlineNewApplicationRequest->business_registration_number))
+                                                                <br />Reg. No.:
+                                                                {{ $new->onlineNewApplicationRequest->business_registration_number }}
+                                                            @else
+                                                                Reg. No.: -
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $new->onlineNewApplicationRequest->start_date }}</td>
+                                                        <td>
+                                                            {{ $new->onlineNewApplicationRequest->mobile_number }}
+                                                            <br />
+                                                            {{ $new->onlineNewApplicationRequest->industry_contact_no }}
+                                                        </td>
+                                                        <td>{!! $new->onlineNewApplicationRequest->isRejected()
+                                                            ? '<span class="badge badge-danger">Rejected</span>'
+                                                            : ucwords(str_replace('_', ' ', $new->status)) !!}
+                                                        </td>
+                                                        <td>
+                                                            <a href="{{ route('online-requests.new-application.view', $new->onlineNewApplicationRequest) }}"
+                                                                class="btn btn-primary btn-sm">
+                                                                <span class="fa fa-eye"></span> View
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @empty
+                                                <tr>
+                                                    <td colspan="12">No new application requests received.</td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @else
+                                <div class="alert alert-info" role="alert">
+                                    please search application status to view applications
+                                </div>
+                            @endif
                         </div>
                         <div class="tab-pane fade" id="pills-rejected-new-applications" role="tabpanel"
                             aria-labelledby="pills-rejected-new-applications-tab">

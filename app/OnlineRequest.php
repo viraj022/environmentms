@@ -35,9 +35,9 @@ class OnlineRequest extends Model
      *
      * @return HasMany
      */
-    public function onlineNewApplicationRequests()
+    public function onlineNewApplicationRequest()
     {
-        return $this->hasMany(OnlineNewApplicationRequest::class);
+        return $this->hasOne(OnlineNewApplicationRequest::class);
     }
 
     public function applicationRequest()
