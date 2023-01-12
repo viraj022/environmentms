@@ -98,10 +98,6 @@
                     <td>{{ $applicationData->industry_type }}</td>
                 </tr>
                 <tr>
-                    <th>Other Industry Type</th>
-                    <td>{{ $applicationData->other_industry_type }}</td>
-                </tr>
-                <tr>
                     <th>Industry Address</th>
                     <td>{{ $applicationData->industry_address }}</td>
                 </tr>

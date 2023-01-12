@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Certificate;
-use App\Client;
+use App\EPL;
 use App\Helpers\SmsHelper;
 use App\Mail\OnlineApplicationPaymentLink;
 use App\OnlineNewApplicationRequest;
 use App\OnlinePayment;
 use App\OnlineRenewalApplicationRequest;
 use App\OnlineRequest;
-use App\OnlineRequestStatus;
 use App\Repositories\OnlineRequestRepository;
+use App\SiteClearenceSession;
 use App\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
-use OCILob;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OnlineRequestController extends Controller
 {
@@ -116,8 +114,15 @@ class OnlineRequestController extends Controller
         $validated = $request->validate([
             'renewal_client_id' => 'required|exists:clients,id',
             'renewal_renewal_id' => 'required|exists:online_renewal_application_requests,id',
-            'renewal_update_certificate_number' => 'nullable|exists:certificates,cetificate_number',
+            'renewal_update_certificate_number' => 'nullable',
         ], $requestData);
+
+        $eplExists = EPL::where('code', $validated['renewal_update_certificate_number'])->exists();
+        $siteClearanceSessionExists = SiteClearenceSession::where('code', $validated['renewal_update_certificate_number'])->exists();
+
+        if (!$eplExists && !$siteClearanceSessionExists) {
+            return redirect()->back()->with('error', 'Cannot identify the client by the given id. Please try again later.');
+        }
 
         // check if client is legit
         $client = $this->onlineRequests->getClientById($validated['renewal_client_id']);
@@ -129,8 +134,10 @@ class OnlineRequestController extends Controller
         // check if the client id matches the certificate number
         $cert = $this->onlineRequests->getCertificateByClientIdAndCertificateNumber(
             $client->id,
-            $validated['renewal_update_certificate_number']
+            $validated['renewal_update_certificate_number'],
+            $renewal->renewal_type
         );
+
         if (empty($cert)) {
             return redirect()->route('online-requests.renewal.view', $renewal)
                 ->with('error', 'Cannot verify the certificate number you entered 
@@ -301,6 +308,11 @@ class OnlineRequestController extends Controller
         $newApplication->status = 'rejected';
         $newApplication->save();
 
+        // if (!empty($newApplication->mobile_number)) {
+        //     $smsMessage = "Hello,\nPlease";
+        //     $isSent = SmsHelper::sendSms($newApplication->mobile_number, $smsMessage);
+        // }
+
         return redirect()->route('online-requests.index')->with('rejected_success', 'New application request rejected.');
     }
 
@@ -310,9 +322,7 @@ class OnlineRequestController extends Controller
 
         $model = str_replace('\Models', '', $onlineReq->request_model);
         $applicationData = $model::where('id', $onlineReq->request_id)->first();
-        // dd($applicationData);
 
-        // return $applicationData;
         switch ($model) {
             case 'App\RefilingPaddyLand':
                 return view('online-requests.print-application.refiling-paddy', compact('applicationData'));
@@ -365,5 +375,21 @@ class OnlineRequestController extends Controller
                 # code...
                 break;
         }
+    }
+
+    public function getNewApplicationsByStatus(Request $request)
+    {
+
+        $businessScales = [
+            '1' => 'Small - S',
+            '2' => 'Medium - M',
+            '3' => 'Large - L',
+        ];
+
+        $completedNewApplications = $this->onlineRequests->getNewCompletedApplications($request->application_status);
+        $renewalApplications = $this->onlineRequests->getAllRenewalApplications();
+        $newApplications = $this->onlineRequests->getAllNewApplications();
+
+        return view('online-requests.index', compact('completedNewApplications', 'renewalApplications', 'newApplications'));
     }
 }

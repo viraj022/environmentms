@@ -14,13 +14,25 @@
                     <div class="card">
                         <div class="card-body">
                             <table class="table table-bordered" id="compalinsTable">
+                                <colgroup>
+                                    <col style="width: 5%;">
+                                    <col style="width: 10%;">
+                                    <col style="width: 10%;">
+                                    <col style="width: 10%;">
+                                    <col style="width: 15%;">
+                                    <col style="width: 10%;">
+                                    <col style="width: 15%;">
+                                    <col style="width: 10%;">
+                                    <col style="width: 10%;">
+                                    <col style="width: 10%;">
+                                </colgroup>
                                 <thead>
                                     <th>#</th>
                                     <th>Complainer name</th>
                                     <th>Pradeshiya sabha</th>
                                     <th>Complaint code</th>
-                                    <th>Contact number</th>
                                     <th>Complainer address</th>
+                                    <th>Contact number</th>
                                     <th>Description</th>
                                     <th>Received type</th>
                                     <th>Complained date</th>
@@ -33,7 +45,7 @@
                                             <td>{{ $complain->complainer_name }}</td>
                                             <td>{{ $complain->pradesheeyasaba->name }}</td>
                                             <td>{{ $complain->complainer_code }}</td>
-                                            <td>{{ $complain->complainer_name }}</td>
+                                            <td>{{ $complain->complainer_address }}</td>
                                             <td>{{ $complain->comp_contact_no }}</td>
                                             <td>{{ $complain->complain_des }}</td>
                                             @if ($complain->recieve_type == 1)

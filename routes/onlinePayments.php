@@ -2,6 +2,7 @@
 # online requests
 
 use App\Http\Controllers\OnlinePaymentController;
+use App\Http\Controllers\OnlineRequestController;
 
 Route::get('/online-requests', 'OnlineRequestController@index')
     ->name('online-requests.index');
@@ -53,3 +54,6 @@ Route::post(
 
 Route::get('/online-request/tree-felling', [OnlinePaymentController::class, 'onlineTreeFellingRequests'])
     ->name('online-tree-felling');
+
+Route::post('/new-applications', [OnlineRequestController::class, 'getNewApplicationsByStatus'])
+    ->name('new-applications-by-status');
