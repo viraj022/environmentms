@@ -11,6 +11,7 @@
   |
  */
 
+use App\Http\Controllers\CashierController;
 use App\Http\Controllers\ComplainController;
 use App\Http\Controllers\ReportController;
 use Doctrine\DBAL\Schema\View;
@@ -147,3 +148,8 @@ Route::post('/completed_files', [ReportController::class, 'viewCompletedFiles'])
 //complains report
 Route::get('/complains_report', [ComplainController::class, 'viewComplainReport'])
     ->name('complains-report');
+
+
+//cashier
+Route::get('/cashier',  [CashierController::class,  'newCashier'])
+->name('cashier-index');

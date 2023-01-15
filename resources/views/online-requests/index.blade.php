@@ -151,8 +151,7 @@
                                             @endphp
                                             @forelse ($completedNewApplications as $new)
                                                 @if (empty($new->onlineNewApplicationRequest->rejected_at))
-                                                    <tr
-                                                        class="{{ $new->onlineNewApplicationRequest->isRejected() ? 'table-danger' : '' }}">
+                                                    <tr>
                                                         <td>{{ $i++ }}</td>
                                                         <td>
                                                             {{ $new->onlineNewApplicationRequest->title }}
