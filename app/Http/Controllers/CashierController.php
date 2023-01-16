@@ -89,4 +89,11 @@ class CashierController extends Controller
         $payment = Payment::get();
         return $payment;
     }
+
+
+    #new cashier
+    public function newCashier()
+    {
+        return view('cashier.index');
+    }
 }
