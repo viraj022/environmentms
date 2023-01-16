@@ -17,6 +17,18 @@ class Transaction extends Model
     public const TRANS_TYPE_FINE = "EPL";
     public const TRANS_SITE_CLEARANCE = "Site";
     protected $appends = ['net_total', 'name'];
+    protected  $fillable = [
+        'status',
+        'cashier_name',
+        'invoice_no',
+        'canceled_at',
+        'billed_at',
+        'type',
+        'type_id',
+        'client_id',
+        'application_client_id',
+        'invoice_id',
+    ];
 
     public function getPaymentDetails()
     {

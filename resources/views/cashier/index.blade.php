@@ -225,6 +225,7 @@
                 function() {
                     loadPaymentsByPaymentTypes(loadPaymentPrice)
                 });
+            generateTable();
         });
 
 
@@ -243,17 +244,7 @@
 
 
         //create payment table
-        var paymentsTable = [];
         $(document).on('click', "#btn_add_to_payments", function() {
-            var data = {
-                Payment_type: $('#payment_type').val(),
-                category: $('#category option:selected').data('name'),
-                Payment_id: $('#category').val(),
-                qty: $('#qty').val(),
-                amount: $('#price').val(),
-            }
-            paymentsTable.push(data);
-
             // create if location storage key does not exists            
             if (!localStorage.getItem('transaction_items')) {
                 localStorage.setItem('transaction_items', '[]');
@@ -263,43 +254,60 @@
             let transactionItems = JSON.parse(localStorage.getItem('transaction_items'));
 
             transactionItems.push({
-                payment_type: data.Payment_type,
-                amount: data.amount,
-                category_id: data.Payment_id,
-                qty: data.qty
+                payment_type: $('#payment_type').val(),
+                payment_cat_name: $('#category option:selected').data('name'),
+                amount: $('#price').val(),
+                category_id: $('#category').val(),
+                qty: $('#qty').val()
             });
 
             localStorage.setItem('transaction_items', JSON.stringify(transactionItems));
 
-            generateTable(paymentsTable);
-
+            generateTable();
         });
 
 
-        function generateTable(array) {
+        function generateTable() {
             let total = 0;
+            let i = 1;
             $("#payments_tbl tbody").html('');
+
+            var array = JSON.parse(localStorage.getItem("transaction_items"));
+
             $.each(array, function(index, val) {
                 if (val) {
-                    $("#payments_tbl > tbody").append(`<tr><td>${index}</td><td>${val.category}</td><td>${val.qty}</td>
+                    $("#payments_tbl > tbody").append(`<tr><td>${i++}</td><td>${val.payment_cat_name}</td><td>${val.qty}</td>
                     <td>${val.amount}</td>
-                    <td><button type="button" class="btn btn-sm btn-danger btn-delete" value=` + index +
-                        `>Delete</button></td></tr>`);
+                    <td><button type="button" class="btn btn-sm btn-danger btn-delete" 
+                        value=` + index +`>Delete</button></td></tr>`);
                 }
                 total += Number(val.amount);
-                console.log(total);
-                $('#amount').val(total);
-            })
+
+                $('#amount').val(total.toFixed(2));
+            });
+
+            // let newTotal = array.reduce((a,b) => Number(a.amount)+Number(b.amount));
+
+            // console.log(`total is ${total}`);
+            // console.log(`new total is ${newTotal}`);
         }
 
         $(document).on('click', ".btn-delete", function(e) {
-            let rowVal = $(this).val();
-            delete paymentsTable[rowVal];
+            if(!confirm('Remove this item?')) {
+                return false;
+            }
 
-            paymentsTable = paymentsTable.filter(function(el) {
-                return el;
-            });
-            generateTable(paymentsTable);
+            var items = JSON.parse(localStorage.getItem("transaction_items"));
+            let rowVal = $(this).val();
+            
+            // remove the item at rowVal index
+            items.splice(rowVal, 1);
+            
+            // set modified items back to the local storage
+            localStorage.setItem("transaction_items", JSON.stringify(items));
+
+            // re-generate the table
+            generateTable();
         });
 
 
@@ -307,21 +315,33 @@
             let data = {
                 name: $('#name').val(),
                 telephone: $('#telephone').val(),
+                nic: $('#nic').val(),
                 invoice_date: $('#invoice_date').val(),
                 payment_method: $('#payment_method').val(),
                 payment_reference_number: $('#payment_reference_number').val(),
                 remark: $('#remark').val(),
                 amount: $('#amount').val(),
-                payments: paymentsTable,
             };
 
-            console.log(data);
+            localStorage.setItem("invoice_details", JSON.stringify(data));
 
-            ajaxRequest('post', '/cashier/invoice', data, function(response) {
+            let tranItems = JSON.parse(window.localStorage.getItem('transaction_items'));
+            let invoiceDet = JSON.parse(window.localStorage.getItem('invoice_details'));
+
+            let arrData = {
+                tranItems: tranItems,
+                invoiceDet: invoiceDet,
+            };
+            ajaxRequest('post', '/cashier/invoice', arrData , function(response) {
+                console.log(arrData);
                 if (typeof callback == 'function') {
                     callback();
                 }
             });
         }
+
+        $(document).on('click', "#btn_pay", function(e) {
+            addPayment();
+        });
     </script>
 @endsection

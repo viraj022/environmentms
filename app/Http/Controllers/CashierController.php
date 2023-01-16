@@ -7,8 +7,12 @@ use App\Transaction;
 use App\PaymentType;
 use App\Payment;
 use App\Helpers\LogActivity;
+use App\Invoice;
+use App\TransactionItem;
+use Auth;
+use FontLib\Table\Type\name;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Request;
 
 class CashierController extends Controller
 {
@@ -107,11 +111,55 @@ class CashierController extends Controller
 
     public function invoiceStore(Request $request)
     {
-        $requestData = $request->all();
-        $validator = Validator::make($requestData, [
-            ''
+        $data = $request->validate([
+            'tranItems' => 'required|array',
+            'tranItems.*' => 'required|array',
+            'tranItems.*.payment_type' => 'required|exists:payment_types,id',
+            'tranItems.*.payment_cat_name' => 'required|exists:payments,name',
+            'tranItems.*.amount' => 'required|numeric|gt:0',
+            'tranItems.*.category_id' => 'required|exists:payments,id',
+            'tranItems.*.qty' => 'required|integer|gt:0',
+            'invoiceDet' => 'required|array',
+            'invoiceDet.name' => 'required',
+            'invoiceDet.telephone' => 'nullable',
+            'invoiceDet.nic' => 'nullable',
+            'invoiceDet.invoice_date' => 'required',
+            'invoiceDet.payment_method' => 'required',
+            'invoiceDet.remark' => 'nullable',
+            'invoiceDet.amount' => 'required'
+        ], $request->all());
+
+        $invoice = Invoice::create([
+            'name' => $data['invoiceDet']['name'],
+            'contact' => $data['invoiceDet']['telephone'],
+            'nic' => $data['invoiceDet']['nic'],
+            'payment_method' => $data['invoiceDet']['payment_method'],
+            'payment_reference_number' => $data['invoiceDet']['telephone'],
+            'user_id' => Auth::user()->id,
+            'amount' => $data['invoiceDet']['amount'],
+            'invoice_date' => $data['invoiceDet']['invoice_date'],
+            'remark' => $data['invoiceDet']['remark'],
         ]);
 
-        $data = $validator->validated();
+        $transaction =  Transaction::create([
+            'status' => '1',
+            'type' => 'abc',
+            'invoice_id' =>  $invoice->id,
+        ]);
+
+        $transactionItems = [];
+
+        foreach ($data['tranItems'] as $transactionItem) {
+            $tranItems = new TransactionItem();
+            $tranItems->transaction_id  = $transaction->id;
+            $tranItems->payment_type_id  = $transactionItem['payment_type'];
+            $tranItems->qty  = $transactionItem['qty'];
+            $tranItems->amount  = $transactionItem['amount'];
+            $tranItems->payment_id  = $transactionItem['category_id'];
+            $tranItems->transaction_type  = 'abc';
+            $transactionItems[] =  $tranItems;
+        }
+
+        $transaction->transactionItems()->saveMany($transactionItems);
     }
 }
