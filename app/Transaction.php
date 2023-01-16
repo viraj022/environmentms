@@ -38,7 +38,7 @@ class Transaction extends Model
 
     public function applicationClient()
     {
-        return $this->belongsTo(ApplicationCliten::class, 'type_id', 'id');
+        return $this->belongsTo(ApplicationCliten::class, 'application_client_id', 'id');
     }
 
 
@@ -66,5 +66,10 @@ class Transaction extends Model
         } else {
             return Client::findOrFail($this->client_id)->first_name;
         }
+    }
+
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class);
     }
 }

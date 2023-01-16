@@ -7,6 +7,8 @@ use App\Transaction;
 use App\PaymentType;
 use App\Payment;
 use App\Helpers\LogActivity;
+use Illuminate\Support\Facades\Validator;
+use Request;
 
 class CashierController extends Controller
 {
@@ -95,5 +97,21 @@ class CashierController extends Controller
     public function newCashier()
     {
         return view('cashier.index');
+    }
+
+    public function getPaymentsByPaymentType($paymentType)
+    {
+        $payments = Payment::where('payment_type_id', $paymentType)->get();
+        return $payments;
+    }
+
+    public function invoiceStore(Request $request)
+    {
+        $requestData = $request->all();
+        $validator = Validator::make($requestData, [
+            ''
+        ]);
+
+        $data = $validator->validated();
     }
 }

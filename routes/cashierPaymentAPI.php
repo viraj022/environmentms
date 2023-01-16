@@ -165,3 +165,7 @@ Route::middleware('auth:api')->get('/payments', 'CashierController@getPayments')
     }
     ]
 */
+
+Route::middleware('auth:api')->get('/payments-by-type/{paymentType}', 'CashierController@getPaymentsByPaymentType');
+
+Route::middleware('auth:api')->post('/invoice', 'CashierController@invoiceStore');
