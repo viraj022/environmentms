@@ -45,7 +45,13 @@
                                     <td>{{ ucwords(str_replace('_', ' ', $renewal->renewal_type)) }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Certificate/License No.</th>
+                                    <th>
+                                        @if ($renewal->renewal_type == 'epl')
+                                            Epl Number
+                                        @else
+                                            Site Clearance Number
+                                        @endif
+                                    </th>
                                     <td class="clearfix">
                                         <strong id="certificate_number">{{ $renewal->certificate_number }}</strong>
 
@@ -77,7 +83,7 @@
                                 </tr>
                                 <tr>
                                     <th>Email</th>
-                                    <td>{{ $renewal->email_address }}</td>
+                                    <td>{{ $renewal->email }}</td>
                                 </tr>
                                 {{-- <tr>
                                     <th>Attachment</th>
@@ -101,15 +107,15 @@
                                         @endif
                                         @if (isset($renewal->road_map))
                                             <a href="{{ $attachmentUrl . '/storage/renewal-attachments/route-map/' . str_replace('public/', '', $renewal->road_map) }}"
-                                                class="btn btn-primary btn-sm mx-2" data-fancybox>Road Map</a>
+                                                class="btn btn-primary btn-sm" data-fancybox>Road Map</a>
                                         @endif
                                         @if (isset($renewal->deed_of_land))
                                             <a href="{{ $attachmentUrl . '/storage/renewal-attachments/deed-of-lands/' . str_replace('public/', '', $renewal->deed_of_land) }}"
-                                                class="btn btn-primary btn-sm mx-2" data-fancybox>Deed of Land</a>
+                                                class="btn btn-primary btn-sm" data-fancybox>Deed of Land</a> <br>
                                         @endif
                                         @if (isset($renewal->survey_plan))
                                             <a href="{{ $attachmentUrl . '/storage/renewal-attachments/survey-plans/' . str_replace('public/', '', $renewal->survey_plan) }}"
-                                                class="btn btn-primary btn-sm" data-fancybox>Survey Plan</a>
+                                                class="btn btn-primary btn-sm mt-2" data-fancybox>Survey Plan</a>
                                         @endif
                                     </td>
                                 </tr>
@@ -160,9 +166,13 @@
                                     </form>
                                 @else
                                     <div class="alert alert-warning">
-                                        Cannot find client by certificate number. Please assign client manually with file
-                                        number
-                                        below.
+                                        @if ($renewal->renewal_type == 'site_clearance')
+                                            Cannot find client by site clearance number. Please assign client manually with
+                                            file number below.
+                                        @else
+                                            Cannot find client by epl number. Please assign client manually with file number
+                                            below.
+                                        @endif
                                     </div>
 
                                     <div class="mb-2">

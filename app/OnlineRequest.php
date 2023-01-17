@@ -35,19 +35,19 @@ class OnlineRequest extends Model
      *
      * @return HasMany
      */
-    public function onlineNewApplicationRequests()
+    public function onlineNewApplicationRequest()
     {
-        return $this->hasMany(OnlineNewApplicationRequest::class);
+        return $this->hasOne(OnlineNewApplicationRequest::class);
     }
 
     public function applicationRequest()
     {
         if ($this->request_type == 'renewal') {
             // search for renewal request
-            return OnlineRenewalApplicationRequest::where('id', $this->request_id)->firstOrFail();
+            return OnlineRenewalApplicationRequest::where('id', $this->online_request_id)->firstOrFail();
         } elseif ($this->request_type == 'new') {
             // search for new application request
-            return OnlineNewApplicationRequest::where('id', $this->request_id)->firstOrFail();
+            return OnlineNewApplicationRequest::where('id', $this->online_request_id)->firstOrFail();
         } elseif ($this->request_type == 'payment') {
             return Transaction::whereId($this->request_id)
                 ->with(

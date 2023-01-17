@@ -280,21 +280,7 @@
                         if (r.id == 1) {
                             ITEM_LIST = [];
                             selectedPayments_table(ITEM_LIST);
-                            $.ajax({
-                                url: 'http://127.0.0.1:8081/hansana',
-                                headers: {
-                                    "Authorization": "Bearer " + $('meta[name=api-token]')
-                                        .attr("content"),
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                                        'content'),
-                                    "Accept": "application/json"
-                                },
-                                data: {
-                                    code: r.code,
-                                    name: r.name
-                                },
-                                success: function(result) {}
-                            });
+                    
                             loadEPL_details(EPL_ID, function(parameters) {
                                 loadEPL_methodCombo(function() {
                                     if (parameters.inspection.status ==
@@ -312,21 +298,7 @@
                         if (r.id == 1) {
                             ITEM_LIST = [];
                             selectedPayments_table(ITEM_LIST);
-                            $.ajax({
-                                url: 'http://127.0.0.1:8081/hansana',
-                                headers: {
-                                    "Authorization": "Bearer " + $('meta[name=api-token]')
-                                        .attr("content"),
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                                        'content'),
-                                    "Accept": "application/json"
-                                },
-                                data: {
-                                    code: r.code,
-                                    name: r.name
-                                },
-                                success: function(result) {}
-                            });
+                            
                             loadSiteClear_details(EPL_ID, function(parameters) {
                                 loadEPL_methodCombo(function() {
                                     if (parameters.inspection.status ==
