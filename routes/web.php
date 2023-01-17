@@ -151,5 +151,10 @@ Route::get('/complains_report', [ComplainController::class, 'viewComplainReport'
 
 
 //cashier
-Route::get('/cashier',  [CashierController::class,  'newCashier'])
-->name('cashier-index');
+Route::middleware('auth')->group(function () {
+    Route::get('/cashier', [CashierController::class,  'newCashier'])
+        ->name('cashier-index');
+
+    Route::get('/view-invoice/{invoice}', 'CashierController@viewInvoice')
+        ->name('view-invoice');
+});

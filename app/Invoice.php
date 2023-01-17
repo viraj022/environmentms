@@ -7,17 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 class Invoice extends Model
 {
     protected $fillable = [
+        'name',
+        'contact',
+        'nic',
         'invoice_number',
         'payment_method',
-        'cheque_number',
+        'payment_reference_number',
         'user_id',
         'amount',
         'invoice_date',
-        'remark'
+        'remark',
+        'status'
     ];
 
-    public function transactions()
+    public function transaction()
     {
-        return $this->hasMany(transactions::class);
+        return $this->hasOne(Transaction::class);
     }
 }

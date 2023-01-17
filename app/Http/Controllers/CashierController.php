@@ -11,6 +11,7 @@ use App\Invoice;
 use App\TransactionItem;
 use Auth;
 use FontLib\Table\Type\name;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -129,6 +130,20 @@ class CashierController extends Controller
             'invoiceDet.amount' => 'required'
         ], $request->all());
 
+        $year = Carbon::now()->format('Y');
+        $number = 1;
+
+        $lastInvoiceNumber = Invoice::select('id')
+            ->whereYear('created_at', $year)
+            ->orderBy('created_at', 'desc')
+            ->first();
+        if ($lastInvoiceNumber) {
+            $number = $lastInvoiceNumber->id + 1;
+            $invoiceNo =  "Invoice/" . $number . "/" . $year;
+        }
+
+        $invoiceNo = "Invoice/" . $number . "/" . $year;
+
         $invoice = Invoice::create([
             'name' => $data['invoiceDet']['name'],
             'contact' => $data['invoiceDet']['telephone'],
@@ -139,12 +154,15 @@ class CashierController extends Controller
             'amount' => $data['invoiceDet']['amount'],
             'invoice_date' => $data['invoiceDet']['invoice_date'],
             'remark' => $data['invoiceDet']['remark'],
+            'invoice_number' => $invoiceNo,
         ]);
 
         $transaction =  Transaction::create([
-            'status' => '1',
-            'type' => 'abc',
+            'status' => '0',
+            'cashier_name' => Auth::user()->user_name,
+            'type' => 'application_fee',
             'invoice_id' =>  $invoice->id,
+            'invoice_no' => $invoiceNo,
         ]);
 
         $transactionItems = [];
@@ -156,10 +174,51 @@ class CashierController extends Controller
             $tranItems->qty  = $transactionItem['qty'];
             $tranItems->amount  = $transactionItem['amount'];
             $tranItems->payment_id  = $transactionItem['category_id'];
-            $tranItems->transaction_type  = 'abc';
+            $tranItems->transaction_type  = 'application_fee';
             $transactionItems[] =  $tranItems;
         }
 
-        $transaction->transactionItems()->saveMany($transactionItems);
+        $itemsStore =  $transaction->transactionItems()->saveMany($transactionItems);
+
+        if ($itemsStore == true) {
+            return array('status' => 1, 'msg' => 'Invoice added successful');
+        } else {
+            return array('status' => 0, 'msg' => 'Invoice adding unsuccessful');
+        }
+    }
+
+    public function loadTransactions()
+    {
+        // $invoices = Invoice::whereHas('transaction', function (Builder $query) {
+        //     $query->whereNull('canceled_at');
+        // })->get();
+
+        $transactions = Transaction::with('transactionItems')->where('status', 0)->whereNull('canceled_at')->get();
+        dd($transactions);
+
+        return $transactions;
+    }
+
+    public function cancelInvoice(Invoice $invoice)
+    {
+        $transaction = Transaction::where('invoice_id', $invoice->id)->first();
+        $cancelTransaction = $transaction->update([
+            "canceled_at" => Carbon::now(),
+        ]);
+
+        if ($cancelTransaction == true) {
+            return array('status' => 1, 'msg' => 'Invoice canceled');
+        } else {
+            return array('status' => 0, 'msg' => 'Invoice cancel unsuccessful');
+        }
+    }
+
+    public function viewInvoice(Invoice $invoice)
+    {
+        $transaction = Transaction::where('invoice_id', $invoice->id)->first();
+
+        $transactionItems = TransactionItem::where('transaction_id', $transaction->id)->get();
+
+        return view('cashier.invoice-view', compact('invoice', 'transaction', 'transactionItems'));
     }
 }
