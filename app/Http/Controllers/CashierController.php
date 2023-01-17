@@ -193,23 +193,25 @@ class CashierController extends Controller
         //     $query->whereNull('canceled_at');
         // })->get();
 
-        $transactions = Transaction::with('transactionItems')->where('status', 0)->whereNull('canceled_at')->get();
-        dd($transactions);
+        $transactions = Transaction::with('transactionItems')
+        ->where('status', 0)
+        ->whereNull('canceled_at')
+        ->get();
 
         return $transactions;
     }
 
-    public function cancelInvoice(Invoice $invoice)
+    public function cancelTransaction(Transaction $transaction)
     {
-        $transaction = Transaction::where('invoice_id', $invoice->id)->first();
         $cancelTransaction = $transaction->update([
             "canceled_at" => Carbon::now(),
+            "status"  =>  '3',
         ]);
 
         if ($cancelTransaction == true) {
-            return array('status' => 1, 'msg' => 'Invoice canceled');
+            return array('status' => 1, 'msg' => 'Transaction canceled');
         } else {
-            return array('status' => 0, 'msg' => 'Invoice cancel unsuccessful');
+            return array('status' => 0, 'msg' => 'Transaction cancel unsuccessful');
         }
     }
 
@@ -220,5 +222,50 @@ class CashierController extends Controller
         $transactionItems = TransactionItem::where('transaction_id', $transaction->id)->get();
 
         return view('cashier.invoice-view', compact('invoice', 'transaction', 'transactionItems'));
+    }
+
+    public function generateInvoice(Request $request)
+    {
+        $data = $request->validate([
+            'transaction' => 'required|array',
+            'transaction.*' => 'required|array',
+            'transaction.*.id' => 'required|exists:transactions,id',
+            'tranItems.*.total' => 'required|numeric|gt:0',
+        ], $request->all());
+
+        $year = Carbon::now()->format('Y');
+        $number = 1;
+
+        foreach ($data['transaction'] as $transaction) {
+            $lastInvoiceNumber = Invoice::select('id')
+            ->whereYear('created_at', $year)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+            if ($lastInvoiceNumber) {
+                $number = $lastInvoiceNumber->id + 1;
+                $invoiceNo =  "Invoice/" . $number . "/" . $year;
+            }
+
+            $invoiceNo =  "Invoice/" . $number . "/" . $year;
+            
+            $transactionDetails = Transaction::where('id', $transaction['id'])->first();
+
+            $invoice = new Invoice();
+            $invoice->name  = $transactionDetails->client->first_name;
+            $invoice->contact  = $transactionDetails->client->contact_no;
+            $invoice->nic  = $transactionDetails->client->nic;
+            $invoice->invoice_number  = $invoiceNo;
+            $invoice->user_id  = Auth::user()->id;
+            $invoice->amount  = $transaction['total'];
+            $invoice->invoice_date =  Carbon::now();
+            $invoice->save();
+
+            $transactionDetails->update([
+                "invoice_id" =>  $invoice->id,
+                'status' =>  '1',
+            ]);
+
+        }
     }
 }

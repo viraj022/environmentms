@@ -221,7 +221,7 @@
                                 aria-labelledby="custom-tabs-two-profile-tab">
                                 <div class="container-fluid">
                                     <div class="row">
-                                        <div class="col-lg-12">
+                                        <div class="col-lg-6">
                                             <div class="card card-body">
                                                 <table class="table" id="transactions_table">
                                                     <thead>
@@ -237,6 +237,36 @@
 
                                                     </tbody>
                                                 </table>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="card">
+                                                <div class="card-header bg-secondary">
+                                                    Invoice Generate
+                                                </div>
+                                                <div class="card-body">
+                                                    <table class="table" id="generate_invoice_tbl">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Transaction Id</th>
+                                                                <th>Client Name</th>
+                                                                <th>Amount</th>
+                                                                <th>Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        </tbody>
+                                                        <tfoot>
+                                                            
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <button type="button" class="btn btn-success float-right" id="generate_invoices">Gerenate
+                                                        Invoice</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -300,6 +330,7 @@
                 });
             generateTable();
             loadTransactionsTable();
+            invoiceGenerateTable();
         });
 
 
@@ -430,46 +461,133 @@
 
         //load all transaction records
         function loadTransactionsTable() {
-            var url = "/cashier/get-transactions";
+            var url = "{{ route('load-transactions-table') }}";
+
             ajaxRequest("GET", url, null, function(response) {
                 let tr = '';
-                let i = 1;
-                response.forEach(function(transaction) {
-                    console.log(transaction);
+                let i = 0;
+                $.each(response, function(i, transaction) {
                     tr += `<tr data-row_id = "${transaction.id}">
-                        <td>${i++}</td>
+                        <td>${++i}</td>
                         <td>${transaction.id}</td>
-                        <td>${transaction.id}</td>
-                        <td>${transaction.id}</td>
-                        <button class ="btn btn-info btn-sm btn-cancel" data-invoice_id=${transaction.id}> Cancel </button></td>
+                        <td data-transaction_name=${transaction.name}>${transaction.name}</td>
+                        <td data-net_total=${transaction.net_total}>${transaction.net_total}</td>
+                        <td>
+                            <button class ="btn btn-dark btn-sm btn-transaction-add" data-invoice_id=${transaction.id}> Add </button> <br>
+                            <button class ="btn btn-info btn-sm btn-cancel mt-2" data-invoice_id=${transaction.id}> Cancel </button> 
+                        </td>
                     </tr>`;
-                });
+                })
                 $("#transactions_table > tbody").html(tr);
             });
         }
 
-        // $(document).on('click', ".btn-cancel", function(e) {
-        //     alert('Are you sure you want to cancel this invoice?');
-        //     let id = $(this).data('invoice_id');
-        //     var row = $(`tr[data-row_id=` + id + `]`);
-        //     var url = "/cashier/cancel-invoices/" + id;
+        $(document).on('click', ".btn-cancel", function(e) {
+            if (!confirm('Are you sure you want to cancel this transaction?')) {
+                return false;
+            }
+            let id = $(this).data('invoice_id');
+            var row = $(`tr[data-row_id=` + id + `]`);
+            var url = "/cancel-transaction/" + id;
 
-        //     ajaxRequest('post', url, null, function(response) {
-        //         if (response.status == 1) {
-        //             swal.fire(
-        //                 "success",
-        //                 "Invoice canceled!",
-        //                 "success"
-        //             );
-        //             row.remove();
-        //         } else {
-        //             swal.fire(
-        //                 "failed",
-        //                 "Invoice cancel unsuccessful!",
-        //                 "warning"
-        //             );
-        //         }
-        //     });
-        // });
+            ajaxRequest('post', url, null, function(response) {
+                if (response.status == 1) {
+                    swal.fire(
+                        "success",
+                        "Transaction canceled!",
+                        "success"
+                    );
+                    row.remove();
+                } else {
+                    swal.fire(
+                        "failed",
+                        "Transaction cancel unsuccessful!",
+                        "warning"
+                    );
+                }
+            });
+        });
+
+        $(document).on('click', ".btn-transaction-add", function() {
+            // create if location storage key does not exists            
+            if (!localStorage.getItem('generate_invoice_list')) {
+                localStorage.setItem('generate_invoice_list', '[]');
+            }
+
+            // get the transactions data from local storage
+            let transactions = JSON.parse(localStorage.getItem('generate_invoice_list'));
+
+            var currentRow = $(this).closest("tr");
+
+            var transaction_id = currentRow.find("td:eq(1)").text();
+            var name = currentRow.find("td:eq(2)").text();
+            var amount = currentRow.find("td:eq(3)").text();
+
+            transactions.push({
+                id: transaction_id,
+                name: name,
+                total: amount,
+            });
+
+            localStorage.setItem('generate_invoice_list', JSON.stringify(transactions));
+            $("#generate_invoice_tbl tfoot").html('');
+            invoiceGenerateTable();
+        });
+
+        function invoiceGenerateTable() {
+            let total = 0;
+            let i = 1;
+            $("#generate_invoice_tbl tbody").html('');
+
+            var array = JSON.parse(localStorage.getItem("generate_invoice_list"));
+
+            $.each(array, function(index, val) {
+                if (val) {
+                    $("#generate_invoice_tbl > tbody").append(`<tr>
+                    <td>${i++}</td><td>${val.id}</td><td>${val.name}</td>
+                    <td>${val.total}</td>
+                    <td><button type="button" class="btn btn-sm btn-danger btn-delete-invoice-gen" 
+                        value=` + index + `>Delete</button></td>
+                    </tr>`);
+                }
+                total += Number(val.total);
+
+            });
+            $("#generate_invoice_tbl > tfoot").append(`<tr>
+                <td colspan="3" style="text-align: center">Total</td>
+                <td id="gene_total_amount">${total}</td>
+            </tr>`);
+        }
+
+        $(document).on('click', ".btn-delete-invoice-gen", function(e) {
+            if (!confirm('Remove this item?')) {
+                return false;
+            }
+
+            var transactions = JSON.parse(localStorage.getItem("generate_invoice_list"));
+            let rowVal = $(this).val();
+
+            // remove the item at rowVal index
+            transactions.splice(rowVal, 1);
+
+            // set modified transactions back to the local storage
+            localStorage.setItem("generate_invoice_list", JSON.stringify(transactions));
+
+            // remove tfoot and re-generate the table
+            $("#generate_invoice_tbl tfoot").html('');
+            invoiceGenerateTable();
+        });
+
+        $(document).on('click', "#generate_invoices", function(e) {
+            var transactions = JSON.parse(localStorage.getItem("generate_invoice_list"));
+
+            let transactionData = {
+                transaction: transactions
+            };
+
+            ajaxRequest('post', '/generate-invoices', transactionData, function(response) {
+                
+            });
+        });
     </script>
 @endsection

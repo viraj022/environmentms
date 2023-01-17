@@ -157,4 +157,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/view-invoice/{invoice}', 'CashierController@viewInvoice')
         ->name('view-invoice');
+
+    Route::get('/get-transactions', 'CashierController@loadTransactions')
+        ->name('load-transactions-table');
+
+    Route::post('/cancel-transaction/{transaction}', 'CashierController@cancelTransaction');
+
+    Route::post('/generate-invoices', 'CashierController@generateInvoice');
 });
