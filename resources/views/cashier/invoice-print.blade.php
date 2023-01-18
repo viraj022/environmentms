@@ -35,6 +35,10 @@
             text-align: center;
         }
 
+        .text-end {
+            text-align: right;
+        }
+
         @media print {
 
             /* ISO Paper Size */

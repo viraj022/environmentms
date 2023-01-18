@@ -22,6 +22,11 @@
                                     href="#custom-tabs-two-profile" role="tab" aria-controls="custom-tabs-two-profile"
                                     aria-selected="false">Cashier 2</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
+                                    href="#custom-tabs-three-profile" role="tab"
+                                    aria-controls="custom-tabs-three-profile" aria-selected="false">Cashier 3</a>
+                            </li>
                         </ul>
                     </div>
                     <div class="card-body">
@@ -116,6 +121,31 @@
                                         <div class="container-fluid">
                                             <div class="row">
                                                 <div class="col-lg-12">
+                                                    <div class="card card-body">
+                                                        <table class="table" id="industry_tran_table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Transaction Id</th>
+                                                                    <th>Client Name</th>
+                                                                    <th>Amount</th>
+                                                                    <th>Actions</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel"
+                                        aria-labelledby="custom-tabs-three-profile-tab">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-12">
                                                     <div class="card card-body" style="height: 400px; overflow-y:scroll">
                                                         <table class="table" id="transactions_table">
                                                             <thead>
@@ -167,10 +197,10 @@
                             <div class="col-lg-6">
                                 <div class="card">
                                     <div class="card-title text-center mt-2">
-                                        <h5>Customer Details</h5>
                                     </div>
                                     <div class="card-body">
                                         <form action="" method="post">
+                                            <input type="text" hidden value="" id="transactionId">
                                             <div class="row mb-3">
                                                 <div class="col-lg-4">
                                                     <label for="name">Name</label>
@@ -204,7 +234,7 @@
                                                 </div>
                                                 <div class="col-lg-8">
                                                     <input type="date" name="invoice_date" id="invoice_date"
-                                                        class="form-control">
+                                                        class="form-control" value="today()">
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
@@ -250,7 +280,8 @@
                                             </label>
                                         </div>
                                         <div class="col-lg-8 ">
-                                            <input type="text" name="amount" id="amount" class="form-control">
+                                            <input type="text" name="amount" id="amount" class="form-control"
+                                                readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -272,51 +303,8 @@
 @endsection
 
 @section('pageScripts')
+<script src="{{ asset('js/Cashier/cashier.js') }}"></script>
     <script>
-        //load payment types
-        function loadPaymentTypes(callback) {
-            ajaxRequest('get', '/cashier/payment_types', null, function(response) {
-                let options = '';
-
-                $.each(response, function(index, value) {
-                    options += `<option value="` + value.id + `">` + value.name + `</option>`;
-                })
-                $('#payment_type').html(options);
-
-                if (typeof callback == 'function') {
-                    callback();
-                }
-            });
-        }
-
-        //load payments by payment type
-        function loadPaymentsByPaymentTypes(callback) {
-            let payment_type = $('#payment_type').val();
-
-            ajaxRequest('get', '/cashier/payments-by-type/' + payment_type, null, function(response) {
-                let options = '';
-
-                $.each(response, function(index, value) {
-                    options +=
-                        `<option value="${value.id}" data-price="${value.amount}" data-name="${value.name}"> ${value.name} </option>`;
-                })
-                $('#category').html(options);
-
-                if (typeof callback == 'function') {
-                    callback();
-                }
-            });
-        }
-
-        //load payment price by payments
-        function loadPaymentPrice() {
-            let price = $('#category option:selected').data('price');
-            $('#price').val(price);
-        }
-
-        $('#payment_type').change(loadPaymentsByPaymentTypes);
-        $('#category').change(loadPaymentPrice);
-
         //get total amount
         function total() {
             let price = $('#category option:selected').data('price');
@@ -356,6 +344,8 @@
 
             localStorage.setItem('new_application_transaction_items', JSON.stringify(transactionItems));
 
+            // clear tfoot
+            $("#industry_payments_tbl tfoot").html('');
             generateNewApplicationTable();
         });
 
@@ -415,6 +405,7 @@
                 payment_reference_number: $('#payment_reference_number').val(),
                 remark: $('#remark').val(),
                 amount: $('#amount').val(),
+                transactionsId: $('#transactionId').val(),
             };
 
             localStorage.setItem("invoice_details", JSON.stringify(data));
@@ -437,6 +428,10 @@
                     );
                     localStorage.removeItem('new_application_transaction_items');
                     localStorage.removeItem('invoice_details');
+                    localStorage.removeItem('industry_transactions');
+                    $("#industry_payments_tbl tfoot").html('');
+                    selectedIndustryTransactionRecordsTbl();
+                    clearClientDetails();
 
                     window.open('{{ route('print-invoice', '') }}/' + response.data.invoice_id);
                 } else {
@@ -453,6 +448,7 @@
             addPayment();
             loadAllIndustryTransactionsTable();
             generateNewApplicationTable();
+            $("#industry_payments_tbl tfoot").html('');
             selectedIndustryTransactionRecordsTbl();
         });
 
@@ -470,8 +466,8 @@
                         <td data-transaction_name=${transaction.name}>${transaction.name}</td>
                         <td data-net_total=${transaction.net_total}>${transaction.net_total}</td>
                         <td>
-                            <button class ="btn btn-dark btn-sm btn-old-transaction-add" data-invoice_id=${transaction.id}> Add </button> <br>
-                            <button class ="btn btn-info btn-sm btn-cancel mt-2" data-invoice_id=${transaction.id}> Cancel </button> 
+                            <button class ="btn btn-dark btn-xs btn-old-transaction-add" data-invoice_id=${transaction.id}> Add </button> <br>
+                            <button class ="btn btn-info btn-xs btn-cancel mt-2" data-invoice_id=${transaction.id}> Cancel </button> 
                         </td>
                     </tr>`;
                 })
@@ -566,9 +562,6 @@
             </tr>`);
 
             $('#amount').val(total.toFixed(2));
-
-            // clear tfoot
-            //$("#industry_payments_tbl tfoot").html('');
         }
 
         //remove selected industry transaction record
@@ -588,6 +581,58 @@
             selectedIndustryTransactionRecordsTbl();
         });
 
+
+        //load all industry transaction records to pay single transaction
+        function loadAllIndustryTransactionsTbleToPay() {
+            var url = "{{ route('load-transactions-table') }}";
+
+            ajaxRequest("GET", url, null, function(response) {
+                let tr = '';
+                let i = 0;
+                $.each(response, function(i, transaction) {
+                    tr += `<tr data-row_id = "${transaction.id}">
+                        <td>${++i}</td>
+                        <td>${transaction.id}</td>
+                        <td>${transaction.name}</td>
+                        <td>${transaction.net_total}</td>
+                        <td>
+                            <button class ="btn btn-danger btn-xs btn-old-transaction-pay" 
+                            data-transaction_name=${transaction.name}
+                            data-nic=${transaction.nic} 
+                            data-contact_no=${transaction.contact_no} 
+                            data-invoice_id=${transaction.id} 
+                            data-net_total=${transaction.net_total}> Pay </button> 
+                            <br>
+                            <button class ="btn btn-info btn-xs btn-cancel mt-2" data-invoice_id=${transaction.id}> Cancel </button> 
+                        </td>
+                    </tr>`;
+                })
+                $('#industry_tran_table > tbody').html(tr);
+                $('#industry_tran_table').DataTable();
+            });
+        }
+
+        $(document).on('click', ".btn-old-transaction-pay", function(e) {
+            let name = $(this).data('transaction_name');
+            let nic = $(this).data('nic');
+            let telephone = $(this).data('contact_no');
+            let amount = $(this).data('net_total');
+            let transactionId = $(this).data('invoice_id');
+
+            $('#name').val(name);
+            $('#nic').val(nic);
+            $('#telephone').val(telephone);
+            $('#amount').val(amount);
+            $('#transactionId').val(transactionId);
+        });
+
+        function clearClientDetails() {
+            $("#name, #nic,  #telephone,  #amount,  #transactionId").val('');
+        }
+        $(document).on('click', "#btn_clear_customer_data", function(e) {
+            clearClientDetails();
+        });
+
         $(function() {
             loadPaymentTypes(
                 function() {
@@ -596,6 +641,7 @@
             generateNewApplicationTable();
             loadAllIndustryTransactionsTable();
             selectedIndustryTransactionRecordsTbl();
+            loadAllIndustryTransactionsTbleToPay();
         });
     </script>
 @endsection

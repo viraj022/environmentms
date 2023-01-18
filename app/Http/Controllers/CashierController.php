@@ -121,7 +121,7 @@ class CashierController extends Controller
             'invoiceDet.payment_method' => 'required',
             'invoiceDet.remark' => 'nullable',
             'invoiceDet.amount' => 'required',
-
+            'invoiceDet.transactionsId' => 'nullable|exists:transactions,id',
         ];
 
         // add validation rules if industry transacitons are present
@@ -218,20 +218,23 @@ class CashierController extends Controller
                 return array('status' => 0, 'msg' => 'Invoice adding unsuccessful');
             }
         }
+
+        if (!empty($data['invoiceDet']['transactionsId'])) {
+            if ($invoice == true) {
+                $transactionDetails = Transaction::where('id', $data['invoiceDet']['transactionsId'])->first();
+                $transactionUpdate = $transactionDetails->update([
+                    "invoice_id" =>  $invoice->id,
+                    'status' =>  '1',
+                ]);
+                return array('status' => 1, 'msg' => 'Invoice added successful', 'data' => ['invoice_id' => $invoice->id]);
+            } else {
+                return array('status' => 0, 'msg' => 'Invoice adding unsuccessful');
+            }
+        }
     }
 
     public function loadTransactions()
     {
-        // $invoices = Invoice::whereHas('transaction', function (Builder $query) {
-        //     $query->whereNull('canceled_at');
-        // })->get();
-
-        // $transactions = Transaction::with('transactionItems')->whereHas('client', function (Builder $query) {
-        //     $query->whereNull('deleted_at');
-        // })->where('status', 0)
-        //     ->whereNull('canceled_at')->where('id', 2902)
-        //     ->get();
-
         $transactions = Transaction::with('transactionItems')
             ->where('status', 0)
             ->whereNull('canceled_at')
@@ -267,7 +270,6 @@ class CashierController extends Controller
     public function printInvoice(Invoice $invoice)
     {
         $transaction = Transaction::with('transactionItems')->where('invoice_id', $invoice->id)->first();
-
         return view('cashier.invoice-print', compact('invoice', 'transaction'));
     }
 }

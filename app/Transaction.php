@@ -16,7 +16,7 @@ class Transaction extends Model
     public const TRANS_TYPE_EPL = "EPL";
     public const TRANS_TYPE_FINE = "EPL";
     public const TRANS_SITE_CLEARANCE = "Site";
-    protected $appends = ['net_total', 'name'];
+    protected $appends = ['net_total', 'name',  'contact_no',  'nic'];
     protected  $fillable = [
         'status',
         'cashier_name',
@@ -79,6 +79,28 @@ class Transaction extends Model
         } else {
             $data = Client::find($this->client_id);
             return (!empty($data)) ? $data->first_name : "N/A";
+        }
+    }
+
+    public function getContactNoAttribute()
+    {
+        if ($this->type == 'application_fee') {
+            $data = ApplicationCliten::find($this->type_id);
+            return (!empty($data)) ? $data->contact_no : "N/A";
+        } else {
+            $data = Client::find($this->client_id);
+            return (!empty($data)) ? $data->contact_no : "N/A";
+        }
+    }
+
+    public function getNicAttribute()
+    {
+        if ($this->type == 'application_fee') {
+            $data = ApplicationCliten::find($this->type_id);
+            return (!empty($data)) ? $data->nic : "N/A";
+        } else {
+            $data = Client::find($this->client_id);
+            return (!empty($data)) ? $data->nic : "N/A";
         }
     }
 
