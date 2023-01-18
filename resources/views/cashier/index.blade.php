@@ -7,15 +7,6 @@
 
 @section('content')
     <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-12 col-sm-6">
-                    <h1>Cashier</h1>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="content-header">
         <div class="col-lg-12">
             <div class="col-md-12">
                 <div class="card card-success card-outline card-tabs">
@@ -34,241 +25,241 @@
                         </ul>
                     </div>
                     <div class="card-body">
-                        <div class="tab-content" id="custom-tabs-two-tabContent">
-                            <div class="tab-pane fade active show" id="custom-tabs-two-home" role="tabpanel"
-                                aria-labelledby="custom-tabs-two-home-tab">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="card">
-                                                <div class="card-header text-center bg-primary">
-                                                    <h6 class="card-title">Payment Details</h6>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-4">
-                                                            <label for="payment_type">Payment Type</label>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="tab-content" id="custom-tabs-two-tabContent">
+                                    <div class="tab-pane fade active show" id="custom-tabs-two-home" role="tabpanel"
+                                        aria-labelledby="custom-tabs-two-home-tab">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="card">
+                                                        <div class="card-header text-center bg-primary">
+                                                            <h6 class="card-title">Payment Details</h6>
                                                         </div>
-                                                        <div class="col-lg-8">
-                                                            <select class="form-select form-control"
-                                                                aria-label="Default select example" id="payment_type"
-                                                                name="payment_type">
-                                                            </select>
+                                                        <div class="card-body">
+                                                            <div class="row mb-3">
+                                                                <div class="col-lg-4">
+                                                                    <label for="payment_type">Payment Type</label>
+                                                                </div>
+                                                                <div class="col-lg-8">
+                                                                    <select class="form-select form-control"
+                                                                        aria-label="Default select example"
+                                                                        id="payment_type" name="payment_type">
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <div class="col-lg-4">
+                                                                    <label for="category">Category</label>
+                                                                </div>
+                                                                <div class="col-lg-8">
+                                                                    <select class="form-select form-control"
+                                                                        aria-label="Default select example" id="category"
+                                                                        name="category">
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <div class="col-lg-4">
+                                                                    <label for="qty">Quantity</label>
+                                                                </div>
+                                                                <div class="col-lg-8">
+                                                                    <input type="number" name="qty" id="qty"
+                                                                        class="form-control" value="1">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <div class="col-lg-4">
+                                                                    <label for="price">Amount</label>
+                                                                </div>
+                                                                <div class="col-lg-8">
+                                                                    <input type="number" name="price" id="price"
+                                                                        class="form-control">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer">
+                                                            <div class="float-right">
+                                                                <button class="btn btn-sm btn-dark" type="button"
+                                                                    id="btn_add_new_application_payment">Add</button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-4">
-                                                            <label for="category">Category</label>
+                                                    <div class="card mt-3">
+                                                        <div class="card-header bg-secondary">
+                                                            <h6 class="card-title">Application Invoice Generate</h6>
                                                         </div>
-                                                        <div class="col-lg-8">
-                                                            <select class="form-select form-control"
-                                                                aria-label="Default select example" id="category"
-                                                                name="category">
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-4">
-                                                            <label for="qty">Quantity</label>
-                                                        </div>
-                                                        <div class="col-lg-8">
-                                                            <input type="number" name="qty" id="qty"
-                                                                class="form-control" value="1">
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-4">
-                                                            <label for="price">Amount</label>
-                                                        </div>
-                                                        <div class="col-lg-8">
-                                                            <input type="number" name="price" id="price"
-                                                                class="form-control">
+                                                        <div class="card-body">
+                                                            <table class="table table-striped table-bordered "
+                                                                id="new_application_payments_tbl">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th style="width:5%;">#</th>
+                                                                        <th style="width:40%;">Payment</th>
+                                                                        <th style="width:10%;">Quantity</th>
+                                                                        <th style="width:15%;">Amount</th>
+                                                                        <th class="" style="width:10%;">Actions</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                </tbody>
+                                                            </table>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="card-footer">
-                                                    <div class="float-right">
-                                                        <button class="btn btn-sm btn-dark" type="button"
-                                                            id="btn_add_to_payments">Add</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card  mt-3">
-                                                <div class="card-header bg-secondary">
-                                                    <h6 class="card-title">Payment Details</h6>
-                                                </div>
-                                                <div class="card-body">
-                                                    <table class="table table-striped table-bordered " id="payments_tbl">
-                                                        <thead>
-                                                            <tr>
-                                                                <th style="width:5%;">#</th>
-                                                                <th style="width:40%;">Payment</th>
-                                                                <th style="width:10%;">Quantity</th>
-                                                                <th style="width:15%;">Amount</th>
-                                                                <th class="" style="width:10%;">Actions</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        </tbody>
-                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
-                                            <div class="card">
-                                                <div class="card-title text-center mt-2">
-                                                    <h5>Customer Details</h5>
-                                                </div>
-                                                <div class="card-body">
-                                                    <form action="" method="post">
-                                                        <div class="row mb-3">
-                                                            <div class="col-lg-4">
-                                                                <label for="name">Name</label>
-                                                            </div>
-                                                            <div class="col-lg-8">
-                                                                <input type="text" name="name" id="name"
-                                                                    class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-lg-4">
-                                                                <label for="nic">NIC</label>
-                                                            </div>
-                                                            <div class="col-lg-8">
-                                                                <input type="text" name="nic" id="nic"
-                                                                    class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-lg-4">
-                                                                <label for="telephone">Contact</label>
-                                                            </div>
-                                                            <div class="col-lg-8">
-                                                                <input type="text" name="telephone" id="telephone"
-                                                                    class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-lg-4">
-                                                                <label for="invoice_date">Date</label>
-                                                            </div>
-                                                            <div class="col-lg-8">
-                                                                <input type="date" name="invoice_date"
-                                                                    id="invoice_date" class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-lg-4">
-                                                                <label for="payment_method">Payment Type</label>
-                                                            </div>
-                                                            <div class="col-lg-8">
-                                                                <select class="form-select  form-control"
-                                                                    aria-label="Default select example"
-                                                                    id="payment_method" name="payment_method">
-                                                                    <option value="cash">Cash</option>
-                                                                    <option value="cheque">Cheque</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-lg-4">
-                                                                <label for="payment_reference_number">Payment Reference
-                                                                    Number</label>
-                                                            </div>
-                                                            <div class="col-lg-8">
-                                                                <input type="text" name="payment_reference_number"
-                                                                    id="payment_reference_number" class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-lg-4">
-                                                                <label for="remark">Remark</label>
-                                                            </div>
-                                                            <div class="col-lg-8">
-                                                                <input type="text" name="remark" id="remark"
-                                                                    class="form-control">
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                            <div class="card-footer">
-                                                <div class="row">
-                                                    <div class="col-lg-4">
-                                                        <label for="total">
-                                                            Total
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-lg-8 ">
-                                                        <input type="text" name="amount" id="amount"
-                                                            class="form-control">
+                                    </div>
+                                    <div class="tab-pane fade" id="custom-tabs-two-profile" role="tabpanel"
+                                        aria-labelledby="custom-tabs-two-profile-tab">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="card card-body" style="height: 400px; overflow-y:scroll">
+                                                        <table class="table" id="transactions_table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Transaction Id</th>
+                                                                    <th>Client Name</th>
+                                                                    <th>Amount</th>
+                                                                    <th>Actions</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                            </tbody>
+                                                        </table>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="card-footer">
-                                                <div class="float-right">
-                                                    <button class="btn btn-danger btn-sm mx-1" type="button"
-                                                        id="btn_pay">Pay</button>
-                                                    <button class="btn btn-sm btn-success" type="button"
-                                                        id="btn_clear_customer_data">Clear</button>
+                                                <div class="col-lg-12">
+                                                    <div class="card">
+                                                        <div class="card-header bg-secondary">
+                                                            Industry Invoice Generate
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <table class="table" id="industry_payments_tbl">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>#</th>
+                                                                        <th>Transaction Id</th>
+                                                                        <th>Client Name</th>
+                                                                        <th>Amount</th>
+                                                                        <th>Actions</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+
+                                                                </tbody>
+                                                                <tfoot>
+
+                                                                </tfoot>
+                                                            </table>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="custom-tabs-two-profile" role="tabpanel"
-                                aria-labelledby="custom-tabs-two-profile-tab">
-                                <div class="container-fluid">
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-title text-center mt-2">
+                                        <h5>Customer Details</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form action="" method="post">
+                                            <div class="row mb-3">
+                                                <div class="col-lg-4">
+                                                    <label for="name">Name</label>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="name" id="name"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-lg-4">
+                                                    <label for="nic">NIC</label>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="nic" id="nic"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-lg-4">
+                                                    <label for="telephone">Contact</label>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="telephone" id="telephone"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-lg-4">
+                                                    <label for="invoice_date">Date</label>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <input type="date" name="invoice_date" id="invoice_date"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-lg-4">
+                                                    <label for="payment_method">Payment Type</label>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <select class="form-select  form-control"
+                                                        aria-label="Default select example" id="payment_method"
+                                                        name="payment_method">
+                                                        <option value="cash">Cash</option>
+                                                        <option value="cheque">Cheque</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-lg-4">
+                                                    <label for="payment_reference_number">Payment Reference
+                                                        Number</label>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="payment_reference_number"
+                                                        id="payment_reference_number" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-lg-4">
+                                                    <label for="remark">Remark</label>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="remark" id="remark"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
                                     <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="card card-body">
-                                                <table class="table" id="transactions_table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>#</th>
-                                                            <th>Transaction Id</th>
-                                                            <th>Client Name</th>
-                                                            <th>Amount</th>
-                                                            <th>Actions</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                        <div class="col-lg-4">
+                                            <label for="total">
+                                                Total
+                                            </label>
                                         </div>
-                                        <div class="col-lg-6">
-                                            <div class="card">
-                                                <div class="card-header bg-secondary">
-                                                    Invoice Generate
-                                                </div>
-                                                <div class="card-body">
-                                                    <table class="table" id="generate_invoice_tbl">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>#</th>
-                                                                <th>Transaction Id</th>
-                                                                <th>Client Name</th>
-                                                                <th>Amount</th>
-                                                                <th>Actions</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-
-                                                        </tbody>
-                                                        <tfoot>
-                                                            
-                                                        </tfoot>
-                                                    </table>
-                                                </div>
-                                                <div class="card-footer">
-                                                    <button type="button" class="btn btn-success float-right" id="generate_invoices">Gerenate
-                                                        Invoice</button>
-                                                </div>
-                                            </div>
+                                        <div class="col-lg-8 ">
+                                            <input type="text" name="amount" id="amount" class="form-control">
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="float-right">
+                                        <button class="btn btn-danger btn-sm mx-1" type="button"
+                                            id="btn_pay">Pay</button>
+                                        <button class="btn btn-sm btn-success" type="button"
+                                            id="btn_clear_customer_data">Clear</button>
                                     </div>
                                 </div>
                             </div>
@@ -323,17 +314,6 @@
             $('#price').val(price);
         }
 
-        $(function() {
-            loadPaymentTypes(
-                function() {
-                    loadPaymentsByPaymentTypes(loadPaymentPrice)
-                });
-            generateTable();
-            loadTransactionsTable();
-            invoiceGenerateTable();
-        });
-
-
         $('#payment_type').change(loadPaymentsByPaymentTypes);
         $('#category').change(loadPaymentPrice);
 
@@ -341,21 +321,30 @@
         function total() {
             let price = $('#category option:selected').data('price');
             let total = price * $('#qty').val();
-            $('#price').val(total);
+            $('#price').val(total.toFixed(2));
         }
 
         $('#qty').change(total);
 
 
-        //create payment table
-        $(document).on('click', "#btn_add_to_payments", function() {
+        //create new application payment table
+        $(document).on('click', "#btn_add_new_application_payment", function() {
+
+
+            var transactions = JSON.parse(localStorage.getItem("industry_transactions"));
+            if (transactions && transactions.length != 0) {
+                localStorage.setItem('industry_transactions', '[]'); // clear
+
+                selectedIndustryTransactionRecordsTbl(); // clear table
+            }
+
             // create if location storage key does not exists            
-            if (!localStorage.getItem('transaction_items')) {
-                localStorage.setItem('transaction_items', '[]');
+            if (!localStorage.getItem('new_application_transaction_items')) {
+                localStorage.setItem('new_application_transaction_items', '[]');
             }
 
             // get the transaction items data from local storage
-            let transactionItems = JSON.parse(localStorage.getItem('transaction_items'));
+            let transactionItems = JSON.parse(localStorage.getItem('new_application_transaction_items'));
 
             transactionItems.push({
                 payment_type: $('#payment_type').val(),
@@ -365,22 +354,23 @@
                 qty: $('#qty').val()
             });
 
-            localStorage.setItem('transaction_items', JSON.stringify(transactionItems));
+            localStorage.setItem('new_application_transaction_items', JSON.stringify(transactionItems));
 
-            generateTable();
+            generateNewApplicationTable();
         });
 
 
-        function generateTable() {
+        //generate payment table
+        function generateNewApplicationTable() {
             let total = 0;
             let i = 1;
-            $("#payments_tbl tbody").html('');
+            $("#new_application_payments_tbl tbody").html('');
 
-            var array = JSON.parse(localStorage.getItem("transaction_items"));
+            var array = JSON.parse(localStorage.getItem("new_application_transaction_items"));
 
             $.each(array, function(index, val) {
                 if (val) {
-                    $("#payments_tbl > tbody").append(`<tr><td>${i++}</td><td>${val.payment_cat_name}</td><td>${val.qty}</td>
+                    $("#new_application_payments_tbl > tbody").append(`<tr><td>${i++}</td><td>${val.payment_cat_name}</td><td>${val.qty}</td>
                     <td>${val.amount}</td>
                     <td><button type="button" class="btn btn-sm btn-danger btn-delete" 
                         value=` + index + `>Delete</button></td></tr>`);
@@ -401,17 +391,17 @@
                 return false;
             }
 
-            var items = JSON.parse(localStorage.getItem("transaction_items"));
+            var items = JSON.parse(localStorage.getItem("new_application_transaction_items"));
             let rowVal = $(this).val();
 
             // remove the item at rowVal index
             items.splice(rowVal, 1);
 
             // set modified items back to the local storage
-            localStorage.setItem("transaction_items", JSON.stringify(items));
+            localStorage.setItem("new_application_transaction_items", JSON.stringify(items));
 
             // re-generate the table
-            generateTable();
+            generateNewApplicationTable();
         });
 
 
@@ -429,22 +419,26 @@
 
             localStorage.setItem("invoice_details", JSON.stringify(data));
 
-            let tranItems = JSON.parse(window.localStorage.getItem('transaction_items'));
-            let invoiceDet = JSON.parse(window.localStorage.getItem('invoice_details'));
+            let tranItems = JSON.parse(localStorage.getItem('new_application_transaction_items'));
+            let invoiceDet = JSON.parse(localStorage.getItem('invoice_details'));
+            let industryTransactions = JSON.parse(localStorage.getItem('industry_transactions'));
 
             let arrData = {
                 tranItems: tranItems,
                 invoiceDet: invoiceDet,
+                industryTransactions: industryTransactions,
             };
             ajaxRequest('post', '/cashier/invoice', arrData, function(response) {
                 if (response.status == 1) {
-                    window.localStorage.removeItem('transaction_items');
-                    window.localStorage.removeItem('invoice_details');
                     swal.fire(
                         "success",
                         "Invoice created successfully",
                         "success"
                     );
+                    localStorage.removeItem('new_application_transaction_items');
+                    localStorage.removeItem('invoice_details');
+
+                    window.open('{{ route('print-invoice', '') }}/' + response.data.invoice_id);
                 } else {
                     swal.fire(
                         "failed",
@@ -457,10 +451,13 @@
 
         $(document).on('click', "#btn_pay", function(e) {
             addPayment();
+            loadAllIndustryTransactionsTable();
+            generateNewApplicationTable();
+            selectedIndustryTransactionRecordsTbl();
         });
 
-        //load all transaction records
-        function loadTransactionsTable() {
+        //load all industry transaction records
+        function loadAllIndustryTransactionsTable() {
             var url = "{{ route('load-transactions-table') }}";
 
             ajaxRequest("GET", url, null, function(response) {
@@ -473,7 +470,7 @@
                         <td data-transaction_name=${transaction.name}>${transaction.name}</td>
                         <td data-net_total=${transaction.net_total}>${transaction.net_total}</td>
                         <td>
-                            <button class ="btn btn-dark btn-sm btn-transaction-add" data-invoice_id=${transaction.id}> Add </button> <br>
+                            <button class ="btn btn-dark btn-sm btn-old-transaction-add" data-invoice_id=${transaction.id}> Add </button> <br>
                             <button class ="btn btn-info btn-sm btn-cancel mt-2" data-invoice_id=${transaction.id}> Cancel </button> 
                         </td>
                     </tr>`;
@@ -482,6 +479,7 @@
             });
         }
 
+        //industry transaction cancel
         $(document).on('click', ".btn-cancel", function(e) {
             if (!confirm('Are you sure you want to cancel this transaction?')) {
                 return false;
@@ -508,14 +506,22 @@
             });
         });
 
-        $(document).on('click', ".btn-transaction-add", function() {
+        //industry transaction add
+        $(document).on('click', ".btn-old-transaction-add", function() {
+
+            var newApplicationPayments = JSON.parse(localStorage.getItem("new_application_transaction_items"));
+            if (newApplicationPayments && newApplicationPayments.length != 0) {
+                localStorage.setItem('new_application_transaction_items', '[]'); // clear
+                generateNewApplicationTable();
+            }
+
             // create if location storage key does not exists            
-            if (!localStorage.getItem('generate_invoice_list')) {
-                localStorage.setItem('generate_invoice_list', '[]');
+            if (!localStorage.getItem('industry_transactions')) {
+                localStorage.setItem('industry_transactions', '[]');
             }
 
             // get the transactions data from local storage
-            let transactions = JSON.parse(localStorage.getItem('generate_invoice_list'));
+            let transactions = JSON.parse(localStorage.getItem('industry_transactions'));
 
             var currentRow = $(this).closest("tr");
 
@@ -529,21 +535,22 @@
                 total: amount,
             });
 
-            localStorage.setItem('generate_invoice_list', JSON.stringify(transactions));
-            $("#generate_invoice_tbl tfoot").html('');
-            invoiceGenerateTable();
+            localStorage.setItem('industry_transactions', JSON.stringify(transactions));
+            $("#industry_payments_tbl tfoot").html('');
+            selectedIndustryTransactionRecordsTbl();
         });
 
-        function invoiceGenerateTable() {
+        //load selected industry transactions table to generate invoice
+        function selectedIndustryTransactionRecordsTbl() {
             let total = 0;
             let i = 1;
-            $("#generate_invoice_tbl tbody").html('');
+            $("#industry_payments_tbl tbody").html('');
 
-            var array = JSON.parse(localStorage.getItem("generate_invoice_list"));
+            var array = JSON.parse(localStorage.getItem("industry_transactions"));
 
             $.each(array, function(index, val) {
                 if (val) {
-                    $("#generate_invoice_tbl > tbody").append(`<tr>
+                    $("#industry_payments_tbl > tbody").append(`<tr>
                     <td>${i++}</td><td>${val.id}</td><td>${val.name}</td>
                     <td>${val.total}</td>
                     <td><button type="button" class="btn btn-sm btn-danger btn-delete-invoice-gen" 
@@ -553,41 +560,42 @@
                 total += Number(val.total);
 
             });
-            $("#generate_invoice_tbl > tfoot").append(`<tr>
+            $("#industry_payments_tbl > tfoot").append(`<tr>
                 <td colspan="3" style="text-align: center">Total</td>
                 <td id="gene_total_amount">${total}</td>
             </tr>`);
+
+            $('#amount').val(total.toFixed(2));
+
+            // clear tfoot
+            //$("#industry_payments_tbl tfoot").html('');
         }
 
+        //remove selected industry transaction record
         $(document).on('click', ".btn-delete-invoice-gen", function(e) {
             if (!confirm('Remove this item?')) {
                 return false;
             }
 
-            var transactions = JSON.parse(localStorage.getItem("generate_invoice_list"));
+            var transactions = JSON.parse(localStorage.getItem("industry_transactions"));
             let rowVal = $(this).val();
 
-            // remove the item at rowVal index
             transactions.splice(rowVal, 1);
 
-            // set modified transactions back to the local storage
-            localStorage.setItem("generate_invoice_list", JSON.stringify(transactions));
+            localStorage.setItem("industry_transactions", JSON.stringify(transactions));
 
-            // remove tfoot and re-generate the table
-            $("#generate_invoice_tbl tfoot").html('');
-            invoiceGenerateTable();
+            $("#industry_payments_tbl tfoot").html('');
+            selectedIndustryTransactionRecordsTbl();
         });
 
-        $(document).on('click', "#generate_invoices", function(e) {
-            var transactions = JSON.parse(localStorage.getItem("generate_invoice_list"));
-
-            let transactionData = {
-                transaction: transactions
-            };
-
-            ajaxRequest('post', '/generate-invoices', transactionData, function(response) {
-                
-            });
+        $(function() {
+            loadPaymentTypes(
+                function() {
+                    loadPaymentsByPaymentTypes(loadPaymentPrice)
+                });
+            generateNewApplicationTable();
+            loadAllIndustryTransactionsTable();
+            selectedIndustryTransactionRecordsTbl();
         });
     </script>
 @endsection

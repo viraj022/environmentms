@@ -164,4 +164,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/cancel-transaction/{transaction}', 'CashierController@cancelTransaction');
 
     Route::post('/generate-invoices', 'CashierController@generateInvoice');
+
+    Route::get('/print-invoice/{invoice}', 'CashierController@printInvoice')
+        ->name('print-invoice');
 });

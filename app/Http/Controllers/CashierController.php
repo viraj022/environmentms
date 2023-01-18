@@ -112,23 +112,39 @@ class CashierController extends Controller
 
     public function invoiceStore(Request $request)
     {
-        $data = $request->validate([
-            'tranItems' => 'required|array',
-            'tranItems.*' => 'required|array',
-            'tranItems.*.payment_type' => 'required|exists:payment_types,id',
-            'tranItems.*.payment_cat_name' => 'required|exists:payments,name',
-            'tranItems.*.amount' => 'required|numeric|gt:0',
-            'tranItems.*.category_id' => 'required|exists:payments,id',
-            'tranItems.*.qty' => 'required|integer|gt:0',
-            'invoiceDet' => 'required|array',
+        $rules = [
+            'invoiceDet' => 'nullable|array',
             'invoiceDet.name' => 'required',
             'invoiceDet.telephone' => 'nullable',
             'invoiceDet.nic' => 'nullable',
             'invoiceDet.invoice_date' => 'required',
             'invoiceDet.payment_method' => 'required',
             'invoiceDet.remark' => 'nullable',
-            'invoiceDet.amount' => 'required'
-        ], $request->all());
+            'invoiceDet.amount' => 'required',
+
+        ];
+
+        // add validation rules if industry transacitons are present
+        if (!empty($request->post('industryTransactions'))) {
+            $rules['industryTransactions'] = 'required|array';
+            $rules['industryTransactions.*'] = 'required|array';
+            $rules['industryTransactions.*.id'] = 'required|exists:transactions,id';
+            $rules['industryTransactions.*.name'] = 'required';
+            $rules['industryTransactions.*.total'] = 'required';
+        }
+
+        // add validation rules if new application transacitons are present
+        if (!empty($request->post('tranItems'))) {
+            $rules['tranItems'] = 'required|array';
+            $rules['tranItems.*'] = 'required|array';
+            $rules['tranItems.*.payment_type'] = 'required|exists:payment_types,id';
+            $rules['tranItems.*.payment_cat_name'] = 'required|exists:payments,name';
+            $rules['tranItems.*.amount'] = 'required|numeric|gt:0';
+            $rules['tranItems.*.category_id'] = 'required|exists:payments,id';
+            $rules['tranItems.*.qty'] = 'required|integer|gt:0';
+        }
+
+        $data = $request->validate($rules, $request->all());
 
         $year = Carbon::now()->format('Y');
         $number = 1;
@@ -137,6 +153,7 @@ class CashierController extends Controller
             ->whereYear('created_at', $year)
             ->orderBy('created_at', 'desc')
             ->first();
+
         if ($lastInvoiceNumber) {
             $number = $lastInvoiceNumber->id + 1;
             $invoiceNo =  "Invoice/" . $number . "/" . $year;
@@ -157,33 +174,49 @@ class CashierController extends Controller
             'invoice_number' => $invoiceNo,
         ]);
 
-        $transaction =  Transaction::create([
-            'status' => '0',
-            'cashier_name' => Auth::user()->user_name,
-            'type' => 'application_fee',
-            'invoice_id' =>  $invoice->id,
-            'invoice_no' => $invoiceNo,
-        ]);
+        if (!empty($data['tranItems'])) {
+            $transaction =  Transaction::create([
+                'status' => '0',
+                'cashier_name' => Auth::user()->user_name,
+                'type' => 'application_fee',
+                'invoice_id' =>  $invoice->id,
+                'invoice_no' => $invoiceNo,
+            ]);
+            $transactionItems = [];
 
-        $transactionItems = [];
+            foreach ($data['tranItems'] as $transactionItem) {
+                $tranItems = new TransactionItem();
+                $tranItems->transaction_id  = $transaction->id;
+                $tranItems->payment_type_id  = $transactionItem['payment_type'];
+                $tranItems->qty  = $transactionItem['qty'];
+                $tranItems->amount  = $transactionItem['amount'];
+                $tranItems->payment_id  = $transactionItem['category_id'];
+                $tranItems->transaction_type  = 'application_fee';
+                $transactionItems[] =  $tranItems;
+            }
 
-        foreach ($data['tranItems'] as $transactionItem) {
-            $tranItems = new TransactionItem();
-            $tranItems->transaction_id  = $transaction->id;
-            $tranItems->payment_type_id  = $transactionItem['payment_type'];
-            $tranItems->qty  = $transactionItem['qty'];
-            $tranItems->amount  = $transactionItem['amount'];
-            $tranItems->payment_id  = $transactionItem['category_id'];
-            $tranItems->transaction_type  = 'application_fee';
-            $transactionItems[] =  $tranItems;
+            $itemsStore =  $transaction->transactionItems()->saveMany($transactionItems);
+
+            if ($itemsStore == true) {
+                return array('status' => 1, 'msg' => 'Invoice added successful', 'data' => ['invoice_id' => $invoice->id]);
+            } else {
+                return array('status' => 0, 'msg' => 'Invoice adding unsuccessful');
+            }
         }
 
-        $itemsStore =  $transaction->transactionItems()->saveMany($transactionItems);
-
-        if ($itemsStore == true) {
-            return array('status' => 1, 'msg' => 'Invoice added successful');
-        } else {
-            return array('status' => 0, 'msg' => 'Invoice adding unsuccessful');
+        if (!empty($data['industryTransactions'])) {
+            foreach ($data['industryTransactions'] as $industrytransaction) {
+                $transactionDetails = Transaction::where('id', $industrytransaction['id'])->first();
+                $transactionUpdate = $transactionDetails->update([
+                    "invoice_id" =>  $invoice->id,
+                    'status' =>  '1',
+                ]);
+            }
+            if ($transactionUpdate == true) {
+                return array('status' => 1, 'msg' => 'Invoice added successful', 'data' => ['invoice_id' => $invoice->id]);
+            } else {
+                return array('status' => 0, 'msg' => 'Invoice adding unsuccessful');
+            }
         }
     }
 
@@ -193,10 +226,17 @@ class CashierController extends Controller
         //     $query->whereNull('canceled_at');
         // })->get();
 
+        // $transactions = Transaction::with('transactionItems')->whereHas('client', function (Builder $query) {
+        //     $query->whereNull('deleted_at');
+        // })->where('status', 0)
+        //     ->whereNull('canceled_at')->where('id', 2902)
+        //     ->get();
+
         $transactions = Transaction::with('transactionItems')
-        ->where('status', 0)
-        ->whereNull('canceled_at')
-        ->get();
+            ->where('status', 0)
+            ->whereNull('canceled_at')
+            ->whereNull('invoice_id')
+            ->get();
 
         return $transactions;
     }
@@ -224,48 +264,10 @@ class CashierController extends Controller
         return view('cashier.invoice-view', compact('invoice', 'transaction', 'transactionItems'));
     }
 
-    public function generateInvoice(Request $request)
+    public function printInvoice(Invoice $invoice)
     {
-        $data = $request->validate([
-            'transaction' => 'required|array',
-            'transaction.*' => 'required|array',
-            'transaction.*.id' => 'required|exists:transactions,id',
-            'tranItems.*.total' => 'required|numeric|gt:0',
-        ], $request->all());
+        $transaction = Transaction::with('transactionItems')->where('invoice_id', $invoice->id)->first();
 
-        $year = Carbon::now()->format('Y');
-        $number = 1;
-
-        foreach ($data['transaction'] as $transaction) {
-            $lastInvoiceNumber = Invoice::select('id')
-            ->whereYear('created_at', $year)
-            ->orderBy('created_at', 'desc')
-            ->first();
-
-            if ($lastInvoiceNumber) {
-                $number = $lastInvoiceNumber->id + 1;
-                $invoiceNo =  "Invoice/" . $number . "/" . $year;
-            }
-
-            $invoiceNo =  "Invoice/" . $number . "/" . $year;
-            
-            $transactionDetails = Transaction::where('id', $transaction['id'])->first();
-
-            $invoice = new Invoice();
-            $invoice->name  = $transactionDetails->client->first_name;
-            $invoice->contact  = $transactionDetails->client->contact_no;
-            $invoice->nic  = $transactionDetails->client->nic;
-            $invoice->invoice_number  = $invoiceNo;
-            $invoice->user_id  = Auth::user()->id;
-            $invoice->amount  = $transaction['total'];
-            $invoice->invoice_date =  Carbon::now();
-            $invoice->save();
-
-            $transactionDetails->update([
-                "invoice_id" =>  $invoice->id,
-                'status' =>  '1',
-            ]);
-
-        }
+        return view('cashier.invoice-print', compact('invoice', 'transaction'));
     }
 }

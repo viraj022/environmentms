@@ -74,9 +74,11 @@ class Transaction extends Model
     public function getNameAttribute()
     {
         if ($this->type == 'application_fee') {
-            return ApplicationCliten::findOrFail($this->type_id)->name;
+            $data = ApplicationCliten::find($this->type_id);
+            return (!empty($data)) ? $data->name : "N/A";
         } else {
-            return Client::findOrFail($this->client_id)->first_name;
+            $data = Client::find($this->client_id);
+            return (!empty($data)) ? $data->first_name : "N/A";
         }
     }
 
