@@ -105,6 +105,10 @@
                                 <td class="text-end">{{ number_format($invoice->nbt_amount, 2) }}</td>
                             </tr>
                             <tr>
+                                <td colspan="2" style="text-align: left">TAX</td>
+                                <td class="text-end">{{ number_format($invoice->other_tax_amount, 2) }}</td>
+                            </tr>
+                            <tr>
                                 <td colspan="2" style="text-align: left">Net Total</td>
                                 <td class="text-end">{{ number_format($invoice->amount, 2) }}</td>
                             </tr>

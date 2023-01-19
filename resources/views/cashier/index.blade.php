@@ -211,7 +211,7 @@
                                                 </div>
                                                 <div class="col-lg-8">
                                                     <input type="text" name="name" id="name"
-                                                        class="form-control">
+                                                        class="form-control" required>
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
@@ -291,7 +291,8 @@
                                     <div class="row mb-3">
                                         <div class="col-lg-4">
                                             <label for="vat">
-                                                Vat Rate ({{ $vat->rate }}%)
+                                                Vat Rate
+                                                ({{ $vat->rate }}%)
                                             </label>
                                         </div>
                                         <div class="col-lg-8 ">
@@ -302,7 +303,8 @@
                                     <div class="row mb-3">
                                         <div class="col-lg-4">
                                             <label for="nbt">
-                                                NBT Rate ({{ $nbt->rate }}%)
+                                                NBT Rate
+                                                ({{ $nbt->rate }}%)
                                             </label>
                                         </div>
                                         <div class="col-lg-8">
@@ -328,6 +330,17 @@
                                         </div>
                                         <div class="col-lg-8 ">
                                             <input type="text" name="tax_2" id="tax_2" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-lg-4">
+                                            <label for="tax_total">
+                                                Tax Total
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-8 ">
+                                            <input type="text" name="tax_total" id="tax_total" class="form-control"
+                                                readonly>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -364,6 +377,7 @@
     <script>
         let vat = Number($('#vatValue').val());
         let nbt = Number($('#nbtValue').val());
+
         //create new application payment table
         $(document).on('click', "#btn_add_new_application_payment", function() {
             var transactions = JSON.parse(localStorage.getItem("industry_transactions"));
@@ -420,15 +434,12 @@
                 sub_total += Number(val.amount);
 
                 $('#sub_total').val(sub_total.toFixed(2));
+                let tax_1 = Number($('#tax_1').val());
+                let tax_2 = Number($('#tax_2').val());
 
                 calTax();
 
             });
-
-            // let newTotal = array.reduce((a,b) => Number(a.amount)+Number(b.amount));
-
-            // console.log(`total is ${total}`);
-            // console.log(`new total is ${newTotal}`);
         }
 
         $(document).on('click', ".btn-delete", function(e) {
@@ -451,55 +462,61 @@
 
 
         function addPayment() {
-            let data = {
-                name: $('#name').val(),
-                telephone: $('#telephone').val(),
-                nic: $('#nic').val(),
-                invoice_date: $('#invoice_date').val(),
-                payment_method: $('#payment_method').val(),
-                payment_reference_number: $('#payment_reference_number').val(),
-                remark: $('#remark').val(),
-                amount: $('#amount').val(),
-                sub_amount: $('#sub_total').val(),
-                vat: $('#vat').val(),
-                nbt: $('#nbt').val(),
-                transactionsId: $('#transactionId').val(),
-            };
-
-            localStorage.setItem("invoice_details", JSON.stringify(data));
-
-            let tranItems = JSON.parse(localStorage.getItem('new_application_transaction_items'));
-            let invoiceDet = JSON.parse(localStorage.getItem('invoice_details'));
-            let industryTransactions = JSON.parse(localStorage.getItem('industry_transactions'));
-
-            let arrData = {
-                tranItems: tranItems,
-                invoiceDet: invoiceDet,
-                industryTransactions: industryTransactions,
-            };
-            ajaxRequest('post', '/cashier/invoice', arrData, function(response) {
-                if (response.status == 1) {
-                    swal.fire(
-                        "success",
-                        "Invoice created successfully",
-                        "success"
-                    );
-                    localStorage.removeItem('new_application_transaction_items');
-                    localStorage.removeItem('invoice_details');
-                    localStorage.removeItem('industry_transactions');
-                    $("#industry_payments_tbl tfoot").html('');
-                    selectedIndustryTransactionRecordsTbl();
-                    clearClientDetails();
-
-                    window.open('{{ route('print-invoice', '') }}/' + response.data.invoice_id);
-                } else {
-                    swal.fire(
-                        "failed",
-                        "Invoice created unsuccessful! Please check details again",
-                        "warning"
-                    );
-                }
-            });
+            let namecheck  = $('#name').val();
+            if (!namecheck || namecheck.length == 0) {
+                return false;
+            } else {
+                let data = {
+                    name: $('#name').val(),
+                    telephone: $('#telephone').val(),
+                    nic: $('#nic').val(),
+                    invoice_date: $('#invoice_date').val(),
+                    payment_method: $('#payment_method').val(),
+                    payment_reference_number: $('#payment_reference_number').val(),
+                    remark: $('#remark').val(),
+                    amount: $('#amount').val(),
+                    sub_amount: $('#sub_total').val(),
+                    vat: $('#vat').val(),
+                    nbt: $('#nbt').val(),
+                    transactionsId: $('#transactionId').val(),
+                    tax_total: $('#tax_total').val(),
+                };
+    
+                localStorage.setItem("invoice_details", JSON.stringify(data));
+    
+                let tranItems = JSON.parse(localStorage.getItem('new_application_transaction_items'));
+                let invoiceDet = JSON.parse(localStorage.getItem('invoice_details'));
+                let industryTransactions = JSON.parse(localStorage.getItem('industry_transactions'));
+    
+                let arrData = {
+                    tranItems: tranItems,
+                    invoiceDet: invoiceDet,
+                    industryTransactions: industryTransactions,
+                };
+                ajaxRequest('post', '/cashier/invoice', arrData, function(response) {
+                    if (response.status == 1) {
+                        swal.fire(
+                            "success",
+                            "Invoice created successfully",
+                            "success"
+                        );
+                        localStorage.removeItem('new_application_transaction_items');
+                        localStorage.removeItem('invoice_details');
+                        localStorage.removeItem('industry_transactions');
+                        $("#industry_payments_tbl tfoot").html('');
+                        selectedIndustryTransactionRecordsTbl();
+                        clearClientDetails();
+    
+                        window.open('{{ route('print-invoice', '') }}/' + response.data.invoice_id);
+                    } else {
+                        swal.fire(
+                            "failed",
+                            "Invoice created unsuccessful! Please check details again",
+                            "warning"
+                        );
+                    }
+                });
+            }
         }
 
         $(document).on('click', "#btn_pay", function(e) {
@@ -706,7 +723,7 @@
         });
 
         function clearClientDetails() {
-            $("#name, #nic, #telephone, #sub_total, #amount, #transactionId, #nbtValue, #vatValue").val('');
+            $("#name, #nic, #telephone, #sub_total, #amount, #transactionId, #vat,  #nbt, #tax_1, #tax_2, #tax_total").val('');
         }
         $(document).on('click', "#btn_clear_customer_data", function(e) {
             clearClientDetails();
@@ -726,16 +743,28 @@
         function calTax() {
             let sub_total = $('#sub_total').val();
 
+            let tax_1 = $('#tax_1').val();
+            let tax_2 = $('#tax_2').val();
+
             let vat_tot = sub_total * (vat / 100);
             let nbt_tot = sub_total * (nbt / 100);
 
             let net_tot = Number(sub_total) + Number(vat_tot) + Number(nbt_tot);
-            console.log(net_tot);
 
-            $('#vat').val(vat_tot);
-            $('#nbt').val(nbt_tot);
+            if (tax_1 || tax_2) {
+                let tax_1_tot = sub_total * (tax_1 / 100);
+                let tax_2_tot = sub_total * (tax_2 / 100);
 
+                let taxTot = Number(tax_1_tot.toFixed(2)) + Number(tax_2_tot.toFixed(2));
+                net_tot = Number(sub_total) + Number(vat_tot) + Number(nbt_tot) + Number(tax_1_tot) + Number(tax_2_tot);
+                $('#tax_total').val(taxTot.toFixed(2));
+            }
+
+            $('#vat').val(vat_tot.toFixed(2));
+            $('#nbt').val(nbt_tot.toFixed(2));
             $('#amount').val(net_tot.toFixed(2));
         }
+        $('#tax_1').change(calTax);
+        $('#tax_2').change(calTax);
     </script>
 @endsection

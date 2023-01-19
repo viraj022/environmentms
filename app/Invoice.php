@@ -20,7 +20,8 @@ class Invoice extends Model
         'status',
         'sub_total',
         'vat_amount',
-        'nbt_amount'
+        'nbt_amount',
+        'other_tax_amount'
     ];
 
     public function transaction()

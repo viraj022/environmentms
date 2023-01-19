@@ -108,12 +108,24 @@ class CashierController extends Controller
         return view('cashier.index', compact('vat', 'nbt'));
     }
 
+    /**
+     * get payments by payment type
+     *
+     * @param [type] $paymentType
+     * @return void
+     */
     public function getPaymentsByPaymentType($paymentType)
     {
         $payments = Payment::where('payment_type_id', $paymentType)->get();
         return $payments;
     }
 
+    /**
+     * generate invoice
+     *
+     * @param Request $request
+     * @return void
+     */
     public function invoiceStore(Request $request)
     {
         $rules = [
@@ -127,6 +139,7 @@ class CashierController extends Controller
             'invoiceDet.sub_amount' => 'required',
             'invoiceDet.vat' => 'required',
             'invoiceDet.nbt' => 'required',
+            'invoiceDet.tax_total' => 'nullable',
             'invoiceDet.amount' => 'required',
             'invoiceDet.transactionsId' => 'nullable|exists:transactions,id',
         ];
@@ -153,7 +166,6 @@ class CashierController extends Controller
 
         $data = $request->validate($rules, $request->all());
 
-        // dd($data['invoiceDet']);
         $year = Carbon::now()->format('Y');
         $number = 1;
 
@@ -183,11 +195,12 @@ class CashierController extends Controller
             'sub_total' => $data['invoiceDet']['sub_amount'],
             'vat_amount' => $data['invoiceDet']['vat'],
             'nbt_amount' => $data['invoiceDet']['nbt'],
+            'other_tax_amount' =>  $data['invoiceDet']['tax_total']
         ]);
 
         if (!empty($data['tranItems'])) {
             $transaction =  Transaction::create([
-                'status' => '0',
+                'status' => '1',
                 'cashier_name' => Auth::user()->user_name,
                 'type' => 'application_fee',
                 'invoice_id' =>  $invoice->id,
@@ -244,6 +257,11 @@ class CashierController extends Controller
         }
     }
 
+    /**
+     * get all unpaid transactions
+     *
+     * @return void
+     */
     public function loadTransactions()
     {
         $transactions = Transaction::with('transactionItems')
@@ -255,6 +273,12 @@ class CashierController extends Controller
         return $transactions;
     }
 
+    /**
+     * Cancel transactions
+     *
+     * @param Transaction $transaction
+     * @return void
+     */
     public function cancelTransaction(Transaction $transaction)
     {
         $cancelTransaction = $transaction->update([
@@ -269,6 +293,12 @@ class CashierController extends Controller
         }
     }
 
+    /**
+     * invoice view (Not used)
+     *
+     * @param Invoice $invoice
+     *@return View|Factory
+     */
     public function viewInvoice(Invoice $invoice)
     {
         $transaction = Transaction::where('invoice_id', $invoice->id)->first();
@@ -278,18 +308,35 @@ class CashierController extends Controller
         return view('cashier.invoice-view', compact('invoice', 'transaction', 'transactionItems'));
     }
 
+    /**
+     * invoice print view
+     *
+     * @param Invoice $invoice
+     * @return View|Factory
+     */
     public function printInvoice(Invoice $invoice)
     {
         $transaction = Transaction::with('transactionItems')->where('invoice_id', $invoice->id)->first();
         return view('cashier.invoice-print', compact('invoice', 'transaction'));
     }
 
+    /**
+     * tax rate edit view
+     *
+     * @return View|Factory
+     */
     public function editTaxRate()
     {
         $taxes = TaxRate::all();
         return view('cashier.tax-rate-edit', compact('taxes'));
     }
 
+    /**
+     * change tax rate post route
+     *
+     * @param Request $request
+     * @return Redirector|RedirectResponse
+     */
     public function changeTaxRate(Request $request)
     {
         $data = $request->validate([
