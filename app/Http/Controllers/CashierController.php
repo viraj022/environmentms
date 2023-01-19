@@ -8,6 +8,7 @@ use App\PaymentType;
 use App\Payment;
 use App\Helpers\LogActivity;
 use App\Invoice;
+use App\TaxRate;
 use App\TransactionItem;
 use Auth;
 use FontLib\Table\Type\name;
@@ -101,7 +102,10 @@ class CashierController extends Controller
     #new cashier
     public function newCashier()
     {
-        return view('cashier.index');
+        $vat = TaxRate::where('name', 'vat')->first();
+        $nbt = TaxRate::where('name', 'nbt')->first();
+
+        return view('cashier.index', compact('vat', 'nbt'));
     }
 
     public function getPaymentsByPaymentType($paymentType)
@@ -120,6 +124,9 @@ class CashierController extends Controller
             'invoiceDet.invoice_date' => 'required',
             'invoiceDet.payment_method' => 'required',
             'invoiceDet.remark' => 'nullable',
+            'invoiceDet.sub_amount' => 'required',
+            'invoiceDet.vat' => 'required',
+            'invoiceDet.nbt' => 'required',
             'invoiceDet.amount' => 'required',
             'invoiceDet.transactionsId' => 'nullable|exists:transactions,id',
         ];
@@ -146,6 +153,7 @@ class CashierController extends Controller
 
         $data = $request->validate($rules, $request->all());
 
+        // dd($data['invoiceDet']);
         $year = Carbon::now()->format('Y');
         $number = 1;
 
@@ -172,6 +180,9 @@ class CashierController extends Controller
             'invoice_date' => $data['invoiceDet']['invoice_date'],
             'remark' => $data['invoiceDet']['remark'],
             'invoice_number' => $invoiceNo,
+            'sub_total' => $data['invoiceDet']['sub_amount'],
+            'vat_amount' => $data['invoiceDet']['vat'],
+            'nbt_amount' => $data['invoiceDet']['nbt'],
         ]);
 
         if (!empty($data['tranItems'])) {
@@ -271,5 +282,28 @@ class CashierController extends Controller
     {
         $transaction = Transaction::with('transactionItems')->where('invoice_id', $invoice->id)->first();
         return view('cashier.invoice-print', compact('invoice', 'transaction'));
+    }
+
+    public function editTaxRate()
+    {
+        $taxes = TaxRate::all();
+        return view('cashier.tax-rate-edit', compact('taxes'));
+    }
+
+    public function changeTaxRate(Request $request)
+    {
+        $data = $request->validate([
+            'tax_type' => 'required|exists:tax_rates,id',
+            'tax_rate' => 'required|numeric|gte:0|lte:100',
+        ]);
+
+        $tax = TaxRate::where('id', $data['tax_type'])->first();
+
+        $tax->update([
+            'rate' => $data['tax_rate'],
+        ]);
+        $taxes = TaxRate::all();
+
+        return redirect()->route('change-tax-rate-view', compact('taxes'));
     }
 }

@@ -22,8 +22,11 @@ class CreateInvoicesTable extends Migration
             $table->string('payment_method');
             $table->string('payment_reference_number')->nullable();
             $table->unsignedBigInteger('user_id');
-            $table->float('amount');
-            $table->timestamp('invoice_date')->nullable();
+            $table->double('amount', 8, 2);
+            $table->double('sub_total', 8, 2);
+            $table->double('vat_amount', 8, 2);
+            $table->double('nbt_amount', 8, 2);
+            $table->date('invoice_date')->nullable();
             $table->string('remark')->nullable();
             $table->tinyInteger('status')->default('1');
             $table->timestamps();

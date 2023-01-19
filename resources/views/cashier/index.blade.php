@@ -128,6 +128,7 @@
                                                                     <th>#</th>
                                                                     <th>Transaction Id</th>
                                                                     <th>Client Name</th>
+                                                                    <th>Type</th>
                                                                     <th>Amount</th>
                                                                     <th>Actions</th>
                                                                 </tr>
@@ -153,6 +154,7 @@
                                                                     <th>#</th>
                                                                     <th>Transaction Id</th>
                                                                     <th>Client Name</th>
+                                                                    <th>Type</th>
                                                                     <th>Amount</th>
                                                                     <th>Actions</th>
                                                                 </tr>
@@ -201,6 +203,8 @@
                                     <div class="card-body">
                                         <form action="" method="post">
                                             <input type="text" hidden value="" id="transactionId">
+                                            <input type="text" hidden value="{{ $vat->rate }}" id="vatValue">
+                                            <input type="text" hidden value="{{ $nbt->rate }}" id="nbtValue">
                                             <div class="row mb-3">
                                                 <div class="col-lg-4">
                                                     <label for="name">Name</label>
@@ -273,7 +277,60 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <div class="row">
+                                    <div class="row mb-3">
+                                        <div class="col-lg-4">
+                                            <label for="sub_total">
+                                                Sub Total
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-8 ">
+                                            <input type="text" name="sub_total" id="sub_total" class="form-control"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-lg-4">
+                                            <label for="vat">
+                                                Vat Rate ({{ $vat->rate }}%)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-8 ">
+                                            <input type="text" name="vat" id="vat" class="form-control"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-lg-4">
+                                            <label for="nbt">
+                                                NBT Rate ({{ $nbt->rate }}%)
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <input type="text" name="nbt" id="nbt" class="form-control"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-lg-4">
+                                            <label for="tax_1">
+                                                Tax 1
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-8 ">
+                                            <input type="text" name="tax_1" id="tax_1" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-lg-4">
+                                            <label for="tax_2">
+                                                Tax 2
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-8 ">
+                                            <input type="text" name="tax_2" id="tax_2" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
                                         <div class="col-lg-4">
                                             <label for="total">
                                                 Total
@@ -303,22 +360,12 @@
 @endsection
 
 @section('pageScripts')
-<script src="{{ asset('js/Cashier/cashier.js') }}"></script>
+    <script src="{{ asset('js/Cashier/cashier.js') }}"></script>
     <script>
-        //get total amount
-        function total() {
-            let price = $('#category option:selected').data('price');
-            let total = price * $('#qty').val();
-            $('#price').val(total.toFixed(2));
-        }
-
-        $('#qty').change(total);
-
-
+        let vat = Number($('#vatValue').val());
+        let nbt = Number($('#nbtValue').val());
         //create new application payment table
         $(document).on('click', "#btn_add_new_application_payment", function() {
-
-
             var transactions = JSON.parse(localStorage.getItem("industry_transactions"));
             if (transactions && transactions.length != 0) {
                 localStorage.setItem('industry_transactions', '[]'); // clear
@@ -352,7 +399,7 @@
 
         //generate payment table
         function generateNewApplicationTable() {
-            let total = 0;
+            let sub_total = 0;
             let i = 1;
             $("#new_application_payments_tbl tbody").html('');
 
@@ -360,14 +407,22 @@
 
             $.each(array, function(index, val) {
                 if (val) {
-                    $("#new_application_payments_tbl > tbody").append(`<tr><td>${i++}</td><td>${val.payment_cat_name}</td><td>${val.qty}</td>
-                    <td>${val.amount}</td>
-                    <td><button type="button" class="btn btn-sm btn-danger btn-delete" 
-                        value=` + index + `>Delete</button></td></tr>`);
+                    if (val.category_id) {
+                        $("#new_application_payments_tbl > tbody").append(`<tr><td>${i++}</td><td>${val.payment_cat_name}</td><td>${val.qty}</td>
+                        <td>${val.amount}</td>
+                        <td><button type="button" class="btn btn-sm btn-danger btn-delete" 
+                            value=` + index + `>Delete</button></td></tr>`);
+                    } else {
+                        localStorage.setItem('new_application_transaction_items', '[]');
+                        return false;
+                    }
                 }
-                total += Number(val.amount);
+                sub_total += Number(val.amount);
 
-                $('#amount').val(total.toFixed(2));
+                $('#sub_total').val(sub_total.toFixed(2));
+
+                calTax();
+
             });
 
             // let newTotal = array.reduce((a,b) => Number(a.amount)+Number(b.amount));
@@ -405,6 +460,9 @@
                 payment_reference_number: $('#payment_reference_number').val(),
                 remark: $('#remark').val(),
                 amount: $('#amount').val(),
+                sub_amount: $('#sub_total').val(),
+                vat: $('#vat').val(),
+                nbt: $('#nbt').val(),
                 transactionsId: $('#transactionId').val(),
             };
 
@@ -460,10 +518,15 @@
                 let tr = '';
                 let i = 0;
                 $.each(response, function(i, transaction) {
+                    let type = transaction.type;
+                    type = type.replace("_", " ");
+                    type.charAt(0).toUpperCase();
+                    type = type.charAt(0).toUpperCase() + type.slice(1);
                     tr += `<tr data-row_id = "${transaction.id}">
                         <td>${++i}</td>
                         <td>${transaction.id}</td>
                         <td data-transaction_name=${transaction.name}>${transaction.name}</td>
+                        <td>${type}</td>
                         <td data-net_total=${transaction.net_total}>${transaction.net_total}</td>
                         <td>
                             <button class ="btn btn-dark btn-xs btn-old-transaction-add" data-invoice_id=${transaction.id}> Add </button> <br>
@@ -523,7 +586,8 @@
 
             var transaction_id = currentRow.find("td:eq(1)").text();
             var name = currentRow.find("td:eq(2)").text();
-            var amount = currentRow.find("td:eq(3)").text();
+            var type = currentRow.find("td:eq(3)").text();
+            var amount = currentRow.find("td:eq(4)").text();
 
             transactions.push({
                 id: transaction_id,
@@ -538,7 +602,7 @@
 
         //load selected industry transactions table to generate invoice
         function selectedIndustryTransactionRecordsTbl() {
-            let total = 0;
+            let sub_total = 0;
             let i = 1;
             $("#industry_payments_tbl tbody").html('');
 
@@ -553,15 +617,15 @@
                         value=` + index + `>Delete</button></td>
                     </tr>`);
                 }
-                total += Number(val.total);
+                sub_total += Number(val.total);
 
             });
             $("#industry_payments_tbl > tfoot").append(`<tr>
                 <td colspan="3" style="text-align: center">Total</td>
-                <td id="gene_total_amount">${total}</td>
+                <td id="gene_total_amount">${sub_total}</td>
             </tr>`);
-
-            $('#amount').val(total.toFixed(2));
+            $('#sub_total').val(sub_total.toFixed(2));
+            calTax();
         }
 
         //remove selected industry transaction record
@@ -590,10 +654,16 @@
                 let tr = '';
                 let i = 0;
                 $.each(response, function(i, transaction) {
+                    let type = transaction.type;
+                    type = type.replace("_", " ");
+                    type.charAt(0).toUpperCase();
+                    type = type.charAt(0).toUpperCase() + type.slice(1)
+
                     tr += `<tr data-row_id = "${transaction.id}">
                         <td>${++i}</td>
                         <td>${transaction.id}</td>
                         <td>${transaction.name}</td>
+                        <td>${type}</td>
                         <td>${transaction.net_total}</td>
                         <td>
                             <button class ="btn btn-danger btn-xs btn-old-transaction-pay" 
@@ -613,21 +683,30 @@
         }
 
         $(document).on('click', ".btn-old-transaction-pay", function(e) {
+            localStorage.setItem('new_application_transaction_items', '[]');
+            generateNewApplicationTable();
+
+            localStorage.setItem('industry_transactions', '[]');
+            $("#industry_payments_tbl tfoot").html('');
+            selectedIndustryTransactionRecordsTbl();
+
             let name = $(this).data('transaction_name');
             let nic = $(this).data('nic');
             let telephone = $(this).data('contact_no');
-            let amount = $(this).data('net_total');
+            let sub_total = $(this).data('net_total');
             let transactionId = $(this).data('invoice_id');
 
             $('#name').val(name);
             $('#nic').val(nic);
             $('#telephone').val(telephone);
-            $('#amount').val(amount);
+            $('#sub_total').val(sub_total.toFixed(2));
             $('#transactionId').val(transactionId);
+
+            calTax();
         });
 
         function clearClientDetails() {
-            $("#name, #nic,  #telephone,  #amount,  #transactionId").val('');
+            $("#name, #nic, #telephone, #sub_total, #amount, #transactionId, #nbtValue, #vatValue").val('');
         }
         $(document).on('click', "#btn_clear_customer_data", function(e) {
             clearClientDetails();
@@ -643,5 +722,20 @@
             selectedIndustryTransactionRecordsTbl();
             loadAllIndustryTransactionsTbleToPay();
         });
+
+        function calTax() {
+            let sub_total = $('#sub_total').val();
+
+            let vat_tot = sub_total * (vat / 100);
+            let nbt_tot = sub_total * (nbt / 100);
+
+            let net_tot = Number(sub_total) + Number(vat_tot) + Number(nbt_tot);
+            console.log(net_tot);
+
+            $('#vat').val(vat_tot);
+            $('#nbt').val(nbt_tot);
+
+            $('#amount').val(net_tot.toFixed(2));
+        }
     </script>
 @endsection

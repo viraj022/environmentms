@@ -17,7 +17,10 @@ class Invoice extends Model
         'amount',
         'invoice_date',
         'remark',
-        'status'
+        'status',
+        'sub_total',
+        'vat_amount',
+        'nbt_amount'
     ];
 
     public function transaction()

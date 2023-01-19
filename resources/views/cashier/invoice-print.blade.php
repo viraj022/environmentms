@@ -83,21 +83,29 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($transaction->transactionItems as $transactionItem)
+                            @foreach ($transaction->transactionItems as $transactionItem)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $transactionItem->payment->name }}</td>
                                     <td class="text-end">{{ number_format($transactionItem->amount, 2) }}</td>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="3">There is no transaction records</td>
-                                </tr>
-                            @endforelse
+                            @endforeach
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="2" style="text-align: center">Net Total</td>
+                                <td colspan="2" style="text-align: left">Total</td>
+                                <td class="text-end">{{ number_format($invoice->sub_total, 2) }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: left">VAT</td>
+                                <td class="text-end">{{ number_format($invoice->vat_amount, 2) }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: left">NBT</td>
+                                <td class="text-end">{{ number_format($invoice->nbt_amount, 2) }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: left">Net Total</td>
                                 <td class="text-end">{{ number_format($invoice->amount, 2) }}</td>
                             </tr>
                         </tfoot>
