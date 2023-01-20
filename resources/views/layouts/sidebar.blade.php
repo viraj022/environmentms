@@ -32,7 +32,7 @@
                 </ul>
             </li>
             <li
-                class="nav-item has-treeview {{ Request::is('attachments', 'attachment_map', 'pradesheyasaba', 'industry_category', 'payment_type', 'payments', 'payment_range', 'zone', 'assistant_director', 'environment_officer', 'committee_pool') ? 'menu-open' : '' }}">
+                class="nav-item has-treeview {{ Request::is('attachments', 'attachment_map', 'pradesheyasaba', 'industry_category', 'payment_type', 'payments', 'payment_range', 'zone', 'assistant_director', 'environment_officer', 'committee_pool', 'edit-tax-rate') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-pencil-ruler"></i>
                     <p>
@@ -145,7 +145,13 @@
                             <p>Letter Template</p>
                         </a>
                     </li>
-
+                    {{-- <li class="nav-item">
+                        <a href="{{ url('/edit-tax-rate') }}"
+                            class="nav-link {{ Request::is('edit-tax-rate') ? 'active' : '' }}">
+                            <i class="fas fa-file-archive nav-icon"></i>
+                            <p>Tax Rates</p>
+                        </a>
+                    </li> --}}
                 </ul>
             </li>
             <li
@@ -607,9 +613,9 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item has-treeview">
+            <li class="nav-item has-treeview {{ Request::is('cashier') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
-                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <i class="nav-icon fas fa-money-bill"></i>
                     <p>
                         Cashier
                         <i class="right fas fa-angle-left"></i>
@@ -618,7 +624,7 @@
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
                         <a href="{{ url('/cashier') }}" class="nav-link active">
-                            <i class="far fa-circle nav-icon"></i>
+                            <i class="fas fa-money-bill"></i>
                             <p>Cashier</p>
                         </a>
                     </li>
