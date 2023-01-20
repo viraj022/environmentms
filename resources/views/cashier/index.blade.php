@@ -462,7 +462,7 @@
 
 
         function addPayment() {
-            let namecheck  = $('#name').val();
+            let namecheck = $('#name').val();
             if (!namecheck || namecheck.length == 0) {
                 return false;
             } else {
@@ -481,13 +481,13 @@
                     transactionsId: $('#transactionId').val(),
                     tax_total: $('#tax_total').val(),
                 };
-    
+
                 localStorage.setItem("invoice_details", JSON.stringify(data));
-    
+
                 let tranItems = JSON.parse(localStorage.getItem('new_application_transaction_items'));
                 let invoiceDet = JSON.parse(localStorage.getItem('invoice_details'));
                 let industryTransactions = JSON.parse(localStorage.getItem('industry_transactions'));
-    
+
                 let arrData = {
                     tranItems: tranItems,
                     invoiceDet: invoiceDet,
@@ -506,8 +506,13 @@
                         $("#industry_payments_tbl tfoot").html('');
                         selectedIndustryTransactionRecordsTbl();
                         clearClientDetails();
-    
-                        window.open('{{ route('print-invoice', '') }}/' + response.data.invoice_id);
+
+                        if (response.type != 'bulk') {
+                            window.open('{{ route('print-invoice', '') }}/' + response.data.invoice_id);
+                        } else {
+                            window.open('{{ route('print-transactions-invoice', '') }}/' + response.data
+                                .invoice_id);
+                        }
                     } else {
                         swal.fire(
                             "failed",
@@ -723,7 +728,8 @@
         });
 
         function clearClientDetails() {
-            $("#name, #nic, #telephone, #sub_total, #amount, #transactionId, #vat,  #nbt, #tax_1, #tax_2, #tax_total").val('');
+            $("#name, #nic, #telephone, #sub_total, #amount, #transactionId, #vat,  #nbt, #tax_1, #tax_2, #tax_total").val(
+                '');
         }
         $(document).on('click', "#btn_clear_customer_data", function(e) {
             clearClientDetails();

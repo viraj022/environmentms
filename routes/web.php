@@ -168,6 +168,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/print-invoice/{invoice}', 'CashierController@printInvoice')
         ->name('print-invoice');
 
+    Route::get('/print-transactions-invoice/{invoice}', 'CashierController@printBulkTransactionsInvoice')
+        ->name('print-transactions-invoice');
+
     #tax rate change
     Route::get('/edit-tax-rate', 'CashierController@editTaxRate')->name('change-tax-rate-view');
     Route::post('/edit-tax-rate', 'CashierController@changeTaxRate')->name('change-tax-rate');

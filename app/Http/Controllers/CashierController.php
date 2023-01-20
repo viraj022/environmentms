@@ -229,6 +229,7 @@ class CashierController extends Controller
         }
 
         if (!empty($data['industryTransactions'])) {
+            // dd($data['industryTransactions']);
             foreach ($data['industryTransactions'] as $industrytransaction) {
                 $transactionDetails = Transaction::where('id', $industrytransaction['id'])->first();
                 $transactionUpdate = $transactionDetails->update([
@@ -237,7 +238,7 @@ class CashierController extends Controller
                 ]);
             }
             if ($transactionUpdate == true) {
-                return array('status' => 1, 'msg' => 'Invoice added successful', 'data' => ['invoice_id' => $invoice->id]);
+                return array('status' => 1, 'msg' => 'Invoice added successful', 'data' => ['invoice_id' => $invoice->id], 'type' => 'bulk');
             } else {
                 return array('status' => 0, 'msg' => 'Invoice adding unsuccessful');
             }
@@ -250,7 +251,7 @@ class CashierController extends Controller
                     "invoice_id" =>  $invoice->id,
                     'status' =>  '1',
                 ]);
-                return array('status' => 1, 'msg' => 'Invoice added successful', 'data' => ['invoice_id' => $invoice->id]);
+                return array('status' => 1, 'msg' => 'Invoice added successful', 'data' => ['invoice_id' => $invoice->id], 'type' => 'single');
             } else {
                 return array('status' => 0, 'msg' => 'Invoice adding unsuccessful');
             }
@@ -318,6 +319,18 @@ class CashierController extends Controller
     {
         $transaction = Transaction::with('transactionItems')->where('invoice_id', $invoice->id)->first();
         return view('cashier.invoice-print', compact('invoice', 'transaction'));
+    }
+
+    /**
+     * invoice print view for multiple transactions 
+     *
+     * @param Invoice $invoice
+     * @return View|Factory
+     */
+    public function printBulkTransactionsInvoice(Invoice $invoice)
+    {
+        $transactions = Transaction::with('transactionItems')->where('invoice_id', $invoice->id)->get();
+        return view('cashier.bulk-transactions-invoice-print', compact('invoice', 'transactions'));
     }
 
     /**
