@@ -54,6 +54,8 @@
 @endsection
 
 @section('pageScripts')
+    <script src="../../dist/js/adminlte.min.js"></script>
+    <script src="../../dist/js/demo.js"></script>
     <script src="{{ asset('plugins/ckeditor/ckeditor.js') }}"></script>
     <script>
         CKEDITOR.editorConfig = function(config) {

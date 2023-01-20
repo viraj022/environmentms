@@ -123,11 +123,21 @@
                                                 <div class="col-lg-12">
                                                     <div class="card card-body">
                                                         <table class="table" id="industry_tran_table">
+                                                            <colgroup>
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                            </colgroup>
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
-                                                                    <th>Transaction Id</th>
+                                                                    <th>Id</th>
                                                                     <th>Client Name</th>
+                                                                    <th>Address</th>
                                                                     <th>Type</th>
                                                                     <th>Amount</th>
                                                                     <th>Actions</th>
@@ -149,11 +159,21 @@
                                                 <div class="col-lg-12">
                                                     <div class="card card-body" style="height: 400px; overflow-y:scroll">
                                                         <table class="table" id="transactions_table">
+                                                            <colgroup>
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                            </colgroup>
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
-                                                                    <th>Transaction Id</th>
+                                                                    <th>Id</th>
                                                                     <th>Client Name</th>
+                                                                    <th>Address</th>
                                                                     <th>Type</th>
                                                                     <th>Amount</th>
                                                                     <th>Actions</th>
@@ -229,6 +249,15 @@
                                                 </div>
                                                 <div class="col-lg-8">
                                                     <input type="text" name="telephone" id="telephone"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-lg-4">
+                                                    <label for="address">Industry Address</label>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="address" id="address"
                                                         class="form-control">
                                                 </div>
                                             </div>
@@ -373,6 +402,8 @@
 @endsection
 
 @section('pageScripts')
+    <script src="../../dist/js/adminlte.min.js"></script>
+    <script src="../../dist/js/demo.js"></script>
     <script src="{{ asset('js/Cashier/cashier.js') }}"></script>
     <script>
         let vat = Number($('#vatValue').val());
@@ -464,12 +495,18 @@
         function addPayment() {
             let namecheck = $('#name').val();
             if (!namecheck || namecheck.length == 0) {
+                swal.fire(
+                    "failed",
+                    "Please enter client name before payment!",
+                    "warning"
+                );
                 return false;
             } else {
                 let data = {
                     name: $('#name').val(),
                     telephone: $('#telephone').val(),
                     nic: $('#nic').val(),
+                    ind_address: $('#address').val(),
                     invoice_date: $('#invoice_date').val(),
                     payment_method: $('#payment_method').val(),
                     payment_reference_number: $('#payment_reference_number').val(),
@@ -493,6 +530,7 @@
                     invoiceDet: invoiceDet,
                     industryTransactions: industryTransactions,
                 };
+
                 ajaxRequest('post', '/cashier/invoice', arrData, function(response) {
                     if (response.status == 1) {
                         swal.fire(
@@ -505,6 +543,7 @@
                         localStorage.removeItem('industry_transactions');
                         $("#industry_payments_tbl tfoot").html('');
                         selectedIndustryTransactionRecordsTbl();
+                        generateNewApplicationTable();
                         clearClientDetails();
 
                         if (response.type != 'bulk') {
@@ -548,6 +587,7 @@
                         <td>${++i}</td>
                         <td>${transaction.id}</td>
                         <td data-transaction_name=${transaction.name}>${transaction.name}</td>
+                        <td data-address="${transaction.address}">${transaction.address}</td>
                         <td>${type}</td>
                         <td data-net_total=${transaction.net_total}>${transaction.net_total}</td>
                         <td>
@@ -555,8 +595,16 @@
                             <button class ="btn btn-info btn-xs btn-cancel mt-2" data-invoice_id=${transaction.id}> Cancel </button> 
                         </td>
                     </tr>`;
+
+                    if ($('.btn-delete-invoice-gen[data-transaction_id]') == transaction.id) {
+                        $('.btn-old-transaction-add[data-invoice_id=' + transaction.id + ']').prop(
+                            'disabled', true);
+                    }
                 })
                 $("#transactions_table > tbody").html(tr);
+                console.log('hi');
+
+                $('#transactions_table').DataTable();
             });
         }
 
@@ -608,8 +656,8 @@
 
             var transaction_id = currentRow.find("td:eq(1)").text();
             var name = currentRow.find("td:eq(2)").text();
-            var type = currentRow.find("td:eq(3)").text();
-            var amount = currentRow.find("td:eq(4)").text();
+            var type = currentRow.find("td:eq(4)").text();
+            var amount = currentRow.find("td:eq(5)").text();
 
             transactions.push({
                 id: transaction_id,
@@ -620,6 +668,8 @@
             localStorage.setItem('industry_transactions', JSON.stringify(transactions));
             $("#industry_payments_tbl tfoot").html('');
             selectedIndustryTransactionRecordsTbl();
+
+            $(this).prop('disabled', true);
         });
 
         //load selected industry transactions table to generate invoice
@@ -636,16 +686,16 @@
                     <td>${i++}</td><td>${val.id}</td><td>${val.name}</td>
                     <td>${val.total}</td>
                     <td><button type="button" class="btn btn-sm btn-danger btn-delete-invoice-gen" 
-                        value=` + index + `>Delete</button></td>
+                        value=` + index + ` ` + `data-transaction_id=${val.id}` + `>Delete</button></td>
                     </tr>`);
                 }
                 sub_total += Number(val.total);
-
             });
             $("#industry_payments_tbl > tfoot").append(`<tr>
                 <td colspan="3" style="text-align: center">Total</td>
                 <td id="gene_total_amount">${sub_total}</td>
             </tr>`);
+            console.log('hi');
             $('#sub_total').val(sub_total.toFixed(2));
             calTax();
         }
@@ -658,6 +708,10 @@
 
             var transactions = JSON.parse(localStorage.getItem("industry_transactions"));
             let rowVal = $(this).val();
+            let transactionId = $(this).data('transaction_id');
+            $('.btn-old-transaction-add[data-invoice_id=' + transactionId + ']').prop('disabled', false);
+
+            console.log('hi');
 
             transactions.splice(rowVal, 1);
 
@@ -685,6 +739,7 @@
                         <td>${++i}</td>
                         <td>${transaction.id}</td>
                         <td>${transaction.name}</td>
+                        <td>${transaction.address}</td>
                         <td>${type}</td>
                         <td>${transaction.net_total}</td>
                         <td>
@@ -693,7 +748,8 @@
                             data-nic=${transaction.nic} 
                             data-contact_no=${transaction.contact_no} 
                             data-invoice_id=${transaction.id} 
-                            data-net_total=${transaction.net_total}> Pay </button> 
+                            data-net_total=${transaction.net_total}
+                            data-address="${transaction.address}"> Pay </button> 
                             <br>
                             <button class ="btn btn-info btn-xs btn-cancel mt-2" data-invoice_id=${transaction.id}> Cancel </button> 
                         </td>
@@ -715,12 +771,14 @@
             let name = $(this).data('transaction_name');
             let nic = $(this).data('nic');
             let telephone = $(this).data('contact_no');
+            let address = $(this).data('address');
             let sub_total = $(this).data('net_total');
             let transactionId = $(this).data('invoice_id');
 
             $('#name').val(name);
             $('#nic').val(nic);
             $('#telephone').val(telephone);
+            $('#address').val(address);
             $('#sub_total').val(sub_total.toFixed(2));
             $('#transactionId').val(transactionId);
 
@@ -728,7 +786,7 @@
         });
 
         function clearClientDetails() {
-            $("#name, #nic, #telephone, #sub_total, #amount, #transactionId, #vat,  #nbt, #tax_1, #tax_2, #tax_total").val(
+            $("#name, #nic, #telephone, #address, #payment_reference_number, #remark, #tax_1, #tax_2, #tax_total").val(
                 '');
         }
         $(document).on('click', "#btn_clear_customer_data", function(e) {

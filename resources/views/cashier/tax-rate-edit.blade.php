@@ -73,6 +73,8 @@
 @endsection
 
 @section('pageScripts')
+    <script src="../../dist/js/adminlte.min.js"></script>
+    <script src="../../dist/js/demo.js"></script>
     <script>
         function setTaxRate() {
             let rate = $("#tax_type option:selected").data("rate");

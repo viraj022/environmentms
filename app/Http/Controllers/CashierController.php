@@ -133,6 +133,7 @@ class CashierController extends Controller
             'invoiceDet.name' => 'required',
             'invoiceDet.telephone' => 'nullable',
             'invoiceDet.nic' => 'nullable',
+            'invoiceDet.ind_address' => 'nullable',
             'invoiceDet.invoice_date' => 'required',
             'invoiceDet.payment_method' => 'required',
             'invoiceDet.remark' => 'nullable',
@@ -185,6 +186,7 @@ class CashierController extends Controller
             'name' => $data['invoiceDet']['name'],
             'contact' => $data['invoiceDet']['telephone'],
             'nic' => $data['invoiceDet']['nic'],
+            'address' => $data['invoiceDet']['ind_address'],
             'payment_method' => $data['invoiceDet']['payment_method'],
             'payment_reference_number' => $data['invoiceDet']['telephone'],
             'user_id' => Auth::user()->id,
@@ -200,7 +202,7 @@ class CashierController extends Controller
 
         if (!empty($data['tranItems'])) {
             $transaction =  Transaction::create([
-                'status' => '1',
+                'status' => 1,
                 'cashier_name' => Auth::user()->user_name,
                 'type' => 'application_fee',
                 'invoice_id' =>  $invoice->id,
@@ -234,7 +236,9 @@ class CashierController extends Controller
                 $transactionDetails = Transaction::where('id', $industrytransaction['id'])->first();
                 $transactionUpdate = $transactionDetails->update([
                     "invoice_id" =>  $invoice->id,
-                    'status' =>  '1',
+                    'cashier_name' => Auth::user()->user_name,
+                    'status' =>  1,
+                    'invoice_no' => $invoiceNo,
                 ]);
             }
             if ($transactionUpdate == true) {
@@ -249,7 +253,9 @@ class CashierController extends Controller
                 $transactionDetails = Transaction::where('id', $data['invoiceDet']['transactionsId'])->first();
                 $transactionUpdate = $transactionDetails->update([
                     "invoice_id" =>  $invoice->id,
-                    'status' =>  '1',
+                    'cashier_name' => Auth::user()->user_name,
+                    'status' =>  1,
+                    'invoice_no' => $invoiceNo,
                 ]);
                 return array('status' => 1, 'msg' => 'Invoice added successful', 'data' => ['invoice_id' => $invoice->id], 'type' => 'single');
             } else {
