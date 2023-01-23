@@ -123,11 +123,21 @@
                                                 <div class="col-lg-12">
                                                     <div class="card card-body">
                                                         <table class="table" id="industry_tran_table">
+                                                            <colgroup>
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                            </colgroup>
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
-                                                                    <th>Transaction Id</th>
+                                                                    <th>Id</th>
                                                                     <th>Client Name</th>
+                                                                    <th>Address</th>
                                                                     <th>Type</th>
                                                                     <th>Amount</th>
                                                                     <th>Actions</th>
@@ -149,11 +159,21 @@
                                                 <div class="col-lg-12">
                                                     <div class="card card-body" style="height: 400px; overflow-y:scroll">
                                                         <table class="table" id="transactions_table">
+                                                            <colgroup>
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                                <col style="width: 10%;">
+                                                            </colgroup>
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
-                                                                    <th>Transaction Id</th>
+                                                                    <th>Id</th>
                                                                     <th>Client Name</th>
+                                                                    <th>Address</th>
                                                                     <th>Type</th>
                                                                     <th>Amount</th>
                                                                     <th>Actions</th>
@@ -229,6 +249,15 @@
                                                 </div>
                                                 <div class="col-lg-8">
                                                     <input type="text" name="telephone" id="telephone"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-lg-4">
+                                                    <label for="address">Industry Address</label>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="address" id="address"
                                                         class="form-control">
                                                 </div>
                                             </div>
@@ -373,103 +402,27 @@
 @endsection
 
 @section('pageScripts')
+    <script src="../../dist/js/adminlte.min.js"></script>
+    <script src="../../dist/js/demo.js"></script>
     <script src="{{ asset('js/Cashier/cashier.js') }}"></script>
+    <script src="{{ asset('js/Cashier/bulkTransactions.js') }}"></script>
+
     <script>
-        let vat = Number($('#vatValue').val());
-        let nbt = Number($('#nbtValue').val());
-
-        //create new application payment table
-        $(document).on('click', "#btn_add_new_application_payment", function() {
-            var transactions = JSON.parse(localStorage.getItem("industry_transactions"));
-            if (transactions && transactions.length != 0) {
-                localStorage.setItem('industry_transactions', '[]'); // clear
-
-                selectedIndustryTransactionRecordsTbl(); // clear table
-            }
-
-            // create if location storage key does not exists            
-            if (!localStorage.getItem('new_application_transaction_items')) {
-                localStorage.setItem('new_application_transaction_items', '[]');
-            }
-
-            // get the transaction items data from local storage
-            let transactionItems = JSON.parse(localStorage.getItem('new_application_transaction_items'));
-
-            transactionItems.push({
-                payment_type: $('#payment_type').val(),
-                payment_cat_name: $('#category option:selected').data('name'),
-                amount: $('#price').val(),
-                category_id: $('#category').val(),
-                qty: $('#qty').val()
-            });
-
-            localStorage.setItem('new_application_transaction_items', JSON.stringify(transactionItems));
-
-            // clear tfoot
-            $("#industry_payments_tbl tfoot").html('');
-            generateNewApplicationTable();
-        });
-
-
-        //generate payment table
-        function generateNewApplicationTable() {
-            let sub_total = 0;
-            let i = 1;
-            $("#new_application_payments_tbl tbody").html('');
-
-            var array = JSON.parse(localStorage.getItem("new_application_transaction_items"));
-
-            $.each(array, function(index, val) {
-                if (val) {
-                    if (val.category_id) {
-                        $("#new_application_payments_tbl > tbody").append(`<tr><td>${i++}</td><td>${val.payment_cat_name}</td><td>${val.qty}</td>
-                        <td>${val.amount}</td>
-                        <td><button type="button" class="btn btn-sm btn-danger btn-delete" 
-                            value=` + index + `>Delete</button></td></tr>`);
-                    } else {
-                        localStorage.setItem('new_application_transaction_items', '[]');
-                        return false;
-                    }
-                }
-                sub_total += Number(val.amount);
-
-                $('#sub_total').val(sub_total.toFixed(2));
-                let tax_1 = Number($('#tax_1').val());
-                let tax_2 = Number($('#tax_2').val());
-
-                calTax();
-
-            });
-        }
-
-        $(document).on('click', ".btn-delete", function(e) {
-            if (!confirm('Remove this item?')) {
-                return false;
-            }
-
-            var items = JSON.parse(localStorage.getItem("new_application_transaction_items"));
-            let rowVal = $(this).val();
-
-            // remove the item at rowVal index
-            items.splice(rowVal, 1);
-
-            // set modified items back to the local storage
-            localStorage.setItem("new_application_transaction_items", JSON.stringify(items));
-
-            // re-generate the table
-            generateNewApplicationTable();
-        });
-
-
         function addPayment() {
             let namecheck = $('#name').val();
             if (!namecheck || namecheck.length == 0) {
+                swal.fire(
+                    "failed",
+                    "Please enter client name before payment!",
+                    "warning"
+                );
                 return false;
             } else {
                 let data = {
                     name: $('#name').val(),
                     telephone: $('#telephone').val(),
                     nic: $('#nic').val(),
+                    ind_address: $('#address').val(),
                     invoice_date: $('#invoice_date').val(),
                     payment_method: $('#payment_method').val(),
                     payment_reference_number: $('#payment_reference_number').val(),
@@ -493,6 +446,7 @@
                     invoiceDet: invoiceDet,
                     industryTransactions: industryTransactions,
                 };
+
                 ajaxRequest('post', '/cashier/invoice', arrData, function(response) {
                     if (response.status == 1) {
                         swal.fire(
@@ -503,8 +457,10 @@
                         localStorage.removeItem('new_application_transaction_items');
                         localStorage.removeItem('invoice_details');
                         localStorage.removeItem('industry_transactions');
+                        localStorage.removeItem('industry_items_id_list');
                         $("#industry_payments_tbl tfoot").html('');
                         selectedIndustryTransactionRecordsTbl();
+                        generateNewApplicationTable();
                         clearClientDetails();
 
                         if (response.type != 'bulk') {
@@ -531,34 +487,6 @@
             $("#industry_payments_tbl tfoot").html('');
             selectedIndustryTransactionRecordsTbl();
         });
-
-        //load all industry transaction records
-        function loadAllIndustryTransactionsTable() {
-            var url = "{{ route('load-transactions-table') }}";
-
-            ajaxRequest("GET", url, null, function(response) {
-                let tr = '';
-                let i = 0;
-                $.each(response, function(i, transaction) {
-                    let type = transaction.type;
-                    type = type.replace("_", " ");
-                    type.charAt(0).toUpperCase();
-                    type = type.charAt(0).toUpperCase() + type.slice(1);
-                    tr += `<tr data-row_id = "${transaction.id}">
-                        <td>${++i}</td>
-                        <td>${transaction.id}</td>
-                        <td data-transaction_name=${transaction.name}>${transaction.name}</td>
-                        <td>${type}</td>
-                        <td data-net_total=${transaction.net_total}>${transaction.net_total}</td>
-                        <td>
-                            <button class ="btn btn-dark btn-xs btn-old-transaction-add" data-invoice_id=${transaction.id}> Add </button> <br>
-                            <button class ="btn btn-info btn-xs btn-cancel mt-2" data-invoice_id=${transaction.id}> Cancel </button> 
-                        </td>
-                    </tr>`;
-                })
-                $("#transactions_table > tbody").html(tr);
-            });
-        }
 
         //industry transaction cancel
         $(document).on('click', ".btn-cancel", function(e) {
@@ -587,87 +515,6 @@
             });
         });
 
-        //industry transaction add
-        $(document).on('click', ".btn-old-transaction-add", function() {
-
-            var newApplicationPayments = JSON.parse(localStorage.getItem("new_application_transaction_items"));
-            if (newApplicationPayments && newApplicationPayments.length != 0) {
-                localStorage.setItem('new_application_transaction_items', '[]'); // clear
-                generateNewApplicationTable();
-            }
-
-            // create if location storage key does not exists            
-            if (!localStorage.getItem('industry_transactions')) {
-                localStorage.setItem('industry_transactions', '[]');
-            }
-
-            // get the transactions data from local storage
-            let transactions = JSON.parse(localStorage.getItem('industry_transactions'));
-
-            var currentRow = $(this).closest("tr");
-
-            var transaction_id = currentRow.find("td:eq(1)").text();
-            var name = currentRow.find("td:eq(2)").text();
-            var type = currentRow.find("td:eq(3)").text();
-            var amount = currentRow.find("td:eq(4)").text();
-
-            transactions.push({
-                id: transaction_id,
-                name: name,
-                total: amount,
-            });
-
-            localStorage.setItem('industry_transactions', JSON.stringify(transactions));
-            $("#industry_payments_tbl tfoot").html('');
-            selectedIndustryTransactionRecordsTbl();
-        });
-
-        //load selected industry transactions table to generate invoice
-        function selectedIndustryTransactionRecordsTbl() {
-            let sub_total = 0;
-            let i = 1;
-            $("#industry_payments_tbl tbody").html('');
-
-            var array = JSON.parse(localStorage.getItem("industry_transactions"));
-
-            $.each(array, function(index, val) {
-                if (val) {
-                    $("#industry_payments_tbl > tbody").append(`<tr>
-                    <td>${i++}</td><td>${val.id}</td><td>${val.name}</td>
-                    <td>${val.total}</td>
-                    <td><button type="button" class="btn btn-sm btn-danger btn-delete-invoice-gen" 
-                        value=` + index + `>Delete</button></td>
-                    </tr>`);
-                }
-                sub_total += Number(val.total);
-
-            });
-            $("#industry_payments_tbl > tfoot").append(`<tr>
-                <td colspan="3" style="text-align: center">Total</td>
-                <td id="gene_total_amount">${sub_total}</td>
-            </tr>`);
-            $('#sub_total').val(sub_total.toFixed(2));
-            calTax();
-        }
-
-        //remove selected industry transaction record
-        $(document).on('click', ".btn-delete-invoice-gen", function(e) {
-            if (!confirm('Remove this item?')) {
-                return false;
-            }
-
-            var transactions = JSON.parse(localStorage.getItem("industry_transactions"));
-            let rowVal = $(this).val();
-
-            transactions.splice(rowVal, 1);
-
-            localStorage.setItem("industry_transactions", JSON.stringify(transactions));
-
-            $("#industry_payments_tbl tfoot").html('');
-            selectedIndustryTransactionRecordsTbl();
-        });
-
-
         //load all industry transaction records to pay single transaction
         function loadAllIndustryTransactionsTbleToPay() {
             var url = "{{ route('load-transactions-table') }}";
@@ -685,6 +532,7 @@
                         <td>${++i}</td>
                         <td>${transaction.id}</td>
                         <td>${transaction.name}</td>
+                        <td>${transaction.address}</td>
                         <td>${type}</td>
                         <td>${transaction.net_total}</td>
                         <td>
@@ -693,7 +541,8 @@
                             data-nic=${transaction.nic} 
                             data-contact_no=${transaction.contact_no} 
                             data-invoice_id=${transaction.id} 
-                            data-net_total=${transaction.net_total}> Pay </button> 
+                            data-net_total=${transaction.net_total}
+                            data-address="${transaction.address}"> Pay </button> 
                             <br>
                             <button class ="btn btn-info btn-xs btn-cancel mt-2" data-invoice_id=${transaction.id}> Cancel </button> 
                         </td>
@@ -715,12 +564,14 @@
             let name = $(this).data('transaction_name');
             let nic = $(this).data('nic');
             let telephone = $(this).data('contact_no');
+            let address = $(this).data('address');
             let sub_total = $(this).data('net_total');
             let transactionId = $(this).data('invoice_id');
 
             $('#name').val(name);
             $('#nic').val(nic);
             $('#telephone').val(telephone);
+            $('#address').val(address);
             $('#sub_total').val(sub_total.toFixed(2));
             $('#transactionId').val(transactionId);
 
@@ -728,7 +579,7 @@
         });
 
         function clearClientDetails() {
-            $("#name, #nic, #telephone, #sub_total, #amount, #transactionId, #vat,  #nbt, #tax_1, #tax_2, #tax_total").val(
+            $("#name, #nic, #telephone, #address, #payment_reference_number, #remark, #tax_1, #tax_2, #tax_total").val(
                 '');
         }
         $(document).on('click', "#btn_clear_customer_data", function(e) {

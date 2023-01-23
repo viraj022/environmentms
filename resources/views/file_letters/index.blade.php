@@ -117,6 +117,8 @@
 @endsection
 
 @section('pageScripts')
+<script src="../../dist/js/adminlte.min.js"></script>
+    <script src="../../dist/js/demo.js"></script>
     <script>
         @if (session('letter_update_success'))
             Swal.fire('Success', '{{ session('letter_update_success') }}', 'success');

@@ -65,10 +65,8 @@
                 <p>
 
                     VAT Registration No. 409216765-7000 <span style="margin-left: 25px;">N.B.T. No.
-                        409216765-9000</span> <br> <br>
-                    <span>Date
-                        :{{ Carbon\Carbon::parse($invoice->invoice_date)->format('Y-m-d') }}</span>
-                    <span style="margin-left: 35px"> Received From : {{ $invoice->name }} </span>
+                        409216765-9000</span> <span style="margin-left: 25px;">N.W.P.C මු/1 </span> <br> <br>
+                    <span> Received From : {{ $invoice->name }} </span>
 
                 </p>
 
@@ -76,7 +74,9 @@
                     @foreach ($transactions as $transaction)
                         <div style="margin-top: 10px;">
                             <div style="margin-bottom: 10px;">
-                                Recipt No. : {{ $transaction->id }}
+                                Recipt No. : {{ $transaction->id }} <br>
+                                <span>Date
+                                    :{{ Carbon\Carbon::parse($transaction->created_at)->format('Y-m-d') }}</span>
                             </div>
                             <table class="table table-bordered mb-2">
                                 <thead>
@@ -118,8 +118,8 @@
                                     <td class="text-end">{{ number_format($invoice->other_tax_amount, 2) }}</td>
                                 </tr>
                                 <tr>
-                                    <th colspan="2" style="text-align: left">Net Total</th>
-                                    <td class="text-end">{{ number_format($invoice->amount, 2) }}</td>
+                                    <th colspan="2" style="text-align: left"><strong>Net Total</strong></th>
+                                    <td class="text-end"><strong>{{ number_format($invoice->amount, 2) }}</strong></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -127,6 +127,9 @@
                 </section>
                 <div style="margin-top: 30px;">
                     Signature & Designation: .......................
+                </div>
+                <div style="margin-top: 20px; text-align:right;">
+                    Printed On {{ Carbon\Carbon::parse(now())->format('Y-m-d h:i A') }}
                 </div>
             </div>
         </div>

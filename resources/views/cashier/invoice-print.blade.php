@@ -65,10 +65,10 @@
                 <p>
 
                     VAT Registration No. 409216765-7000 <span style="margin-left: 25px;">N.B.T. No.
-                        409216765-9000</span> <br> <br>
+                        409216765-9000</span> <span style="margin-left: 25px;">N.W.P.C මු/1 </span> <br> <br>
                     Recipt No. : {{ $transaction->id }}
                     <span style="margin-left: 35px">Date
-                        :{{ Carbon\Carbon::parse($invoice->invoice_date)->format('Y-m-d') }}</span>
+                        :{{ Carbon\Carbon::parse($transaction->created_at)->format('Y-m-d') }}</span>
                     <span style="margin-left: 35px"> Received From : {{ $invoice->name }} </span>
 
                 </p>
@@ -109,14 +109,17 @@
                                 <td class="text-end">{{ number_format($invoice->other_tax_amount, 2) }}</td>
                             </tr>
                             <tr>
-                                <td colspan="2" style="text-align: left">Net Total</td>
-                                <td class="text-end">{{ number_format($invoice->amount, 2) }}</td>
+                                <td colspan="2" style="text-align: left"><strong>Net Total</strong></td>
+                                <td class="text-end"><strong>{{ number_format($invoice->amount, 2) }}</strong></td>
                             </tr>
                         </tfoot>
                     </table>
                 </section>
                 <div style="margin-top: 30px;">
                     Signature & Designation: .......................
+                </div>
+                <div style="margin-top: 20px; text-align:right;">
+                    Printed On {{ Carbon\Carbon::parse(now())->format('Y-m-d h:i A') }}
                 </div>
             </div>
         </div>

@@ -97,6 +97,8 @@
 @endsection
 
 @section('pageScripts')
+    <script src="../../dist/js/adminlte.min.js"></script>
+    <script src="../../dist/js/demo.js"></script>
     <script>
         $(document).ready(function() {
             $('#completed_files_table').DataTable();

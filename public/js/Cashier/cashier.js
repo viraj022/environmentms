@@ -1,3 +1,6 @@
+let vat = Number($("#vatValue").val());
+let nbt = Number($("#nbtValue").val());
+
 $("#invoice_date").val(new Date().toJSON().slice(0, 10));
 //load payment types
 function loadPaymentTypes(callback) {
@@ -56,3 +59,103 @@ function total() {
 }
 
 $("#qty").change(total);
+
+//create new application payment table
+$(document).on("click", "#btn_add_new_application_payment", function () {
+    var transactions = JSON.parse(
+        localStorage.getItem("industry_transactions")
+    );
+    if (transactions && transactions.length != 0) {
+        localStorage.setItem("industry_transactions", "[]"); // clear
+
+        selectedIndustryTransactionRecordsTbl(); // clear table
+    }
+
+    // create if location storage key does not exists
+    if (!localStorage.getItem("new_application_transaction_items")) {
+        localStorage.setItem("new_application_transaction_items", "[]");
+    }
+
+    // get the transaction items data from local storage
+    let transactionItems = JSON.parse(
+        localStorage.getItem("new_application_transaction_items")
+    );
+
+    transactionItems.push({
+        payment_type: $("#payment_type").val(),
+        payment_cat_name: $("#category option:selected").data("name"),
+        amount: $("#price").val(),
+        category_id: $("#category").val(),
+        qty: $("#qty").val(),
+    });
+
+    localStorage.setItem(
+        "new_application_transaction_items",
+        JSON.stringify(transactionItems)
+    );
+
+    // clear tfoot
+    $("#industry_payments_tbl tfoot").html("");
+    generateNewApplicationTable();
+});
+
+//generate payment table
+function generateNewApplicationTable() {
+    let sub_total = 0;
+    let i = 1;
+    $("#new_application_payments_tbl tbody").html("");
+
+    var array = JSON.parse(
+        localStorage.getItem("new_application_transaction_items")
+    );
+
+    $.each(array, function (index, val) {
+        if (val) {
+            if (val.category_id) {
+                $("#new_application_payments_tbl > tbody").append(
+                    `<tr><td>${i++}</td><td>${val.payment_cat_name}</td><td>${
+                        val.qty
+                    }</td>
+                <td>${val.amount}</td>
+                <td><button type="button" class="btn btn-sm btn-danger btn-delete" 
+                    value=` +
+                        index +
+                        `>Delete</button></td></tr>`
+                );
+            } else {
+                localStorage.setItem("new_application_transaction_items", "[]");
+                return false;
+            }
+        }
+        sub_total += Number(val.amount);
+
+        $("#sub_total").val(sub_total.toFixed(2));
+        let tax_1 = Number($("#tax_1").val());
+        let tax_2 = Number($("#tax_2").val());
+
+        calTax();
+    });
+}
+
+$(document).on("click", ".btn-delete", function (e) {
+    if (!confirm("Remove this item?")) {
+        return false;
+    }
+
+    var items = JSON.parse(
+        localStorage.getItem("new_application_transaction_items")
+    );
+    let rowVal = $(this).val();
+
+    // remove the item at rowVal index
+    items.splice(rowVal, 1);
+
+    // set modified items back to the local storage
+    localStorage.setItem(
+        "new_application_transaction_items",
+        JSON.stringify(items)
+    );
+
+    // re-generate the table
+    generateNewApplicationTable();
+});

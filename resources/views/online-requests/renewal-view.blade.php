@@ -262,6 +262,8 @@
 @endsection
 
 @section('pageScripts')
+    <script src="../../dist/js/adminlte.min.js"></script>
+    <script src="../../dist/js/demo.js"></script>
     <!-- Page scripts -->
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
