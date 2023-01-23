@@ -405,93 +405,9 @@
     <script src="../../dist/js/adminlte.min.js"></script>
     <script src="../../dist/js/demo.js"></script>
     <script src="{{ asset('js/Cashier/cashier.js') }}"></script>
+    <script src="{{ asset('js/Cashier/bulkTransactions.js') }}"></script>
+
     <script>
-        let vat = Number($('#vatValue').val());
-        let nbt = Number($('#nbtValue').val());
-
-        //create new application payment table
-        $(document).on('click', "#btn_add_new_application_payment", function() {
-            var transactions = JSON.parse(localStorage.getItem("industry_transactions"));
-            if (transactions && transactions.length != 0) {
-                localStorage.setItem('industry_transactions', '[]'); // clear
-
-                selectedIndustryTransactionRecordsTbl(); // clear table
-            }
-
-            // create if location storage key does not exists            
-            if (!localStorage.getItem('new_application_transaction_items')) {
-                localStorage.setItem('new_application_transaction_items', '[]');
-            }
-
-            // get the transaction items data from local storage
-            let transactionItems = JSON.parse(localStorage.getItem('new_application_transaction_items'));
-
-            transactionItems.push({
-                payment_type: $('#payment_type').val(),
-                payment_cat_name: $('#category option:selected').data('name'),
-                amount: $('#price').val(),
-                category_id: $('#category').val(),
-                qty: $('#qty').val()
-            });
-
-            localStorage.setItem('new_application_transaction_items', JSON.stringify(transactionItems));
-
-            // clear tfoot
-            $("#industry_payments_tbl tfoot").html('');
-            generateNewApplicationTable();
-        });
-
-
-        //generate payment table
-        function generateNewApplicationTable() {
-            let sub_total = 0;
-            let i = 1;
-            $("#new_application_payments_tbl tbody").html('');
-
-            var array = JSON.parse(localStorage.getItem("new_application_transaction_items"));
-
-            $.each(array, function(index, val) {
-                if (val) {
-                    if (val.category_id) {
-                        $("#new_application_payments_tbl > tbody").append(`<tr><td>${i++}</td><td>${val.payment_cat_name}</td><td>${val.qty}</td>
-                        <td>${val.amount}</td>
-                        <td><button type="button" class="btn btn-sm btn-danger btn-delete" 
-                            value=` + index + `>Delete</button></td></tr>`);
-                    } else {
-                        localStorage.setItem('new_application_transaction_items', '[]');
-                        return false;
-                    }
-                }
-                sub_total += Number(val.amount);
-
-                $('#sub_total').val(sub_total.toFixed(2));
-                let tax_1 = Number($('#tax_1').val());
-                let tax_2 = Number($('#tax_2').val());
-
-                calTax();
-
-            });
-        }
-
-        $(document).on('click', ".btn-delete", function(e) {
-            if (!confirm('Remove this item?')) {
-                return false;
-            }
-
-            var items = JSON.parse(localStorage.getItem("new_application_transaction_items"));
-            let rowVal = $(this).val();
-
-            // remove the item at rowVal index
-            items.splice(rowVal, 1);
-
-            // set modified items back to the local storage
-            localStorage.setItem("new_application_transaction_items", JSON.stringify(items));
-
-            // re-generate the table
-            generateNewApplicationTable();
-        });
-
-
         function addPayment() {
             let namecheck = $('#name').val();
             if (!namecheck || namecheck.length == 0) {
@@ -541,6 +457,7 @@
                         localStorage.removeItem('new_application_transaction_items');
                         localStorage.removeItem('invoice_details');
                         localStorage.removeItem('industry_transactions');
+                        localStorage.removeItem('industry_items_id_list');
                         $("#industry_payments_tbl tfoot").html('');
                         selectedIndustryTransactionRecordsTbl();
                         generateNewApplicationTable();
@@ -571,43 +488,6 @@
             selectedIndustryTransactionRecordsTbl();
         });
 
-        //load all industry transaction records
-        function loadAllIndustryTransactionsTable() {
-            var url = "{{ route('load-transactions-table') }}";
-
-            ajaxRequest("GET", url, null, function(response) {
-                let tr = '';
-                let i = 0;
-                $.each(response, function(i, transaction) {
-                    let type = transaction.type;
-                    type = type.replace("_", " ");
-                    type.charAt(0).toUpperCase();
-                    type = type.charAt(0).toUpperCase() + type.slice(1);
-                    tr += `<tr data-row_id = "${transaction.id}">
-                        <td>${++i}</td>
-                        <td>${transaction.id}</td>
-                        <td data-transaction_name=${transaction.name}>${transaction.name}</td>
-                        <td data-address="${transaction.address}">${transaction.address}</td>
-                        <td>${type}</td>
-                        <td data-net_total=${transaction.net_total}>${transaction.net_total}</td>
-                        <td>
-                            <button class ="btn btn-dark btn-xs btn-old-transaction-add" data-invoice_id=${transaction.id}> Add </button> <br>
-                            <button class ="btn btn-info btn-xs btn-cancel mt-2" data-invoice_id=${transaction.id}> Cancel </button> 
-                        </td>
-                    </tr>`;
-
-                    if ($('.btn-delete-invoice-gen[data-transaction_id]') == transaction.id) {
-                        $('.btn-old-transaction-add[data-invoice_id=' + transaction.id + ']').prop(
-                            'disabled', true);
-                    }
-                })
-                $("#transactions_table > tbody").html(tr);
-                console.log('hi');
-
-                $('#transactions_table').DataTable();
-            });
-        }
-
         //industry transaction cancel
         $(document).on('click', ".btn-cancel", function(e) {
             if (!confirm('Are you sure you want to cancel this transaction?')) {
@@ -634,93 +514,6 @@
                 }
             });
         });
-
-        //industry transaction add
-        $(document).on('click', ".btn-old-transaction-add", function() {
-
-            var newApplicationPayments = JSON.parse(localStorage.getItem("new_application_transaction_items"));
-            if (newApplicationPayments && newApplicationPayments.length != 0) {
-                localStorage.setItem('new_application_transaction_items', '[]'); // clear
-                generateNewApplicationTable();
-            }
-
-            // create if location storage key does not exists            
-            if (!localStorage.getItem('industry_transactions')) {
-                localStorage.setItem('industry_transactions', '[]');
-            }
-
-            // get the transactions data from local storage
-            let transactions = JSON.parse(localStorage.getItem('industry_transactions'));
-
-            var currentRow = $(this).closest("tr");
-
-            var transaction_id = currentRow.find("td:eq(1)").text();
-            var name = currentRow.find("td:eq(2)").text();
-            var type = currentRow.find("td:eq(4)").text();
-            var amount = currentRow.find("td:eq(5)").text();
-
-            transactions.push({
-                id: transaction_id,
-                name: name,
-                total: amount,
-            });
-
-            localStorage.setItem('industry_transactions', JSON.stringify(transactions));
-            $("#industry_payments_tbl tfoot").html('');
-            selectedIndustryTransactionRecordsTbl();
-
-            $(this).prop('disabled', true);
-        });
-
-        //load selected industry transactions table to generate invoice
-        function selectedIndustryTransactionRecordsTbl() {
-            let sub_total = 0;
-            let i = 1;
-            $("#industry_payments_tbl tbody").html('');
-
-            var array = JSON.parse(localStorage.getItem("industry_transactions"));
-
-            $.each(array, function(index, val) {
-                if (val) {
-                    $("#industry_payments_tbl > tbody").append(`<tr>
-                    <td>${i++}</td><td>${val.id}</td><td>${val.name}</td>
-                    <td>${val.total}</td>
-                    <td><button type="button" class="btn btn-sm btn-danger btn-delete-invoice-gen" 
-                        value=` + index + ` ` + `data-transaction_id=${val.id}` + `>Delete</button></td>
-                    </tr>`);
-                }
-                sub_total += Number(val.total);
-            });
-            $("#industry_payments_tbl > tfoot").append(`<tr>
-                <td colspan="3" style="text-align: center">Total</td>
-                <td id="gene_total_amount">${sub_total}</td>
-            </tr>`);
-            console.log('hi');
-            $('#sub_total').val(sub_total.toFixed(2));
-            calTax();
-        }
-
-        //remove selected industry transaction record
-        $(document).on('click', ".btn-delete-invoice-gen", function(e) {
-            if (!confirm('Remove this item?')) {
-                return false;
-            }
-
-            var transactions = JSON.parse(localStorage.getItem("industry_transactions"));
-            let rowVal = $(this).val();
-            let transactionId = $(this).data('transaction_id');
-            $('.btn-old-transaction-add[data-invoice_id=' + transactionId + ']').prop('disabled', false);
-
-            console.log('hi');
-
-            transactions.splice(rowVal, 1);
-
-            localStorage.setItem("industry_transactions", JSON.stringify(transactions));
-
-            $("#industry_payments_tbl tfoot").html('');
-            selectedIndustryTransactionRecordsTbl();
-        });
-
 
         //load all industry transaction records to pay single transaction
         function loadAllIndustryTransactionsTbleToPay() {

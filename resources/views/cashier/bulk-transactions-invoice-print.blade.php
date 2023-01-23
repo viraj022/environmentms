@@ -66,9 +66,7 @@
 
                     VAT Registration No. 409216765-7000 <span style="margin-left: 25px;">N.B.T. No.
                         409216765-9000</span> <span style="margin-left: 25px;">N.W.P.C මු/1 </span> <br> <br>
-                    <span>Date
-                        :{{ Carbon\Carbon::parse($transaction->created_at)->format('Y-m-d') }}</span>
-                    <span style="margin-left: 35px"> Received From : {{ $invoice->name }} </span>
+                    <span> Received From : {{ $invoice->name }} </span>
 
                 </p>
 
@@ -76,7 +74,9 @@
                     @foreach ($transactions as $transaction)
                         <div style="margin-top: 10px;">
                             <div style="margin-bottom: 10px;">
-                                Recipt No. : {{ $transaction->id }}
+                                Recipt No. : {{ $transaction->id }} <br>
+                                <span>Date
+                                    :{{ Carbon\Carbon::parse($transaction->created_at)->format('Y-m-d') }}</span>
                             </div>
                             <table class="table table-bordered mb-2">
                                 <thead>
