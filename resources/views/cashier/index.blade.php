@@ -276,14 +276,14 @@
                                                 </div>
                                                 <div class="col-lg-8">
                                                     <div class="form-check d-inline">
-                                                        <input class="form-check-input" type="radio"
+                                                        <input class="form-check-input payment_method" type="radio"
                                                             name="payment_method" id="cash" value="cash" checked>
                                                         <label class="form-check-label" for="cash">
                                                             Cash
                                                         </label>
                                                     </div>
                                                     <div class="form-check d-inline mx-3">
-                                                        <input class="form-check-input" type="radio"
+                                                        <input class="form-check-input payment_method" type="radio"
                                                             name="payment_method" id="cheque" value="cheque">
                                                         <label class="form-check-label" for="cheque">
                                                             Cheque
@@ -431,13 +431,14 @@
                 );
                 return false;
             } else {
+                console.log($('#vat').val());
                 let data = {
                     name: $('#name').val(),
                     telephone: $('#telephone').val(),
                     nic: $('#nic').val(),
                     ind_address: $('#address').val(),
                     invoice_date: $('#invoice_date').val(),
-                    payment_method: $('#payment_method').val(),
+                    payment_method:$('.payment_method:checked').val(),
                     payment_reference_number: $('#payment_reference_number').val(),
                     remark: $('#remark').val(),
                     amount: $('#amount').val(),
@@ -514,7 +515,7 @@
                 if (response.status == 1) {
                     swal.fire(
                         "success",
-                        "Transaction canceled!",
+                        "Transaction cancelled!",
                         "success"
                     );
                     row.remove();
@@ -631,6 +632,36 @@
             let net_tot = Number(sub_total);
             $('#amount').val(net_tot.toFixed(2));
 
+            if ($('#tax_status :selected').val() == 'non-tax') {
+                $('#vatField').addClass('d-none');
+                    $('#nbtField').addClass('d-none');
+                    $('#taxTotalField').addClass('d-none');
+
+                    let vat_tot = 0;
+                    let nbt_tot = 0;
+                    let taxTot = 0;
+                    $('#vat').val(vat_tot.toFixed(2));
+                    console.log(vat_tot);
+                    console.log('hi');
+                    $('#nbt').val(nbt_tot.toFixed(2));
+                    $('#tax_total').val(taxTot.toFixed(2));
+                    $('#amount').val(net_tot.toFixed(2));
+            } else {
+                $('#vatField').removeClass('d-none');
+                    $('#nbtField').removeClass('d-none');
+                    $('#taxTotalField').removeClass('d-none');
+
+                    let vat_tot = sub_total * (vat / 100);
+                    let nbt_tot = sub_total * (nbt / 100);
+                    let taxTot = Number(vat_tot.toFixed(2)) + Number(nbt_tot.toFixed(2));
+                    let net_tot = Number(sub_total) + Number(vat_tot) + Number(nbt_tot);
+
+                    $('#vat').val(vat_tot.toFixed(2));
+                    $('#nbt').val(nbt_tot.toFixed(2));
+                    $('#tax_total').val(taxTot.toFixed(2));
+                    $('#amount').val(net_tot.toFixed(2));
+            }
+            
             $("#tax_status").change(function() {
                 $vatStatus = $('#tax_status :selected').val();
                 if ($vatStatus == 'tax') {
@@ -656,6 +687,8 @@
                     let nbt_tot = 0;
                     let taxTot = 0;
                     $('#vat').val(vat_tot.toFixed(2));
+                    console.log(vat_tot);
+                    console.log('hi');
                     $('#nbt').val(nbt_tot.toFixed(2));
                     $('#tax_total').val(taxTot.toFixed(2));
                     $('#amount').val(net_tot.toFixed(2));

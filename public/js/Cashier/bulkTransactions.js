@@ -44,7 +44,7 @@ function loadAllIndustryTransactionsTable() {
                     } ${isDisabledText}> Add </button> <br>
                     <button class ="btn btn-info btn-xs btn-cancel mt-2" data-invoice_id=${
                         transaction.id
-                    }> Cancel </button> 
+                    } ${isDisabledText}> Cancel </button> 
                 </td>
             </tr>`;
         });
@@ -160,6 +160,10 @@ $(document).on("click", ".btn-delete-invoice-gen", function (e) {
     let rowVal = $(this).val();
     let transactionId = $(this).data("transaction_id");
     $(".btn-old-transaction-add[data-invoice_id=" + transactionId + "]").prop(
+        "disabled",
+        false
+    );
+    $(".btn-cancel[data-invoice_id=" + transactionId + "]").prop(
         "disabled",
         false
     );

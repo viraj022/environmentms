@@ -225,7 +225,7 @@
                 if (result.value) {
                     delete_complain(id);
                 } else if (result.isDenied) {
-                    Swal.fire('Canceled!', 'Confirmation was cancelled', 'info')
+                    Swal.fire('Cancelled!', 'Confirmation was cancelled', 'info')
                 }
             })
         });

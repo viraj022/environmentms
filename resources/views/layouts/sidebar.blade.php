@@ -628,7 +628,7 @@
                     <li class="nav-item">
                         <a href="{{ url('/edit-tax-rate') }}"
                             class="nav-link {{ Request::is('edit-tax-rate') ? 'active' : '' }}">
-                            <i class="fas fa-money-bill"></i>
+                            <i class="fas fa-solid fa-percent"></i>
                             <p>Tax Rates</p>
                         </a>
                     </li>
@@ -636,7 +636,7 @@
                         <li class="nav-item">
                             <a href="{{ url('/invoices') }}"
                                 class="nav-link {{ Request::is('invoices') ? 'active' : '' }}">
-                                <i class="fas fa-money-bill"></i>
+                                <i class="fas fa-duotone fa-list"></i>
                                 <p>Invoice List</p>
                             </a>
                         </li>
@@ -644,8 +644,8 @@
                     <li class="nav-item">
                         <a href="{{ url('/cancel-invoices-list') }}"
                             class="nav-link {{ Request::is('cancel-invoices-list') ? 'active' : '' }}">
-                            <i class="fas fa-money-bill"></i>
-                            <p>Canceled Invoices</p>
+                            <i class="fas fa-duotone fa-list"></i>
+                            <p>Cancelled Invoices</p>
                         </a>
                     </li>
                 </ul>

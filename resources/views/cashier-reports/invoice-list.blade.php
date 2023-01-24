@@ -32,11 +32,15 @@
                     </form>
                 </div>
             </div>
+        </div>
+        <div class="row">
             @if (empty($invoices))
-                <div class="col-lg-12">
-                    <div class="card crad-body">
-                        <div class="alert alert-info">
-                            Please search a date to view invoices.
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                Please search a date to view invoices.
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -50,6 +54,7 @@
                                         <th>#</th>
                                         <th>Name</th>
                                         <th>Address</th>
+                                        <th>NIC</th>
                                         <th>Invoice Date</th>
                                         <th>Amount</th>
                                         <th>Actions</th>
@@ -61,6 +66,7 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $invoice->name }}</td>
                                             <td>{{ $invoice->address }}</td>
+                                            <td>{{ $invoice->nic }}</td>
                                             <td>{{ $invoice->invoice_date }}</td>
                                             <td>{{ number_format($invoice->amount, 2) }}</td>
                                             <td>
@@ -90,5 +96,9 @@
         $(document).ready(function() {
             $('#invoicesTable').DataTable();
         });
+
+        @if (session('invoiceCancelled'))
+            Swal.fire('Success', '{{ session('invoiceCancelled') }}', 'success');
+        @endif        
     </script>
 @endsection

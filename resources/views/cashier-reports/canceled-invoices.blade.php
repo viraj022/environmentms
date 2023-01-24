@@ -10,7 +10,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-12 col-sm-6">
-                    <h1>Canceled Invoice List</h1>
+                    <h1>Cancelled Invoice List</h1>
                 </div>
             </div>
         </div>
@@ -32,11 +32,15 @@
                     </form>
                 </div>
             </div>
+        </div>
+        <div class="row">
             @if (empty($canceledInvoices))
-                <div class="col-lg-12">
-                    <div class="card crad-body">
-                        <div class="alert alert-info">
-                            Please search a date to view canceled invoices.
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                Please search a date to view cancelled invoices.
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -50,9 +54,10 @@
                                         <th>#</th>
                                         <th>Name</th>
                                         <th>Address</th>
+                                        <th>NIC</th>
                                         <th>Invoice Date</th>
-                                        <th>Canceled Date</th>
                                         <th>Amount</th>
+                                        <th>Cancelled Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -61,9 +66,10 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $invoice->name }}</td>
                                             <td>{{ $invoice->address }}</td>
+                                            <td>{{ $invoice->nic }}</td>
                                             <td>{{ $invoice->invoice_date }}</td>
-                                            <td>{{ $invoice->canceled_at }}</td>
                                             <td>{{ number_format($invoice->amount, 2) }}</td>
+                                            <td>{{ $invoice->canceled_at }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

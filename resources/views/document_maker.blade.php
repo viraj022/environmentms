@@ -190,7 +190,7 @@
                         }
                     });
                 } else if (result.isDenied) {
-                    Swal.fire('Canceled!', 'Confirmation was cancelled', 'info')
+                    Swal.fire('Cancelled!', 'Confirmation was cancelled', 'info')
                 }
             })
         }
@@ -224,7 +224,7 @@
                         }
                     });
                 } else if (result.isDenied) {
-                    Swal.fire('Canceled!', 'Confirmation was cancelled', 'info')
+                    Swal.fire('Cancelled!', 'Confirmation was cancelled', 'info')
                 }
             })
 

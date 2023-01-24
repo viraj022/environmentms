@@ -374,7 +374,7 @@ class CashierController extends Controller
         ]);
         $taxes = TaxRate::all();
 
-        return redirect()->route('change-tax-rate-view', compact('taxes'));
+        return redirect()->route('change-tax-rate-view', compact('taxes'))->with('taxRate', 'Tax rate changed successfully!');
     }
 
     /**
@@ -400,9 +400,12 @@ class CashierController extends Controller
             'end_date' => 'required|date',
         ], $request->all());
 
-        $invoices = Invoice::where('status', 1)->whereRaw('DATE(invoice_date) BETWEEN ? AND ?', [$data['start_date'], $data['end_date']])->get();
+        $start_date = $data['start_date'];
+        $end_date = $data['end_date'];
 
-        return view('cashier-reports.invoice-list', compact('invoices'));
+        $invoices = Invoice::where('status', 1)->whereRaw('DATE(invoice_date) BETWEEN ? AND ?', [$start_date, $end_date])->get();
+
+        return view('cashier-reports.invoice-list', compact('invoices', 'start_date', 'end_date' ));
     }
 
     /**
@@ -423,7 +426,7 @@ class CashierController extends Controller
 
         $invoice->delete();
 
-        return redirect()->route('invoice-list')->with('Invoice cancelled successfully');
+        return redirect()->route('invoice-list')->with('invoiceCancelled', 'Invoice cancelled successfully');
     }
 
     /**
@@ -434,9 +437,7 @@ class CashierController extends Controller
      */
     public function canceledInvoiceList()
     {
-        $canceledInvoiceList = Invoice::where('status', 0)->get();
-
-        return view('cashier-reports.canceled-invoices', compact('canceledInvoiceList'));
+        return view('cashier-reports.canceled-invoices');
     }
 
     /**
@@ -452,8 +453,14 @@ class CashierController extends Controller
             'end_date' => 'required|date',
         ], $request->all());
 
-        $canceledInvoices = Invoice::where('status', 0)->whereRaw('DATE(canceled_at) BETWEEN ? AND ?', [$data['start_date'], $data['end_date']])->get();
+        $start_date = $data['start_date'];
+        $end_date = $data['end_date'];
 
-        return view('cashier-reports.canceled-invoices', compact('canceledInvoices'));
+        $canceledInvoices = Invoice::where('status', 0)
+        ->whereRaw('DATE(canceled_at) BETWEEN ? AND ?', [$start_date, $end_date])
+        ->withTrashed()
+        ->get();
+
+        return view('cashier-reports.canceled-invoices', compact('canceledInvoices', 'start_date', 'end_date'));
     }
 }

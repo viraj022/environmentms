@@ -87,5 +87,9 @@
         $(function() {
             setTaxRate();
         });
+
+        @if (session('taxRate'))
+            Swal.fire('Success', '{{ session('taxRate') }}', 'success');
+        @endif  
     </script>
 @endsection
