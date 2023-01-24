@@ -15,17 +15,17 @@
                             <li class="nav-item">
                                 <a class="nav-link active" id="custom-tabs-two-home-tab" data-toggle="pill"
                                     href="#custom-tabs-two-home" role="tab" aria-controls="custom-tabs-two-home"
-                                    aria-selected="true">Cashier</a>
+                                    aria-selected="true">New Client Payment</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="custom-tabs-two-profile-tab" data-toggle="pill"
                                     href="#custom-tabs-two-profile" role="tab" aria-controls="custom-tabs-two-profile"
-                                    aria-selected="false">Cashier 2</a>
+                                    aria-selected="false">Single Payment</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
                                     href="#custom-tabs-three-profile" role="tab"
-                                    aria-controls="custom-tabs-three-profile" aria-selected="false">Cashier 3</a>
+                                    aria-controls="custom-tabs-three-profile" aria-selected="false">Bulk Payment</a>
                             </li>
                         </ul>
                     </div>
@@ -136,7 +136,7 @@
                                                                 <tr>
                                                                     <th>#</th>
                                                                     <th>Id</th>
-                                                                    <th>Client Name</th>
+                                                                    <th>Industry Name</th>
                                                                     <th>Address</th>
                                                                     <th>Type</th>
                                                                     <th>Amount</th>
@@ -172,7 +172,7 @@
                                                                 <tr>
                                                                     <th>#</th>
                                                                     <th>Id</th>
-                                                                    <th>Client Name</th>
+                                                                    <th>Industry Name</th>
                                                                     <th>Address</th>
                                                                     <th>Type</th>
                                                                     <th>Amount</th>
@@ -227,11 +227,20 @@
                                             <input type="text" hidden value="{{ $nbt->rate }}" id="nbtValue">
                                             <div class="row mb-3">
                                                 <div class="col-lg-4">
-                                                    <label for="name">Name</label>
+                                                    <label for="name">Industry Name</label>
                                                 </div>
                                                 <div class="col-lg-8">
                                                     <input type="text" name="name" id="name"
                                                         class="form-control" required>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-lg-4">
+                                                    <label for="address">Industry Address</label>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="address" id="address"
+                                                        class="form-control">
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
@@ -254,15 +263,6 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <div class="col-lg-4">
-                                                    <label for="address">Industry Address</label>
-                                                </div>
-                                                <div class="col-lg-8">
-                                                    <input type="text" name="address" id="address"
-                                                        class="form-control">
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <div class="col-lg-4">
                                                     <label for="invoice_date">Date</label>
                                                 </div>
                                                 <div class="col-lg-8">
@@ -275,22 +275,39 @@
                                                     <label for="payment_method">Payment Type</label>
                                                 </div>
                                                 <div class="col-lg-8">
-                                                    <select class="form-select  form-control"
-                                                        aria-label="Default select example" id="payment_method"
-                                                        name="payment_method">
-                                                        <option value="cash">Cash</option>
-                                                        <option value="cheque">Cheque</option>
-                                                    </select>
+                                                    <div class="form-check d-inline">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="payment_method" id="cash" value="cash" checked>
+                                                        <label class="form-check-label" for="cash">
+                                                            Cash
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check d-inline mx-3">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="payment_method" id="cheque" value="cheque">
+                                                        <label class="form-check-label" for="cheque">
+                                                            Cheque
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="row mb-3">
+                                            <div class="row mb-3 d-none" id="paymentReferenceField">
                                                 <div class="col-lg-4">
                                                     <label for="payment_reference_number">Payment Reference
-                                                        Number</label>
+                                                        Number <br> (Cheque Number)</label>
                                                 </div>
                                                 <div class="col-lg-8">
                                                     <input type="text" name="payment_reference_number"
                                                         id="payment_reference_number" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 d-none" id="chequeDateField">
+                                                <div class="col-lg-4">
+                                                    <label for="cheque_issue_date">Cheque issued date</label>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <input type="date" name="cheque_issue_date" id="cheque_issue_date"
+                                                        class="form-control">
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
@@ -319,6 +336,20 @@
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-lg-4">
+                                            <label for="sub_total">
+                                                Tax Status
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-8 ">
+                                            <select class="form-select form-control" aria-label="Default select example"
+                                                name="tax_status" id="tax_status">
+                                                <option value="non-tax" selected>Without TAX</option>
+                                                <option value="tax">TAX</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 d-none" id="vatField">
+                                        <div class="col-lg-4">
                                             <label for="vat">
                                                 Vat Rate
                                                 ({{ $vat->rate }}%)
@@ -329,7 +360,7 @@
                                                 readonly>
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
+                                    <div class="row mb-3 d-none" id="nbtField">
                                         <div class="col-lg-4">
                                             <label for="nbt">
                                                 NBT Rate
@@ -341,27 +372,7 @@
                                                 readonly>
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-lg-4">
-                                            <label for="tax_1">
-                                                Tax 1
-                                            </label>
-                                        </div>
-                                        <div class="col-lg-8 ">
-                                            <input type="text" name="tax_1" id="tax_1" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-lg-4">
-                                            <label for="tax_2">
-                                                Tax 2
-                                            </label>
-                                        </div>
-                                        <div class="col-lg-8 ">
-                                            <input type="text" name="tax_2" id="tax_2" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
+                                    <div class="row mb-3 d-none" id="taxTotalField">
                                         <div class="col-lg-4">
                                             <label for="tax_total">
                                                 Tax Total
@@ -408,12 +419,14 @@
     <script src="{{ asset('js/Cashier/bulkTransactions.js') }}"></script>
 
     <script>
+        $('.mainBodyClass').addClass('sidebar-collapse');
+
         function addPayment() {
             let namecheck = $('#name').val();
             if (!namecheck || namecheck.length == 0) {
                 swal.fire(
                     "failed",
-                    "Please enter client name before payment!",
+                    "Please enter industry name before payment!",
                     "warning"
                 );
                 return false;
@@ -531,13 +544,13 @@
                     tr += `<tr data-row_id = "${transaction.id}">
                         <td>${++i}</td>
                         <td>${transaction.id}</td>
-                        <td>${transaction.name}</td>
+                        <td>${transaction.industry_name}</td>
                         <td>${transaction.address}</td>
                         <td>${type}</td>
                         <td>${transaction.net_total}</td>
                         <td>
                             <button class ="btn btn-danger btn-xs btn-old-transaction-pay" 
-                            data-transaction_name=${transaction.name}
+                            data-transaction_name="${transaction.industry_name}"
                             data-nic=${transaction.nic} 
                             data-contact_no=${transaction.contact_no} 
                             data-invoice_id=${transaction.id} 
@@ -561,12 +574,20 @@
             $("#industry_payments_tbl tfoot").html('');
             selectedIndustryTransactionRecordsTbl();
 
+            localStorage.setItem('industry_items_id_list', '[]');
+            loadAllIndustryTransactionsTable();
+
             let name = $(this).data('transaction_name');
             let nic = $(this).data('nic');
             let telephone = $(this).data('contact_no');
             let address = $(this).data('address');
             let sub_total = $(this).data('net_total');
             let transactionId = $(this).data('invoice_id');
+
+            name ? $('#name').prop("readonly", true) : $('#name').prop("readonly", false);
+            nic ? $('#nic').prop("readonly", true) : $('#nic').prop("readonly", false);
+            telephone ? $('#telephone').prop("readonly", true) : $('#telephone').prop("readonly", false);
+            address ? $('#address').prop("readonly", true) : $('#address').prop("readonly", false);
 
             $('#name').val(name);
             $('#nic').val(nic);
@@ -579,8 +600,15 @@
         });
 
         function clearClientDetails() {
-            $("#name, #nic, #telephone, #address, #payment_reference_number, #remark, #tax_1, #tax_2, #tax_total").val(
-                '');
+            $("#name, #nic, #telephone, #address, #invoice_date, #cheque_issue_date, #payment_reference_number, #remark, #tax_total, #vat, #nbt")
+                .val(
+                    '');
+
+            $('#name').prop("readonly", false);
+            $('#nic').prop("readonly", false);
+            $('#telephone').prop("readonly", false);
+            $('#address').prop("readonly", false);
+
         }
         $(document).on('click', "#btn_clear_customer_data", function(e) {
             clearClientDetails();
@@ -600,28 +628,60 @@
         function calTax() {
             let sub_total = $('#sub_total').val();
 
-            let tax_1 = $('#tax_1').val();
-            let tax_2 = $('#tax_2').val();
-
-            let vat_tot = sub_total * (vat / 100);
-            let nbt_tot = sub_total * (nbt / 100);
-
-            let net_tot = Number(sub_total) + Number(vat_tot) + Number(nbt_tot);
-
-            if (tax_1 || tax_2) {
-                let tax_1_tot = sub_total * (tax_1 / 100);
-                let tax_2_tot = sub_total * (tax_2 / 100);
-
-                let taxTot = Number(tax_1_tot.toFixed(2)) + Number(tax_2_tot.toFixed(2));
-                net_tot = Number(sub_total) + Number(vat_tot) + Number(nbt_tot) + Number(tax_1_tot) + Number(tax_2_tot);
-                $('#tax_total').val(taxTot.toFixed(2));
-            }
-
-            $('#vat').val(vat_tot.toFixed(2));
-            $('#nbt').val(nbt_tot.toFixed(2));
+            let net_tot = Number(sub_total);
             $('#amount').val(net_tot.toFixed(2));
+
+            $("#tax_status").change(function() {
+                $vatStatus = $('#tax_status :selected').val();
+                if ($vatStatus == 'tax') {
+                    $('#vatField').removeClass('d-none');
+                    $('#nbtField').removeClass('d-none');
+                    $('#taxTotalField').removeClass('d-none');
+
+                    let vat_tot = sub_total * (vat / 100);
+                    let nbt_tot = sub_total * (nbt / 100);
+                    let taxTot = Number(vat_tot.toFixed(2)) + Number(nbt_tot.toFixed(2));
+                    let net_tot = Number(sub_total) + Number(vat_tot) + Number(nbt_tot);
+
+                    $('#vat').val(vat_tot.toFixed(2));
+                    $('#nbt').val(nbt_tot.toFixed(2));
+                    $('#tax_total').val(taxTot.toFixed(2));
+                    $('#amount').val(net_tot.toFixed(2));
+                } else {
+                    $('#vatField').addClass('d-none');
+                    $('#nbtField').addClass('d-none');
+                    $('#taxTotalField').addClass('d-none');
+
+                    let vat_tot = 0;
+                    let nbt_tot = 0;
+                    let taxTot = 0;
+                    $('#vat').val(vat_tot.toFixed(2));
+                    $('#nbt').val(nbt_tot.toFixed(2));
+                    $('#tax_total').val(taxTot.toFixed(2));
+                    $('#amount').val(net_tot.toFixed(2));
+                }
+            });
         }
-        $('#tax_1').change(calTax);
-        $('#tax_2').change(calTax);
+
+        $("#cash").change(function() {
+            console.log($(this).is(':checked'));
+            if ($(this).is(':checked')) {
+                $('#paymentReferenceField').addClass('d-none');
+                $('#chequeDateField').addClass('d-none');
+            } else {
+                $('#paymentReferenceField').removeClass('d-none');
+                $('#chequeDateField').removeClass('d-none');
+            }
+        });
+
+        $("#cheque").change(function() {
+            if ($(this).is(':checked')) {
+                $('#paymentReferenceField').removeClass('d-none');
+                $('#chequeDateField').removeClass('d-none');
+            } else {
+                $('#paymentReferenceField').addClass('d-none');
+                $('#chequeDateField').addClass('d-none');
+            }
+        });
     </script>
 @endsection

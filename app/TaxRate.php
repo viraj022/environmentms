@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class TaxRate extends Model
 {
-    protected $fillable = ['name', 'rate'];
+    protected $fillable = ['name', 'rate', 'changed_user'];
 }

@@ -97,6 +97,8 @@ $(document).on("click", "#btn_add_new_application_payment", function () {
     // clear tfoot
     $("#industry_payments_tbl tfoot").html("");
     generateNewApplicationTable();
+    localStorage.setItem("industry_items_id_list", "[]");
+    loadAllIndustryTransactionsTable();
 });
 
 //generate payment table
@@ -130,8 +132,6 @@ function generateNewApplicationTable() {
         sub_total += Number(val.amount);
 
         $("#sub_total").val(sub_total.toFixed(2));
-        let tax_1 = Number($("#tax_1").val());
-        let tax_2 = Number($("#tax_2").val());
 
         calTax();
     });

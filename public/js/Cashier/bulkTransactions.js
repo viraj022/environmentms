@@ -28,8 +28,8 @@ function loadAllIndustryTransactionsTable() {
             tr += `<tr data-row_id = "${transaction.id}">
                 <td>${++i}</td>
                 <td>${transaction.id}</td>
-                <td data-transaction_name=${transaction.name}>${
-                transaction.name
+                <td data-transaction_name=${transaction.industry_name}>${
+                transaction.industry_name
             }</td>
                 <td data-address="${transaction.address}">${
                 transaction.address
@@ -109,7 +109,9 @@ $(document).on("click", ".btn-old-transaction-add", function () {
     $("#industry_payments_tbl tfoot").html("");
     selectedIndustryTransactionRecordsTbl();
 
-    $(this).prop("disabled", true);
+    let s = $(this).parents("td").find("button").prop("disabled", true);
+    // console.log(s);
+    // $(this).prop("disabled", true);
 });
 
 //load selected industry transactions table to generate invoice

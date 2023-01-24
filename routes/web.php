@@ -174,4 +174,12 @@ Route::middleware('auth')->group(function () {
     #tax rate change
     Route::get('/edit-tax-rate', 'CashierController@editTaxRate')->name('change-tax-rate-view');
     Route::post('/edit-tax-rate', 'CashierController@changeTaxRate')->name('change-tax-rate');
+
+    #invoices view
+    Route::get('/invoices', 'CashierController@loadInvoices')->name('invoice-list');
+    Route::post('/invoices', 'CashierController@loadInvoicesByDate')->name('invoice-list-by-date');
+    Route::post('/cancel-invoice/{invoice}', 'CashierController@cancelInvoice')->name('invoice-cancel');
+
+    Route::get('/cancel-invoices-list', 'CashierController@canceledInvoiceList')->name('canceled-invoice-list');
+    Route::post('/cancel-invoices-list', 'CashierController@canceledInvoicesByDate')->name('canceled-invoice-list-by-date');
 });

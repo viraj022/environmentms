@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Invoice extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'name',
         'contact',
@@ -21,7 +24,9 @@ class Invoice extends Model
         'sub_total',
         'vat_amount',
         'nbt_amount',
-        'other_tax_amount'
+        'other_tax_amount',
+        'canceled_at',
+        'canceled_by',
     ];
 
     public function transaction()

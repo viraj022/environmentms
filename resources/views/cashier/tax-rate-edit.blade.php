@@ -25,6 +25,7 @@
                             Edit Tax Rate
                         </div>
                         <div class="card-body">
+                            <input type="hidden" name="changed_user" id="changed_user" value="{{ Auth::user()->id }}">
                             <div class="mb-3">
                                 <label for="tax_type">Tax Type</label>
                                 <select name="tax_type" id="tax_type" class="form-control">
