@@ -116,7 +116,7 @@
                     </table>
                 </section>
                 <div style="margin-top: 30px;">
-                    Signature & Designation: .......................
+                    Authorized Officer Signature: .......................
                 </div>
                 <div style="margin-top: 20px; text-align:right;">
                     Printed On {{ Carbon\Carbon::parse(now())->format('Y-m-d h:i A') }}

@@ -28,8 +28,8 @@ function loadAllIndustryTransactionsTable() {
             tr += `<tr data-row_id = "${transaction.id}">
                 <td>${++i}</td>
                 <td>${transaction.id}</td>
-                <td data-transaction_name=${transaction.name}>${
-                transaction.name
+                <td data-transaction_name=${transaction.industry_name}>${
+                transaction.industry_name
             }</td>
                 <td data-address="${transaction.address}">${
                 transaction.address
@@ -44,7 +44,7 @@ function loadAllIndustryTransactionsTable() {
                     } ${isDisabledText}> Add </button> <br>
                     <button class ="btn btn-info btn-xs btn-cancel mt-2" data-invoice_id=${
                         transaction.id
-                    }> Cancel </button> 
+                    } ${isDisabledText}> Cancel </button> 
                 </td>
             </tr>`;
         });
@@ -109,7 +109,9 @@ $(document).on("click", ".btn-old-transaction-add", function () {
     $("#industry_payments_tbl tfoot").html("");
     selectedIndustryTransactionRecordsTbl();
 
-    $(this).prop("disabled", true);
+    let s = $(this).parents("td").find("button").prop("disabled", true);
+    // console.log(s);
+    // $(this).prop("disabled", true);
 });
 
 //load selected industry transactions table to generate invoice
@@ -158,6 +160,10 @@ $(document).on("click", ".btn-delete-invoice-gen", function (e) {
     let rowVal = $(this).val();
     let transactionId = $(this).data("transaction_id");
     $(".btn-old-transaction-add[data-invoice_id=" + transactionId + "]").prop(
+        "disabled",
+        false
+    );
+    $(".btn-cancel[data-invoice_id=" + transactionId + "]").prop(
         "disabled",
         false
     );

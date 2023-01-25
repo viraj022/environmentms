@@ -293,6 +293,8 @@ class CashierController extends Controller
             "status"  =>  '3',
         ]);
 
+        $transaction->delete();
+
         if ($cancelTransaction == true) {
             return array('status' => 1, 'msg' => 'Transaction canceled');
         } else {
@@ -361,15 +363,104 @@ class CashierController extends Controller
         $data = $request->validate([
             'tax_type' => 'required|exists:tax_rates,id',
             'tax_rate' => 'required|numeric|gte:0|lte:100',
+            'changed_user' => 'required|exists:users,id'
         ]);
 
         $tax = TaxRate::where('id', $data['tax_type'])->first();
 
         $tax->update([
             'rate' => $data['tax_rate'],
+            'changed_user' => $data['changed_user'],
         ]);
         $taxes = TaxRate::all();
 
-        return redirect()->route('change-tax-rate-view', compact('taxes'));
+        return redirect()->route('change-tax-rate-view', compact('taxes'))->with('taxRate', 'Tax rate changed successfully!');
+    }
+
+    /**
+     * load invoice list view
+     *
+     * @return void
+     */
+    public function loadInvoices()
+    {
+        return view('cashier-reports.invoice-list');
+    }
+
+    /**
+     * load invoices by date
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function loadInvoicesByDate(Request $request)
+    {
+        $data = $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+        ], $request->all());
+
+        $start_date = $data['start_date'];
+        $end_date = $data['end_date'];
+
+        $invoices = Invoice::where('status', 1)->whereRaw('DATE(invoice_date) BETWEEN ? AND ?', [$start_date, $end_date])->get();
+
+        return view('cashier-reports.invoice-list', compact('invoices', 'start_date', 'end_date' ));
+    }
+
+    /**
+     * cancel invoice
+     *
+     * @param Invoice $invoice
+     * @return void
+     */
+    public function cancelInvoice(Invoice $invoice)
+    {
+        $now = Carbon::now()->format('Y-m-d');
+
+        $cancelInvoice = $invoice->update([
+            'status' => 0,
+            'canceled_at' => $now,
+            'canceled_by' => Auth::user()->id,
+        ]);
+
+        $invoice->delete();
+
+        return redirect()->route('invoice-list')->with('invoiceCancelled', 'Invoice cancelled successfully');
+    }
+
+    /**
+     * canceled invoices list
+     *
+     * @param Invoice $invoice
+     * @return void
+     */
+    public function canceledInvoiceList()
+    {
+        return view('cashier-reports.canceled-invoices');
+    }
+
+    /**
+     * canceled invoices list by date
+     *
+     * @param Invoice $invoice
+     * @return void
+     */
+    public function canceledInvoicesByDate(Request $request)
+    {
+        $data = $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+        ], $request->all());
+
+        $start_date = $data['start_date'];
+        $end_date = $data['end_date'];
+
+        $canceledInvoices = Invoice::where('status', 0)
+        ->whereRaw('DATE(canceled_at) BETWEEN ? AND ?', [$start_date, $end_date])
+        ->withTrashed()
+        ->get();
+
+        return view('cashier-reports.canceled-invoices', compact('canceledInvoices', 'start_date', 'end_date'));
     }
 }

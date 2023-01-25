@@ -414,7 +414,7 @@
                     let complain_id = "{{ $complain_id }}";
                     confirm_complain(complain_id);
                 } else if (result.isDenied) {
-                    Swal.fire('Canceled!', 'Confirmation was cancelled', 'info')
+                    Swal.fire('Cancelled!', 'Confirmation was cancelled', 'info')
                 }
             })
         });
@@ -432,7 +432,7 @@
                     let complain_id = "{{ $complain_id }}";
                     reject_complain(complain_id);
                 } else if (result.isDenied) {
-                    Swal.fire('Canceled!', 'Rejection was cancelled', 'info')
+                    Swal.fire('Cancelled!', 'Rejection was cancelled', 'info')
                 }
             })
         });
@@ -450,7 +450,7 @@
                     let complain_id = "{{ $complain_id }}";
                     forward_letter_preforation(complain_id);
                 } else if (result.isDenied) {
-                    Swal.fire('Canceled!', 'Confirmation was cancelled', 'info')
+                    Swal.fire('Cancelled!', 'Confirmation was cancelled', 'info')
                 }
             })
         });
