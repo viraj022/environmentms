@@ -62,17 +62,16 @@ class EPLPaymentController extends Controller
                 'contact_no' => ['nullable', new contactNo],
             ]);
             return \DB::transaction(function () {
-                $client = new ApplicationCliten();
-                $client->name = request('name');
-                $client->nic = request('nic');
-                $client->address = request('address');
-                $client->contact_no = request('contact_no');
-                $msg = $client->save();
+                $applicationClient = new ApplicationCliten();
+                $applicationClient->name = request('name');
+                $applicationClient->nic = request('nic');
+                $applicationClient->address = request('address');
+                $applicationClient->contact_no = request('contact_no');
+                $msg = $applicationClient->save();
                 $transaction = new Transaction();
                 $transaction->status = 0;
                 $transaction->type = Transaction::APPLICATION_FEE;
-                $transaction->type_id = $client->id;
-                $transaction->client_id = $client->id;
+                $transaction->application_client_id = $applicationClient->id;
                 $msg = $msg && $transaction->save();
                 if ($msg) {
                     $data = request('items');
@@ -84,9 +83,7 @@ class EPLPaymentController extends Controller
                             $transactionItem->payment_type_id = $payment->payment_type_id;
                             $transactionItem->payment_id = $payment->id;
                             $transactionItem->transaction_type = Transaction::APPLICATION_FEE;
-                            $transactionItem->client_id = $client->id;
                             $transactionItem->amount = $payment->amount;
-                            $transactionItem->transaction_type_id = $client->id;
                             $transactionItem->qty = $item['qty'];
                             $msg = $msg && $transactionItem->save();
                         } else {

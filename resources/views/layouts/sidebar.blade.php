@@ -2,8 +2,8 @@
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <!--    <div class="image">
-                                                                        <img src="/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                                                                    </div>-->
+                                                                                                                    <img src="/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                                                                                                                </div>-->
         <div class="info">
             <a href="#" class="d-block">Welcome, {{ auth()->user()->first_name }}!</a>
         </div>
@@ -13,7 +13,7 @@
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
-                                                                         with font-awesome or any other icon font library -->
+                                                                                                                     with font-awesome or any other icon font library -->
             <li class="nav-item has-treeview">
                 <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -145,7 +145,6 @@
                             <p>Letter Template</p>
                         </a>
                     </li>
-
                 </ul>
             </li>
             <li
@@ -607,19 +606,46 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item has-treeview">
+            <li
+                class="nav-item has-treeview {{ Request::is('cashier', 'edit-tax-rate', 'invoices', 'cancel-invoices-list') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
-                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <i class="nav-icon fas fa-money-bill"></i>
                     <p>
                         Cashier
                         <i class="right fas fa-angle-left"></i>
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
+                    @if ($pre['id'] === config('auth.privileges.InvoiceCancel'))
+                        <li class="nav-item">
+                            <a href="{{ url('/cashier') }}"
+                                class="nav-link {{ Request::is('cashier') ? 'active' : '' }}">
+                                <i class="fas fa-money-bill"></i>
+                                <p>Cashier</p>
+                            </a>
+                        </li>
+                    @endif
                     <li class="nav-item">
-                        <a href="{{ url('/cashier') }}" class="nav-link active">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Cashier</p>
+                        <a href="{{ url('/edit-tax-rate') }}"
+                            class="nav-link {{ Request::is('edit-tax-rate') ? 'active' : '' }}">
+                            <i class="fas fa-solid fa-percent"></i>
+                            <p>Tax Rates</p>
+                        </a>
+                    </li>
+                    @if ($pre['id'] === config('auth.privileges.Cashier'))
+                        <li class="nav-item">
+                            <a href="{{ url('/invoices') }}"
+                                class="nav-link {{ Request::is('invoices') ? 'active' : '' }}">
+                                <i class="fas fa-duotone fa-list"></i>
+                                <p>Invoice List</p>
+                            </a>
+                        </li>
+                    @endif
+                    <li class="nav-item">
+                        <a href="{{ url('/cancel-invoices-list') }}"
+                            class="nav-link {{ Request::is('cancel-invoices-list') ? 'active' : '' }}">
+                            <i class="fas fa-duotone fa-list"></i>
+                            <p>Cancelled Invoices</p>
                         </a>
                     </li>
                 </ul>

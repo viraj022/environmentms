@@ -151,5 +151,35 @@ Route::get('/complains_report', [ComplainController::class, 'viewComplainReport'
 
 
 //cashier
-Route::get('/cashier',  [CashierController::class,  'newCashier'])
-->name('cashier-index');
+Route::middleware('auth')->group(function () {
+    Route::get('/cashier', [CashierController::class,  'newCashier'])
+        ->name('cashier-index');
+
+    Route::get('/view-invoice/{invoice}', 'CashierController@viewInvoice')
+        ->name('view-invoice');
+
+    Route::get('/get-transactions', 'CashierController@loadTransactions')
+        ->name('load-transactions-table');
+
+    Route::post('/cancel-transaction/{transaction}', 'CashierController@cancelTransaction');
+
+    Route::post('/generate-invoices', 'CashierController@generateInvoice');
+
+    Route::get('/print-invoice/{invoice}', 'CashierController@printInvoice')
+        ->name('print-invoice');
+
+    Route::get('/print-transactions-invoice/{invoice}', 'CashierController@printBulkTransactionsInvoice')
+        ->name('print-transactions-invoice');
+
+    #tax rate change
+    Route::get('/edit-tax-rate', 'CashierController@editTaxRate')->name('change-tax-rate-view');
+    Route::post('/edit-tax-rate', 'CashierController@changeTaxRate')->name('change-tax-rate');
+
+    #invoices view
+    Route::get('/invoices', 'CashierController@loadInvoices')->name('invoice-list');
+    Route::post('/invoices', 'CashierController@loadInvoicesByDate')->name('invoice-list-by-date');
+    Route::post('/cancel-invoice/{invoice}', 'CashierController@cancelInvoice')->name('invoice-cancel');
+
+    Route::get('/cancel-invoices-list', 'CashierController@canceledInvoiceList')->name('canceled-invoice-list');
+    Route::post('/cancel-invoices-list', 'CashierController@canceledInvoicesByDate')->name('canceled-invoice-list-by-date');
+});
