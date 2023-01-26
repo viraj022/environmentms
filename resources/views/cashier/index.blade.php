@@ -425,7 +425,6 @@
                 });
 
                 $('#sub_total').val(tot.toFixed(2));
-                $('#amount').val(tot.toFixed(2));
             }
         }
 
@@ -434,7 +433,6 @@
             if (array && array.length != 0) {
                 $('#transactionId').val(array.transactionId);
                 $('#sub_total').val(array.sub_total.toFixed(2));
-                $('#amount').val(array.sub_total.toFixed(2));
             }
         }
 
@@ -442,6 +440,7 @@
         function clientDataValidation() {
             let namecheck = $('#name').val();
             let payment_type = $('.payment_method:checked').val();
+            console.log(payment_type);
             let pay_number = $('#payment_reference_number').val();
             let cheque_date = $('#cheque_issue_date').val();
             let nicRegex = /^([1-9]{1}[0-9]{8}[VvXx])|([1-9]{1}[0-9]{11})$/;
@@ -461,6 +460,7 @@
                 ).then(function() {
                     singleTranAmount();
                     newPaymentAmountCal();
+                    calTax();
                 });
                 return false;
             } else if (nic.length != 0 && nicRegex.test(nic) == false) {
@@ -472,6 +472,7 @@
                 ).then(function() {
                     singleTranAmount();
                     newPaymentAmountCal();
+                    calTax();
                 });
                 return false;
             } else if (number.length != 0 && numberRegex.test(number) == false) {
@@ -482,6 +483,7 @@
                 ).then(function() {
                     singleTranAmount();
                     newPaymentAmountCal();
+                    calTax();
                 });
                 return false;
             } else if (payment_type == 'cheque') {
@@ -493,6 +495,7 @@
                     ).then(function() {
                         singleTranAmount();
                         newPaymentAmountCal();
+                        calTax();
                     });
                     return false;
                 } else if (!cheque_date || cheque_date.length == 0) {
@@ -503,8 +506,11 @@
                     ).then(function() {
                         singleTranAmount();
                         newPaymentAmountCal();
+                        calTax();
                     });
                     return false;
+                } else  {
+                    return true;
                 }
             } else {
                 return true;
@@ -512,7 +518,7 @@
         }
 
         function addPayment() {
-            if (clientDataValidation()) {
+            if (clientDataValidation() == true) {
                 let data = {
                     name: $('#name').val(),
                     telephone: $('#telephone').val(),
@@ -530,6 +536,7 @@
                     transactionsId: $('#transactionId').val(),
                     tax_total: $('#tax_total').val(),
                 };
+                console.log(data);
 
                 localStorage.setItem("invoice_details", JSON.stringify(data));
 

@@ -25,7 +25,6 @@ function loadAllIndustryTransactionsTable() {
                 invoiceIdList.indexOf(`${transaction.id}`) > -1
                     ? 'disabled'
                     : '';
-                    console.log(`${transaction.id}`);
             tr += `<tr data-row_id = ${transaction.id}>
                 <td>${++i}</td>
                 <td>${transaction.id}</td>
