@@ -1,7 +1,6 @@
 let vat = Number($("#vatValue").val());
 let nbt = Number($("#nbtValue").val());
 
-$("#invoice_date").val(new Date().toJSON().slice(0, 10));
 //load payment types
 function loadPaymentTypes(callback) {
     ajaxRequest("get", "/cashier/payment_types", null, function (response) {
@@ -71,6 +70,13 @@ $(document).on("click", "#btn_add_new_application_payment", function () {
         selectedIndustryTransactionRecordsTbl(); // clear table
     }
 
+    var singlePaymentAmount  =  JSON.parse(
+        localStorage.getItem("single_transaction_amount")
+    );
+    if (singlePaymentAmount && singlePaymentAmount.length != 0) {
+        localStorage.setItem("single_transaction_amount", "[]"); // clear
+    }
+
     // create if location storage key does not exists
     if (!localStorage.getItem("new_application_transaction_items")) {
         localStorage.setItem("new_application_transaction_items", "[]");
@@ -115,14 +121,13 @@ function generateNewApplicationTable() {
         if (val) {
             if (val.category_id) {
                 $("#new_application_payments_tbl > tbody").append(
-                    `<tr><td>${i++}</td><td>${val.payment_cat_name}</td><td>${
-                        val.qty
+                    `<tr><td>${i++}</td><td>${val.payment_cat_name}</td><td>${val.qty
                     }</td>
                 <td>${val.amount}</td>
-                <td><button type="button" class="btn btn-sm btn-danger btn-delete" 
+                <td><button type="button" class="btn btn-xs btn-danger btn-delete" 
                     value=` +
-                        index +
-                        `>Delete</button></td></tr>`
+                    index +
+                    `>Delete</button></td></tr>`
                 );
             } else {
                 localStorage.setItem("new_application_transaction_items", "[]");
@@ -130,11 +135,10 @@ function generateNewApplicationTable() {
             }
         }
         sub_total += Number(val.amount);
-
-        $("#sub_total").val(sub_total.toFixed(2));
-
-        calTax();
     });
+    
+    $("#sub_total").val(sub_total.toFixed(2));
+    calTax();
 }
 
 $(document).on("click", ".btn-delete", function (e) {

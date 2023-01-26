@@ -52,8 +52,9 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Name</th>
-                                        <th>Address</th>
+                                        <th>Invoice Number</th>
+                                        <th>Industry Name</th>
+                                        <th>Industry Address</th>
                                         <th>NIC</th>
                                         <th>Invoice Date</th>
                                         <th>Amount</th>
@@ -64,19 +65,17 @@
                                     @foreach ($invoices as $invoice)
                                         <tr data-row_id={{ $invoice->id }}>
                                             <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $invoice->id }}</td>
                                             <td>{{ $invoice->name }}</td>
                                             <td>{{ $invoice->address }}</td>
                                             <td>{{ $invoice->nic }}</td>
                                             <td>{{ $invoice->invoice_date }}</td>
-                                            <td>{{ number_format($invoice->amount, 2) }}</td>
+                                            <td>Rs.{{ number_format($invoice->amount, 2) }}</td>
                                             <td>
-                                                <form action="{{ route('invoice-cancel', $invoice->id) }}" method="post"
-                                                    onsubmit="return confirm('Are you sure you want to cancel this invoice?')">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-info btn-sm btn-cancel mt-2">
-                                                        Cancel
-                                                    </button>
-                                                </form>
+                                                <button type="button" class="btn btn-info btn-sm btn-cancel mt-2"
+                                                    data-invoice_id={{ $invoice->id }}>
+                                                    Cancel
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -97,8 +96,30 @@
             $('#invoicesTable').DataTable();
         });
 
-        @if (session('invoiceCancelled'))
-            Swal.fire('Success', '{{ session('invoiceCancelled') }}', 'success');
-        @endif        
+        $(document).on('click', ".btn-cancel", function(e) {
+            if (!confirm('Are you sure you want to cancel this invoice?')) {
+                return false;
+            }
+            let invoice_id = $(this).data('invoice_id');
+            let url = '/cancel-invoice/' + invoice_id;
+            var currentRow = $(this).closest("tr");
+
+            ajaxRequest('post', url, null, function(response) {
+                if (response.status == 1) {
+                    swal.fire(
+                        "success",
+                        "Invoice cancelled successfully",
+                        "success"
+                    );
+                    currentRow.remove();
+                } else {
+                    swal.fire(
+                        "failed",
+                        "Invoice cancelled unsuccessful!",
+                        "warning"
+                    );
+                }
+            });
+        });
     </script>
 @endsection

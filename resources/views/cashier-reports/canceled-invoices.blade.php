@@ -52,8 +52,9 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Name</th>
-                                        <th>Address</th>
+                                        <th>Invoice Number</th>
+                                        <th>Industry Name</th>
+                                        <th>Industry Address</th>
                                         <th>NIC</th>
                                         <th>Invoice Date</th>
                                         <th>Amount</th>
@@ -64,11 +65,12 @@
                                     @foreach ($canceledInvoices as $invoice)
                                         <tr data-row_id={{ $invoice->id }}>
                                             <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $invoice->id }}</td>
                                             <td>{{ $invoice->name }}</td>
                                             <td>{{ $invoice->address }}</td>
                                             <td>{{ $invoice->nic }}</td>
                                             <td>{{ $invoice->invoice_date }}</td>
-                                            <td>{{ number_format($invoice->amount, 2) }}</td>
+                                            <td>Rs.{{ number_format($invoice->amount, 2) }}</td>
                                             <td>{{ $invoice->canceled_at }}</td>
                                         </tr>
                                     @endforeach

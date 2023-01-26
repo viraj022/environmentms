@@ -23,26 +23,22 @@ function loadAllIndustryTransactionsTable() {
             // check if the transaction.id is available in the invoiceIdList array, and add disabled attr. or set nothing.
             let isDisabledText =
                 invoiceIdList.indexOf(`${transaction.id}`) > -1
-                    ? "disabled"
-                    : "";
-            tr += `<tr data-row_id = "${transaction.id}">
+                    ? 'disabled'
+                    : '';
+                    console.log(`${transaction.id}`);
+            tr += `<tr data-row_id = ${transaction.id}>
                 <td>${++i}</td>
                 <td>${transaction.id}</td>
-                <td data-transaction_name=${transaction.industry_name}>${
-                transaction.industry_name
-            }</td>
-                <td data-address="${transaction.address}">${
-                transaction.address
-            }</td>
-                <td>${type}</td>
-                <td data-net_total=${transaction.net_total}>${
-                transaction.net_total
-            }</td>
+                <td><b>${ transaction.industry_name}</b>  <br> ${transaction.address}</td>
+                <td>${type} <br> <b>Rs.${transaction.net_total.toFixed(2)}</b></td>
                 <td>
-                    <button class ="btn btn-dark btn-xs btn-old-transaction-add" data-invoice_id=${
-                        transaction.id
-                    } ${isDisabledText}> Add </button> <br>
-                    <button class ="btn btn-info btn-xs btn-cancel mt-2" data-invoice_id=${
+                    <button class ="btn btn-dark btn-xs btn-old-transaction-add" 
+                    data-invoice_id=${transaction.id}
+                    data-transaction_name="${transaction.industry_name}"
+                    data-address="${transaction.address}"
+                    data-net_total=${transaction.net_total}
+                     ${isDisabledText}> Add </button>
+                    <button class ="btn btn-info btn-xs btn-cancel" data-invoice_id=${
                         transaction.id
                     } ${isDisabledText}> Cancel </button> 
                 </td>
@@ -62,6 +58,13 @@ $(document).on("click", ".btn-old-transaction-add", function () {
     if (newApplicationPayments && newApplicationPayments.length != 0) {
         localStorage.setItem("new_application_transaction_items", "[]"); // clear
         generateNewApplicationTable();
+    }
+
+    var singlePaymentAmount  =  JSON.parse(
+        localStorage.getItem("single_transaction_amount")
+    );
+    if (singlePaymentAmount && singlePaymentAmount.length != 0) {
+        localStorage.setItem("single_transaction_amount", "[]"); // clear
     }
 
     // create entry for invoice items id list
@@ -84,16 +87,15 @@ $(document).on("click", ".btn-old-transaction-add", function () {
         localStorage.getItem("industry_transactions")
     );
 
-    var currentRow = $(this).closest("tr");
-
-    var transaction_id = currentRow.find("td:eq(1)").text();
-    var name = currentRow.find("td:eq(2)").text();
-    var type = currentRow.find("td:eq(4)").text();
-    var amount = currentRow.find("td:eq(5)").text();
+    var transaction_id =  $(this).data("invoice_id");
+    var name = $(this).data("transaction_name");
+    var address = $(this).data("address");
+    var amount = $(this).data("net_total");
 
     transactions.push({
         id: transaction_id,
         name: name,
+        address: address,
         total: amount,
     });
 
@@ -126,9 +128,9 @@ function selectedIndustryTransactionRecordsTbl() {
         if (val) {
             $("#industry_payments_tbl > tbody").append(
                 `<tr>
-            <td>${i++}</td><td>${val.id}</td><td>${val.name}</td>
-            <td>${val.total}</td>
-            <td><button type="button" class="btn btn-sm btn-danger btn-delete-invoice-gen" 
+            <td>${i++}</td><td>${val.id}</td><td><b>${val.name}</b>  <br>${val.address}</td>
+            <td>${val.total.toFixed(2)}</td>
+            <td><button type="button" class="btn btn-xs btn-danger btn-delete-invoice-gen" 
                 value=` +
                     index +
                     ` ` +
@@ -141,7 +143,7 @@ function selectedIndustryTransactionRecordsTbl() {
     });
     $("#industry_payments_tbl > tfoot").append(`<tr>
         <td colspan="3" style="text-align: center">Total</td>
-        <td id="gene_total_amount">${sub_total}</td>
+        <td id="gene_total_amount">${sub_total.toFixed(2)}</td>
     </tr>`);
 
     $("#sub_total").val(sub_total.toFixed(2));

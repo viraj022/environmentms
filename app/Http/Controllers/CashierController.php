@@ -136,6 +136,8 @@ class CashierController extends Controller
             'invoiceDet.ind_address' => 'nullable',
             'invoiceDet.invoice_date' => 'required',
             'invoiceDet.payment_method' => 'required',
+            'invoiceDet.payment_reference_number' => 'nullable',
+            'invoiceDet.cheque_issue_date' => 'nullable',
             'invoiceDet.remark' => 'nullable',
             'invoiceDet.sub_amount' => 'required',
             'invoiceDet.vat' => 'required',
@@ -173,6 +175,7 @@ class CashierController extends Controller
         $lastInvoiceNumber = Invoice::select('id')
             ->whereYear('created_at', $year)
             ->orderBy('created_at', 'desc')
+            ->withTrashed()
             ->first();
 
         if ($lastInvoiceNumber) {
@@ -188,7 +191,8 @@ class CashierController extends Controller
             'nic' => $data['invoiceDet']['nic'],
             'address' => $data['invoiceDet']['ind_address'],
             'payment_method' => $data['invoiceDet']['payment_method'],
-            'payment_reference_number' => $data['invoiceDet']['telephone'],
+            'payment_reference_number' => $data['invoiceDet']['payment_reference_number'],
+            'cheque_issue_date' => $data['invoiceDet']['cheque_issue_date'],
             'user_id' => Auth::user()->id,
             'amount' => $data['invoiceDet']['amount'],
             'invoice_date' => $data['invoiceDet']['invoice_date'],
@@ -275,6 +279,7 @@ class CashierController extends Controller
             ->where('status', 0)
             ->whereNull('canceled_at')
             ->whereNull('invoice_id')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return $transactions;
@@ -424,9 +429,13 @@ class CashierController extends Controller
             'canceled_by' => Auth::user()->id,
         ]);
 
-        $invoice->delete();
+        $invoiceDeleted = $invoice->delete();
 
-        return redirect()->route('invoice-list')->with('invoiceCancelled', 'Invoice cancelled successfully');
+        if ($invoiceDeleted == true) {
+            return array('status' => 1, 'msg' => 'Invoice cancelled');
+        } else {
+            return array('status' => 0, 'msg' => 'Invoice cancel unsuccessful');
+        }
     }
 
     /**
