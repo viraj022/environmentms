@@ -11,10 +11,7 @@ use App\Invoice;
 use App\TaxRate;
 use App\TransactionItem;
 use Auth;
-use FontLib\Table\Type\name;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class CashierController extends Controller
 {
@@ -410,7 +407,7 @@ class CashierController extends Controller
 
         $invoices = Invoice::where('status', 1)->whereRaw('DATE(invoice_date) BETWEEN ? AND ?', [$start_date, $end_date])->get();
 
-        return view('cashier-reports.invoice-list', compact('invoices', 'start_date', 'end_date' ));
+        return view('cashier-reports.invoice-list', compact('invoices', 'start_date', 'end_date'));
     }
 
     /**
@@ -466,9 +463,9 @@ class CashierController extends Controller
         $end_date = $data['end_date'];
 
         $canceledInvoices = Invoice::where('status', 0)
-        ->whereRaw('DATE(canceled_at) BETWEEN ? AND ?', [$start_date, $end_date])
-        ->withTrashed()
-        ->get();
+            ->whereRaw('DATE(canceled_at) BETWEEN ? AND ?', [$start_date, $end_date])
+            ->withTrashed()
+            ->get();
 
         return view('cashier-reports.canceled-invoices', compact('canceledInvoices', 'start_date', 'end_date'));
     }

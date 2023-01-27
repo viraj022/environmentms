@@ -21,15 +21,19 @@ function loadAllIndustryTransactionsTable() {
             type.charAt(0).toUpperCase();
             type = type.charAt(0).toUpperCase() + type.slice(1);
             // check if the transaction.id is available in the invoiceIdList array, and add disabled attr. or set nothing.
+
             let isDisabledText =
-                invoiceIdList.indexOf(`${transaction.id}`) > -1
-                    ? 'disabled'
-                    : '';
+                invoiceIdList.indexOf(transaction.id) > -1 ? "disabled" : "";
+
             tr += `<tr data-row_id = ${transaction.id}>
                 <td>${++i}</td>
                 <td>${transaction.id}</td>
-                <td><b>${ transaction.industry_name}</b>  <br> ${transaction.address}</td>
-                <td>${type} <br> <b>Rs.${transaction.net_total.toFixed(2)}</b></td>
+                <td><b>${transaction.industry_name}</b>  <br> ${
+                transaction.address
+            }</td>
+                <td>${type} <br> <b>Rs.${transaction.net_total.toFixed(
+                2
+            )}</b></td>
                 <td>
                     <button class ="btn btn-dark btn-xs btn-old-transaction-add" 
                     data-invoice_id=${transaction.id}
@@ -59,7 +63,7 @@ $(document).on("click", ".btn-old-transaction-add", function () {
         generateNewApplicationTable();
     }
 
-    var singlePaymentAmount  =  JSON.parse(
+    var singlePaymentAmount = JSON.parse(
         localStorage.getItem("single_transaction_amount")
     );
     if (singlePaymentAmount && singlePaymentAmount.length != 0) {
@@ -86,7 +90,7 @@ $(document).on("click", ".btn-old-transaction-add", function () {
         localStorage.getItem("industry_transactions")
     );
 
-    var transaction_id =  $(this).data("invoice_id");
+    var transaction_id = $(this).data("invoice_id");
     var name = $(this).data("transaction_name");
     var address = $(this).data("address");
     var amount = $(this).data("net_total");
@@ -127,7 +131,9 @@ function selectedIndustryTransactionRecordsTbl() {
         if (val) {
             $("#industry_payments_tbl > tbody").append(
                 `<tr>
-            <td>${i++}</td><td>${val.id}</td><td><b>${val.name}</b>  <br>${val.address}</td>
+            <td>${i++}</td><td>${val.id}</td><td><b>${val.name}</b>  <br>${
+                    val.address
+                }</td>
             <td>${val.total.toFixed(2)}</td>
             <td><button type="button" class="btn btn-xs btn-danger btn-delete-invoice-gen" 
                 value=` +

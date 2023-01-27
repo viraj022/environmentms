@@ -73,6 +73,8 @@
                     VAT Registration No. 409216765-7000 <span style="margin-left: 25px;">N.B.T. No.
                         409216765-9000</span> <span style="margin-left: 25px;">N.W.P.C මු/1 </span> <br> <br>
                     Recipt No. : {{ $invoice->id }}
+                    <span style="margin-left: 35px">Date
+                        :{{ Carbon\Carbon::parse($invoice->created_at)->format('Y-m-d') }}</span>
                     <span style="margin-left: 25px;"> Received From : {{ $invoice->name }} </span>
                 </p>
 
@@ -103,19 +105,19 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th colspan="2" style="text-align: left">Total</th>
+                                <td colspan="2" style="text-align: left">Total</td>
                                 <td class="text-end">{{ number_format($invoice->sub_total, 2) }}</td>
                             </tr>
                             <tr>
-                                <th colspan="2" style="text-align: left">VAT</th>
+                                <td colspan="2" style="text-align: left">VAT</td>
                                 <td class="text-end">{{ number_format($invoice->vat_amount, 2) }}</td>
                             </tr>
                             <tr>
-                                <th colspan="2" style="text-align: left">NBT</th>
+                                <td colspan="2" style="text-align: left">NBT</td>
                                 <td class="text-end">{{ number_format($invoice->nbt_amount, 2) }}</td>
                             </tr>
                             <tr>
-                                <th colspan="2" style="text-align: left">TAX</th>
+                                <td colspan="2" style="text-align: left">TAX</td>
                                 <td class="text-end">{{ number_format($invoice->other_tax_amount, 2) }}</td>
                             </tr>
                             <tr>

@@ -188,7 +188,7 @@
                                                                     <tr>
                                                                         <th>#</th>
                                                                         <th>Transaction Id</th>
-                                                                        <th>Client Name</th>
+                                                                        <th>Industry Name</th>
                                                                         <th>Amount</th>
                                                                         <th>Actions</th>
                                                                     </tr>
@@ -258,7 +258,7 @@
                                                 <div class="col-lg-4">
                                                     <label for="invoice_date">Date</label>
                                                 </div>
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-4">
                                                     <input type="date" name="invoice_date" id="invoice_date"
                                                         class="form-control" value="{{ date('Y-m-d') }}">
                                                 </div>
@@ -298,7 +298,7 @@
                                                 <div class="col-lg-4">
                                                     <label for="cheque_issue_date">Cheque issued date</label>
                                                 </div>
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-4">
                                                     <input type="date" name="cheque_issue_date" id="cheque_issue_date"
                                                         class="form-control">
                                                 </div>
@@ -425,6 +425,7 @@
                 });
 
                 $('#sub_total').val(tot.toFixed(2));
+                calTax();
             }
         }
 
@@ -433,6 +434,7 @@
             if (array && array.length != 0) {
                 $('#transactionId').val(array.transactionId);
                 $('#sub_total').val(array.sub_total.toFixed(2));
+                calTax();
             }
         }
 
@@ -440,7 +442,6 @@
         function clientDataValidation() {
             let namecheck = $('#name').val();
             let payment_type = $('.payment_method:checked').val();
-            console.log(payment_type);
             let pay_number = $('#payment_reference_number').val();
             let cheque_date = $('#cheque_issue_date').val();
             let nicRegex = /^([1-9]{1}[0-9]{8}[VvXx])|([1-9]{1}[0-9]{11})$/;
@@ -460,7 +461,6 @@
                 ).then(function() {
                     singleTranAmount();
                     newPaymentAmountCal();
-                    calTax();
                 });
                 return false;
             } else if (nic.length != 0 && nicRegex.test(nic) == false) {
@@ -472,7 +472,6 @@
                 ).then(function() {
                     singleTranAmount();
                     newPaymentAmountCal();
-                    calTax();
                 });
                 return false;
             } else if (number.length != 0 && numberRegex.test(number) == false) {
@@ -483,7 +482,6 @@
                 ).then(function() {
                     singleTranAmount();
                     newPaymentAmountCal();
-                    calTax();
                 });
                 return false;
             } else if (payment_type == 'cheque') {
@@ -495,7 +493,6 @@
                     ).then(function() {
                         singleTranAmount();
                         newPaymentAmountCal();
-                        calTax();
                     });
                     return false;
                 } else if (!cheque_date || cheque_date.length == 0) {
@@ -506,10 +503,9 @@
                     ).then(function() {
                         singleTranAmount();
                         newPaymentAmountCal();
-                        calTax();
                     });
                     return false;
-                } else  {
+                } else {
                     return true;
                 }
             } else {
@@ -536,7 +532,6 @@
                     transactionsId: $('#transactionId').val(),
                     tax_total: $('#tax_total').val(),
                 };
-                console.log(data);
 
                 localStorage.setItem("invoice_details", JSON.stringify(data));
 
@@ -587,6 +582,7 @@
         $(document).on('click', "#btn_pay", function(e) {
             addPayment();
             loadAllIndustryTransactionsTable();
+            loadAllIndustryTransactionsTbleToPay();
             generateNewApplicationTable();
             $("#industry_payments_tbl tfoot").html('');
             selectedIndustryTransactionRecordsTbl();

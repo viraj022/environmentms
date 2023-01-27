@@ -48,6 +48,14 @@
                     <td>{{ $applicationData->industry_name }}</td>
                 </tr>
                 <tr>
+                    <th>Business registration number</th>
+                    <td>{{ $applicationData->industry_br }}</td>
+                </tr>
+                <tr>
+                    <th>Identity Card Number</th>
+                    <td>{{ $applicationData->nic }}</td>
+                </tr>
+                <tr>
                     <th>Type of Industry</th>
                     <td>{{ $applicationData->industry_type }} <br>
                         @if ($applicationData->other_industry_type)
@@ -73,7 +81,19 @@
                     </th>
                 </tr>
                 <tr>
-                    <th>Address of location</th>
+                    <th>Nature of industry</th>
+                    <td>{{ $applicationData->industry_nature }}</td>
+                </tr>
+                <tr>
+                    <th>GPS</th>
+                    <td>{{ $applicationData->industry_GPS }}</td>
+                </tr>
+                <tr>
+                    <th>Telephone Number</th>
+                    <td>{{ $applicationData->telephone_Number }}</td>
+                </tr>
+                <tr>
+                    <th>Postal Address</th>
                     <td>{{ $applicationData->location_address }}</td>
                 </tr>
                 <tr>
@@ -85,17 +105,37 @@
                     <td>{{ ucwords($applicationData->approval_industrial_zone) }}</td>
                 </tr>
                 <tr>
+                    <th>Number of acre’s in industrial zone</th>
+                    <td>{{ ucwords($applicationData->industrial_zone2) }}</td>
+                </tr>
+                <tr>
+                    <th>Land ownership</th>
+                    <td>{{ ucwords($applicationData->industrial_zone3) }}</td>
+                </tr>
+                <tr>
+                    <th>Deed number</th>
+                    <td>{{ ucwords($applicationData->industrial_zone4) }}</td>
+                </tr>
+                <tr>
+                    <th>Survey plan number</th>
+                    <td>{{ ucwords($applicationData->industrial_zone5) }}</td>
+                </tr>
+                <tr>
                     <th colspan="2">
                         <center>Amount of capital investment</center>
                     </th>
                 </tr>
                 <tr>
-                    <th>Local Amount</th>
-                    <td>{{ $applicationData->local_amount }}</td>
+                    <th>Value of Land</th>
+                    <td>{{ $applicationData->land_amount }}</td>
                 </tr>
                 <tr>
-                    <th>Foreign Amount</th>
-                    <td>{{ $applicationData->foreign_amount }}</td>
+                    <th>Value of Buildings</th>
+                    <td>{{ $applicationData->buildings_amount }}</td>
+                </tr>
+                <tr>
+                    <th>Value of Machinery</th>
+                    <td>{{ $applicationData->machinery_amount }}</td>
                 </tr>
                 <tr>
                     <th>Date of commencement of operation</th>
@@ -140,6 +180,12 @@
                             {{ $value }}
                             <br>
                         @endforeach
+                    </td>
+                </tr>
+                <tr>
+                    <th>Other area within 05 km</th>
+                    <td>
+                        {{ $applicationData->other5km }}
                     </td>
                 </tr>
                 <tr>
@@ -246,6 +292,15 @@
                     <th>Method of discharge</th>
                     <td>
                         @foreach (json_decode($applicationData->waterDischargeMethod, true) as $key => $value)
+                            {{ $value }} <br>
+                            <br>
+                        @endforeach
+                    </td>
+                </tr>
+                <tr>
+                    <th>Final point of discharge of waste water</th>
+                    <td>
+                        @foreach (json_decode($applicationData->waterDischargeFinalPoint, true) as $key => $value)
                             {{ $value }} <br>
                             <br>
                         @endforeach
