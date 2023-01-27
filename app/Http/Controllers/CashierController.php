@@ -275,7 +275,7 @@ class CashierController extends Controller
         $transactions = Transaction::with('transactionItems')
             ->where('status', 0)
             ->whereNull('canceled_at')
-            ->whereNull('invoice_id')
+            // ->whereNull('invoice_id')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -419,6 +419,14 @@ class CashierController extends Controller
     public function cancelInvoice(Invoice $invoice)
     {
         $now = Carbon::now()->format('Y-m-d');
+
+        $transactions = Transaction::where('invoice_id', $invoice->id)->get();
+
+        foreach ($transactions as $transaction) {
+            $transaction->update([
+                'status' => 0,
+            ]);
+        };
 
         $cancelInvoice = $invoice->update([
             'status' => 0,
