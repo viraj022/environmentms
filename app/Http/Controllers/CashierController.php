@@ -11,10 +11,7 @@ use App\Invoice;
 use App\TaxRate;
 use App\TransactionItem;
 use Auth;
-use FontLib\Table\Type\name;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class CashierController extends Controller
 {
@@ -136,6 +133,8 @@ class CashierController extends Controller
             'invoiceDet.ind_address' => 'nullable',
             'invoiceDet.invoice_date' => 'required',
             'invoiceDet.payment_method' => 'required',
+            'invoiceDet.payment_reference_number' => 'nullable',
+            'invoiceDet.cheque_issue_date' => 'nullable',
             'invoiceDet.remark' => 'nullable',
             'invoiceDet.sub_amount' => 'required',
             'invoiceDet.vat' => 'required',
@@ -173,6 +172,7 @@ class CashierController extends Controller
         $lastInvoiceNumber = Invoice::select('id')
             ->whereYear('created_at', $year)
             ->orderBy('created_at', 'desc')
+            ->withTrashed()
             ->first();
 
         if ($lastInvoiceNumber) {
@@ -188,7 +188,8 @@ class CashierController extends Controller
             'nic' => $data['invoiceDet']['nic'],
             'address' => $data['invoiceDet']['ind_address'],
             'payment_method' => $data['invoiceDet']['payment_method'],
-            'payment_reference_number' => $data['invoiceDet']['telephone'],
+            'payment_reference_number' => $data['invoiceDet']['payment_reference_number'],
+            'cheque_issue_date' => $data['invoiceDet']['cheque_issue_date'],
             'user_id' => Auth::user()->id,
             'amount' => $data['invoiceDet']['amount'],
             'invoice_date' => $data['invoiceDet']['invoice_date'],
@@ -274,7 +275,8 @@ class CashierController extends Controller
         $transactions = Transaction::with('transactionItems')
             ->where('status', 0)
             ->whereNull('canceled_at')
-            ->whereNull('invoice_id')
+            // ->whereNull('invoice_id')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return $transactions;
@@ -405,7 +407,7 @@ class CashierController extends Controller
 
         $invoices = Invoice::where('status', 1)->whereRaw('DATE(invoice_date) BETWEEN ? AND ?', [$start_date, $end_date])->get();
 
-        return view('cashier-reports.invoice-list', compact('invoices', 'start_date', 'end_date' ));
+        return view('cashier-reports.invoice-list', compact('invoices', 'start_date', 'end_date'));
     }
 
     /**
@@ -418,15 +420,27 @@ class CashierController extends Controller
     {
         $now = Carbon::now()->format('Y-m-d');
 
+        $transactions = Transaction::where('invoice_id', $invoice->id)->get();
+
+        foreach ($transactions as $transaction) {
+            $transaction->update([
+                'status' => 0,
+            ]);
+        };
+
         $cancelInvoice = $invoice->update([
             'status' => 0,
             'canceled_at' => $now,
             'canceled_by' => Auth::user()->id,
         ]);
 
-        $invoice->delete();
+        $invoiceDeleted = $invoice->delete();
 
-        return redirect()->route('invoice-list')->with('invoiceCancelled', 'Invoice cancelled successfully');
+        if ($invoiceDeleted == true) {
+            return array('status' => 1, 'msg' => 'Invoice cancelled');
+        } else {
+            return array('status' => 0, 'msg' => 'Invoice cancel unsuccessful');
+        }
     }
 
     /**
@@ -457,9 +471,9 @@ class CashierController extends Controller
         $end_date = $data['end_date'];
 
         $canceledInvoices = Invoice::where('status', 0)
-        ->whereRaw('DATE(canceled_at) BETWEEN ? AND ?', [$start_date, $end_date])
-        ->withTrashed()
-        ->get();
+            ->whereRaw('DATE(canceled_at) BETWEEN ? AND ?', [$start_date, $end_date])
+            ->withTrashed()
+            ->get();
 
         return view('cashier-reports.canceled-invoices', compact('canceledInvoices', 'start_date', 'end_date'));
     }

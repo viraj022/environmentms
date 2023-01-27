@@ -616,7 +616,7 @@
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
-                    @if ($pre['id'] === config('auth.privileges.InvoiceCancel'))
+                    @if ($pre['id'] === config('auth.privileges.Cashier'))
                         <li class="nav-item">
                             <a href="{{ url('/cashier') }}"
                                 class="nav-link {{ Request::is('cashier') ? 'active' : '' }}">
@@ -625,6 +625,7 @@
                             </a>
                         </li>
                     @endif
+                    @if ($pre['id'] === config('auth.privileges.TaxRate'))
                     <li class="nav-item">
                         <a href="{{ url('/edit-tax-rate') }}"
                             class="nav-link {{ Request::is('edit-tax-rate') ? 'active' : '' }}">
@@ -632,7 +633,8 @@
                             <p>Tax Rates</p>
                         </a>
                     </li>
-                    @if ($pre['id'] === config('auth.privileges.Cashier'))
+                    @endif
+                    @if ($pre['id'] === config('auth.privileges.InvoiceCancel'))
                         <li class="nav-item">
                             <a href="{{ url('/invoices') }}"
                                 class="nav-link {{ Request::is('invoices') ? 'active' : '' }}">
