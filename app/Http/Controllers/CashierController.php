@@ -424,8 +424,11 @@ class CashierController extends Controller
 
         foreach ($transactions as $transaction) {
             $transaction->update([
-                'status' => 0,
+                'status' => 3,
+                "canceled_at" => Carbon::now(),
             ]);
+
+            $transaction->delete();
         };
 
         $cancelInvoice = $invoice->update([
