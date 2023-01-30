@@ -156,6 +156,10 @@
                     <td>{{ $applicationData->contact_person_email }}</td>
                 </tr>
                 <tr>
+                    <th>National identity card number</th>
+                    <td>{{ $applicationData->nic }}</td>
+                </tr>
+                <tr>
                     <th colspan="2">
                         <center>Amount of capital investment</center>
                     </th>
@@ -259,19 +263,34 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Total daily discharge and its quality
+                    <th colspan="2">
+                        <center>Total daily discharge and its quality</center>
                     </th>
-                    <td>{{ $applicationData->daily_tot_discharge }}</td>
                 </tr>
                 <tr>
-                    <th>Final point of discharge of waste water
+                    <th>Volume of the waste water discharged per day
                     </th>
-                    <td>{{ $applicationData->water_discharge_final_point }}</td>
+                    <td>{{ $applicationData->tot_discharge_per_day }}</td>
+                </tr>
+                <tr>
+                    <th>Contaminants
+                    </th>
+                    <td>{{ $applicationData->contaminants }}</td>
+                </tr>
+                <tr>
+                    <th>Proposed program for refinery wastewater
+                    </th>
+                    <td>{{ $applicationData->refinery_waste_water }}</td>
                 </tr>
                 <tr>
                     <th>Methods of discharging of waste water when no treatment adopted
                     </th>
                     <td>{{ $applicationData->w_discharge_method }}</td>
+                </tr>
+                <tr>
+                    <th>Final point of discharge of waste water
+                    </th>
+                    <td>{{ $applicationData->water_discharge_final_point }}</td>
                 </tr>
                 <tr>
                     <th>Give details of solid waste generated daily in the Industry/Project
@@ -374,7 +393,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Details of chimneys used in the industry</th>
+                    <th>Method of emission to the atmosphere</th>
                     <td>
                         <table class="table table-bordered">
                             <tr>
@@ -382,7 +401,7 @@
                                 <th>Height from the ground level</th>
                                 <th>Diameter-(m)</th>
                             </tr>
-                            @if ($applicationData->chimney  != '[]')
+                            @if ($applicationData->chimney != '[]')
                                 @foreach (json_decode($applicationData->chimney, true) as $key => $value)
                                     <tr>
                                         <td>{{ $value['number_of_chimneys'] }}</td>

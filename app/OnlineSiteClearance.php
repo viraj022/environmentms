@@ -28,6 +28,7 @@ class OnlineSiteClearance extends Model
         'contact_person_address',
         'contact_person_number',
         'contact_person_email',
+        'nic',
         'building_layout_plan',
         'local_amount',
         'foreign_amount',
@@ -45,7 +46,6 @@ class OnlineSiteClearance extends Model
         'washing_requirement',
         'demestic_requirement',
         'waterSource',
-        'daily_tot_discharge',
         'water_discharge_final_point',
         'solid_waste_type',
         'solid_waste_quantity',
@@ -77,6 +77,9 @@ class OnlineSiteClearance extends Model
         'survey_plan',
         'business_reg_cer',
         'project_report',
+        'tot_discharge_per_day',
+        'contaminants',
+        'refinery_waste_water',
     ];
 
     public function onlineRequest()

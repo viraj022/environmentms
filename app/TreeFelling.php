@@ -31,6 +31,7 @@ class TreeFelling extends Model
         'deed_of_land',
         'survey_plan',
         'landowners_affidavit',
+        'route_map',
     ];
 
     public function onlineRequest()

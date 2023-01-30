@@ -141,6 +141,7 @@ return [
         'reset' => 19,
         'InvoiceCancel' => 20,
         'Cashier' => 21,
+        'TaxRate'  => 22,
     ],
 
 ];
