@@ -25,7 +25,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
                                     href="#custom-tabs-three-profile" role="tab"
-                                    aria-controls="custom-tabs-three-profile" aria-selected="false">Bulk Payment</a>
+                                    aria-controls="custom-tabs-three-profile" aria-selected="false">Batch Payment</a>
                             </li>
                         </ul>
                     </div>

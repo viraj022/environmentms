@@ -480,4 +480,99 @@ class CashierController extends Controller
 
         return view('cashier-reports.canceled-invoices', compact('canceledInvoices', 'start_date', 'end_date'));
     }
+
+    /**
+     * income report view
+     *
+     * @return void
+     */
+    public function incomeReport()
+    {
+        return view('cashier-reports.income-report-by-date');
+    }
+
+    public function getPaymentTypeGroups()
+    {
+        $groups = [];
+
+
+        $paymentTypes = Payment::select(
+            'payments.id',
+            'payments.payment_type_id',
+            'payments.name',
+            'payments.type',
+            'payments.amount',
+            'payment_types.name AS payment_type_name',
+            'payment_types.is_grouped'
+        )
+            ->join('payment_types', 'payments.payment_type_id', '=', 'payment_types.id')
+            ->orderBy('payments.payment_type_id')
+            ->get();
+
+        foreach ($paymentTypes as $type) {
+            if (!array_key_exists('type_' . $type->payment_type_id, $groups)) {
+                $groups['type_' . $type->payment_type_id] = [
+                    'id' => $type->payment_type_id,
+                    'name' => $type->payment_type_name,
+                    'is_grouped' => $type->is_grouped,
+                    'payments' => [],
+                    'children' => []
+                ];
+            }
+
+            $groups['type_' . $type->payment_type_id]['payments']['p_' . $type->id] = [
+                'id' => $type->id,
+                'payment_type_id' => $type->payment_type_id,
+                'name' => $type->name,
+            ];
+            $groups['type_' . $type->payment_type_id]['children']['c_' . $type->id] = $type->id;
+        }
+
+        return $groups;
+    }
+
+    /**
+     * income report by date
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function incomeByDate(Request $request)
+    {
+        $data = $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+        ], $request->all());
+
+        $start_date = $data['start_date'];
+        $end_date = $data['end_date'];
+
+        // get invoice data
+        $invoices = Invoice::whereRaw('DATE(invoices.created_at) BETWEEN ? AND ?', [$start_date, $end_date])
+            ->where('invoices.status', 1)
+            ->join('transactions', 'invoices.id', '=', 'transactions.invoice_id')
+            ->join('transaction_items', 'transactions.id', '=', 'transaction_items.transaction_id')
+            ->join('payments', 'transaction_items.payment_id', '=', 'payments.id')
+            ->join('payment_types', 'transaction_items.payment_type_id', '=', 'payment_types.id')
+            ->select(
+                'invoices.id as invoice_id',
+                'transactions.id as transaction_id',
+                'invoices.created_at as invoice_date',
+                'invoices.amount as invoice_amount',
+                'invoices.sub_total as invoice_sub_amount',
+                'invoices.vat_amount as vat',
+                'invoices.nbt_amount as nbt',
+                'invoices.other_tax_amount as tax',
+                'payments.id as payment_id',
+                'payments.name as payment_name',
+                'payments.amount as payment_amount',
+                'payment_types.id as payment_type_id',
+                'payment_types.name as payment_type_name',
+            )
+            ->get();
+
+        $paymentTypes = $this->getPaymentTypeGroups();
+
+        return view('cashier-reports.income-report', compact('start_date', 'end_date', 'invoices', 'paymentTypes'));
+    }
 }

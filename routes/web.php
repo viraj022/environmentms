@@ -182,4 +182,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/cancel-invoices-list', 'CashierController@canceledInvoiceList')->name('canceled-invoice-list');
     Route::post('/cancel-invoices-list', 'CashierController@canceledInvoicesByDate')->name('canceled-invoice-list-by-date');
+
+    Route::get('/income-report', 'CashierController@incomeReport')->name('income-report');
+    Route::post('/income-report-by-date', 'CashierController@incomeByDate')->name('income-report-by-date');
 });
