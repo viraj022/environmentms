@@ -277,8 +277,16 @@ class CashierController extends Controller
             ->whereNull('canceled_at')
             // ->whereNull('invoice_id')
             ->orderBy('created_at', 'desc')
+            ->select(
+                'application_client_id',
+                'id',
+                'type',
+                'type_id',
+                'client_id',
+            )
             ->get();
 
+        // dd($transactions);
         return $transactions;
     }
 
@@ -557,7 +565,7 @@ class CashierController extends Controller
             ->select(
                 'invoices.id as invoice_id',
                 'transactions.id as transaction_id',
-                'invoices.created_at as invoice_date',
+                'invoices.invoice_date as invoice_date',
                 'invoices.amount as invoice_amount',
                 'invoices.sub_total as invoice_sub_amount',
                 'invoices.vat_amount as vat',

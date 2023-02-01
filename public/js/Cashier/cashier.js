@@ -61,50 +61,54 @@ $("#qty").change(total);
 
 //create new application payment table
 $(document).on("click", "#btn_add_new_application_payment", function () {
-    var transactions = JSON.parse(
-        localStorage.getItem("industry_transactions")
-    );
-    if (transactions && transactions.length != 0) {
-        localStorage.setItem("industry_transactions", "[]"); // clear
+    let category = $("#category").val();
+    if (category) {
+        var transactions = JSON.parse(
+            localStorage.getItem("industry_transactions")
+        );
+        if (transactions && transactions.length != 0) {
+            localStorage.setItem("industry_transactions", "[]"); // clear
 
-        selectedIndustryTransactionRecordsTbl(); // clear table
+            selectedIndustryTransactionRecordsTbl(); // clear table
+        }
+
+        var singlePaymentAmount = JSON.parse(
+            localStorage.getItem("single_transaction_amount")
+        );
+        if (singlePaymentAmount && singlePaymentAmount.length != 0) {
+            localStorage.setItem("single_transaction_amount", "[]"); // clear
+        }
+
+        // create if location storage key does not exists
+        if (!localStorage.getItem("new_application_transaction_items")) {
+            localStorage.setItem("new_application_transaction_items", "[]");
+        }
+
+        // get the transaction items data from local storage
+        let transactionItems = JSON.parse(
+            localStorage.getItem("new_application_transaction_items")
+        );
+
+        transactionItems.push({
+            payment_type: $("#payment_type").val(),
+            payment_cat_name: $("#category option:selected").data("name"),
+            amount: $("#price").val(),
+            category_id: $("#category").val(),
+            qty: $("#qty").val(),
+        });
+
+        localStorage.setItem(
+            "new_application_transaction_items",
+            JSON.stringify(transactionItems)
+        );
+
+        // clear tfoot
+        $("#industry_payments_tbl tfoot").html("");
+        generateNewApplicationTable();
+        localStorage.setItem("industry_items_id_list", "[]");
+    } else {
+        swal.fire("failed", "Please select category!", "warning");
     }
-
-    var singlePaymentAmount  =  JSON.parse(
-        localStorage.getItem("single_transaction_amount")
-    );
-    if (singlePaymentAmount && singlePaymentAmount.length != 0) {
-        localStorage.setItem("single_transaction_amount", "[]"); // clear
-    }
-
-    // create if location storage key does not exists
-    if (!localStorage.getItem("new_application_transaction_items")) {
-        localStorage.setItem("new_application_transaction_items", "[]");
-    }
-
-    // get the transaction items data from local storage
-    let transactionItems = JSON.parse(
-        localStorage.getItem("new_application_transaction_items")
-    );
-
-    transactionItems.push({
-        payment_type: $("#payment_type").val(),
-        payment_cat_name: $("#category option:selected").data("name"),
-        amount: $("#price").val(),
-        category_id: $("#category").val(),
-        qty: $("#qty").val(),
-    });
-
-    localStorage.setItem(
-        "new_application_transaction_items",
-        JSON.stringify(transactionItems)
-    );
-
-    // clear tfoot
-    $("#industry_payments_tbl tfoot").html("");
-    generateNewApplicationTable();
-    localStorage.setItem("industry_items_id_list", "[]");
-    loadAllIndustryTransactionsTable();
 });
 
 //generate payment table
@@ -121,13 +125,14 @@ function generateNewApplicationTable() {
         if (val) {
             if (val.category_id) {
                 $("#new_application_payments_tbl > tbody").append(
-                    `<tr><td>${i++}</td><td>${val.payment_cat_name}</td><td>${val.qty
+                    `<tr><td>${i++}</td><td>${val.payment_cat_name}</td><td>${
+                        val.qty
                     }</td>
                 <td>${val.amount}</td>
                 <td><button type="button" class="btn btn-xs btn-danger btn-delete" 
                     value=` +
-                    index +
-                    `>Delete</button></td></tr>`
+                        index +
+                        `>Delete</button></td></tr>`
                 );
             } else {
                 localStorage.setItem("new_application_transaction_items", "[]");
@@ -136,7 +141,7 @@ function generateNewApplicationTable() {
         }
         sub_total += Number(val.amount);
     });
-    
+
     $("#sub_total").val(sub_total.toFixed(2));
     calTax();
 }

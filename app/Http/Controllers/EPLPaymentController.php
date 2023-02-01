@@ -72,6 +72,7 @@ class EPLPaymentController extends Controller
                 $transaction->status = 0;
                 $transaction->type = Transaction::APPLICATION_FEE;
                 $transaction->application_client_id = $applicationClient->id;
+                $transaction->type_id = $applicationClient->id;
                 $msg = $msg && $transaction->save();
                 if ($msg) {
                     $data = request('items');

@@ -61,7 +61,18 @@
             </tr>
         </thead>
         <tbody>
-
+            @foreach ($invoices as $invoice)
+                <tr>
+                    <td>{{ $invoice->invoice_date }}</td>
+                    <td>{{ $invoice->invoice_id }}</td>
+                    @foreach ($paymentTypes as $type)
+                        @if (!$type['is_grouped'])
+                            @foreach ($type['payments'] as $tp)
+                            @endforeach
+                        @endif
+                    @endforeach
+                </tr>
+            @endforeach
         </tbody>
     </table>
 

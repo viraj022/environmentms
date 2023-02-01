@@ -31,8 +31,8 @@ class Invoice extends Model
         'canceled_by',
     ];
 
-    public function transaction()
+    public function transactions()
     {
-        return $this->hasOne(Transaction::class);
+        return $this->hasMany(Transaction::class);
     }
 }

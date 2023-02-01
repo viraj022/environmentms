@@ -185,4 +185,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/income-report', 'CashierController@incomeReport')->name('income-report');
     Route::post('/income-report-by-date', 'CashierController@incomeByDate')->name('income-report-by-date');
+
+    //set profile payments
+    Route::get('/profile-payments/{client}', 'ClientController@setProfilePayments')->name('set-profile-payments');
+    Route::post('/profile-payments-set/client/{client}/{invoice}', 'ClientController@setPayment')->name('set-payment-to-client');
 });

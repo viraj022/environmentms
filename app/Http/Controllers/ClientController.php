@@ -20,11 +20,13 @@ use App\Helpers\ClientApplicationHelper;
 use Illuminate\Support\Str;
 use App\Helpers\LogActivity;
 use App\Http\Resources\ClientResource;
+use App\Invoice;
 use App\OnlineNewApplicationRequest;
 use App\Repositories\UserNotificationsRepositary;
 use App\SiteClearance;
 use Illuminate\Http\Request;
 use App\SiteClearenceSession;
+use App\Transaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -1662,5 +1664,38 @@ class ClientController extends Controller
         } else {
             return array('status' => 0, 'message' => 'Ownership changing was unsuccessfull');
         }
+    }
+
+    /**
+     * view to set application fee payment to profile
+     *
+     * @param Client $client
+     * @return void
+     */
+    public function setProfilePayments(Client $client)
+    {
+        $invoices = Invoice::with('transactions')->whereHas('transactions', function ($query) {
+            $query->whereNull('client_id');
+        })->get();
+
+        return view('set-profile-payment.index', compact('client', 'invoices'));
+    }
+
+    /**
+     * set application fee to profile
+     *
+     * @return void
+     */
+    public function setPayment(Client $client, Invoice $invoice)
+    {
+        $transactions = Transaction::where('invoice_id', $invoice->id)->get();
+
+        foreach ($transactions as $transaction) {
+            $transaction->update([
+                'client_id' => $client->id,
+            ]);
+        }
+
+        return redirect()->route('set-profile-payments', $client->id)->with('payment_set', 'Payment successfully added to the selected client');
     }
 }
