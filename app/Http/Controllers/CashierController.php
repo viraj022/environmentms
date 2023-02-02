@@ -680,11 +680,6 @@ class CashierController extends Controller
         $paymentTypes = $this->getPaymentTypeGroups();
         // dd($paymentTypes);
         $totals = [
-            'total_without_tax' => 0.0,
-            'vat' => 0.0,
-            'nbt' => 0.0,
-            'tax_total' => 0.0,
-            'total' => 0.0,
             'apFee_siteClearance_tot' => 0.0,
             'apFee_reneaval_tot' => 0.0,
             'apFee_eplApplication_tot' => 0.0,
@@ -696,7 +691,11 @@ class CashierController extends Controller
             'waste_tot' => 0.0,
             'eia_iee_tot' => 0.0,
             'other_income_tot' => 0.0,
-            'all_total' => 0.0
+            'all_without_tax_total' => 0.0,
+            'vat' => 0.0,
+            'nbt' => 0.0,
+            'all_tax_total' => 0.0,
+            'all_total' => 0.0,
         ];
         $rows = [];
 
@@ -770,11 +769,10 @@ class CashierController extends Controller
                 $totals['other_income_tot'] += $invoice['transaction_amount'];
             }
 
-            $totals['total_without_tax'] += $invoice->invoice_sub_amount;
-            $totals['vat'] += $invoice->vat;
-            $totals['nbt'] += $invoice->nbt;
-            $totals['tax_total'] += $invoice->tax;
-            $totals['total'] += $invoice->invoice_amount;
+            $totals['all_without_tax_total'] += $row['total_without_tax'];
+            $totals['vat'] += $row['vat'];
+            $totals['nbt'] += $row['nbt'];
+            $totals['all_tax_total'] += $row['tax_total'];
             $totals['all_total'] += $row['total'];
             $rows['in_' . $invoice->invoice_id] = $row;
         }
