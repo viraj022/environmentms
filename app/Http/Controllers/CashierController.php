@@ -580,7 +580,64 @@ class CashierController extends Controller
             ->get();
 
         $paymentTypes = $this->getPaymentTypeGroups();
+        // dd($paymentTypes);
+        $totals = [
+            'total_without_tax' => 0.0,
+            'vat' => 0.0,
+            'nbt' => 0.0,
+            'tax_total' => 0.0,
+            'total' => 0.0,
+        ];
+        $cols = [];
+        foreach ($paymentTypes as $ptype) {
+            if ($ptype['is_grouped']) {
+                $cols['c_' . $ptype['id']] = 0.0;
+                $totals['c_' . $ptype['id']] = 0.0;
+            } else {
+                foreach ($ptype['children'] as $v) {
+                    $cols['c_' . $v] = 0.0;
+                    $totals['c_' . $v] = 0.0;
+                }
+            }
+        }
 
-        return view('cashier-reports.income-report', compact('start_date', 'end_date', 'invoices', 'paymentTypes'));
+
+        $rows = [];
+
+        foreach ($invoices as $invoice) {
+            // check if there is no slot for the invoice in the rows yet,
+            if (!array_key_exists('in_' . $invoice->invoice_id, $rows)) {
+                // create the column cells
+                $row = [
+                    'date' => $invoice->invoice_date,
+                    'receipt_number' => $invoice->invoice_id,
+                    'total_without_tax' => $invoice->invoice_sub_amount,
+                    'vat' => $invoice->vat,
+                    'nbt' => $invoice->nbt,
+                    'tax_total' => $invoice->tax,
+                    'total' => $invoice->invoice_amount,
+                ];
+
+                $totals['total_without_tax'] += $invoice->invoice_sub_amount;
+                $totals['vat'] += $invoice->vat;
+                $totals['nbt'] += $invoice->nbt;
+                $totals['tax_total'] += $invoice->tax;
+                $totals['total'] += $invoice->invoice_amount;
+                // extract columns from $cols into this arrayÄ
+                $row = array_merge($row, $cols);
+            }
+
+            if ($paymentTypes['type_' . $invoice->payment_type_id]['is_grouped']) {
+                $row['c_' . $invoice->payment_type_id] += doubleval($invoice->payment_amount);
+                $totals['c_' . $invoice->payment_type_id] += doubleval($invoice->payment_amount);
+            } else {
+                $row['c_' . $invoice->payment_id] += doubleval($invoice->payment_amount);
+                $totals['c_' . $invoice->payment_id] += doubleval($invoice->payment_amount);
+            }
+
+            $rows['in_' . $invoice->invoice_id] = $row;
+        }
+
+        return view('cashier-reports.income-report', compact('start_date', 'end_date', 'paymentTypes', 'rows', 'totals'));
     }
 }
