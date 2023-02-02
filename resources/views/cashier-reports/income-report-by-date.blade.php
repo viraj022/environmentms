@@ -23,7 +23,7 @@
                         Generate Income Report
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('income-report-by-date') }}" method="post">
+                        <form action="{{ route('income-report-by-date-new') }}" method="post">
                             @csrf
                             <div class="input-group mb-3">
                                 <input type="date" name="start_date" id="start_date" class="form-control" aria-label=""
