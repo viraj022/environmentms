@@ -113,16 +113,16 @@
                     <th class="text-right">{{ number_format($totals['waste_tot'], 2, '.', '') }}</th>
                     <th class="text-right">{{ number_format($totals['eia_iee_tot'], 2, '.', '') }}</th>
                     <th class="text-right">{{ number_format($totals['other_income_tot'], 2, '.', '') }}</th>
+                    <th class="text-right">{{ number_format($totals['all_without_tax_total'], 2, '.', '') }}</th>
                     <th class="text-right">{{ number_format($totals['vat'], 2, '.', '') }}</th>
                     <th class="text-right">{{ number_format($totals['nbt'], 2, '.', '') }}</th>
-                    <th class="text-right">{{ number_format($totals['tax_total'], 2, '.', '') }}</th>
-                    <th class="text-right">{{ number_format($totals['total'], 2, '.', '') }}</th>
+                    <th class="text-right">{{ number_format($totals['all_tax_total'], 2, '.', '') }}</th>
                     <th class="text-right">{{ number_format($totals['all_total'], 2, '.', '') }}</th>
                 </tr>
             </tfoot>
         </table>
     </div>
-
+    {{-- @dd($totals) --}}
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
