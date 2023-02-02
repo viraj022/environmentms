@@ -25,7 +25,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
                                     href="#custom-tabs-three-profile" role="tab"
-                                    aria-controls="custom-tabs-three-profile" aria-selected="false">Bulk Payment</a>
+                                    aria-controls="custom-tabs-three-profile" aria-selected="false">Batch Payment</a>
                             </li>
                         </ul>
                     </div>
@@ -581,7 +581,6 @@
         // pay button click event
         $(document).on('click', "#btn_pay", function(e) {
             addPayment();
-            loadAllIndustryTransactionsTable();
             loadAllIndustryTransactionsTbleToPay();
             generateNewApplicationTable();
             $("#industry_payments_tbl tfoot").html('');
@@ -638,16 +637,14 @@
                     loadPaymentsByPaymentTypes(loadPaymentPrice)
                 });
             generateNewApplicationTable();
-            loadAllIndustryTransactionsTable();
-            selectedIndustryTransactionRecordsTbl();
             loadAllIndustryTransactionsTbleToPay();
+            selectedIndustryTransactionRecordsTbl();
+            newPaymentAmountCal();
         });
 
         function calTax() {
-            let sub_total = $('#sub_total').val();
-
-            let net_tot = Number(sub_total);
-            $('#amount').val(net_tot.toFixed(2));
+            let sub_total = Number($('#sub_total').val());
+            $('#amount').val(sub_total.toFixed(2));
 
             if ($('#tax_status :selected').val() == 'non-tax') {
                 $('#vatField').addClass('d-none');
@@ -660,7 +657,7 @@
                 $('#vat').val(vat_tot.toFixed(2));
                 $('#nbt').val(nbt_tot.toFixed(2));
                 $('#tax_total').val(taxTot.toFixed(2));
-                $('#amount').val(net_tot.toFixed(2));
+                $('#amount').val(sub_total.toFixed(2));
             } else {
                 $('#vatField').removeClass('d-none');
                 $('#nbtField').removeClass('d-none');
@@ -668,46 +665,17 @@
 
                 let vat_tot = sub_total * (vat / 100);
                 let nbt_tot = sub_total * (nbt / 100);
-                let taxTot = Number(vat_tot.toFixed(2)) + Number(nbt_tot.toFixed(2));
-                let net_tot = Number(sub_total) + Number(vat_tot) + Number(nbt_tot);
+                let taxTot = vat_tot + nbt_tot;
+                let net_tot = sub_total + vat_tot + nbt_tot;
 
                 $('#vat').val(vat_tot.toFixed(2));
                 $('#nbt').val(nbt_tot.toFixed(2));
                 $('#tax_total').val(taxTot.toFixed(2));
                 $('#amount').val(net_tot.toFixed(2));
             }
-
-            $("#tax_status").change(function() {
-                $vatStatus = $('#tax_status :selected').val();
-                if ($vatStatus == 'tax') {
-                    $('#vatField').removeClass('d-none');
-                    $('#nbtField').removeClass('d-none');
-                    $('#taxTotalField').removeClass('d-none');
-
-                    let vat_tot = sub_total * (vat / 100);
-                    let nbt_tot = sub_total * (nbt / 100);
-                    let taxTot = Number(vat_tot.toFixed(2)) + Number(nbt_tot.toFixed(2));
-                    let net_tot = Number(sub_total) + Number(vat_tot) + Number(nbt_tot);
-
-                    $('#vat').val(vat_tot.toFixed(2));
-                    $('#nbt').val(nbt_tot.toFixed(2));
-                    $('#tax_total').val(taxTot.toFixed(2));
-                    $('#amount').val(net_tot.toFixed(2));
-                } else {
-                    $('#vatField').addClass('d-none');
-                    $('#nbtField').addClass('d-none');
-                    $('#taxTotalField').addClass('d-none');
-
-                    let vat_tot = 0;
-                    let nbt_tot = 0;
-                    let taxTot = 0;
-                    $('#vat').val(vat_tot.toFixed(2));
-                    $('#nbt').val(nbt_tot.toFixed(2));
-                    $('#tax_total').val(taxTot.toFixed(2));
-                    $('#amount').val(net_tot.toFixed(2));
-                }
-            });
         }
+
+        $("#tax_status").change(calTax);
 
         $("#cash").change(function() {
             if ($(this).is(':checked')) {
