@@ -13,13 +13,15 @@ class AlterAddOnlineApplicationIndustryTables extends Migration
      */
     public function up()
     {
-        Schema::table('online_new_epls', function (Blueprint $table) {
-            $table->text('industryDetailCheck')->nullable()->after('plan_description');
-        });
+        // Schema::table('online_new_epls', function (Blueprint $table) {
+        //     $table->text('industryDetailCheck')->nullable()->after('plan_description');
+        //     $table->text('subIndustries')->nullable()->after('industryDetailCheck');
+        // });
 
-        Schema::table('online_site_clearances', function (Blueprint $table) {
-            $table->text('industryDetailCheck')->nullable()->after('refinery_waste_water');
-        });
+        // Schema::table('online_site_clearances', function (Blueprint $table) {
+        //     $table->text('industryDetailCheck')->nullable()->after('refinery_waste_water');
+        //     $table->text('subIndustries')->nullable()->after('industryDetailCheck');
+        // });
     }
 
     /**
@@ -29,12 +31,14 @@ class AlterAddOnlineApplicationIndustryTables extends Migration
      */
     public function down()
     {
-        Schema::table('online_new_epls', function (Blueprint $table) {
-            $table->dropColumn('industryDetailCheck');
-        });
+        // Schema::table('online_new_epls', function (Blueprint $table) {
+        //     $table->dropColumn('industryDetailCheck');
+        //     $table->dropColumn('subIndustries');
+        // });
 
-        Schema::table('online_site_clearances', function (Blueprint $table) {
-            $table->dropColumn('industryDetailCheck');
-        });
+        // Schema::table('online_site_clearances', function (Blueprint $table) {
+        //     $table->dropColumn('industryDetailCheck');
+        //     $table->dropColumn('subIndustries');
+        // });
     }
 }

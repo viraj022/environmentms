@@ -53,19 +53,19 @@
                 <tr>
                     <th rowspan="2">Date</th>
                     <th rowspan="2">Receipt No</th>
-                    <th rowspan="1" colspan="3">Application fee</th>
-                    <th rowspan="1" colspan="2">Inspection Charge</th>
-                    <th rowspan="2">Licence fee</th>
-                    <th rowspan="2">Licence Books</th>
-                    <th rowspan="2">Fine</th>
-                    <th rowspan="2">Scheduled waste</th>
-                    <th rowspan="2">EIA/IEE</th>
-                    <th rowspan="2">Other Income</th>
-                    <th rowspan="2">Total (Without Tax)</th>
-                    <th rowspan="2">VAT</th>
-                    <th rowspan="2">NBT</th>
-                    <th rowspan="2">Tax Total</th>
-                    <th rowspan="2">Total (with Tax)</th>
+                    <th rowspan="1" colspan="3">Application fee (Rs)</th>
+                    <th rowspan="1" colspan="2">Inspection Charge (Rs)</th>
+                    <th rowspan="2">Licence fee (Rs)</th>
+                    <th rowspan="2">Licence Books (Rs)</th>
+                    <th rowspan="2">Fine (Rs)</th>
+                    <th rowspan="2">Scheduled waste (Rs)</th>
+                    <th rowspan="2">EIA/IEE (Rs)</th>
+                    <th rowspan="2">Other Income (Rs)</th>
+                    <th rowspan="2">Total (Without Tax) (Rs)</th>
+                    <th rowspan="2">VAT (Rs)</th>
+                    <th rowspan="2">NBT (Rs)</th>
+                    <th rowspan="2">Tax Total (Rs)</th>
+                    <th rowspan="2">Total (with Tax) (Rs)</th>
                 </tr>
                 <tr>
                     <th>Site Cleareance</th>
@@ -98,10 +98,9 @@
                         <td class="text-right">{{ number_format($row['total'], 2, '.', '') }}</td>
                     </tr>
                 @endforeach
-            </tbody>
-            <tfoot>
                 <tr class="table-secondary">
-                    <th colspan="2">Total</th>
+                    <th>Total</th>
+                    <th>&nbsp;</th>
                     <th class="text-right">{{ number_format($totals['apFee_siteClearance_tot'], 2, '.', '') }}</th>
                     <th class="text-right">{{ number_format($totals['apFee_reneaval_tot'], 2, '.', '') }}</th>
                     <th class="text-right">{{ number_format($totals['apFee_eplApplication_tot'], 2, '.', '') }}</th>
@@ -119,7 +118,7 @@
                     <th class="text-right">{{ number_format($totals['all_tax_total'], 2, '.', '') }}</th>
                     <th class="text-right">{{ number_format($totals['all_total'], 2, '.', '') }}</th>
                 </tr>
-            </tfoot>
+            </tbody>
         </table>
     </div>
     {{-- @dd($totals) --}}

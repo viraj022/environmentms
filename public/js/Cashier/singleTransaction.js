@@ -102,10 +102,13 @@ $(document).on("click", ".btn-old-transaction-pay", function (e) {
 
     localStorage.setItem("industry_items_id_list", "[]");
 
+    // console.log($(this).data("nic") != "N/A");
     let name = $(this).data("transaction_name");
-    let nic = $(this).data("nic");
-    let telephone = $(this).data("contact_no");
-    let address = $(this).data("address");
+    let nic = $(this).data("nic") != "N/A" ? $(this).data("nic") : "";
+    let telephone =
+        $(this).data("contact_no") != "N/A" ? $(this).data("contact_no") : "";
+    let address =
+        $(this).data("address") != "N/A" ? $(this).data("address") : "";
     let sub_total = $(this).data("net_total");
     let transactionId = $(this).data("invoice_id");
 

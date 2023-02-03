@@ -313,87 +313,93 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        <div class="row mb-3">
-                                            <div class="col-lg-4">
-                                                <label for="sub_total">
-                                                    Sub Total
-                                                </label>
-                                            </div>
-                                            <div class="col-lg-8 ">
-                                                <input type="number" name="sub_total" id="sub_total"
-                                                    class="form-control" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-lg-4">
-                                                <label for="sub_total">
-                                                    Tax Status
-                                                </label>
-                                            </div>
-                                            <div class="col-lg-8 ">
-                                                <select class="form-select form-control"
-                                                    aria-label="Default select example" name="tax_status"
-                                                    id="tax_status">
-                                                    <option value="non-tax" selected>Without TAX</option>
-                                                    <option value="tax">TAX</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3 d-none" id="vatField">
-                                            <div class="col-lg-4">
-                                                <label for="vat">
-                                                    Vat Rate
-                                                    ({{ $vat->rate }}%)
-                                                </label>
-                                            </div>
-                                            <div class="col-lg-8 ">
-                                                <input type="text" name="vat" id="vat" class="form-control"
-                                                    readonly>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3 d-none" id="nbtField">
-                                            <div class="col-lg-4">
-                                                <label for="nbt">
-                                                    NBT Rate
-                                                    ({{ $nbt->rate }}%)
-                                                </label>
-                                            </div>
-                                            <div class="col-lg-8">
-                                                <input type="text" name="nbt" id="nbt" class="form-control"
-                                                    readonly>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3 d-none" id="taxTotalField">
-                                            <div class="col-lg-4">
-                                                <label for="tax_total">
-                                                    Tax Total
-                                                </label>
-                                            </div>
-                                            <div class="col-lg-8 ">
-                                                <input type="text" name="tax_total" id="tax_total"
-                                                    class="form-control" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-lg-4">
-                                                <label for="total">
-                                                    Total
-                                                </label>
-                                            </div>
-                                            <div class="col-lg-8 ">
-                                                <input type="number" name="amount" id="amount" class="form-control"
-                                                    readonly>
+                                        <div class="card-footer">
+                                            <div class="float-right">
+                                                <button class="btn btn-sm btn-success" type="button"
+                                                    id="btn_clear_customer_data">Clear</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card-footer">
-                                        <div class="float-right">
-                                            <button class="btn btn-danger btn-sm mx-1" type="button"
-                                                id="btn_pay">Pay</button>
-                                            <button class="btn btn-sm btn-success" type="button"
-                                                id="btn_clear_customer_data">Clear</button>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row mb-3">
+                                                <div class="col-lg-4">
+                                                    <label for="sub_total">
+                                                        Sub Total
+                                                    </label>
+                                                </div>
+                                                <div class="col-lg-8 ">
+                                                    <input type="number" name="sub_total" id="sub_total"
+                                                        class="form-control" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-lg-4">
+                                                    <label for="sub_total">
+                                                        Tax Status
+                                                    </label>
+                                                </div>
+                                                <div class="col-lg-8 ">
+                                                    <select class="form-select form-control"
+                                                        aria-label="Default select example" name="tax_status"
+                                                        id="tax_status">
+                                                        <option value="non-tax" selected>Without TAX</option>
+                                                        <option value="tax">TAX</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 d-none" id="vatField">
+                                                <div class="col-lg-4">
+                                                    <label for="vat">
+                                                        Vat Rate
+                                                        ({{ $vat->rate }}%)
+                                                    </label>
+                                                </div>
+                                                <div class="col-lg-8 ">
+                                                    <input type="text" name="vat" id="vat"
+                                                        class="form-control" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 d-none" id="nbtField">
+                                                <div class="col-lg-4">
+                                                    <label for="nbt">
+                                                        NBT Rate
+                                                        ({{ $nbt->rate }}%)
+                                                    </label>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="nbt" id="nbt"
+                                                        class="form-control" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 d-none" id="taxTotalField">
+                                                <div class="col-lg-4">
+                                                    <label for="tax_total">
+                                                        Tax Total
+                                                    </label>
+                                                </div>
+                                                <div class="col-lg-8 ">
+                                                    <input type="text" name="tax_total" id="tax_total"
+                                                        class="form-control" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-lg-4">
+                                                    <label for="total">
+                                                        Total
+                                                    </label>
+                                                </div>
+                                                <div class="col-lg-8 ">
+                                                    <input type="number" name="amount" id="amount"
+                                                        class="form-control" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer">
+                                            <div class="float-right">
+                                                <button class="btn btn-danger btn-sm mx-1" type="button"
+                                                    id="btn_pay">Pay</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>

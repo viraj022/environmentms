@@ -698,7 +698,7 @@ class CashierController extends Controller
             'all_total' => 0.0,
         ];
         $rows = [];
-
+        // return $invoices;
         foreach ($invoices as $invoice) {
             // check if there is no slot for the invoice in the rows yet,
             if (!array_key_exists('in_' . $invoice->invoice_id, $rows)) {
@@ -723,60 +723,62 @@ class CashierController extends Controller
                     'eia_iee' => 0,
                     'other_income' => 0,
                 ];
+
+                $totals['all_without_tax_total'] += $invoice->invoice_sub_amount;
+                $totals['vat'] += $invoice->vat;
+                $totals['nbt'] += $invoice->nbt;
+                $totals['all_tax_total'] += $invoice->tax;
+                $totals['all_total'] += $invoice->invoice_amount;
             }
-            if ($invoice['payment_type_id'] == 3 && $invoice['payment_id'] == 2) {
-                $row['apFee_siteClearance'] += $invoice['transaction_amount'];
-                $totals['apFee_siteClearance_tot'] += $invoice['transaction_amount'];
+            if ($invoice->payment_type_id == 3 && $invoice->payment_id == 2) {
+                $row['apFee_siteClearance'] += $invoice->transaction_amount;
+                $totals['apFee_siteClearance_tot'] += $invoice->transaction_amount;
             }
-            if ($invoice['payment_type_id'] == 3 && $invoice['payment_id'] == 5) {
-                $row['apFee_reneaval'] += $invoice['transaction_amount'];
-                $totals['apFee_reneaval_tot'] += $invoice['transaction_amount'];
+            if ($invoice->payment_type_id == 3 && $invoice->payment_id == 5) {
+                $row['apFee_reneaval'] += $invoice->transaction_amount;
+                $totals['apFee_reneaval_tot'] += $invoice->transaction_amount;
             }
-            if ($invoice['payment_type_id'] == 3 && $invoice['payment_id'] == 4) {
-                $row['apFee_eplApplication'] += $invoice['transaction_amount'];
-                $totals['apFee_eplApplication_tot'] += $invoice['transaction_amount'];
+            if ($invoice->payment_type_id == 3 && $invoice->payment_id == 4) {
+                $row['apFee_eplApplication'] += $invoice->transaction_amount;
+                $totals['apFee_eplApplication_tot'] += $invoice->transaction_amount;
             }
-            if ($invoice['transaction_type'] == 'Site' && $invoice['payment_type_id'] == 4) {
-                $row['inspectionCharges_sc'] += $invoice['transaction_amount'];
-                $totals['inspectionCharges_sc_tot'] += $invoice['transaction_amount'];
+            if ($invoice->transaction_type == 'Site' && $invoice->payment_type_id == 4) {
+                $row['inspectionCharges_sc'] += $invoice->transaction_amount;
+                $totals['inspectionCharges_sc_tot'] += $invoice->transaction_amount;
             }
-            if ($invoice['transaction_type'] == 'EPL' && $invoice['payment_type_id'] == 4) {
-                $row['inspectionCharges_epl'] += $invoice['transaction_amount'];
-                $totals['inspectionCharges_epl_tot'] += $invoice['transaction_amount'];
+            if ($invoice->transaction_type == 'EPL' && $invoice->payment_type_id == 4) {
+                $row['inspectionCharges_epl'] += $invoice->transaction_amount;
+                $totals['inspectionCharges_epl_tot'] += $invoice->transaction_amount;
             }
-            if ($invoice['payment_type_id'] == 5) {
-                $row['licence_fee'] += $invoice['transaction_amount'];
-                $totals['licence_fee_tot'] += $invoice['transaction_amount'];
+            if ($invoice->payment_type_id == 5) {
+                $row['licence_fee'] += $invoice->transaction_amount;
+                $totals['licence_fee_tot'] += $invoice->transaction_amount;
             }
-            if ($invoice['payment_type_id'] == 12) {
-                $row['licence_books'] += $invoice['transaction_amount'];
-                $totals['licence_books_tot'] += $invoice['transaction_amount'];
+            if ($invoice->payment_type_id == 12) {
+                $row['licence_books'] += $invoice->transaction_amount;
+                $totals['licence_books_tot'] += $invoice->transaction_amount;
             }
-            if ($invoice['payment_type_id'] == 8) {
-                $row['fine'] += $invoice['transaction_amount'];
-                $totals['fine_tot'] += $invoice['transaction_amount'];
+            if ($invoice->payment_type_id == 8) {
+                $row['fine'] += $invoice->transaction_amount;
+                $totals['fine_tot'] += $invoice->transaction_amount;
             }
-            if ($invoice['payment_type_id'] == 9) {
-                $row['waste'] += $invoice['transaction_amount'];
-                $totals['waste_tot'] += $invoice['transaction_amount'];
+            if ($invoice->payment_type_id == 9) {
+                $row['waste'] += $invoice->transaction_amount;
+                $totals['waste_tot'] += $invoice->transaction_amount;
             }
-            if ($invoice['payment_type_id'] == 14) {
-                $row['eia_iee'] += $invoice['transaction_amount'];
-                $totals['eia_iee_tot'] += $invoice['transaction_amount'];
+            if ($invoice->payment_type_id == 14) {
+                $row['eia_iee'] += $invoice->transaction_amount;
+                $totals['eia_iee_tot'] += $invoice->transaction_amount;
             }
-            if ($invoice['payment_type_id'] == 15) {
-                $row['other_income'] += $invoice['transaction_amount'];
-                $totals['other_income_tot'] += $invoice['transaction_amount'];
+            if ($invoice->payment_type_id == 15) {
+                $row['other_income'] += $invoice->transaction_amount;
+                $totals['other_income_tot'] += $invoice->transaction_amount;
             }
 
-            $totals['all_without_tax_total'] += $row['total_without_tax'];
-            $totals['vat'] += $row['vat'];
-            $totals['nbt'] += $row['nbt'];
-            $totals['all_tax_total'] += $row['tax_total'];
-            $totals['all_total'] += $row['total'];
             $rows['in_' . $invoice->invoice_id] = $row;
         }
 
+        // return $totals;
         return view('cashier-reports.income-report2', compact('start_date', 'end_date', 'rows', 'totals'));
     }
 }
