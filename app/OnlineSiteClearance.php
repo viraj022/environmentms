@@ -80,6 +80,7 @@ class OnlineSiteClearance extends Model
         'tot_discharge_per_day',
         'contaminants',
         'refinery_waste_water',
+        'industryDetailCheck',
     ];
 
     public function onlineRequest()
