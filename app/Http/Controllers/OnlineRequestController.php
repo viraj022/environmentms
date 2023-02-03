@@ -184,6 +184,8 @@ class OnlineRequestController extends Controller
         $personName = sprintf('%s %s %s', $client->name_title, $client->first_name, $client->last_name);
         $businessName = $client->industry_name;
 
+        // dd($paymentAmount);
+
         if (get_class($application) === "App\\OnlineNewApplicationRequest") {
             $requestType = OnlineRequest::NEW;
             $emailAddress = $application->email_address;

@@ -117,7 +117,8 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-lg-4">
-                                                        <button type="submit" class="btn btn-primary">Search</button>
+                                                        <button type="submit" class="btn btn-primary"
+                                                            id="searchBtn">Search</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -371,6 +372,12 @@
         @if (session('rejected_success'))
             Swal.fire('Success', '{{ session('rejected_success') }}', 'success');
             $('#pills-rejected-new-applications-tab').tab('show');
+        @endif
+
+        @if (isset($completedNewApplications))
+            {
+                $('.nav-pills #pills-new-applications-tab').tab('show');
+            }
         @endif
     </script>
 @endsection

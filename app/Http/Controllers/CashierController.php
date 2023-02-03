@@ -277,8 +277,16 @@ class CashierController extends Controller
             ->whereNull('canceled_at')
             // ->whereNull('invoice_id')
             ->orderBy('created_at', 'desc')
+            ->select(
+                'application_client_id',
+                'id',
+                'type',
+                'type_id',
+                'client_id',
+            )
             ->get();
 
+        // dd($transactions);
         return $transactions;
     }
 
@@ -479,5 +487,298 @@ class CashierController extends Controller
             ->get();
 
         return view('cashier-reports.canceled-invoices', compact('canceledInvoices', 'start_date', 'end_date'));
+    }
+
+    /**
+     * income report view
+     *
+     * @return void
+     */
+    public function incomeReport()
+    {
+        return view('cashier-reports.income-report-by-date');
+    }
+
+    public function getPaymentTypeGroups()
+    {
+        $groups = [];
+
+
+        $paymentTypes = Payment::select(
+            'payments.id',
+            'payments.payment_type_id',
+            'payments.name',
+            'payments.type',
+            'payments.amount',
+            'payment_types.name AS payment_type_name',
+            'payment_types.is_grouped'
+        )
+            ->join('payment_types', 'payments.payment_type_id', '=', 'payment_types.id')
+            ->orderBy('payments.payment_type_id')
+            ->get();
+
+        foreach ($paymentTypes as $type) {
+            if (!array_key_exists('type_' . $type->payment_type_id, $groups)) {
+                $groups['type_' . $type->payment_type_id] = [
+                    'id' => $type->payment_type_id,
+                    'name' => $type->payment_type_name,
+                    'is_grouped' => $type->is_grouped,
+                    'payments' => [],
+                    'children' => []
+                ];
+            }
+
+            $groups['type_' . $type->payment_type_id]['payments']['p_' . $type->id] = [
+                'id' => $type->id,
+                'payment_type_id' => $type->payment_type_id,
+                'name' => $type->name,
+            ];
+            $groups['type_' . $type->payment_type_id]['children']['c_' . $type->id] = $type->id;
+        }
+
+        return $groups;
+    }
+
+    /**
+     * income report by date (Dynamic report - not used)
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function incomeByDate(Request $request)
+    {
+        $data = $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+        ], $request->all());
+
+        $start_date = $data['start_date'];
+        $end_date = $data['end_date'];
+
+        // get invoice data
+        $invoices = Invoice::whereRaw('DATE(invoices.created_at) BETWEEN ? AND ?', [$start_date, $end_date])
+            ->where('invoices.status', 1)
+            ->join('transactions', 'invoices.id', '=', 'transactions.invoice_id')
+            ->join('transaction_items', 'transactions.id', '=', 'transaction_items.transaction_id')
+            ->join('payments', 'transaction_items.payment_id', '=', 'payments.id')
+            ->join('payment_types', 'transaction_items.payment_type_id', '=', 'payment_types.id')
+            ->select(
+                'invoices.id as invoice_id',
+                'transactions.id as transaction_id',
+                'invoices.invoice_date as invoice_date',
+                'invoices.amount as invoice_amount',
+                'invoices.sub_total as invoice_sub_amount',
+                'invoices.vat_amount as vat',
+                'invoices.nbt_amount as nbt',
+                'invoices.other_tax_amount as tax',
+                'payments.id as payment_id',
+                'payments.name as payment_name',
+                'payments.amount as payment_amount',
+                'payment_types.id as payment_type_id',
+                'payment_types.name as payment_type_name',
+            )
+            ->get();
+
+        $paymentTypes = $this->getPaymentTypeGroups();
+        // dd($paymentTypes);
+        $totals = [
+            'total_without_tax' => 0.0,
+            'vat' => 0.0,
+            'nbt' => 0.0,
+            'tax_total' => 0.0,
+            'total' => 0.0,
+        ];
+        $cols = [];
+        foreach ($paymentTypes as $ptype) {
+            if ($ptype['is_grouped']) {
+                $cols['c_' . $ptype['id']] = 0.0;
+                $totals['c_' . $ptype['id']] = 0.0;
+            } else {
+                foreach ($ptype['children'] as $v) {
+                    $cols['c_' . $v] = 0.0;
+                    $totals['c_' . $v] = 0.0;
+                }
+            }
+        }
+
+
+        $rows = [];
+
+        foreach ($invoices as $invoice) {
+            // check if there is no slot for the invoice in the rows yet,
+            if (!array_key_exists('in_' . $invoice->invoice_id, $rows)) {
+                // create the column cells
+                $row = [
+                    'date' => $invoice->invoice_date,
+                    'receipt_number' => $invoice->invoice_id,
+                    'total_without_tax' => $invoice->invoice_sub_amount,
+                    'vat' => $invoice->vat,
+                    'nbt' => $invoice->nbt,
+                    'tax_total' => $invoice->tax,
+                    'total' => $invoice->invoice_amount,
+                ];
+
+                $totals['total_without_tax'] += $invoice->invoice_sub_amount;
+                $totals['vat'] += $invoice->vat;
+                $totals['nbt'] += $invoice->nbt;
+                $totals['tax_total'] += $invoice->tax;
+                $totals['total'] += $invoice->invoice_amount;
+                // extract columns from $cols into this arrayÄ
+                $row = array_merge($row, $cols);
+            }
+
+            if ($paymentTypes['type_' . $invoice->payment_type_id]['is_grouped']) {
+                $row['c_' . $invoice->payment_type_id] += doubleval($invoice->payment_amount);
+                $totals['c_' . $invoice->payment_type_id] += doubleval($invoice->payment_amount);
+            } else {
+                $row['c_' . $invoice->payment_id] += doubleval($invoice->payment_amount);
+                $totals['c_' . $invoice->payment_id] += doubleval($invoice->payment_amount);
+            }
+
+            $rows['in_' . $invoice->invoice_id] = $row;
+        }
+
+        return view('cashier-reports.income-report', compact('start_date', 'end_date', 'paymentTypes', 'rows', 'totals'));
+    }
+
+
+    public function incomeReportNew(Request $request)
+    {
+        $data = $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+        ], $request->all());
+
+        $start_date = $data['start_date'];
+        $end_date = $data['end_date'];
+
+        // get invoice data
+        $invoices = Invoice::whereRaw('DATE(invoices.created_at) BETWEEN ? AND ?', [$start_date, $end_date])
+            ->where('invoices.status', 1)
+            ->join('transactions', 'invoices.id', '=', 'transactions.invoice_id')
+            ->join('transaction_items', 'transactions.id', '=', 'transaction_items.transaction_id')
+            ->join('payments', 'transaction_items.payment_id', '=', 'payments.id')
+            ->join('payment_types', 'transaction_items.payment_type_id', '=', 'payment_types.id')
+            ->select(
+                'invoices.id as invoice_id',
+                'transactions.id as transaction_id',
+                'transactions.type as transaction_type',
+                'transaction_items.amount as transaction_amount',
+                'invoices.invoice_date as invoice_date',
+                'invoices.amount as invoice_amount',
+                'invoices.sub_total as invoice_sub_amount',
+                'invoices.vat_amount as vat',
+                'invoices.nbt_amount as nbt',
+                'invoices.other_tax_amount as tax',
+                'payments.id as payment_id',
+                'payments.name as payment_name',
+                'payment_types.id as payment_type_id',
+                'payment_types.name as payment_type_name',
+            )
+            ->get();
+        // dd($invoices);
+        $paymentTypes = $this->getPaymentTypeGroups();
+        // dd($paymentTypes);
+        $totals = [
+            'apFee_siteClearance_tot' => 0.0,
+            'apFee_reneaval_tot' => 0.0,
+            'apFee_eplApplication_tot' => 0.0,
+            'inspectionCharges_sc_tot' => 0.0,
+            'inspectionCharges_epl_tot' => 0.0,
+            'licence_fee_tot' => 0.0,
+            'licence_books_tot' => 0.0,
+            'fine_tot' => 0.0,
+            'waste_tot' => 0.0,
+            'eia_iee_tot' => 0.0,
+            'other_income_tot' => 0.0,
+            'all_without_tax_total' => 0.0,
+            'vat' => 0.0,
+            'nbt' => 0.0,
+            'all_tax_total' => 0.0,
+            'all_total' => 0.0,
+        ];
+        $rows = [];
+        // return $invoices;
+        foreach ($invoices as $invoice) {
+            // check if there is no slot for the invoice in the rows yet,
+            if (!array_key_exists('in_' . $invoice->invoice_id, $rows)) {
+                // create the column cells
+                $row = [
+                    'date' => $invoice->invoice_date,
+                    'receipt_number' => $invoice->invoice_id,
+                    'total_without_tax' => $invoice->invoice_sub_amount,
+                    'vat' => $invoice->vat,
+                    'nbt' => $invoice->nbt,
+                    'tax_total' => $invoice->tax,
+                    'total' => $invoice->invoice_amount,
+                    'apFee_siteClearance' => 0,
+                    'apFee_reneaval' => 0,
+                    'apFee_eplApplication' => 0,
+                    'inspectionCharges_sc' => 0,
+                    'inspectionCharges_epl' => 0,
+                    'licence_fee' => 0,
+                    'licence_books' => 0,
+                    'fine' => 0,
+                    'waste' => 0,
+                    'eia_iee' => 0,
+                    'other_income' => 0,
+                ];
+
+                $totals['all_without_tax_total'] += $invoice->invoice_sub_amount;
+                $totals['vat'] += $invoice->vat;
+                $totals['nbt'] += $invoice->nbt;
+                $totals['all_tax_total'] += $invoice->tax;
+                $totals['all_total'] += $invoice->invoice_amount;
+            }
+            if ($invoice->payment_type_id == 3 && $invoice->payment_id == 2) {
+                $row['apFee_siteClearance'] += $invoice->transaction_amount;
+                $totals['apFee_siteClearance_tot'] += $invoice->transaction_amount;
+            }
+            if ($invoice->payment_type_id == 3 && $invoice->payment_id == 5) {
+                $row['apFee_reneaval'] += $invoice->transaction_amount;
+                $totals['apFee_reneaval_tot'] += $invoice->transaction_amount;
+            }
+            if ($invoice->payment_type_id == 3 && $invoice->payment_id == 4) {
+                $row['apFee_eplApplication'] += $invoice->transaction_amount;
+                $totals['apFee_eplApplication_tot'] += $invoice->transaction_amount;
+            }
+            if ($invoice->transaction_type == 'Site' && $invoice->payment_type_id == 4) {
+                $row['inspectionCharges_sc'] += $invoice->transaction_amount;
+                $totals['inspectionCharges_sc_tot'] += $invoice->transaction_amount;
+            }
+            if ($invoice->transaction_type == 'EPL' && $invoice->payment_type_id == 4) {
+                $row['inspectionCharges_epl'] += $invoice->transaction_amount;
+                $totals['inspectionCharges_epl_tot'] += $invoice->transaction_amount;
+            }
+            if ($invoice->payment_type_id == 5) {
+                $row['licence_fee'] += $invoice->transaction_amount;
+                $totals['licence_fee_tot'] += $invoice->transaction_amount;
+            }
+            if ($invoice->payment_type_id == 12) {
+                $row['licence_books'] += $invoice->transaction_amount;
+                $totals['licence_books_tot'] += $invoice->transaction_amount;
+            }
+            if ($invoice->payment_type_id == 8) {
+                $row['fine'] += $invoice->transaction_amount;
+                $totals['fine_tot'] += $invoice->transaction_amount;
+            }
+            if ($invoice->payment_type_id == 9) {
+                $row['waste'] += $invoice->transaction_amount;
+                $totals['waste_tot'] += $invoice->transaction_amount;
+            }
+            if ($invoice->payment_type_id == 14) {
+                $row['eia_iee'] += $invoice->transaction_amount;
+                $totals['eia_iee_tot'] += $invoice->transaction_amount;
+            }
+            if ($invoice->payment_type_id == 15) {
+                $row['other_income'] += $invoice->transaction_amount;
+                $totals['other_income_tot'] += $invoice->transaction_amount;
+            }
+
+            $rows['in_' . $invoice->invoice_id] = $row;
+        }
+
+        // return $totals;
+        return view('cashier-reports.income-report2', compact('start_date', 'end_date', 'rows', 'totals'));
     }
 }

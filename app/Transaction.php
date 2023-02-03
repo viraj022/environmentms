@@ -75,10 +75,10 @@ class Transaction extends Model
     {
         if ($this->type == 'application_fee') {
             $data = ApplicationCliten::find($this->type_id);
-            return (!empty($data)) ? $data->name : "N/A";
+            return (!empty($data->name)) ? $data->name : "N/A";
         } else {
             $data = Client::find($this->client_id);
-            return (!empty($data)) ? $data->first_name : "N/A";
+            return (!empty($data->first_name)) ? $data->first_name : "N/A";
         }
     }
 
@@ -86,10 +86,10 @@ class Transaction extends Model
     {
         if ($this->type == 'application_fee') {
             $data = ApplicationCliten::find($this->type_id);
-            return (!empty($data)) ? $data->name : "N/A";
+            return (!empty($data->name)) ? $data->name : "N/A";
         } else {
             $data = Client::find($this->client_id);
-            return (!empty($data)) ? $data->industry_name : "N/A";
+            return (!empty($data->industry_name)) ? $data->industry_name : "N/A";
         }
     }
 
@@ -97,10 +97,10 @@ class Transaction extends Model
     {
         if ($this->type == 'application_fee') {
             $data = ApplicationCliten::find($this->type_id);
-            return (!empty($data)) ? $data->contact_no : "N/A";
+            return (!empty($data->contact_no)) ? $data->contact_no : "N/A";
         } else {
             $data = Client::find($this->client_id);
-            return (!empty($data)) ? $data->contact_no : "N/A";
+            return (!empty($data->contact_no)) ? $data->contact_no : "N/A";
         }
     }
 
@@ -108,10 +108,10 @@ class Transaction extends Model
     {
         if ($this->type == 'application_fee') {
             $data = ApplicationCliten::find($this->type_id);
-            return (!empty($data)) ? $data->nic : "N/A";
+            return (!empty($data->nic)) ? $data->nic : "N/A";
         } else {
             $data = Client::find($this->client_id);
-            return (!empty($data)) ? $data->nic : "N/A";
+            return (!empty($data->nic)) ? $data->nic : "N/A";
         }
     }
 
@@ -119,10 +119,10 @@ class Transaction extends Model
     {
         if ($this->type == 'application_fee') {
             $data = ApplicationCliten::find($this->type_id);
-            return (!empty($data)) ? $data->address : "N/A";
+            return (!empty($data->address)) ? $data->address : "N/A";
         } else {
             $data = Client::find($this->client_id);
-            return (!empty($data)) ? $data->industry_address : "N/A";
+            return (!empty($data->industry_address)) ? $data->industry_address : "N/A";
         }
     }
 
