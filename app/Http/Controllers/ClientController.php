@@ -1675,7 +1675,7 @@ class ClientController extends Controller
     public function setProfilePayments(Client $client)
     {
         $invoices = Invoice::with('transactions')->whereHas('transactions', function ($query) {
-            $query->whereNull('client_id');
+            $query->whereNull('client_id')->where('type', 'application_fee');
         })->get();
 
         return view('set-profile-payment.index', compact('client', 'invoices'));
