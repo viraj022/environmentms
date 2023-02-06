@@ -57,10 +57,15 @@
                 </tr>
                 <tr>
                     <th>Type of Industry</th>
-                    <td>{{ $applicationData->industry_type }} <br>
-                        @if ($applicationData->other_industry_type)
-                            {{ $applicationData->other_industry_type }}
-                        @endif
+                    <td>{{ $applicationData->industry_type }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Industry Details</th>
+                    <td>
+                        @foreach (json_decode($applicationData->industryDetailCheck, true) as $key => $value)
+                            {{ $value }} <br>
+                        @endforeach
                     </td>
                 </tr>
                 <tr>
