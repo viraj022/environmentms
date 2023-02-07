@@ -241,13 +241,17 @@
                                 <form action="{{ route('online-request.payment.sendlink', $renewal->onlineRequest->id) }}"
                                     method="post" class="has-validation">
                                     @csrf
-
+                                    {{-- <div class="mb-2">
+                                        <label>Application Type: </label>
+                                        <select id="application_combo" name="application_combo" class="form-control form-control-sm">
+                                            <option>Loading...</option>
+                                        </select>
+                                    </div> --}}
                                     <div class="mb-2">
                                         <label for="payment_amount">Payment Amount</label>
                                         <input type="number" name="payment_amount" id="payment_amount"
                                             class="form-control" required min="1" step="1">
                                     </div>
-
                                     <div class="mb-2">
                                         <button type="submit" class="btn btn-success">Send Payment Link</button>
                                     </div>
@@ -264,6 +268,7 @@
 @section('pageScripts')
     <script src="../../dist/js/adminlte.min.js"></script>
     <script src="../../dist/js/demo.js"></script>
+    <script src="{{ asset('js/paymentsjs/application_payment.js') }}"></script>
     <!-- Page scripts -->
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
@@ -311,6 +316,17 @@
         $(function() {
             // init clipboard
             new ClipboardJS('.btn');
+            loadApplication_types(function() {
+                loadPaymentAmount();  
+            });
         });
+
+        
+        function loadPaymentAmount() {
+            let amount = $("#application_combo option:selected").data("amt");
+            $("#payment_amount").val(amount);
+        }
+
+        $('#application_combo').change(loadPaymentAmount);
     </script>
 @endsection
