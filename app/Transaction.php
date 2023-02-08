@@ -28,6 +28,7 @@ class Transaction extends Model
         'client_id',
         'application_client_id',
         'invoice_id',
+        'online_payment_id',
     ];
 
     public function getPaymentDetails()

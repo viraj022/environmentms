@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\EPL;
 use App\Helpers\SmsHelper;
+use App\Invoice;
 use App\Mail\OnlineApplicationPaymentLink;
 use App\OnlineNewApplicationRequest;
 use App\OnlinePayment;
@@ -176,7 +177,7 @@ class OnlineRequestController extends Controller
     {
         $data = $request->validate([
             'payment_amount' => 'required|numeric',
-            // 'application_combo'  => 'required|exists:payments,id',
+            'application_combo'  => 'nullable|exists:payments,id',
         ], $request->all());
 
         $paymentAmount = doubleval($data['payment_amount']);
@@ -184,6 +185,22 @@ class OnlineRequestController extends Controller
         $client = $application->client;
         $personName = sprintf('%s %s %s', $client->name_title, $client->first_name, $client->last_name);
         $businessName = $client->industry_name;
+
+        if (isset($data['application_combo'])) {
+            $transaction = Transaction::with('transactionItems')
+                ->where('client_id', $client->id)
+                ->where('status', 0)
+                ->whereHas('transactionItems', function ($query) use ($data) {
+                    $query->where('payment_type_id', 3)->where('payment_id', $data['application_combo']);
+                })->first();
+
+            if ($transaction) {
+                $routeName = 'online-requests.renewal.view';
+                $returnId = $onlineRequest->online_request_id;
+                return redirect()->route($routeName, $returnId)
+                    ->with('error', 'Client already assign for that payment'); // change words
+            }
+        }
 
         if (get_class($application) === "App\\OnlineNewApplicationRequest") {
             $requestType = OnlineRequest::NEW;
@@ -194,36 +211,43 @@ class OnlineRequestController extends Controller
             $emailAddress = $application->email;
             $mobileNumber = $application->mobile_no;
 
-            // $transactions  = Transaction::create([
-            //     'status'  =>  '0',
-            //     'type' =>  'application_fee',
-            //     'type_id'  =>  $client->id,
-            //     'client_id'  => $client->id,
-            // ]);
+            if (isset($data['application_combo'])) {
+                // create new transaction
+                $transaction  = Transaction::create([
+                    'status'  =>  '0',
+                    'type' =>  'application_fee',
+                    'type_id'  =>  $client->id,
+                    'client_id'  => $client->id,
+                ]);
 
-            // $transactionItem  =   TransactionItem::create([
-            //     'transaction_id' => $transactions->id,
-            //     'qty'   => 1,
-            //     'amount'  => $data['payment_amount'],
-            //     'payment_type_id' => 3,
-            //     'payment_id' => $data['application_combo'],
-            //     'transaction_type'  => 'application_fee',
-            //     'client_id' => $client->id,
-            //     'transaction_type_id' => $client->id,
-            // ]);
-
+                TransactionItem::create([
+                    'transaction_id' => $transaction->id,
+                    'qty'   => 1,
+                    'amount'  => $data['payment_amount'],
+                    'payment_type_id' => 3,
+                    'payment_id' => $data['application_combo'],
+                    'transaction_type'  => 'application_fee',
+                    'client_id' => $client->id,
+                    'transaction_type_id' => $client->id,
+                ]);
+            }
         } elseif (get_class($application) === 'App\\Transaction') {
             $requestType = OnlineRequest::PAYMENT;
             $emailAddress = $application->client->email;
             $mobileNumber = $application->client->contact_no;
+            // identify the application as the transaction
+            $transaction = $application;
         }
-        // dd($application);
         // create online payment record
         $onp = OnlinePayment::create([
             'online_request_id' => $onlineRequest->id,
             'reference_no' => Str::uuid()->toString(),
             'amount' => $paymentAmount,
         ]);
+
+        if (isset($transaction)) {
+            $transaction->update(['online_payment_id' => $onp->id]);
+        }
 
         // generate a signed URL
         $paymentLink = URL::temporarySignedRoute(

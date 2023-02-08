@@ -14,12 +14,6 @@
     <!-- Google Font: Source Sans Pro -->
 @endsection
 @section('content')
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -241,16 +235,17 @@
                                 <form action="{{ route('online-request.payment.sendlink', $renewal->onlineRequest->id) }}"
                                     method="post" class="has-validation">
                                     @csrf
-                                    {{-- <div class="mb-2">
+                                    <div class="mb-2">
                                         <label>Application Type: </label>
-                                        <select id="application_combo" name="application_combo" class="form-control form-control-sm">
+                                        <select id="application_combo" name="application_combo"
+                                            class="form-control form-control-sm">
                                             <option>Loading...</option>
                                         </select>
-                                    </div> --}}
+                                    </div>
                                     <div class="mb-2">
                                         <label for="payment_amount">Payment Amount</label>
                                         <input type="number" name="payment_amount" id="payment_amount"
-                                            class="form-control" required min="1" step="1">
+                                            class="form-control" required min="1" step="1" readonly>
                                     </div>
                                     <div class="mb-2">
                                         <button type="submit" class="btn btn-success">Send Payment Link</button>
@@ -317,11 +312,11 @@
             // init clipboard
             new ClipboardJS('.btn');
             loadApplication_types(function() {
-                loadPaymentAmount();  
+                loadPaymentAmount();
             });
         });
 
-        
+
         function loadPaymentAmount() {
             let amount = $("#application_combo option:selected").data("amt");
             $("#payment_amount").val(amount);
