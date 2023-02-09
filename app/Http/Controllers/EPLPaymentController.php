@@ -139,6 +139,7 @@ class EPLPaymentController extends Controller
         return $transaction = Transaction::with('transactionItems')
             ->with('applicationClient')
             ->where('status', '<', 2)
+            ->whereNotNull('application_client_id')
             ->where('type', Transaction::APPLICATION_FEE)
             ->where('created_at', '>=', date('Y-m-d', strtotime('-1 month')))
             ->orderBy('created_at', 'desc')

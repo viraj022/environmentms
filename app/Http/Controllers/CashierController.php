@@ -166,21 +166,20 @@ class CashierController extends Controller
 
         $data = $request->validate($rules, $request->all());
 
-        $year = Carbon::now()->format('Y');
+        // $year = Carbon::now()->format('Y');
         $number = 1;
 
-        $lastInvoiceNumber = Invoice::select('id')
-            ->whereYear('created_at', $year)
+        $lastInvoiceNumber = Invoice::select('invoice_number')
             ->orderBy('created_at', 'desc')
             ->withTrashed()
             ->first();
 
         if ($lastInvoiceNumber) {
-            $number = $lastInvoiceNumber->id + 1;
-            $invoiceNo =  "Invoice/" . $number . "/" . $year;
+            $number = $lastInvoiceNumber->invoice_number + 1;
+            $invoiceNo =  $number;
         }
 
-        $invoiceNo = "Invoice/" . $number . "/" . $year;
+        $invoiceNo = $number;
 
         $invoice = Invoice::create([
             'name' => $data['invoiceDet']['name'],
@@ -661,6 +660,7 @@ class CashierController extends Controller
             ->join('payment_types', 'transaction_items.payment_type_id', '=', 'payment_types.id')
             ->select(
                 'invoices.id as invoice_id',
+                'invoices.invoice_number as invoice_number',
                 'transactions.id as transaction_id',
                 'transactions.type as transaction_type',
                 'transaction_items.amount as transaction_amount',
@@ -705,7 +705,7 @@ class CashierController extends Controller
                 // create the column cells
                 $row = [
                     'date' => $invoice->invoice_date,
-                    'receipt_number' => $invoice->invoice_id,
+                    'receipt_number' => $invoice->invoice_number,
                     'total_without_tax' => $invoice->invoice_sub_amount,
                     'vat' => $invoice->vat,
                     'nbt' => $invoice->nbt,

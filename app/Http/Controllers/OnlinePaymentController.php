@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use App\Helpers\SmsHelper;
+use App\Invoice;
 use App\Mail\OnlinePaymentSuccessReceipt;
 use App\OnlineNewApplicationRequest;
 use App\OnlinePayment;
 use App\OnlineRenewalApplicationRequest;
 use App\OnlineRequest;
 use App\Transaction;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class OnlinePaymentController extends Controller
 {
@@ -69,7 +69,7 @@ class OnlinePaymentController extends Controller
         $stringBody = (string) $response->getBody();
         parse_str($stringBody, $initParams); // parse the received query string to an array
 
-        // in result is not success
+        // if result is not success
         if ($initParams['result'] !== 'SUCCESS') {
             // abort the payment request.
             abort('401', 'Failed to authorize the payment.');
@@ -78,6 +78,9 @@ class OnlinePaymentController extends Controller
         // store success indicator
         $paymentRequest->ipg_success_indicator = $initParams['successIndicator'];
         $paymentRequest->save();
+
+        $transaction = Transaction::where('online_payment_id', $paymentRequest->id)->first();
+        $transaction->update(['status' => 1]);
 
         // send to the redirection page with session data
         return view('online-requests.gateway-redirect', compact('initParams', 'onlineRequest', 'paymentRequest', 'orderId'));
@@ -173,11 +176,40 @@ class OnlinePaymentController extends Controller
         $onlineRequest->status = 'complete';
         $onlineRequest->save();
 
+        //invoice code
+        // $year = Carbon::now()->format('Y');
+        $number = 1;
+
+        $lastInvoiceNumber = Invoice::select('invoice_number')
+            ->orderBy('created_at', 'desc')
+            ->withTrashed()
+            ->first();
+
+        if ($lastInvoiceNumber) {
+            $number = $lastInvoiceNumber->invoice_number + 1;
+            $invoiceNo =  $number;
+        }
+
+        $invoiceNo = $number;
+
         // complete payment status for request_id
         if ($onlineRequest->request_type == OnlineRequest::RENEWAL) {
             $model = OnlineRenewalApplicationRequest::whereId($onlineRequest->online_request_id)->first();
             $model->status = 'complete';
             $model->save();
+            $onlineRequest = OnlineRequest::where('id', $onlinePayment->online_request_id)->select('online_request_id')->first();
+            $onlineRequestData = OnlineRenewalApplicationRequest::where('id', $onlineRequest->online_request_id)->select('industry_name', 'mobile_no', 'nic_number')->first();
+            Invoice::create([
+                'name' => $onlineRequestData->industry_name,
+                'contact' => $onlineRequestData->mobile_no,
+                'nic' => $onlineRequestData->nic_number,
+                'invoice_number' => $invoiceNo,
+                'payment_method' => 'online',
+                'amount' => $onlinePayment->amount,
+                'sub_total' => $onlinePayment->amount,
+                'invoice_date' => Carbon::now()->format('Y-m-d'),
+                'online_payment_id' => $onlinePayment->id,
+            ]);
         } elseif ($onlineRequest->request_type == OnlineRequest::NEW) {
             $model = OnlineNewApplicationRequest::whereId($onlineRequest->online_request_id)->first();
             $model->status = 'complete';
@@ -185,7 +217,21 @@ class OnlinePaymentController extends Controller
         } elseif ($onlineRequest->request_type == OnlineRequest::PAYMENT) {
             $model = Transaction::whereId($onlineRequest->request_id)->first();
             $model->status = '1'; // set in transaction
+            $model->invoice_no = $invoiceNo;
             $model->save();
+            $client = Client::whereId($model->client_id)->select('industry_name', 'industry_address', 'contact_no', 'nic')->first();
+            Invoice::create([
+                'name' => $client->industry_name,
+                'contact' => $client->contact_no,
+                'nic' => $client->nic,
+                'address' => $client->industry_address,
+                'invoice_number' => $invoiceNo,
+                'payment_method' => 'online',
+                'amount' => $onlinePayment->amount,
+                'sub_total' => $onlinePayment->amount,
+                'invoice_date' => Carbon::now()->format('Y-m-d'),
+                'online_payment_id' => $onlinePayment->id,
+            ]);
         }
 
         return view($view, ['paymentRequest' => $onlinePayment]);
