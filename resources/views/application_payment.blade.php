@@ -230,6 +230,8 @@
     <!-- Page script -->
     <script type="text/JavaScript" src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.6.0/jQuery.print.js"></script>
     <script src="../../js/paymentsjs/application_payment.js" type="text/javascript"></script>
+    <script src="../../dist/js/adminlte.min.js"></script>
+    <script src="../../dist/js/demo.js"></script>
     <!-- AdminLTE App -->
     <script>
         $(function() {
@@ -246,6 +248,15 @@
             $('#application_combo').change(function() {
                 set_application_amount();
             });
+
+            $("#app_qty").change(function() {
+                let paymentAmount = $("#application_combo :selected").data("amt")
+                let paymentQty = $("#app_qty").val();
+                let total = paymentAmount * paymentQty;
+                $("#amt").val(total);
+                set_application_amount(total);
+            });
+
             $('#tblRefresh').click(function() {
                 paymentDetals_table();
             });

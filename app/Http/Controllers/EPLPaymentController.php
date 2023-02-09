@@ -11,6 +11,7 @@ use App\Rules\contactNo;
 use App\TransactionItem;
 use App\Rules\nationalID;
 use App\ApplicationCliten;
+use App\Client;
 use App\Transactioncounter;
 use App\Helpers\LogActivity;
 use App\SiteClearenceSession;
@@ -41,8 +42,12 @@ class EPLPaymentController extends Controller
                 }
             } else if ($type == 'site_clearance') {
                 $site = SiteClearenceSession::find($id);
+                $scOldPaymentList = TransactionItem::where('transaction_type_id', $id)
+                    ->with(['transaction' => function ($q) {
+                        return $q->withTrashed();
+                    }])->get();
                 if ($site) {
-                    return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id, "epl_no" => $site->code, "client" => $site->client_id, 'type' => $type, 'type_title' => 'site_clearance']);
+                    return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id, "epl_no" => $site->code, "client" => $site->client_id, 'type' => $type, 'type_title' => 'site_clearance', 'scOldPaymentList' => $scOldPaymentList]);
                 } else {
                     abort(404);
                 }
@@ -84,7 +89,7 @@ class EPLPaymentController extends Controller
                             $transactionItem->payment_type_id = $payment->payment_type_id;
                             $transactionItem->payment_id = $payment->id;
                             $transactionItem->transaction_type = Transaction::APPLICATION_FEE;
-                            $transactionItem->amount = $payment->amount;
+                            $transactionItem->amount = $item['amount'];
                             $transactionItem->qty = $item['qty'];
                             $msg = $msg && $transactionItem->save();
                         } else {
@@ -419,12 +424,11 @@ class EPLPaymentController extends Controller
 
         if ($site) {
             $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
-            // dd($inspectionTypes);+
+            // dd($inspectionTypes);
             $inspection = TransactionItem::with('transaction')->where('transaction_type', Transaction::TRANS_SITE_CLEARANCE)
-                ->where('client_id', $site->client_id)
+                ->where('transaction_type_id', $id)
                 ->where('payment_type_id', $inspectionTypes->id)
                 ->first();
-
             $license_fee = PaymentType::getpaymentByTypeName(PaymentType::LICENCE_FEE);
             $certificate_fee = TransactionItem::with('transaction')
                 ->where('transaction_type', Transaction::TRANS_SITE_CLEARANCE)
@@ -451,6 +455,7 @@ class EPLPaymentController extends Controller
                 $processingFee = array();
             }
 
+            // dd($inspection);
             if ($inspection) {
                 $rtn['inspection']['status'] = "payed";
                 $rtn['inspection']['object'] = $inspection;

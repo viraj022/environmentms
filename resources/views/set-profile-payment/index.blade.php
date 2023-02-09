@@ -47,9 +47,15 @@
                         </table>
                     </div>
                 </div>
+                <div class="card border border-secondary">
+                    <div class="card-header bg-secondary">
+                        Send Online Payment Request
+                    </div>
+                    <div class="card-body">
+
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="row">
             <div class="col-lg-8">
                 <div class="card card-body">
                     <table class="table border" id="invoiceTable">
