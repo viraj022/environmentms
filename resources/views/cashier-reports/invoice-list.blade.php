@@ -65,14 +65,16 @@
                                     @foreach ($invoices as $invoice)
                                         <tr data-row_id={{ $invoice->id }}>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $invoice->id }}</td>
+                                            <td>{{ $invoice->invoice_number }}</td>
                                             <td>{{ $invoice->name }}</td>
                                             <td>{{ $invoice->address }}</td>
                                             <td>{{ $invoice->nic }}</td>
                                             <td>{{ $invoice->invoice_date }}</td>
                                             <td>Rs.{{ number_format($invoice->amount, 2) }}</td>
                                             <td>
-                                                <button type="button" class="btn btn-info btn-sm btn-cancel mt-2"
+                                                <a href="{{ route('print-invoice', $invoice->id) }}"
+                                                    class="btn btn-sm btn-success" target="_blank">Print</a>
+                                                <button type="button" class="btn btn-info btn-sm btn-cancel"
                                                     data-invoice_id={{ $invoice->id }}>
                                                     Cancel
                                                 </button>

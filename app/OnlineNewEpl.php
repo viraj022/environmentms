@@ -15,7 +15,6 @@ class OnlineNewEpl extends Model
         'industry_nature',
         'industry_GPS',
         'telephone_Number',
-        'other_industry_type',
         'applicant_name',
         'applicant_address',
         'applicant_telephone',
@@ -79,7 +78,7 @@ class OnlineNewEpl extends Model
         'fuel_daily_consumption',
         'recycling',
         'plan_description',
-        'industryDetailCheck',
+        'industryDetailCheck'
     ];
 
     public function onlineRequest()
