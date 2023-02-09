@@ -177,21 +177,20 @@ class OnlinePaymentController extends Controller
         $onlineRequest->save();
 
         //invoice code
-        $year = Carbon::now()->format('Y');
+        // $year = Carbon::now()->format('Y');
         $number = 1;
 
-        $lastInvoiceNumber = Invoice::select('id')
-            ->whereYear('created_at', $year)
+        $lastInvoiceNumber = Invoice::select('invoice_number')
             ->orderBy('created_at', 'desc')
             ->withTrashed()
             ->first();
 
         if ($lastInvoiceNumber) {
-            $number = $lastInvoiceNumber->id + 1;
-            $invoiceNo =  "Invoice/" . $number . "/" . $year;
+            $number = $lastInvoiceNumber->invoice_number + 1;
+            $invoiceNo =  $number;
         }
 
-        $invoiceNo = "Invoice/" . $number . "/" . $year;
+        $invoiceNo = $number;
 
         // complete payment status for request_id
         if ($onlineRequest->request_type == OnlineRequest::RENEWAL) {

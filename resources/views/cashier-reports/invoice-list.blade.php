@@ -65,7 +65,7 @@
                                     @foreach ($invoices as $invoice)
                                         <tr data-row_id={{ $invoice->id }}>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $invoice->id }}</td>
+                                            <td>{{ $invoice->invoice_number }}</td>
                                             <td>{{ $invoice->name }}</td>
                                             <td>{{ $invoice->address }}</td>
                                             <td>{{ $invoice->nic }}</td>

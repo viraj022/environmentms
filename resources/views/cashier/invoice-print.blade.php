@@ -72,11 +72,15 @@
 
                     VAT Registration No. 409216765-7000 <span style="margin-left: 25px;">N.B.T. No.
                         409216765-9000</span> <span style="margin-left: 25px;">N.W.P.C මු/1 </span> <br> <br>
-                    Recipt No. : {{ $invoice->id }}
+                    Recipt No. : {{ $invoice->invoice_number }}
                     <span style="margin-left: 35px">Date
                         :{{ Carbon\Carbon::parse($invoice->created_at)->format('Y-m-d') }}</span>
-                    <span style="margin-left: 35px"> Received From : {{ $invoice->name }} </span>
-
+                    <span style="margin-left: 35px"> Received From : {{ $invoice->name }} </span> <br>
+                    @if ($invoice->payment_reference_number)
+                        <span> Cheque number / Date: {{ $invoice->payment_reference_number }}
+                            ({{ $invoice->cheque_issue_date }})</span>
+                    @endif <br>
+                    <span> Remark: {{ $invoice->remark }}</span>
                 </p>
 
                 <section>
@@ -92,7 +96,9 @@
                             @foreach ($transaction->transactionItems as $transactionItem)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $transactionItem->payment->name }}</td>
+                                    <td>{{ $transactionItem->paymentType->name }}
+                                        ({{ $transactionItem->payment->name }})
+                                    </td>
                                     <td class="text-end">{{ number_format($transactionItem->amount, 2) }}</td>
                                 </tr>
                             @endforeach
