@@ -64,8 +64,8 @@
                                 Inspection</a>
                         </li>
                         <!--                <li class="nav-item">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </li>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <a class="nav-link locationTab" id="custom-tabs-three-locationTab-tab" data-toggle="pill" href="#custom-tabs-three-locationTab" role="tab" aria-controls="custom-tabs-three-locationTab" aria-selected="false">Location</a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </li>-->
                         <li class="nav-item">
                             <a class="nav-link paymentsTab" id="custom-tabs-three-paymentsTab-tab" data-toggle="pill"
                                 href="#custom-tabs-three-paymentsTab" role="tab"
@@ -151,14 +151,14 @@
                                                             </div>
 
                                                             <!--                                                    <div class="info-box mb-3 bg-info">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <span class="info-box-icon">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <button class="btn btn-lg btn-default" id="teli"><i class="fa fa-plus"></i></button></span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <div class="info-box-content">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <span class="info-box-text">Create new telecommunication site clearance file</span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <span class="info-box-number">Telecommunication Site Clearance</span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     /.info-box-content
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <span class="info-box-icon">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <button class="btn btn-lg btn-default" id="teli"><i class="fa fa-plus"></i></button></span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="info-box-content">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <span class="info-box-text">Create new telecommunication site clearance file</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <span class="info-box-number">Telecommunication Site Clearance</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         /.info-box-content
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>-->
 
                                                             <div class="info-box mb-3 bg-info">
                                                                 <span class="info-box-icon">
@@ -876,44 +876,50 @@
                                             <h3 class="card-title">Online Payment History</h3>
                                         </div>
                                         <div class="card-body p-0">
-                                            <div class="card-body table-responsive" style="height: 450px;">
-                                                <table class="table table-condensed" id="onlinePaymentRecords">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>#</th>
-                                                            <th>Invoice No</th>
-                                                            <th>Status</th>
-                                                            <th>Total</th>
-                                                            <th>Date</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @php
-                                                            $i = 1;
-                                                        @endphp
-                                                        @foreach ($onlineTransactions as $onlineTransaction)
-                                                            @foreach ($onlineTransaction->transactionItems as $transactionItem)
-                                                                <tr>
-                                                                    <td>{{ $i++ }}</td>
-                                                                    <td>{{ $onlineTransaction->invoice_no }}</td>
-                                                                    <td>
-                                                                        @if ($onlineTransaction->status == 1)
-                                                                            Complete
-                                                                        @elseif($onlineTransaction->status == 0)
-                                                                            Pending
-                                                                        @elseif ($onlineTransaction->status == 3)
-                                                                            Cancelled
-                                                                        @endif
-                                                                    </td>
-                                                                    <td>{{ $transactionItem->amount }}</td>
-                                                                    <td>{{ Carbon\Carbon::parse($onlineTransaction->created_at)->format('Y-m-d') }}
-                                                                    </td>
-                                                                </tr>
+                                            @if ($onlineTransactions->isEmpty())
+                                                <div class="alert alert-primary m-3" role="alert">
+                                                    <span class="fa fa-info-circle"></span> No Online Payment Records
+                                                </div>
+                                            @else
+                                                <div class="card-body table-responsive" style="height: 450px;">
+                                                    <table class="table table-condensed" id="onlinePaymentRecords">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Invoice No</th>
+                                                                <th>Status</th>
+                                                                <th>Total</th>
+                                                                <th>Date</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @php
+                                                                $i = 1;
+                                                            @endphp
+                                                            @foreach ($onlineTransactions as $onlineTransaction)
+                                                                @foreach ($onlineTransaction->transactionItems as $transactionItem)
+                                                                    <tr>
+                                                                        <td>{{ $i++ }}</td>
+                                                                        <td>{{ $onlineTransaction->invoice_no }}</td>
+                                                                        <td>
+                                                                            @if ($onlineTransaction->status == 1)
+                                                                                Complete
+                                                                            @elseif($onlineTransaction->status == 0)
+                                                                                Pending
+                                                                            @elseif ($onlineTransaction->status == 3)
+                                                                                Cancelled
+                                                                            @endif
+                                                                        </td>
+                                                                        <td>{{ $transactionItem->amount }}</td>
+                                                                        <td>{{ Carbon\Carbon::parse($onlineTransaction->created_at)->format('Y-m-d') }}
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
                                                             @endforeach
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
