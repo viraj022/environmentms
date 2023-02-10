@@ -81,7 +81,8 @@
                             </div>
                             <div class="col-lg-8 text-left">
                                 <p>
-                                    Reference No. : <strong>{{ $paymentRequest->reference_no }}</strong> <br>
+                                    {{-- Reference No. : <strong>{{ $paymentRequest->reference_no }}</strong> <br> --}}
+                                    Invoice Number: <strong>{{ $invoice->invoice_number }}</strong> <br>
                                     Date: <strong>{{ $paymentRequest->created_at->format('Y-m-d') }}</strong>
                                 </p>
                             </div>

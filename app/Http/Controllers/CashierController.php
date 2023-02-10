@@ -81,7 +81,7 @@ class CashierController extends Controller
 
     public function getPendingPaymentByFileID($id)
     {
-        return Transaction::with('transactionItems')->with('client')->where('client_id', $id)->get();
+        return Transaction::with('transactionItems')->with('client')->where('client_id', $id)->whereNull('online_payment_id')->get();
     }
     public function getPaymentTypes()
     {
@@ -275,6 +275,7 @@ class CashierController extends Controller
             ->where('status', 0)
             ->whereNull('canceled_at')
             // ->whereNull('invoice_id')
+            ->whereNull('online_payment_id')
             ->orderBy('created_at', 'desc')
             ->select(
                 'application_client_id',
