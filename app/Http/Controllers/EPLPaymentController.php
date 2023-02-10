@@ -372,16 +372,13 @@ class EPLPaymentController extends Controller
                 ->where('transaction_type_id', $id)
                 ->where('payment_type_id', $inspectionTypes->id)
                 ->first();
-            // dd($inspection);
             $license_fee = PaymentType::getpaymentByTypeName(PaymentType::LICENCE_FEE);
-            $certificate_fee = TransactionItem::with('transaction')
-                ->where('transaction_type', Transaction::TRANS_TYPE_EPL)
+            $certificate_fee = TransactionItem::with('transaction')->where('transaction_type', Transaction::TRANS_TYPE_EPL)
                 ->where('transaction_type_id', $id)
                 ->where('payment_type_id', $license_fee->id)
                 ->first();
             $fintType = PaymentType::getpaymentByTypeName(PaymentType::FINE);
-            $fine = TransactionItem::with('transaction')
-                ->where('transaction_type', Transaction::TRANS_TYPE_EPL)
+            $fine = TransactionItem::with('transaction')->where('transaction_type', Transaction::TRANS_TYPE_EPL)
                 ->where('transaction_type_id', $id)
                 ->where('payment_type_id', $fintType->id)
                 ->first();

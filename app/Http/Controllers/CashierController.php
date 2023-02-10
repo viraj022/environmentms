@@ -297,6 +297,12 @@ class CashierController extends Controller
      */
     public function cancelTransaction(Transaction $transaction)
     {
+        $transactionItems = TransactionItem::where('transaction_id', $transaction->id)->get();
+        //delete transaction items
+        foreach ($transactionItems as $transactionItem) {
+            $transactionItem->delete();
+        }
+
         $cancelTransaction = $transaction->update([
             "canceled_at" => Carbon::now(),
             "status"  =>  '3',
@@ -430,6 +436,12 @@ class CashierController extends Controller
         $transactions = Transaction::where('invoice_id', $invoice->id)->get();
 
         foreach ($transactions as $transaction) {
+            $transactionItems = TransactionItem::where('transaction_id', $transaction->id)->get();
+            //delete transaction items
+            foreach ($transactionItems as $transactionItem) {
+                $transactionItem->delete();
+            }
+
             $transaction->update([
                 'status' => 3,
                 "canceled_at" => Carbon::now(),

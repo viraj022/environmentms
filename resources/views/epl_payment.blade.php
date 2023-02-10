@@ -204,6 +204,8 @@
 
 @section('pageScripts')
     <!-- Page script -->
+    <script src="{{ asset('dist/js/adminlte.js') }}"></script>
+    <script src="{{ asset('dist/js/demo.js') }}"></script>
     <!-- Select2 -->
     <script src="/../../plugins/select2/js/select2.full.min.js"></script>
     <!-- Bootstrap4 Duallistbox -->
@@ -222,8 +224,6 @@
     <!-- AdminLTE for demo purposes -->
     <script src="/../../js/paymentsjs/epl_payments.js" type="text/javascript"></script>
     <!-- AdminLTE App -->
-    <script src="../../dist/js/adminlte.min.js"></script>
-    <script src="../../dist/js/demo.js"></script>
     <script>
         $(function() {
             // alert("123");
