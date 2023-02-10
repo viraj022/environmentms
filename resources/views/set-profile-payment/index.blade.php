@@ -47,14 +47,35 @@
                         </table>
                     </div>
                 </div>
-                <div class="card border border-secondary">
-                    <div class="card-header bg-secondary">
-                        Send Online Payment Request
+                @if (!empty($onlineNewApplicationRequest))
+                    <div class="card border border-secondary">
+                        <div class="card-header bg-secondary">
+                            Send Online Payment Request
+                        </div>
+                        <div class="card-body">
+                            <form
+                                action="{{ route('online-request.payment.sendlink', $onlineNewApplicationRequest->onlineRequest->id) }}"
+                                method="post" class="has-validation">
+                                @csrf
+                                <div class="mb-2">
+                                    <label>Application Type: </label>
+                                    <select id="application_combo" name="application_combo"
+                                        class="form-control form-control-sm">
+                                        <option>Loading...</option>
+                                    </select>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="payment_amount">Payment Amount</label>
+                                    <input type="number" name="payment_amount" id="payment_amount" class="form-control"
+                                        required min="1" step="1" readonly>
+                                </div>
+                                <div class="mb-2">
+                                    <button type="submit" class="btn btn-success">Send Payment Link</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <div class="card-body">
-
-                    </div>
-                </div>
+                @endif
             </div>
             <div class="col-lg-8">
                 <div class="card card-body">
@@ -95,12 +116,24 @@
 @section('pageScripts')
     <script src="../../dist/js/adminlte.min.js"></script>
     <script src="../../dist/js/demo.js"></script>
+    <script script src="{{ asset('js/paymentsjs/application_payment.js') }}"></script>
     <script>
         @if (session('payment_set'))
             Swal.fire('Success', '{{ session('payment_set') }}', 'success');
         @endif
         $(document).ready(function() {
             $('#invoiceTable').DataTable();
+
+            loadApplication_types(function() {
+                loadPaymentAmount();
+            });
         });
+
+        function loadPaymentAmount() {
+            let amount = $("#application_combo option:selected").data("amt");
+            $("#payment_amount").val(amount);
+        }
+
+        $('#application_combo').change(loadPaymentAmount);
     </script>
 @endsection
