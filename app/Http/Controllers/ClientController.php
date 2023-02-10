@@ -138,9 +138,11 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $client = Client::find($id);
         $oldOwnerDetails = ChangeOwner::where('client_id', $client->id)->orderBy('created_at', 'desc')->first();
+        $onlineTransactions = Transaction::with('transactionItems')->whereNotNull('online_payment_id')->where('client_id', $id)->withTrashed()->get();
+
         $qrCode = $this->fileQr($client->file_no);
         if ($pageAuth['is_read']) {
-            return view('industry_profile', ['pageAuth' => $pageAuth, 'id' => $id, 'client' => $client, 'qrCode' => $qrCode, 'oldOwnerDetails' => $oldOwnerDetails]);
+            return view('industry_profile', ['pageAuth' => $pageAuth, 'id' => $id, 'client' => $client, 'qrCode' => $qrCode, 'oldOwnerDetails' => $oldOwnerDetails, 'onlineTransactions' => $onlineTransactions]);
         } else {
             abort(401);
         }
