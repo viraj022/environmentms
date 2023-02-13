@@ -139,10 +139,14 @@ class ClientController extends Controller
         $client = Client::find($id);
         $oldOwnerDetails = ChangeOwner::where('client_id', $client->id)->orderBy('created_at', 'desc')->first();
         $onlineTransactions = Transaction::with('transactionItems')->whereNotNull('online_payment_id')->where('client_id', $id)->withTrashed()->get();
+        $scCertificates = Certificate::where('certificate_type', 1)->where('client_id', $id)->where('issue_status', 1)->select('signed_certificate_path', 'issue_date', 'expire_date', 'cetificate_number')->get();
 
         $qrCode = $this->fileQr($client->file_no);
         if ($pageAuth['is_read']) {
-            return view('industry_profile', ['pageAuth' => $pageAuth, 'id' => $id, 'client' => $client, 'qrCode' => $qrCode, 'oldOwnerDetails' => $oldOwnerDetails, 'onlineTransactions' => $onlineTransactions]);
+            return view('industry_profile', [
+                'pageAuth' => $pageAuth, 'id' => $id, 'client' => $client, 'qrCode' => $qrCode, 'oldOwnerDetails' => $oldOwnerDetails, 'onlineTransactions' => $onlineTransactions,
+                'scCertificates' => $scCertificates
+            ]);
         } else {
             abort(401);
         }
