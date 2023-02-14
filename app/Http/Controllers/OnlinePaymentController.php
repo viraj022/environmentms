@@ -207,6 +207,7 @@ class OnlinePaymentController extends Controller
 
                 $transaction = Transaction::where('online_payment_id', $onlinePayment->id)->first();
                 $transaction->invoice_id = $invoice->id;
+                $transaction->invoice_no = $invoice->invoice_number;
                 $transaction->status = 1;
                 $transaction->save();
             } elseif ($onlineRequest->request_type == OnlineRequest::NEW) {
@@ -227,6 +228,7 @@ class OnlinePaymentController extends Controller
 
                 $transaction = Transaction::where('online_payment_id', $onlinePayment->id)->first();
                 $transaction->invoice_id = $invoice->id;
+                $transaction->invoice_no = $invoice->invoice_number;
                 $transaction->status = 1;
                 $transaction->save();
             } elseif ($onlineRequest->request_type == OnlineRequest::PAYMENT) {
@@ -248,6 +250,7 @@ class OnlinePaymentController extends Controller
                     'online_payment_id' => $onlinePayment->id,
                 ]);
                 $model->invoice_id = $invoice->id;
+                $model->invoice_no = $invoice->invoice_number;
                 $model->status = 1;
                 $model->save();
             }
