@@ -8,6 +8,7 @@ use DateInterval;
 use Carbon\Carbon;
 use App\SiteClearance;
 use App\ApplicationType;
+use App\EPL;
 use Illuminate\Http\Request;
 use App\SiteClearenceSession;
 use Illuminate\Support\Facades\Auth;
@@ -31,22 +32,52 @@ class DashboardController extends Controller
 
     public function renewalChart($from, $to)
     {
+        $from = date("Y-01-01");
+        $to = date("Y-12-31");
         $start = microtime(true);
         $rtn = [];
-        $client = new ClientRepository();
-        $data = $client->allPlain($from, $to);
-        $eplCount = $this->getEPlCountGroupMonth($data->whereBetween('epl_submitted_date', [$from, $to])->where('epl_count', '>', '0'));
-        $siteCount = $this->getSiteCountGroupMonth($data->whereBetween('site_submit_date', [$from, $to])->where('site_count', '>', '0'));
-        $newCount = getArraySum($eplCount, $siteCount);
+        $monthRange = $this->getMonths($from, $to);
+        $eplRenewalCount = EPL::whereBetween('submitted_date', [$from, $to])
+            ->where('count', '>', 0)
+            ->groupByRaw('month(submitted_date)')
+            ->selectRaw("DATE_FORMAT(submitted_date, '%b')  as submitted_month, count(id) as id_count")
+            ->orderBy('submitted_date')
+            ->get()->keyBy('submitted_month')->toArray();
+        $expiredEplCount = EPL::whereBetween('expire_date', [$from, $to])->groupByRaw('month(expire_date)')->selectRaw("DATE_FORMAT(expire_date, '%b') as expire_date, count(id) as id_count")->orderBy('expire_date')->get()->keyBy('expire_date')->toArray();
+        $siteClearanceCount = SiteClearance::whereBetween('submit_date', [$from, $to])
+            ->where('count', '>', 0)
+            ->groupByRaw('month(submit_date)')
+            ->selectRaw("DATE_FORMAT(submit_date, '%b') as submitted_month, count(id) as id_count")
+            ->orderBy('submit_date')->get()->keyBy('submitted_month')->toArray();
 
-        $expireEPL = $this->getEPLExpireGroupMonth($data->whereBetween('epl_expire_date', [$from, $to]));
-        $expireSITE = $this->getSiteExpireGroupMonth($data->whereBetween('site_expire_date', [$from, $to]));
-        $expireCount = getArraySum($expireEPL, $expireSITE);
+        $eplRenewals = [];
+        $expiredEpls = [];
+        $siteClearences = [];
+
+        foreach ($monthRange as $mr) {
+            if (!array_key_exists($mr, $eplRenewalCount)) {
+                $eplRenewals[] = 0;
+            } else {
+                $eplRenewals[] = $eplRenewalCount[$mr]['id_count'];
+            }
+            if (!array_key_exists($mr, $expiredEplCount)) {
+                $expiredEpls[] = 0;
+            } else {
+                $expiredEpls[] = $expiredEplCount[$mr]['id_count'];
+            }
+            if (!array_key_exists($mr, $siteClearanceCount)) {
+                $siteClearences[] = 0;
+            } else {
+                $siteClearences[] = $siteClearanceCount[$mr]['id_count'];
+            }
+        }
+
         $time_elapsed_secs = round(microtime(true) - $start, 5);
-        // dd($siteCount, $eplCount, $newCount);
-        $rtn["renew"] = $newCount;
-        $rtn["expire"] = $expireCount;
-        $rtn["months"] = $this->getMonths($from, $to);
+
+        $rtn["renew"] = $eplRenewals;
+        $rtn["expire"] = $expiredEpls;
+        $rtn["siteClearence"] = $siteClearences;
+        $rtn["months"] = $monthRange;
         $rtn["time"] = $time_elapsed_secs;
 
         return $rtn;
@@ -54,39 +85,91 @@ class DashboardController extends Controller
 
     public function newFIleChart($from, $to)
     {
+        $from = date("Y-01-01");
+        $to = date("Y-12-31");
         $start = microtime(true);
         $rtn = [];
-        $client = new ClientRepository();
-        $data = $client->allPlain($from, $to);
-        // dd($data->last()->toArray());
-        $eplCount = $this->getEPlCountGroupMonth($data->whereBetween('epl_submitted_date', [$from, $to])->where('epl_count', '0'));
-        $siteCount = $this->getSiteCountGroupMonth($data->whereBetween('site_submit_date', [$from, $to])->where('site_count', '0'));
-        // dd($data->whereBetween('epl_submitted_date', [$from, $to])->where('epl_count', '0'));
-        // dd($eplCount, $siteCount);
-        $newCount = getArraySum($eplCount, $siteCount);
+
+        $monthRange = $this->getMonths($from, $to);
+        $eplRenewalCount = EPL::whereBetween('submitted_date', [$from, $to])
+            ->where('count', 0)
+            ->groupByRaw('month(submitted_date)')
+            ->selectRaw("DATE_FORMAT(submitted_date, '%b')  as submitted_month, count(id) as id_count")
+            ->orderBy('submitted_date')
+            ->get()->keyBy('submitted_month')->toArray();
+
+        $siteClearanceCount = SiteClearance::whereBetween('submit_date', [$from, $to])
+            ->where('count', 0)
+            ->groupByRaw('month(submit_date)')
+            ->selectRaw("DATE_FORMAT(submit_date, '%b') as submitted_month, count(id) as id_count")
+            ->orderBy('submit_date')->get()->keyBy('submitted_month')->toArray();
+
+        $eplRenewals = [];
+        $siteClearences = [];
+
+        foreach ($monthRange as $mr) {
+            if (!array_key_exists($mr, $eplRenewalCount)) {
+                $eplRenewals[] = 0;
+            } else {
+                $eplRenewals[] = $eplRenewalCount[$mr]['id_count'];
+            }
+            if (!array_key_exists($mr, $siteClearanceCount)) {
+                $siteClearences[] = 0;
+            } else {
+                $siteClearences[] = $siteClearanceCount[$mr]['id_count'];
+            }
+        }
+
         $time_elapsed_secs = round(microtime(true) - $start, 5);
-        $rtn["new"] = $newCount;
-        $rtn["months"] = $this->getMonths($from, $to);
+
+        $rtn["epl"] = $eplRenewals;
+        $rtn["site"] = $siteClearences;
+        $rtn["months"] = $monthRange;
         $rtn["time"] = $time_elapsed_secs;
         return $rtn;
     }
     public function newFIleChartV2($from, $to)
     {
+        $from = date("Y-01-01");
+        $to = date("Y-12-31");
         $start = microtime(true);
         $rtn = [];
-        $client = new ClientRepository();
-        $data = $client->allPlain($from, $to);
-        // dd($data->last()->toArray());
-        $eplCount = $this->getEPlCountGroupMonth($data->whereBetween('epl_submitted_date', [$from, $to])->where('epl_count', '0'));
-        $siteCount = $this->getSiteCountGroupMonth($data->whereBetween('site_submit_date', [$from, $to])->where('site_count', '0'));
-        // dd($data->whereBetween('epl_submitted_date', [$from, $to])->where('epl_count', '0'));
-        // dd($eplCount, $siteCount);
-        $newCount = getArraySum($eplCount, $siteCount);
+
+        $monthRange = $this->getMonths($from, $to);
+        $eplRenewalCount = EPL::whereBetween('submitted_date', [$from, $to])
+            ->where('count', 0)
+            ->groupByRaw('month(submitted_date)')
+            ->selectRaw("DATE_FORMAT(submitted_date, '%b')  as submitted_month, count(id) as id_count")
+            ->orderBy('submitted_date')
+            ->get()->keyBy('submitted_month')->toArray();
+
+        $siteClearanceCount = SiteClearance::whereBetween('submit_date', [$from, $to])
+            ->where('count', 0)
+            ->groupByRaw('month(submit_date)')
+            ->selectRaw("DATE_FORMAT(submit_date, '%b') as submitted_month, count(id) as id_count")
+            ->orderBy('submit_date')->get()->keyBy('submitted_month')->toArray();
+
+        $eplRenewals = [];
+        $siteClearences = [];
+
+        foreach ($monthRange as $mr) {
+            if (!array_key_exists($mr, $eplRenewalCount)) {
+                $eplRenewals[] = 0;
+            } else {
+                $eplRenewals[] = $eplRenewalCount[$mr]['id_count'];
+            }
+            if (!array_key_exists($mr, $siteClearanceCount)) {
+                $siteClearences[] = 0;
+            } else {
+                $siteClearences[] = $siteClearanceCount[$mr]['id_count'];
+            }
+        }
+
         $time_elapsed_secs = round(microtime(true) - $start, 5);
-        $rtn["new"] = $newCount;
-        $rtn["epl"] = $eplCount;
-        $rtn["site"] = $siteCount;
-        $rtn["months"] = $this->getMonths($from, $to);
+
+        $rtn["epl"] = $eplRenewals;
+        $rtn["site"] = $siteClearences;
+        $rtn["months"] = $monthRange;
         $rtn["time"] = $time_elapsed_secs;
         return $rtn;
     }
@@ -206,7 +289,6 @@ class DashboardController extends Controller
         $start = microtime(true);
         $rtn = [];
         if ($request->has('renew_chart')) {
-
             $from = $request->renew_chart['from'];
             $to = $request->renew_chart['to'];
             $rtn['renew_chart'] = $this->renewalChart($from, $to);
