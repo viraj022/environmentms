@@ -55,8 +55,14 @@
                                 </div>
                                 <div class="form-group eiApaySection d-none">
                                     <label id="applicationtype_lbl">EIA Payment*</label>
-                                    <input id="eiaPayment" type="text" class="form-control form-control-sm"
-                                        placeholder="0.00" value="">
+                                    <div class="input-group mb-3">
+                                        <input id="eiaPayment" type="number" class="form-control form-control-sm"
+                                            placeholder="0.00" value="" data-payment_type="96">
+                                        <div class="input-group-prepend">
+                                            <button type="button" class="btn btn-sm btn-dark"
+                                                id="eiaPayment_payBtn">Add</button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <hr>
 
@@ -161,12 +167,6 @@
                                     <!-- /.card-body -->
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-5">
-                        <div class="row">
                             <div class="col-md-12">
                                 <div class="card card-secondary">
                                     <div class="card-header">
@@ -290,6 +290,11 @@
 
             $('#inspection_payBtn').click(function() { // add inspection Amount
                 addItemsToArray($('#epl_methodCombo').val(), "Inspection Amount", $('#paymnt_amount')
+                    .val());
+            });
+            $('#eiaPayment_payBtn').click(function() { // add eia amount
+                addItemsToArray($('#eiaPayment').data('payment_type'), $('#applicationtype_lbl').html(), $(
+                        '#eiaPayment')
                     .val());
             });
             $('#fine_payBtn').click(function() { // add fine
