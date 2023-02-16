@@ -50,25 +50,42 @@ class DashboardController extends Controller
             ->selectRaw("DATE_FORMAT(submit_date, '%b') as submitted_month, count(id) as id_count")
             ->orderBy('submit_date')->get()->keyBy('submitted_month')->toArray();
 
+        $siteClearanceExpire = SiteClearance::whereBetween('expire_date', [$from, $to])
+            ->where('count', '>', 0)
+            ->groupByRaw('month(expire_date)')
+            ->selectRaw("DATE_FORMAT(expire_date, '%b') as expire_month, count(id) as id_count")
+            ->orderBy('expire_date')->get()->keyBy('expire_month')->toArray();
+        $currentMonth = intval(date('m'));
         $eplRenewals = [];
         $expiredEpls = [];
         $siteClearences = [];
-
+        $siteClearenceExpireCount = [];
         foreach ($monthRange as $mr) {
-            if (!array_key_exists($mr, $eplRenewalCount)) {
-                $eplRenewals[] = 0;
-            } else {
-                $eplRenewals[] = $eplRenewalCount[$mr]['id_count'];
+            $monthNumber = intval(date("m", strtotime($mr)));
+
+            if ($monthNumber <= $currentMonth) {
+                if (!array_key_exists($mr, $eplRenewalCount)) {
+                    $eplRenewals[] = 0;
+                } else {
+                    $eplRenewals[] = $eplRenewalCount[$mr]['id_count'];
+                }
+                if (!array_key_exists($mr, $siteClearanceCount)) {
+                    $siteClearences[] = 0;
+                } else {
+                    $siteClearences[] = $siteClearanceCount[$mr]['id_count'];
+                }
             }
+
             if (!array_key_exists($mr, $expiredEplCount)) {
                 $expiredEpls[] = 0;
             } else {
                 $expiredEpls[] = $expiredEplCount[$mr]['id_count'];
             }
-            if (!array_key_exists($mr, $siteClearanceCount)) {
-                $siteClearences[] = 0;
+
+            if (!array_key_exists($mr, $siteClearanceExpire)) {
+                $siteClearenceExpireCount[] = 0;
             } else {
-                $siteClearences[] = $siteClearanceCount[$mr]['id_count'];
+                $siteClearenceExpireCount[] = $siteClearanceExpire[$mr]['id_count'];
             }
         }
 
@@ -77,6 +94,7 @@ class DashboardController extends Controller
         $rtn["renew"] = $eplRenewals;
         $rtn["expire"] = $expiredEpls;
         $rtn["siteClearence"] = $siteClearences;
+        $rtn["siteClearenceExpire"] = $siteClearenceExpireCount;
         $rtn["months"] = $monthRange;
         $rtn["time"] = $time_elapsed_secs;
 
@@ -203,22 +221,36 @@ class DashboardController extends Controller
     {
         $start = microtime(true);
         $rtn = [];
-        $client = new ClientRepository();
-        $data = $client->allPlain($from, $to);
-        $types = array("EPL", "Site Clearance", "Tele Communication", "Schedule Waste");
-        $eplCount = $data->whereBetween('epl_submitted_date', [$from, $to])->count();
-        $siteCount = $data->whereBetween('site_submit_date', [$from, $to])
-            ->where('site_site_clearance_type', SiteClearance::SITE_CLEARANCE)
+        $time = strtotime(date("Y-m-01"));
+        $final = date("Y-m-01", strtotime("+1 month", $time));
+        $from = date("Y-m-01");
+        $to = $final;
+
+        $eplCount = EPL::whereBetween('submitted_date', [$from, $to])
+            // ->where('count', 0)
             ->count();
 
-        // dd($siteCount);
-        $siteTeleCount = $data->whereBetween('site_submit_date', [$from, $to])
-            ->where('site_site_clearance_type', SiteClearance::SITE_TELECOMMUNICATION)
+        $siteClearanceCount = SiteClearance::with('siteClearenceSession')->whereBetween('submit_date', [$from, $to])
+            ->whereHas('siteClearenceSession', function ($query) {
+                $query->where('site_clearance_type', 'Site Clearance');
+            })
+            // ->where('count', 0)
             ->count();
+
+        $siteClearanceTeleCount = SiteClearance::with('siteClearenceSession')->whereBetween('submit_date', [$from, $to])
+            ->whereHas('siteClearenceSession', function ($query) {
+                $query->where('site_clearance_type', 'Telecommunication');
+            })
+            // ->where('count', 0)
+            ->count();
+
+        $types = array("EPL", "Site Clearance", "Tele Communication", "Schedule Waste");
+
         $scheduleWaste = 0;
+
         $time_elapsed_secs = round(microtime(true) - $start, 5);
         $rtn["types"] = $types;
-        $rtn["count"] = array($eplCount, $siteCount, $siteTeleCount, $scheduleWaste);
+        $rtn["count"] = array($eplCount, $siteClearanceCount, $siteClearanceTeleCount, $scheduleWaste);
         $rtn["time"] = $time_elapsed_secs;
         return $rtn;
     }
@@ -308,7 +340,7 @@ class DashboardController extends Controller
         if ($request->has('new_job_chart')) {
             $from = $request->renew_chart['from'];
             $to = $request->renew_chart['to'];
-            $rtn['new_job_chart'] = $this->getNewJobsByType($from, $to);
+            $rtn['new_job_chart'] = $this->getNewJobsByTypeAndDate($from, $to);
         }
         if ($request->has('pra_table')) {
 
@@ -421,6 +453,47 @@ class DashboardController extends Controller
             array_push($rtn, $dt->format("M"));
             // echo $dt->format("M") . "<br>\n";
         }
+        return $rtn;
+    }
+
+    public function getNewJobsByTypeAndDate($from, $to)
+    {
+        $start = microtime(true);
+        $rtn = [];
+        $from = date('Y-m-d');
+        $to = date('Y-m-d');
+
+        $time = strtotime(date("Y-m-d"));
+        $final = date("Y-m-d", strtotime("+1 day", $time));
+        $from = date("Y-m-d");
+        $to = $final;
+
+        $eplCount = EPL::whereBetween('submitted_date', [$from, $to])
+            // ->where('count', 0)
+            ->count();
+
+        $siteClearanceCount = SiteClearance::with('siteClearenceSession')->whereBetween('submit_date', [$from, $to])
+            ->whereHas('siteClearenceSession', function ($query) {
+                $query->where('site_clearance_type', 'Site Clearance');
+            })
+            // ->where('count', 0)
+            ->count();
+
+        $siteClearanceTeleCount = SiteClearance::with('siteClearenceSession')->whereBetween('submit_date', [$from, $to])
+            ->whereHas('siteClearenceSession', function ($query) {
+                $query->where('site_clearance_type', 'Telecommunication');
+            })
+            // ->where('count', 0)
+            ->count();
+
+        $types = array("EPL", "Site Clearance", "Tele Communication", "Schedule Waste");
+
+        $scheduleWaste = 0;
+
+        $time_elapsed_secs = round(microtime(true) - $start, 5);
+        $rtn["types"] = $types;
+        $rtn["count"] = array($eplCount, $siteClearanceCount, $siteClearanceTeleCount, $scheduleWaste);
+        $rtn["time"] = $time_elapsed_secs;
         return $rtn;
     }
 }

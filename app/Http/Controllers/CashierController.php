@@ -583,6 +583,8 @@ class CashierController extends Controller
                 'invoices.vat_amount as vat',
                 'invoices.nbt_amount as nbt',
                 'invoices.other_tax_amount as tax',
+                'invoices.payment_method as payment_method',
+                'invoices.payment_reference_number as cheque_number',
                 'payments.id as payment_id',
                 'payments.name as payment_name',
                 'payments.amount as payment_amount',
@@ -635,6 +637,7 @@ class CashierController extends Controller
                 $totals['nbt'] += $invoice->nbt;
                 $totals['tax_total'] += $invoice->tax;
                 $totals['total'] += $invoice->invoice_amount;
+
                 // extract columns from $cols into this arrayÄ
                 $row = array_merge($row, $cols);
             }
@@ -674,6 +677,7 @@ class CashierController extends Controller
             ->select(
                 'invoices.id as invoice_id',
                 'invoices.invoice_number as invoice_number',
+                'invoices.payment_method as payment_method',
                 'transactions.id as transaction_id',
                 'transactions.type as transaction_type',
                 'transaction_items.amount as transaction_amount',
@@ -709,6 +713,8 @@ class CashierController extends Controller
             'nbt' => 0.0,
             'all_tax_total' => 0.0,
             'all_total' => 0.0,
+            'cash' => 0.0,
+            'cheque' => 0.0,
         ];
         $rows = [];
         // return $invoices;
@@ -735,6 +741,8 @@ class CashierController extends Controller
                     'waste' => 0,
                     'eia_iee' => 0,
                     'other_income' => 0,
+                    'cheque' => ($invoice->payment_method == 'cheque') ? $invoice->invoice_amount : 0,
+                    'cash' => ($invoice->payment_method == 'cash') ? $invoice->invoice_amount : 0,
                 ];
 
                 $totals['all_without_tax_total'] += $invoice->invoice_sub_amount;
@@ -742,6 +750,8 @@ class CashierController extends Controller
                 $totals['nbt'] += $invoice->nbt;
                 $totals['all_tax_total'] += $invoice->tax;
                 $totals['all_total'] += $invoice->invoice_amount;
+                $totals['cash'] += $row['cash'];
+                $totals['cheque'] += $row['cheque'];
             }
             if ($invoice->payment_type_id == 3 && $invoice->payment_id == 2) {
                 $row['apFee_siteClearance'] += $invoice->transaction_amount;

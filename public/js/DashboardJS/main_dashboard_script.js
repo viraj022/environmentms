@@ -1,6 +1,6 @@
 //EPL Renewal Chart OPEN//
 
-function eplRenewalChart(lable, line1, line2, line3) {
+function eplRenewalChart(lable, line1, line2, line3, line4) {
     "use strict";
 
     var ticksStyle = {
@@ -34,9 +34,9 @@ function eplRenewalChart(lable, line1, line2, line3) {
                     //                    data: [60, 80, 70, 67, 80, 77, 100],
                     data: line2,
                     backgroundColor: "tansparent",
-                    borderColor: "#ced4da",
-                    pointBorderColor: "#ced4da",
-                    pointBackgroundColor: "#ced4da",
+                    borderColor: "#007bff63",
+                    pointBorderColor: "#007bff63",
+                    pointBackgroundColor: "#007bff63",
                     fill: false,
                     // pointHoverBackgroundColor: '#ced4da',
                     // pointHoverBorderColor    : '#ced4da'
@@ -49,6 +49,18 @@ function eplRenewalChart(lable, line1, line2, line3) {
                     borderColor: "#FF0000",
                     pointBorderColor: "#FF0000",
                     pointBackgroundColor: "#FF0000",
+                    fill: false,
+                    // pointHoverBackgroundColor: '#ced4da',
+                    // pointHoverBorderColor    : '#ced4da'
+                },
+                {
+                    type: "line",
+                    //                    data: [60, 80, 70, 67, 80, 77, 100],
+                    data: line4,
+                    backgroundColor: "tansparent",
+                    borderColor: "#dc354587",
+                    pointBorderColor: "#dc354587",
+                    pointBackgroundColor: "#dc354587",
                     fill: false,
                     // pointHoverBackgroundColor: '#ced4da',
                     // pointHoverBorderColor    : '#ced4da'
@@ -190,6 +202,38 @@ function newFilesChart(newfile_lable, site, epl) {
 
 function fileCategoryChart(fileCat) {
     var pieChartCanvas = $("#fileCategorypieChart").get(0).getContext("2d");
+    var pieData = {
+        labels: fileCat.types,
+        datasets: [
+            {
+                data: fileCat.count,
+                backgroundColor: [
+                    "#f56954",
+                    "#00a65a",
+                    "#f39c12",
+                    "#00c0ef",
+                    "#3c8dbc",
+                    "#d2d6de",
+                ],
+            },
+        ],
+    };
+    var pieOptions = {
+        legend: {
+            display: false,
+        },
+    };
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    var pieChart = new Chart(pieChartCanvas, {
+        type: "doughnut",
+        data: pieData,
+        options: pieOptions,
+    });
+}
+
+function fileCategoryChartDay(fileCat) {
+    var pieChartCanvas = $("#newJobspieChart").get(0).getContext("2d");
     var pieData = {
         labels: fileCat.types,
         datasets: [
