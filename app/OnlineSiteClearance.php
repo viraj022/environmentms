@@ -81,6 +81,7 @@ class OnlineSiteClearance extends Model
         'contaminants',
         'refinery_waste_water',
         'industryDetailCheck',
+        'other_ind_type'
     ];
 
     public function onlineRequest()
