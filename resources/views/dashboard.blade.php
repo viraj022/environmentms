@@ -8,20 +8,20 @@
 @section('content')
     <!-- Content Header (Page header) -->
     <!--<div class="content-header">
-                                    <div class="container-fluid">
-                                        <div class="row mb-2">
-                                            <div class="col-sm-6">
-                                                <h1 class="m-0 text-dark">Dashboard</h1>
-                                            </div> /.col
-                                            <div class="col-sm-6">
-                                                <ol class="breadcrumb float-sm-right">
-                                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                                    <li class="breadcrumb-item active">Dashboard v1</li>
-                                                </ol>
-                                            </div> /.col
-                                        </div> /.row
-                                    </div> /.container-fluid
-                                </div>-->
+                                                                                                                                                                                                                                                            <div class="container-fluid">
+                                                                                                                                                                                                                                                                <div class="row mb-2">
+                                                                                                                                                                                                                                                                    <div class="col-sm-6">
+                                                                                                                                                                                                                                                                        <h1 class="m-0 text-dark">Dashboard</h1>
+                                                                                                                                                                                                                                                                    </div> /.col
+                                                                                                                                                                                                                                                                    <div class="col-sm-6">
+                                                                                                                                                                                                                                                                        <ol class="breadcrumb float-sm-right">
+                                                                                                                                                                                                                                                                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                                                                                                                                                                                                                                                            <li class="breadcrumb-item active">Dashboard v1</li>
+                                                                                                                                                                                                                                                                        </ol>
+                                                                                                                                                                                                                                                                    </div> /.col
+                                                                                                                                                                                                                                                                </div> /.row
+                                                                                                                                                                                                                                                            </div> /.container-fluid
+                                                                                                                                                                                                                                                        </div>-->
     <!-- /.content-header -->
     <link href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <!-- Main content -->
@@ -99,11 +99,20 @@
                         <!-- /.info-box-content -->
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-3">
+                {{-- <div class="col-12 col-sm-6 col-md-3">
                     <div class="info-box mb-3">
                         <span class="info-box-icon bg-info elevation-1"><i class="fab fa-whmcs"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text font-weight-bold ">Inspection Pending Count</span>
+                            <span class="info-box-number ad_approve_count">760</span>
+                        </div>
+                    </div>
+                </div> --}}
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fab fa-whmcs"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text font-weight-bold ad_approve">Inspection Pending Count</span>
                             <span class="info-box-number ad_approve_count">760</span>
                         </div>
                     </div>
@@ -112,8 +121,8 @@
                     <div class="info-box mb-3">
                         <span class="info-box-icon bg-info elevation-1"><i class="fab fa-whmcs"></i></span>
                         <div class="info-box-content">
-                            <span class="info-box-text font-weight-bold ad_approve">Inspection Pending Count</span>
-                            <span class="info-box-number ad_approve_count">760</span>
+                            <span class="info-box-text font-weight-bold">Inspection Pending Count</span>
+                            <span class="info-box-number">{{ !empty($count) ? $count : '' }}</span>
                         </div>
                     </div>
                 </div>
@@ -125,21 +134,15 @@
                     <div class="card">
                         <div class="card-header border-0">
                             <div class="d-flex justify-content-between">
-                                <h3 class="card-title"><b>Monthly EPL Renewal Summary</b></h3>
-                                <a href="javascript:void(0);">View Report</a>
+                                <h3 class="card-title"><b>Monthly EPL / SC Summary
+                                        ({{ date('Y-01') }} -
+                                        {{ date('Y-12') }})</b></h3>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="d-flex">
                                 <p class="d-flex flex-column">
-                                    <span class="text-bold text-lg">820</span>
-                                    <span>Visitors Over Time</span>
-                                </p>
-                                <p class="ml-auto d-flex flex-column text-right">
-                                    <span class="text-success">
-                                        <i class="fas fa-arrow-up"></i> 12.5%
-                                    </span>
-                                    <span class="text-muted">Since last week</span>
+                                    <span>File Count</span>
                                 </p>
                             </div>
                             <!-- /.d-flex -->
@@ -150,11 +153,19 @@
 
                             <div class="d-flex flex-row justify-content-end">
                                 <span class="mr-2">
-                                    <i class="fas fa-square text-primary"></i> Renewed
+                                    <i class="fas fa-square text-primary"></i> EPL Renewed
+                                </span>
+
+                                <span class="mr-2">
+                                    <i class="fas fa-square" style="color: #007bff63;"></i> EPL Expired
+                                </span>
+
+                                <span class="mr-2">
+                                    <i class="fas fa-square text-danger"></i> Site Clearance Extend
                                 </span>
 
                                 <span>
-                                    <i class="fas fa-square text-gray"></i> Pending
+                                    <i class="fas fa-square" style="color: #dc354587;"></i> Site Clearance Expired
                                 </span>
                             </div>
                         </div>
@@ -165,7 +176,7 @@
                         <div class="card-header border-0">
                             <h3 class="card-title">
                                 <i class="fas fa-th mr-1"></i>
-                                New Files
+                                New Files ({{ date('Y-01') }} - {{ date('Y-12') }})
                             </h3>
 
                             <div class="card-tools">
@@ -217,7 +228,7 @@
                                         <li><i class="far fa-circle text-danger"></i> EPL</li>
                                         <li><i class="far fa-circle text-success"></i> Site Clearance</li>
                                         <li><i class="far fa-circle text-warning"></i> Telecommunication</li>
-                                        <li><i class="far fa-circle text-info"></i> Schedule Waste</li>
+                                        {{-- <li><i class="far fa-circle text-info"></i> Schedule Waste</li> --}}
                                     </ul>
                                 </div>
                                 <!-- /.col -->
@@ -258,7 +269,7 @@
                                         <li><i class="far fa-circle text-danger"></i> EPL</li>
                                         <li><i class="far fa-circle text-success"></i> Site Clearance</li>
                                         <li><i class="far fa-circle text-warning"></i> Telecommunication</li>
-                                        <li><i class="far fa-circle text-info"></i> Schedule Waste</li>
+                                        {{-- <li><i class="far fa-circle text-info"></i> Schedule Waste</li> --}}
                                     </ul>
                                 </div>
                                 <!-- /.col -->
@@ -429,40 +440,40 @@
                     <!-- /.row -->
 
                     <!--                <div class="card">
-                                                                    <div class="card-header">
-                                                                        <h3 class="card-title"><b>File Category</b></h3>
+                                                                                                                                                                                                                                                                                            <div class="card-header">
+                                                                                                                                                                                                                                                                                                <h3 class="card-title"><b>File Category</b></h3>
 
-                                                                        <div class="card-tools">
-                                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                                                                            </button>
-                                                                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                     /.card-header
-                                                                    <div class="card-body">
-                                                                        <div class="row">
-                                                                            <div class="col-md-8">
-                                                                                <div class="chart-responsive">
-                                                                                    <canvas id="pieChart2" height="150"></canvas>
-                                                                                </div>
-                                                                                 ./chart-responsive
-                                                                            </div>
-                                                                             /.col
-                                                                            <div class="col-md-4">
-                                                                                <ul class="chart-legend clearfix">
-                                                                                    <li><i class="far fa-circle text-danger"></i> EPL</li>
-                                                                                    <li><i class="far fa-circle text-success"></i> Site Clearance</li>
-                                                                                    <li><i class="far fa-circle text-warning"></i> Telecommunication</li>
-                                                                                    <li><i class="far fa-circle text-info"></i> Schedule Waste</li>
-                                                                                </ul>
-                                                                            </div>
-                                                                             /.col
-                                                                        </div>
-                                                                         /.row
-                                                                    </div>
-                                                                     /.card-body
-                                                                </div>-->
+                                                                                                                                                                                                                                                                                                <div class="card-tools">
+                                                                                                                                                                                                                                                                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                                                                                                                                                                                                                                                                                    </button>
+                                                                                                                                                                                                                                                                                                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                                                                                                                                                                                                                                                                                                    </button>
+                                                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                                                                             /.card-header
+                                                                                                                                                                                                                                                                                            <div class="card-body">
+                                                                                                                                                                                                                                                                                                <div class="row">
+                                                                                                                                                                                                                                                                                                    <div class="col-md-8">
+                                                                                                                                                                                                                                                                                                        <div class="chart-responsive">
+                                                                                                                                                                                                                                                                                                            <canvas id="pieChart2" height="150"></canvas>
+                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                         ./chart-responsive
+                                                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                                                     /.col
+                                                                                                                                                                                                                                                                                                    <div class="col-md-4">
+                                                                                                                                                                                                                                                                                                        <ul class="chart-legend clearfix">
+                                                                                                                                                                                                                                                                                                            <li><i class="far fa-circle text-danger"></i> EPL</li>
+                                                                                                                                                                                                                                                                                                            <li><i class="far fa-circle text-success"></i> Site Clearance</li>
+                                                                                                                                                                                                                                                                                                            <li><i class="far fa-circle text-warning"></i> Telecommunication</li>
+                                                                                                                                                                                                                                                                                                            <li><i class="far fa-circle text-info"></i> Schedule Waste</li>
+                                                                                                                                                                                                                                                                                                        </ul>
+                                                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                                                     /.col
+                                                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                                                                 /.row
+                                                                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                                                                             /.card-body
+                                                                                                                                                                                                                                                                                        </div>-->
                     <!-- /.card -->
                 </div>
             </div>
@@ -518,18 +529,18 @@
 
         //    renew_chart, new_file_chart, file_category_chart, new_job_chart, pra_table, env_officer_table, industry_category_table, file_status_lable
         getDashboardData(['renew_chart', 'new_file_chart', 'pra_table', 'industry_category_table', 'env_officer_table',
-            'file_category_chart'
+            'file_category_chart', 'new_job_chart'
         ], {
             from: (yyyy - 1) + '-' + today.getMonth() + '-' + dd,
             to: yyyy + '-' + today.getMonth() + '-' + dd
         }, function(p) {
             //--EPL Renewal Chart Open--//
-            eplRenewalChart(p.renew_chart.months, p.renew_chart.renew, p.renew_chart.expire);
+            eplRenewalChart(p.renew_chart.months, p.renew_chart.renew, p.renew_chart.expire, p.renew_chart
+                .siteClearence, p.renew_chart.siteClearenceExpire);
             //--EPL Renewal Chart END--//
 
             //--NEW FILES Chart Open--//
-            newFilesChart(p.new_file_chart.months, p.new_file_chart.new, p.new_file_chart.site, p.new_file_chart
-                .epl);
+            newFilesChart(p.new_file_chart.months, p.new_file_chart.site, p.new_file_chart.epl);
             //--NEW FILES Chart END--//
 
             /* -- pradeshiya sabha file count--*/
@@ -540,6 +551,8 @@
             environmentOfficersFileCount(p.env_officer_table.data);
             /* file categoyr chart monthly*/
             fileCategoryChart(p.file_category_chart);
+
+            fileCategoryChartDay(p.new_job_chart);
         });
         today = yyyy + '-' + mm + '-' + dd;
         nextDay = yyyy + '-' + mm + '-' + dd2;
@@ -571,7 +584,7 @@
             0: 'In Progress',
             1: 'AD File Approval Pending',
             2: 'Certificate Preparation',
-            3: 'AD Pending Approval',
+            3: 'AD Certificate Approval Pending',
             4: 'D Certificate Approval Pending',
             5: 'Complete',
             6: 'Issued',
@@ -608,6 +621,8 @@
             var count = '';
             var clz = '';
             var count_clz = '';
+            console.log('hi');
+            console.log(e.file_status_lable.data);
             $.each(e.file_status_lable.data, function(index, row) {
                 lable = FILE_STATUS[row.file_status];
                 clz = FILE_CLASS[row.file_status];

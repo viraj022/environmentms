@@ -75,7 +75,8 @@
                     Recipt No. : {{ $invoice->invoice_number }}
                     <span style="margin-left: 35px">Date
                         :{{ Carbon\Carbon::parse($invoice->created_at)->format('Y-m-d') }}</span>
-                    <span style="margin-left: 35px"> Received From : {{ $invoice->name }} </span> <br>
+                    <span style="margin-left: 35px"> Received From : {{ $invoice->name }}
+                        {{ $invoice->address == '' ? '' : "($invoice->address)" }}</span> <br>
                     @if ($invoice->payment_reference_number)
                         <span> Cheque number / Date: {{ $invoice->payment_reference_number }}
                             ({{ $invoice->cheque_issue_date }})</span>

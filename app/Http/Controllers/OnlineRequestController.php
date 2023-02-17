@@ -150,7 +150,7 @@ class OnlineRequestController extends Controller
         $renewal->person_name = sprintf('%s %s %s', $client->name_title, $client->first_name, $client->last_name);
         $renewal->industry_name = $client->industry_name;
         $renewal->business_registration_no = $client->industry_registration_no;
-        $renewal->certificate_number = $cert->cetificate_number;
+        $renewal->certificate_number = $cert->code;
         $renewal->client_id = $client->id;
         $renewal->status = 'accepted'; // changed to accepted from acceptance_pending
         $renewal->save();
@@ -206,6 +206,27 @@ class OnlineRequestController extends Controller
             $requestType = OnlineRequest::NEW;
             $emailAddress = $application->email_address;
             $mobileNumber = $application->mobile_number;
+
+            if (isset($data['application_combo'])) {
+                // create new transaction
+                $transaction  = Transaction::create([
+                    'status'  =>  '0',
+                    'type' =>  'application_fee',
+                    'type_id'  =>  $client->id,
+                    'client_id'  => $client->id,
+                ]);
+
+                TransactionItem::create([
+                    'transaction_id' => $transaction->id,
+                    'qty'   => 1,
+                    'amount'  => $data['payment_amount'],
+                    'payment_type_id' => 3,
+                    'payment_id' => $data['application_combo'],
+                    'transaction_type'  => 'application_fee',
+                    'client_id' => $client->id,
+                    'transaction_type_id' => $client->id,
+                ]);
+            }
         } elseif (get_class($application) === 'App\\OnlineRenewalApplicationRequest') {
             $requestType = OnlineRequest::RENEWAL;
             $emailAddress = $application->email;
@@ -282,7 +303,8 @@ class OnlineRequestController extends Controller
         if ($requestType == OnlineRequest::RENEWAL) {
             $routeName = 'online-requests.renewal.view';
         } elseif ($requestType == OnlineRequest::NEW) {
-            $routeName = 'online-requests.new-application.view';
+            $returnId = $client->id;
+            $routeName = 'set-profile-payments';
         } elseif ($requestType == OnlineRequest::PAYMENT) {
             $returnId = $client->id;
             $routeName = 'industry_profile.find';
@@ -423,17 +445,17 @@ class OnlineRequestController extends Controller
 
     public function getNewApplicationsByStatus(Request $request)
     {
-
         $businessScales = [
             '1' => 'Small - S',
             '2' => 'Medium - M',
             '3' => 'Large - L',
         ];
+        $status = $request->application_status;
 
         $completedNewApplications = $this->onlineRequests->getNewCompletedApplications($request->application_status);
         $renewalApplications = $this->onlineRequests->getAllRenewalApplications();
         $newApplications = $this->onlineRequests->getAllNewApplications();
 
-        return view('online-requests.index', compact('completedNewApplications', 'renewalApplications', 'newApplications'));
+        return view('online-requests.index', compact('completedNewApplications', 'renewalApplications', 'newApplications', 'status'));
     }
 }

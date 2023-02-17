@@ -29,6 +29,7 @@ class Invoice extends Model
         'other_tax_amount',
         'canceled_at',
         'canceled_by',
+        'online_payment_id',
     ];
 
     public function transactions()

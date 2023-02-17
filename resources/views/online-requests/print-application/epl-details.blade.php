@@ -60,14 +60,24 @@
                     <td>{{ $applicationData->industry_type }}
                     </td>
                 </tr>
-                <tr>
-                    <th>Industry Details</th>
-                    <td>
-                        @foreach (json_decode($applicationData->industryDetailCheck, true) as $key => $value)
-                            {{ $value }} <br>
-                        @endforeach
-                    </td>
-                </tr>
+                @if ($applicationData->industryDetailCheck)
+                    <tr>
+                        <th>Industry Details</th>
+                        <td>
+                            @foreach (json_decode($applicationData->industryDetailCheck, true) as $key => $value)
+                                {{ $value }} <br>
+                            @endforeach
+                        </td>
+                    </tr>
+                @endif
+                @if ($applicationData->other_ind_type)
+                    <tr>
+                        <th>Industry Details</th>
+                        <td>
+                            {{ $applicationData->other_ind_type }}
+                        </td>
+                    </tr>
+                @endif
                 <tr>
                     <th>Name of applicant</th>
                     <td>{{ $applicationData->applicant_name }}</td>

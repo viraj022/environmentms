@@ -79,12 +79,13 @@ function saveApplicationPayment(data, callBack) {
     });
 }
 
-function set_application_amount() {
-    let apl_amt = isNaN(
-        parseFloat($("#application_combo :selected").data("amt"))
-    )
-        ? "00.00"
-        : parseFloat($("#application_combo :selected").data("amt"));
+function set_application_amount(amt) {
+    let apl_amt =
+        amt ||
+        (isNaN(parseFloat($("#application_combo :selected").data("amt")))
+            ? "00.00"
+            : parseFloat($("#application_combo :selected").data("amt")));
+
     $("#amt").val(apl_amt);
 }
 

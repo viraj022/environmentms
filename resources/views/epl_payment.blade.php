@@ -22,7 +22,8 @@
                     <div class="col-12">
                         <h1>(<a
                                 href="/{{ $type_title }}/client/{{ $client }}/profile/{{ $id }}">{{ $epl_no }}</a>)
-                            <b class="siteDataType">...</b></h1>
+                            <b class="siteDataType">...</b>
+                        </h1>
                     </div>
                 </div>
             </div>
@@ -54,8 +55,14 @@
                                 </div>
                                 <div class="form-group eiApaySection d-none">
                                     <label id="applicationtype_lbl">EIA Payment*</label>
-                                    <input id="eiaPayment" type="text" class="form-control form-control-sm"
-                                        placeholder="0.00" value="">
+                                    <div class="input-group mb-3">
+                                        <input id="eiaPayment" type="number" class="form-control form-control-sm"
+                                            placeholder="0.00" value="" data-payment_type="96">
+                                        <div class="input-group-prepend">
+                                            <button type="button" class="btn btn-sm btn-dark"
+                                                id="eiaPayment_payBtn">Add</button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <hr>
 
@@ -106,10 +113,60 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div class="col-md-7">
                         <div class="row">
+                            <div class="col-md-12">
+                                <div class="card card-secondary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Previous Payment List</h3>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <div class="card-body p-0">
+                                        <div class="card-body table-responsive" style="height: 450px;">
+                                            <table class="table table-condensed" id="perviousPayments">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Payment Type</th>
+                                                        <th>Type</th>
+                                                        <th>Amount</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {{-- @dd($scOldPaymentList) --}}
+                                                    @if (!empty($scOldPaymentList))
+                                                        @forelse ($scOldPaymentList as $scOldPayment)
+                                                            <tr>
+                                                                <td>{{ $loop->iteration }}</td>
+                                                                <td>{{ $scOldPayment->paymentType->name }}</td>
+                                                                <td>{{ $scOldPayment->payment->name }}</td>
+                                                                <td>{{ $scOldPayment->amount }}</td>
+                                                                <td>
+                                                                    @if ($scOldPayment->transaction->status == 0)
+                                                                        Pending
+                                                                    @elseif($scOldPayment->transaction->status == 3)
+                                                                        Cancelled
+                                                                    @elseif($scOldPayment->transaction->status == 1)
+                                                                        Completed
+                                                                    @else
+                                                                        -
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        @empty
+                                                            <tr>
+                                                                <td colspan="4">No pervious payment records</td>
+                                                            </tr>
+                                                        @endforelse
+                                                    @endif
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                            </div>
                             <div class="col-md-12">
                                 <div class="card card-secondary">
                                     <div class="card-header">
@@ -147,7 +204,8 @@
 
 @section('pageScripts')
     <!-- Page script -->
-
+    <script src="{{ asset('dist/js/adminlte.js') }}"></script>
+    <script src="{{ asset('dist/js/demo.js') }}"></script>
     <!-- Select2 -->
     <script src="/../../plugins/select2/js/select2.full.min.js"></script>
     <!-- Bootstrap4 Duallistbox -->
@@ -163,7 +221,6 @@
     <script src="/../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
     <!-- Bootstrap Switch -->
     <script src="/../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-    <script src="/../../dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="/../../js/paymentsjs/epl_payments.js" type="text/javascript"></script>
     <!-- AdminLTE App -->
@@ -206,7 +263,7 @@
                             calc_amount();
                         } else {
 
-                            $('.ifPaidRaid').text('(Paid)');
+                            // $('.ifPaidRaid').text('(Paid)');
                         }
                     });
                 });
@@ -233,7 +290,12 @@
 
             $('#inspection_payBtn').click(function() { // add inspection Amount
                 addItemsToArray($('#epl_methodCombo').val(), "Inspection Amount", $('#paymnt_amount')
-            .val());
+                    .val());
+            });
+            $('#eiaPayment_payBtn').click(function() { // add eia amount
+                addItemsToArray($('#eiaPayment').data('payment_type'), $('#applicationtype_lbl').html(), $(
+                        '#eiaPayment')
+                    .val());
             });
             $('#fine_payBtn').click(function() { // add fine
                 addItemsToArray($('#fine_list').val(), "Fine Amount", $('#fine_amt').val());
@@ -280,7 +342,7 @@
                         if (r.id == 1) {
                             ITEM_LIST = [];
                             selectedPayments_table(ITEM_LIST);
-                    
+
                             loadEPL_details(EPL_ID, function(parameters) {
                                 loadEPL_methodCombo(function() {
                                     if (parameters.inspection.status ==
@@ -298,7 +360,7 @@
                         if (r.id == 1) {
                             ITEM_LIST = [];
                             selectedPayments_table(ITEM_LIST);
-                            
+
                             loadSiteClear_details(EPL_ID, function(parameters) {
                                 loadEPL_methodCombo(function() {
                                     if (parameters.inspection.status ==

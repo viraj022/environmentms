@@ -4,10 +4,7 @@ namespace App\Repositories;
 
 use App\Client;
 use App\FileView;
-use App\IndustryCategory;
 use Carbon\Carbon;
-use App\SiteClearance;
-use App\InspectionSession;
 use App\SiteClearenceSession;
 use Illuminate\Support\Facades\DB;
 /*
@@ -123,14 +120,14 @@ class ClientRepository
     public function allPlain($from, $to)
     {
         // echo $client;
-        $file = FileView::orWhereBetween('epl_issue_date', [$from, $to])
-            ->orWhereBetween('epl_expire_date', [$from, $to])
-            ->orWhereBetween('epl_submitted_date', [$from, $to])
-            ->orWhereBetween('epl_rejected_date', [$from, $to])
-            ->orWhereBetween('site_submit_date', [$from, $to])
-            ->orWhereBetween('site_issue_date', [$from, $to])
-            ->orWhereBetween('site_expire_date', [$from, $to])
-            ->orWhereBetween('site_rejected_date', [$from, $to]);
+        $file = FileView::orWhereRaw('DATE(epl_issue_date) BETWEEN DATE(?) AND DATE(?)', [$from, $to])
+            ->orWhereRaw('DATE(epl_expire_date) BETWEEN DATE(?) AND DATE(?)', [$from, $to])
+            ->orWhereRaw('DATE(epl_submitted_date) BETWEEN DATE(?) AND DATE(?)', [$from, $to])
+            ->orWhereRaw('DATE(epl_rejected_date) BETWEEN DATE(?) AND DATE(?)', [$from, $to])
+            ->orWhereRaw('DATE(site_submit_date) BETWEEN DATE(?) AND DATE(?)', [$from, $to])
+            ->orWhereRaw('DATE(site_issue_date) BETWEEN DATE(?) AND DATE(?)', [$from, $to])
+            ->orWhereRaw('DATE(site_expire_date) BETWEEN DATE(?) AND DATE(?)', [$from, $to])
+            ->orWhereRaw('DATE(site_rejected_date) BETWEEN DATE(?) AND DATE(?)', [$from, $to]);
         // dd(FileView::all());
         // echo $file->toSql();
         return $file->get();

@@ -161,9 +161,7 @@
                                             @php
                                                 $attachmentUrl = config('online-request.url');
                                             @endphp
-                                            @if (empty($newApplication->road_map) &&
-                                                empty($newApplication->deed_of_land) &&
-                                                empty($newApplication->survey_plan))
+                                            @if (empty($newApplication->road_map) && empty($newApplication->deed_of_land) && empty($newApplication->survey_plan))
                                                 No documents uploaded.
                                             @endif
 
@@ -261,6 +259,7 @@
     <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
     <script src="{{ asset('plugins/fancybox/fancybox.umd.js') }}"></script>
+    <script src="{{ asset('js/paymentsjs/application_payment.js') }}"></script>
     <script>
         $(function() {
             // init clipboard
