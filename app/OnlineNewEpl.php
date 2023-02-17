@@ -78,7 +78,8 @@ class OnlineNewEpl extends Model
         'fuel_daily_consumption',
         'recycling',
         'plan_description',
-        'industryDetailCheck'
+        'industryDetailCheck',
+        'other_ind_type'
     ];
 
     public function onlineRequest()

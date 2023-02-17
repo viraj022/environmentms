@@ -445,17 +445,17 @@ class OnlineRequestController extends Controller
 
     public function getNewApplicationsByStatus(Request $request)
     {
-
         $businessScales = [
             '1' => 'Small - S',
             '2' => 'Medium - M',
             '3' => 'Large - L',
         ];
+        $status = $request->application_status;
 
         $completedNewApplications = $this->onlineRequests->getNewCompletedApplications($request->application_status);
         $renewalApplications = $this->onlineRequests->getAllRenewalApplications();
         $newApplications = $this->onlineRequests->getAllNewApplications();
 
-        return view('online-requests.index', compact('completedNewApplications', 'renewalApplications', 'newApplications'));
+        return view('online-requests.index', compact('completedNewApplications', 'renewalApplications', 'newApplications', 'status'));
     }
 }

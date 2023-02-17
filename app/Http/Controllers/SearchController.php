@@ -17,6 +17,7 @@ class SearchController extends Controller
     {
         return Client::with('epls')->where('first_name', 'like', '%' . $name . '%')
             ->orWhere('last_name', 'like', '%' . $name . '%')
+            ->groupByRaw('id')
             ->get();
     }
 
@@ -29,8 +30,7 @@ class SearchController extends Controller
 
     public function getClientByIndustryName($industry)
     {
-        return Client::with('epls')->where('industry_name', 'like', '%' . $industry . '%')
-            ->get();
+        return Client::with('epls')->where('industry_name', 'like', '%' . $industry . '%')->groupByRaw('id')->get();
     }
 
     public function getClientByID($id)
@@ -48,6 +48,7 @@ class SearchController extends Controller
         $epls = EPL::join('clients', 'e_p_l_s.client_id', 'clients.id')
             ->whereNull('clients.deleted_at')
             ->where('code', 'like', '%' . $code . '%')
+            ->groupByRaw('client_id')
             ->select('code', 'remark', 'status', 'first_name', 'last_name', 'address', 'industry_name', 'clients.id')
             ->get();
 
@@ -169,7 +170,7 @@ class SearchController extends Controller
 
     public function getBusinessByName($name)
     {
-        return EPL::where('registration_no', 'like', '%' . $name . '%')->get();
+        return EPL::where('registration_no', 'like', '%' . $name . '%')->groupByRaw('client_id')->get();
     }
 
     public function getClientBySite($name)

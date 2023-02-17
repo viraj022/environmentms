@@ -112,8 +112,12 @@
                                                         <select class="form-select form-control"
                                                             aria-label="Default select example" id="application_status"
                                                             name="application_status">
-                                                            <option value="complete">Complete</option>
-                                                            <option value="pending">Pending</option>
+                                                            <option value="complete"
+                                                                {{ !empty($status) ? ($status == 'complete' ? 'selected' : '') : '' }}>
+                                                                Complete</option>
+                                                            <option value="pending"
+                                                                {{ !empty($status) ? ($status == 'pending' ? 'selected' : '') : '' }}>
+                                                                Pending</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-lg-4">
@@ -214,15 +218,19 @@
                                                 @endif
                                             @empty
                                                 <tr>
-                                                    <td colspan="12">No new application requests received.</td>
+                                                    <td colspan="12">No completed application records.</td>
                                                 </tr>
                                             @endforelse
                                         </tbody>
                                     </table>
                                 </div>
                             @else
-                                <div class="alert alert-info" role="alert">
-                                    please search application status to view applications
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="alert alert-info" role="alert">
+                                            please search application status to view applications
+                                        </div>
+                                    </div>
                                 </div>
                             @endif
                         </div>
