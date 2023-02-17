@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\SiteClearance;
 use App\ApplicationType;
 use App\EPL;
+use App\InspectionSession;
 use Illuminate\Http\Request;
 use App\SiteClearenceSession;
 use Illuminate\Support\Facades\Auth;
@@ -26,8 +27,9 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $count = InspectionSession::where('status', 0)->count();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-        return view('dashboard', ['pageAuth' => $pageAuth]);
+        return view('dashboard', ['pageAuth' => $pageAuth, 'count' => $count]);
     }
 
     public function renewalChart($from, $to)
@@ -43,7 +45,11 @@ class DashboardController extends Controller
             ->selectRaw("DATE_FORMAT(submitted_date, '%b')  as submitted_month, count(id) as id_count")
             ->orderBy('submitted_date')
             ->get()->keyBy('submitted_month')->toArray();
-        $expiredEplCount = EPL::whereBetween('expire_date', [$from, $to])->groupByRaw('month(expire_date)')->selectRaw("DATE_FORMAT(expire_date, '%b') as expire_date, count(id) as id_count")->orderBy('expire_date')->get()->keyBy('expire_date')->toArray();
+        $expiredEplCount = EPL::whereBetween('expire_date', [$from, $to])
+            ->groupByRaw('month(expire_date)')
+            ->selectRaw("DATE_FORMAT(expire_date, '%b') as expire_date, count(id) as id_count")
+            ->orderBy('expire_date')
+            ->get()->keyBy('expire_date')->toArray();
         $siteClearanceCount = SiteClearance::whereBetween('submit_date', [$from, $to])
             ->where('count', '>', 0)
             ->groupByRaw('month(submit_date)')
