@@ -737,7 +737,9 @@
                                 break;
                             case 'id':
                                 if (result != 0) {
-                                    window.location = "/industry_profile/id/" + result.id;
+                                    // window.location = "/industry_profile/id/" + result.id;
+                                    showCustomerDetails(result);
+                                    $('.view-Customer').removeClass('d-none');
                                 } else {
                                     if (confirm(
                                             'Client Not Found!Do You Want Create New Client?')) {
