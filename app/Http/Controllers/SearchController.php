@@ -35,12 +35,7 @@ class SearchController extends Controller
 
     public function getClientByID($id)
     {
-        $client = Client::with('epls')->where('nic', $id)->first();
-        if ($client) {
-            return $client;
-        } else {
-            return array();
-        }
+        return Client::with('epls')->where('nic', $id)->get();
     }
 
     public function getClientByEPL($code)
