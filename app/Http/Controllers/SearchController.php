@@ -73,7 +73,7 @@ class SearchController extends Controller
     {
 
 
-        $epl = EPL::where('certificate_no', 'like', $code . "%")->first();
+        $epl = EPL::whereNotNull('certificate_no')->where('certificate_no', 'like', $code . "%")->first();
         //        $client = Client::where('file_no', 'like', $code . "%")->first();
 
         $serial = Str::substr($epl->certificate_no, 0, strpos($epl->certificate_no, '/'));
