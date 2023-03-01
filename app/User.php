@@ -108,8 +108,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserNotification::class);
     }
-    
-//file letters
+
+    //file letters
     public function fileLetters()
     {
         return $this->hasMany(FileLetter::class);

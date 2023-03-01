@@ -114,11 +114,7 @@ class PradesheeyasabaController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
-        if ($pageAuth['is_read']) {
-            return Pradesheeyasaba::where('zone_id', '=', $id)->get();
-        } else {
-            abort(401);
-        }
+        return Pradesheeyasaba::where('zone_id', '=', $id)->get();
     }
 
     /**
