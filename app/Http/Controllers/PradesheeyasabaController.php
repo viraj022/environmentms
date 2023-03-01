@@ -66,7 +66,7 @@ class PradesheeyasabaController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
         //           request()->validate([
         //                'name' => 'required|unique:pradesheeyasabas,name',
-        //                'code' => 'required|unique:pradesheeyasabas,code',           
+        //                'code' => 'required|unique:pradesheeyasabas,code',
         //            ]);
         if ($pageAuth['is_update']) {
             $pradesheyasaba = Pradesheeyasaba::findOrFail($id);
@@ -107,13 +107,8 @@ class PradesheeyasabaController extends Controller
      */
     public function show()
     {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.pradesheyasaba'));
-        if ($pageAuth['is_read']) {
-            return Pradesheeyasaba::get();
-        } else {
-            abort(401);
-        }
+        // $user = Auth::user();
+        return Pradesheeyasaba::get();
     }
     public function getLocalAuthorityByZone($id)
     {
