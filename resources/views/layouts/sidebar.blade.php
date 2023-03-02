@@ -16,7 +16,7 @@
                                                                                                                                                                                                                                                              with font-awesome or any other icon font library -->
             <li class="nav-item has-treeview">
                 <a href="#" class="nav-link active">
-                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <i class="nav-icon fas fa-chart-pie"></i>
                     <p>
                         Dashboard
                         <i class="right fas fa-angle-left"></i>
@@ -34,7 +34,7 @@
             <li
                 class="nav-item has-treeview {{ Request::is('attachments', 'attachment_map', 'pradesheyasaba', 'industry_category', 'payment_type', 'payments', 'payment_range', 'zone', 'assistant_director', 'environment_officer', 'committee_pool') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
-                    <i class="nav-icon fas fa-pencil-ruler"></i>
+                    <i class="nav-icon fas fa-cog"></i>
                     <p>
                         General Settings
                         <i class="right fas fa-angle-left"></i>
@@ -123,7 +123,7 @@
                             <li class="nav-item">
                                 <a href="{{ url('/environment_officer') }}"
                                     class="nav-link {{ Request::is('environment_officer') ? 'active' : '' }}">
-                                    <i class="far fa-user nav-icon"></i>
+                                    <i class="fas fa-users nav-icon"></i>
                                     <p>Environment Officer</p>
                                 </a>
                             </li>
@@ -150,7 +150,7 @@
             <li
                 class="nav-item has-treeview {{ Request::is('client_space', 'industry_files', 'epl_assign', 'old_file_list', 'env_officer', 'search_files') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
-                    <i class="nav-icon fas fa-user-shield"></i>
+                    <i class="nav-icon fas fa-file-signature"></i>
                     <p>
                         Licenses
                         <i class="right fas fa-angle-left"></i>
@@ -181,7 +181,7 @@
                             <li class="nav-item">
                                 <a href="{{ url('/industry_files') }}"
                                     class="nav-link {{ Request::is('industry_files') ? 'active' : '' }}">
-                                    <i class="far fa-file-alt nav-icon"></i>
+                                    <i class="fas fa-search nav-icon"></i>
                                     <p>Industry Files</p>
                                 </a>
                             </li>
@@ -209,7 +209,7 @@
             </li>
             <li class="nav-item has-treeview {{ Request::is('application_payment') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
-                    <i class="nav-icon fas fa-address-card"></i>
+                    <i class="nav-icon fas fa-file-alt"></i>
                     <p>Application <i class="right fas fa-angle-left"></i></p>
                 </a>
                 <ul class="nav nav-treeview">
@@ -247,7 +247,7 @@
             </li>
             <li class="nav-item has-treeview {{ Request::is('industry_files', 'schedule') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
-                    <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                    <i class="nav-icon fas fa-users"></i>
                     <p>Environment Officer <i class="right fas fa-angle-left"></i></p>
                 </a>
                 <ul class="nav nav-treeview">
@@ -350,7 +350,7 @@
             </li>
             <li class="nav-item has-treeview {{ Request::is('eo_locations') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
-                    <i class="nav-icon fas fa-user-tie"></i>
+                    <i class="nav-icon fas fa-map-marked"></i>
                     <p>Location <i class="right fas fa-angle-left"></i></p>
                 </a>
                 <ul class="nav nav-treeview">
@@ -370,7 +370,7 @@
             <li
                 class="nav-item has-treeview {{ Request::is('expired_certificates', 'pending_expired_cert', 'expired_epl', 'act_status/id/1', 'report_dashboard', 'old_data_summary', 'confirmed_files', 'reverse_confirm', 'eo_report', 'file_progress_report', 'warning_letters', 'pending_site_clear_report', 'pending_epl_report', 'completed_files', 'complains_report') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
-                    <i class="nav-icon fas fa-user-tie"></i>
+                    <i class="nav-icon fas fa-folder-open"></i>
                     <p>Report <i class="right fas fa-angle-left"></i></p>
                 </a>
                 <ul class="nav nav-treeview">
@@ -522,7 +522,7 @@
                             <li class="nav-item">
                                 <a href="{{ url('/complains_report') }}"
                                     class="nav-link {{ Request::is('complains_report') ? 'active' : '' }}">
-                                    <i class="fas fa-file-archive nav-icon"></i>
+                                    <i class="fas fa-exclamation nav-icon "></i>
                                     <p>Complains</p>
                                 </a>
                             </li>
@@ -579,7 +579,7 @@
             </li>
             <li class="nav-item has-treeview {{ Request::is('complains') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
-                    <i class="nav-icon fas fa-user-shield"></i>
+                    <i class="nav-icon fas fa-exclamation"></i>
                     <p>
                         Complains
                         <i class="right fas fa-angle-left"></i>
@@ -589,7 +589,7 @@
                     <li class="nav-item">
                         <a href="{{ url('/complains') }}"
                             class="nav-link {{ Request::is('complains') ? 'active' : '' }}">
-                            <i class="fas fa-user-plus nav-icon"></i>
+                            <i class="fas fa-exclamation nav-icon"></i>
                             <p>Complains</p>
                         </a>
                     </li>
@@ -597,7 +597,7 @@
             </li>
             <li class="nav-item has-treeview {{ Request::is('online-requests') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
-                    <i class="nav-icon fas fa-user-shield"></i>
+                    <i class="nav-icon fas fa-globe-asia"></i>
                     <p>
                         Online-Requests
                         <i class="right fas fa-angle-left"></i>
