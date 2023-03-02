@@ -197,6 +197,10 @@ class ClientController extends Controller
 
     public function certificatesUi()
     {
+        if(!Auth::check()) {
+            return redirect('/');
+        }
+
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('pending_certificates', ['pageAuth' => $pageAuth]);
