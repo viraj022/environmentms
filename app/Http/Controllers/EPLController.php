@@ -344,7 +344,7 @@ class EPLController extends Controller
             $path = $request->file('file')->storeAs($storePath, $file_name);
             $msg = $client->save();
             if ($msg) {
-                LogActivity::fileLog($client->id, 'File', "Attachment saved", 1, 'epl', $epl->id);
+                LogActivity::fileLog($client->id, 'File', "Attachment saved", 1, 'File', $client->id);
                 LogActivity::addToLog('Attachment saved', $client);
                 return array('id' => 1, 'message' => 'true');
             } else {

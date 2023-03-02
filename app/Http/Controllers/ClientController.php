@@ -154,6 +154,9 @@ class ClientController extends Controller
 
     public function fileQr($fileCode)
     {
+        if (empty($fileCode)) {
+            return '<img src="#" />';
+        }
         $writer = new PngWriter();
 
         // Create QR code

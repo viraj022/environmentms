@@ -15,7 +15,7 @@
     <!-- Google Font: Source Sans Pro -->
 @endsection
 @section('content')
-    @if ($pageAuth['is_read'] == 1 || false)
+    @if ((isset($pageAuth['is_read']) && $pageAuth['is_read'] == 1) || false)
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
