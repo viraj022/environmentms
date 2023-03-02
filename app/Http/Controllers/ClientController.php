@@ -58,6 +58,9 @@ class ClientController extends Controller
     public function index()
     {
         $user = Auth::user();
+        if (empty($user)) {
+            return redirect()->route('/');
+        }
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('client_space', [
             'pageAuth' => $pageAuth,
@@ -197,7 +200,7 @@ class ClientController extends Controller
 
     public function certificatesUi()
     {
-        if(!Auth::check()) {
+        if (!Auth::check()) {
             return redirect('/');
         }
 
