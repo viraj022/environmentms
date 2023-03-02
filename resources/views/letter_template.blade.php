@@ -48,7 +48,7 @@
                             <div class="card-header">
                                 <h4 class="card-title">Letter Templates</h4>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body" style="height: 600px; overflow-y: scroll;">
                                 <table class="table table-bordered" id="letter_temp_tbl">
                                     <thead>
                                         <tr>
