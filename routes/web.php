@@ -16,7 +16,7 @@ use App\Http\Controllers\ComplainController;
 use App\Http\Controllers\ReportController;
 use Doctrine\DBAL\Schema\View;
 
-Route::get('/', 'HomeController@index');
+Route::get('/', 'HomeController@index')->name('home');
 
 Auth::routes(['register' => false]);
 
