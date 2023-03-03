@@ -117,7 +117,7 @@
                         </div>
                     </div>
                     <div class="col-md-7">
-                        @if ($pageAuth['is_update'] == 1 || true)
+                        @if (!empty($pageAuth['is_update']) && $pageAuth['is_update'] == 1)
                             <form method="POST" action="/users/my_password">
                                 <div class="card card-gray">
                                     <div class="card-header">
@@ -208,11 +208,11 @@
             //Initialize Select2 Elements
             var userId = '{{ $user[
                 '
-                    id '
+                                id '
             ] }}'
             var rollId = '{{ $user[
                 '
-                    roll_id '
+                                roll_id '
             ] }}'
             $('.select2').select2();
 

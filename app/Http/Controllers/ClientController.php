@@ -59,7 +59,7 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         if (empty($user)) {
-            return redirect()->route('/');
+            return redirect()->route('home');
         }
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('client_space', [
@@ -140,6 +140,9 @@ class ClientController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $client = Client::find($id);
+        if (empty($client)) {
+            abort(404);
+        }
         $oldOwnerDetails = ChangeOwner::where('client_id', $client->id)->orderBy('created_at', 'desc')->first();
         $onlineTransactions = Transaction::with('transactionItems')->whereNotNull('online_payment_id')->where('client_id', $id)->withTrashed()->get();
         $scCertificates = Certificate::where('certificate_type', 1)->where('client_id', $id)->where('issue_status', 1)->select('signed_certificate_path', 'issue_date', 'expire_date', 'cetificate_number')->get();
@@ -201,7 +204,7 @@ class ClientController extends Controller
     public function certificatesUi()
     {
         if (!Auth::check()) {
-            return redirect('/');
+            return redirect()->route('home');
         }
 
         $user = Auth::user();

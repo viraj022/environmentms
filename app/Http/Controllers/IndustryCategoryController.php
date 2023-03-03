@@ -84,7 +84,7 @@ class IndustryCategoryController extends Controller
                 $industryCategory->code = \request('code');
             }
             //            $industryCategory->code = \request('code');
-            //        $industryCategory->name= \request('name'); 
+            //        $industryCategory->name= \request('name');
             $msg = $industryCategory->save();
 
 
@@ -107,13 +107,9 @@ class IndustryCategoryController extends Controller
      */
     public function show()
     {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.industry'));
-        if ($pageAuth['is_read']) {
-            return IndustryCategory::get();
-        } else {
-            abort(401);
-        }
+        // $user = Auth::user();
+        // $pageAuth = $user->authentication(config('auth.privileges.industry'));
+        return IndustryCategory::get();
     }
 
     /**
