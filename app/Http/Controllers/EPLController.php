@@ -358,6 +358,9 @@ class EPLController extends Controller
     public function getDeadList($id)
     {
         $client = Client::where('id', $id)->first();
+        if (empty($client->file_02)) {
+            return [];
+        }
         $clientFile2 = $client->file_02;
         $files = Storage::files("public/uploads/industry_files/{$id}/application/file2");
         $links = array();

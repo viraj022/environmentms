@@ -161,30 +161,26 @@ class EnvironmentOfficerController extends Controller
         // dd($id);
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.fileAssign'));
-        if ($pageAuth['is_read']) {
-            return EnvironmentOfficer::where('environment_officers.assistant_director_id', '=', $id)
-                ->where('environment_officers.active_status', '=', 1)
-                ->join('assistant_directors', 'environment_officers.assistant_director_id', 'assistant_directors.id')
-                ->join('zones', 'assistant_directors.zone_id', 'zones.id')
-                ->join('users', 'environment_officers.user_id', '=', 'users.id')
-                ->join('users as assistant_director_users', 'assistant_directors.user_id', '=', 'assistant_director_users.id')
-                ->select(
-                    'environment_officers.id',
-                    'users.first_name as first_name',
-                    'users.last_name as last_name',
-                    'users.user_name as user_name',
-                    'users.id as user_id',
-                    'environment_officers.active_status',
-                    'zones.id as zone_id',
-                    'zones.name as zone_name',
-                    'assistant_director_users.first_name as assistant_director_first_name',
-                    'assistant_director_users.last_name as assistant_director_last_name',
-                    'assistant_director_users.user_name as assistant_director_user_name'
-                )
-                ->get();
-        } else {
-            abort(401);
-        }
+        return EnvironmentOfficer::where('environment_officers.assistant_director_id', '=', $id)
+            ->where('environment_officers.active_status', '=', 1)
+            ->join('assistant_directors', 'environment_officers.assistant_director_id', 'assistant_directors.id')
+            ->join('zones', 'assistant_directors.zone_id', 'zones.id')
+            ->join('users', 'environment_officers.user_id', '=', 'users.id')
+            ->join('users as assistant_director_users', 'assistant_directors.user_id', '=', 'assistant_director_users.id')
+            ->select(
+                'environment_officers.id',
+                'users.first_name as first_name',
+                'users.last_name as last_name',
+                'users.user_name as user_name',
+                'users.id as user_id',
+                'environment_officers.active_status',
+                'zones.id as zone_id',
+                'zones.name as zone_name',
+                'assistant_director_users.first_name as assistant_director_first_name',
+                'assistant_director_users.last_name as assistant_director_last_name',
+                'assistant_director_users.user_name as assistant_director_user_name'
+            )
+            ->get();
     }
 
     /**
