@@ -131,16 +131,15 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
                     if (row.is_old != 0) {
                         tbl += '<tr style="' + tr_style + '">';
                         tbl += '<td>' + ++index + '</td>';
-                        tbl += '<td>' + row.industry_name + '</td>';
-                        tbl += '<td>' + row.name + '</td>';
-                        tbl += '<td>' + row.epl_code + '</td>';
-                        tbl += '<td>' + row.site_clearance_code + '</td>';
+                        tbl += '<td>' + row.industry_name + '<br>'+ row.name+'</td>';
+                        // tbl += '<td>' + row.name + '</td>';
+                        tbl += '<td>' + row.epl_code + '<br>' + row.site_clearance_code + '</td>';
                         if (row.file_no != null) {
                             tbl += '<td><a href="/industry_profile/id/' + row.id + '" class="btn btn-dark w-100" target="_blank">' + row.file_no + '</a></td>';
                         } else {
                             tbl += '<td> <b class="btn btn-dark">No File No</b> </td>';
                         }
-                        tbl += '<td class="">' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
+                        tbl += '<td class="">' + cer_type_status[row.cer_type_status] + '<br>(' + fixMydate + ')</td>';
                         tbl += '<td>' + file_status_list[row.file_status] + status_Lable + '</td>';
                         if (row.file_status != 5) {
                             tbl += '<td class="text-center"><button type="button" value="' + escape(JSON.stringify(row)) + '" class="btn btn-info detailsData">Action</button></td>';

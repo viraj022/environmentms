@@ -63,18 +63,27 @@
 
                                 <hr>
                                 <table class="table table-condensed" id="tblAllFiles">
+                                    <colgroup>
+                                        <col style="width: 2%;">
+                                        <col style="width: 30%;">
+                                        <col style="width: 25%;">
+                                        <col style="width: 10%;">
+                                        <col style="width: 13%;">
+                                        <col style="width: 10%;">
+                                        <col style="width: 5%;">
+                                    </colgroup>
                                     <thead>
                                         <tr class="tblTrsec">
-                                            <th style="width: 10px">#</th>
-                                            <th style='width: 25em'>Industry Name</th>
-                                            <th style='width: 25em'>Client Name</th>
-                                            <th style='width: 20em'>EPL Code</th>
-                                            <th style='width: 20em'>Site Clearance Code</th>
-                                            <th style='width: 25em'>File No</th>
-                                            <th style='width: 25em'>Application log date</th>
-                                            <th style='width: 25em'>File Status</th>
+                                            <th>#</th>
+                                            <th>Industry Name</th>
+                                            {{-- <th style='width: 25em'>Client Name</th> --}}
+                                            <th>EPL\SC Code</th>
+                                            {{-- <th style='width: 20em'>Site Clearance Code</th> --}}
+                                            <th>File No</th>
+                                            <th>Application log date</th>
+                                            <th>File Status</th>
                                             <!--<th class="inspectTbl" style="width: 180px">Inspection</th>-->
-                                            <th style='width: 5em'>Action</th>
+                                            <th>#</th>
                                         </tr>
                                     </thead>
                                     <tbody>
