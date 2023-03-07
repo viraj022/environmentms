@@ -673,7 +673,6 @@ class ClientController extends Controller
             $data->where('environment_officer_id', $id);
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
             $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
-            dd($envOfficer);
             if ($envOfficer) {
                 $data->where('environment_officer_id', $envOfficer->id);
             } else {

@@ -45,7 +45,6 @@ class EnvironmentOfficerController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.fileAssign'));
-        //        dd($pageAuth);
         return view('epl_assign', ['pageAuth' => $pageAuth]);
     }
 
@@ -164,7 +163,6 @@ class EnvironmentOfficerController extends Controller
 
     public function getAEnvironmentOfficerByAssitantDirector($id)
     {
-        // dd($id);
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.fileAssign'));
         return EnvironmentOfficer::where('environment_officers.assistant_director_id', '=', $id)
