@@ -643,7 +643,13 @@ class ClientController extends Controller
             ->with('industryCategory')
             ->with('businessScale')
             ->with('certificates')
-            ->with('pradesheeyasaba')->find($id)->toArray();
+            ->with('pradesheeyasaba')->find($id);
+        if(!$file) {
+            // if file not found
+            return array('id' => 0, 'message' => 'File not found');
+        }
+
+        $file = $file->toArray();
         $file['created_at'] = date('Y-m-d', strtotime($file['created_at']));
         $file['industry_start_date'] = date('Y-m-d', strtotime($file['industry_start_date']));
         // dd($ref);
