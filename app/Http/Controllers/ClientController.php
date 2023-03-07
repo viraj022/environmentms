@@ -660,20 +660,20 @@ class ClientController extends Controller
     {
         $data = array();
         $user = Auth::user();
+        // dd($user->roll->level->name);
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $data = Client::with(['epls' => function ($query) {
             $query->orderBy('submitted_date', 'desc');
         }, 'siteClearenceSessions', 'siteClearenceSessions.siteClearances' => function ($query) {
             $query->orderBy('submit_date', 'desc');
         }]);
-        // ->leftJoin('e_p_l_s', 'clients.id', '=', 'e_p_l_s.client_id')
-        // ->leftJoin('site_clearence_sessions', 'clients.id', '=', 'site_clearence_sessions.client_id')
         if ($user->roll->level->name == Level::DIRECTOR) {
             $data->where('environment_officer_id', $id);
         } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
             $data->where('environment_officer_id', $id);
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
             $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
+            dd($envOfficer);
             if ($envOfficer) {
                 $data->where('environment_officer_id', $envOfficer->id);
             } else {
@@ -682,11 +682,7 @@ class ClientController extends Controller
         } else {
             abort(401);
         }
-        // $data->where('id', 592);
-        // $data->groupBy('clients.id');
         $data = $data->get();
-        // return $data;
-        // dd($data->toArray());
         return clientResource::collection($data);
     }
 

@@ -207,7 +207,7 @@ class AssistantDirectorController extends Controller
         }
     }
 
-    //get allUser not in 
+    //get allUser not in
     public function getAllUsersNotInAssistantDirector()
     {
         $user = Auth::user();
@@ -223,7 +223,7 @@ class AssistantDirectorController extends Controller
         }
     }
 
-    //end get allUser not in 
+    //end get allUser not in
     //get all active_AssistantDirector
     public function getAll_active_AssistantDirector()
     {
@@ -302,7 +302,10 @@ class AssistantDirectorController extends Controller
             $data = AssistantDirector::with('user')->where('user_id', $user->id)->where('active_status', 1)->get();
             // dd($data);
         } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-            $data = AssistantDirector::with('user')->where('id', EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first()->assistant_director_id)->get();
+            $eo = EnvironmentOfficer::where('user_id', $user->id)->whereNotNull('assistant_director_id')->first();
+            if (!empty($eo)) {
+                $data = AssistantDirector::with('user')->where('id', $eo->assistant_director_id)->get();
+            }
         }
         return $data;
     }

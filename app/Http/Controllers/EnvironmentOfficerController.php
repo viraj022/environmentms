@@ -69,7 +69,7 @@ class EnvironmentOfficerController extends Controller
             'user_id' => 'required',
             'assistantDirector_id' => 'required',
         ]);
-        if ($pageAuth['is_create']) {
+        if (isset($pageAuth['is_create']) && $pageAuth['is_create']) {
             if ($this->checkAssistantDirector(\request('user_id'))) {
                 if ($this->checkEnvironmentOfficer(\request('user_id'))) {
                     $environmentOfficer = new EnvironmentOfficer();
@@ -84,10 +84,20 @@ class EnvironmentOfficerController extends Controller
                         return array('id' => 0, 'message' => 'false');
                     }
                 } else {
-                    return array('message' => 'Custom Validation unprocessable entry', 'errors' => array('user_id' => 'user is already already assigned as an active environment officer'));
+                    $eo = EnvironmentOfficer::where('user_id', \request('user_id'))->first();
+                    $eo->assistant_director_id = \request('assistantDirector_id');
+                    $eo->active_status = '1';
+                    $msg = $eo->save();
+                    LogActivity::addToLog('Update a environment Officer', $eo);
+                    if ($msg) {
+                        return array('id' => 1, 'message' => 'true');
+                    } else {
+                        return array('id' => 0, 'message' => 'false');
+                    }
+                    // return array('message' => 'Custom Validation unprocessable entry', 'errors' => array('user_id' => 'user is already already assigned as an active environment officer'));
                 }
             } else {
-                return array('message' => 'Custom Validation unprocessable entry', 'errors' => array('user_id' => 'can not assign active assistant directer as an environment officer'));
+                return array('message' => 'can not assign active assistant directer as an environment officer', 'errors' => array('user_id' => 'can not assign active assistant directer as an environment officer'));
             }
         } else {
             abort(401);
@@ -115,15 +125,11 @@ class EnvironmentOfficerController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        if ($pageAuth['is_read']) {
-            $assistantDirectors = AssistantDirector::where('active_status', '1')->select('user_id as id')->get();
-            $environmentOfficers = EnvironmentOfficer::where('active_status', '1')->select('user_id as id')->get();
-            return User::whereHas('roll.level', function ($queary) {
-                $queary->where('name', Level::ENV_OFFICER);
-            })->wherenotin('id', $assistantDirectors)->wherenotin('id', $environmentOfficers)->get();
-        } else {
-            abort(401);
-        }
+        $assistantDirectors = AssistantDirector::where('active_status', '1')->select('user_id as id')->get();
+        $environmentOfficers = EnvironmentOfficer::whereNotNull('assistant_director_id')->select('user_id as id')->get();
+        return User::whereHas('roll.level', function ($queary) {
+            $queary->where('name', Level::ENV_OFFICER);
+        })->wherenotin('id', $assistantDirectors)->wherenotin('id', $environmentOfficers)->get();
     }
 
     public function getAEnvironmentOfficer($id)
@@ -216,7 +222,8 @@ class EnvironmentOfficerController extends Controller
     {
         $environmentOfficer = EnvironmentOfficer::find($id);
         if ($environmentOfficer !== null) {
-            $environmentOfficer->active_status = 0;
+            // $environmentOfficer->active_status = 0;
+            $environmentOfficer->assistant_director_id = null;
             $msg = $environmentOfficer->save();
             LogActivity::addToLog('Delete environment officer', $environmentOfficer);
             if ($msg) {
