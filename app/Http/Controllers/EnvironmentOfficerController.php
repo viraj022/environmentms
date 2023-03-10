@@ -124,8 +124,10 @@ class EnvironmentOfficerController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        $assistantDirectors = AssistantDirector::where('active_status', '1')->select('user_id as id')->get();
-        $environmentOfficers = EnvironmentOfficer::whereNotNull('assistant_director_id')->select('user_id as id')->get();
+        $assistantDirectors = AssistantDirector::where('active_status', '1')->pluck('user_id')->toArray();
+        // $environmentOfficers = EnvironmentOfficer::whereNotNull('assistant_director_id')->select('user_id as id')->get();
+        $environmentOfficers = EnvironmentOfficer::whereNotNull('assistant_director_id')->pluck('user_id')->toArray();
+        // dd($environmentOfficers);
         return User::whereHas('roll.level', function ($queary) {
             $queary->where('name', Level::ENV_OFFICER);
         })->wherenotin('id', $assistantDirectors)->wherenotin('id', $environmentOfficers)->get();
@@ -166,7 +168,7 @@ class EnvironmentOfficerController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.fileAssign'));
         return EnvironmentOfficer::where('environment_officers.assistant_director_id', '=', $id)
-            ->where('environment_officers.active_status', '=', 1)
+            // ->where('environment_officers.active_status', '=', 1)
             ->join('assistant_directors', 'environment_officers.assistant_director_id', 'assistant_directors.id')
             ->join('zones', 'assistant_directors.zone_id', 'zones.id')
             ->join('users', 'environment_officers.user_id', '=', 'users.id')
