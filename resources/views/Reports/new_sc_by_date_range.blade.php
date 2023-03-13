@@ -7,54 +7,39 @@
     <meta name="api-token" content="{{ auth()->user()->api_token }}" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EPL Report | North Western Province</title>
+    <title>SC Report | North Western Province</title>
     <link rel="stylesheet" type="text/css" href="/dataTable/datatables.min.css" />
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed text-sm">
     <center>
-        <h1>Progress Report </h1>
-        <h5>From: {{ $from }} - To: {{ $to }}</h5>
+        <h1>{{ $isNew == 1 ? 'New' : 'Extended' }} Site Clearance Report </h1>
+        <h5>From: {{ $from }} - To: {{ $to }} (Submit Date)</h5>
     </center>
-    <h4>Report Genaration Time :{{ $time_elapsed_secs }} seconds</h4>
-    {{-- @dump($newEplCount); --}}
     <table class="table cell-border compact stripe">
         <thead>
             <tr>
                 <th>#</th>
-                <th> </th>
-                <th>Application</th>
-                @foreach ($assistanceDirectors as $assistanceDirector)
-                    <th>{{ $assistanceDirector['name'] }} <br> {{ $assistanceDirector['first_name'] }}
-                        {{ $assistanceDirector['last_name'] }}</th>
-                @endforeach
+                <th>SC Code</th>
+                <th>Submit Date</th>
+                <th>Industry Name</th>
+                <th>Zone</th>
             </tr>
         </thead>
         <tbody>
-            {{-- @dump($result); --}}
-            @foreach ($result as $row)
-                {{-- @dd($row) --}}
+            @foreach ($data as $row)
                 <tr>
-                    <th>{{ $row['type'] }}</th>
-                    <th>{{ $row['name'] }}</th>
-                    @if ($row['type'] == 'received' && $row['name'] == 'SC(New)')
-                        <th><a href="{{ route('new_cs_report', [$from, $to, 1]) }}">{{ $row['application'] }}</a></th>
-                    @elseif($row['type'] == 'received' && $row['name'] == 'SC(EX)')
-                        <th><a href="{{ route('new_cs_report', [$from, $to, 0]) }}">{{ $row['application'] }}</a></th>
-                    @elseif($row['type'] == 'received' && $row['name'] == 'EPL(New)')
-                        <th><a href="{{ route('new_epl_report', [$from, $to, 1]) }}">{{ $row['application'] }}</a>
-                        </th>
-                    @elseif($row['type'] == 'received' && $row['name'] == 'EPL(R)')
-                        <th><a href="{{ route('new_epl_report', [$from, $to, 0]) }}">{{ $row['application'] }}</a>
-                        </th>
-                    @else
-                        <th>{{ $row['application'] }}</th>
-                    @endif
-                    @foreach ($row['object'] as $o)
-                        <th>{{ $o['total'] }}</th>
-                    @endforeach
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $row['sc_code'] }}</td>
+                    <td>{{ Carbon\Carbon::parse($row['submit_date'])->format('Y-m-d') }}</td>
+                    <td><a
+                            href="{{ route('industry_profile.find', $row['client_id']) }}">{{ $row['industry_name'] }}</a>
+                    </td>
+                    <td>{{ $row['zone'] }}</td>
                 </tr>
             @endforeach
+
+
         </tbody>
     </table>
     <script src="/plugins/jquery/jquery.min.js"></script>
@@ -69,7 +54,7 @@
                 colReorder: true,
                 responsive: true,
                 select: true,
-                ordering: false,
+                ordering: true,
                 paging: false,
                 dom: "Bfrtip",
                 // buttons: ["csv", "excel", "print",],

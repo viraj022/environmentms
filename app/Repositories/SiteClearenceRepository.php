@@ -110,14 +110,16 @@ class SiteClearenceRepository
             // ->where('transactions.type', Transaction::TRANS_SITE_CLEARANCE)
             // ->where('transaction_items.payment_type_id', $inspectionTypes->id)
             ->orderBy('site_clearence_sessions.created_at', 'DESC');
-
         switch ($instance) {
             case 'all':
-                return $query->get();
+                $query->get();
+                break;
             case 'new':
                 $query = $query->where('site_clearances.count', 0);
+                break;
             case 'extend':
                 $query = $query->where('site_clearances.count', '>', 0);
+                break;
             default:
                 abort('404', 'Report Instance Not Defined - Ceytech internal error log');
         }
@@ -126,6 +128,7 @@ class SiteClearenceRepository
 
     public function ReceivedSiteCount($from, $to, $isNew)
     {
+        // dd($from, $to, $isNew);
         $query = SiteClearance::whereBetween('submit_date', [$from, $to])
             ->join('site_clearence_sessions', 'site_clearances.site_clearence_session_id', 'site_clearence_sessions.id')
             ->join('clients', 'site_clearence_sessions.client_id', 'clients.id')
@@ -139,12 +142,17 @@ class SiteClearenceRepository
             ->orderBy('zones.name');
         switch ($isNew) {
             case 1:
-                return $query->where('count', 0)->get();
+                $query->where('count', 0);
+                break;
             case 0:
-                return $query->where('count', '>', 0)->get();
+                $query->where('count', '>', 0);
+                break;
             default:
                 abort(422, "invalid Argument for the if HCE-log");
         }
+        // $query = $query->toSql();
+        // dd($query);
+        return  $query = $query->get();
     }
 
     public function IssuedSiteCount($from, $to, $isNew)
@@ -325,5 +333,32 @@ class SiteClearenceRepository
         // ->toSql();
         // dd($query);
         return $query;
+    }
+    public function siteClearanceDetailsBySubmitDate($from, $to, $isNew)
+    {
+        $query = SiteClearance::whereBetween('submit_date', [$from, $to])
+            ->join('site_clearence_sessions', 'site_clearances.site_clearence_session_id', 'site_clearence_sessions.id')
+            ->join('clients', 'site_clearence_sessions.client_id', 'clients.id')
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
+            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
+            ->join('users', 'assistant_directors.user_id', 'users.id')
+            ->where('assistant_directors.active_status', 1)
+            ->select('zones.name AS zone', 'site_clearence_sessions.code AS sc_code', 'clients.industry_name', 'site_clearances.submit_date', 'clients.id AS client_id')
+            ->orderBy('zones.name');
+        // $query->where('count', 0);
+        switch ($isNew) {
+            case 1:
+                $query->where('count', 0);
+                break;
+            case 0:
+                $query->where('count', '>', 0);
+                break;
+            default:
+                abort(422, "invalid Argument for isNew");
+        }
+        // $query = $query->toSql();
+        // dd($query);
+        return  $query = $query->get();
     }
 }
