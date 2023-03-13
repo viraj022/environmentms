@@ -188,4 +188,24 @@ class EPLRepository
         // dd($query->toSql());
         return $query->get();
     }
+    public function eplBySubmitDate($from, $to, $isNew)
+    {
+        $query = EPL::whereBetween('submitted_date', [$from, $to])
+            ->join('clients', 'e_p_l_s.client_id', 'clients.id')
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
+            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
+            ->join('users', 'assistant_directors.user_id', 'users.id')
+            ->where('assistant_directors.active_status', 1)
+            ->select('zones.name AS zone', 'e_p_l_s.code AS epl_code', 'clients.industry_name', 'e_p_l_s.submitted_date', 'clients.id AS client_id')
+            ->orderBy('zones.name');
+        switch ($isNew) {
+            case 1:
+                return $query->where('count', 0)->get();
+            case 0:
+                return $query->where('count', '>', 0)->get();
+            default:
+                abort(422, "invalid Argument for isNew");
+        }
+    }
 }

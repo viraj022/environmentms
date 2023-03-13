@@ -108,6 +108,7 @@ class ReportController extends Controller
 
             array_push($data, $array);
         }
+
         switch ($type) {
             case 'all':
                 $title = "Site Clearance Report (All)";
@@ -1191,5 +1192,18 @@ class ReportController extends Controller
         $result = $merged->all();
 
         return view('Reports.completed_files', compact('result', 'start_data', 'end_date'));
+    }
+    public function siteClearanceBySubmitDate($from, $to, $isNew)
+    {
+        $site = new SiteClearenceRepository();
+        $data = $site->siteClearanceDetailsBySubmitDate($from, $to, $isNew);
+        // dd($data);
+        return view('Reports.new_sc_by_date_range', compact(['data', 'from', 'to', 'isNew']));
+    }
+    public function eplBySubmitDate($from, $to, $isNew)
+    {
+        $epl = new EplRepository();
+        $data = $epl->eplBySubmitDate($from, $to, $isNew);
+        return view('Reports.new_epl_by_date_range', compact(['data', 'from', 'to', 'isNew']));
     }
 }
