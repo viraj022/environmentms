@@ -299,6 +299,8 @@ function loadAllEPLTable(data, callBack) {
 }
 
 function loadAllSiteClearTable(dataSet, callBack) {
+    console.log('dataSet');
+    console.log(dataSet);
     //SiteClears as dataSet
     var tbl = "";
     var i = 0;

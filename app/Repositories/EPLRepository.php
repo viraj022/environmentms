@@ -66,20 +66,22 @@ class EPLRepository
             ->join('clients', 'e_p_l_s.client_id', 'clients.id')
             ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
             ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
-            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
-            ->join('users', 'assistant_directors.user_id', 'users.id')
-            ->where('assistant_directors.active_status', 1)
-            ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(e_p_l_s.id) as total'))
+            ->select('zones.name as zone_name', 'zones.id as zone_id', DB::raw('count(e_p_l_s.id) as total'))
             ->groupBy('zones.id')
             ->orderBy('zones.name');
         switch ($isNew) {
             case 1:
-                return $query->where('count', 0)->get();
+                $query->where('count', 0);
+                break;
             case 0:
-                return $query->where('count', '>', 0)->get();
+                $query->where('count', '>', 0);
+                break;
             default:
                 abort(422, "invalid Argument for the if HCE-log");
+                break;
         }
+        $query = $query->get()->keyBy('zone_id');
+        return $query;
     }
 
     public function IssuedPLCount($from, $to, $isNew)
@@ -110,10 +112,7 @@ class EPLRepository
         $query = EPL::join('clients', 'e_p_l_s.client_id', 'clients.id')
             ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
             ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
-            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
-            ->join('users', 'assistant_directors.user_id', 'users.id')
-            ->where('assistant_directors.active_status', 1)
-            ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(e_p_l_s.id) as total'))
+            ->select('zones.id as zone_id', 'zones.name as zone_name', DB::raw('count(e_p_l_s.id) as total'))
             ->groupBy('zones.id')
             ->orderBy('zones.name');
         switch ($isNew) {
@@ -141,7 +140,7 @@ class EPLRepository
                 abort(422, "invalid Argument for the isIssueStatus HCE-log");
         }
 
-        return $query->get();
+        return $query->get()->keyBy('zone_id');
     }
 
     /**
@@ -153,11 +152,8 @@ class EPLRepository
             ->join('site_clearence_sessions', 'clients.id', 'site_clearence_sessions.client_id')
             ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
             ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
-            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
-            ->join('users', 'assistant_directors.user_id', 'users.id')
-            ->where('assistant_directors.active_status', 1)
             ->where('clients.industry_category_id', 76)
-            ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(e_p_l_s.id) as total'))
+            ->select('zones.id as zone_id', 'zones.name as zone_name', DB::raw('count(e_p_l_s.id) as total'))
             ->groupBy('zones.id')
             ->orderBy('zones.name');
         switch ($isNew) {
@@ -186,7 +182,7 @@ class EPLRepository
         }
 
         // dd($query->toSql());
-        return $query->get();
+        return $query->get()->keyBy('zone_id');
     }
     public function eplBySubmitDate($from, $to, $isNew)
     {
@@ -194,9 +190,6 @@ class EPLRepository
             ->join('clients', 'e_p_l_s.client_id', 'clients.id')
             ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
             ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
-            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
-            ->join('users', 'assistant_directors.user_id', 'users.id')
-            ->where('assistant_directors.active_status', 1)
             ->select('zones.name AS zone', 'e_p_l_s.code AS epl_code', 'clients.industry_name', 'e_p_l_s.submitted_date', 'clients.id AS client_id')
             ->orderBy('zones.name');
         switch ($isNew) {

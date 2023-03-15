@@ -1012,7 +1012,7 @@
                     epls: parameters.epls,
                     certificates: parameters.certificates
                 });
-                // loadAllSiteClearTable(parameters.site_clearence_sessions);
+                loadAllSiteClearTable(parameters.site_clearence_sessions);
                 setupInspectionUI(parameters.need_inspection);
                 checkFileIssueStatus(parameters);
                 checkCompletedStatus(parameters.file_status, parameters.epls, parameters
