@@ -24,9 +24,8 @@
                 <th>#</th>
                 <th> </th>
                 <th>Application</th>
-                @foreach ($assistanceDirectors as $assistanceDirector)
-                    <th>{{ $assistanceDirector['name'] }} <br> {{ $assistanceDirector['first_name'] }}
-                        {{ $assistanceDirector['last_name'] }}</th>
+                @foreach ($zones as $zone)
+                    <th>{{ $zone['name'] }}</th>
                 @endforeach
             </tr>
         </thead>
@@ -50,8 +49,14 @@
                     @else
                         <th>{{ $row['application'] }}</th>
                     @endif
-                    @foreach ($row['object'] as $o)
-                        <th>{{ $o['total'] }}</th>
+                    {{-- @dd($zones) --}}
+
+                    @foreach ($zones as $zk => $zv)
+                        @if (array_key_exists($zk, $row['object']))
+                        <th>{{ $row['object'][$zk]['total'] }}</th>
+                        @else
+                        <th></th>
+                        @endif
                     @endforeach
                 </tr>
             @endforeach

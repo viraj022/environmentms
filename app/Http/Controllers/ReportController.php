@@ -28,6 +28,7 @@ use App\EPLNew;
 use App\FileLog;
 use App\Repositories\ComplaintRepository;
 use App\SiteClearenceSession;
+use App\Zone;
 use DB;
 
 class ReportController extends Controller
@@ -233,7 +234,9 @@ class ReportController extends Controller
         $inspection = new InspectionSessionRepository();
         $committee = new CommitteeRepository();
         $complaints = new ComplaintRepository();
-        $assistanceDirectors = $ass->getAssistanceDirectorWithZones();
+        // $assistanceDirectors = $ass->getAssistanceDirectorWithZones();
+        $zones = Zone::all()->keyBy('id')->toArray();
+
         /**
          * Received Section
          */
@@ -243,16 +246,16 @@ class ReportController extends Controller
         $siteExtendCount = $site->ReceivedSiteCount($from, $to, 0);
         $complainCount = $complaints->getComplaints($from, $to);
 
-        $result[] = array('type' => 'received', 'name' => 'SC(New)', 'application' => $this->prepareApplicationTotal($siteNewCount->toArray()), 'object' => $this->prepareCount($siteNewCount->toArray(), $assistanceDirectors));
-        $result[] = array('type' => 'received', 'name' => 'SC(EX)', 'application' => $this->prepareApplicationTotal($siteExtendCount->toArray()), 'object' => $this->prepareCount($siteExtendCount->toArray(), $assistanceDirectors));
-        $result[] = array('type' => 'received', 'name' => 'EPL(New)', 'application' => $this->prepareApplicationTotal($newEplCount->toArray()), 'object' => $this->prepareCount($newEplCount->toArray(), $assistanceDirectors));
-        $result[] = array('type' => 'received', 'name' => 'EPL(R)', 'application' => $this->prepareApplicationTotal($renewEplCount->toArray()), 'object' => $this->prepareCount($renewEplCount->toArray(), $assistanceDirectors));
-        $result[] = array('type' => 'received', 'name' => 'Agrarian Services', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
-        $result[] = array('type' => 'received', 'name' => 'Land Lease Out', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
-        $result[] = array('type' => 'received', 'name' => 'Court Case', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
-        $result[] = array('type' => 'received', 'name' => 'Complaints', 'application' => $this->prepareApplicationTotal($complainCount->toArray()), 'object' => $this->prepareCount($complainCount->toArray(), $assistanceDirectors));
-        $result[] = array('type' => 'received', 'name' => 'Other', 'application' => $this->prepareApplicationTotal(array(), false), 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
-
+        $result[] = array('type' => 'received', 'name' => 'SC(New)', 'application' => $siteNewCount->sum('total'), 'object' => $siteNewCount->toArray());
+        $result[] = array('type' => 'received', 'name' => 'SC(EX)', 'application' => $siteExtendCount->sum('total'), 'object' => $siteExtendCount->toArray());
+        $result[] = array('type' => 'received', 'name' => 'EPL(New)', 'application' => $newEplCount->sum('total'), 'object' => $newEplCount->toArray());
+        $result[] = array('type' => 'received', 'name' => 'EPL(R)', 'application' => $renewEplCount->sum('total'), 'object' => $renewEplCount->toArray());
+        $result[] = array('type' => 'received', 'name' => 'Agrarian Services', 'application' => '', 'object' => []);
+        $result[] = array('type' => 'received', 'name' => 'Land Lease Out', 'application' => '', 'object' => []);
+        $result[] = array('type' => 'received', 'name' => 'Court Case', 'application' => '', 'object' => []);
+        $result[] = array('type' => 'received', 'name' => 'Complaints', 'application' => $complainCount->sum('total'), 'object' => $complainCount->toArray());
+        $result[] = array('type' => 'received', 'name' => 'Other', 'application' => '', 'object' => []);
+        // dd($result);
         /**
          * Inspection Section
          */
@@ -260,28 +263,28 @@ class ReportController extends Controller
         $eplInspectionRenewCount = $inspection->getEPLInspection($from, $to, 0);
         $siteInspectionNewCount = $inspection->getSiteInspection($from, $to, 1);
         $siteInspectionRenewCount = $inspection->getSiteInspection($from, $to, 0);
+
         $totalCount = $this->generateTotalField(array(
             $eplInspectionNewCount,
             $eplInspectionRenewCount,
             $siteInspectionNewCount, $siteInspectionRenewCount
-        ), $assistanceDirectors);
-        // dd($siteInspectionNewCount->toArray(), $siteInspectionRenewCount->toArray());
+        ));
 
-        $result[] = array('type' => 'Inspection', 'name' => 'SC(New)', 'application' => "", 'object' => $this->prepareCount($siteInspectionNewCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => 'Inspection', 'name' => 'SC(New)', 'application' => "", 'object' => $siteInspectionNewCount->toArray());
 
-        $result[] = array('type' => 'Inspection', 'name' => 'SC(EX)', 'application' => "", 'object' => $this->prepareCount($siteInspectionRenewCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => 'Inspection', 'name' => 'SC(EX)', 'application' => "", 'object' => $siteInspectionRenewCount->toArray());
 
-        $result[] = array('type' => 'Inspection', 'name' => 'EPL(New)', 'application' => "", 'object' => $this->prepareCount($eplInspectionNewCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => 'Inspection', 'name' => 'EPL(New)', 'application' => "", 'object' => $eplInspectionNewCount->toArray());
 
-        $result[] = array('type' => 'Inspection', 'name' => 'EPL(R)', 'application' => '', 'object' => $this->prepareCount($eplInspectionRenewCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => 'Inspection', 'name' => 'EPL(R)', 'application' => '', 'object' => $eplInspectionRenewCount->toArray());
         $result[] = array('type' => 'Inspection', 'name' => 'Total', 'application' => '', 'object' => $totalCount);
-        $result[] = array('type' => 'Inspection', 'name' => 'Agrarian Services', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
-        $result[] = array('type' => 'Inspection', 'name' => 'Land Lease Out', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
-        $result[] = array('type' => 'Inspection', 'name' => 'Monitoring', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
-        $result[] = array('type' => 'Inspection', 'name' => 'Court Case', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
-        $result[] = array('type' => 'Inspection', 'name' => 'Complaints', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
-        $result[] = array('type' => 'Inspection', 'name' => 'Other', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
-        $result[] = array('type' => 'Inspection', 'name' => 'UnAuthorized', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+        $result[] = array('type' => 'Inspection', 'name' => 'Agrarian Services', 'application' => '', 'object' => array());
+        $result[] = array('type' => 'Inspection', 'name' => 'Land Lease Out', 'application' => '', 'object' => array());
+        $result[] = array('type' => 'Inspection', 'name' => 'Monitoring', 'application' => '', 'object' => array());
+        $result[] = array('type' => 'Inspection', 'name' => 'Court Case', 'application' => '', 'object' => array());
+        $result[] = array('type' => 'Inspection', 'name' => 'Complaints', 'application' => '', 'object' => array());
+        $result[] = array('type' => 'Inspection', 'name' => 'Other', 'application' => '', 'object' => array());
+        $result[] = array('type' => 'Inspection', 'name' => 'UnAuthorized', 'application' => '', 'object' => array());
 
         /**
          * Completed Section
@@ -293,26 +296,27 @@ class ReportController extends Controller
         $totalIssuedCount = $this->generateTotalField(array(
             $completedNewEplCount,
             $completedReNewEplCount,
-            $completedNewSiteCount, $completedRenewSiteCount
-        ), $assistanceDirectors);
+            $completedNewSiteCount,
+            $completedRenewSiteCount
+        ));
 
-        $result[] = array('type' => 'Issued', 'name' => 'SC(New)', 'application' => "", 'object' => $this->prepareCount($completedNewSiteCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => 'Issued', 'name' => 'SC(New)', 'application' => "", 'object' => $completedNewSiteCount->toArray());
 
-        $result[] = array('type' => 'Issued', 'name' => 'SC(EX)', 'application' => "", 'object' => $this->prepareCount($completedRenewSiteCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => 'Issued', 'name' => 'SC(EX)', 'application' => "", 'object' => $completedRenewSiteCount->toArray());
 
-        $result[] = array('type' => 'Issued', 'name' => 'EPL(New)', 'application' => "", 'object' => $this->prepareCount($completedNewEplCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => 'Issued', 'name' => 'EPL(New)', 'application' => "", 'object' => $completedNewEplCount->toArray());
 
-        $result[] = array('type' => 'Issued', 'name' => 'EPL(R)', 'application' => '', 'object' => $this->prepareCount($completedReNewEplCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => 'Issued', 'name' => 'EPL(R)', 'application' => '', 'object' => $completedReNewEplCount->toArray());
 
         $result[] = array('type' => 'Issued', 'name' => 'Total', 'application' => '', 'object' => $totalIssuedCount);
 
-        $result[] = array('type' => 'Issued', 'name' => 'Agrarian Services', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+        $result[] = array('type' => 'Issued', 'name' => 'Agrarian Services', 'application' => '', 'object' => array());
 
-        $result[] = array('type' => 'Issued', 'name' => 'Land Lease Out', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+        $result[] = array('type' => 'Issued', 'name' => 'Land Lease Out', 'application' => '', 'object' => array());
 
-        $result[] = array('type' => 'Issued', 'name' => 'Respond for Court Case', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+        $result[] = array('type' => 'Issued', 'name' => 'Respond for Court Case', 'application' => '', 'object' => array());
 
-        $result[] = array('type' => 'Issued', 'name' => 'Other Letters', 'application' => '', 'object' => $this->prepareCount(array(), $assistanceDirectors, false));
+        $result[] = array('type' => 'Issued', 'name' => 'Other Letters', 'application' => '', 'object' => array());
 
         /**
          * Rejected Section
@@ -320,15 +324,15 @@ class ReportController extends Controller
         $rejectedEplCount = $epl->EPlPLCount($from, $to, 3, 2);
         $rejectedNewSiteCount = $site->SiteCount($from, $to, 0, 2);
 
-        $result[] = array('type' => 'Rejected', 'name' => 'SC', 'application' => "", 'object' => $this->prepareCount($rejectedNewSiteCount->toArray(), $assistanceDirectors));
-        $result[] = array('type' => 'Rejected', 'name' => 'EPL', 'application' => "", 'object' => $this->prepareCount($rejectedEplCount->toArray(), $assistanceDirectors));
+        $result[] = array('type' => 'Rejected', 'name' => 'SC', 'application' => "", 'object' => $rejectedNewSiteCount->toArray());
+        $result[] = array('type' => 'Rejected', 'name' => 'EPL', 'application' => "", 'object' => $rejectedEplCount->toArray());
         /**
          * Committee
          */
         $committeeCount = $committee->getCommitteeCount($from, $to);
-        $result[] = array('type' => 'Technical Committee', 'name' => 'Meetings', 'application' => "", 'object' => $this->prepareCount($committeeCount->toArray(), $assistanceDirectors));
-        $result[] = array('type' => 'Technical Committee', 'name' => 'TOR Preparations', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
-        $result[] = array('type' => 'Technical Committee', 'name' => 'Letters', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
+        $result[] = array('type' => 'Technical Committee', 'name' => 'Meetings', 'application' => "", 'object' => $committeeCount->toArray());
+        $result[] = array('type' => 'Technical Committee', 'name' => 'TOR Preparations', 'application' => "", 'object' => array());
+        $result[] = array('type' => 'Technical Committee', 'name' => 'Letters', 'application' => "", 'object' => array());
         /**
          * Others
          */
@@ -337,71 +341,44 @@ class ReportController extends Controller
         $towerEplRenewCount = $epl->TowerEPlPLCount($from, $to, 0, 0);
 
 
-        $result[] = array('type' => '', 'name' => 'Meeting/Test Blast', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
-        $result[] = array('type' => '', 'name' => 'Joint Inspection', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
-        $result[] = array('type' => '', 'name' => 'Trainings', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
-        $result[] = array('type' => '', 'name' => 'SWML', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
-        $result[] = array('type' => '', 'name' => 'Tower (EPL R)', 'application' => $this->prepareApplicationTotal($towerEplRenewCount->toArray()), 'object' => $this->prepareCount($towerEplRenewCount->toArray(), $assistanceDirectors));
-        $result[] = array('type' => '', 'name' => 'Tower (EPL N)', 'application' => $this->prepareApplicationTotal($towerEplNewCount->toArray()), 'object' => $this->prepareCount($towerEplNewCount->toArray(), $assistanceDirectors));
-        $result[] = array('type' => '', 'name' => 'Tower SC', 'application' => $this->prepareApplicationTotal($telecommunicationCount->toArray()), 'object' => $this->prepareCount($telecommunicationCount->toArray(), $assistanceDirectors));
-        $result[] = array('type' => '', 'name' => 'Expert Committee Meetings', 'application' => "", 'object' => $this->prepareCount(array(), $assistanceDirectors));
+        $result[] = array('type' => '', 'name' => 'Meeting/Test Blast', 'application' => "", 'object' => array());
+        $result[] = array('type' => '', 'name' => 'Joint Inspection', 'application' => "", 'object' => array());
+        $result[] = array('type' => '', 'name' => 'Trainings', 'application' => "", 'object' => array());
+        $result[] = array('type' => '', 'name' => 'SWML', 'application' => "", 'object' => array());
+        $result[] = array('type' => '', 'name' => 'Tower (EPL R)', 'application' => $towerEplRenewCount->sum('total'), 'object' => $towerEplRenewCount->toArray());
+        $result[] = array('type' => '', 'name' => 'Tower (EPL N)', 'application' => $towerEplNewCount->sum('total'), 'object' => $towerEplNewCount->toArray());
+        $result[] = array('type' => '', 'name' => 'Tower SC', 'application' => $telecommunicationCount->sum('total'), 'object' => $telecommunicationCount->toArray());
+        $result[] = array('type' => '', 'name' => 'Expert Committee Meetings', 'application' => "", 'object' => array());
         $time_elapsed_secs = round(microtime(true) - $start, 5);
-        return view('Reports.monthly_progress_report', compact('result', 'assistanceDirectors', 'time_elapsed_secs', 'from', 'to'));
+        return view('Reports.monthly_progress_report', compact('result', 'zones', 'time_elapsed_secs', 'from', 'to'));
     }
 
-    private function prepareCount($array, $assistanceDirectors, $flag = true)
+    private function generateTotalField($array)
     {
         $rtn = [];
-        foreach ($assistanceDirectors as $assistanceDirector) {
-            if ($flag) {
-                $data = array('total' => 0);
-            } else {
-                $data = array('total' => '');
-            }
-            foreach ($array as $a) {
-                if ($assistanceDirector->id == $a['ass_id']) {
-                    $data['total'] = $a['total'];
+        foreach ($array as $a) {
+            foreach ($a as $k => $v) {
+                if (!array_key_exists($k, $rtn)) {
+                    $rtn[$k] = array('total' => 0);
                 }
+                $rtn[$k]['total'] += $v['total'];
             }
-            array_push($rtn, $data);
-        }
-        return $rtn;
-    }
-
-    private function generateTotalField($array, $assistanceDirectors)
-    {
-        $rtn = [];
-        // dd($array);
-        // dd($assistanceDirectors->toArray());
-        foreach ($assistanceDirectors as $assistanceDirector) {
-            $data['total'] = 0;
-            foreach ($array as $a) {
-                foreach ($a as $d) {
-                    if ($assistanceDirector->id == $d['ass_id']) {
-                        $data['total'] = $data['total'] + $d['total'];
-                    }
-                }
-            }
-            array_push($rtn, $data);
         }
         return $rtn;
     }
 
     private function prepareApplicationTotal($array, $flag = true)
     {
+        if (!$flag) {
+            return '';
+        }
         $rtn = 0;
         if (count($array) > 0) {
-
             foreach ($array as $a) {
                 $rtn = $rtn + $a['total'];
             }
         }
-        if ($flag) {
-
-            return $rtn;
-        } else {
-            return '';
-        }
+        return $rtn;
     }
 
     public function eoInspectionReport($eo_id, $from, $to)
@@ -612,12 +589,6 @@ class ReportController extends Controller
     {
         $clientRepo = new ClientRepository();
         $file = $clientRepo->find($id);
-        // dd($file->fileLogs->toArray());
-        // dd($file->toArray());
-        // dd($file->businessScale['name']);
-        // $data = [];
-        // $num = 0;
-        // dd($data);
         $fpdf = new SummaryTemplate('p', 'mm', 'A4', 'File Summary');
         $splitSize = $fpdf->GetPageWidth() / 2 - 10;
         $fpdf->AddPage();

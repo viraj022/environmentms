@@ -134,10 +134,7 @@ class SiteClearenceRepository
             ->join('clients', 'site_clearence_sessions.client_id', 'clients.id')
             ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
             ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
-            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
-            ->join('users', 'assistant_directors.user_id', 'users.id')
-            ->where('assistant_directors.active_status', 1)
-            ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(site_clearances.id) as total'))
+            ->select('zones.name AS zone_name', 'zones.id AS zone_id', DB::raw('count(site_clearances.id) as total'))
             ->groupBy('zones.id')
             ->orderBy('zones.name');
         switch ($isNew) {
@@ -152,7 +149,7 @@ class SiteClearenceRepository
         }
         // $query = $query->toSql();
         // dd($query);
-        return  $query = $query->get();
+        return  $query = $query->get()->keyBy('zone_id');
     }
 
     public function IssuedSiteCount($from, $to, $isNew)
@@ -192,10 +189,7 @@ class SiteClearenceRepository
             ->join('clients', 'site_clearence_sessions.client_id', 'clients.id')
             ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
             ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
-            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
-            ->join('users', 'assistant_directors.user_id', 'users.id')
-            ->where('assistant_directors.active_status', 1)
-            ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(site_clearances.id) as total'))
+            ->select('zones.id as zone_id', 'zones.name as zone_name', DB::raw('count(site_clearances.id) as total'))
             ->groupBy('zones.id')
             ->orderBy('zones.name');
         switch ($isNew) {
@@ -225,7 +219,7 @@ class SiteClearenceRepository
         if ($SiteType !== 0) {
             $query = $query->where('site_clearance_type', $SiteType);
         }
-        return $query->get();
+        return $query->get()->keyBy('zone_id');
     }
 
     public function extendSiteClearance($request, $siteClearence)
@@ -322,16 +316,12 @@ class SiteClearenceRepository
             ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
             ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
             ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
-            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
-            ->join('users', 'assistant_directors.user_id', 'users.id')
-            ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(site_clearances.id) as total'))
+            ->select('zones.id as zone_id', 'zones.name as zone_name', DB::raw('count(site_clearances.id) as total'))
             ->whereNotNull('site_clearances.submit_date')
             ->whereBetween('site_clearances.submit_date', [$from, $to])
             ->where('clients.industry_category_id', '=', '76')
             ->groupBy('zones.id')
-            ->get();
-        // ->toSql();
-        // dd($query);
+            ->get()->keyBy('zone_id');
         return $query;
     }
     public function siteClearanceDetailsBySubmitDate($from, $to, $isNew)
@@ -341,9 +331,6 @@ class SiteClearenceRepository
             ->join('clients', 'site_clearence_sessions.client_id', 'clients.id')
             ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
             ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
-            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
-            ->join('users', 'assistant_directors.user_id', 'users.id')
-            ->where('assistant_directors.active_status', 1)
             ->select('zones.name AS zone', 'site_clearence_sessions.code AS sc_code', 'clients.industry_name', 'site_clearances.submit_date', 'clients.id AS client_id')
             ->orderBy('zones.name');
         // $query->where('count', 0);
