@@ -270,14 +270,14 @@ class ReportController extends Controller
             $siteInspectionNewCount, $siteInspectionRenewCount
         ));
 
-        $result[] = array('type' => 'Inspection', 'name' => 'SC(New)', 'application' => "", 'object' => $siteInspectionNewCount->toArray());
+        $result[] = array('type' => 'Inspection', 'name' => 'SC(New)', 'application' => $siteInspectionNewCount->sum('total'), 'object' => $siteInspectionNewCount->toArray());
 
-        $result[] = array('type' => 'Inspection', 'name' => 'SC(EX)', 'application' => "", 'object' => $siteInspectionRenewCount->toArray());
+        $result[] = array('type' => 'Inspection', 'name' => 'SC(EX)', 'application' => $siteInspectionRenewCount->sum('total'), 'object' => $siteInspectionRenewCount->toArray());
 
-        $result[] = array('type' => 'Inspection', 'name' => 'EPL(New)', 'application' => "", 'object' => $eplInspectionNewCount->toArray());
+        $result[] = array('type' => 'Inspection', 'name' => 'EPL(New)', 'application' => $eplInspectionNewCount->sum('total'), 'object' => $eplInspectionNewCount->toArray());
 
-        $result[] = array('type' => 'Inspection', 'name' => 'EPL(R)', 'application' => '', 'object' => $eplInspectionRenewCount->toArray());
-        $result[] = array('type' => 'Inspection', 'name' => 'Total', 'application' => '', 'object' => $totalCount);
+        $result[] = array('type' => 'Inspection', 'name' => 'EPL(R)', 'application' => $eplInspectionRenewCount->sum('total'), 'object' => $eplInspectionRenewCount->toArray());
+        $result[] = array('type' => 'Inspection', 'name' => 'Total', 'application' => $totalCount->sum('total'), 'object' => $totalCount->toArray());
         $result[] = array('type' => 'Inspection', 'name' => 'Agrarian Services', 'application' => '', 'object' => array());
         $result[] = array('type' => 'Inspection', 'name' => 'Land Lease Out', 'application' => '', 'object' => array());
         $result[] = array('type' => 'Inspection', 'name' => 'Monitoring', 'application' => '', 'object' => array());
@@ -292,6 +292,7 @@ class ReportController extends Controller
         $completedNewEplCount = $epl->IssuedPLCount($from, $to, 1);
         $completedReNewEplCount = $epl->IssuedPLCount($from, $to, 0);
         $completedNewSiteCount = $site->IssuedSiteCount($from, $to, 1);
+        // dd($completedNewSiteCount);
         $completedRenewSiteCount = $site->IssuedSiteCount($from, $to, 0);
         $totalIssuedCount = $this->generateTotalField(array(
             $completedNewEplCount,
@@ -300,15 +301,16 @@ class ReportController extends Controller
             $completedRenewSiteCount
         ));
 
-        $result[] = array('type' => 'Issued', 'name' => 'SC(New)', 'application' => "", 'object' => $completedNewSiteCount->toArray());
+        // dd($completedNewEplCount);
+        $result[] = array('type' => 'Issued', 'name' => 'SC(New)', 'application' =>  $completedNewSiteCount->sum('total'), 'object' => $completedNewSiteCount->toArray());
 
-        $result[] = array('type' => 'Issued', 'name' => 'SC(EX)', 'application' => "", 'object' => $completedRenewSiteCount->toArray());
+        $result[] = array('type' => 'Issued', 'name' => 'SC(EX)', 'application' =>  $completedRenewSiteCount->sum('total'), 'object' => $completedRenewSiteCount->toArray());
 
-        $result[] = array('type' => 'Issued', 'name' => 'EPL(New)', 'application' => "", 'object' => $completedNewEplCount->toArray());
+        $result[] = array('type' => 'Issued', 'name' => 'EPL(New)', 'application' =>  $completedNewEplCount->sum('total'), 'object' => $completedNewEplCount->toArray());
 
-        $result[] = array('type' => 'Issued', 'name' => 'EPL(R)', 'application' => '', 'object' => $completedReNewEplCount->toArray());
+        $result[] = array('type' => 'Issued', 'name' => 'EPL(R)', 'application' =>  $completedReNewEplCount->sum('total'), 'object' => $completedReNewEplCount->toArray());
 
-        $result[] = array('type' => 'Issued', 'name' => 'Total', 'application' => '', 'object' => $totalIssuedCount);
+        $result[] = array('type' => 'Issued', 'name' => 'Total', 'application' => $totalIssuedCount->sum('total'), 'object' => $totalIssuedCount->toArray());
 
         $result[] = array('type' => 'Issued', 'name' => 'Agrarian Services', 'application' => '', 'object' => array());
 
@@ -336,10 +338,10 @@ class ReportController extends Controller
         /**
          * Others
          */
-        $telecommunicationCount = $site->telicomTowerCount($from, $to, 'Application');
+        $telecommunicationCount = $site->telicomTowerCount($from, $to);
         $towerEplNewCount = $epl->TowerEPlPLCount($from, $to, 1, 0);
         $towerEplRenewCount = $epl->TowerEPlPLCount($from, $to, 0, 0);
-
+// dd($towerEplRenewCount);
 
         $result[] = array('type' => '', 'name' => 'Meeting/Test Blast', 'application' => "", 'object' => array());
         $result[] = array('type' => '', 'name' => 'Joint Inspection', 'application' => "", 'object' => array());
@@ -364,7 +366,7 @@ class ReportController extends Controller
                 $rtn[$k]['total'] += $v['total'];
             }
         }
-        return $rtn;
+        return collect($rtn);
     }
 
     private function prepareApplicationTotal($array, $flag = true)

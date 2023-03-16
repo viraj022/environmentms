@@ -205,19 +205,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <!-- <div class="form-group showCorrectedFileUi d-none">
-                                                                                                                                                            <label for="uploadLabel">Word File Upload: </label><br>
-                                                                                                                                                            <input id="correctedFile" type="file" class="" accept=".doc, .docx, .pdf">
-                                                                                                                                                            <button id="uploadcorrectedFile" class="btn btn-success"><i
-                                                                                                                                                                class="fas fa-file-upload"></i> Upload</button>
-                                                                                                                                                            <div class="progress d-none">
-                                                                                                                                                                <div class="progress-bar bg-primary progress-bar-striped Uploadprogress"
-                                                                                                                                                                id="Uploadprogress" role="progressbar" aria-valuenow="40"
-                                                                                                                                                                aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                                                                                                                                                                <!--<span class="sr-only">40% Complete (success)</span>-->
-                                                        <!-- </div>
-                                                                                                                                                            </div>
-                                                                                                                                                        </div> -->
+
                                                         <h4 class="text-success d-none" id="certificateSubmittedLable">
                                                             Certificate Submitted</h4>
                                                         <button class="btn btn-primary complCertificate d-none"><i
