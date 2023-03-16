@@ -60,7 +60,7 @@ Route::get('/pending_certificates', 'ClientController@certificatesUi');
 Route::get('/ad_pending_list', 'AssistantDirectorController@adPendingIndex');
 Route::get('/certificate_perforation/id/{id}', 'ClientController@certificatePrefer');
 Route::get('/director_pending_list', 'AssistantDirectorController@directorPendingListIndex');
-Route::get('/site_clearance/client/{client}/profile/{profile}', 'SiteClearanceController@index');
+Route::get('/site_clearance/client/{client}/profile/{profile}', 'SiteClearanceController@index')->name('site_clearance.index');
 Route::get('/expired_certificates', 'ClientController@expireCertificatesUi');
 Route::get('/confirmed_files', 'ClientController@confirmedFiles');
 Route::get('/committee/id/{id}', 'WebRouteController@indexCommittee');

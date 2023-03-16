@@ -32,7 +32,7 @@
         <tbody>
             {{-- @dump($result); --}}
             @foreach ($result as $row)
-                {{-- @dd($row) --}}
+                {{-- @dump($row) --}}
                 <tr>
                     <th>{{ $row['type'] }}</th>
                     <th>{{ $row['name'] }}</th>
@@ -49,13 +49,12 @@
                     @else
                         <th>{{ $row['application'] }}</th>
                     @endif
-                    {{-- @dd($zones) --}}
 
                     @foreach ($zones as $zk => $zv)
                         @if (array_key_exists($zk, $row['object']))
-                        <th>{{ $row['object'][$zk]['total'] }}</th>
+                            <th>{{ $row['object'][$zk]['total'] }}</th>
                         @else
-                        <th></th>
+                            <th></th>
                         @endif
                     @endforeach
                 </tr>

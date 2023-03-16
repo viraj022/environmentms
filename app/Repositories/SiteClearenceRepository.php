@@ -159,12 +159,9 @@ class SiteClearenceRepository
             ->join('clients', 'site_clearence_sessions.client_id', 'clients.id')
             ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
             ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
-            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
-            ->join('users', 'assistant_directors.user_id', 'users.id')
-            ->where('assistant_directors.active_status', 1)
             // ->whereNotNull('site_clearances.issue_date')
             ->whereBetween('site_clearances.issue_date', [$from, $to])
-            ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(site_clearances.id) as total'))
+            ->select('zones.id as zone_id', 'zones.name as zone_name', DB::raw('count(site_clearances.id) as total'))
             ->groupBy('zones.id')
             ->orderBy('zones.name');
         switch ($isNew) {
@@ -180,7 +177,7 @@ class SiteClearenceRepository
         }
         // $query = $query->toSql();
         // dd($query);
-        return $query->get();
+        return $query->get()->keyBy('zone_id');
     }
 
     public function SiteCount($from, $to, $isNew = -1, $issueStatus = 0, $SiteType = 0)
@@ -309,7 +306,7 @@ class SiteClearenceRepository
         // dd($query);
         return $query;
     }
-    public function telicomTowerCount($from, $to, $type)
+    public function telicomTowerCount($from, $to)
     {
         $query = SiteClearance::join('site_clearence_sessions', 'site_clearances.site_clearence_session_id', 'site_clearence_sessions.id')
             ->join('clients', 'site_clearence_sessions.client_id', 'clients.id')

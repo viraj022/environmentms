@@ -145,13 +145,21 @@ class ClientController extends Controller
         }
         $oldOwnerDetails = ChangeOwner::where('client_id', $client->id)->orderBy('created_at', 'desc')->first();
         $onlineTransactions = Transaction::with('transactionItems')->whereNotNull('online_payment_id')->where('client_id', $id)->withTrashed()->get();
-        $scCertificates = Certificate::where('certificate_type', 1)->where('client_id', $id)->where('issue_status', 1)->select('signed_certificate_path', 'issue_date', 'expire_date', 'cetificate_number')->get();
+        $scCertificates = Certificate::where('certificate_type', 1)->where('client_id', $id)
+            // ->where('issue_status', 1)
+            ->select('signed_certificate_path', 'issue_date', 'expire_date', 'cetificate_number')->get();
+
+        $siteClearance = SiteClearance::join('site_clearence_sessions', 'site_clearence_sessions.id', '=', 'site_clearances.site_clearence_session_id')
+            ->where('site_clearence_sessions.client_id', $id)
+            ->select('site_clearances.*', 'site_clearence_sessions.code as session_code')
+            ->orderBy('site_clearances.count', 'desc')
+            ->get();
 
         $qrCode = $this->fileQr($client->file_no);
         if ($pageAuth['is_read']) {
             return view('industry_profile', [
                 'pageAuth' => $pageAuth, 'id' => $id, 'client' => $client, 'qrCode' => $qrCode, 'oldOwnerDetails' => $oldOwnerDetails, 'onlineTransactions' => $onlineTransactions,
-                'scCertificates' => $scCertificates
+                'siteClearance' => $siteClearance
             ]);
         } else {
             abort(401);
@@ -644,7 +652,7 @@ class ClientController extends Controller
             ->with('businessScale')
             ->with('certificates')
             ->with('pradesheeyasaba')->find($id);
-        if(!$file) {
+        if (!$file) {
             // if file not found
             return array('id' => 0, 'message' => 'File not found');
         }
@@ -1078,6 +1086,7 @@ class ClientController extends Controller
             //epl certificate
             $certificate->certificate_type = 0;
         } elseif ($client->cer_type_status == 3 || $client->cer_type_status == 4) {
+            //sc certificate
             $certificate->certificate_type = 1;
         }
         $certificate->cetificate_number = $client->generateCertificateNumber();

@@ -120,6 +120,7 @@
 
                         </div>
                     </div>
+
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-header">
@@ -307,6 +308,44 @@
                                             class="fas fa-check"></i> Upload Application</button>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-address-card"></i> Issued Data
+                                </h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Date</th>
+                                            <th>No</th>
+                                            <th>View</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($certificates as $certificate)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>Expire: {{ $certificate->expire_date }}, Issued:
+                                                    {{ $certificate->issue_date }}</td>
+                                                <td>{{ $certificate->cetificate_number }}</td>
+                                                <td><a href="{{ asset($certificate->signed_certificate_path) }}"
+                                                        class="btn btn-sm btn-success"></a></td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="4">No Data</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
                         </div>
                     </div>
                 </div>
