@@ -39,9 +39,10 @@ class SiteClearanceController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $certificates = Certificate::where('client_id', $client)->where('certificate_type', 1)->orderBy('id', 'desc')->get();
+        $certificate = Certificate::where('client_id', $client)->where('certificate_type', 1)->first();
         if ($pageAuth['is_read']) {
             if (Client::find($client) !== null && SiteClearenceSession::find($profile) !== null) {
-                return view('site_clearance', ['pageAuth' => $pageAuth, 'client' => $client, 'profile' => $profile, 'code' => SiteClearenceSession::find($profile)->code, 'certificates' => $certificates]);
+                return view('site_clearance', ['pageAuth' => $pageAuth, 'client' => $client, 'profile' => $profile, 'code' => SiteClearenceSession::find($profile)->code, 'certificates' => $certificates, 'certificate' => $certificate]);
             } else {
                 abort(404);
             }
