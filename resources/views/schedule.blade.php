@@ -28,7 +28,7 @@
 @endsection
 
 @section('content')
-    @if ($pageAuth['is_read'] == 1 || false)
+    @if ((!empty($pageAuth['is_read']) && $pageAuth['is_read']) == 1 || false)
         <section class="content-header">
 
             <div class="container-fluid">
@@ -78,15 +78,15 @@
 
                                         <p class='text-success'>Loading...</p>
                                         <!--                                <div class="external-event bg-warning">Telecommunication</div>
-                                                                                                                                                                                                                            <div class="external-event bg-info">Another [1]</div>
-                                                                                                                                                                                                                            <div class="external-event bg-primary">Another [2]</div>
-                                                                                                                                                                                                                            <div class="external-event bg-danger">Another [3]</div>-->
+                                                                                                                                                                                                                                <div class="external-event bg-info">Another [1]</div>
+                                                                                                                                                                                                                                <div class="external-event bg-primary">Another [2]</div>
+                                                                                                                                                                                                                                <div class="external-event bg-danger">Another [3]</div>-->
                                         <!--                                <div class="checkbox">
-                                                                                                                                                                                                                                <label for="drop-remove">
-                                                                                                                                                                                                                                    <input type="checkbox" id="drop-remove">
-                                                                                                                                                                                                                                    remove after drop
-                                                                                                                                                                                                                                </label>
-                                                                                                                                                                                                                            </div>-->
+                                                                                                                                                                                                                                    <label for="drop-remove">
+                                                                                                                                                                                                                                        <input type="checkbox" id="drop-remove">
+                                                                                                                                                                                                                                        remove after drop
+                                                                                                                                                                                                                                    </label>
+                                                                                                                                                                                                                                </div>-->
                                     </div>
                                 </div>
                                 <!-- /.card-body -->

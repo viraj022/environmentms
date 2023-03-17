@@ -180,6 +180,9 @@ class SearchController extends Controller
     public function getClientByReferenceNumber($code)
     {
         $certificate = Certificate::where('refference_no', $code)->first();
+        if (empty($certificate)) {
+            return [];
+        }
         $client = Client::where('id', $certificate->client_id)->get();
         return $client;
     }
