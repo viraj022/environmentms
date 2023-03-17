@@ -230,6 +230,9 @@ class ClientController extends Controller
     public function confirmedFiles()
     {
         $user = Auth::user();
+        if(empty($user)){
+            return redirect()->route('home');
+        }
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('confirmed_files', ['pageAuth' => $pageAuth]);
     }

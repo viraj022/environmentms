@@ -15,7 +15,7 @@
     <!-- Google Font: Source Sans Pro -->
 @endsection
 @section('content')
-    @if ($pageAuth['is_read'] == 1 || false)
+    @if ((!empty($pageAuth['is_read']) && $pageAuth['is_read'] == 1) || false)
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
@@ -144,7 +144,7 @@
             $('#getAssistantDirector').change(function() {
                 loadAdPendingListTable($('#getAssistantDirector').val());
             });
-            //select button action 
+            //select button action
             $(document).on('click', '.btnAction', function() {});
 
             $(document).on('click', '.actionDetails', function() {

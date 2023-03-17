@@ -151,7 +151,7 @@ class EPLRepository
     public function TowerEPlPLCount($from, $to, $isNew, $issueStatus = 0)
     {
         $query = EPL::join('clients', 'e_p_l_s.client_id', 'clients.id')
-            ->join('site_clearence_sessions', 'clients.id', 'site_clearence_sessions.client_id')
+            // ->join('site_clearence_sessions', 'clients.id', 'site_clearence_sessions.client_id')
             ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
             ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
             //76 = telicommunication tower
