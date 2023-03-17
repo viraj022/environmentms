@@ -324,18 +324,26 @@
                                             <th>#</th>
                                             <th>Date</th>
                                             <th>No</th>
-                                            <th>View</th>
+                                            <th>Certificate</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($certificates as $certificate)
+                                        @forelse ($certificates as $cert)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>Expire: {{ $certificate->expire_date }}, Issued:
-                                                    {{ $certificate->issue_date }}</td>
-                                                <td>{{ $certificate->cetificate_number }}</td>
-                                                <td><a href="{{ asset($certificate->signed_certificate_path) }}"
-                                                        class="btn btn-sm btn-success"></a></td>
+                                                <td>Expire: {{ $cert->expire_date }}, Issued:
+                                                    {{ $cert->issue_date }}</td>
+                                                <td>{{ $cert->cetificate_number }}</td>
+                                                <td>
+                                                    @if (!empty($cert->certificate_path))
+                                                        <a href="{{ asset($cert->certificate_path) }}"
+                                                            class="btn btn-sm btn-success">Draft</a>
+                                                    @endif
+                                                    @if (!empty($cert->signed_certificate_path))
+                                                        <a href="{{ asset($cert->signed_certificate_path) }}"
+                                                            class="btn btn-sm btn-info">Origial</a>
+                                                    @endif
+                                                </td>
                                             </tr>
                                         @empty
                                             <tr>
