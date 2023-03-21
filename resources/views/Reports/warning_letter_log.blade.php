@@ -29,12 +29,15 @@
         {{-- {{ dd($warn_let_data) }} --}}
         <tbody>
             {{-- {{ dd($warn_let_data) }} --}}
-            @foreach ($warn_let_data as $key => $value)
+            @php
+                $no=1;
+            @endphp
+            @foreach ($warn_let_data as $value)
+                @if (!isset($value->client->id))
+                    @continue
+                @endif
                 <tr>
-                    @if (!isset($value->client->id))
-                        @continue
-                    @endif
-                    <td>{{ $key + 1 }}</td>
+                    <td>{{ $no++ }}</td>
                     <td><a href="{{ $value->client->id }}">{{ $value->client->file_no }}</a></td>
                     <td>{{ $value->client->first_name . ' ' . $value->client->last_name }}</td>
                     <td>{{ $value->client->industry_name }}</td>
@@ -55,6 +58,7 @@
             $('.table').DataTable({
                 colReorder: true,
                 responsive: true,
+                pageLength: 50,
                 select: true,
                 dom: "Bfrtip",
                 // buttons: ["csv", "excel", "print",],

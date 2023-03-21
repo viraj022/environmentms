@@ -110,6 +110,12 @@ class ClientController extends Controller
     public function indexOldFileList()
     {
         $user = Auth::user();
+        if (empty($user)) {
+            return redirect()->route('home');
+        }
+        if (!config('auth.privileges.clientSpace')) {
+            abort(401);
+        }
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('old_file_list', ['pageAuth' => $pageAuth]);
     }
@@ -232,6 +238,9 @@ class ClientController extends Controller
         $user = Auth::user();
         if(empty($user)){
             return redirect()->route('home');
+        }
+        if(!config('auth.privileges.clientSpace')){
+            abort(401);
         }
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('confirmed_files', ['pageAuth' => $pageAuth]);
