@@ -1,5 +1,7 @@
 function loadEPL_details(epl_id, callBack) {
     ajaxRequest("GET", "/api/epl/pay/id/" + epl_id, null, function (dataSet) {
+        // alert("loadEPL_details");
+        console.log(dataSet);
         if (dataSet.fine.status == "not_payed") {
             $("#fineDev").removeClass("d-none");
             $("#fine_amt").prop("readonly", false);

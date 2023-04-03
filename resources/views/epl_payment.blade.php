@@ -134,13 +134,16 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {{-- @dd($scOldPaymentList) --}}
-                                                    @if (!empty($scOldPaymentList))
-                                                        @forelse ($scOldPaymentList as $scOldPayment)
+                                                    {{-- @dd($oldPaymentList) --}}
+                                                    @if (!empty($oldPaymentList))
+                                                        @forelse ($oldPaymentList as $scOldPayment)
                                                             <tr>
                                                                 <td>{{ $loop->iteration }}</td>
                                                                 <td>{{ $scOldPayment->paymentType->name }}</td>
-                                                                <td>{{ $scOldPayment->payment->name }}</td>
+                                                                <td>{{ $scOldPayment->payment->name }}
+                                                                    <br>
+                                                                    <small>(At {{ $scOldPayment->transaction->created_at->format('Y-m-d h:i a') }})</small>
+                                                                </td>
                                                                 <td>{{ $scOldPayment->amount }}</td>
                                                                 <td>
                                                                     @if ($scOldPayment->transaction->status == 0)
@@ -152,6 +155,7 @@
                                                                     @else
                                                                         -
                                                                     @endif
+
                                                                 </td>
                                                             </tr>
                                                         @empty

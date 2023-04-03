@@ -32,26 +32,35 @@ class EPLPaymentController extends Controller
         //        abort(503);
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        $return = ["id" => $id, 'type' => $type,];
         if ($pageAuth['is_read']) {
+            $return['pageAuth'] = $pageAuth;
             if ($type == 'epl') {
                 $epl = EPL::find($id);
                 if ($epl) {
-                    return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id, "epl_no" => $epl->code, "client" => $epl->client_id, 'type' => $type, 'type_title' => 'epl_profile']);
+                    $return['epl_no'] = $epl->code;
+                    $return['client'] = $epl->client_id;
+                    $return['type_title'] = 'epl_profile';
                 } else {
                     abort(404);
                 }
             } else if ($type == 'site_clearance') {
                 $site = SiteClearenceSession::find($id);
-                $scOldPaymentList = TransactionItem::where('transaction_type_id', $id)
-                    ->with(['transaction' => function ($q) {
-                        return $q->withTrashed();
-                    }])->get();
                 if ($site) {
-                    return view('epl_payment', ['pageAuth' => $pageAuth, "id" => $id, "epl_no" => $site->code, "client" => $site->client_id, 'type' => $type, 'type_title' => 'site_clearance', 'scOldPaymentList' => $scOldPaymentList]);
+                    $return['epl_no'] = $site->code;
+                    $return['client'] = $site->client_id;
+                    $return['type_title'] = 'site_clearance';
                 } else {
                     abort(404);
                 }
             }
+            $oldPaymentList = TransactionItem::where('transaction_type_id', $id)
+                ->with(['transaction' => function ($q) {
+                    return $q->withTrashed();
+                }])->get();
+            // dd($oldPaymentList);
+            $return['oldPaymentList'] = $oldPaymentList;
+            return view('epl_payment', $return);
         }
     }
 
@@ -362,8 +371,8 @@ class EPLPaymentController extends Controller
 
     public function paymentList($id)
     {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        // $user = Auth::user();
+        // $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $epl = EPL::find($id);
         if ($epl) {
             $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
@@ -396,16 +405,16 @@ class EPLPaymentController extends Controller
                 $rtn['license_fee']['status'] = "not_payed";
             }
             // dd($fine);
-            if ($epl->client->siteClearenceSessions->count() == 0) {
-                if ($fine) {
-                    $rtn['fine']['status'] = "payed";
-                    $rtn['fine']['object'] = $fine;
-                } else {
-                    $rtn['fine']['status'] = "not_payed";
-                }
+            // if ($epl->client->siteClearenceSessions->count() == 0) {
+            if ($fine) {
+                $rtn['fine']['status'] = "payed";
+                $rtn['fine']['object'] = $fine;
             } else {
-                $rtn['fine']['status'] = "not_available";
+                $rtn['fine']['status'] = "not_payed";
             }
+            // } else {
+            //     $rtn['fine']['status'] = "not_available";
+            // }
 
             return $rtn;
         } else {
