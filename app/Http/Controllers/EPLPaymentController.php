@@ -374,6 +374,7 @@ class EPLPaymentController extends Controller
         // $user = Auth::user();
         // $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $epl = EPL::find($id);
+        // dd($epl);
         if ($epl) {
             $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
             // dd($inspectionTypes);
@@ -425,7 +426,7 @@ class EPLPaymentController extends Controller
     public function SiteClearancePaymentList($id)
     {
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        // $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $site = SiteClearenceSession::find($id);
 
         if ($site) {
