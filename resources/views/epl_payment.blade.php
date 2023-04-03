@@ -115,7 +115,7 @@
                     </div>
                     <div class="col-md-7">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-12" id="old_payment_table_section">
                                 <div class="card card-secondary">
                                     <div class="card-header">
                                         <h3 class="card-title">Previous Payment List</h3>
@@ -142,9 +142,10 @@
                                                                 <td>{{ $scOldPayment->paymentType->name }}</td>
                                                                 <td>{{ $scOldPayment->payment->name }}
                                                                     <br>
-                                                                    <small>(At {{ $scOldPayment->transaction->created_at->format('Y-m-d h:i a') }})</small>
+                                                                    <small>(At
+                                                                        {{ $scOldPayment->transaction->created_at->format('Y-m-d h:i a') }})</small>
                                                                 </td>
-                                                                <td>{{ $scOldPayment->amount }}</td>
+                                                                <td>{{ number_format($scOldPayment->amount, 2) }}</td>
                                                                 <td>
                                                                     @if ($scOldPayment->transaction->status == 0)
                                                                         Pending
@@ -171,7 +172,7 @@
                                     <!-- /.card-body -->
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 d-none" id="payment_table_section">
                                 <div class="card card-secondary">
                                     <div class="card-header">
                                         <h3 class="card-title">Pending Payment List</h3>
@@ -333,6 +334,9 @@
                     amount: amount
                 });
                 console.log(ITEM_LIST);
+                $('#payment_table_section').removeClass('d-none');
+                $('#old_payment_table_section').addClass('d-none');
+
                 selectedPayments_table(ITEM_LIST);
             }
             $(document).on('click', '.app_removeBtn', function(parameters) {
