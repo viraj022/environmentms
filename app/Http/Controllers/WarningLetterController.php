@@ -73,7 +73,6 @@ class WarningLetterController extends Controller
             "file_type" => $file_type,
             "expire_date" => $expired_date->format('Y-m-d'),
         ]);
-        dd($warning_letter);
 
         if ($warning_letter == true) {
             return array('status' => 1, 'message' => 'Successfully saved the warning letter');
