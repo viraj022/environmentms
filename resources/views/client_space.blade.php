@@ -567,12 +567,17 @@
                     // if validiated
                     AddClient(data, function(result) {
                         if (result.message == 'true') {
-                            alert('Environmental MS Saved');
+                            // alert('Environmental MS Saved');
+                            Swal.fire('Success', 'Environmental MS Saved!', 'success')
                             getaClientbyId(result.id, function(result) {
                                 window.location = "/industry_profile/id/" + result.id;
                             });
                         } else {
-                            alert('Environmental MS Error (' + Object.values(result.message) + ')');
+                            // alert('Environmental MS Error (' + Object.values(result.message) + ')');
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'Environmental MS Error (' + Object.values(result.message) + ')'
+                            })
                         }
                         resetinputFields();
                         hideAllErrors();
