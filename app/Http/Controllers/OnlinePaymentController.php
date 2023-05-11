@@ -42,7 +42,7 @@ class OnlinePaymentController extends Controller
         }
 
         // required params
-        $requestUrl = 'https://test-bankofceylon.mtf.gateway.mastercard.com';
+        $requestUrl = config('ipg.mode') == 'production' ? config('ipg.url') : config('ipg.testing_url');
         $merchantId = config('ipg.merchant_id');
         $orderId = uniqid('peanwp_', true);
         $apiPassword = config('ipg.integration_auth_password');
@@ -69,7 +69,7 @@ class OnlinePaymentController extends Controller
         // get the body cast to string type
         $stringBody = (string) $response->getBody();
         parse_str($stringBody, $initParams); // parse the received query string to an array
-
+        // dd($stringBody);
         // if result is not success
         if ($initParams['result'] !== 'SUCCESS') {
             // abort the payment request.
@@ -323,7 +323,7 @@ class OnlinePaymentController extends Controller
                 'requestType',
                 'emailAddress',
                 'mobileNumber',
-                'invoice',
+                'invoice'
             )
         );
     }
