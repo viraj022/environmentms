@@ -191,4 +191,8 @@ Route::middleware('auth')->group(function () {
     //set profile payments
     Route::get('/profile-payments/{client}', 'ClientController@setProfilePayments')->name('set-profile-payments');
     Route::post('/profile-payments-set/client/{client}/{invoice}', 'ClientController@setPayment')->name('set-payment-to-client');
+
+    //online payments income report
+    Route::get('/online-payment-income-report', 'OnlinePaymentController@onlinePaymentIncomeReport')->name('online-payment-income-report');
+    Route::post('/online-payment-income-report', 'OnlinePaymentController@onlinePaymentDetails')->name('online-payment-income-report');
 });

@@ -361,4 +361,41 @@ class OnlinePaymentController extends Controller
     {
         return view('online-requests.tree-felling-request');
     }
+
+    /**
+     * online payment details by date range
+     *
+     * @return void
+     */
+    public function onlinePaymentIncomeReport()
+    {
+        return view('Reports.online-payments-report');
+    }
+
+    /**
+     * get online payement details
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function onlinePaymentDetails(Request $request)
+    {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+
+        $data = $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+        ], $request->all());
+
+        $invoices = Invoice::whereRaw('DATE(invoice_date) BETWEEN ? AND ?', [$data['start_date'], $data['end_date']])
+        ->whereNotNull('online_payment_id')
+        ->with('onlinePayment')
+        ->whereHas('onlinePayment', function ($query) {
+            $query->where('ipg_success_indicator', '!=', null);
+        })
+        ->get();
+
+        return view('Reports.online-payments-report', compact('invoices', 'start_date', 'end_date'));
+    }
 }
