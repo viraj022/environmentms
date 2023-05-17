@@ -535,6 +535,13 @@
                             <p>Income Report</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ url('/online-payment-income-report') }}"
+                            class="nav-link {{ Request::is('online-payment-income-report') ? 'active' : '' }}">
+                            <i class="fas fa-file-archive nav-icon"></i>
+                            <p>Online Payment Income Report</p>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item has-treeview {{ Request::is('users', 'rolls') ? 'menu-open' : '' }}">

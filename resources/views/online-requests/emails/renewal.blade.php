@@ -16,7 +16,7 @@
             <small>
                 Please note that you will be redirected to the online payment gateway
                 for payment and no card details will be retained by the
-                authority. <strong>This link will expire on 2022-07-26 02:43 PM. You are advised to make the payment before
+                authority. <strong>This link will expire on {{ now()->addWeek()->format('Y-m-d h:i A') }}. You are advised to make the payment before
                     expiry.</strong>
             </small>
         </div>

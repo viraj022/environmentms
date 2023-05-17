@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Redirecting...</title>
-    <script src="https://test-bankofceylon.mtf.gateway.mastercard.com/checkout/version/60/checkout.js"
+  
+    <script src="{{ config('ipg.url') }}/checkout/version/60/checkout.js"
         data-error="errorCallback" data-cancel="cancelCallback"></script>
     <script>
         function errorCallback(error) {
-            alert('Payment error.');
+            alert('Error occured when attempting to redirect to the payment gateway.');
             console.log(JSON.stringify(error));
         }
 

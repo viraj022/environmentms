@@ -42,7 +42,7 @@ class OnlinePaymentController extends Controller
         }
 
         // required params
-        $requestUrl = 'https://test-bankofceylon.mtf.gateway.mastercard.com';
+        $requestUrl = config('ipg.mode') == 'production' ? config('ipg.url') : config('ipg.testing_url');
         $merchantId = config('ipg.merchant_id');
         $orderId = uniqid('peanwp_', true);
         $apiPassword = config('ipg.integration_auth_password');
@@ -69,7 +69,7 @@ class OnlinePaymentController extends Controller
         // get the body cast to string type
         $stringBody = (string) $response->getBody();
         parse_str($stringBody, $initParams); // parse the received query string to an array
-
+        // dd($stringBody);
         // if result is not success
         if ($initParams['result'] !== 'SUCCESS') {
             // abort the payment request.
@@ -323,7 +323,7 @@ class OnlinePaymentController extends Controller
                 'requestType',
                 'emailAddress',
                 'mobileNumber',
-                'invoice',
+                'invoice'
             )
         );
     }
@@ -360,5 +360,42 @@ class OnlinePaymentController extends Controller
     public function onlineTreeFellingRequests()
     {
         return view('online-requests.tree-felling-request');
+    }
+
+    /**
+     * online payment details by date range
+     *
+     * @return void
+     */
+    public function onlinePaymentIncomeReport()
+    {
+        return view('Reports.online-payments-report');
+    }
+
+    /**
+     * get online payement details
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function onlinePaymentDetails(Request $request)
+    {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+
+        $data = $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+        ], $request->all());
+
+        $invoices = Invoice::whereRaw('DATE(invoice_date) BETWEEN ? AND ?', [$data['start_date'], $data['end_date']])
+        ->whereNotNull('online_payment_id')
+        ->with('onlinePayment')
+        ->whereHas('onlinePayment', function ($query) {
+            $query->where('ipg_success_indicator', '!=', null);
+        })
+        ->get();
+
+        return view('Reports.online-payments-report', compact('invoices', 'start_date', 'end_date'));
     }
 }
