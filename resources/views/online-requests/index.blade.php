@@ -138,6 +138,7 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
+                                                <th>Type</th>
                                                 <th>Name</th>
                                                 <th>Pradeshiya Sabha</th>
                                                 <th>Industry Category</th>
@@ -158,6 +159,13 @@
                                                 @if (empty($new->onlineNewApplicationRequest->rejected_at))
                                                     <tr>
                                                         <td>{{ $i++ }}</td>
+                                                        <td>
+                                                            @if ($new->request_model == 'App\Models\OnlineSiteClearance')
+                                                                Site Clearance
+                                                            @else
+                                                                EPL
+                                                            @endif
+                                                        </td>
                                                         <td>
                                                             {{ $new->onlineNewApplicationRequest->title }}
                                                             @if (!empty($new->onlineNewApplicationRequest->lastname))
@@ -241,6 +249,7 @@
                                     id="rejected-new-applications-table">
                                     <colgroup>
                                         <col style="width: 3%">
+                                        <col style="width: 4%">
                                         <col style="width: 9%">
                                         <col style="width: 6%">
                                         <col style="width: 6%">
@@ -250,13 +259,14 @@
                                         <col style="width: 6%">
                                         <col style="width: 6%">
                                         <col style="width: 6%">
-                                        <col style="width: 20%;">
+                                        <col style="width: 16%;">
                                         <col style="width: 10%">
                                         <col style="width: 8%">
                                     </colgroup>
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>Type</th>
                                             <th>Name</th>
                                             <th>Pradeshiya Sabha</th>
                                             <th>Industry Category</th>
@@ -279,6 +289,13 @@
                                             @if (!empty($new->rejected_at))
                                                 <tr class="{{ $new->isRejected() ? 'table-danger' : '' }}">
                                                     <td>{{ $i++ }}</td>
+                                                    <td>
+                                                        @if ($new->onlineRequest->request_model == 'App\Models\OnlineSiteClearance')
+                                                            Site Clearance
+                                                        @else
+                                                            EPL
+                                                        @endif
+                                                    </td>
                                                     <td>
                                                         {{ $new->title }}
                                                         @if (!empty($new->lastname))

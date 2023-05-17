@@ -98,7 +98,7 @@ class OnlineRequestController extends Controller
     {
         $file_no = $request->post('file_no');
         $fileNo = $this->onlineRequests->getClientByFileNumber($file_no);
-
+        
         return response()->json(['data' => $fileNo]);
     }
 
