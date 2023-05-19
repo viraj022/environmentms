@@ -144,12 +144,14 @@
                                                     </div>
                                                 </div>
                                                 <hr>
-                                                <strong><i class="fas fa-map-pin mr-1"></i> Distance to the closest residence and of house within 50m </strong>
+                                                <strong><i class="fas fa-map-pin mr-1"></i> Distance to the closest
+                                                    residence and of house within 50m </strong>
                                                 <p class="text-muted">{{ $InspectionSession->house_within_100 }}</p>
                                                 <hr>
-                                                <strong><i class="fas fa-map-pin mr-1"></i> Sensitive areas and public places (with distance) </strong>
+                                                <strong><i class="fas fa-map-pin mr-1"></i> Sensitive areas and public
+                                                    places (with distance) </strong>
                                                 <p class="text-muted">{{ $InspectionSession->sensitive_area_desc }}</p>
-                                                
+
                                             </div>
                                         </div>
 
@@ -163,7 +165,8 @@
                                                     <input id="getComment" type="text"
                                                         class="form-control form-control-sm"
                                                         placeholder="Enter Your Comment" value="">
-                                                    <a class="error invalid-feedback aefFGE d-none">Please enter your comment</a>
+                                                    <a class="error invalid-feedback aefFGE d-none">Please enter your
+                                                        comment</a>
                                                 </div>
                                             </div>
                                             <div class="card-footer">
@@ -183,16 +186,25 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">
-                                                    @if(strpos($InspectionSession->sketch_path, 'storage/') === 0)
-                                                    <a href="{{ asset($InspectionSession->sketch_path) }}" data-fancybox="sketch">
-                                                    <img src="{{ asset($InspectionSession->sketch_path) }}" alt="sketch image" height="128">
-                                                    </a>
+                                                    {{-- @dd($InspectionSession->sketch_path) --}}
+                                                    @if ($InspectionSession->sketch_path != null)
+                                                        @if (strpos($InspectionSession->sketch_path, 'storage/') === 0)
+                                                            <a href="{{ asset($InspectionSession->sketch_path) }}"
+                                                                data-fancybox="sketch">
+                                                                <img src="{{ asset($InspectionSession->sketch_path) }}"
+                                                                    alt="sketch image" height="128">
+                                                            </a>
+                                                        @else
+                                                            <a href="{{ asset('storage/' . $InspectionSession->sketch_path) }}"
+                                                                data-fancybox="sketch">
+                                                                <img src="{{ asset('storage/' . $InspectionSession->sketch_path) }}"
+                                                                    alt="sketch image" height="128">
+                                                            </a>
+                                                        @endif
                                                     @else
-                                                    <a href="{{ asset('storage/' . $InspectionSession->sketch_path) }}" data-fancybox="sketch">
-                                                    <img src="{{ asset('storage/' . $InspectionSession->sketch_path) }}" alt="sketch image" height="128">
-                                                    </a>
+                                                        <p>No Sketch Uploaded</p>
                                                     @endif
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
@@ -231,43 +243,23 @@
                                     <h5><a href="/inspection_attachment/id/{{ $id }}"
                                             class="text-success font-weight-bold ">Add Attachments</a></h5>
 
-                            <p>Add images, attachment in inspection</p>
-                        </div>
-                        <div class="callout callout-success inspectConfStatus d-none">
-                            <button type="button" id="completeInsBtn" class="btn btn-block btn-dark btn-lg"><i class="fa fa-check"></i> Complete Inspection</button>
-                            <a href="{{ route('inspection_site_report', $id) }}" class="btn btn-block btn-success btn-lg">View Site Inspection Report</a>
-                        </div>
-                        <div class="callout callout-success compDoneUi d-none">
-                            <h4><i class="text-success fa fa-check"></i> Completed</h4> 
-                        </div>
-                    </div>
+                                    <p>Add images, attachment in inspection</p>
+                                </div>
+                                <div class="callout callout-success inspectConfStatus d-none">
+                                    <button type="button" id="completeInsBtn" class="btn btn-block btn-dark btn-lg"><i
+                                            class="fa fa-check"></i> Complete Inspection</button>
+                                    <a href="{{ route('inspection_site_report', $id) }}"
+                                        class="btn btn-block btn-success btn-lg">View Site Inspection Report</a>
+                                </div>
+                                <div class="callout callout-success compDoneUi d-none">
+                                    <h4><i class="text-success fa fa-check"></i> Completed</h4>
+                                </div>
+                            </div>
 
-                    <div class="col-md-8">
+                            <div class="col-md-8">
 
-                    </div>
-                </div>
-                <!--        <div class="modal fade" id="modal-danger">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content bg-danger">
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title">Delete Selected Remark</h4>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <p><b>Are you sure you want to permanently delete this Item? </b></p>
-                                                        <p>Once you continue, this process can not be undone. Please Procede with care.</p>
-                                                    </div>
-                                                    <div class="modal-footer justify-content-between">
-                                                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                                                        <button id="btnDelete" type="submit" class="btn btn-outline-light" data-dismiss="modal">Delete Permanently</button>
-                                                    </div>
-                                                </div>
-                                                 /.modal-content
-                                            </div>
-                                             /.modal-dialog
-                                        </div>-->
+                            </div>
+                        </div>
         </section>
     @endif
 @endsection
@@ -363,7 +355,7 @@
                 }
             });
 
-            //Reset all fields    
+            //Reset all fields
             function resetinputFields() {
                 $('#getComment').val('');
                 $('#btnUpdate').val('');
