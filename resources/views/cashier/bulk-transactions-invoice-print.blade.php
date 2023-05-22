@@ -74,7 +74,7 @@
                         409216765-9000</span> <span style="margin-left: 25px;">N.W.P.C මු/1 </span> <br> <br>
                     Recipt No. : {{ $invoice->invoice_number }}
                     <span style="margin-left: 35px">Date
-                        :{{ Carbon\Carbon::parse($invoice->created_at)->format('Y-m-d') }}</span>
+                        :{{ Carbon\Carbon::parse($invoice->invoice_date)->format('Y-m-d') }}</span>
                     <span style="margin-left: 25px;"> Received From : {{ $invoice->name }}
                         {{ $invoice->address == '' ? '' : "($invoice->address)" }}</span> <br>
                     @if ($invoice->payment_reference_number)
