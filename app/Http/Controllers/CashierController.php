@@ -668,7 +668,7 @@ class CashierController extends Controller
         $end_date = $data['end_date'];
 
         // get invoice data
-        $invoices = Invoice::whereRaw('DATE(invoices.created_at) BETWEEN ? AND ?', [$start_date, $end_date])
+        $invoices = Invoice::whereRaw('DATE(invoices.invoice_date) BETWEEN ? AND ?', [$start_date, $end_date])
             ->where('invoices.status', 1)
             ->join('transactions', 'invoices.id', '=', 'transactions.invoice_id')
             ->join('transaction_items', 'transactions.id', '=', 'transaction_items.transaction_id')
