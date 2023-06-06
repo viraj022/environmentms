@@ -125,6 +125,10 @@ class CashierController extends Controller
      */
     public function invoiceStore(Request $request)
     {
+        if (empty($data['tranItems'])) {
+            return array('status' => 0, 'msg' => 'Please add transaction items before continue');
+        }
+
         $rules = [
             'invoiceDet' => 'nullable|array',
             'invoiceDet.name' => 'required',

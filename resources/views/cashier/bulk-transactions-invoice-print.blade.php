@@ -83,58 +83,76 @@
                     @endif <br>
                     <span> Remark: {{ $invoice->remark }}</span>
                 </p>
-
-                <section>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Description</th>
-                                <th>Amount(Rs)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $i = 0;
-                            @endphp
-                            @foreach ($transactions as $transaction)
-                                @foreach ($transaction->transactionItems as $transactionItem)
-                                    <tr>
-                                        <td>{{ ++$i }}</td>
-                                        <td><b>{{ $transactionItem->paymentType->name }}</b>
-                                            ({{ $transactionItem->payment->name }})
-                                            <br>
-                                            {{ $transaction->address }}
-                                        </td>
-                                        <td class="text-end">{{ number_format($transactionItem->amount, 2) }}</td>
-                                    </tr>
+                @if (!empty($transactions))
+                    <section>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Description</th>
+                                    <th>Amount(Rs)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $i = 0;
+                                @endphp
+                                @foreach ($transactions as $transaction)
+                                    @foreach ($transaction->transactionItems as $transactionItem)
+                                        <tr>
+                                            <td>{{ ++$i }}</td>
+                                            <td><b>{{ $transactionItem->paymentType->name }}</b>
+                                                ({{ $transactionItem->payment->name }})
+                                                <br>
+                                                {{ $transaction->address }}
+                                            </td>
+                                            <td class="text-end">{{ number_format($transactionItem->amount, 2) }}</td>
+                                        </tr>
+                                    @endforeach
                                 @endforeach
-                            @endforeach
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="2" style="text-align: left">Total</td>
-                                <td class="text-end">{{ number_format($invoice->sub_total, 2) }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="text-align: left">VAT</td>
-                                <td class="text-end">{{ number_format($invoice->vat_amount, 2) }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="text-align: left">NBT</td>
-                                <td class="text-end">{{ number_format($invoice->nbt_amount, 2) }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="text-align: left">TAX</td>
-                                <td class="text-end">{{ number_format($invoice->other_tax_amount, 2) }}</td>
-                            </tr>
-                            <tr>
-                                <th colspan="2" style="text-align: left"><strong>Net Total</strong></th>
-                                <td class="text-end"><strong>{{ number_format($invoice->amount, 2) }}</strong></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </section>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2" style="text-align: left">Total</td>
+                                    <td class="text-end">{{ number_format($invoice->sub_total, 2) }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align: left">VAT</td>
+                                    <td class="text-end">{{ number_format($invoice->vat_amount, 2) }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align: left">NBT</td>
+                                    <td class="text-end">{{ number_format($invoice->nbt_amount, 2) }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align: left">TAX</td>
+                                    <td class="text-end">{{ number_format($invoice->other_tax_amount, 2) }}</td>
+                                </tr>
+                                <tr>
+                                    <th colspan="2" style="text-align: left"><strong>Net Total</strong></th>
+                                    <td class="text-end"><strong>{{ number_format($invoice->amount, 2) }}</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </section>
+                @else
+                    <section>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Description</th>
+                                    <th>Amount(Rs)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="3">No available transaction records</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                @endif
                 <div style="margin-top: 30px;">
                     Authorized Officer Signature: .......................
                 </div>
