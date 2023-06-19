@@ -83,51 +83,69 @@
                     @endif <br>
                     <span> Remark: {{ $invoice->remark }}</span>
                 </p>
-
-                <section>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Description</th>
-                                <th>Amount(Rs)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($transaction->transactionItems as $transactionItem)
+                @if (!empty($transaction))
+                    <section>
+                        <table class="table table-bordered">
+                            <thead>
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $transactionItem->paymentType->name }}
-                                        ({{ $transactionItem->payment->name }})
-                                    </td>
-                                    <td class="text-end">{{ number_format($transactionItem->amount, 2) }}</td>
+                                    <th>#</th>
+                                    <th>Description</th>
+                                    <th>Amount(Rs)</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="2" style="text-align: left">Total</td>
-                                <td class="text-end">{{ number_format($invoice->sub_total, 2) }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="text-align: left">VAT</td>
-                                <td class="text-end">{{ number_format($invoice->vat_amount, 2) }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="text-align: left">NBT</td>
-                                <td class="text-end">{{ number_format($invoice->nbt_amount, 2) }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="text-align: left">TAX</td>
-                                <td class="text-end">{{ number_format($invoice->other_tax_amount, 2) }}</td>
-                            </tr>
-                            <tr>
-                                <th colspan="2" style="text-align: left">Net Total</th>
-                                <td class="text-end"><strong>{{ number_format($invoice->amount, 2) }}</strong></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </section>
+                            </thead>
+                            <tbody>
+                                @foreach ($transaction->transactionItems as $transactionItem)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $transactionItem->paymentType->name }}
+                                            ({{ $transactionItem->payment->name }})
+                                        </td>
+                                        <td class="text-end">{{ number_format($transactionItem->amount, 2) }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2" style="text-align: left">Total</td>
+                                    <td class="text-end">{{ number_format($invoice->sub_total, 2) }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align: left">VAT</td>
+                                    <td class="text-end">{{ number_format($invoice->vat_amount, 2) }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align: left">NBT</td>
+                                    <td class="text-end">{{ number_format($invoice->nbt_amount, 2) }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align: left">TAX</td>
+                                    <td class="text-end">{{ number_format($invoice->other_tax_amount, 2) }}</td>
+                                </tr>
+                                <tr>
+                                    <th colspan="2" style="text-align: left">Net Total</th>
+                                    <td class="text-end"><strong>{{ number_format($invoice->amount, 2) }}</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </section>
+                @else
+                    <section>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Description</th>
+                                    <th>Amount(Rs)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="3">No available transaction records</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                @endif
                 <div style="margin-top: 30px;">
                     Authorized Officer Signature: .......................
                 </div>

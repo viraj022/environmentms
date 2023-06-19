@@ -262,6 +262,8 @@ class ReportController extends Controller
         $eplInspectionNewCount = $inspection->getEPLInspection($from, $to, 1);
         $eplInspectionRenewCount = $inspection->getEPLInspection($from, $to, 0);
         $siteInspectionNewCount = $inspection->getSiteInspection($from, $to, 1);
+
+        // dd($siteInspectionNewCount);
         $siteInspectionRenewCount = $inspection->getSiteInspection($from, $to, 0);
 
         $totalCount = $this->generateTotalField(array(
@@ -285,7 +287,7 @@ class ReportController extends Controller
         $result[] = array('type' => 'Inspection', 'name' => 'Complaints', 'application' => '', 'object' => array());
         $result[] = array('type' => 'Inspection', 'name' => 'Other', 'application' => '', 'object' => array());
         $result[] = array('type' => 'Inspection', 'name' => 'UnAuthorized', 'application' => '', 'object' => array());
-
+// dd($result);
         /**
          * Completed Section
          */
@@ -339,8 +341,8 @@ class ReportController extends Controller
          * Others
          */
         $telecommunicationCount = $site->telicomTowerCount($from, $to);
-        $towerEplNewCount = $epl->TowerEPlPLCount($from, $to, 1, 0);
-        $towerEplRenewCount = $epl->TowerEPlPLCount($from, $to, 0, 0);
+        $towerEplNewCount = $epl->TowerEPlPLCount($from, $to, 1, 1);
+        $towerEplRenewCount = $epl->TowerEPlPLCount($from, $to, 0, 1);
 // dd($towerEplRenewCount);
 
         $result[] = array('type' => '', 'name' => 'Meeting/Test Blast', 'application' => "", 'object' => array());
