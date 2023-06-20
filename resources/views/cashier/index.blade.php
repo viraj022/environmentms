@@ -646,6 +646,7 @@
             loadAllIndustryTransactionsTbleToPay();
             selectedIndustryTransactionRecordsTbl();
             newPaymentAmountCal();
+            localStorage.removeItem('invoice_details');
         });
 
         function calTax() {
