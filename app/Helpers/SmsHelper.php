@@ -37,7 +37,7 @@ class SmsHelper
 
         $smsResult = json_decode($result);
 
-        if ($smsResult->Status != "200") {
+        if (isset($smsResult->Status) && $smsResult->Status != "200") {
             return false;
         } else {
             return true;
