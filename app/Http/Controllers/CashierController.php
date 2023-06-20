@@ -125,9 +125,6 @@ class CashierController extends Controller
      */
     public function invoiceStore(Request $request)
     {
-        if (empty($data['tranItems'])) {
-            return array('status' => 0, 'msg' => 'Please add transaction items before continue');
-        }
 
         $rules = [
             'invoiceDet' => 'nullable|array',
@@ -170,6 +167,9 @@ class CashierController extends Controller
 
         $data = $request->validate($rules, $request->all());
 
+        if (empty($data['invoiceDet']['transactionsId']) && empty($data['industryTransactions'])) {
+            return array('status' => 0, 'msg' => 'Please add transaction items before continue');
+        }
         // $year = Carbon::now()->format('Y');
         $number = 1;
 
