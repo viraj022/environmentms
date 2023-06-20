@@ -168,7 +168,9 @@ class CashierController extends Controller
         $data = $request->validate($rules, $request->all());
 
         if (empty($data['invoiceDet']['transactionsId']) && empty($data['industryTransactions'])) {
-            return array('status' => 0, 'msg' => 'Please add transaction items before continue');
+            if ((empty($request->post('tranItems')))) {
+                return array('status' => 0, 'msg' => 'Please add transaction items before continue');
+            }
         }
         // $year = Carbon::now()->format('Y');
         $number = 1;

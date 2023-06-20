@@ -38,20 +38,20 @@ class DirectorController extends Controller
             $msg = setFileStatus($file_id, 'cer_status', 5);
 
             $file_type = $file->cer_type_status;
+            $fileTypeName = '';
             if ($file_type == 1 || $file_type == 2) {
                 $fileTypeName = 'epl';
                 $epl = EPL::where('client_id', $file->id)->orderBy('created_at', 'desc')->first();
-                $msg = "ඔබගේ " . $epl->code . " අංක දරණ පාරිසරික නිරවුල් සහතිකයේ / පාරිසරික ආරක්ෂණ බලපත්‍රයේ වැඩ කටයුතු නිමව ඇති අතර, එය ලබා ගැනීමට අවශ්‍ය කටයුතු සිදුකරන මෙන් කාරුණිකව ඉල්ලා සිටිමි.\n\nපාරිසරික ආරක්ෂණ බලපත්‍රයක් නම්,අදාල බලපත්‍ර ගාස්තු පිළිබඳව 037-2225236  දුරකථන අංකය මාර්ගයෙන් විමසීමට කටයුතු කරන ලෙසද දන්වා සිටිමි.\n\nවයඹ පළාත් පරිසර අධිකාරිය (Provincial  Environmental Authority-NWP)\n037-2225236\n(This is a system generated message)";
-
-                SmsHelper::sendSms($file->contact_no, $msg);
+                $msgMsg = "ඔබගේ " . $epl->code . " අංක දරණ පාරිසරික නිරවුල් සහතිකයේ / පාරිසරික ආරක්ෂණ බලපත්‍රයේ වැඩ කටයුතු නිමව ඇති අතර, එය ලබා ගැනීමට අවශ්‍ය කටයුතු සිදුකරන මෙන් කාරුණිකව ඉල්ලා සිටිමි.\n\nපාරිසරික ආරක්ෂණ බලපත්‍රයක් නම්,අදාල බලපත්‍ර ගාස්තු පිළිබඳව 037-2225236  දුරකථන අංකය මාර්ගයෙන් විමසීමට කටයුතු කරන ලෙසද දන්වා සිටිමි.\n\nවයඹ පළාත් පරිසර අධිකාරිය (Provincial  Environmental Authority-NWP)\n037-2225236\n(This is a system generated message)";
             } elseif ($file_type == 3 || $file_type == 4) {
                 $fileTypeName = 'sc';
                 $sc = SiteClearenceSession::where('client_id', $file->id)->orderBy('created_at', 'desc')->first();
-                $msg = "ඔබගේ " . $sc->code . " අංක දරණ පාරිසරික නිරවුල් සහතිකයේ / පාරිසරික ආරක්ෂණ බලපත්‍රයේ වැඩ කටයුතු නිමව ඇති අතර, එය ලබා ගැනීමට අවශ්‍ය කටයුතු සිදුකරන මෙන් කාරුණිකව ඉල්ලා සිටිමි.\n\nපාරිසරික ආරක්ෂණ බලපත්‍රයක් නම්,අදාල බලපත්‍ර ගාස්තු පිළිබඳව 037-2225236  දුරකථන අංකය මාර්ගයෙන් විමසීමට කටයුතු කරන ලෙසද දන්වා සිටිමි.\n\nවයඹ පළාත් පරිසර අධිකාරිය (Provincial  Environmental Authority-NWP)\n037-2225236\n(This is a system generated message)";
+                $msgMsg = "ඔබගේ " . $sc->code . " අංක දරණ පාරිසරික නිරවුල් සහතිකයේ / පාරිසරික ආරක්ෂණ බලපත්‍රයේ වැඩ කටයුතු නිමව ඇති අතර, එය ලබා ගැනීමට අවශ්‍ය කටයුතු සිදුකරන මෙන් කාරුණිකව ඉල්ලා සිටිමි.\n\nපාරිසරික ආරක්ෂණ බලපත්‍රයක් නම්,අදාල බලපත්‍ර ගාස්තු පිළිබඳව 037-2225236  දුරකථන අංකය මාර්ගයෙන් විමසීමට කටයුතු කරන ලෙසද දන්වා සිටිමි.\n\nවයඹ පළාත් පරිසර අධිකාරිය (Provincial  Environmental Authority-NWP)\n037-2225236\n(This is a system generated message)";
+            }
 
-                SmsHelper::sendSms($file->contact_no, $msg);
-            } else {
-                $fileTypeName = '';
+            //send sms
+            if ($file->contact_no != null) {
+                SmsHelper::sendSms($file->contact_no, $msgMsg);
             }
 
             fileLog($file->id, 'Approval', 'Director (' . $user->first_name . ' ' . $user->last_name . ') Approve the Certificate', 0, $fileTypeName, '');
