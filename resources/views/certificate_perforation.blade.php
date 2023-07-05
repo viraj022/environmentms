@@ -69,7 +69,7 @@
                                                             </dl>
                                                         </div>
                                                         <!--                                                <button class="btn btn-primary genCertificateNum d-none"><i class="fa fa-gear"></i> Generate Certificate Number</button>
-                                                                                                                                                                                     /.card-body -->
+                                                                                                                                                                                             /.card-body -->
                                                     </div>
                                                     <div class="card card-success">
                                                         <div class="card-header">
@@ -244,19 +244,19 @@
                                                                 </div>
                                                             </div>
                                                             <!-- <div class="col-4">
-                                                                                                                                                                <div class="correctedFileShowUi d-none" style=" height: 200px;">
-                                                                                                                                                                    <hr>
-                                                                                                                                                                    <a data-toggle="tooltip" data-placement="top"
-                                                                                                                                                                    title="Click to view file" id="correctedCertificatePath"
-                                                                                                                                                                    href="" target="_blank">
-                                                                                                                                                                        <p>Corrected File</p>
-                                                                                                                                                                        <img class="img-fluid rounded" id="file_view" alt="PDF"
-                                                                                                                                                                        style="width: 128px; height: 128px;"
-                                                                                                                                                                        src=""
-                                                                                                                                                                        data-holder-rendered="true">
-                                                                                                                                                                    </a>
-                                                                                                                                                                </div>
-                                                                                                                                                            </div> -->
+                                                                                                                                                                        <div class="correctedFileShowUi d-none" style=" height: 200px;">
+                                                                                                                                                                            <hr>
+                                                                                                                                                                            <a data-toggle="tooltip" data-placement="top"
+                                                                                                                                                                            title="Click to view file" id="correctedCertificatePath"
+                                                                                                                                                                            href="" target="_blank">
+                                                                                                                                                                                <p>Corrected File</p>
+                                                                                                                                                                                <img class="img-fluid rounded" id="file_view" alt="PDF"
+                                                                                                                                                                                style="width: 128px; height: 128px;"
+                                                                                                                                                                                src=""
+                                                                                                                                                                                data-holder-rendered="true">
+                                                                                                                                                                            </a>
+                                                                                                                                                                        </div>
+                                                                                                                                                                    </div> -->
                                                         </div>
                                                     </div>
 
@@ -364,8 +364,8 @@
                     </div>
                 </div>
                 <!--        <div class="overlay dark loadingRenderUI">
-                                                                                                                                                        <i class="fas fa-2x fa-sync-alt"></i>
-                                                                                                                                                    </div>-->
+                                                                                                                                                                <i class="fas fa-2x fa-sync-alt"></i>
+                                                                                                                                                            </div>-->
             </div>
         </section>
         <!--//Tab Section END//-->
@@ -532,20 +532,23 @@
                 completeCertificateAPI(CERTIFICATE_ID, FILE_STATUS, dataB, function(resp) {
 
                     show_mesege(resp);
-                    // if (resp.id === 1) {
-                    //     window.location.href = "/industry_profile/id/" + PROFILE_ID;
-                    // }
+                    if (resp.id === 1) {
+                        $('.fileUpDiv').addClass('d-none');
+                        // window.location.href = "/industry_profile/id/" + PROFILE_ID;
+                    }
                     $('#certificateSubmittedLable').removeClass('d-none');
                     $('.complCertificate').addClass('d-none');
                     //***
                     $('.genCertificateNum').addClass('d-none');
 
-                    getCertificateDetails(PROFILE_ID, function(resp) {
-                        if (resp.length != 0) {
-                            CERTIFICATE_ID = parseInt(resp.id);
-                            FILE_STATUS = parseInt(resp.client.file_status);
-                        }
-                    });
+                    if (resp.id != 1) {
+                        getCertificateDetails(PROFILE_ID, function(resp) {
+                            if (resp.length != 0) {
+                                CERTIFICATE_ID = parseInt(resp.id);
+                                FILE_STATUS = parseInt(resp.client.file_status);
+                            }
+                        });
+                    }
                 });
             }
         });

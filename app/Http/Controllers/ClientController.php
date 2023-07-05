@@ -1219,6 +1219,15 @@ class ClientController extends Controller
             'expire_date' => 'sometimes|required|date',
             'file' => 'sometimes|required|mimes:jpeg,jpg,png,pdf'
         ]);
+        // validate issue date and expire date
+        $issue_date = Carbon::parse($request->issue_date)->format('Y-m-d');
+        $expire_date = Carbon::parse($request->expire_date)->format('Y-m-d');
+        if (empty($request->issue_date) || empty($request->expire_date)) {
+            return array('id' => 0, 'message' => 'issue date and expire date are required');
+        }
+        if ($issue_date >= $expire_date) {
+            return array('id' => 0, 'message' => 'issue date must be less than expire date');
+        }
         $user = Auth::user();
         $req = request()->all();
         unset($req['file']);
