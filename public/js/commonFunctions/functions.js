@@ -69,9 +69,13 @@ function show_mesege(resp_id) {
             title: 'Envirmontal MS</br>Success!'
         });
     } else {
+        let message = '';
+        if (resp_id.message != undefined || resp_id.message != null || resp_id.message != '') {
+            message = resp_id.message;
+        }
         Swal.fire({
             type: 'error',
-            title: 'Enviremontal MS</br>' + resp_id
+            title: 'Enviremontal MS</br>' + message
         });
     }
 }
