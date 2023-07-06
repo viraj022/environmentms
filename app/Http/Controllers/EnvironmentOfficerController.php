@@ -68,11 +68,12 @@ class EnvironmentOfficerController extends Controller
             'user_id' => 'required',
             'assistantDirector_id' => 'required',
         ]);
+        $eo_user_id=request('user_id');
         if (isset($pageAuth['is_create']) && $pageAuth['is_create']) {
-            if ($this->checkAssistantDirector(\request('user_id'))) {
-                if ($this->checkEnvironmentOfficer(\request('user_id'))) {
+            if ($this->checkAssistantDirector($eo_user_id)) {
+                if ($this->checkEnvironmentOfficer($eo_user_id)) {
                     $environmentOfficer = new EnvironmentOfficer();
-                    $environmentOfficer->user_id = \request('user_id');
+                    $environmentOfficer->user_id = $eo_user_id;
                     $environmentOfficer->assistant_director_id = \request('assistantDirector_id');
                     $environmentOfficer->active_status = '1';
                     $msg = $environmentOfficer->save();
@@ -83,7 +84,7 @@ class EnvironmentOfficerController extends Controller
                         return array('id' => 0, 'message' => 'false');
                     }
                 } else {
-                    $eo = EnvironmentOfficer::where('user_id', \request('user_id'))->first();
+                    $eo = EnvironmentOfficer::where('user_id', $eo_user_id)->first();
                     $eo->assistant_director_id = \request('assistantDirector_id');
                     $eo->active_status = '1';
                     $msg = $eo->save();
@@ -93,7 +94,6 @@ class EnvironmentOfficerController extends Controller
                     } else {
                         return array('id' => 0, 'message' => 'false');
                     }
-                    // return array('message' => 'Custom Validation unprocessable entry', 'errors' => array('user_id' => 'user is already already assigned as an active environment officer'));
                 }
             } else {
                 return array('message' => 'can not assign active assistant directer as an environment officer', 'errors' => array('user_id' => 'can not assign active assistant directer as an environment officer'));
@@ -123,11 +123,14 @@ class EnvironmentOfficerController extends Controller
     public function show(EnvironmentOfficer $environmentOfficer)
     {
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $assistantDirectors = AssistantDirector::where('active_status', '1')->pluck('user_id')->toArray();
-        // $environmentOfficers = EnvironmentOfficer::whereNotNull('assistant_director_id')->select('user_id as id')->get();
+        // dd($assistantDirectors);
         $environmentOfficers = EnvironmentOfficer::whereNotNull('assistant_director_id')->pluck('user_id')->toArray();
+        // $environmentOfficers = EnvironmentOfficer::whereNotNull('assistant_director_id')->get()->toArray();
         // dd($environmentOfficers);
+        // merge two arrays
+        $Officers = array_merge($assistantDirectors, $environmentOfficers);
+        // dd($Officers);
         return User::whereHas('roll.level', function ($queary) {
             $queary->where('name', Level::ENV_OFFICER);
         })->wherenotin('id', $assistantDirectors)->wherenotin('id', $environmentOfficers)->get();
@@ -249,8 +252,7 @@ class EnvironmentOfficerController extends Controller
 
     public function checkEnvironmentOfficer($id)
     {
-        $environmentOfficer = EnvironmentOfficer::where('user_id', '=', $id)
-            ->where('active_status', '=', 1)->first();
+        $environmentOfficer = EnvironmentOfficer::where('user_id', '=', $id)->first();
         if ($environmentOfficer === null) {
             return true;
         } else {
@@ -345,7 +347,6 @@ class EnvironmentOfficerController extends Controller
     public function getEplByEnvOfficer($id)
     {
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         return Client::where('environment_officer_id', $id)
             ->with('epls', 'siteClearenceSessions')
             ->get();
