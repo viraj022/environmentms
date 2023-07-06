@@ -160,16 +160,11 @@
 <!-- AdminLTE App -->
 <script>
     $(function() {
-
-        //Load table
-        //loadTable();
-        //   loadZoneCombo();
         loadUsersCombo();
         loadAssistantDirectorCombo(function() {
             loadEnvOficerTable($('#getAssistantDirector').val());
-
         });
-        //loadTable();
+
         //click save button
         $('#btnSave').click(function() {
             var data = {
@@ -228,22 +223,12 @@
                     loadEnvOficerTable($('#getAssistantDirector').val());
                 });
                 showSaveBtn();
-
-                // resetinputFields();
-                //hideAllErrors();
             });
         });
         //select button action
         $(document).on('click', '.btnAction', function() {
             var jsonArray = JSON.parse(unescape($(this).data('raw_data')));
             $('#btnDelete').val(jsonArray.id);
-            //  getEnvOfficerById(this.id, function(result) {
-            //    alert(result.id);
-            // $('#lblAssistantDirector').text(result.assistant_director_first_name + ' ' + result.assistant_director_last_name);
-            // $('#lblUser').text(result.user_name + ' ' + result.last_name);
-            // $('#btnUpdate').val(result.id);
-            // $('#btnDelete').val(result.id);
-            // showUpdate_DeleteBtn();
         });
         // hideAllErrors();
 

@@ -4,7 +4,7 @@ function GetUsers(callBack) {
         headers: {
             Authorization:
                 "Bearer " + $("meta[name=api-token]").attr("content"),
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             Accept: "application/json",
         },
         url: "api/environment_officers/unassigned",
@@ -30,23 +30,15 @@ function GetUsers(callBack) {
 function loadUsersCombo(callBack) {
     GetUsers(function (result) {
         var combo = "";
-        var id = 1;
-        $.each(result, function (index, value) {
-            combo +=
-                "<option value='" +
-                value.id +
-                "'>" +
-                value.first_name +
-                " " +
-                value.last_name +
-                "</option>";
-        });
+        if (result.length == 0 || result == undefined) {
+            combo = "<option value=''>-No data Found-</option>";
+        } else {
+            $.each(result, function (index, value) {
+                combo += "<option value='" + value.id + "'>" + value.first_name + " " + value.last_name + "</option>";
+            });
+        }
         $("#getUsers").html(combo);
-        if (
-            typeof callBack !== "undefined" &&
-            callBack != null &&
-            typeof callBack === "function"
-        ) {
+        if (typeof callBack !== "undefined" && callBack != null && typeof callBack === "function") {
             callBack(result);
         }
     });
@@ -58,7 +50,7 @@ function uniqueNamecheck(name, callBack) {
         headers: {
             Authorization:
                 "Bearer " + $("meta[name=api-token]").attr("content"),
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             Accept: "application/json",
         },
         url: "api/zone/name/" + name,
@@ -83,7 +75,7 @@ function uniqueCodecheck(code, callBack) {
         headers: {
             Authorization:
                 "Bearer " + $("meta[name=api-token]").attr("content"),
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             Accept: "application/json",
         },
         url: "api/zone/code/" + code,
@@ -109,7 +101,7 @@ function GetAssistantDir(callBack) {
         headers: {
             Authorization:
                 "Bearer " + $("meta[name=api-token]").attr("content"),
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             Accept: "application/json",
         },
         url: "api/AssistantDirector/active",
@@ -160,7 +152,7 @@ function getEnvOfficerByAssistantDirId_table(id, callBack) {
         headers: {
             Authorization:
                 "Bearer " + $("meta[name=api-token]").attr("content"),
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             Accept: "application/json",
         },
         url: "api/environment_officers/assistant_director/id/" + id,
@@ -208,7 +200,7 @@ function getEnvOfficerById(id, callBack) {
         headers: {
             Authorization:
                 "Bearer " + $("meta[name=api-token]").attr("content"),
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             Accept: "application/json",
         },
         url: "api/environment_officer/id/" + id,
