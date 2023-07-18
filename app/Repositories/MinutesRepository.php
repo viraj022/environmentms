@@ -20,31 +20,20 @@ use Illuminate\Support\Facades\DB;
  *
  * @author hansana
  */
-class MinutesRepository
-{
+class MinutesRepository {
 
-    public static function all($file_id)
-    {
-        $minutes = Minute::where('file_id', $file_id)
-        ->orderBy('id', 'DESC')
-        ->withTrashed()
-        ->with('user')
-        ->get();
+    public static function all($file_id) {
+        $minutes = Minute::with('user')->where('file_id', $file_id)->orderBy('id', 'DESC')->get()->toArray();
         $array = [];
-        foreach ($minutes->toArray() as $min) {
-            $raw = array(
+        foreach ($minutes as $min) {
+            $user = $min['user'];
+            $array[] = array(
                 'file_type' => $min['file_type'],
                 'minute_description' => $min['minute_description'],
                 'situation' => $min['situation'],
                 'updated_at' => $min['updated_at'],
+                'user' => $user['first_name'] . " " . $user['last_name'] . " (" . $user['user_name'] . ")",
             );
-            if (isset($min['user'])) {
-                $user = $min['user'];
-                $raw['user'] = $user['first_name'] . " " . $user['last_name'] . " (" . $user['user_name'] . ")";
-            } else {
-                $raw['user'] = "N/A";
-            }
-            array_push($array, $raw);
         }
         /*
           foreach ($minutes as $key => $value) {
@@ -66,32 +55,28 @@ class MinutesRepository
         return $array;
     }
 
-    public function save($requestData)
-    {
+    public function save($requestData) {
         $minutes = Minute::create($requestData);
         return $minutes == true;
     }
 
-    public function update($request, $id)
-    {
+    public function update($request, $id) {
 
         $minutes = Minute::findOrFail($id);
         $minutes = $minutes->update($request->all());
         return $minutes == true;
     }
 
-    public function delete($id)
-    {
+    public function delete($id) {
         return Minute::findOrFail($id)->delete() == true;
     }
 
-    public function show($id)
-    {
+    public function show($id) {
         // return Committee::with('siteClearenceSession.client')->with('commetyPool')->findOrFail($id);
     }
 
-    public function getByAttribute($attribute, $value)
-    {
+    public function getByAttribute($attribute, $value) {
         // return Committee::with('siteClearenceSession.client')->with('commetyPool')->where($attribute, $value)->get();
     }
+
 }

@@ -26,7 +26,7 @@ class Minute extends Model
     protected $fillable = ['file_type', 'file_type_id', 'user_id', 'minute_description', 'situation','file_id'];
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withTrashed();
     }
 
     public function fileTye()
