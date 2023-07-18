@@ -48,6 +48,10 @@ class InspectionSessionAttachmentController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
             $inspection = InspectionSession::find($id);
+            // check if inspection session completed
+            if ($inspection->status == 1) {
+                return array('id' => 0, 'message' => 'Inspection session already completed');
+            }
             if ($inspection) {
                 $e = Client::findOrFail($inspection->client_id);
                 $type = $request->file->extension();
@@ -137,7 +141,10 @@ class InspectionSessionAttachmentController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_delete']) {
-            $inspectionSessionAttachment = InspectionSessionAttachment::findOrFail($id);
+            $inspectionSessionAttachment = InspectionSessionAttachment::with('InspectionSession')->findOrFail($id);
+            if ($inspectionSessionAttachment->InspectionSession->status == 1) {
+                return array('id' => 0, 'message' => 'File is Completed. You can not delete this file.');
+            }
             $msg = $inspectionSessionAttachment->delete();
 
             if ($msg) {
