@@ -1,5 +1,6 @@
 //Load Attachments
 function loadAllOldAttachments(result, callBack) {
+    console.log(result);
     var obj = '';
     var num = 0;
     $.each(result, function(index, row) {
@@ -13,6 +14,7 @@ function loadAllOldAttachments(result, callBack) {
             row.description = 'N/A';
         }
         obj += '<h6 class="text-center" >' + row.description + '</h6>';
+        obj += '<span>Uploaded at: ' + row.created_at + '</span><br>';
         obj += '<a type="button" id="' + row.id + '" class="btn btn-danger text-white removeAttachs" value="0">Remove Attachment</a>';
         obj += '</div>';
     });
