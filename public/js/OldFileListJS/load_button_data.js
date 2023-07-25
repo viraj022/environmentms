@@ -1,16 +1,16 @@
-//show update buttons    
+//show update buttons
 function showUpdate() {
     $('#btnSave').addClass('d-none');
     $('#btnUpdate').removeClass('d-none');
     $('#btnshowDelete').removeClass('d-none');
 }
-//show save button    
+//show save button
 function showSave() {
     $('#btnSave').removeClass('d-none');
     $('#btnUpdate').addClass('d-none');
     $('#btnshowDelete').addClass('d-none');
 }
-//Reset all fields    
+//Reset all fields
 function resetinputFields() {
     $('#getEPLCode').val('');
     $('#getRemark').val('');
@@ -23,7 +23,7 @@ function resetinputFields() {
     $('#otherFiles').val('');
     $('.lastIssuedCer').addClass('d-none');
 }
-//HIDE ALL ERROR MSGS   
+//HIDE ALL ERROR MSGS
 function hideAllErrors() {
     $('#valEPL').addClass('d-none');
     $('#valRemark').addClass('d-none');
@@ -39,6 +39,7 @@ function visibleUploads(usage) {
 
 //Load Attachments
 function loadAllOldAttachments(result, callBack) {
+    // console.log(result);
     var obj = '';
     var num = 0;
     $.each(result.old_files, function (index, row) {

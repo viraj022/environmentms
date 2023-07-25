@@ -125,19 +125,10 @@
             if (confirm('Are you sure you want to remove this Image?')) {
                 remove_Image($(this).val(), function(parameters) {
                     if (parameters.id == 1) {
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Enviremontal MS</br>Attachment Succuessfully Removed !'
-                        });
                         getaAttachmentbyId(ID, function(res) {
                             iterateSavedImages(res);
                         });
                         $('.ekko-lightbox').modal('hide');
-                    } else {
-                        Toast.fire({
-                            type: 'error',
-                            title: 'Enviremontal MS</br>Error'
-                        });
                     }
                 });
             }
@@ -176,7 +167,7 @@
             let attid = $(this).data("attachment_id");
             if (confirm('Are you sure you want to delete this attachment?')) {
                 remove_Image(attid, function(p) {
-                    if (p.message == 'true') {
+                    if (p.id == '1') {
                         getaAttachmentbyId(ID, function(res) {
                             iterateSavedImages(res);
                         });

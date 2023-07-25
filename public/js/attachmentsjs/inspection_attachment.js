@@ -34,7 +34,7 @@ function iterateSavedImages(url_list) {
         $.each(url_list, function (index, value) {
             let prefix = value.path.startsWith('storage/') ? '' : 'storage/';
             content += '<div>';
-            content += '<div class="thumbnail attachment_image"><a href="javascript:void(0)" class="delete_attachment" data-attachment_id="' + value.id +'">';
+            content += '<div class="thumbnail attachment_image"><a href="javascript:void(0)" class="delete_attachment" data-attachment_id="' + value.id + '">';
             content += '<img src="/dist/img/delete-icon.png" alt="" style="width:32px; height:32px;"></a>';
             content += '<a href="/' + prefix + value.path + '"  data-title="' + value.id + '" data-fancybox="attachments">';
             content += '<div class="m-3" style="width: 120px; height:120px; background-size: cover; background-image:url(/' + prefix + value.path + ')"></div>';
@@ -59,7 +59,7 @@ function readImage(selected_id, callback) {
         FR.readAsDataURL(img.files[0]);
     } else {
         return false;
-//        alert("No Image");
+        //        alert("No Image");
     }
 }
 
@@ -89,6 +89,17 @@ function remove_Image(attachment_id, callBack) {
         cache: false,
         processDaate: false,
         success: function (result) {
+            if (result.id == 1) {
+                Toast.fire({
+                    type: 'success',
+                    title: 'Enviremontal MS</br>Attachment Succuessfully Removed !'
+                });
+            } else {
+                Toast.fire({
+                    type: 'error',
+                    title: result.message
+                });
+            }
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
             }
