@@ -20,12 +20,15 @@ class OldFilesController extends Controller
             'file_catagory' => 'required|string'
         ]);
         $client = Client::findOrFail($id);
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
+        // $user = Auth::user();
+        // $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
         $fileUrl = '/uploads/' . FieUploadController::getOldFilePath($client);
         $storePath = 'public' . $fileUrl;
         $path = $request->file('file')->storeAs($storePath, $file_name);
+        if (!$path) {
+            return array('id' => 0, 'message' => 'false');
+        }
         $oldFiles = new OldFiles();
         $oldFiles->path = "storage" . $fileUrl . "/" . $file_name;
         $oldFiles->type = $request->file->extension();
@@ -48,7 +51,9 @@ class OldFilesController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $oldFiles = OldFiles::findOrFail($id);
         $msg = $oldFiles->delete();
-
+        if (!$msg) {
+            return array('id' => 0, 'message' => 'false');
+        }
         LogActivity::fileLog($oldFiles->client_id, 'old_file', "OldFileDelate", 1, 'old file', '');
         LogActivity::addToLog('OldFileCreate Deleted', $oldFiles);
         if ($msg) {
