@@ -245,7 +245,7 @@
                                     <div class="mb-2">
                                         <label for="payment_amount">Payment Amount</label>
                                         <input type="number" name="payment_amount" id="payment_amount"
-                                            class="form-control" required min="1" step="1" readonly>
+                                            class="form-control" required min="1" step="1" >
                                     </div>
                                     <div class="mb-2">
                                         <button type="submit" class="btn btn-success">Send Payment Link</button>
