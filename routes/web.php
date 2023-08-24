@@ -149,6 +149,10 @@ Route::post('/completed_files', [ReportController::class, 'viewCompletedFiles'])
 Route::get('/complains_report', [ComplainController::class, 'viewComplainReport'])
     ->name('complains-report');
 
+    // minutes report
+Route::get('/minutes_report', [ReportController::class, 'viewMinutesReport'])->name('minutes-report');
+Route::post('/minutes_report', [ReportController::class, 'viewMinutesReport'])->name('minutes-report-list');
+
 
 //cashier
 Route::middleware('auth')->group(function () {
