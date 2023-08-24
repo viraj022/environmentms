@@ -42,6 +42,6 @@ class Minute extends Model
     // file
     public function client()
     {
-        return $this->hasOne(Client::class, 'id', 'file_id');
+        return $this->hasOne(Client::class, 'id', 'file_id')->withTrashed();
     }
 }
