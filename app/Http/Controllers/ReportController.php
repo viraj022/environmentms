@@ -20,6 +20,7 @@ use App\Repositories\InspectionSessionRepository;
 use App\Repositories\AssistanceDirectorRepository;
 use App\Repositories\EnvironmentOfficerRepository;
 use App\Repositories\PradesheeyasabaRepository;
+use App\Repositories\MinutesRepository;
 use PhpParser\Node\Expr\Print_;
 use Illuminate\Http\Request;
 use App\Certificate;
@@ -287,7 +288,7 @@ class ReportController extends Controller
         $result[] = array('type' => 'Inspection', 'name' => 'Complaints', 'application' => '', 'object' => array());
         $result[] = array('type' => 'Inspection', 'name' => 'Other', 'application' => '', 'object' => array());
         $result[] = array('type' => 'Inspection', 'name' => 'UnAuthorized', 'application' => '', 'object' => array());
-// dd($result);
+        // dd($result);
         /**
          * Completed Section
          */
@@ -343,7 +344,7 @@ class ReportController extends Controller
         $telecommunicationCount = $site->telicomTowerCount($from, $to);
         $towerEplNewCount = $epl->TowerEPlPLCount($from, $to, 1, 1);
         $towerEplRenewCount = $epl->TowerEPlPLCount($from, $to, 0, 1);
-// dd($towerEplRenewCount);
+        // dd($towerEplRenewCount);
 
         $result[] = array('type' => '', 'name' => 'Meeting/Test Blast', 'application' => "", 'object' => array());
         $result[] = array('type' => '', 'name' => 'Joint Inspection', 'application' => "", 'object' => array());
@@ -1180,5 +1181,20 @@ class ReportController extends Controller
         $epl = new EplRepository();
         $data = $epl->eplBySubmitDate($from, $to, $isNew);
         return view('Reports.new_epl_by_date_range', compact(['data', 'from', 'to', 'isNew']));
+    }
+
+    public function viewMinutesReport(Request $request)
+    {
+        $user = Auth::user();
+        // check is user logged in
+        if (!$user) {
+            return redirect()->route('login');
+        }
+        $start_data = $request->start_data;
+        $end_date = $request->end_date;
+        $minutes = new MinutesRepository();
+        $minutes_data = $minutes->getDirectorApproveCertificate($start_data, $end_date);
+        // dd($minutes_data);
+        return view('Reports.minutes_report', compact('start_data', 'end_date', 'minutes_data'));
     }
 }

@@ -536,6 +536,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ url('/minutes_report') }}"
+                            class="nav-link {{ Request::is('minutes_report') ? 'active' : '' }}">
+                            <i class="fas fa-file-archive nav-icon"></i>
+                            <p>Director Certificate Approved</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ url('/online-payment-income-report') }}"
                             class="nav-link {{ Request::is('online-payment-income-report') ? 'active' : '' }}">
                             <i class="fas fa-file-archive nav-icon"></i>

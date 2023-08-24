@@ -38,4 +38,10 @@ class Minute extends Model
             return $this->belongsTo(SiteClearance::class, 'file_type_id', 'id');
         }
     }
+
+    // file
+    public function client()
+    {
+        return $this->hasOne(Client::class, 'id', 'file_id');
+    }
 }

@@ -20,9 +20,11 @@ use Illuminate\Support\Facades\DB;
  *
  * @author hansana
  */
-class MinutesRepository {
+class MinutesRepository
+{
 
-    public static function all($file_id) {
+    public static function all($file_id)
+    {
         $minutes = Minute::with('user')->where('file_id', $file_id)->orderBy('id', 'DESC')->get()->toArray();
         $array = [];
         foreach ($minutes as $min) {
@@ -55,28 +57,39 @@ class MinutesRepository {
         return $array;
     }
 
-    public function save($requestData) {
+    public function save($requestData)
+    {
         $minutes = Minute::create($requestData);
         return $minutes == true;
     }
 
-    public function update($request, $id) {
+    public function update($request, $id)
+    {
 
         $minutes = Minute::findOrFail($id);
         $minutes = $minutes->update($request->all());
         return $minutes == true;
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         return Minute::findOrFail($id)->delete() == true;
     }
 
-    public function show($id) {
+    public function show($id)
+    {
         // return Committee::with('siteClearenceSession.client')->with('commetyPool')->findOrFail($id);
     }
 
-    public function getByAttribute($attribute, $value) {
+    public function getByAttribute($attribute, $value)
+    {
         // return Committee::with('siteClearenceSession.client')->with('commetyPool')->where($attribute, $value)->get();
     }
 
+    // get DIRECTOR_APP__CERTIFICATE minutes files
+    public function getDirectorApproveCertificate($date_from, $date_to)
+    {
+        $minutes = Minute::with(['user', 'client'])->where('situation', Minute::DESCRIPTION_Dire_APPROVE_CERTIFICATE)->whereBetween(DB::raw('DATE(updated_at)'), [$date_from, $date_to])->orderBy('id', 'DESC')->get();
+        return $minutes;
+    }
 }
