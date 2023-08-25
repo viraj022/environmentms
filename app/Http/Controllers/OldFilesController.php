@@ -24,8 +24,7 @@ class OldFilesController extends Controller
         // $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
         $fileUrl = '/uploads/' . FieUploadController::getOldFilePath($client);
-        $storePath = 'public' . $fileUrl;
-        $path = $request->file('file')->storeAs($storePath, $file_name);
+        $path = $request->file('file')->storeAs($fileUrl, $file_name);
         if (!$path) {
             return array('id' => 0, 'message' => 'false');
         }
