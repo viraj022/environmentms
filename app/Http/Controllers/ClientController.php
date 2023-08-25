@@ -980,20 +980,7 @@ class ClientController extends Controller
             ]);
 
             $file = Client::findOrFail($id);
-            // if (!($request->file == null || isset($request->file))) {
-            //     $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-            //     $fileUrl = '/uploads/' . FieUploadController::getOldFilePath($file);
-            //     $storePath = 'public' . $fileUrl;
-            //     $path = $request->file('file')->storeAs($storePath, $file_name);
-            //     $oldFiles = new OldFiles();
-            //     $oldFiles->path = "storage" . $fileUrl . "/" . $file_name;
-            //     $oldFiles->type = $request->file->extension();
-            //     $oldFiles->client_id = $file->id;
-            //     $oldFiles->description = \request('description');
-            //     $oldFiles->file_catagory = \request('file_catagory');
-            //     $file->complain_attachment = "storage" . $fileUrl . "/" . $file_name;
-            //     $msg = $oldFiles->save();
-            // }
+
             if (\request('file_problem_status') == 'clean') {
                 $file->complain_attachment = null;
             }
