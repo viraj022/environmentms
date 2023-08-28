@@ -30,8 +30,25 @@
             <div class="col-md-12">
 <table class="table">
     <tr>
-        <td>old files</td>
-        <td><button class="btn btn-dark" id="old_files"> button</button></td>
+        <td><button class="btn btn-dark" id="" value="old_files"> old files</button></td>
+    </tr>
+    <tr>
+        <td><button class="btn btn-dark" id="" value="fix_client">Client</button></td>
+    </tr>
+    <tr>
+        <td><button class="btn btn-dark" id="" value="fix_epl">fix_epl</button></td>
+    </tr>
+    <tr>
+        <td><button class="btn btn-dark" id="" value="fix_siteclearance">fix_siteclearance</button></td>
+    </tr>
+    <tr>
+        <td><button class="btn btn-dark" id="" value="fix_committee_remark">fix_committee_remark</button></td>
+    </tr>
+    <tr>
+        <td><button class="btn btn-dark" id="" value="fix_inspection_session_attachment">fix_inspection_session_attachment</button></td>
+    </tr>
+    <tr>
+        <td><button class="btn btn-dark" id="" value="fix_certificate">fix_certificate</button></td>
     </tr>
 </table>
             </div>
@@ -67,7 +84,21 @@
 <script>
 
     $(function () {
+// .btn-dark click
+        $('.btn-dark').click(function () {
+            var btn_value = $(this).val();
+            var url = '/' + btn_value;
+            console.log(url);
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
 
+                }
+            });
+        });
     });
 
 </script>

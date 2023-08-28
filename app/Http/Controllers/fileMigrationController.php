@@ -17,7 +17,7 @@ class fileMigrationController extends Controller
     public function __construct()
     {
         // $this->middleware('auth:api');
-        $this->fixCertificate();
+        // $this->fixCertificate();
     }
 
     // index
@@ -30,7 +30,7 @@ class fileMigrationController extends Controller
     // get old files
     public function getOldFiles()
     {
-        $oldFiles = OldFiles::like('path', 'storage%')->get();
+        $oldFiles = OldFiles::get();
         foreach ($oldFiles as $oldFile) {
             // if isset storage// and storage/ replace with empty string
             $oldFile->path = str_replace('storage//', '', $oldFile->path);
@@ -38,6 +38,11 @@ class fileMigrationController extends Controller
             //save changes
             $oldFile->save();
         }
+        // return response
+        return response()->json([
+            'message' => 'Old files updated successfully',
+            'status' => 'success',
+        ], 200);
     }
 
     // Client table
@@ -66,6 +71,11 @@ class fileMigrationController extends Controller
             }
             $value->save();
         }
+        // return response
+        return response()->json([
+            'message' => 'Client updated successfully',
+            'status' => 'success',
+        ], 200);
     }
 
     // epl table
@@ -84,6 +94,11 @@ class fileMigrationController extends Controller
             }
             $e->save();
         }
+        // return response
+        return response()->json([
+            'message' => 'EPL updated successfully',
+            'status' => 'success',
+        ], 200);
     }
 
     // site clearances table
@@ -102,6 +117,11 @@ class fileMigrationController extends Controller
             }
             $value->save();
         }
+        // return response
+        return response()->json([
+            'message' => 'SiteClearance updated successfully',
+            'status' => 'success',
+        ], 200);
     }
 
     //CommitteeRemark table
@@ -115,6 +135,11 @@ class fileMigrationController extends Controller
             }
             $value->save();
         }
+        // return response
+        return response()->json([
+            'message' => 'CommitteeRemark updated successfully',
+            'status' => 'success',
+        ], 200);
     }
 
     // InspectionSessionAttachment table
@@ -128,6 +153,11 @@ class fileMigrationController extends Controller
             }
             $value->save();
         }
+        // return response
+        return response()->json([
+            'message' => 'InspectionSessionAttachment updated successfully',
+            'status' => 'success',
+        ], 200);
     }
 
     // Certificate table
@@ -146,5 +176,10 @@ class fileMigrationController extends Controller
             }
             $value->save();
         }
+        // return response
+        return response()->json([
+            'message' => 'Certificate updated successfully',
+            'status' => 'success',
+        ], 200);
     }
 }
