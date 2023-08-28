@@ -41,7 +41,7 @@ function update_attachments() {
     }
 }
 
-function loadProfileData(user_id, callBack) {
+function loadProfileData(user_id, file_url, callBack) {
     let id = $("#complain_profile_id").val();
     let url = "/api/complain_profile_data/id/" + id;
     ajaxRequest("GET", url, null, function (resp) {
@@ -116,35 +116,24 @@ function loadProfileData(user_id, callBack) {
 
                     if (file_type != "pdf") {
                         if (file_path != "") {
-                            image +=
-                                '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><img src="/storage/' +
-                                file_path +
+                            image += '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><img src="' +
+                                file_url + '/' + file_path +
                                 '" class="img-fluid" alt="" style="width: auto; height: 200px; max-width: 384px;"><hr>';
                             if (resp.status != 1) {
-                                image +=
-                                    '<button type="button" data-name="' +
-                                    file_path +
-                                    '" class="btn btn-danger remove_attach">Remove</button>';
+                                image += '<button type="button" data-name="' + file_path + '" class="btn btn-danger remove_attach">Remove</button>';
                             }
                             image +=
-                                '<a class="btn btn-primary m-1" href="/storage/' +
-                                file_path +
+                                '<a class="btn btn-primary m-1" href="' +
+                                file_url + '/' + file_path +
                                 '" target="blank">View</a></div>';
                         }
                     } else {
                         if (file_path != "") {
                             image +=
-                                '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><embed  src="/storage/' +
-                                file_path +
+                                '<div class="col-3" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;text-align: center; margin-top: 2%;background-color: #e7e3e3;"><embed  src="' +file_url + '/' + file_path +
                                 '" class="img-fluid" alt="" style="width: auto; height: 200px; max-width: 384px;"><hr>';
-                            image +=
-                                '<button type="button" data-name="' +
-                                file_path +
-                                '" class="btn btn-danger remove_attach">Remove</button>';
-                            image +=
-                                '<a class="btn btn-primary m-1" href="/storage/' +
-                                file_path +
-                                '" target="blank">View</a></div>';
+                            image += '<button type="button" data-name="' + file_url + '/' + file_path + '" class="btn btn-danger remove_attach">Remove</button>';
+                            image += '<a class="btn btn-primary m-1" href="' + file_url + '/' + file_path + '" target="blank">View</a></div>';
                         }
                     }
                 });
@@ -304,9 +293,9 @@ function assign_user_to_complain(complain_id, user_id) {
     ajaxRequest(
         "GET",
         "/api/assign_complain_to_user/complain_id/" +
-            complain_id +
-            "/user_id/" +
-            user_id,
+        complain_id +
+        "/user_id/" +
+        user_id,
         null,
         function (result) {
             if (result.status == 1) {

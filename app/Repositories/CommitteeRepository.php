@@ -103,11 +103,9 @@ class CommitteeRepository
     {
         // dd($committee);
         if ($file != null) {
-            $file_name = Carbon::now()->timestamp . '.' . $extension;
             $fileUrl = '/uploads/industry_files/committee/' . $committee->siteClearenceSession->id . '/' . $committee->site_clearence_session_id . '/' . $committee->id . '/application';
-            $storePath = 'public' . $fileUrl;
-            $path = $file->storeAs($storePath, $file_name);
-            return "storage" . $fileUrl . "/" . $file_name;
+            $path = $file->store($fileUrl);
+            return $path;
         }
     }
 

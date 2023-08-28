@@ -31,9 +31,9 @@ function setProfileDetails(obj) {
         $("#setEPlLink").attr(
             "href",
             "/epl_profile/client/" +
-                PROFILE_ID +
-                "/profile/" +
-                obj.epls[obj.epls.length - 1].id
+            PROFILE_ID +
+            "/profile/" +
+            obj.epls[obj.epls.length - 1].id
         );
     }
     obj.last_name == null
@@ -98,7 +98,7 @@ function genCertificateNumbyId(file_id, callBack) {
     });
 }
 
-function getCertificateDetails(file_id, callBack) {
+function getCertificateDetails(file_id, FILE_URL, callBack) {
     if (file_id.length == 0) {
         return false;
     }
@@ -113,11 +113,11 @@ function getCertificateDetails(file_id, callBack) {
             );
             resp.refference_no != null
                 ? $("#ref_Num").html(
-                      "<b>Reference Number: </b>" + resp.refference_no
-                  )
+                    "<b>Reference Number: </b>" + resp.refference_no
+                )
                 : $("#ref_Num").html(
-                      "<b>Reference Number: </b>" + "&nbsp &nbsp -"
-                  );
+                    "<b>Reference Number: </b>" + "&nbsp &nbsp -"
+                );
             $("#created_at").html("<b>Created At: </b>" + resp.created_at);
             $("#updated_at").html("<b>Updated At: </b>" + resp.updated_at);
             $("#issue_date").val(resp.issue_date);
@@ -130,7 +130,7 @@ function getCertificateDetails(file_id, callBack) {
                 $(".fileShowUi").removeClass("d-none");
                 $("#fileuploadedPath").attr(
                     "href",
-                    "/" + resp.certificate_path
+                    FILE_URL + '/' + resp.certificate_path
                 );
 
                 let file_ext = resp.certificate_path.split(".").pop();
@@ -173,7 +173,7 @@ function getCertificateDetails(file_id, callBack) {
                     $(".correctedFileShowUi").removeClass("d-none");
                     $("#correctedCertificatePath").attr(
                         "href",
-                        "/" + resp.corrected_file
+                        FILE_URL + '/' + resp.corrected_file
                     );
 
                     let file_ext = resp.corrected_file.split(".").pop();
@@ -196,7 +196,7 @@ function getCertificateDetails(file_id, callBack) {
                     $(".originalCertificateShowUi").removeClass("d-none");
                     $("#originalCertificatePath").attr(
                         "href",
-                        "/" + resp.signed_certificate_path
+                        FILE_URL + '/' + resp.signed_certificate_path
                     );
 
                     let file_ext = resp.signed_certificate_path

@@ -153,7 +153,8 @@ Route::get('/complains_report', [ComplainController::class, 'viewComplainReport'
 Route::get('/minutes_report', [ReportController::class, 'viewMinutesReport'])->name('minutes-report');
 Route::post('/minutes_report', [ReportController::class, 'viewMinutesReport'])->name('minutes-report-list');
 
-
+// migration
+Route::get('/file_migration', 'fileMigrationController@index');
 //cashier
 Route::middleware('auth')->group(function () {
     Route::get('/cashier', [CashierController::class,  'newCashier'])

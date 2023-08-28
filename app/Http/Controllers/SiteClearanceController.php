@@ -96,11 +96,9 @@ class SiteClearanceController extends Controller
             // save old data file
             if ($msg) {
                 if ($request->file('file') != null) {
-                    $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                    $fileUrl = '/uploads/' . FieUploadController::getSiteClearanceCertificateFilePath($siteSessions);
-                    $storePath = 'public' . $fileUrl;
-                    $path = $request->file('file')->storeAs($storePath, $file_name);
-                    $siteClearance->certificate_path = "storage/" . $fileUrl . "/" . $file_name;
+                    $storePath = '/uploads/' . FieUploadController::getSiteClearanceCertificateFilePath($siteSessions);
+                    $path = $request->file('file')->store($storePath);
+                    $siteClearance->certificate_path = $path;
                     $msg = $msg && $siteClearance->save();
                 } else {
                     return response(array('id' => 1, 'message' => 'certificate not found'), 422);
@@ -154,11 +152,9 @@ class SiteClearanceController extends Controller
             // save old data file
             if ($msg) {
                 if ($request->file('file') != null) {
-                    $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
                     $fileUrl = '/uploads/' . FieUploadController::getSiteClearanceCertificateFilePath($siteClearanceSession);
-                    $storePath = 'public' . $fileUrl;
-                    $path = $request->file('file')->storeAs($storePath, $file_name);
-                    $siteClearance->certificate_path = "storage/" . $fileUrl . "/" . $file_name;
+                    $path = $request->file('file')->store($fileUrl);
+                    $siteClearance->certificate_path = $path;
                 }
                 $msg = $msg && $siteClearance->save();
             } else {
@@ -262,11 +258,9 @@ class SiteClearanceController extends Controller
                 $siteClearance->count = 0;
                 // upload file
                 if ($request->file('file') != null) {
-                    $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
                     $fileUrl = '/uploads/' . FieUploadController::getSiteClearanceAPPLICATIONFilePath($siteSessions);
-                    $storePath = 'public' . $fileUrl;
-                    $path = $request->file('file')->storeAs($storePath, $file_name);
-                    $siteClearance->application_path = "storage" . $fileUrl . "/" . $file_name;
+                    $path = $request->file('file')->store($fileUrl);
+                    $siteClearance->application_path = $path;
                     $msg = $msg && $siteClearance->save();
                 } else {
                     return response(array('id' => 1, 'message' => 'certificate not found'), 422);
@@ -343,11 +337,8 @@ class SiteClearanceController extends Controller
             'file' => 'required|mimes:jpeg,jpg,png,pdf',
         ]);
         if ($request->file('file') != null) {
-            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
             $fileUrl = '/uploads/' . FieUploadController::torPath($siteClearenceSession);
-            $storePath = 'public' . $fileUrl;
-            $path = $request->file('file')->storeAs($storePath, $file_name);
-            $db_path = "storage" . $fileUrl . "/" . $file_name;
+            $db_path = $request->file('file')->store($fileUrl);
             if ($siteClearenceSession->content_paths) {
                 $siteClearenceSession->content_paths = array_merge($siteClearenceSession->content_paths, ["tor" => ["path" => $db_path, "expire_date" => $request->expire_date, "valid_date" => $request->valid_date]]);
             } else {
@@ -374,11 +365,8 @@ class SiteClearanceController extends Controller
             'file' => 'required|mimes:jpeg,jpg,png,pdf',
         ]);
         if ($request->file('file') != null) {
-            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
             $fileUrl = '/uploads/' . FieUploadController::torPath($siteClearenceSession);
-            $storePath = 'public' . $fileUrl;
-            $path = $request->file('file')->storeAs($storePath, $file_name);
-            $db_path = "storage" . $fileUrl . "/" . $file_name;
+            $db_path = $request->file('file')->store($fileUrl);
             if ($siteClearenceSession->content_paths) {
                 $siteClearenceSession->content_paths = array_merge($siteClearenceSession->content_paths, ["client_report" => ["path" => $db_path, "expire_date" => $request->expire_date]]);
             } else {

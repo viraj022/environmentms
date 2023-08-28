@@ -307,8 +307,9 @@
     <script>
         var complain_id = "{{ $complain_id }}";
         var user_id = "{{ $user->id }}";
+        const FILE_URL="{{ env('DO_URL') }}";
         $(document).ready(function() {
-            loadProfileData(user_id);
+            loadProfileData(user_id,FILE_URL);
             load_forward_history_table(complain_id);
             load_user_by_level($('#user_level').val());
             load_letters(complain_id);
@@ -371,7 +372,7 @@
             ajaxRequest('DELETE', url, data, function(resp) {
                 if (resp.status == 1) {
                     swal.fire('success', 'Complain attachments successfully removed', 'success');
-                    loadProfileData(user_id);
+                    loadProfileData(user_id,FILE_URL);
                 } else {
                     swal.fire('failed', 'Complain attachments removal was unsuccessful', 'warning');
                 }
