@@ -208,6 +208,7 @@
     <script async="" defer=""
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
     <script>
+        const FILE_URL="{{ env('DO_URL') }}";
         //Map Start
         // Initialize and add the map
         function initMap(_Latitude, _Longitude) {
@@ -260,13 +261,13 @@
                     $('#epl_hid').val(PROFILE);
 
                     if (result.path == null) {
-                        $(".navTodownload").attr("href", '/' + result.application_path);
+                        $(".navTodownload").attr("href", FILE_URL+'/' + result.application_path);
                     } else {
-                        $(".navTodownload").attr("href", '/' + result.path);
+                        $(".navTodownload").attr("href", FILE_URL+'/' + result.path);
                     }
                     if (result.path != '') {
                         $('#delete_application').removeClass('d-none');
-                        $('#delete_application').attr('data-file', '/' + result.path);
+                        $('#delete_application').attr('data-file', FILE_URL+'/' + result.path);
                     }
 
                 }
@@ -278,7 +279,7 @@
                         cert_no: result.certificate_no
                     };
                     getCertificatebyId(cert_num, function(set) { // get certificate by cert number
-                        $('.viewCert').attr('href', "/" + set[0].signed_certificate_path);
+                        $('.viewCert').attr('href', FILE_URL+"/" + set[0].signed_certificate_path);
                     });
                 }
             });

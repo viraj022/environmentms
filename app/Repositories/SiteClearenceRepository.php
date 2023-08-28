@@ -223,18 +223,15 @@ class SiteClearenceRepository
     {
         return DB::transaction(function () use ($request, $siteClearence) {
             $site = new SiteClearance();
-            //                    dd($siteClearence);
             $site->site_clearence_session_id = $siteClearence->site_clearence_session_id;
             if ($request->file('file') != null) {
-                $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
                 $fileUrl = '/uploads/' . FieUploadController::getSiteClearanceAPPLICATIONFilePath($site->siteClearenceSession);
-                $storePath = 'public' . $fileUrl;
-                $path = $request->file('file')->storeAs($storePath, $file_name);
+                $path = $request->file('file')->store($fileUrl);
             } else {
                 return response(array('id' => 1, 'message' => 'Application not found'), 422);
             }
             $site->submit_date = $request->submit_date;
-            $site->application_path = "storage/" . $fileUrl . "/" . $file_name;
+            $site->application_path = $path;
             $site->status = 0;
             $site->count = $this->getLastSiteClearance($site->siteClearenceSession->client_id)->count + 1;
             $file = $site->siteClearenceSession->client;

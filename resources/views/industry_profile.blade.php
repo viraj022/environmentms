@@ -975,6 +975,7 @@
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
     <script>
         PROFILE_ID = '{{ $id }}';
+       const FILE_BASE_PATH = '{{ env('DO_URL') }}';
         var FILE_DETAILS = null;
         $(function() {
             $(".loadingRenderUI").remove();
@@ -992,7 +993,7 @@
                 setIndustryAndClientDb(parameters);
                 updateAttachmentData(parameters);
                 $(document).on('click', '.oldAttachTab', function() {
-                    loadAllOldAttachments(parameters.old_files, function() {});
+                    loadAllOldAttachments(parameters.old_files, FILE_BASE_PATH);
                 });
                 oldFileConfirmSection(parameters.is_old);
                 checkEPLstatus(parameters.epls);
@@ -1099,7 +1100,7 @@
                     $('#otherFiles')[0].files[null];
                 }
                 getaProfilebyId(PROFILE_ID, function(parameters) {
-                    loadAllOldAttachments(parameters.old_files, function() {});
+                    loadAllOldAttachments(parameters.old_files, FILE_BASE_PATH);
                 });
             });
         });
@@ -1111,7 +1112,7 @@
                 deleteOldAttachments(getRemoveId, function(result) {
                     show_mesege(result);
                     getaProfilebyId(PROFILE_ID, function(parameters) {
-                        loadAllOldAttachments(parameters.old_files, function() {});
+                        loadAllOldAttachments(parameters.old_files, FILE_BASE_PATH);
                     });
                 });
             } else {

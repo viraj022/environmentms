@@ -236,10 +236,10 @@ class ClientController extends Controller
     public function confirmedFiles()
     {
         $user = Auth::user();
-        if(empty($user)){
+        if (empty($user)) {
             return redirect()->route('home');
         }
-        if(!config('auth.privileges.clientSpace')){
+        if (!config('auth.privileges.clientSpace')) {
             abort(401);
         }
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
@@ -980,20 +980,7 @@ class ClientController extends Controller
             ]);
 
             $file = Client::findOrFail($id);
-            // if (!($request->file == null || isset($request->file))) {
-            //     $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-            //     $fileUrl = '/uploads/' . FieUploadController::getOldFilePath($file);
-            //     $storePath = 'public' . $fileUrl;
-            //     $path = $request->file('file')->storeAs($storePath, $file_name);
-            //     $oldFiles = new OldFiles();
-            //     $oldFiles->path = "storage" . $fileUrl . "/" . $file_name;
-            //     $oldFiles->type = $request->file->extension();
-            //     $oldFiles->client_id = $file->id;
-            //     $oldFiles->description = \request('description');
-            //     $oldFiles->file_catagory = \request('file_catagory');
-            //     $file->complain_attachment = "storage" . $fileUrl . "/" . $file_name;
-            //     $msg = $oldFiles->save();
-            // }
+
             if (\request('file_problem_status') == 'clean') {
                 $file->complain_attachment = null;
             }
@@ -1153,15 +1140,10 @@ class ClientController extends Controller
         $user = Auth::user();
         $req = request()->all();
         unset($req['file']);
-        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $certificate = Certificate::findOrFail($id);
         if ($request->exists('file')) {
-            $type = $request->file->extension();
-            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
             $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/draft/" . $id;
-            $storePath = 'public' . $fileUrl;
-            $path = 'storage' . $fileUrl . "/" . $file_name;
-            $request->file('file')->storeAs($storePath, $file_name);
+            $path = $request->file('file')->store($fileUrl);
             $req['user_id_certificate_upload'] = $user->id;
             $req['certificate_upload_date'] = Carbon::now()->toDateString();
             $req['certificate_path'] = $path;
@@ -1187,15 +1169,10 @@ class ClientController extends Controller
         $user = Auth::user();
         $req = request()->all();
         unset($req['file']);
-        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $certificate = Certificate::findOrFail($id);
         if ($request->exists('file')) {
-            $type = $request->file->extension();
-            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
             $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/draft/" . $id;
-            $storePath = 'public' . $fileUrl;
-            $path = 'storage' . $fileUrl . "/" . $file_name;
-            $request->file('file')->storeAs($storePath, $file_name);
+            $path = $request->file('file')->store($fileUrl);
             $req['user_id_certificate_upload'] = $user->id;
             $req['corrected_file'] = $path;
         } else {
@@ -1231,15 +1208,10 @@ class ClientController extends Controller
         $user = Auth::user();
         $req = request()->all();
         unset($req['file']);
-        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $certificate = Certificate::findOrFail($id);
         if ($request->exists('file')) {
-            $type = $request->file->extension();
-            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
             $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/original/" . $id;
-            $storePath = 'public' . $fileUrl;
-            $path = 'storage' . $fileUrl . "/" . $file_name;
-            $request->file('file')->storeAs($storePath, $file_name);
+            $path = $request->file('file')->store($fileUrl);
             $req['signed_certificate_path'] = $path;
             $req['user_id_certificate_upload'] = $user->id;
         } else {

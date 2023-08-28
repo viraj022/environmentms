@@ -243,20 +243,6 @@
                                                                     </a>
                                                                 </div>
                                                             </div>
-                                                            <!-- <div class="col-4">
-                                                                                                                                                                        <div class="correctedFileShowUi d-none" style=" height: 200px;">
-                                                                                                                                                                            <hr>
-                                                                                                                                                                            <a data-toggle="tooltip" data-placement="top"
-                                                                                                                                                                            title="Click to view file" id="correctedCertificatePath"
-                                                                                                                                                                            href="" target="_blank">
-                                                                                                                                                                                <p>Corrected File</p>
-                                                                                                                                                                                <img class="img-fluid rounded" id="file_view" alt="PDF"
-                                                                                                                                                                                style="width: 128px; height: 128px;"
-                                                                                                                                                                                src=""
-                                                                                                                                                                                data-holder-rendered="true">
-                                                                                                                                                                            </a>
-                                                                                                                                                                        </div>
-                                                                                                                                                                    </div> -->
                                                         </div>
                                                     </div>
 
@@ -388,6 +374,7 @@
         var FILE_STATUS = '';
         var CER_STATUS = '';
         var CERTIFICATE_ID = '';
+        const FILE_URL="{{ env('DO_URL') }}";
         $(function() {
             //Load table
             getaProfilebyId(PROFILE_ID, function(parameters) {
@@ -397,7 +384,7 @@
                 setProfileDetails(parameters);
                 setIndustryAndClientDb(parameters);
 
-                getCertificateDetails(PROFILE_ID, function(resp) {
+                getCertificateDetails(PROFILE_ID,FILE_URL, function(resp) {
                     loadCertRefNo(resp);
                 });
 
@@ -410,7 +397,7 @@
         });
 
         //Show Certificate Details
-        getCertificateDetails(PROFILE_ID, function(resp) {
+        getCertificateDetails(PROFILE_ID, FILE_URL,function(resp) {
             if (resp.length != 0) {
                 FILE_STATUS = parseInt(resp.client.file_status);
                 CERTIFICATE_ID = parseInt(resp.id);
@@ -423,7 +410,7 @@
                 genCertificateNumbyId(PROFILE_ID, function(resp) {
                     show_mesege(resp);
                     if (resp.id == 1) {
-                        getCertificateDetails(PROFILE_ID, function(resp) {
+                        getCertificateDetails(PROFILE_ID,FILE_URL, function(resp) {
                             loadCertRefNo(resp);
                             CERTIFICATE_ID = parseInt(resp.id);
                         });
@@ -514,7 +501,7 @@
                 $('#uploadCerfile').prop('disabled', false);
                 show_mesege(resp);
                 if (resp.id == 1) {
-                    getCertificateDetails(PROFILE_ID, function(resp) {
+                    getCertificateDetails(PROFILE_ID,FILE_URL, function(resp) {
                         CERTIFICATE_ID = parseInt(resp.id);
                         FILE_STATUS = parseInt(resp.client.file_status);
                         $('#fileUploadInput').val('');
@@ -542,7 +529,7 @@
                     $('.genCertificateNum').addClass('d-none');
 
                     if (resp.id != 1) {
-                        getCertificateDetails(PROFILE_ID, function(resp) {
+                        getCertificateDetails(PROFILE_ID,FILE_URL, function(resp) {
                             if (resp.length != 0) {
                                 CERTIFICATE_ID = parseInt(resp.id);
                                 FILE_STATUS = parseInt(resp.client.file_status);
@@ -591,7 +578,7 @@
                     if (resp.status == 1) {
                         swal.fire('success', 'Reference Number Saved Successfully', 'success');
                         $('#man_cert_ref_no').val('');
-                        getCertificateDetails(PROFILE_ID)
+                        getCertificateDetails(PROFILE_ID,FILE_URL)
                     } else {
                         swal.fire('Failed', 'Reference Number Saving was Successfully', 'error');
                     }
