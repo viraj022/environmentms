@@ -129,6 +129,7 @@
     <script src="../../js/AdPendingJS/ad_pending_list.js" type="text/javascript"></script>
     <!-- AdminLTE App -->
     <script>
+        const FILE_URL="{{ env('DO_URL') }}";
         function minute() {
             var data = {
                 minutes: $('#getMinutes').val()
@@ -265,7 +266,7 @@
             $(document).on('click', '#viewCertificateBtn', function() {
                 var fileData = JSON.parse(unescape($(this).val()));
                 loadCertificatePathsApi(parseInt(fileData.id), function(set) {
-                    window.open(set.certificate_path, '_blank');
+                    window.open(FILE_URL+'/'+set.certificate_path, '_blank');
                 });
             });
 

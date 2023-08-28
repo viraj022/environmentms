@@ -415,7 +415,7 @@
         $(document).on('click', '#viewCertificateBtn', function() {
             var fileData = JSON.parse(unescape($(this).val()));
             loadCertificatePathsApi(parseInt(fileData.id), function(set) {
-                window.open(set.certificate_path, '_blank');
+                window.open(FILE_URL+'/'+set.certificate_path, '_blank');
             });
         });
 
