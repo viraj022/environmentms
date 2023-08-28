@@ -20,17 +20,15 @@ class OldFilesController extends Controller
             'file_catagory' => 'required|string'
         ]);
         $client = Client::findOrFail($id);
-        // $user = Auth::user();
-        // $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
-        $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
         $fileUrl = '/uploads/' . FieUploadController::getOldFilePath($client);
-        $storePath = 'public' . $fileUrl;
-        $path = $request->file('file')->storeAs($storePath, $file_name);
+        // dd($fileUrl);
+        $path = $request->file('file')->store($fileUrl);
+        // dd($path);
         if (!$path) {
             return array('id' => 0, 'message' => 'false');
         }
         $oldFiles = new OldFiles();
-        $oldFiles->path = "storage" . $fileUrl . "/" . $file_name;
+        $oldFiles->path = $path;
         $oldFiles->type = $request->file->extension();
         $oldFiles->client_id = $client->id;
         $oldFiles->description = \request('description');

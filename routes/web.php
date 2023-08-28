@@ -153,6 +153,21 @@ Route::get('/complains_report', [ComplainController::class, 'viewComplainReport'
 Route::get('/minutes_report', [ReportController::class, 'viewMinutesReport'])->name('minutes-report');
 Route::post('/minutes_report', [ReportController::class, 'viewMinutesReport'])->name('minutes-report-list');
 
+// migration
+Route::get('/file_migration', 'fileMigrationController@index');
+
+Route::get('/old_files', 'fileMigrationController@getOldFiles');//get old files
+Route::get('/fix_client', 'fileMigrationController@fixClient');//fix client table
+Route::get('/fix_epl', 'fileMigrationController@fixEpl');//fix epl table
+Route::get('/fix_siteclearance', 'fileMigrationController@fixSiteClearances');//fix site clearance table
+//fixCommitteeRemark
+Route::get('/fix_committee_remark', 'fileMigrationController@fixCommitteeRemark');
+// fixInspectionSessionAttachment
+Route::get('/fix_inspection_session_attachment', 'fileMigrationController@fixInspectionSessionAttachment');
+// fixCertificate
+Route::get('/fix_certificate', 'fileMigrationController@fixCertificate');
+
+
 
 //cashier
 Route::middleware('auth')->group(function () {

@@ -53,13 +53,9 @@ class InspectionSessionAttachmentController extends Controller
                 return array('id' => 0, 'message' => 'Inspection session already completed');
             }
             if ($inspection) {
-                $e = Client::findOrFail($inspection->client_id);
                 $type = $request->file->extension();
-                $file_name = Carbon::now()->timestamp . '.' . $request->file->getClientOriginalExtension();
-                $fileUrl = "/uploads/" . FieUploadController::getInspectionFilePath($inspection);
-                $storePath = 'public' . $fileUrl;
-                $path = 'storage' . $fileUrl . "/" . $file_name;
-                $request->file('file')->storeAs($storePath, $file_name);
+                $storePath = "/uploads/" . FieUploadController::getInspectionFilePath($inspection);
+                $path = $request->file('file')->store($storePath);
                 $inspectionSessionAttachment = new InspectionSessionAttachment();
                 $inspectionSessionAttachment->inspection_session_id = $id;
                 $inspectionSessionAttachment->path = $path;

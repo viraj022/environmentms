@@ -150,7 +150,7 @@
                                         <button id="delete_application" class="btn btn-danger d-none"
                                             data-file="">Delete Application</button>
                                         @if (!empty($certificate) && !empty($certificate->certificate_path))
-                                            <a href="{{ asset($certificate->certificate_path) }}" target="_blank"
+                                            <a href="{{ env('DO_URL').'/'.$certificate->certificate_path }}" target="_blank"
                                                 class="btn btn-primary mt-2" data-toggle="tooltip" data-placement="top"
                                                 title="Click to get draft certificate" id="">
                                                 Draft Certificate </a>
@@ -336,11 +336,11 @@
                                                 <td>{{ $cert->cetificate_number }}</td>
                                                 <td>
                                                     @if (!empty($cert->certificate_path))
-                                                        <a href="{{ asset($cert->certificate_path) }}"
+                                                        <a href="{{ env('DO_URL').'/'.$cert->certificate_path }}"
                                                             class="btn btn-sm btn-success">Draft</a>
                                                     @endif
                                                     @if (!empty($cert->signed_certificate_path))
-                                                        <a href="{{ asset($cert->signed_certificate_path) }}"
+                                                        <a href="{{ env('DO_URL').'/'.$cert->signed_certificate_path }}"
                                                             class="btn btn-sm btn-info">Origial</a>
                                                     @endif
                                                 </td>
@@ -410,6 +410,7 @@
         $(function() {
             var CLIENT = '{{ $client }}';
             var PROFILE = '{{ $profile }}';
+            const FILE_URL="{{ env('DO_URL') }}";
             //    var PATH_CONTENT = [];
             $('#currentProStatus').val(PROFILE);
             //    console.log('cli: ' + CLIENT + ', prof: ' + PROFILE);
@@ -452,10 +453,10 @@
                         $('.sectionUploadTor').addClass('d-none');
                         $('.sectionArrangeCommittee').addClass('d-none');
                     }
-                    $('.navTodownload').attr('href', '/' + cleareance.application_path);
+                    $('.navTodownload').attr('href', FILE_URL+'/' + cleareance.application_path);
                     $('.siteClearType').html(resp.site_clearance_type);
 
-                    $('#delete_application').attr('data-file', '/' + cleareance.application_path);
+                    $('#delete_application').attr('data-file', FILE_URL+'/' + cleareance.application_path);
                     $('#delete_application').removeClass('d-none');
                 } else {}
                 if (resp.client.file_status == 5) {
@@ -487,7 +488,7 @@
                                     $('.sectionUploadTor').addClass('d-none');
                                     $('.sectionArrangeCommittee').addClass('d-none');
                                 }
-                                $('.navTodownload').attr('href', '/' + cleareance
+                                $('.navTodownload').attr('href', FILE_URL+'/' + cleareance
                                     .application_path);
                                 $('.siteClearType').html(resp.site_clearance_type);
                             } else {}

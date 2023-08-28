@@ -205,15 +205,10 @@ class EPLController extends Controller
                     $epl->count = 0;
                     $msg = $epl->save();
                     if ($msg) {
-                        $file_name = Carbon::now()->timestamp . '.' . $request->inp->extension();
-                        $fileUrl = '/uploads/industry_files/' . $client->id . '/application';
-                        $fileUrl = '/uploads/'
-                            . FieUploadController::getEPLApplicationFilePath($epl);
-                        $storePath = 'public' . $fileUrl;
-                        $path = $request->file('inp')->storeAs($storePath, $file_name);
-                        $client->application_path = "storage" . $fileUrl . "/" . $file_name;
-                        $epl->application_path = "storage" . $fileUrl . "/" . $file_name;
-                        // $client->is_working = 1;
+                        $fileUrl = '/uploads/' . FieUploadController::getEPLApplicationFilePath($epl);
+                        $path = $request->file('inp')->store($fileUrl);
+                        $client->application_path = $path;
+                        $epl->application_path = $path;
                         $client->save();
                         $epl->save();
                         incrementSerial(Setting::EPL_AI);
@@ -284,12 +279,10 @@ class EPLController extends Controller
                     setFileStatus($epl->client_id, 'cer_status', 0);  // set certificate status to 0
                     setFileStatus($epl->client_id, 'file_problem', 0); // set file problem status to 0
                     if ($msg) {
-                        $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                        $fileUrl = '/uploads/'
-                            . FieUploadController::getEPLApplicationFilePath($epl);
-                        $storePath = 'public' . $fileUrl;
-                        $path = $request->file('file')->storeAs($storePath, $file_name);
-                        $epl->application_path = "storage/" . $fileUrl . "/" . $file_name;
+                        $fileUrl = '/uploads/' . FieUploadController::getEPLApplicationFilePath($epl);
+                        $path = $request->file('file')->store($fileUrl);
+                        $epl->application_path = $path;
+                        $client->application_path = $path;
                         $client->save();
                         $epl->save();
                         LogActivity::fileLog($client->id, 'EPL', "Add EPL renewal", 1, 'epl', $epl->id);
@@ -327,21 +320,23 @@ class EPLController extends Controller
             switch ($type) {
                 case 'file1':
                     $fileUrl = '/uploads/' . FieUploadController::getRoadMapPath($client);
-                    $client->file_01 = "storage" . $fileUrl . "/" . $file_name;
+                    $client->file_01 = $fileUrl . "/" . $file_name;
                     break;
                 case 'file2':
                     $fileUrl = '/uploads/' . FieUploadController::getDeedFilePath($client);
-                    $client->file_02 = "storage" . $fileUrl . "/" . $file_name;
+                    $client->file_02 = $fileUrl . "/" . $file_name;
                     break;
                 case 'file3':
                     $fileUrl = '/uploads/' . FieUploadController::getSurveyFilePath($client);
-                    $client->file_03 = "storage" . $fileUrl . "/" . $file_name;
+                    $client->file_03 = $fileUrl . "/" . $file_name;
                     break;
                 default:
                     abort(422);
             }
-            $storePath = 'public' . $fileUrl;
-            $path = $request->file('file')->storeAs($storePath, $file_name);
+            $path = $request->file('file')->storeAs($fileUrl, $file_name);
+            if (!$path) {
+                return array('id' => 0, 'message' => 'false');
+            }
             $msg = $client->save();
             if ($msg) {
                 LogActivity::fileLog($client->id, 'File', "Attachment saved", 1, 'File', $client->id);
@@ -625,8 +620,7 @@ class EPLController extends Controller
             if (count($epls) > 0) {
                 return response(array("id" => 2, "message" => 'Record Already Exist Please Update the existing record'), 403);
             }
-            //  $client->is_working = 1;
-            $msg = $client->save();
+
             $epl = new EPL();
             $epl->client_id = $client->id;
             $epl->code = \request('epl_code');
@@ -640,11 +634,9 @@ class EPLController extends Controller
             $msg = $epl->save();
             if ($msg) {
                 if ($request->file('file') != null) {
-                    $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
                     $fileUrl = '/uploads/' . FieUploadController::getEPLCertificateFilePath($epl);
-                    $storePath = 'public' . $fileUrl;
-                    $path = $request->file('file')->storeAs($storePath, $file_name);
-                    $epl->path = "storage" . $fileUrl . "/" . $file_name;
+                    $path = $request->file('file')->store($fileUrl);
+                    $epl->path = $path;
                     $msg = $epl->save();
                 } else {
                     return response(array('id' => 1, 'message' => 'application not found'), 422);
@@ -716,11 +708,9 @@ class EPLController extends Controller
             // save old data file
             if ($msg) {
                 if ($request->file('file') != null) {
-                    $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
                     $fileUrl = '/uploads/' . FieUploadController::getEPLCertificateFilePath($epl);
-                    $storePath = 'public' . $fileUrl;
-                    $path = $request->file('file')->storeAs($storePath, $file_name);
-                    $epl->path = "storage/" . $fileUrl . "/" . $file_name;
+                    $path = $request->file('file')->store($fileUrl);
+                    $epl->path = $path;
                 }
                 $msg = $epl->save();
             } else {
