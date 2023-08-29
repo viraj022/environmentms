@@ -37,7 +37,7 @@ function getaProfilebyId(id, callBack) {
     });
 }
 
-function setProfileDetails(obj) {
+function setProfileDetails(obj, file_path) {
     if (obj.epls.length == 0) {
         $(".newEPL").removeClass("d-none");
     } else {
@@ -48,9 +48,9 @@ function setProfileDetails(obj) {
             $("#setEPlLink").attr(
                 "href",
                 "/epl_profile/client/" +
-                    PROFILE_ID +
-                    "/profile/" +
-                    obj.epls[obj.epls.length - 1].id
+                PROFILE_ID +
+                "/profile/" +
+                obj.epls[obj.epls.length - 1].id
             );
         }
     }
@@ -65,11 +65,11 @@ function setProfileDetails(obj) {
             $("#setSiteClear").attr(
                 "href",
                 "/site_clearance/client/" +
-                    PROFILE_ID +
-                    "/profile/" +
-                    obj.site_clearence_sessions[
-                        obj.site_clearence_sessions.length - 1
-                    ].id
+                PROFILE_ID +
+                "/profile/" +
+                obj.site_clearence_sessions[
+                    obj.site_clearence_sessions.length - 1
+                ].id
             );
         }
     }
@@ -99,7 +99,7 @@ function setProfileDetails(obj) {
         parseFloat(obj.industry_coordinate_x),
         parseFloat(obj.industry_coordinate_y)
     );
-    documentUploadDetails(obj);
+    documentUploadDetails(obj, file_path);
 }
 
 // Initialize and add the map
@@ -121,7 +121,7 @@ function initMap(_Latitude, _Longitude) {
     });
 }
 
-function documentUploadDetails(obj) {
+function documentUploadDetails(obj, file_path) {
     $("#fileUpDiv").addClass("d-none");
     $(".navTodownload").addClass("d-none");
     $("#upld_roadMap").addClass("d-none");
@@ -153,18 +153,18 @@ function documentUploadDetails(obj) {
     }
     $("#obj_code").html(obj.code);
     $("#obj_remark").html(obj.remark);
-    $(".navTodownload").attr("href", obj.application_path);
-    $(".navToFile1").attr("href", "/" + obj.file_01);
-    $(".navToFile2").attr("href", "/" + obj.file_02);
-    $(".navToFile3").attr("href", "/" + obj.file_03);
+    $(".navTodownload").attr("href", file_path + "/" + obj.application_path);
+    $(".navToFile1").attr("href", file_path + "/" + obj.file_01);
+    $(".navToFile2").attr("href", file_path + "/" + obj.file_02);
+    $(".navToFile3").attr("href", file_path + "/" + obj.file_03);
 
     if (obj.environment_officer != null) {
         if (obj.environment_officer.user != null) {
             $("#env_firstname").html(
                 "Environment Officer: " +
-                    obj.environment_officer.user.first_name +
-                    " " +
-                    obj.environment_officer.user.last_name
+                obj.environment_officer.user.first_name +
+                " " +
+                obj.environment_officer.user.last_name
             );
         }
     } else if (obj.first_name == null) {
@@ -612,20 +612,20 @@ function checkFileIssueStatus(is_exist) {
         if (get_url_extension(is_exist.complain_attachment) == "pdf") {
             $(".reportInfo").html(
                 is_exist.file_problem_status_description +
-                    "<br>" +
-                    '<a href="/' +
-                    is_exist.complain_attachment +
-                    '" target="_blank"><img class="rounded" alt="PDF" style="width: auto; height: auto;" src="/dist/img/pdf-view.png" data-holder-rendered="true"></a>'
+                "<br>" +
+                '<a href="/' +
+                is_exist.complain_attachment +
+                '" target="_blank"><img class="rounded" alt="PDF" style="width: auto; height: auto;" src="/dist/img/pdf-view.png" data-holder-rendered="true"></a>'
             );
         } else {
             $(".reportInfo").html(
                 is_exist.file_problem_status_description +
-                    "<br>" +
-                    '<a href="/' +
-                    is_exist.complain_attachment +
-                    '" target="_blank"><img class="rounded img-thumbnail" alt="IMG" style="width: auto; height: auto;" src="/' +
-                    is_exist.complain_attachment +
-                    '" data-holder-rendered="true"></a>'
+                "<br>" +
+                '<a href="/' +
+                is_exist.complain_attachment +
+                '" target="_blank"><img class="rounded img-thumbnail" alt="IMG" style="width: auto; height: auto;" src="/' +
+                is_exist.complain_attachment +
+                '" data-holder-rendered="true"></a>'
             );
         }
     } else {

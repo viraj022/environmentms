@@ -989,7 +989,7 @@
             getaProfilebyId(PROFILE_ID, function(parameters) {
                 FILE_DETAILS = parameters;
                 setCurrentFileStatus(parameters);
-                setProfileDetails(parameters);
+                setProfileDetails(parameters,FILE_BASE_PATH);
                 setIndustryAndClientDb(parameters);
                 updateAttachmentData(parameters);
                 $(document).on('click', '.oldAttachTab', function() {
