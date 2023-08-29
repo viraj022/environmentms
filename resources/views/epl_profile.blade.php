@@ -59,7 +59,7 @@
                                     {{-- draft certificate --}}
                                     @if (!empty($certificate) && !empty($certificate->certificate_path))
                                         <a data-toggle="tooltip" data-placement="top" title="Click to get draft certificate"
-                                            id="" href="{{ asset($certificate->certificate_path) }}"
+                                            id="" href="{{ env('DO_URL').'/'.$certificate->certificate_path }}"
                                             target="_blank" class="btn btn-primary" style="float: right;"> Draft Certificate
                                         </a>
                                     @endif
