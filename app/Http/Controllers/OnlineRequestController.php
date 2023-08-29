@@ -88,17 +88,14 @@ class OnlineRequestController extends Controller
             $client = $certificate->client;
         }
 
-        return view(
-            'online-requests.renewal-view',
-            compact('renewal', 'client')
-        );
+        return view('online-requests.renewal-view', compact('renewal', 'client'));
     }
 
     public function getClientByOldFileNumber(Request $request)
     {
         $file_no = $request->post('file_no');
         $fileNo = $this->onlineRequests->getClientByFileNumber($file_no);
-        
+
         return response()->json(['data' => $fileNo]);
     }
 
@@ -142,7 +139,7 @@ class OnlineRequestController extends Controller
 
         if (empty($cert)) {
             return redirect()->route('online-requests.renewal.view', $renewal)
-                ->with('error', 'Cannot verify the certificate number you entered 
+                ->with('error', 'Cannot verify the certificate number you entered
                 for the selected client. Please try again.');
         }
 

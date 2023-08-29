@@ -318,7 +318,11 @@
 
 
         function loadPaymentAmount() {
-            let amount = $("#application_combo option:selected").data("amt");
+            let amount = parseFloat($("#application_combo option:selected").data("amt"));
+            console.log(amount);
+            // add 1.5% amount to the total amount
+            amount = amount + (amount * 0.015);
+
             $("#payment_amount").val(amount);
         }
 
