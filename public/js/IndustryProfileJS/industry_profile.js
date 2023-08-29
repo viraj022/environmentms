@@ -153,10 +153,10 @@ function documentUploadDetails(obj, file_path) {
     }
     $("#obj_code").html(obj.code);
     $("#obj_remark").html(obj.remark);
-    $(".navTodownload").attr("href", file_path + "/" + obj.application_path);
-    $(".navToFile1").attr("href", file_path + "/" + obj.file_01);
-    $(".navToFile2").attr("href", file_path + "/" + obj.file_02);
-    $(".navToFile3").attr("href", file_path + "/" + obj.file_03);
+    $(".navTodownload").attr("href", file_path + obj.application_path);
+    $(".navToFile1").attr("href", file_path + obj.file_01);
+    $(".navToFile2").attr("href", file_path + obj.file_02);
+    $(".navToFile3").attr("href", file_path + obj.file_03);
 
     if (obj.environment_officer != null) {
         if (obj.environment_officer.user != null) {
