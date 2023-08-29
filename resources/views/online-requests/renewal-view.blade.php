@@ -323,7 +323,7 @@
             // add 1.5% amount to the total amount
             amount = amount + (amount * 0.015);
 
-            $("#payment_amount").val(amount);
+            $("#payment_amount").val(amount.toFixed(2));
         }
 
         $('#application_combo').change(loadPaymentAmount);
