@@ -110,7 +110,7 @@
     <script>
         //    $(function () {
         var ID = "{{ $id }}";
-        const file_url="{{ env('DO_URL') }} }}/";
+        const file_url="{{ env('DO_URL') }}/";
         getaAttachmentbyId(ID, function(res) {
             iterateSavedImages(res,file_url);
         });
