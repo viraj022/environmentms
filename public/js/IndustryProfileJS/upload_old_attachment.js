@@ -1,7 +1,7 @@
 //Load Attachments
 function loadAllOldAttachments(result, BASE_PATH, callBack) {
     var obj = '';
-    BASE_PATH = BASE_PATH;
+    console.log(BASE_PATH);
     $.each(result, function (index, row) {
         obj += '<div class="col-3 text-center" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;">';
         if (row.type === 'pdf') {
