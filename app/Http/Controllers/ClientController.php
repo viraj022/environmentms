@@ -366,7 +366,7 @@ class ClientController extends Controller
                             // import file 2/deed
                             $file2Filepath = $newApplicationRequest->deed_of_land;
                             $file2FileName = basename($file2Filepath);
-                            $file2FileUrl = config('online-request.url') . '/uploads/new-attachments/deed-of-lands/' . str_replace('public/', '', $file2Filepath);
+                            $file2FileUrl = config('online-request.url') . '/storage/new-attachments/deed-of-lands/' . str_replace('public/', '', $file2Filepath);
                             $targetDir = 'uploads/industry_files/' . $client->id . '/application/file2';
 
                             if (!Storage::exists($targetDir)) {
@@ -391,7 +391,7 @@ class ClientController extends Controller
                             // import file 3/survey plan
                             $file3Filepath = $newApplicationRequest->survey_plan;
                             $file3FileName = basename($file3Filepath);
-                            $file3FileUrl = config('online-request.url') . '/uploads/new-attachments/survey-plans/' . str_replace('public/', '', $file3Filepath);
+                            $file3FileUrl = config('online-request.url') . '/storage/new-attachments/survey-plans/' . str_replace('public/', '', $file3Filepath);
                             $targetDir = 'uploads/industry_files/' . $client->id . '/application/file3';
 
                             if (!Storage::exists($targetDir)) {
