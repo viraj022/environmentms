@@ -9,12 +9,12 @@ Route::apiResource('/committees', 'CommitteeController');
  "site_clearence_session_id" : 1,
  "schedule_date": "2020-01-01",
  "members": [1,2]
- 
+
 }
  */
 /**
  * output data
- * 
+ *
  {
      "id": 1,
      "name": "hansana",
@@ -64,9 +64,9 @@ Route::apiResource('/committees', 'CommitteeController');
              "industry_registration_no": "AE545",
              "application_path": null,
              "environment_officer_id": 4,
-             "file_01": "storage/uploads/industry_files/24/application/file1/1599214250.png",
-             "file_02": "storage/uploads/industry_files/24/application/file2/1599214324.png",
-             "file_03": "storage/uploads/industry_files/24/application/file3/1599214427.jpeg",
+             "file_01": "uploads/industry_files/24/application/file1/1599214250.png",
+             "file_02": "uploads/industry_files/24/application/file2/1599214324.png",
+             "file_03": "uploads/industry_files/24/application/file3/1599214427.jpeg",
              "file_no": "PEA/PKG/AG/S/24/2020",
              "assign_date": null,
              "is_old": 0,
@@ -79,7 +79,7 @@ Route::apiResource('/committees', 'CommitteeController');
              "start_date_only": "2020-01-01"
             }
         }
-    }    
+    }
  */
 
 /**
@@ -87,14 +87,14 @@ Route::apiResource('/committees', 'CommitteeController');
  *{
          "id": 1,
          "message": "true"
-        }  
+        }
  */
 
 Route::apiResource('/committees.c_remarks', 'CommitteeRemarkController')->shallow();
 /**
  * input data
  * {{
-  "remark": "My first remark third"  
+  "remark": "My first remark third"
 }
  */
 /**
@@ -131,13 +131,13 @@ Route::apiResource('/committees.c_remarks', 'CommitteeRemarkController')->shallo
  *{
          "id": 1,
          "message": "true"
-        }  
+        }
  */
 Route::apiResource('/committees.c_attachments', 'CommitteeRemarkController')->shallow();
 /**
  * input data
  * {{
-  "remark": "My first remark third"  
+  "remark": "My first remark third"
 }
  */
 /**
@@ -174,5 +174,5 @@ Route::apiResource('/committees.c_attachments', 'CommitteeRemarkController')->sh
  *{
          "id": 1,
          "message": "true"
-        }  
+        }
  */

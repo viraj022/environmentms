@@ -103,7 +103,7 @@ class CommitteeRepository
     {
         // dd($committee);
         if ($file != null) {
-            $fileUrl = '/uploads/industry_files/committee/' . $committee->siteClearenceSession->id . '/' . $committee->site_clearence_session_id . '/' . $committee->id . '/application';
+            $fileUrl = 'uploads/industry_files/committee/' . $committee->siteClearenceSession->id . '/' . $committee->site_clearence_session_id . '/' . $committee->id . '/application';
             $path = $file->store($fileUrl);
             return $path;
         }

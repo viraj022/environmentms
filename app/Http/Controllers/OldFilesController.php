@@ -20,7 +20,7 @@ class OldFilesController extends Controller
             'file_catagory' => 'required|string'
         ]);
         $client = Client::findOrFail($id);
-        $fileUrl = '/uploads/' . FieUploadController::getOldFilePath($client);
+        $fileUrl = 'uploads/' . FieUploadController::getOldFilePath($client);
         // dd($fileUrl);
         $path = $request->file('file')->store($fileUrl);
         // dd($path);
