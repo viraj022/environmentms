@@ -208,7 +208,7 @@ class AttachemntsController extends Controller
         if ($pageAuth['is_create']) {
             $e = EPL::findOrFail($epl);
             $type = $request->file->extension();
-            $fileUrl = "/uploads/" . FieUploadController::getEPLAttachmentPath($e);
+            $fileUrl = "uploads/" . FieUploadController::getEPLAttachmentPath($e);
             $path = $request->file('file')->store($fileUrl);
             return \DB::transaction(function () use ($attachment, $e, $path, $type) {
                 $e->attachemnts()->detach($attachment);

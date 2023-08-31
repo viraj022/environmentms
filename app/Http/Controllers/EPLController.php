@@ -205,7 +205,7 @@ class EPLController extends Controller
                     $epl->count = 0;
                     $msg = $epl->save();
                     if ($msg) {
-                        $fileUrl = '/uploads/' . FieUploadController::getEPLApplicationFilePath($epl);
+                        $fileUrl = 'uploads/' . FieUploadController::getEPLApplicationFilePath($epl);
                         $path = $request->file('inp')->store($fileUrl);
                         $client->application_path = $path;
                         $epl->application_path = $path;
@@ -279,7 +279,7 @@ class EPLController extends Controller
                     setFileStatus($epl->client_id, 'cer_status', 0);  // set certificate status to 0
                     setFileStatus($epl->client_id, 'file_problem', 0); // set file problem status to 0
                     if ($msg) {
-                        $fileUrl = '/uploads/' . FieUploadController::getEPLApplicationFilePath($epl);
+                        $fileUrl = 'uploads/' . FieUploadController::getEPLApplicationFilePath($epl);
                         $path = $request->file('file')->store($fileUrl);
                         $epl->application_path = $path;
                         $client->application_path = $path;
@@ -319,15 +319,15 @@ class EPLController extends Controller
             $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
             switch ($type) {
                 case 'file1':
-                    $fileUrl = '/uploads/' . FieUploadController::getRoadMapPath($client);
+                    $fileUrl = 'uploads/' . FieUploadController::getRoadMapPath($client);
                     $client->file_01 = $fileUrl . "/" . $file_name;
                     break;
                 case 'file2':
-                    $fileUrl = '/uploads/' . FieUploadController::getDeedFilePath($client);
+                    $fileUrl = 'uploads/' . FieUploadController::getDeedFilePath($client);
                     $client->file_02 = $fileUrl . "/" . $file_name;
                     break;
                 case 'file3':
-                    $fileUrl = '/uploads/' . FieUploadController::getSurveyFilePath($client);
+                    $fileUrl = 'uploads/' . FieUploadController::getSurveyFilePath($client);
                     $client->file_03 = $fileUrl . "/" . $file_name;
                     break;
                 default:
@@ -357,7 +357,7 @@ class EPLController extends Controller
             return [];
         }
         $clientFile2 = $client->file_02;
-        $files = Storage::files("public/uploads/industry_files/{$id}/application/file2");
+        $files = Storage::files("uploads/industry_files/{$id}/application/file2");
         $links = array();
         foreach ($files as $file) {
             $fileName = str_replace("public", "storage", $file);
@@ -634,7 +634,7 @@ class EPLController extends Controller
             $msg = $epl->save();
             if ($msg) {
                 if ($request->file('file') != null) {
-                    $fileUrl = '/uploads/' . FieUploadController::getEPLCertificateFilePath($epl);
+                    $fileUrl = 'uploads/' . FieUploadController::getEPLCertificateFilePath($epl);
                     $path = $request->file('file')->store($fileUrl);
                     $epl->path = $path;
                     $msg = $epl->save();
@@ -708,7 +708,7 @@ class EPLController extends Controller
             // save old data file
             if ($msg) {
                 if ($request->file('file') != null) {
-                    $fileUrl = '/uploads/' . FieUploadController::getEPLCertificateFilePath($epl);
+                    $fileUrl = 'uploads/' . FieUploadController::getEPLCertificateFilePath($epl);
                     $path = $request->file('file')->store($fileUrl);
                     $epl->path = $path;
                 }

@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
   |
  */
 
-Route::middleware('auth:api')->get('/files/old/{count}', 'ClientController@getOldFiles'); //   get old files 
+Route::middleware('auth:api')->get('/files/old/{count}', 'ClientController@getOldFiles'); //   get old files
 /*
 [
     {
@@ -42,10 +42,10 @@ Route::middleware('auth:api')->get('/files/old/{count}', 'ClientController@getOl
         "industry_investment": 50000,
         "industry_start_date": "2020-08-04 00:00:00",
         "industry_registration_no": "ABC/VR/8585",
-        "application_path": "storage//uploads/industry_files/6/application/1596531804.png",
+        "application_path": "uploads/industry_files/6/application/1596531804.png",
         "environment_officer_id": null,
-        "file_01": "storage/uploads/industry_files/6/application/1596531562.png",
-        "file_02": "storage/uploads/industry_files/6/application/1596531579.png",
+        "file_01": "uploads/industry_files/6/application/1596531562.png",
+        "file_02": "uploads/industry_files/6/application/1596531579.png",
         "file_03": null,
         "file_no": "PEA/PKG/AG/S/06/2020",
         "assign_date": null,
@@ -128,7 +128,7 @@ Route::middleware('auth:api')->get('/old/industry/{id}', 'ClientController@getOl
 */
 
 
-/// apis for site clearance  
+/// apis for site clearance
 
 
 Route::middleware('auth:api')->get('/old/site_clearance/industry/{id}', 'ClientController@getOldSiteClearanceData'); //   get old side clearance file detail
@@ -153,9 +153,9 @@ Route::middleware('auth:api')->post('/site_clearance/old/file/{id}', 'SiteCleara
 */
 /*
 
-type should be one of the following 
+type should be one of the following
 
-Site Clearance 
+Site Clearance
 Telecommunication
 Schedule Waste'
 

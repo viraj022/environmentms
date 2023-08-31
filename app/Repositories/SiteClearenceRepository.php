@@ -225,7 +225,7 @@ class SiteClearenceRepository
             $site = new SiteClearance();
             $site->site_clearence_session_id = $siteClearence->site_clearence_session_id;
             if ($request->file('file') != null) {
-                $fileUrl = '/uploads/' . FieUploadController::getSiteClearanceAPPLICATIONFilePath($site->siteClearenceSession);
+                $fileUrl = 'uploads/' . FieUploadController::getSiteClearanceAPPLICATIONFilePath($site->siteClearenceSession);
                 $path = $request->file('file')->store($fileUrl);
             } else {
                 return response(array('id' => 1, 'message' => 'Application not found'), 422);

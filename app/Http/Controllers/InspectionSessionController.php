@@ -300,8 +300,8 @@ class InspectionSessionController extends Controller
         $InspectionPersonals = $request->inspectionPersonals;
 
         if (($request->hasFile('sketch_file'))) {
-            $sketchPath = $request->file('sketch_file')->store('public/uploads/industry_files/' . $inspectionSession->client_id . '/inspections/' . $inspectionSession->id);
-            $inspectionSession->sketch_path = str_replace('public/', '', $sketchPath);
+            $sketchPath = $request->file('sketch_file')->store('uploads/industry_files/' . $inspectionSession->client_id . '/inspections/' . $inspectionSession->id);
+            $inspectionSession->sketch_path = $sketchPath;
         }
 
         $inspectionSession->proposed_land_ext = $request->proposed_land_ext;
@@ -323,9 +323,9 @@ class InspectionSessionController extends Controller
                 $type = $attachment->extension();
                 $inspectionSessionAttachment = new InspectionSessionAttachment();
                 $inspectionSessionAttachment->inspection_session_id = $request->session_id;
-                $attachmentPath = $attachment->store('public/uploads/industry_files/' . $inspectionSession->client_id . '/inspections/' . $inspectionSession->id);
+                $attachmentPath = $attachment->store('uploads/industry_files/' . $inspectionSession->client_id . '/inspections/' . $inspectionSession->id);
                 if ($attachmentPath) {
-                    $inspectionSessionAttachment->path = str_replace('public/', '', $attachmentPath);
+                    $inspectionSessionAttachment->path = $attachmentPath;
                     $inspectionSessionAttachment->type = $type;
                     $inspectionSessionAttachment->save();
                 }
