@@ -32,7 +32,6 @@ class fileMigrationController extends Controller
     {
         $oldFiles = OldFiles::get();
         foreach ($oldFiles as $oldFile) {
-            // if isset storage// and storage/ replace with empty string
             $oldFile->path = str_replace('/uploads', 'uploads', $oldFile->path);
             //save changes
             $oldFile->save();

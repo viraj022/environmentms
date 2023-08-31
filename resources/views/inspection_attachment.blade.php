@@ -110,8 +110,9 @@
     <script>
         //    $(function () {
         var ID = "{{ $id }}";
+        const file_url="{{ env('DO_URL') }}/ }}";
         getaAttachmentbyId(ID, function(res) {
-            iterateSavedImages(res);
+            iterateSavedImages(res,file_url);
         });
         loadInspectionStatusAPI(ID, function(resp) { //<-- Get Inspection Status
             if (resp.status === 0) {
@@ -126,7 +127,7 @@
                 remove_Image($(this).val(), function(parameters) {
                     if (parameters.id == 1) {
                         getaAttachmentbyId(ID, function(res) {
-                            iterateSavedImages(res);
+                            iterateSavedImages(res,file_url);
                         });
                         $('.ekko-lightbox').modal('hide');
                     }
@@ -141,7 +142,7 @@
                 show_mesege(parameters);
                 if (parameters.id == 1) {
                     getaAttachmentbyId(ID, function(res) {
-                        iterateSavedImages(res);
+                        iterateSavedImages(res,file_url);
                     });
                     $('#fileInput').val('');
                 }
@@ -169,7 +170,7 @@
                 remove_Image(attid, function(p) {
                     if (p.id == '1') {
                         getaAttachmentbyId(ID, function(res) {
-                            iterateSavedImages(res);
+                            iterateSavedImages(res,file_url);
                         });
                     }
                 });

@@ -25,19 +25,17 @@ function getaAttachmentbyId(id, callBack) {
 
 }
 
-function iterateSavedImages(url_list) {
+function iterateSavedImages(url_list,file_url) {
     let content = '';
-    console.log(url_list);
     if (url_list.length == 0 || url_list == undefined) {
         content = '';
     } else {
         $.each(url_list, function (index, value) {
-            let prefix = value.path.startsWith('storage/') ? '' : 'storage/';
             content += '<div>';
             content += '<div class="thumbnail attachment_image"><a href="javascript:void(0)" class="delete_attachment" data-attachment_id="' + value.id + '">';
             content += '<img src="/dist/img/delete-icon.png" alt="" style="width:32px; height:32px;"></a>';
-            content += '<a href="/' + prefix + value.path + '"  data-title="' + value.id + '" data-fancybox="attachments">';
-            content += '<div class="m-3" style="width: 120px; height:120px; background-size: cover; background-image:url(/' + prefix + value.path + ')"></div>';
+            content += '<a href="/' + file_url + value.path + '"  data-title="' + value.id + '" data-fancybox="attachments">';
+            content += '<div class="m-3" style="width: 120px; height:120px; background-size: cover; background-image:url(/' + file_url + value.path + ')"></div>';
             content += '</a>';
             content += '</div>';
             content += '</div>';

@@ -86,8 +86,8 @@
                 </tr>
                 <tr>
                     <td colspan="4">
-                        <div> 
-                            <img class="border p-2" style="border-color: #000 !important;" src="{{ asset('storage/'.$inspectionSession->sketch_path) }}" alt="" width="400"
+                        <div>
+                            <img class="border p-2" style="border-color: #000 !important;" src="{{ env('DO_URL').'/'.$inspectionSession->sketch_path }}" alt="" width="400"
                             height="400">
                         </div>
                     </td>
