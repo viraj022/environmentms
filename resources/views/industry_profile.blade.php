@@ -985,7 +985,7 @@
             $('.paymentsTab').click(function() { //<--load min when click on payment tab
                 pendingPaymentsTable(PROFILE_ID); //<-- Load pending payment table
             });
-            deedList(PROFILE_ID, function() {});
+            deedList(PROFILE_ID, FILE_BASE_PATH);
             getaProfilebyId(PROFILE_ID, function(parameters) {
                 FILE_DETAILS = parameters;
                 setCurrentFileStatus(parameters);
@@ -1073,7 +1073,7 @@
                     getaProfilebyId(PROFILE_ID, function(result) {
                         setProfileDetails(result,FILE_BASE_PATH);
                     });
-                    deedList(PROFILE_ID, function() {
+                    deedList(PROFILE_ID,FILE_BASE_PATH, function() {
                         $('.fileUploadInput').val('');
                     });
                 });

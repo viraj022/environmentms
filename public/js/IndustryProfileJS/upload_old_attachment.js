@@ -1,7 +1,7 @@
 //Load Attachments
 function loadAllOldAttachments(result, BASE_PATH, callBack) {
     var obj = '';
-    BASE_PATH = BASE_PATH + '/';
+    BASE_PATH = BASE_PATH;
     $.each(result, function (index, row) {
         obj += '<div class="col-3 text-center" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;">';
         if (row.type === 'pdf') {
@@ -23,7 +23,7 @@ function loadAllOldAttachments(result, BASE_PATH, callBack) {
     }
 }
 
-function deedList(profile_id, callBack) {
+function deedList(profile_id, FILE_BASE_PATH, callBack) {
     var obj = '';
     ajaxRequest('GET', '/api/files/client/id/' + profile_id, null, function (respo) {
         if (respo.length == 0) {
@@ -31,7 +31,7 @@ function deedList(profile_id, callBack) {
         } else {
             $.each(respo, function (index, row) {
                 obj += '<li class="' + (row.is_latest ? 'text-success' : '') + '">\
-                <a target="_blank" href="/' + row.file_name + '" class="' + (row.is_latest ? 'text-success' : '') + '">' + (row.is_latest ? '<strong>' : '') + 'File ' + ++index + (row.is_latest ? ' (Latest)' : '') + (row.is_latest ? '<strong>' : '') + '</a>\
+                <a target="_blank" href="/' + FILE_BASE_PATH + row.file_name + '" class="' + (row.is_latest ? 'text-success' : '') + '">' + (row.is_latest ? '<strong>' : '') + 'File ' + ++index + (row.is_latest ? ' (Latest)' : '') + (row.is_latest ? '<strong>' : '') + '</a>\
                 </li>';
             });
         }
