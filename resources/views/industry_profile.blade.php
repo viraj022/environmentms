@@ -975,7 +975,7 @@
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
     <script>
         PROFILE_ID = '{{ $id }}';
-       const FILE_BASE_PATH = '{{ env('DO_URL') }}';
+       const FILE_BASE_PATH = '{{ env('DO_URL') }}/';
         var FILE_DETAILS = null;
         $(function() {
             $(".loadingRenderUI").remove();
@@ -1071,7 +1071,7 @@
                     parameters) {
                     show_mesege(parameters);
                     getaProfilebyId(PROFILE_ID, function(result) {
-                        setProfileDetails(result);
+                        setProfileDetails(result,FILE_BASE_PATH);
                     });
                     deedList(PROFILE_ID, function() {
                         $('.fileUploadInput').val('');
