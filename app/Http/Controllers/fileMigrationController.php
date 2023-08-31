@@ -34,7 +34,6 @@ class fileMigrationController extends Controller
         foreach ($oldFiles as $oldFile) {
             // if isset storage// and storage/ replace with empty string
             $oldFile->path = str_replace('storage//', '', $oldFile->path);
-            $oldFile->path = str_replace('storage/', '', $oldFile->path);
             //save changes
             $oldFile->save();
         }
@@ -51,23 +50,19 @@ class fileMigrationController extends Controller
         $client = Client::all();
         foreach ($client as $value) {
             if (isset($value->application_path)) {
-                $value->application_path = str_replace('storage//', '', $value->application_path);
-                $value->application_path = str_replace('storage/', '', $value->application_path);
+                $value->application_path = str_replace('/uploads', 'uploads', $value->application_path);
             }
 
             if (isset($value->file_01)) {
-                $value->file_01 = str_replace('storage//', '', $value->file_01);
-                $value->file_01 = str_replace('storage/', '', $value->file_01);
+                $value->file_01 = str_replace('/uploads', 'uploads', $value->file_01);
             }
 
             if (isset($value->file_02)) {
-                $value->file_02 = str_replace('storage//', '', $value->file_02);
-                $value->file_02 = str_replace('storage/', '', $value->file_02);
+                $value->file_02 = str_replace('/uploads', 'uploads', $value->file_02);
             }
 
             if (isset($value->file_03)) {
-                $value->file_03 = str_replace('storage//', '', $value->file_03);
-                $value->file_03 = str_replace('storage/', '', $value->file_03);
+                $value->file_03 = str_replace('/uploads', 'uploads', $value->file_03);
             }
             $value->save();
         }
@@ -84,13 +79,11 @@ class fileMigrationController extends Controller
         $epls = EPL::withTrashed()->get();
         foreach ($epls as $e) {
             if (isset($e->path)) {
-                $e->path = str_replace('storage//', '', $e->path);
-                $e->path = str_replace('storage/', '', $e->path);
+                $e->path = str_replace('/uploads', 'uploads', $e->path);
             }
             //application_path
             if (isset($e->application_path)) {
-                $e->application_path = str_replace('storage//', '', $e->application_path);
-                $e->application_path = str_replace('storage/', '', $e->application_path);
+                $e->application_path = str_replace('/uploads', 'uploads', $e->application_path);
             }
             $e->save();
         }
@@ -107,13 +100,11 @@ class fileMigrationController extends Controller
         $siteClearances = SiteClearance::withTrashed()->get();
         foreach ($siteClearances as $value) {
             if (isset($value->application_path)) {
-                $value->application_path = str_replace('storage//', '', $value->application_path);
-                $value->application_path = str_replace('storage/', '', $value->application_path);
+                $value->application_path = str_replace('/uploads', 'uploads', $value->application_path);
             }
             //certificate_path
             if (isset($value->certificate_path)) {
-                $value->certificate_path = str_replace('storage//', '', $value->certificate_path);
-                $value->certificate_path = str_replace('storage/', '', $value->certificate_path);
+                $value->certificate_path = str_replace('/uploads', 'uploads', $value->certificate_path);
             }
             $value->save();
         }
@@ -130,8 +121,7 @@ class fileMigrationController extends Controller
         $committeeRemarks = CommitteeRemark::all();
         foreach ($committeeRemarks as $value) {
             if (isset($value->path)) {
-                $value->path = str_replace('storage//', '', $value->path);
-                $value->path = str_replace('storage/', '', $value->path);
+                $value->path = str_replace('/uploads', 'uploads', $value->path);
             }
             $value->save();
         }
@@ -148,8 +138,7 @@ class fileMigrationController extends Controller
         $inspectionSessionAttachments = InspectionSessionAttachment::all();
         foreach ($inspectionSessionAttachments as $value) {
             if (isset($value->path)) {
-                $value->path = str_replace('storage//', '', $value->path);
-                $value->path = str_replace('storage/', '', $value->path);
+                $value->path = str_replace('/uploads', 'uploads', $value->path);
             }
             $value->save();
         }
@@ -166,13 +155,11 @@ class fileMigrationController extends Controller
         $certificates = Certificate::withTrashed()->get();
         foreach ($certificates as $value) {
             if (isset($value->certificate_path)) {
-                $value->certificate_path = str_replace('storage//', '', $value->certificate_path);
-                $value->certificate_path = str_replace('storage/', '', $value->certificate_path);
+                $value->certificate_path = str_replace('/uploads', 'uploads', $value->certificate_path);
             }
 
             if (isset($value->signed_certificate_path)) {
-                $value->signed_certificate_path = str_replace('storage//', '', $value->signed_certificate_path);
-                $value->signed_certificate_path = str_replace('storage/', '', $value->signed_certificate_path);
+                $value->signed_certificate_path = str_replace('/uploads', 'uploads', $value->signed_certificate_path);
             }
             $value->save();
         }
