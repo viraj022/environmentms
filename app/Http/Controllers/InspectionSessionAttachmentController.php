@@ -54,7 +54,7 @@ class InspectionSessionAttachmentController extends Controller
             }
             if ($inspection) {
                 $type = $request->file->extension();
-                $storePath = "/uploads/" . FieUploadController::getInspectionFilePath($inspection);
+                $storePath = "uploads/" . FieUploadController::getInspectionFilePath($inspection);
                 $path = $request->file('file')->store($storePath);
                 $inspectionSessionAttachment = new InspectionSessionAttachment();
                 $inspectionSessionAttachment->inspection_session_id = $id;

@@ -16,7 +16,7 @@ class ChangeFileController extends Controller
             $epl = Epl::find($request['epl_id']);
             $client_id = $epl->client_id;
             if ($request->hasFile('file_list')) {
-                $fileUrl = '/uploads/industry_files/' . $client_id . '/application';
+                $fileUrl = 'uploads/industry_files/' . $client_id . '/application';
                 $url = $request->file_list[0]->store($fileUrl);
                 $epl->path = $url;
             }
@@ -24,7 +24,7 @@ class ChangeFileController extends Controller
         } else {
             $site_clear = SiteClearance::where('site_clearence_session_id', $request['site_clear_sess_id'])->first();
             $siteSessions = SiteClearenceSession::find($request['site_clear_sess_id']);
-            $fileUrl = '/uploads/' . FieUploadController::getSiteClearanceAPPLICATIONFilePath($siteSessions);
+            $fileUrl = 'uploads/' . FieUploadController::getSiteClearanceAPPLICATIONFilePath($siteSessions);
             $path = $request['file_list'][0]->store($fileUrl);
             $site_clear->application_path = $path;
             $status = $site_clear->save();

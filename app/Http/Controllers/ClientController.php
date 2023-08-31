@@ -342,7 +342,7 @@ class ClientController extends Controller
                             $file1Filepath = $newApplicationRequest->road_map;
                             $file1FileName = basename($file1Filepath);
                             $file1FileUrl = config('online-request.url') . '/storage/new-attachments/route-map/' . str_replace('public/', '', $file1Filepath);
-                            $targetDir = 'public/uploads/industry_files/' . $client->id . '/application/file1';
+                            $targetDir = 'uploads/industry_files/' . $client->id . '/application/file1';
 
                             if (!Storage::exists($targetDir)) {
                                 try {
@@ -359,15 +359,15 @@ class ClientController extends Controller
                             } catch (\Throwable $th) {
                                 throw $th;
                             }
-                            $client->file_01 = 'storage/uploads/industry_files/' . $client->id . '/application/file1/' . $file1FileName;
+                            $client->file_01 = 'uploads/industry_files/' . $client->id . '/application/file1/' . $file1FileName;
                         }
 
                         if (!empty($newApplicationRequest->deed_of_land)) {
                             // import file 2/deed
                             $file2Filepath = $newApplicationRequest->deed_of_land;
                             $file2FileName = basename($file2Filepath);
-                            $file2FileUrl = config('online-request.url') . '/storage/new-attachments/deed-of-lands/' . str_replace('public/', '', $file2Filepath);
-                            $targetDir = 'public/uploads/industry_files/' . $client->id . '/application/file2';
+                            $file2FileUrl = config('online-request.url') . '/uploads/new-attachments/deed-of-lands/' . str_replace('public/', '', $file2Filepath);
+                            $targetDir = 'uploads/industry_files/' . $client->id . '/application/file2';
 
                             if (!Storage::exists($targetDir)) {
                                 try {
@@ -384,15 +384,15 @@ class ClientController extends Controller
                             } catch (\Throwable $th) {
                                 throw $th;
                             }
-                            $client->file_02 = 'storage/uploads/industry_files/' . $client->id . '/application/file2/' . $file2FileName;
+                            $client->file_02 = 'uploads/industry_files/' . $client->id . '/application/file2/' . $file2FileName;
                         }
 
                         if (!empty($newApplicationRequest->survey_plan)) {
                             // import file 3/survey plan
                             $file3Filepath = $newApplicationRequest->survey_plan;
                             $file3FileName = basename($file3Filepath);
-                            $file3FileUrl = config('online-request.url') . '/storage/new-attachments/survey-plans/' . str_replace('public/', '', $file3Filepath);
-                            $targetDir = 'public/uploads/industry_files/' . $client->id . '/application/file3';
+                            $file3FileUrl = config('online-request.url') . '/uploads/new-attachments/survey-plans/' . str_replace('public/', '', $file3Filepath);
+                            $targetDir = 'uploads/industry_files/' . $client->id . '/application/file3';
 
                             if (!Storage::exists($targetDir)) {
                                 try {
@@ -410,7 +410,7 @@ class ClientController extends Controller
                                 throw $th;
                             }
 
-                            $client->file_03 = 'storage/uploads/industry_files/' . $client->id . '/application/file3/' . $file3FileName;
+                            $client->file_03 = 'uploads/industry_files/' . $client->id . '/application/file3/' . $file3FileName;
                         }
 
                         $client->save();
@@ -1142,7 +1142,7 @@ class ClientController extends Controller
         unset($req['file']);
         $certificate = Certificate::findOrFail($id);
         if ($request->exists('file')) {
-            $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/draft/" . $id;
+            $fileUrl = "uploads/industry_files/" . $certificate->client_id . "/certificates/draft/" . $id;
             $path = $request->file('file')->store($fileUrl);
             $req['user_id_certificate_upload'] = $user->id;
             $req['certificate_upload_date'] = Carbon::now()->toDateString();
@@ -1171,7 +1171,7 @@ class ClientController extends Controller
         unset($req['file']);
         $certificate = Certificate::findOrFail($id);
         if ($request->exists('file')) {
-            $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/draft/" . $id;
+            $fileUrl = "uploads/industry_files/" . $certificate->client_id . "/certificates/draft/" . $id;
             $path = $request->file('file')->store($fileUrl);
             $req['user_id_certificate_upload'] = $user->id;
             $req['corrected_file'] = $path;
@@ -1210,7 +1210,7 @@ class ClientController extends Controller
         unset($req['file']);
         $certificate = Certificate::findOrFail($id);
         if ($request->exists('file')) {
-            $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/original/" . $id;
+            $fileUrl = "uploads/industry_files/" . $certificate->client_id . "/certificates/original/" . $id;
             $path = $request->file('file')->store($fileUrl);
             $req['signed_certificate_path'] = $path;
             $req['user_id_certificate_upload'] = $user->id;

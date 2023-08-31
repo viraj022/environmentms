@@ -906,9 +906,9 @@ class ReportController extends Controller
         $zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
 
         // $path = storage_path(FieUploadController::getClientFolderPath($client));
-        $path = "storage/uploads/" . FieUploadController::getClientFolderPath($client);
+        $path = "uploads/" . FieUploadController::getClientFolderPath($client);
         // dd($path);
-        $files = Storage::allFiles("public/uploads/industry_files/" . $client->id);
+        $files = Storage::allFiles("uploads/industry_files/" . $client->id);
         // $files = Storage::allFiles("uploads/" . FieUploadController::getClientFolderPath($client));
         // dd($files);
         $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
@@ -918,7 +918,7 @@ class ReportController extends Controller
             if (file_exists($file) && is_file($file)) {
                 $filePath = $file->getRealPath();
                 // dd($filePath);
-                $relativePath = substr($file->getPath(), strlen("storage/uploads/industry_files/"));
+                $relativePath = substr($file->getPath(), strlen("uploads/industry_files/"));
                 // dd($relativePath);
 
                 $zip->addFile($filePath, $relativePath);
