@@ -188,19 +188,14 @@
                                                 <div class="row">
                                                     {{-- @dd($InspectionSession->sketch_path) --}}
                                                     @if ($InspectionSession->sketch_path != null)
-                                                        @if (strpos($InspectionSession->sketch_path, 'storage/') === 0)
-                                                            <a href="{{ asset($InspectionSession->sketch_path) }}"
+@php
+    $file_path = env('DO_URL');
+@endphp
+                                                            <a href="{{ $file_path.'/'.$InspectionSession->sketch_path }}"
                                                                 data-fancybox="sketch">
-                                                                <img src="{{ asset($InspectionSession->sketch_path) }}"
+                                                                <img src="{{ $file_path.'/'.$InspectionSession->sketch_path }}"
                                                                     alt="sketch image" height="128">
                                                             </a>
-                                                        @else
-                                                            <a href="{{ asset('storage/' . $InspectionSession->sketch_path) }}"
-                                                                data-fancybox="sketch">
-                                                                <img src="{{ asset('storage/' . $InspectionSession->sketch_path) }}"
-                                                                    alt="sketch image" height="128">
-                                                            </a>
-                                                        @endif
                                                     @else
                                                         <p>No Sketch Uploaded</p>
                                                     @endif
