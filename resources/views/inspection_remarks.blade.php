@@ -291,9 +291,10 @@
         $(function() {
             var ID = "{{ $id }}";
             var inspect_attachment = "{{ $inspect_file_attach }}";
+            const file_url = "{{ env('DO_URL') }}/";
 
             getaAttachmentbyId(ID, function(res) {
-                iterateSavedImages(res);
+                iterateSavedImages(res,file_url);
             });
 
             loadInterface(ID);
