@@ -181,19 +181,27 @@
                                 row.client_id + '" data-expire-date="' + row.expire_date +
                                 '" data-file-type="' + row.certificate_type +
                                 '">Generate Warning Letter</button>';
-                            tbl +=
-                                '<button type="button" class="btn btn-info send_sms ml-1" data-client="' +
-                                row.client_id + '" data-expire-date="' + row.expire_date +
-                                '" data-industry-name="' + row.industry_name + '" data-tel="' + row
-                                .contact_no + '">Send SMS</button>';
-                        } else {
+                                if(row.contact_no!=undefined && row.contact_no.length>0){
+                                    tbl +=
+                                        '<button type="button" class="btn btn-info send_sms ml-1" data-client="' +
+                                        row.client_id + '" data-expire-date="' + row.expire_date +
+                                        '" data-industry-name="' + row.industry_name + '" data-tel="' + row
+                                        .contact_no + '">Send SMS</button>';
+                                }else{
+                                    tbl +='<button type="button" class="btn btn-danger ml-1" disabled>No Mobile Number</button>';
+                                }
+                            } else {
                             tbl += '<a href="/warn_view/id/' + row.last_letter +
                                 '" class="btn btn-primary"  target="_blank">View Warning Letter</a>';
-                            tbl +=
-                                '<button type="button" class="btn btn-info send_sms ml-1" data-client="' +
-                                row.client_id + '" data-expire-date="' + row.expire_date +
-                                '" data-industry-name="' + row.industry_name + '" data-tel="' + row
-                                .contact_no + '">Send SMS</button>';
+                                if(row.contact_no!=undefined && row.contact_no.length>0){
+                                    tbl +=
+                                        '<button type="button" class="btn btn-info send_sms ml-1" data-client="' +
+                                        row.client_id + '" data-expire-date="' + row.expire_date +
+                                        '" data-industry-name="' + row.industry_name + '" data-tel="' + row
+                                        .contact_no + '">Send SMS</button>';
+                                    }else{
+                                    tbl +='<button type="button" class="btn btn-danger ml-1" disabled>No Mobile Number</button>';
+                                }
                         }
                         tbl += '</td>';
                         tbl += '</tr>';
@@ -211,7 +219,8 @@
         }
 
         $(document).on('click', '.send_sms', function() {
-            if ($(this).data('tel') != '') {
+            let phone = $(this).data('tel');
+            if (phone==undefined || phone != '') {
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "Message will be send!",
