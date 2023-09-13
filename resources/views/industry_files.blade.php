@@ -223,7 +223,7 @@
             '-1': 'Rejected',
             '-2': 'Hold'
         };
-
+        const FILE_URL="{{ env('DO_URL') }}";
         function minute() {
             var data = {
                 minutes: $('#getMinutes').val().trim()
@@ -298,9 +298,7 @@
 
         $(document).on('click', '.detailsData', function() {
             var fileData = JSON.parse(unescape($(this).val()));
-            console.log(fileData);
             let f_Status = fileData.file_status;
-            console.log(f_Status);
             $('#modal-x2').modal();
             $('#getMinutes').val('');
 
