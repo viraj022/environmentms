@@ -156,6 +156,9 @@
                                                 $i = 1;
                                             @endphp
                                             @forelse ($completedNewApplications as $new)
+                                            @if (empty($new->onlineNewApplicationRequest))
+                                                @continue
+                                            @endif
                                                 @if (empty($new->onlineNewApplicationRequest->rejected_at))
                                                     <tr>
                                                         <td>{{ $i++ }}</td>
