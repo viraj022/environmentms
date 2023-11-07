@@ -347,12 +347,16 @@ class CashierController extends Controller
      */
     public function printInvoice(Invoice $invoice)
     {
+        //check if invoice has multiple transactions
+        if ($invoice->transactions->count() > 1) {
+            return $this->printBulkTransactionsInvoice($invoice);
+        }
         $transaction = Transaction::with('transactionItems')->where('invoice_id', $invoice->id)->first();
         return view('cashier.invoice-print', compact('invoice', 'transaction'));
     }
 
     /**
-     * invoice print view for multiple transactions 
+     * invoice print view for multiple transactions
      *
      * @param Invoice $invoice
      * @return View|Factory
