@@ -19,11 +19,14 @@ function ajaxRequest(Method, url, data, callBack) {
             console.log(jqXHR.responseJSON.message);
             var msg = '';
             if (jqXHR.status === 0) {
-                msg = 'Not connect.\n Verify Network.';
+                msg = 'Failed To Connect. Please Verify Your Network Connection.';
             } else if (jqXHR.status == 401) {
                 msg = 'You Dont Have Privilege To Performe This Action!';
             } else if (jqXHR.status == 422) {
-                msg = 'Validation Error ! \n' + jqXHR.responseJSON.message;
+                msg = 'Validation Error ! \n';
+                $.each(jqXHR.responseJSON.errors, function (key, value) {
+                    msg += value + '\n';
+                });
             } else if (jqXHR.status == 404) {
                 msg = 'Requested page not found. [404]';
             } else if (jqXHR.status == 500) {
