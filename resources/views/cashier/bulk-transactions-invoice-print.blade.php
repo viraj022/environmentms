@@ -99,12 +99,19 @@
                                 @endphp
                                 @foreach ($transactions as $transaction)
                                     @foreach ($transaction->transactionItems as $transactionItem)
+                                        {{-- @dd($transaction->client->file_no) --}}
+
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             <td><b>{{ $transactionItem->paymentType->name }}</b>
                                                 ({{ $transactionItem->payment->name }})
                                                 <br>
-                                                {{ $transaction->address }}
+                                                @if (empty($transaction->client->file_no))
+                                                    <span class="text-danger">File Not Found</span>
+                                                @else
+                                                    ({{ $transaction->client->file_no }})
+                                                    {{ $transaction->address }}
+                                                @endif
                                             </td>
                                             <td class="text-end">{{ number_format($transactionItem->amount, 2) }}</td>
                                         </tr>
