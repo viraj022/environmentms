@@ -120,7 +120,7 @@ class OnlineRequestController extends Controller
         $siteClearanceSessionExists = SiteClearenceSession::where('code', $validated['renewal_update_certificate_number'])->exists();
 
         if (!$eplExists && !$siteClearanceSessionExists) {
-            return redirect()->back()->with('error', 'Cannot identify the client by the given id. Please try again later.');
+            return redirect()->back()->with('error', 'Cannot identify the client by the given id. Please try again later. (No EPL or Site Clearance found)');
         }
 
         // check if client is legit
