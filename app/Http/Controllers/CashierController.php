@@ -12,6 +12,7 @@ use App\TaxRate;
 use App\TransactionItem;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CashierController extends Controller
 {
@@ -172,90 +173,100 @@ class CashierController extends Controller
                 return array('status' => 0, 'msg' => 'Please add transaction items before continue');
             }
         }
-        // $year = Carbon::now()->format('Y');
-        $number = 1;
 
-        $lastInvoiceNumber = Invoice::select('invoice_number')
-            ->orderBy('created_at', 'desc')
-            ->withTrashed()
-            ->first();
 
-        if ($lastInvoiceNumber) {
-            $number = $lastInvoiceNumber->invoice_number + 1;
-            $invoiceNo =  $number;
-        }
+        try {
+            //begin transaction
+            DB::beginTransaction();
+            // $year = Carbon::now()->format('Y');
+            $number = 1;
 
-        $invoiceNo = $number;
+            $lastInvoiceNumber = Invoice::select('invoice_number')
+                ->orderBy('created_at', 'desc')
+                ->withTrashed()
+                ->first();
 
-        $invoice = Invoice::create([
-            'name' => $data['invoiceDet']['name'],
-            'contact' => $data['invoiceDet']['telephone'],
-            'nic' => $data['invoiceDet']['nic'],
-            'address' => $data['invoiceDet']['ind_address'],
-            'payment_method' => $data['invoiceDet']['payment_method'],
-            'payment_reference_number' => $data['invoiceDet']['payment_reference_number'],
-            'cheque_issue_date' => $data['invoiceDet']['cheque_issue_date'],
-            'user_id' => Auth::user()->id,
-            'amount' => $data['invoiceDet']['amount'],
-            'invoice_date' => $data['invoiceDet']['invoice_date'],
-            'remark' => $data['invoiceDet']['remark'],
-            'invoice_number' => $invoiceNo,
-            'sub_total' => $data['invoiceDet']['sub_amount'],
-            'vat_amount' => $data['invoiceDet']['vat'],
-            'nbt_amount' => $data['invoiceDet']['nbt'],
-            'other_tax_amount' =>  $data['invoiceDet']['tax_total']
-        ]);
+            if ($lastInvoiceNumber) {
+                $number = $lastInvoiceNumber->invoice_number + 1;
+                $invoiceNo =  $number;
+            }
 
-        if (!empty($data['tranItems'])) {
-            $transaction =  Transaction::create([
-                'status' => 1,
-                'cashier_name' => Auth::user()->user_name,
-                'type' => 'application_fee',
-                'invoice_id' =>  $invoice->id,
-                'invoice_no' => $invoiceNo,
+            $invoiceNo = $number;
+
+            $invoice = Invoice::create([
+                'name' => $data['invoiceDet']['name'],
+                'contact' => $data['invoiceDet']['telephone'],
+                'nic' => $data['invoiceDet']['nic'],
+                'address' => $data['invoiceDet']['ind_address'],
+                'payment_method' => $data['invoiceDet']['payment_method'],
+                'payment_reference_number' => $data['invoiceDet']['payment_reference_number'],
+                'cheque_issue_date' => $data['invoiceDet']['cheque_issue_date'],
+                'user_id' => Auth::user()->id,
+                'amount' => $data['invoiceDet']['amount'],
+                'invoice_date' => $data['invoiceDet']['invoice_date'],
+                'remark' => $data['invoiceDet']['remark'],
+                'invoice_number' => $invoiceNo,
+                'sub_total' => $data['invoiceDet']['sub_amount'],
+                'vat_amount' => $data['invoiceDet']['vat'],
+                'nbt_amount' => $data['invoiceDet']['nbt'],
+                'other_tax_amount' =>  $data['invoiceDet']['tax_total']
             ]);
-            $transactionItems = [];
 
-            foreach ($data['tranItems'] as $transactionItem) {
-                $tranItems = new TransactionItem();
-                $tranItems->transaction_id  = $transaction->id;
-                $tranItems->payment_type_id  = $transactionItem['payment_type'];
-                $tranItems->qty  = $transactionItem['qty'];
-                $tranItems->amount  = $transactionItem['amount'];
-                $tranItems->payment_id  = $transactionItem['category_id'];
-                $tranItems->transaction_type  = 'application_fee';
-                $transactionItems[] =  $tranItems;
-            }
-
-            $itemsStore =  $transaction->transactionItems()->saveMany($transactionItems);
-
-            if ($itemsStore == true) {
-                return array('status' => 1, 'msg' => 'Invoice added successful', 'data' => ['invoice_id' => $invoice->id]);
-            } else {
-                return array('status' => 0, 'msg' => 'Invoice adding unsuccessful');
-            }
-        }
-
-        if (!empty($data['industryTransactions'])) {
-            // dd($data['industryTransactions']);
-            foreach ($data['industryTransactions'] as $industrytransaction) {
-                $transactionDetails = Transaction::where('id', $industrytransaction['id'])->first();
-                $transactionUpdate = $transactionDetails->update([
-                    "invoice_id" =>  $invoice->id,
+            if (!empty($data['tranItems'])) {
+                $transaction =  Transaction::create([
+                    'status' => 1,
                     'cashier_name' => Auth::user()->user_name,
-                    'status' =>  1,
+                    'type' => 'application_fee',
+                    'invoice_id' =>  $invoice->id,
                     'invoice_no' => $invoiceNo,
                 ]);
-            }
-            if ($transactionUpdate == true) {
-                return array('status' => 1, 'msg' => 'Invoice added successful', 'data' => ['invoice_id' => $invoice->id], 'type' => 'bulk');
-            } else {
-                return array('status' => 0, 'msg' => 'Invoice adding unsuccessful');
-            }
-        }
+                $transactionItems = [];
 
-        if (!empty($data['invoiceDet']['transactionsId'])) {
-            if ($invoice == true) {
+                foreach ($data['tranItems'] as $transactionItem) {
+                    $tranItems = new TransactionItem();
+                    $tranItems->transaction_id  = $transaction->id;
+                    $tranItems->payment_type_id  = $transactionItem['payment_type'];
+                    $tranItems->qty  = $transactionItem['qty'];
+                    $tranItems->amount  = $transactionItem['amount'];
+                    $tranItems->payment_id  = $transactionItem['category_id'];
+                    $tranItems->transaction_type  = 'application_fee';
+                    $transactionItems[] =  $tranItems;
+                }
+
+                $itemsStore =  $transaction->transactionItems()->saveMany($transactionItems);
+
+                if (!$itemsStore) {
+                    //throw exception with error message
+                    throw new \Exception('Invoice adding unsuccessful');
+                }
+                DB::commit();
+                return array('status' => 1, 'msg' => 'Invoice added successful', 'data' => ['invoice_id' => $invoice->id]);
+            }
+
+            if (!empty($data['industryTransactions'])) {
+                // dd($data['industryTransactions']);
+                foreach ($data['industryTransactions'] as $industrytransaction) {
+                    $transactionDetails = Transaction::where('id', $industrytransaction['id'])->first();
+                    $transactionUpdate = $transactionDetails->update([
+                        "invoice_id" =>  $invoice->id,
+                        'cashier_name' => Auth::user()->user_name,
+                        'status' =>  1,
+                        'invoice_no' => $invoiceNo,
+                    ]);
+                }
+                if (!$transactionUpdate) {
+                    //throw exception with error message
+                    throw new \Exception('Invoice adding unsuccessful');
+                }
+                DB::commit();
+                return array('status' => 1, 'msg' => 'Invoice added successful', 'data' => ['invoice_id' => $invoice->id], 'type' => 'bulk');
+            }
+
+            if (!empty($data['invoiceDet']['transactionsId'])) {
+                if (!$invoice) {
+                    //throw exception with error message
+                    throw new \Exception('Invoice adding unsuccessful');
+                }
                 $transactionDetails = Transaction::where('id', $data['invoiceDet']['transactionsId'])->first();
                 $transactionUpdate = $transactionDetails->update([
                     "invoice_id" =>  $invoice->id,
@@ -263,10 +274,17 @@ class CashierController extends Controller
                     'status' =>  1,
                     'invoice_no' => $invoiceNo,
                 ]);
+                if (!$transactionUpdate) {
+                    //throw exception with error message
+                    throw new \Exception('Invoice adding unsuccessful');
+                }
+                DB::commit();
                 return array('status' => 1, 'msg' => 'Invoice added successful', 'data' => ['invoice_id' => $invoice->id], 'type' => 'single');
-            } else {
-                return array('status' => 0, 'msg' => 'Invoice adding unsuccessful');
             }
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return array('status' => 0, 'msg' => 'Invoice adding unsuccessful');
         }
     }
 

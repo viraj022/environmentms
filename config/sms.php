@@ -8,8 +8,8 @@ return [
         'api_header_key' => env('LBSMS_API_HEADER_KEY'),
     ],
     'http' => [
-        'url' => env('LBSMS_HTTP_URL'),
-        'company_id' => env('LBSMS_HTTP_COMPANY_ID'),
-        'password' => env('LBSMS_HTTP_PASSWORD'),
+        'url' => env('DIALOG_SMS_URL'),
+        'sms_key' => env('DIALOG_SMS_KEY'),
+        'mask' => env('DIALOG_SMS_MASK'),
     ]
 ];

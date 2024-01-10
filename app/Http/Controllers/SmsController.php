@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Client;
 use App\EPL;
+use App\Helpers\SmsHelper;
 
 class SmsController extends Controller
 {
@@ -19,29 +20,24 @@ class SmsController extends Controller
             . 'වයඹ පළාත් පරිසර අධිකාරිය' . "\n" . '(Provincial  Environmental Authority-NWP)' . "\n" . '037-2225236' . "\n" . '(This is a system generated message)';
 
         if (isset($request->PhoneNumber)) {
-            $data = array(
-                'SmsMessage' => $sms_message,
-                'PhoneNumber' => $tel_no,
-                'CompanyId' => 'CEYTECHAPI394',
-                'Pword' => 'aQyp7glqK0',
-            );
+            SmsHelper::sendSms($tel_no, $sms_message);
+            return array('status' => 1, 'mesg' => 'SMS successfully sent');
+        } else {
+            return array('status' => 2, 'mesg' => 'No telephone number found');
+        }
+    }
 
-            $json_data = json_encode($data);
-            $ch = curl_init('http://smsm.lankabell.com:4040/Sms.svc/PostSendSms');
-            // Attach encoded JSON string to the POST fields
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);
+    /**
+     * send test sms
+     */
+    public function sendTestSms(Request $request)
+    {
+        // dd($request->all());
+        $tel_no = preg_replace('/^\+?1|\|1|\D/', '', ($request->PhoneNumber));
+        $sms_message = $request->message;
 
-            // Set the content type to application/json
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
-
-            // Return response instead of outputting
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-            // Execute the POST request
-            $result = curl_exec($ch);
-
-            // Close cURL resource
-            curl_close($ch);
+        if (isset($request->PhoneNumber)) {
+            SmsHelper::sendSms($tel_no, $sms_message);
             return array('status' => 1, 'mesg' => 'SMS successfully sent');
         } else {
             return array('status' => 2, 'mesg' => 'No telephone number found');
