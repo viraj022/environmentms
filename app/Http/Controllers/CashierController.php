@@ -720,6 +720,7 @@ class CashierController extends Controller
                 'payment_types.id as payment_type_id',
                 'payment_types.name as payment_type_name',
             )
+            ->orderBy('invoices.id', 'asc')
             ->get();
         // dd($invoices->toArray());
         $paymentTypes = $this->getPaymentTypeGroups();
@@ -831,7 +832,6 @@ class CashierController extends Controller
 
             $rows['in_' . $invoice->invoice_id] = $row;
         }
-
         // return $totals;
         return view('cashier-reports.income-report2', compact('start_date', 'end_date', 'rows', 'totals'));
     }
