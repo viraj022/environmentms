@@ -81,7 +81,11 @@
                         <span> Cheque number / Date: {{ $invoice->payment_reference_number }}
                             ({{ $invoice->cheque_issue_date }})</span>
                     @endif <br>
-                    <span> Remark: {{ $invoice->remark }}</span>
+                    <span> Payment Method: {{ $invoice->payment_method }}</span><br>
+                    @if ($invoice->remark)
+                        <span> Remark: {{ $invoice->remark }}</span>
+                    @endif
+                    {{-- <span> Remark: {{ $invoice->remark }}</span> --}}
                 </p>
                 @if (!empty($transaction))
                     <section>

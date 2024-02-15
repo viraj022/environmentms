@@ -745,6 +745,7 @@ class CashierController extends Controller
             'cash' => 0.0,
             'cheque' => 0.0,
             'online' => 0.0,
+            'bank' => 0.0,
         ];
         $rows = [];
         // return $invoices;
@@ -774,6 +775,7 @@ class CashierController extends Controller
                     'cheque' => ($invoice->payment_method == 'cheque') ? $invoice->invoice_amount : 0,
                     'cash' => ($invoice->payment_method == 'cash') ? $invoice->invoice_amount : 0,
                     'online' => ($invoice->payment_method == 'online') ? $invoice->invoice_amount : 0,
+                    'bank' => ($invoice->payment_method == 'bank_deposit') ? $invoice->invoice_amount : 0,
                 ];
 
                 $totals['all_without_tax_total'] += $invoice->invoice_sub_amount;
@@ -784,6 +786,7 @@ class CashierController extends Controller
                 $totals['cash'] += $row['cash'];
                 $totals['cheque'] += $row['cheque'];
                 $totals['online'] += $row['online'];
+                $totals['bank'] += $row['bank'];
             }
             if ($invoice->payment_type_id == 3 && $invoice->payment_id == 2) {
                 $row['apFee_siteClearance'] += $invoice->transaction_amount;

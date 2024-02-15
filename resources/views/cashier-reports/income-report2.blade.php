@@ -69,6 +69,7 @@
                     <th rowspan="2">Cash</th>
                     <th rowspan="2">Cheque</th>
                     <th rowspan="2">Online</th>
+                    <th rowspan="2">Bank</th>
                 </tr>
                 <tr>
                     <th>Site Cleareance</th>
@@ -102,6 +103,7 @@
                         <td class="text-right">{{ number_format($row['cash'], 2, '.', '') }}</td>
                         <td class="text-right">{{ number_format($row['cheque'], 2, '.', '') }}</td>
                         <td class="text-right">{{ number_format($row['online'], 2, '.', '') }}</td>
+                        <td class="text-right">{{ number_format($row['bank'], 2, '.', '') }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -128,6 +130,7 @@
                     <th class="text-right">{{ number_format($totals['cash'], 2, '.', '') }}</th>
                     <th class="text-right">{{ number_format($totals['cheque'], 2, '.', '') }}</th>
                     <th class="text-right">{{ number_format($totals['online'], 2, '.', '') }}</th>
+                    <th class="text-right">{{ number_format($totals['bank'], 2, '.', '') }}</th>
                 </tr>
             </tfoot>
         </table>
