@@ -721,7 +721,7 @@ class CashierController extends Controller
                 'payment_types.name as payment_type_name',
             )
             ->get();
-        // dd($invoices);
+        // dd($invoices->toArray());
         $paymentTypes = $this->getPaymentTypeGroups();
         // dd($paymentTypes);
         $totals = [

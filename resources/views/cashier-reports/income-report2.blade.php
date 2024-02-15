@@ -104,6 +104,8 @@
                         <td class="text-right">{{ number_format($row['online'], 2, '.', '') }}</td>
                     </tr>
                 @endforeach
+            </tbody>
+            <tfoot>
                 <tr class="table-secondary">
                     <th>Total</th>
                     <th>&nbsp;</th>
@@ -127,7 +129,7 @@
                     <th class="text-right">{{ number_format($totals['cheque'], 2, '.', '') }}</th>
                     <th class="text-right">{{ number_format($totals['online'], 2, '.', '') }}</th>
                 </tr>
-            </tbody>
+            </tfoot>
         </table>
     </div>
     {{-- @dd($totals) --}}

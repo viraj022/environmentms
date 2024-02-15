@@ -16,5 +16,8 @@ $(function () {
                 orientation: "landscape",
             },
         ],
+        //order second column ascending
+        order: [[1, "asc"]],
+
     });
 });
