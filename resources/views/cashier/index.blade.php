@@ -282,6 +282,13 @@
                                                             Cheque
                                                         </label>
                                                     </div>
+                                                    <div class="form-check d-inline mx-3">
+                                                        <input class="form-check-input payment_method" type="radio"
+                                                            name="payment_method" id="bank_deposit" value="bank_deposit">
+                                                        <label class="form-check-label" for="bank_deposit">
+                                                            Bank Deposit
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="row mb-3 d-none" id="paymentReferenceField">
@@ -684,7 +691,7 @@
 
         $("#tax_status").change(calTax);
 
-        $("#cash").change(function() {
+        $("#cash, #bank_deposit").change(function() {
             if ($(this).is(':checked')) {
                 $('#paymentReferenceField').addClass('d-none');
                 $('#chequeDateField').addClass('d-none');
