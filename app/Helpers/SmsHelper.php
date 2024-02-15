@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use GuzzleHttp;
+// use GuzzleHttp;
 
 class SmsHelper
 {
@@ -26,19 +26,21 @@ class SmsHelper
         $smsKey = config('sms.http.sms_key');
         $mask = config('sms.http.mask');
         // https://e-sms.dialog.lk/api/v1/message-via-url/create/url-campaign?esmsqk=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTI0OTksImlhdCI6MTcwNDg3MTcyNiwiZXhwIjo0ODI5MDc0MTI2fQ.ykSOOUw2YBzjKoEhEygdkJfgSqtqo2enI4mCF7vZ6dM&list=0704655577,0743609669&source_address=PEA NWP&message=test sms
-        $client = new GuzzleHttp\Client();
-        $response = $client->request('GET', $url, [
-            'query' => [
-                'esmsqk' => $smsKey,
-                'list' => $number,
-                'source_address' => $mask,
-                'message' => $message,
-            ]
-        ]);
+        // $client = new GuzzleHttp\Client();
+        // $response = $client->request('GET', $url, [
+        //     'query' => [
+        //         'esmsqk' => $smsKey,
+        //         'list' => $number,
+        //         'source_address' => $mask,
+        //         'message' => $message,
+        //     ]
+        // ]);
 
-        $responseBody = json_decode($response->getBody());
+        // $responseBody = json_decode($response->getBody());
         // $status = $responseBody->status;
-        dd($responseBody);
+        // dd($responseBody);
+
+
         // $data = array(
         //     'SmsMessage' => $message,
         //     'PhoneNumber' => $number,
