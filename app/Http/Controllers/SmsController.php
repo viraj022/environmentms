@@ -42,5 +42,7 @@ class SmsController extends Controller
         } else {
             return array('status' => 2, 'mesg' => 'No telephone number found');
         }
+
+        // return  SmsHelper::sendSms($tel_no, $sms_message);
     }
 }

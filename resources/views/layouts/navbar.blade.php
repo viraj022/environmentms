@@ -71,11 +71,11 @@
                     <i class="fas fa-power-off mr-2"></i> Sign Out
 
                 </a>
-                {{-- <div class="dropdown-divider"            ></div> --}}
-                {{-- <a href="#" class="dropdown-item"> --}}
-                {{-- <i class="fas fa-file mr-2"></i> 3 new reports --}}
-                {{-- <span class="float-right text-muted text-sm">2 days</span> --}}
-                {{-- </        a> --}}
+                {{-- <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item">
+                    <i class="fas fa-file mr-2"></i> 3 new reports
+                    <span class="float-right text-muted text-sm">2 days</span>
+                </a> --}}
 
             </div>
         </li>
