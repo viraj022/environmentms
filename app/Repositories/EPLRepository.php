@@ -44,6 +44,7 @@ class EPLRepository
             ->orderBy('e_p_l_s.issue_date')
             ->groupBy('e_p_l_s.client_id')
             ->get();
+            // dd($query->take(1));
         return $query;
     }
     public function getEPLApplicationLog($from, $to)
