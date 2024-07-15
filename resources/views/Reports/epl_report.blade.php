@@ -25,6 +25,7 @@
                 <th>Applications Name</th>
                 <th>Address</th>
                 <th>Industry</th>
+                <th>Industry Address</th>
                 <th>EPL Code</th>
                 <th>File No</th>
                 <th>Ref No</th>
@@ -34,6 +35,7 @@
                 {{-- <th>Created Date</th> --}}
                 <th>Submitted Date</th>
                 <th>Issued Date</th>
+                <th>Expire Date</th>
                 <th>Nature</th>
             </tr>
         </thead>
@@ -44,6 +46,7 @@
                     <td>{{ $row['name_title'] }}</td>
                     <td>{{ $row['address'] }}</td>
                     <td>{{ $row['category_name'] }}</td>
+                    <td>{{ $row['industry_address'] }}</td>
                     <td>{{ $row['code'] }}</td>
                     <td><a href="/industry_profile/id/{{ $row['client_id'] }}"
                             target="_blank">{{ $row['file_no'] }}</a></td>
@@ -54,6 +57,7 @@
                     {{-- <td>{{ $row['created_at'] }}</td> --}}
                     <td>{{ $row['submitted_date'] }}</td>
                     <td>{{ $row['issue_date'] }}</td>
+                    <td>{{ $row['expire_date'] }}</td>
                     <td>{{ $row['nature'] }}</td>
                 </tr>
             @endforeach

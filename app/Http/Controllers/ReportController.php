@@ -156,6 +156,7 @@ class ReportController extends Controller
             $array['industry_address'] = $client['industry_address'];
             if (isset($client['transactions']) && count($client['transactions']) > 0 && count($client['transactions'][0]['transaction_items']) > 0) {
                 $array['inspection_fee'] = $client['transactions'][0]['transaction_items'][0]['amount'];
+                // dd($client['transactions']);
                 $array['inspection_pay_date'] = Carbon::parse($client['transactions'][0]['billed_at'])->format('Y-m-d');
             } else {
                 $array['inspection_fee'] = "N/A";
@@ -169,6 +170,7 @@ class ReportController extends Controller
             $array['ref_no'] = $ref_no;
             $array['license_number'] = $certificate_no;
             $array['client_id'] =  $client['id'];
+            $array['expire_date'] = (isset($row['expire_date'])) ? Carbon::parse($row['expire_date'])->format('Y-m-d') : 'N/A';
             if ($row['count'] > 0) {
                 $array['nature'] = 'Renew';
             } else {
