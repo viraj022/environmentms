@@ -10,21 +10,36 @@ use Carbon\Carbon;
 use App\Certificate;
 use App\OldFiles;
 use App\BusinessScale;
+use App\ChangeOwner;
 use App\Pradesheeyasaba;
 use App\Rules\contactNo;
 use App\IndustryCategory;
 use App\Rules\nationalID;
 use App\EnvironmentOfficer;
+use App\Helpers\ClientApplicationHelper;
 use Illuminate\Support\Str;
 use App\Helpers\LogActivity;
+use App\Http\Resources\ClientResource;
+use App\Invoice;
+use App\OnlineNewApplicationRequest;
 use App\Repositories\UserNotificationsRepositary;
 use App\SiteClearance;
 use Illuminate\Http\Request;
 use App\SiteClearenceSession;
+use App\Transaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Endroid\QrCode\Writer\PngWriter;
+
 use Exception;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Label\Label;
+use Illuminate\Support\Facades\Storage;
 
 class ClientController extends Controller
 {
@@ -43,8 +58,39 @@ class ClientController extends Controller
     public function index()
     {
         $user = Auth::user();
+        if (empty($user)) {
+            return redirect()->route('home');
+        }
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        return view('client_space', ['pageAuth' => $pageAuth]);
+        return view('client_space', [
+            'pageAuth' => $pageAuth,
+            'newApplicationRequest' => null,
+            'salutations' => $this->getSalutations(),
+        ]);
+    }
+
+    public function getSalutations()
+    {
+        return ['-' => 'N/A', 'Mr' => 'Mr.', 'Mrs' => 'Mrs.', 'Ms' => 'Ms.', 'Miss' => 'Miss', 'Rev' => 'Rev'];
+    }
+
+    public function fromOnlineNewApplicationRequest(Request $request)
+    {
+        $newApplicationRequest = null;
+        if ($request->has('new_application_request')) {
+            $req = OnlineNewApplicationRequest::find($request->post('new_application_request'));
+            if ($req) {
+                $newApplicationRequest = $req;
+            }
+        }
+
+        $user = Auth::user();
+        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        return view('client_space', [
+            'pageAuth' => $pageAuth,
+            'newApplicationRequest' => $newApplicationRequest,
+            'salutations' => $this->getSalutations(),
+        ]);
     }
 
     public function search_files()
@@ -64,6 +110,12 @@ class ClientController extends Controller
     public function indexOldFileList()
     {
         $user = Auth::user();
+        if (empty($user)) {
+            return redirect()->route('home');
+        }
+        if (!config('auth.privileges.clientSpace')) {
+            abort(401);
+        }
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('old_file_list', ['pageAuth' => $pageAuth]);
     }
@@ -93,22 +145,82 @@ class ClientController extends Controller
         }
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+        $client = Client::find($id);
+        if (empty($client)) {
+            abort(404);
+        }
+        $oldOwnerDetails = ChangeOwner::where('client_id', $client->id)->orderBy('created_at', 'desc')->first();
+        $onlineTransactions = Transaction::with('transactionItems')->whereNotNull('online_payment_id')->where('client_id', $id)->withTrashed()->get();
+        $scCertificates = Certificate::where('certificate_type', 1)->where('client_id', $id)
+            // ->where('issue_status', 1)
+            ->select('signed_certificate_path', 'issue_date', 'expire_date', 'cetificate_number')->get();
+
+        $siteClearance = SiteClearance::join('site_clearence_sessions', 'site_clearence_sessions.id', '=', 'site_clearances.site_clearence_session_id')
+            ->where('site_clearence_sessions.client_id', $id)
+            ->select('site_clearances.*', 'site_clearence_sessions.code as session_code')
+            ->orderBy('site_clearances.count', 'desc')
+            ->get();
+
+        $qrCode = $this->fileQr($client->file_no);
         if ($pageAuth['is_read']) {
-            return view('industry_profile', ['pageAuth' => $pageAuth, 'id' => $id]);
+            return view('industry_profile', [
+                'pageAuth' => $pageAuth, 'id' => $id, 'client' => $client, 'qrCode' => $qrCode, 'oldOwnerDetails' => $oldOwnerDetails, 'onlineTransactions' => $onlineTransactions,
+                'siteClearance' => $siteClearance
+            ]);
         } else {
             abort(401);
         }
+    }
+
+    public function fileQr($fileCode)
+    {
+        if (empty($fileCode)) {
+            return '<img src="#" />';
+        }
+        $writer = new PngWriter();
+
+        // Create QR code
+        $qrCode = QRcode::create($fileCode)
+            ->setEncoding(new Encoding('UTF-8'))
+            ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+            ->setSize(200)
+            ->setMargin(10)
+            ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
+            ->setForegroundColor(new Color(0, 0, 0))
+            ->setBackgroundColor(new Color(255, 255, 255));
+        // Create generic label
+        $label = Label::create($fileCode);
+
+        // $result = $writer->write($qrCode, null, $label);
+        $result = $writer->write($qrCode, null, null);
+
+        // Generate a data URI to include image data inline (i.e. inside an <img> tag)
+        $dataUri = $result->getDataUri();
+        return '<img src="' . $dataUri . '" />';
+    }
+
+    public function generateFileQrCode($id)
+    {
+        $client = Client::find($id);
+        $qrCode = $this->fileQr($client->file_no);
+        return $qrCode;
     }
 
     public function updateClient($id)
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        return view('update_industry_file', ['pageAuth' => $pageAuth, 'id' => $id]);
+        $CLIENT = Client::find($id);
+        $FileCrateYear = carbon::parse($CLIENT->created_at)->format('Y');
+        return view('update_industry_file', ['pageAuth' => $pageAuth, 'id' => $id, 'file_year' => $FileCrateYear]);
     }
 
     public function certificatesUi()
     {
+        if (!Auth::check()) {
+            return redirect()->route('home');
+        }
+
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('pending_certificates', ['pageAuth' => $pageAuth]);
@@ -124,6 +236,12 @@ class ClientController extends Controller
     public function confirmedFiles()
     {
         $user = Auth::user();
+        if (empty($user)) {
+            return redirect()->route('home');
+        }
+        if (!config('auth.privileges.clientSpace')) {
+            abort(401);
+        }
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('confirmed_files', ['pageAuth' => $pageAuth]);
     }
@@ -131,8 +249,9 @@ class ClientController extends Controller
     public function certificatePrefer($id)
     {
         $user = Auth::user();
+        $cli = Client::where('id', $id)->first();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        return view('certificate_perforation', ['pageAuth' => $pageAuth, 'id' => $id]);
+        return view('certificate_perforation', ['pageAuth' => $pageAuth, 'id' => $id, 'cli' => $cli]);
     }
 
     /**
@@ -140,81 +259,183 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        request()->validate([
-            'first_name' => 'required|string',
-            'last_name' => 'nullable|string',
-            'address' => 'nullable',
-            'contact_no' => ['nullable', new contactNo],
-            'email' => 'nullable|sometimes',
-            'nic' => ['sometimes', 'nullable', 'unique:clients', new nationalID],
-            'industry_name' => 'required|string',
-            'industry_category_id' => 'required|integer',
-            'business_scale_id' => 'required|integer',
-            'industry_contact_no' => ['nullable', new contactNo],
-            'industry_address' => 'required|string',
-            'industry_email' => 'nullable|email',
-            'industry_coordinate_x' => ['numeric', 'required', 'between:-180,180'],
-            'industry_coordinate_y' => ['numeric', 'required', 'between:-90,90'],
-            'pradesheeyasaba_id' => 'required|integer',
-            'industry_is_industry' => 'required|integer',
-            'industry_investment' => 'required|numeric',
-            'industry_start_date' => 'required|date',
-            'industry_registration_no' => 'nullable|string',
-            'is_old' => 'required|integer',
-            'name_title' => 'required|string',
-            'industry_sub_category' => 'nullable|string',
-            // 'password' => 'required',
-        ]);
-        if ($pageAuth['is_create']) {
-            $client = new Client();
-            $client->name_title = \request('name_title');
-            $client->first_name = \request('first_name');
-            $client->last_name = \request('last_name');
-            $client->address = \request('address');
-            $client->contact_no = \request('contact_no');
-            $client->email = \request('email');
-            $client->nic = \request('nic');
-            $client->password = Hash::make(request('nic'));
-            $client->api_token = Str::random(80);
+        try {
+            $user = Auth::user();
+            $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
+            request()->validate([
+                'first_name' => 'required|string',
+                'last_name' => 'nullable|string',
+                'address' => 'nullable',
+                'contact_no' => ['nullable', new contactNo],
+                'email' => 'nullable|sometimes',
+                'nic' => ['sometimes', 'nullable', new nationalID],
+                'industry_name' => 'required|string',
+                'industry_category_id' => 'required|integer',
+                'business_scale_id' => 'required|integer',
+                'industry_contact_no' => ['nullable', new contactNo],
+                'industry_address' => 'required|string',
+                'industry_email' => 'nullable|email',
+                'industry_coordinate_x' => ['numeric', 'required', 'between:-180,180'],
+                'industry_coordinate_y' => ['numeric', 'required', 'between:-90,90'],
+                'pradesheeyasaba_id' => 'required|integer',
+                'industry_is_industry' => 'required|integer',
+                'industry_investment' => 'required|numeric',
+                'industry_start_date' => 'required|date',
+                'industry_registration_no' =>  ['sometimes', 'nullable', 'string', 'unique:clients'],
+                'is_old' => 'required|integer',
+                'name_title' => 'required|string',
+                'industry_sub_category' => 'nullable|string',
+                // 'password' => 'required',
+            ]);
+            if ($pageAuth['is_create']) {
+                $client = new Client();
+                $client->name_title = \request('name_title');
+                $client->first_name = \request('first_name');
+                $client->last_name = \request('last_name');
+                $client->address = \request('address');
+                $client->contact_no = \request('contact_no');
+                $client->email = \request('email');
+                $client->nic = \request('nic');
+                $client->password = Hash::make(request('nic'));
+                $client->api_token = Str::random(80);
 
-            $client->industry_name = \request('industry_name');
-            $client->industry_category_id = \request('industry_category_id');
-            $client->business_scale_id = \request('business_scale_id');
-            $client->industry_contact_no = \request('industry_contact_no');
-            $client->industry_address = \request('industry_address');
-            $client->industry_email = \request('industry_email');
-            $client->industry_coordinate_x = \request('industry_coordinate_x');
-            $client->industry_coordinate_y = \request('industry_coordinate_y');
-            $client->pradesheeyasaba_id = \request('pradesheeyasaba_id');
-            $client->industry_is_industry = \request('industry_is_industry');
-            $client->industry_investment = \request('industry_investment');
-            $client->industry_start_date = \request('industry_start_date');
-            $client->industry_registration_no = \request('industry_registration_no');
-            $client->industry_sub_category = \request('industry_sub_category');
-            $client->created_user = $user->id;
-            $client->is_old = \request('is_old');
-            if ($client->is_old == 0) {
-                $client->need_inspection = 'Inspection Not Needed';
-            }
-            $code = $this->generateCode($client);
-            if (!$code || $code == null) {
-                return array('id' => 0, 'message' => 'Error Generating file code!');
-            }
-            $client->file_no = $code;
-            $client->save();
-            if ($client) {
-                LogActivity::fileLog($client->id, 'File', "Create New File", 1);
-                LogActivity::addToLog('Create new file', $client);
-                return array('id' => 1, 'message' => 'true', 'id' => $client->id);
+                $client->industry_name = \request('industry_name');
+                $client->industry_category_id = \request('industry_category_id');
+                $client->business_scale_id = \request('business_scale_id');
+                $client->industry_contact_no = \request('industry_contact_no');
+                $client->industry_address = \request('industry_address');
+                $client->industry_email = \request('industry_email');
+                $client->industry_coordinate_x = \request('industry_coordinate_x');
+                $client->industry_coordinate_y = \request('industry_coordinate_y');
+                $client->pradesheeyasaba_id = \request('pradesheeyasaba_id');
+                $client->industry_is_industry = \request('industry_is_industry');
+                $client->industry_investment = \request('industry_investment');
+                $client->industry_start_date = \request('industry_start_date');
+                $client->industry_registration_no = \request('industry_registration_no');
+                $client->industry_sub_category = \request('industry_sub_category');
+                $client->created_user = $user->id;
+                $client->is_old = \request('is_old');
+                if ($client->is_old == 0) {
+                    $client->need_inspection = 'Inspection Not Needed';
+                }
+                $code = $this->generateCode($client);
+                if (!$code || $code == null) {
+                    return array('id' => 0, 'message' => 'Error Generating file code!');
+                }
+                $client->file_no = $code;
+                $client->save();
+                // dd($client->id);
+                if ($client) {
+                    // bind client id to new application request if this is a new application request entry
+                    if ($request->new_application_request_id) {
+                        // set client id to new application request
+                        $newApplicationRequest = OnlineNewApplicationRequest::find($request->new_application_request_id);
+                        $newApplicationRequest->client_id = $client->id;
+                        $newApplicationRequest->status = 'complete'; // mark this as complete
+                        $newApplicationRequest->save();
+
+                        // import files from new application request to client profile
+                        if (!empty($newApplicationRequest->road_map)) {
+                            // import file 1/road map
+                            $file1Filepath = $newApplicationRequest->road_map;
+                            $file1FileName = basename($file1Filepath);
+                            $file1FileUrl = config('online-request.url') . '/storage/new-attachments/route-map/' . str_replace('public/', '', $file1Filepath);
+                            $targetDir = 'uploads/industry_files/' . $client->id . '/application/file1';
+
+                            if (!Storage::exists($targetDir)) {
+                                try {
+                                    Storage::makeDirectory($targetDir);
+                                } catch (\Throwable $th) {
+                                    throw $th;
+                                }
+                            }
+                            $targetFileName = $targetDir . '/' . $file1FileName;
+                            $file1Path = ClientApplicationHelper::downloadFile($file1FileUrl);
+                            try {
+                                Storage::copy($file1Path, $targetFileName);
+                                Storage::delete($file1Path);
+                            } catch (\Throwable $th) {
+                                throw $th;
+                            }
+                            $client->file_01 = 'uploads/industry_files/' . $client->id . '/application/file1/' . $file1FileName;
+                        }
+
+                        if (!empty($newApplicationRequest->deed_of_land)) {
+                            // import file 2/deed
+                            $file2Filepath = $newApplicationRequest->deed_of_land;
+                            $file2FileName = basename($file2Filepath);
+                            $file2FileUrl = config('online-request.url') . '/storage/new-attachments/deed-of-lands/' . str_replace('public/', '', $file2Filepath);
+                            $targetDir = 'uploads/industry_files/' . $client->id . '/application/file2';
+
+                            if (!Storage::exists($targetDir)) {
+                                try {
+                                    Storage::makeDirectory($targetDir);
+                                } catch (\Throwable $th) {
+                                    throw $th;
+                                }
+                            }
+                            $targetFileName = $targetDir . '/' . $file2FileName;
+                            $file2Path = ClientApplicationHelper::downloadFile($file2FileUrl);
+                            try {
+                                Storage::copy($file2Path, $targetFileName);
+                                Storage::delete($file2Path);
+                            } catch (\Throwable $th) {
+                                throw $th;
+                            }
+                            $client->file_02 = 'uploads/industry_files/' . $client->id . '/application/file2/' . $file2FileName;
+                        }
+
+                        if (!empty($newApplicationRequest->survey_plan)) {
+                            // import file 3/survey plan
+                            $file3Filepath = $newApplicationRequest->survey_plan;
+                            $file3FileName = basename($file3Filepath);
+                            $file3FileUrl = config('online-request.url') . '/storage/new-attachments/survey-plans/' . str_replace('public/', '', $file3Filepath);
+                            $targetDir = 'uploads/industry_files/' . $client->id . '/application/file3';
+
+                            if (!Storage::exists($targetDir)) {
+                                try {
+                                    Storage::makeDirectory($targetDir);
+                                } catch (\Throwable $th) {
+                                    throw $th;
+                                }
+                            }
+                            $targetFileName = $targetDir . '/' . $file3FileName;
+                            $file3Path = ClientApplicationHelper::downloadFile($file3FileUrl);
+                            try {
+                                Storage::copy($file3Path, $targetFileName);
+                                Storage::delete($file3Path);
+                            } catch (\Throwable $th) {
+                                throw $th;
+                            }
+
+                            $client->file_03 = 'uploads/industry_files/' . $client->id . '/application/file3/' . $file3FileName;
+                        }
+
+                        $client->save();
+
+                        // set online request for the new application request as complete
+                        $onlineRequest = $newApplicationRequest->onlineRequest;
+                        $onlineRequest->status = 'complete'; // mark this as complete
+                        $onlineRequest->save();
+                    }
+
+                    LogActivity::fileLog($client->id, 'File', "Create New File", 1, 'new file', '');
+                    LogActivity::addToLog('Create new file', $client);
+                    return array('id' => 1, 'message' => 'true', 'id' => $client->id);
+                } else {
+                    return array('id' => 0, 'message' => 'false');
+                }
             } else {
-                return array('id' => 0, 'message' => 'false');
+                abort(401);
             }
-        } else {
-            abort(401);
+        } catch (Exception $ex) {
+            if (isset($ex->validator)) {
+                return array('id' => 0, 'message' => $ex->validator->errors());
+            } else {
+                return array('id' => 0, 'message' => $ex->getMessage());
+            }
         }
     }
 
@@ -281,7 +502,7 @@ class ClientController extends Controller
                 DB::beginTransaction();
 
                 $msg = Client::where('id', $id)->update($request->all());
-                $epl = EPL::where('client_id', $id)->first();
+                $epl = Epl::where('client_id', $id)->orderBy('created_at', 'desc')->first();
                 $site_clearsess = SiteClearenceSession::where('client_id', $id)->first();
 
                 //load and split new file no to generate new epl code
@@ -315,7 +536,7 @@ class ClientController extends Controller
                 }
 
                 DB::commit();
-                LogActivity::fileLog($id, 'File', "Update file", 1);
+                LogActivity::fileLog($id, 'File', "Update file", 1, 'update file', '');
                 LogActivity::addToLog('Update file', $msg);
                 return array('id' => 1, 'message' => 'File Number, EPL Number, Site clearence Number has updated successful');
             } catch (\Exception $ex) {
@@ -409,7 +630,7 @@ class ClientController extends Controller
                 $msg1 = EPL::where('client_id', $id)->delete();
             }
             LogActivity::addToLog("Delete fIle", $client);
-            LogActivity::fileLog($client->id, 'File', "Delete file", 1);
+            LogActivity::fileLog($client->id, 'File', "Delete file", 1, 'delete file', '');
             if ($msg1) {
                 return array('id' => 1, 'message' => 'true');
             } else {
@@ -436,22 +657,36 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
         //    PaymentType::get();
-        $file = Client::with('epls')->with('siteClearenceSessions.siteClearances')->with('environmentOfficer.user')->with('oldFiles')->with('industryCategory')->with('businessScale')->with('pradesheeyasaba')->find($id)->toArray();
+        $file = Client::with('epls')->with('siteClearenceSessions.siteClearances')
+            ->with('environmentOfficer.user')
+            ->with('oldFiles')
+            ->with('industryCategory')
+            ->with('businessScale')
+            ->with('certificates')
+            ->with('pradesheeyasaba')->find($id);
+        if (!$file) {
+            // if file not found
+            return array('id' => 0, 'message' => 'File not found');
+        }
+
+        $file = $file->toArray();
         $file['created_at'] = date('Y-m-d', strtotime($file['created_at']));
         $file['industry_start_date'] = date('Y-m-d', strtotime($file['industry_start_date']));
+        // dd($ref);
         return $file;
     }
 
     public function getAllFiles($id)
     {
-        //        dd('ffff');
         $data = array();
         $user = Auth::user();
+        // dd($user->roll->level->name);
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        $data = Client::select('clients.*', 'site_clearence_sessions.code AS code_site', 'e_p_l_s.code AS code_epl')
-            ->leftJoin('e_p_l_s', 'clients.id', '=', 'e_p_l_s.client_id')
-            ->leftJoin('site_clearence_sessions', 'clients.id', '=', 'site_clearence_sessions.client_id');
-
+        $data = Client::with(['epls' => function ($query) {
+            $query->orderBy('submitted_date', 'desc');
+        }, 'siteClearenceSessions', 'siteClearenceSessions.siteClearances' => function ($query) {
+            $query->orderBy('submit_date', 'desc');
+        }]);
         if ($user->roll->level->name == Level::DIRECTOR) {
             $data->where('environment_officer_id', $id);
         } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
@@ -466,8 +701,8 @@ class ClientController extends Controller
         } else {
             abort(401);
         }
-        $data->groupBy('clients.id');
-        return $data->get();
+        $data = $data->get();
+        return clientResource::collection($data);
     }
 
     public function certificatePath($id)
@@ -602,7 +837,7 @@ class ClientController extends Controller
             $client->file_status = 5; // set file status
             $client->cer_status = 6; // set certificate status
             LogActivity::addToLog("Old file complete" . $id, $client);
-            LogActivity::fileLog($client->id, 'File', "Old file complete", 1);
+            LogActivity::fileLog($client->id, 'File', "Old file complete", 1, 'old file complete', '');
             if ($client->save()) {
                 return array('id' => 1, 'message' => 'true');
             } else {
@@ -625,7 +860,7 @@ class ClientController extends Controller
                 ->where('client_id', '=', $id)
                 ->delete();
             LogActivity::addToLog("Old file confirm revert" . $id, $client);
-            LogActivity::fileLog($client->id, 'File', "Old file confirm revert", 1);
+            LogActivity::fileLog($client->id, 'File', "Old file confirm revert", 1, 'old file revert', '');
             if ($client == true) {
                 return array('id' => 1, 'message' => 'true');
             } else {
@@ -716,11 +951,11 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $client = Client::findOrFail($id);
         if ($inspectionNeed == 'needed') {
-            LogActivity::fileLog($client->id, 'Inspection', "Mark inspection needed", 1);
+            LogActivity::fileLog($client->id, 'Inspection', "Mark inspection needed", 1, 'inspection', '');
             LogActivity::addToLog("Mark inspection needed", $client);
             $client->need_inspection = CLIENT::STATUS_INSPECTION_NEEDED;
         } else if ($inspectionNeed == 'no_needed') {
-            LogActivity::fileLog($client->id, 'Inspection', "Mark inspection no need", 1);
+            LogActivity::fileLog($client->id, 'Inspection', "Mark inspection no need", 1, 'inspection', '');
             LogActivity::addToLog("Mark inspection no need", $client);
             $client->need_inspection = CLIENT::STATUS_INSPECTION_NOT_NEEDED;
         } else {
@@ -743,27 +978,23 @@ class ClientController extends Controller
                 'file_problem_status_description' => 'required|string',
                 'file' => $request->file != null ? 'sometimes|required|min:8' : ''
             ]);
+
             $file = Client::findOrFail($id);
-            if (!($request->file == null || isset($request->file))) {
-                $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                $fileUrl = '/uploads/' . FieUploadController::getOldFilePath($file);
-                $storePath = 'public' . $fileUrl;
-                $path = $request->file('file')->storeAs($storePath, $file_name);
-                $oldFiles = new OldFiles();
-                $oldFiles->path = "storage" . $fileUrl . "/" . $file_name;
-                $oldFiles->type = $request->file->extension();
-                $oldFiles->client_id = $file->id;
-                $oldFiles->description = \request('description');
-                $oldFiles->file_catagory = \request('file_catagory');
-                $file->complain_attachment = "storage" . $fileUrl . "/" . $file_name;
-                $msg = $oldFiles->save();
-            }
+
             if (\request('file_problem_status') == 'clean') {
                 $file->complain_attachment = null;
             }
             $file->file_problem_status = \request('file_problem_status');
             $file->file_problem_status_description = \request('file_problem_status_description');
-            LogActivity::fileLog($file->id, 'File', "set File problem status " . $file->file_problem_status, 1);
+            $file_type = $file->cer_type_status;
+            if ($file_type == 1 || $file_type == 2) {
+                $fileTypeName = 'epl';
+            } elseif ($file_type == 3 || $file_type == 4) {
+                $fileTypeName = 'sc';
+            } else {
+                $fileTypeName = '';
+            }
+            LogActivity::fileLog($file->id, 'File', "set File problem status " . $file->file_problem_status, 1, $fileTypeName, '');
             LogActivity::addToLog("Mark file problem status", $file);
             if ($file->save()) {
                 return array('id' => 1, 'message' => 'true');
@@ -854,6 +1085,7 @@ class ClientController extends Controller
             //epl certificate
             $certificate->certificate_type = 0;
         } elseif ($client->cer_type_status == 3 || $client->cer_type_status == 4) {
+            //sc certificate
             $certificate->certificate_type = 1;
         }
         $certificate->cetificate_number = $client->generateCertificateNumber();
@@ -865,8 +1097,16 @@ class ClientController extends Controller
         if ($client->cer_type_status == 1) {
             incrementSerial(Setting::CERTIFICATE_AI);
         }
+        $file_type = $client->cer_type_status;
+        if ($file_type == 1 || $file_type == 2) {
+            $fileTypeName = 'epl';
+        } elseif ($file_type == 3 || $file_type == 4) {
+            $fileTypeName = 'sc';
+        } else {
+            $fileTypeName = '';
+        }
         setFileStatus($client->id, 'cer_status', 1);
-        fileLog($client->id, 'Certificate', 'User (' . $user->last_name . ') Start drafting', 0);
+        fileLog($client->id, 'Certificate', 'User (' . $user->last_name . ') Start drafting', 0, $fileTypeName, '');
         LogActivity::addToLog("Start certificate drafting", $client);
         if ($msg) {
             return array('id' => 1, 'message' => 'true', 'certificate_number' => $certificate->cetificate_number);
@@ -885,6 +1125,7 @@ class ClientController extends Controller
         if (!$certificate) {
             return array();
         } else {
+            $certificate->issue_date = ($certificate->issue_date != null) ? Carbon::parse($certificate->issue_date)->format('Y-m-d') : date('Y-m-d');
             return $certificate;
         }
     }
@@ -899,15 +1140,10 @@ class ClientController extends Controller
         $user = Auth::user();
         $req = request()->all();
         unset($req['file']);
-        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $certificate = Certificate::findOrFail($id);
         if ($request->exists('file')) {
-            $type = $request->file->extension();
-            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-            $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/draft/" . $id;
-            $storePath = 'public' . $fileUrl;
-            $path = 'storage' . $fileUrl . "/" . $file_name;
-            $request->file('file')->storeAs($storePath, $file_name);
+            $fileUrl = "uploads/industry_files/" . $certificate->client_id . "/certificates/draft/" . $id;
+            $path = $request->file('file')->store($fileUrl);
             $req['user_id_certificate_upload'] = $user->id;
             $req['certificate_upload_date'] = Carbon::now()->toDateString();
             $req['certificate_path'] = $path;
@@ -916,7 +1152,7 @@ class ClientController extends Controller
         }
         $msg = Certificate::where('id', $id)->update($req);
 
-        fileLog($certificate->client_id, 'certificate', 'User (' . $user->last_name . ') uploaded draft', 0);
+        fileLog($certificate->client_id, 'certificate', 'User (' . $user->last_name . ') uploaded draft', 0, 'upload draft', '');
         LogActivity::addToLog("Upload Draft", $certificate);
         if ($msg) {
             return array('id' => 1, 'message' => 'true');
@@ -933,15 +1169,10 @@ class ClientController extends Controller
         $user = Auth::user();
         $req = request()->all();
         unset($req['file']);
-        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $certificate = Certificate::findOrFail($id);
         if ($request->exists('file')) {
-            $type = $request->file->extension();
-            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-            $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/draft/" . $id;
-            $storePath = 'public' . $fileUrl;
-            $path = 'storage' . $fileUrl . "/" . $file_name;
-            $request->file('file')->storeAs($storePath, $file_name);
+            $fileUrl = "uploads/industry_files/" . $certificate->client_id . "/certificates/draft/" . $id;
+            $path = $request->file('file')->store($fileUrl);
             $req['user_id_certificate_upload'] = $user->id;
             $req['corrected_file'] = $path;
         } else {
@@ -949,7 +1180,7 @@ class ClientController extends Controller
         }
         $msg = Certificate::where('id', $id)->update($req);
 
-        fileLog($certificate->client_id, 'certificate', 'User (' . $user->last_name . ') uploaded draft', 0);
+        fileLog($certificate->client_id, 'certificate', 'User (' . $user->last_name . ') uploaded draft', 0, 'upload draft', '');
         LogActivity::addToLog("Upload Corrected File", $certificate);
         if ($msg) {
             return array('id' => 1, 'message' => 'true');
@@ -965,18 +1196,22 @@ class ClientController extends Controller
             'expire_date' => 'sometimes|required|date',
             'file' => 'sometimes|required|mimes:jpeg,jpg,png,pdf'
         ]);
+        // validate issue date and expire date
+        $issue_date = Carbon::parse($request->issue_date)->format('Y-m-d');
+        $expire_date = Carbon::parse($request->expire_date)->format('Y-m-d');
+        if (empty($request->issue_date) || empty($request->expire_date)) {
+            return array('id' => 0, 'message' => 'issue date and expire date are required');
+        }
+        if ($issue_date >= $expire_date) {
+            return array('id' => 0, 'message' => 'issue date must be less than expire date');
+        }
         $user = Auth::user();
         $req = request()->all();
         unset($req['file']);
-        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $certificate = Certificate::findOrFail($id);
         if ($request->exists('file')) {
-            $type = $request->file->extension();
-            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-            $fileUrl = "/uploads/industry_files/" . $certificate->client_id . "/certificates/original/" . $id;
-            $storePath = 'public' . $fileUrl;
-            $path = 'storage' . $fileUrl . "/" . $file_name;
-            $request->file('file')->storeAs($storePath, $file_name);
+            $fileUrl = "uploads/industry_files/" . $certificate->client_id . "/certificates/original/" . $id;
+            $path = $request->file('file')->store($fileUrl);
             $req['signed_certificate_path'] = $path;
             $req['user_id_certificate_upload'] = $user->id;
         } else {
@@ -984,7 +1219,7 @@ class ClientController extends Controller
         }
         $msg = Certificate::where('id', $id)->update($req);
 
-        fileLog($certificate->client_id, 'certificate', 'User (' . $user->user_name . ')  uploaded the original', 0);
+        fileLog($certificate->client_id, 'certificate', 'User (' . $user->user_name . ')  uploaded the original', 0, 'upload original certificate', '');
         LogActivity::addToLog("Upload original", $certificate);
         if ($msg) {
             return array('id' => 1, 'message' => 'true');
@@ -993,67 +1228,93 @@ class ClientController extends Controller
         }
     }
 
-    public function issueCertificate($cer_id)
+    public function issueCertificate(Request $request, $cer_id)
     {
-        return DB::transaction(function () use ($cer_id) {
-            $user = Auth::user();
-            $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-            $certificate = Certificate::findOrFail($cer_id);
-            if ($certificate->issue_status == 0) {
-                $file = Client::findOrFail($certificate->client_id);
-                $msg = setFileStatus($file->id, 'file_status', 5);
-                $msg = $msg && setFileStatus($file->id, 'cer_status', 6);
-                $certificate->issue_status = 1;
-                $certificate->user_id = $user->id;
-                $msg = $msg && $certificate->save();
-                $file = $certificate->client;
 
-                // check if => 1=new epl, 2=epl renew
-                if ($file->cer_type_status == 1 || $file->cer_type_status == 2) {
-                    $epl = EPL::where('client_id', $certificate->client_id)->whereNull('issue_date')->where('status', 0)->first();
-                    $epl->issue_date = $certificate->issue_date;
-                    $epl->expire_date = $certificate->expire_date;
-                    $epl->certificate_no = $certificate->cetificate_number;
-                    $epl->status = 1;
-                    $msg = $msg && $epl->save();
+        $issue_date = Carbon::parse($request->issue_date)->format('Y-m-d');
+        $expire_date = Carbon::parse($request->expire_date)->format('Y-m-d');
+        if (empty($request->issue_date) || empty($request->expire_date)) {
+            return array('id' => 0, 'message' => 'issue date and expire date are required');
+        }
+        if ($issue_date >= $expire_date) {
+            return array('id' => 0, 'message' => 'issue date must be less than expire date');
+        }
+        try {
+            return DB::transaction(function () use ($cer_id, $issue_date, $expire_date) {
+                $user = Auth::user();
+                $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+                $certificate = Certificate::findOrFail($cer_id);
+                if ($certificate->issue_status == 0) {
+                    $file = Client::findOrFail($certificate->client_id);
+                    $msg = setFileStatus($file->id, 'file_status', 5);
+                    $msg = $msg && setFileStatus($file->id, 'cer_status', 6);
+                    $certificate->issue_status = 1;
+                    $certificate->issue_date = $issue_date;
+                    $certificate->expire_date = $expire_date;
+                    $certificate->updated_at = Carbon::now();
+                    $certificate->user_id = $user->id;
+                    $msg = $msg && $certificate->save();
+                    $file = $certificate->client;
 
-                    //check if 3=site clearance
-                } else if ($file->cer_type_status == 3) {
-                    $site = SiteClearenceSession::where('client_id', $certificate->client_id)->whereNull('issue_date')->first();
-                    $site->issue_date = $certificate->issue_date;
-                    $site->expire_date = $certificate->expire_date;
-                    $site->licence_no = $certificate->cetificate_number;
-                    $site->status = 1;
+                    // check if => 1=new epl, 2=epl renew
+                    if ($file->cer_type_status == 1 || $file->cer_type_status == 2) {
+                        $epl = EPL::where('client_id', $certificate->client_id)->whereNull('issue_date')->where('status', 0)->first();
+                        $epl->issue_date = $issue_date;
+                        $epl->expire_date = $expire_date;
+                        $epl->certificate_no = $certificate->cetificate_number;
+                        $epl->status = 1;
+                        $msg = $msg && $epl->save();
 
-                    $s = SiteClearance::where('site_clearence_session_id', $site->id)->where('status', 0)->first();
-                    $s->status = 1;
-                    $msg = $msg && $s->save();
-                    $msg = $msg && $site->save();
+                        //check if 3=site clearance
+                    } else if ($file->cer_type_status == 3) {
+                        $site = SiteClearenceSession::where('client_id', $certificate->client_id)->whereNull('issue_date')->first();
+                        $site->issue_date = $issue_date;
+                        $site->expire_date = $expire_date;
+                        $site->licence_no = $certificate->cetificate_number;
+                        $site->status = 1;
 
-                    //                            check if 4=site clearance renew
-                } else if ($file->cer_type_status == 4) {
-                    $site = SiteClearenceSession::where('client_id', $certificate->client_id)->orderBy('id', 'desc')->first();
-                    $site->issue_date = $certificate->issue_date;
-                    $site->expire_date = $certificate->expire_date;
-                    $site->status = 1; //status already 1
-                    $site->save();
-                    $s = SiteClearance::where('site_clearence_session_id', $site->id)->where('status', 0)->first();
-                    $s->status = 1;
-                    $s->save();
+                        $s = SiteClearance::where('site_clearence_session_id', $site->id)->where('status', 0)->first();
+                        $s->status = 1;
+                        $s->issue_date = $issue_date;
+                        $s->expire_date = $expire_date;
+                        $msg = $msg && $s->save();
+                        $msg = $msg && $site->save();
+
+                        //                            check if 4=site clearance renew
+                    } else if ($file->cer_type_status == 4) {
+                        $site = SiteClearenceSession::where('client_id', $certificate->client_id)->orderBy('id', 'desc')->first();
+                        $site->issue_date = $issue_date;
+                        $site->expire_date = $expire_date;
+                        $site->status = 1; //status already 1
+                        $site->save();
+                        $s = SiteClearance::where('site_clearence_session_id', $site->id)->where('status', 0)->orderBy('id', 'desc')->first();
+                        $s->status = 1;
+                        $s->issue_date = $issue_date;
+                        $s->expire_date = $expire_date;
+                        $s->save();
+                    } else {
+                        abort(501, "Invalid File Status - error code");
+                    }
                 } else {
-                    abort(501, "Invalid File Status - error code");
+                    abort(422, "Certificate Already Issued");
                 }
-            } else {
-                abort(422, "Certificate Already Issued");
-            }
-            fileLog($file->id, 'certificate', 'User (' . $user->last_name . ') Issued the Certificate', 0);
-            LogActivity::addToLog("Issue certificate", $certificate);
-            if ($msg) {
-                return array('id' => 1, 'message' => 'true');
-            } else {
-                return array('id' => 0, 'message' => 'false');
-            }
-        });
+
+                $file_type = $file->cer_type_status;
+                if ($file_type == 1 || $file_type == 2) {
+                    $fileTypeName = 'epl';
+                } elseif ($file_type == 3 || $file_type == 4) {
+                    $fileTypeName = 'sc';
+                } else {
+                    $fileTypeName = '';
+                }
+
+                fileLog($file->id, 'certificate', 'User (' . $user->last_name . ') Issued the Certificate', 0, $fileTypeName, '');
+                LogActivity::addToLog("Issue certificate", $certificate);
+                return array('id' => 1, 'message' => 'Successfully Issued Certificate');
+            });
+        } catch (\Throwable $th) {
+            return array('id' => 0, 'message' => 'Unable to issue certificate');
+        }
     }
 
     public function completeDraftingCertificate($id)
@@ -1063,8 +1324,18 @@ class ClientController extends Controller
         $certificate = Certificate::with('client.environmentOfficer')->whereId($id)->first();
         $client = $certificate->client;
         // dd($client);
+
+        $file_type = $client->cer_type_status;
+        if ($file_type == 1 || $file_type == 2) {
+            $fileTypeName = 'epl';
+        } elseif ($file_type == 3 || $file_type == 4) {
+            $fileTypeName = 'sc';
+        } else {
+            $fileTypeName = '';
+        }
+
         $msg = setFileStatus($certificate->client_id, 'cer_status', 2);
-        fileLog($certificate->client_id, 'certificate', 'User (' . $user->first_name . ' ' . $user->last_name . ') complete draft', 0);
+        fileLog($certificate->client_id, 'certificate', 'User (' . $user->first_name . ' ' . $user->last_name . ') complete draft', 0, $fileTypeName, '');
         LogActivity::addToLog("Complete draft", $certificate);
         $this->userNotificationsRepositary->makeNotification(
             $client->environmentOfficer->user_id,
@@ -1088,7 +1359,7 @@ class ClientController extends Controller
         $file = Client::findOrFail($certificate->client_id);
         $msg = setFileStatus($certificate->client_id, 'file_status', 5);
         // $msg = setFileStatus($certificate->client_id, 'cer_status', 5);
-        fileLog($certificate->client_id, 'certificate', 'User (' . $user->user_name . ') complete certificate', 0);
+        fileLog($certificate->client_id, 'certificate', 'User (' . $user->user_name . ') complete certificate', 0, 'complete certificate', '');
         LogActivity::addToLog("Complete certificate", $certificate);
         if ($msg) {
             return array('id' => 1, 'message' => 'true');
@@ -1117,6 +1388,8 @@ class ClientController extends Controller
             e_p_l_s.`code`,
             clients.industry_name,
 	        clients.contact_no,
+            clients.file_no,
+            e_p_l_s.certificate_no,
             pradesheeyasabas.`name` AS pradesheeyasaba_name,
             (SELECT COUNT( warning_letters.id ) FROM warning_letters WHERE warning_letters.client_id = e_p_l_s.client_id ) AS warning_count,
 	        (SELECT MAX(warning_letters.id) FROM warning_letters WHERE warning_letters.client_id = e_p_l_s.client_id ) AS last_letter
@@ -1133,7 +1406,8 @@ class ClientController extends Controller
             if (isset($ad_id)) {
                 $q .= " AND environment_officers.assistant_director_id = {$ad_id}";
             }
-            $q .= " HAVING DATE( e_p_l_s.expire_date ) < '{$date}'
+            $q .= " AND clients.deleted_at IS NULL";
+            $q .= " AND clients.file_status = 5 HAVING DATE( e_p_l_s.expire_date ) < '{$date}'
             AND e_p_l_s.expire_date IS NOT NULL";
             $responses = \DB::select($q);
             foreach ($responses as &$res) {
@@ -1181,6 +1455,8 @@ class ClientController extends Controller
             2 => 'first_name',
             3 => 'industry_name',
             4 => 'industry_registration_no',
+            5 => 'certificate_number',
+            6 => 'industry_address'
         );
         $totalData = Client::where('deleted_at', '=', null)->where('is_old', '!=', 0)->count();
 
@@ -1190,14 +1466,15 @@ class ClientController extends Controller
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
         if (empty($request->input('search.value'))) {
-            $clients = Client::where('is_old', '!=', 0)
+            $clients = Client::with('certificates', 'epls')->where('is_old', '!=', 0)
                 ->offset($start)
                 ->limit($limit)
                 ->orderBy($order, $dir)
                 ->get();
         } else {
             $search = $request->input('search.value');
-            $clients = Client::where('is_old', '!=', 0)
+            $clients = Client::with('certificates', 'epls')
+                ->where('is_old', '!=', 0)
                 //                    ->orWhere('id', 'LIKE', "%{$search}%")
                 ->Where('file_no', 'LIKE', "%{$search}%")
                 ->orWhere('first_name', 'LIKE', "%{$search}%")
@@ -1205,10 +1482,10 @@ class ClientController extends Controller
                 ->orWhere('industry_name', 'LIKE', "%{$search}%")
                 ->offset($start)
                 ->limit($limit)
-                ->orderBy($order, $dir)
+                ->orderBy('clients.' . $order, $dir)
                 ->get();
-            //dd($clients);
-            $totalFiltered = Client::where('is_old', '!=', 0)
+            // dd($clients);
+            $totalFiltered = Client::with('certificates', 'epls')->where('is_old', '!=', 0)
                 //                    ->orWhere('id', 'LIKE', "%{$search}%")
                 ->Where('file_no', 'LIKE', "%{$search}%")
                 ->orWhere('first_name', 'LIKE', "%{$search}%")
@@ -1223,11 +1500,17 @@ class ClientController extends Controller
             foreach ($clients as $client) {
                 //                $show =  route('posts.show',$post->id);
                 //                $edit =  route('posts.edit',$post->id);
+                $cert = $client->certificates->first();
+                $epl_cert = !empty($client->epls->first()) ? $client->epls->first() : '';
+                // dump($client->id);
+                // dd($cert->cetificate_number);
                 $nestedData['id'] = $client->id;
                 $nestedData['file_no'] = $client->file_no;
                 $nestedData['client_name'] = $client->first_name . $client->last_name;
                 $nestedData['industry_name'] = $client->industry_name;
                 $nestedData['industry_registration_no'] = $client->industry_registration_no;
+                $nestedData['certificate_number'] = !empty($cert) ? $cert->cetificate_number : (empty($epl_cert) ? '' : $epl_cert->certificate_no);
+                $nestedData['industry_address'] = $client->industry_address;
                 //                $nestedData['body'] = substr(strip_tags($post->body),0,50)."...";
                 //                $nestedData['created_at'] = date('j M Y h:i a',strtotime($post->created_at));
                 //                $nestedData['options'] = "&emsp;<a href='{$show}' title='SHOW' ><span class='glyphicon glyphicon-list'></span></a>
@@ -1287,14 +1570,17 @@ class ClientController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
 
-        $date = Carbon::now()->format('Y-m-d');
-        // $date = $date->addDays(30);
+        $date = Carbon::now();
+        $formatted_date = $date->addDays(30)->format('Y-m-d');
 
         $is_checked = $request->ad_check;
         $ad_id = $request->ad_id;
 
         $responses = EPL::selectRaw('MAX(id), client_id, expire_date')
-            ->With(['client.pradesheeyasaba']);
+            ->With(['client.pradesheeyasaba'])
+            ->whereHas('Client', function ($query) {
+                $query->where('clients.file_status', '!=', 0);
+            });
         // ->selectRaw('max(id) as id, client_id, expire_date,cetificate_number, certificate_type')
 
         $responses->when($is_checked == 'on', function ($q) use ($ad_id) {
@@ -1303,7 +1589,7 @@ class ClientController extends Controller
             });
         });
 
-        $responses = $responses->having('expire_date', '<', $date)
+        $responses = $responses->having('expire_date', '<', $formatted_date)
             ->havingRaw('`expire_date` IS NOT NULL')
             ->groupBy('client_id')
             ->get();
@@ -1335,5 +1621,104 @@ class ClientController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         return view('Reports.pending_expired_list', ['pageAuth' => $pageAuth]);
+    }
+
+    public function changeStatus($client_id)
+    {
+        $client = Client::find($client_id);
+
+        if ($client->file_status != 5) {
+            return array('status' => 0, 'message' => 'File not completed');
+        }
+        $client->file_status = 0;
+        $client->save();
+        if ($client == true) {
+            return array('status' => 1, 'message' => 'Successfully changed the file status');
+        } else {
+            return array('status' => 0, 'message' => 'File status changing was unsuccessfull');
+        }
+    }
+    public function fixFileStatus(Request $request)
+    {
+        $client = Client::whereId($request->clint_id)->first();
+        $client->file_status = 0;
+        $client->save();
+        if ($client == true) {
+            return array('id' => 1, 'message' => 'Successfully changed the file status');
+        } else {
+            return array('id' => 0, 'message' => 'File status changing was unsuccessfull');
+        }
+    }
+
+    public function changeOwner(Request $request)
+    {
+        $request->validate([
+            'name_title' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'nullable',
+            'address' => 'nullable',
+            'email' => 'nullable|email',
+            'nic' => 'nullable',
+            'contact_no' => 'nullable',
+            'industry_name' => 'required',
+            'industry_contact_no' => 'nullable',
+            'industry_address' => 'required',
+            'industry_email' => 'nullable|email',
+        ]);
+
+        $ownerchange = ChangeOwner::create([
+            'client_id' => $request->client_id,
+            'name_title' => $request->name_title,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'address' => $request->address,
+            'email' => $request->email,
+            'nic' => $request->nic,
+            'contact_no' => $request->contact_no,
+            'industry_name' => $request->industry_name,
+            'industry_contact_no' => $request->industry_contact_no,
+            'industry_address' => $request->industry_address,
+            'industry_email' => $request->industry_email,
+        ]);
+
+        if ($ownerchange == true) {
+            return array('status' => 1, 'message' => 'Successfully changed the owner details');
+        } else {
+            return array('status' => 0, 'message' => 'Ownership changing was unsuccessfull');
+        }
+    }
+
+    /**
+     * view to set application fee payment to profile
+     *
+     * @param Client $client
+     * @return void
+     */
+    public function setProfilePayments(Client $client)
+    {
+        $onlineNewApplicationRequest = OnlineNewApplicationRequest::where('client_id', $client->id)->first();
+        $invoices = Invoice::with('transactions')->whereHas('transactions', function ($query) {
+            $query->whereNull('client_id')->where('type', 'application_fee');
+        })->get();
+
+        return view('set-profile-payment.index', compact('client', 'invoices', 'onlineNewApplicationRequest'));
+    }
+
+    /**
+     * set application fee to profile
+     *
+     * @return void
+     */
+    public function setPayment(Client $client, Invoice $invoice)
+    {
+        $transactions = Transaction::where('invoice_id', $invoice->id)->get();
+
+        foreach ($transactions as $transaction) {
+            $transaction->update([
+                'client_id' => $client->id,
+            ]);
+        }
+
+        return redirect()->route('set-profile-payments', $client->id)->with('payment_set', 'Payment successfully added to the selected client');
     }
 }

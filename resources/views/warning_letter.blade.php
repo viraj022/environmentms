@@ -13,6 +13,17 @@
     @if ($pageAuth['is_read'] == 1 || false)
         <section class="content-header">
             <div class="container-fluid">
+                <div class="row mb-3">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">Issue Warning Letters</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Issue Warning Letters</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -26,7 +37,8 @@
                                                 <label class="form-check-label">Search By Assistant Director</label>
                                             </div>
                                             <div class="form-group">
-                                                <select id="getAsDirect" class="form-control form-control-sm" name="ad_id">
+                                                <select id="getAsDirect" class="form-control form-control-sm"
+                                                    name="ad_id">
                                                     <option value="0">Loading..</option>
                                                 </select>
                                             </div>
@@ -169,19 +181,27 @@
                                 row.client_id + '" data-expire-date="' + row.expire_date +
                                 '" data-file-type="' + row.certificate_type +
                                 '">Generate Warning Letter</button>';
-                            tbl +=
-                                '<button type="button" class="btn btn-info send_sms ml-1" data-client="' +
-                                row.client_id + '" data-expire-date="' + row.expire_date +
-                                '" data-industry-name="' + row.industry_name + '" data-tel="' + row
-                                .contact_no + '">Send SMS</button>';
-                        } else {
+                                if(row.contact_no!=undefined && row.contact_no.length>0){
+                                    tbl +=
+                                        '<button type="button" class="btn btn-info send_sms ml-1" data-client="' +
+                                        row.client_id + '" data-expire-date="' + row.expire_date +
+                                        '" data-industry-name="' + row.industry_name + '" data-tel="' + row
+                                        .contact_no + '">Send SMS</button>';
+                                }else{
+                                    tbl +='<button type="button" class="btn btn-danger ml-1" disabled>No Mobile Number</button>';
+                                }
+                            } else {
                             tbl += '<a href="/warn_view/id/' + row.last_letter +
                                 '" class="btn btn-primary"  target="_blank">View Warning Letter</a>';
-                            tbl +=
-                                '<button type="button" class="btn btn-info send_sms ml-1" data-client="' +
-                                row.client_id + '" data-expire-date="' + row.expire_date +
-                                '" data-industry-name="' + row.industry_name + '" data-tel="' + row
-                                .contact_no + '">Send SMS</button>';
+                                if(row.contact_no!=undefined && row.contact_no.length>0){
+                                    tbl +=
+                                        '<button type="button" class="btn btn-info send_sms ml-1" data-client="' +
+                                        row.client_id + '" data-expire-date="' + row.expire_date +
+                                        '" data-industry-name="' + row.industry_name + '" data-tel="' + row
+                                        .contact_no + '">Send SMS</button>';
+                                    }else{
+                                    tbl +='<button type="button" class="btn btn-danger ml-1" disabled>No Mobile Number</button>';
+                                }
                         }
                         tbl += '</td>';
                         tbl += '</tr>';
@@ -199,7 +219,8 @@
         }
 
         $(document).on('click', '.send_sms', function() {
-            if ($(this).data('tel') != '') {
+            let phone = $(this).data('tel');
+            if (phone==undefined || phone != '') {
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "Message will be send!",

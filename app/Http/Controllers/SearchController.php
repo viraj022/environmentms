@@ -10,55 +10,47 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class SearchController extends Controller {
+class SearchController extends Controller
+{
 
-    function getClientByName($name) {
+    public function getClientByName($name)
+    {
         return Client::with('epls')->where('first_name', 'like', '%' . $name . '%')
-                        ->orWhere('last_name', 'like', '%' . $name . '%')
-                        ->get();
+            ->orWhere('last_name', 'like', '%' . $name . '%')
+            ->groupByRaw('id')
+            ->get();
     }
 
-    function getClientByAddress($address) {
+    public function getClientByAddress($address)
+    {
         return Client::with('epls')->where('address', 'like', '%' . $address . '%')
-                        ->orWhere('industry_address', 'like', '%' . $address . '%')
-                        ->get();
+            ->orWhere('industry_address', 'like', '%' . $address . '%')
+            ->get();
     }
 
-    function getClientByIndustryName($industry) {
-        return Client::with('epls')->where('industry_name', 'like', '%' . $industry . '%')
-                        ->get();
+    public function getClientByIndustryName($industry)
+    {
+        return Client::with('epls')->where('industry_name', 'like', '%' . $industry . '%')->groupByRaw('id')->get();
     }
 
-    function getClientByID($id) {
-        $client = Client::with('epls')->where('nic', $id)->first();
-        if ($client) {
-            return $client;
-        } else {
-            return array();
-        }
+    public function getClientByID($id)
+    {
+        return Client::with('epls')->where('nic', $id)->get();
     }
 
-    function getClientByEPL($code) {
-        DB::enableQueryLog();
-        $epl = EPL::where('code', $code)->first();
+    public function getClientByEPL($code)
+    {
+        $epls = EPL::join('clients', 'e_p_l_s.client_id', 'clients.id')
+            ->whereNull('clients.deleted_at')
+            ->where('code', 'like', '%' . $code . '%')
+            ->groupByRaw('client_id')
+            ->select('code', 'remark', 'status', 'first_name', 'last_name', 'address', 'industry_name', 'clients.id')
+            ->get();
 
-        if ($epl) {
-//            $client = Client::with('epls')->find($epl->client_id);
-            $client = Client::withTrashed()->find($epl->client_id);
-//            $client = Client::withTrashed('epls')->get($epl->client_id);
-//            dd($client);
-//      dd(DB::getQueryLog()); 
-            if ($client) {
-                return $client;
-            } else {
-                return array();
-            }
-        } else {
-            return array();
-        }
+        return $epls;
     }
 
-    // function getClientByLicence($code)
+    // public function getClientByLicence($code)
     // {
     //     $epl = EPL::where('certificate_no', 'like', $code . "%")->first();
     //     $serial = Str::substr($epl->certificate_no, 0, strpos($epl->certificate_no, '/'));
@@ -77,14 +69,14 @@ class SearchController extends Controller {
     //     }
     // }
 
-    function getClientByLicence($code) {
-
-
+    public function getClientByLicence($code)
+    {
         $epl = EPL::where('certificate_no', 'like', $code . "%")->first();
-//        $client = Client::where('file_no', 'like', $code . "%")->first();
-
+        if (empty($epl->certificate_no)) {
+            return [];
+        }
         $serial = Str::substr($epl->certificate_no, 0, strpos($epl->certificate_no, '/'));
-//        dd($serial);
+        //        dd($serial);
         if ($serial != $code) {
             return array();
         }
@@ -101,7 +93,8 @@ class SearchController extends Controller {
         }
     }
 
-    function getClientByBusinessRegistration($code) {
+    public function getClientByBusinessRegistration($code)
+    {
         $client_data = Client::where('industry_registration_no', $code)->first();
         if ($client_data) {
             $client_data = $client_data->toArray();
@@ -111,9 +104,10 @@ class SearchController extends Controller {
         return $client_data;
     }
 
-    public function getSearchDetails($type) {
+    public function getSearchDetails($type)
+    {
         $column = 'first_name';
-//        $column_2 = 'last_name';
+        //        $column_2 = 'last_name';
         switch ($type) {
             case 'name':
                 $column = 'first_name';
@@ -139,7 +133,10 @@ class SearchController extends Controller {
             case 'site_clear_code':
                 $column = 'code';
                 break;
-            default :
+            case 'reference_number':
+                $column = 'code';
+                break;
+            default:
                 $column = 'first_name';
                 break;
         }
@@ -147,7 +144,7 @@ class SearchController extends Controller {
             $client_data = EPL::pluck($column)->toArray();
         } else if ($type == 'license') {
             //get Certificate Number
-//            $client_data = Certificate::pluck($column)->toArray();
+            //            $client_data = Certificate::pluck($column)->toArray();
             $client_data = Certificate::pluck($column)->toArray();
             foreach ($client_data as $key => $value) {
                 $exploded_value = explode("/", $value);
@@ -155,27 +152,43 @@ class SearchController extends Controller {
             }
         } elseif ($type == 'site_clear_code') {
             $client_data = SiteClearenceSession::pluck($column)->toArray();
-//            Client::find()
+            //            Client::find()
+        } elseif ($type == 'reference_number') {
+            $client_data = Certificate::whereNotNull('refference_no')->pluck('refference_no')->toArray();
         } else {
             $client_data = Client::pluck($column)->toArray();
         }
-//        $client_data = Client::select('first_name', 'nic', 'industry_registration_no', 'address')->get()->toArray();
+        //        $client_data = Client::select('first_name', 'nic', 'industry_registration_no', 'address')->get()->toArray();
         return $client_data;
     }
 
-    function getBusinessByName($name) {
-        return EPL::where('registration_no', 'like', '%' . $name . '%')->get();
+    public function getBusinessByName($name)
+    {
+        return EPL::where('registration_no', 'like', '%' . $name . '%')->groupByRaw('client_id')->get();
     }
 
-    function getClientBySite($name) {
+    public function getClientBySite($name)
+    {
         $client_site = SiteClearenceSession::join('clients', 'site_clearence_sessions.client_id', 'clients.id')
-                ->where('code', 'like', '%'.$name.'%')
-                ->select('code', 'remark', 'site_clearance_type', 'first_name', 'last_name', 'address', 'industry_name','clients.id')
-                ->get();
+            ->whereNull('clients.deleted_at')
+            ->where('code', 'like', '%' . $name . '%')
+            ->select('code', 'remark', 'site_clearance_type', 'first_name', 'last_name', 'address', 'industry_name', 'clients.id')
+            ->get();
         return $client_site;
     }
 
-    public function search($type) {
+    public function getClientByReferenceNumber($code)
+    {
+        $certificate = Certificate::where('refference_no', $code)->first();
+        if (empty($certificate)) {
+            return [];
+        }
+        $client = Client::where('id', $certificate->client_id)->get();
+        return $client;
+    }
+
+    public function search($type)
+    {
         request()->validate([
             'value' => ['required', 'string'],
         ]);
@@ -199,10 +212,11 @@ class SearchController extends Controller {
                 return $this->getClientByIndustryName($value);
             case 'site_clear_code':
                 return $this->getClientBySite($value);
+            case 'reference_number':
+                return $this->getClientByReferenceNumber($value);
             default:
-                abort(422);
+                // abort(422);
                 return response(array('message' => 'Invalid Code', 422));
         }
     }
-
 }

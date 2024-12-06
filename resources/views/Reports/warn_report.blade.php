@@ -31,6 +31,9 @@
                                 <tbody>
                                     @foreach($warn_let_data as $data)
                                     <tr>
+                                        @if (!isset($data['client']))
+                                        @continue
+                                        @endif
                                         <td>{{ $loop->index+1}}</td>
                                         <td>{{$data['client']['industry_name']}}</td>
                                         <td>{{$data['cetificate_number'].'('.$data['client']['file_no'].')'}}</td>
@@ -53,7 +56,7 @@
     <script type="text/javascript" src="/dataTable/datatables.min.js"></script>
     <script type="text/javascript" src="/js/image.js"></script>
     <script>
-        // var img = 
+        // var img =
         // $('.table').DataTable();
         $(document).ready( function () {
             // alert(123);
@@ -66,18 +69,18 @@
         buttons: [{
                 extend: 'print',
                 title : '',
-                customize: function ( win ) {                  
+                customize: function ( win ) {
                     $(win.document.body)
                         .css( 'font-size', '10pt' )
                         .prepend(
                             '<center><H1>Warning Letter Report</h1></center><img src='+img+' style="position:absolute; filter: grayscale(100%); opacity: 0.5; top:0; left:0;" />'
-                        ); 
+                        );
                     $(win.document.body).find( 'table' )
                         .addClass( 'compact' )
                         .css( 'font-size', 'inherit' );
                 }
             },"excel","csv"],
-        
+
     });
 } );
     </script>

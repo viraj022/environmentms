@@ -38,7 +38,7 @@ class CommitteeRepository
 
     public function update($request, $id)
     {
-        // should remove client_id if present 
+        // should remove client_id if present
         // dd($id);
         $committee = Committee::findOrFail($id);
         $committeeResult = $committee->update($request->all());
@@ -71,7 +71,7 @@ class CommitteeRepository
     }
 
     // committee remarks ----
-    public function saveRemarksByCommittee($committee, $requestData, $file = null, $extension)
+    public function saveRemarksByCommittee($committee, $requestData, $file = null, $extension = null)
     {
         return  DB::transaction(function () use ($committee, $requestData, $file, $extension) {
             $committee = Committee::findOrFail($committee);
@@ -103,11 +103,9 @@ class CommitteeRepository
     {
         // dd($committee);
         if ($file != null) {
-            $file_name = Carbon::now()->timestamp . '.' . $extension;
-            $fileUrl = '/uploads/industry_files/committee/' . $committee->siteClearenceSession->id . '/' . $committee->site_clearence_session_id . '/' . $committee->id . '/application';
-            $storePath = 'public' . $fileUrl;
-            $path = $file->storeAs($storePath, $file_name);
-            return "storage" . $fileUrl . "/" . $file_name;
+            $fileUrl = 'uploads/industry_files/committee/' . $committee->siteClearenceSession->id . '/' . $committee->site_clearence_session_id . '/' . $committee->id . '/application';
+            $path = $file->store($fileUrl);
+            return $path;
         }
     }
 
@@ -116,13 +114,10 @@ class CommitteeRepository
         $query = Committee::join('clients', 'committees.client_id', 'clients.id')
             ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
             ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
-            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
-            ->join('users', 'assistant_directors.user_id', 'users.id')
-            ->where('assistant_directors.active_status', 1)
             ->whereBetween('schedule_date', [$from, $to])
-            ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(committees.id) as total'))
+            ->select('zones.id as zone_id', 'zones.name as zone_name', DB::raw('count(committees.id) as total'))
             ->groupBy('zones.id')
             ->orderBy('zones.name');
-        return $query->get();
+        return $query->get()->keyBy('zone_id');
     }
 }

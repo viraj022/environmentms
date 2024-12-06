@@ -34,7 +34,8 @@ function getPendingExpireCerByAssDir(id, callBack) {
                     tbl += '<tr>';
                     tbl += '<td>' + ++index + '</td>';
                     tbl += '<td>' + row.code + '</td>';
-                    tbl += '<td>' + row.client.file_no + '</td>';
+                    tbl += '<td><a href="/industry_profile/id/'+row.client.id+'" target="_blank">'+row.client.file_no+'</a></td>';
+                    tbl += '<td>' + row.client.industry_name + '</td>';
                     if (row.client.environment_officer != null) {
                         tbl += '<td>' + row.client.environment_officer.user.user_name + '</td>';
                     } else {

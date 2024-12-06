@@ -1,12 +1,13 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <link rel="icon" type="image/x-icon" href="{{ asset('dist/img/favicon.ico') }}">
     <title>{{ config('app.name', 'Environmental MS') }}</title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -18,27 +19,25 @@
 
     <style type="text/css">
         @charset "utf-8";
-        @import url
+        @import url / / maxcdn.bootstrapcdn.com /font-awesome/ 4.3 .0 /css/ font-awesome.min.css);
 
-        /
-        /
-        maxcdn.bootstrapcdn.com /font-awesome/
-
-        4.3
-        .0
-        /css/ font-awesome.min.css
-
-        )
-        ;
         div.main {
-            background: #0264d6; /* Old browsers */
-            background: -moz-radial-gradient(center, ellipse cover, #0264d6 1%, #1c2b5a 100%); /* FF3.6+ */
-            background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(1%, #0264d6), color-stop(100%, #1c2b5a)); /* Chrome,Safari4+ */
-            background: -webkit-radial-gradient(center, ellipse cover, #0264d6 1%, #1c2b5a 100%); /* Chrome10+,Safari5.1+ */
-            background: -o-radial-gradient(center, ellipse cover, #0264d6 1%, #1c2b5a 100%); /* Opera 12+ */
-            background: -ms-radial-gradient(center, ellipse cover, #0264d6 1%, #1c2b5a 100%); /* IE10+ */
-            background: radial-gradient(ellipse at center, #199a5e 1%, #03170d 100%); /* W3C */
-            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0264d6', endColorstr='#1c2b5a', GradientType=1); /* IE6-9 fallback on horizontal gradient */
+            background: #0264d6;
+            /* Old browsers */
+            background: -moz-radial-gradient(center, ellipse cover, #0264d6 1%, #1c2b5a 100%);
+            /* FF3.6+ */
+            background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(1%, #0264d6), color-stop(100%, #1c2b5a));
+            /* Chrome,Safari4+ */
+            background: -webkit-radial-gradient(center, ellipse cover, #0264d6 1%, #1c2b5a 100%);
+            /* Chrome10+,Safari5.1+ */
+            background: -o-radial-gradient(center, ellipse cover, #0264d6 1%, #1c2b5a 100%);
+            /* Opera 12+ */
+            background: -ms-radial-gradient(center, ellipse cover, #0264d6 1%, #1c2b5a 100%);
+            /* IE10+ */
+            background: radial-gradient(ellipse at center, #199a5e 1%, #03170d 100%);
+            /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0264d6', endColorstr='#1c2b5a', GradientType=1);
+            /* IE6-9 fallback on horizontal gradient */
             height: calc(100vh);
             width: 100%;
         }
@@ -53,13 +52,11 @@
             box-sizing: border-box;
             margin: 0px auto;
 
-        &
-        :before,
+            & :before,
 
-        &
-        :after {
-            box-sizing: border-box;
-        }
+            & :after {
+                box-sizing: border-box;
+            }
 
         }
 
@@ -95,19 +92,16 @@
         .clearfix {
             *zoom: 1;
 
-        &
-        :before,
+            & :before,
 
-        &
-        :after {
-            content: ' ';
-            display: table;
-        }
+            & :after {
+                content: ' ';
+                display: table;
+            }
 
-        &
-        :after {
-            clear: both;
-        }
+            & :after {
+                clear: both;
+            }
 
         }
 
@@ -124,7 +118,8 @@
             width: 250px;
         }
 
-        #login, .logo {
+        #login,
+        .logo {
             display: inline-block;
             width: 40%;
         }
@@ -165,7 +160,8 @@
 
         }
 
-        #login form input[type="text"], input[type="password"] {
+        #login form input[type="text"],
+        input[type="password"] {
             background-color: #fff;
             border-radius: 0px 3px 3px 0px;
             color: #000;
@@ -191,11 +187,11 @@
             background-color: #d44179;
         }
 
-        #login > p {
+        #login>p {
             text-align: center;
         }
 
-        #login > p span {
+        #login>p span {
             padding-left: 5px;
         }
 
@@ -207,9 +203,11 @@
 
 
 </head>
+
 <body>
     <div id="app">
-            @yield('content')
+        @yield('content')
     </div>
 </body>
+
 </html>

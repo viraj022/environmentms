@@ -13,6 +13,7 @@ use App\Client;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use App\Repositories\UserNotificationsRepositary;
+use Carbon\Carbon;
 
 class ComplainController extends Controller
 {
@@ -34,7 +35,7 @@ class ComplainController extends Controller
         request()->validate([
             "complainer_name_ipt" => 'required|max:255|string',
             "complainer_address_ipt" => 'required|max:255|string',
-            "contact_complainer_ipt" => ['required', 'numeric', 'nullable', 'min:10'],
+            "contact_complainer_ipt" => 'nullable|numeric|min:10',
             "recieve_type_ipt" => 'required',
             "complain_desc_ipt" => 'required|max:255|string',
             "complainer_code" => 'required|max:255|string',
@@ -42,13 +43,28 @@ class ComplainController extends Controller
             "pradeshiya_saba_id" => 'required'
         ]);
 
+        $number = 1;
+
+        $searchStr = sprintf('^PEA/NWP/%s/[a-zA-Z]{3}/compt/', date('Y'));
+        $lastComplaintCode = Complain::select('complainer_code')
+            ->whereRaw("complainer_code REGEXP ?", $searchStr)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        if ($lastComplaintCode) {
+            $segments = explode('/', $lastComplaintCode->complainer_code);
+            $number = intval($segments[5]) + 1;
+        }
+
+        $nextComplaintCode = $request->complainer_code . $number;
+
         $save_complain = Complain::create([
             "complainer_name" => $request->complainer_name_ipt,
             "complainer_address" => $request->complainer_address_ipt,
-            "comp_contact_no" => $request->contact_complainer_ipt,
+            "comp_contact_no" => isset($request->contact_complainer_ipt) ? $request->contact_complainer_ipt : '-',
             "recieve_type" => $request->recieve_type_ipt,
             "complain_des" => $request->complain_desc_ipt,
-            "complainer_code" => $request->complainer_code,
+            "complainer_code" => $nextComplaintCode,
             "created_user" =>  $user,
             "pradeshiya_saba_id" => $request->pradeshiya_saba_id,
         ]);
@@ -81,7 +97,7 @@ class ComplainController extends Controller
         request()->validate([
             "complainer_name_ipt" => 'required|max:255|string',
             "complainer_address_ipt" => 'required|max:255|string',
-            "contact_complainer_ipt" => ['required', 'numeric', 'nullable', 'min:10'],
+            "contact_complainer_ipt" => 'nullable|numeric|min:10',
             "recieve_type_ipt" => 'required',
             "complain_desc_ipt" => 'required|max:255|string',
             "complainer_code" => 'required|max:255|string',
@@ -92,7 +108,7 @@ class ComplainController extends Controller
         $update_complain = Complain::find($id);
         $update_complain->complainer_name = $request->complainer_name_ipt;
         $update_complain->complainer_address = $request->complainer_address_ipt;
-        $update_complain->comp_contact_no = $request->contact_complainer_ipt;
+        $update_complain->comp_contact_no = isset($request->contact_complainer_ipt) ? $request->contact_complainer_ipt : '-';
         $update_complain->recieve_type = $request->recieve_type_ipt;
         $update_complain->complain_des = $request->complain_desc_ipt;
         $update_complain->complainer_code = $request->complainer_code;
@@ -137,8 +153,9 @@ class ComplainController extends Controller
     public function complainProfile($id)
     {
         $user = Auth::user();
+        $complainDetails = Complain::where('id', $id)->first();
         $pageAuth = $user->authentication(config('auth.privileges.complains'));
-        return view('complain_profile', ['complain_id' => $id, 'pageAuth' => $pageAuth, 'user' => $user]);
+        return view('complain_profile', ['complain_id' => $id, 'pageAuth' => $pageAuth, 'user' => $user, 'complainDetails' => $complainDetails]);
     }
 
     public function complainProfileData($id)
@@ -359,5 +376,11 @@ class ComplainController extends Controller
         } else {
             return array('status' => 0, 'msg' => 'File assigning was unsuccessful');
         }
+    }
+
+    public function viewComplainReport()
+    {
+        $complains = Complain::all();
+        return view('Reports.complains_report', compact('complains'));
     }
 }

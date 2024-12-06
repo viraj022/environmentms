@@ -1,153 +1,221 @@
 function loadEPL_details(epl_id, callBack) {
-    ajaxRequest('GET', "/api/epl/pay/id/" + epl_id, null, function (dataSet) {
+    ajaxRequest("GET", "/api/epl/pay/id/" + epl_id, null, function (dataSet) {
+        // alert("loadEPL_details");
+        console.log(dataSet);
         if (dataSet.fine.status == "not_payed") {
-            $('#fineDev').removeClass('d-none');
-            $('#fine_amt').prop('readonly', false);
-            $('#fine_payBtn').prop('disabled', false);
+            $("#fineDev").removeClass("d-none");
+            $("#fine_amt").prop("readonly", false);
+            $("#fine_payBtn").prop("disabled", false);
         } else if (dataSet.fine.status == "not_available") {
-            $('#fineDev').addClass('d-none');
+            $("#fineDev").addClass("d-none");
         } else {
-            $('#fineDev').removeClass('d-none');
-            $('#fine_amt').prop('readonly', true);
-            $('#fine_payBtn').prop('disabled', true);
+            $("#fineDev").removeClass("d-none");
+            $("#fine_amt").prop("readonly", true);
+            $("#fine_payBtn").prop("disabled", true);
         }
 
         if (dataSet.inspection.status == "not_payed") {
-            $('#epl_methodCombo').prop('disabled', false);
-            $('#paymnt_amount').prop('readonly', false);
-            $('#inspection_payBtn').prop('disabled', false);
-            $('#paymnt_amount').val('');
+            $("#epl_methodCombo").prop("disabled", false);
+            $("#paymnt_amount").prop("readonly", false);
+            $("#inspection_payBtn").prop("disabled", false);
+            $("#paymnt_amount").val("");
         } else {
-            $('#epl_methodCombo').prop('disabled', true);
-            $('#paymnt_amount').prop('readonly', true);
-            $('#inspection_payBtn').prop('disabled', true);
-            $('#paymnt_amount').val(dataSet.inspection.object.amount);
+            $("#epl_methodCombo").prop("disabled", true);
+            $("#paymnt_amount").prop("readonly", true);
+            $("#inspection_payBtn").prop("disabled", true);
+            $("#paymnt_amount").val(dataSet.inspection.object.amount);
         }
         if (dataSet.license_fee.status == "not_payed") {
-            $('#certificate_list').prop('disabled', false);
-            $('#certificate_payBtn').prop('disabled', false);
-            $('#cert_amt').val('');
+            $("#certificate_list").prop("disabled", false);
+            $("#certificate_payBtn").prop("disabled", false);
+            $("#cert_amt").val("");
         } else {
-            $('#certificate_list').prop('disabled', true);
-            $('#certificate_payBtn').prop('disabled', true);
-            $('#cert_amt').val(dataSet.license_fee.object.amount);
+            $("#certificate_list").prop("disabled", true);
+            $("#certificate_payBtn").prop("disabled", true);
+            $("#cert_amt").val(dataSet.license_fee.object.amount);
         }
 
-        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        if (
+            typeof callBack !== "undefined" &&
+            callBack != null &&
+            typeof callBack === "function"
+        ) {
             callBack(dataSet);
         }
     });
 }
 function loadSiteClear_details(site_id, callBack) {
-    ajaxRequest('GET', "/api/siteClearance/pay/id/" + site_id, null, function (dataSet) {
-        if (dataSet.inspection.status == "not_payed") {
-//            $('#fineDev').removeClass('d-none');
-            $('#fine_amt').prop('readonly', false);
-            $('#fine_payBtn').prop('disabled', false);
-        } else if (dataSet.inspection.status == "not_available") {
-            $('#fineDev').addClass('d-none');
-        } else {
-//            $('#fineDev').removeClass('d-none');
-            $('#fine_amt').prop('readonly', true);
-            $('#fine_payBtn').prop('disabled', true);
-        }
-        $('#applicationtype_lbl').text(dataSet.processing_fee.processing_fee_type + ' Amount');
-        if (dataSet.processing_fee.status == 'not_payed') {
-            $('.eiApaySection').removeClass('d-none');
-        } else {
-        }
-        if (dataSet.inspection.status == "not_payed") {
-            $('#epl_methodCombo').prop('disabled', false);
-            $('#paymnt_amount').prop('readonly', false);
-            $('#inspection_payBtn').prop('disabled', false);
-            $('#paymnt_amount').val('');
-        } else {
-            $('#epl_methodCombo').prop('disabled', true);
-            $('#paymnt_amount').prop('readonly', true);
-            $('#inspection_payBtn').prop('disabled', true);
-            $('#paymnt_amount').val(dataSet.inspection.object.amount);
-        }
-        if (dataSet.license_fee.status == "not_payed") {
-            $('#certificate_list').prop('disabled', false);
-            $('#certificate_payBtn').prop('disabled', false);
-            $('#cert_amt').val('');
-        } else {
-            $('#certificate_list').prop('disabled', true);
-            $('#certificate_payBtn').prop('disabled', true);
-            $('#cert_amt').val(dataSet.license_fee.object.amount);
-        }
+    ajaxRequest(
+        "GET",
+        "/api/siteClearance/pay/id/" + site_id,
+        null,
+        function (dataSet) {
+            // if (dataSet.inspection.status == "not_payed") {
+            //     //            $('#fineDev').removeClass('d-none');
+            //     $("#fine_amt").prop("readonly", false);
+            //     $("#fine_payBtn").prop("disabled", false);
+            // } else if (dataSet.inspection.status == "not_available") {
+            //     $("#fineDev").addClass("d-none");
+            // } else {
+            //     //            $('#fineDev').removeClass('d-none');
+            //     $("#fine_amt").prop("readonly", true);
+            //     $("#fine_payBtn").prop("disabled", true);
+            // }
+            $("#applicationtype_lbl").text(
+                dataSet.processing_fee.processing_fee_type + " Amount"
+            );
+            if (dataSet.processing_fee.status == "not_payed") {
+                $(".eiApaySection").removeClass("d-none");
+            } else {
+            }
+            // if (dataSet.inspection.status == "not_payed") {
+            //     $("#epl_methodCombo").prop("disabled", false);
+            //     $("#paymnt_amount").prop("readonly", false);
+            //     $("#inspection_payBtn").prop("disabled", false);
+            //     $("#paymnt_amount").val("");
+            // } else {
+            //     $("#epl_methodCombo").prop("disabled", true);
+            //     $("#paymnt_amount").prop("readonly", true);
+            //     $("#inspection_payBtn").prop("disabled", true);
+            //     $("#paymnt_amount").val(dataSet.inspection.object.amount);
+            // }
+            // if (dataSet.license_fee.status == "not_payed") {
+            //     $("#certificate_list").prop("disabled", false);
+            //     $("#certificate_payBtn").prop("disabled", false);
+            //     $("#cert_amt").val("");
+            // } else {
+            //     $("#certificate_list").prop("disabled", true);
+            //     $("#certificate_payBtn").prop("disabled", true);
+            //     $("#cert_amt").val(dataSet.license_fee.object.amount);
+            // }
 
-        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-            callBack(dataSet);
+            if (
+                typeof callBack !== "undefined" &&
+                callBack != null &&
+                typeof callBack === "function"
+            ) {
+                callBack(dataSet);
+            }
         }
-    });
+    );
 }
 function loadFine_amount(epl_id, epl_amt, callBack) {
     if (isNaN(epl_amt)) {
         epl_amt = 0;
     }
-    ajaxRequest('POST', "/api/get/epl/inspection/fine/id/" + epl_id, {inspection_fee: epl_amt}, function (dataSet) {
-        $('#fine_amt').val(dataSet.amount);
-        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-            callBack();
+    ajaxRequest(
+        "POST",
+        "/api/get/epl/inspection/fine/id/" + epl_id,
+        { inspection_fee: epl_amt },
+        function (dataSet) {
+            $("#fine_amt").val(dataSet.amount);
+            if (
+                typeof callBack !== "undefined" &&
+                callBack != null &&
+                typeof callBack === "function"
+            ) {
+                callBack();
+            }
         }
-    });
+    );
 }
 function loadEPL_methodCombo(callBack) {
-    let cbo = '';
-    ajaxRequest('GET', "/api/inspection/list", null, function (dataSet) {
+    let cbo = "";
+    ajaxRequest("GET", "/api/inspection/list", null, function (dataSet) {
         if (dataSet) {
             $.each(dataSet, function (index, row) {
-                cbo += '<option value="' + row.id + '" data-amt="' + row.amount + '">' + row.name + '</option>';
+                cbo +=
+                    '<option value="' +
+                    row.id +
+                    '" data-amt="' +
+                    row.amount +
+                    '">' +
+                    row.name +
+                    "</option>";
             });
         } else {
             cbo = "<option value=''>No Data Found</option>";
         }
-        $('#epl_methodCombo').html(cbo);
-        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        $("#epl_methodCombo").html(cbo);
+        if (
+            typeof callBack !== "undefined" &&
+            callBack != null &&
+            typeof callBack === "function"
+        ) {
             callBack();
         }
     });
 }
 function fineList_Combo(callBack) {
-    let cbo = '';
-    ajaxRequest('GET', "/api/application/fine_list", null, function (dataSet) {
+    let cbo = "";
+    ajaxRequest("GET", "/api/application/fine_list", null, function (dataSet) {
         if (dataSet) {
             $.each(dataSet, function (index, row) {
-                cbo += '<option value="' + row.id + '" data-amt="' + row.amount + '">' + row.name + '</option>';
+                cbo +=
+                    '<option value="' +
+                    row.id +
+                    '" data-amt="' +
+                    row.amount +
+                    '">' +
+                    row.name +
+                    "</option>";
             });
         } else {
             cbo = "<option value=''>No Data Found</option>";
         }
-        $('#fine_list').html(cbo);
-        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        $("#fine_list").html(cbo);
+        if (
+            typeof callBack !== "undefined" &&
+            callBack != null &&
+            typeof callBack === "function"
+        ) {
             callBack();
         }
     });
 }
 function certificateList_Combo(callBack) {
-    let cbo = '';
-    ajaxRequest('GET', "/api/application/licenceList", null, function (dataSet) {
-        if (dataSet) {
-            $.each(dataSet, function (index, row) {
-                cbo += '<option value="' + row.id + '" data-amt="' + row.amount + '">' + row.name + '</option>';
-            });
-        } else {
-            cbo = "<option value=''>No Data Found</option>";
+    let cbo = "";
+    ajaxRequest(
+        "GET",
+        "/api/application/licenceList",
+        null,
+        function (dataSet) {
+            if (dataSet) {
+                $.each(dataSet, function (index, row) {
+                    cbo +=
+                        '<option value="' +
+                        row.id +
+                        '" data-amt="' +
+                        row.amount +
+                        '">' +
+                        row.name +
+                        "</option>";
+                });
+            } else {
+                cbo = "<option value=''>No Data Found</option>";
+            }
+            $("#certificate_list").html(cbo);
+            if (
+                typeof callBack !== "undefined" &&
+                callBack != null &&
+                typeof callBack === "function"
+            ) {
+                callBack();
+            }
         }
-        $('#certificate_list').html(cbo);
-        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-            callBack();
-        }
-    });
+    );
 }
 function certificate_amount() {
-    let amt = (isNaN(parseFloat($('#certificate_list :selected').data('amt')))) ? 0.0 : parseFloat($('#certificate_list :selected').data('amt'));
-    $('#cert_amt').val(amt);
+    let amt = isNaN(parseFloat($("#certificate_list :selected").data("amt")))
+        ? 0.0
+        : parseFloat($("#certificate_list :selected").data("amt"));
+    $("#cert_amt").val(amt);
 }
 function calc_amount() {
-    let amt = (isNaN(parseFloat($('#epl_methodCombo :selected').data('amt')))) ? 0.0 : parseFloat($('#epl_methodCombo :selected').data('amt'));
-    $('#paymnt_amount').val(amt);
+    let amt = isNaN(parseFloat($("#epl_methodCombo :selected").data("amt")))
+        ? 0.0
+        : parseFloat($("#epl_methodCombo :selected").data("amt"));
+    $("#paymnt_amount").val(amt);
 }
 
 //function loadApplication_types(callBack) {
@@ -175,55 +243,84 @@ function selectedPayments_table(obj, callBack) {
     } else {
         $.each(obj, function (index, row) {
             tot += parseFloat(row.amount);
-            tbl += '<tr>';
-            tbl += '<td>' + ++index + '</td>';
-            tbl += '<td>' + row.name + '</td>';
-            tbl += '<td class="text-right">' + row.amount + '</td>';
-            tbl += '<td><button value="' + row.id + '" type="button" class="btn btn-danger app_removeBtn">Remove</button></td>';
-            tbl += '</tr>';
+            tbl += "<tr>";
+            tbl += "<td>" + ++index + "</td>";
+            tbl += "<td>" + row.name + "</td>";
+            tbl += '<td class="text-right">' + row.amount + "</td>";
+            tbl +=
+                '<td><button value="' +
+                row.id +
+                '" type="button" class="btn btn-danger app_removeBtn">Remove</button></td>';
+            tbl += "</tr>";
         });
     }
-    tbl += '<tr>';
+    tbl += "<tr>";
     tbl += '<td colspan="2">Total</td>';
-    tbl += '<td class="text-right">' + tot.toFixed(2) + '</td>';
-    tbl += '<td></td>';
-    tbl += '</tr>';
+    tbl += '<td class="text-right">' + tot.toFixed(2) + "</td>";
+    tbl += "<td></td>";
+    tbl += "</tr>";
 
-    $('#tbl_applications tbody').html(tbl);
-    $('#tbl_applications tfoot').html(tblft);
-    if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+    $("#tbl_applications tbody").html(tbl);
+    $("#tbl_applications tfoot").html(tblft);
+    if (
+        typeof callBack !== "undefined" &&
+        callBack != null &&
+        typeof callBack === "function"
+    ) {
         callBack();
     }
 }
 
 function savePayment(data, epl_id, callBack) {
     if (!data || data.length == 0) {
-        alert('Please Add Payments Before Complete!');
+        alert("Please Add Payments Before Complete!");
         return false;
     }
-    ajaxRequest("POST", "/api/epl/pay/id/" + epl_id, {items: data}, function (resp) {
-        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-            callBack(resp);
+    ajaxRequest(
+        "POST",
+        "/api/epl/pay/id/" + epl_id,
+        { items: data },
+        function (resp) {
+            if (
+                typeof callBack !== "undefined" &&
+                callBack != null &&
+                typeof callBack === "function"
+            ) {
+                callBack(resp);
+            }
         }
-    });
+    );
 }
 function processingFeeList(callBack) {
     ajaxRequest("GET", "/api/processing_list", null, function (resp) {
-        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
+        if (
+            typeof callBack !== "undefined" &&
+            callBack != null &&
+            typeof callBack === "function"
+        ) {
             callBack(resp);
         }
     });
 }
 function saveSiteClearPayment(data, site_id, callBack) {
     if (!data || data.length == 0) {
-        alert('Please Add Payments Before Complete!');
+        alert("Please Add Payments Before Complete!");
         return false;
     }
-    ajaxRequest("POST", "/api/siteClearance/pay/id/" + site_id, {items: data}, function (resp) {
-        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-            callBack(resp);
+    ajaxRequest(
+        "POST",
+        "/api/siteClearance/pay/id/" + site_id,
+        { items: data },
+        function (resp) {
+            if (
+                typeof callBack !== "undefined" &&
+                callBack != null &&
+                typeof callBack === "function"
+            ) {
+                callBack(resp);
+            }
         }
-    });
+    );
 }
 //function deleteIssueApplication(id, callBack) {
 //    let url = 'api/epl/regPayment/id/' + id;

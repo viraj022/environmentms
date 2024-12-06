@@ -24,7 +24,8 @@ use Illuminate\Support\Facades\DB;
  *
  * @author hansana
  */
-class EPLRepository {
+class EPLRepository
+{
 
     /**
      * Get File with has a site clearence in it
@@ -32,72 +33,91 @@ class EPLRepository {
      * To date
      * Instance => All , New , Extensions
      */
-    public function getEPLReport($from, $to) {
+    public function getEPLReport($from, $to)
+    {
         $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
-        $query = EPL::with(['client.industryCategory', 'client.siteClearenceSessions'])
-        ->with(['client.transactions.transactionItems' => function ($query) use ($inspectionTypes) {
-            $query->where('payment_type_id', $inspectionTypes->id)->where('transaction_type', Transaction::TRANS_TYPE_EPL);
-        }])
-        ->whereBetween('created_at', [$from, $to])
-        ->orderBy('e_p_l_s.issue_date')
-        ->groupBy('e_p_l_s.client_id')
-        ->get();
+        $query = EPL::with(['client.industryCategory', 'client.siteClearenceSessions', 'client.certificates'])
+            ->with(['client.transactions.transactionItems' => function ($query) use ($inspectionTypes) {
+                $query->where('payment_type_id', $inspectionTypes->id)->where('transaction_type', Transaction::TRANS_TYPE_EPL);
+            }])
+            ->whereBetween('issue_date', [$from, $to])
+            ->orderBy('e_p_l_s.issue_date')
+            ->groupBy('e_p_l_s.client_id')
+            ->get();
+            // dd($query->take(1));
+        return $query;
+    }
+    public function getEPLApplicationLog($from, $to)
+    {
+        $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
+        $query = EPL::with(['client.industryCategory', 'client.siteClearenceSessions', 'client.certificates'])
+            ->with(['client.transactions.transactionItems' => function ($query) use ($inspectionTypes) {
+                $query->where('payment_type_id', $inspectionTypes->id)->where('transaction_type', Transaction::TRANS_TYPE_EPL);
+            }])
+            ->whereBetween('submitted_date', [$from, $to])
+            ->orderBy('e_p_l_s.issue_date')
+            ->groupBy('e_p_l_s.client_id')
+            ->get();
         return $query;
     }
 
-    public function ReceivedPLCount($from, $to, $isNew) {
+    public function ReceivedPLCount($from, $to, $isNew)
+    {
         $query = EPL::whereBetween('submitted_date', [$from, $to])
-                ->join('clients', 'e_p_l_s.client_id', 'clients.id')
-                ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
-                ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
-                ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
-                ->join('users', 'assistant_directors.user_id', 'users.id')
-                ->where('assistant_directors.active_status', 1)
-                ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(e_p_l_s.id) as total'))
-                ->groupBy('zones.id')
-                ->orderBy('zones.name');
+            ->join('clients', 'e_p_l_s.client_id', 'clients.id')
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
+            ->select('zones.name as zone_name', 'zones.id as zone_id', DB::raw('count(e_p_l_s.id) as total'))
+            ->groupBy('zones.id')
+            ->orderBy('zones.name');
         switch ($isNew) {
             case 1:
-                return $query->where('count', 0)->get();
+                $query->where('count', 0);
+                break;
             case 0:
-                return $query->where('count', '>', 0)->get();
+                $query->where('count', '>', 0);
+                break;
             default:
                 abort(422, "invalid Argument for the if HCE-log");
+                break;
         }
+        $query = $query->get()->keyBy('zone_id');
+        return $query;
     }
 
-    public function IssuedPLCount($from, $to, $isNew) {
+    public function IssuedPLCount($from, $to, $isNew)
+    {
         $query = EPL::join('clients', 'e_p_l_s.client_id', 'clients.id')
-                ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
-                ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
-                ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
-                ->join('users', 'assistant_directors.user_id', 'users.id')
-                ->where('assistant_directors.active_status', 1)
-                ->whereBetween('e_p_l_s.issue_date', [$from, $to])
-                ->where('e_p_l_s.status', 1)
-                ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(e_p_l_s.id) as total'))
-                ->groupBy('zones.id')
-                ->orderBy('zones.name');
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
+            ->whereBetween('e_p_l_s.issue_date', [$from, $to])
+            ->where('e_p_l_s.status', 1)
+            ->select('zones.id as zone_id', 'zones.name as zone_name', DB::raw('count(e_p_l_s.id) as total'))
+            ->groupBy('zones.id')
+            ->orderBy('zones.name');
         switch ($isNew) {
             case 1:
-                return $query->where('count', 0)->get();
+                $query->where('count', 0);
+                break;
             case 0:
-                return $query->where('count', '>', 0)->get();
+                $query->where('count', '>', 0);
+                break;
             default:
                 abort(422, "invalid Argument for the if HCE-log");
+                break;
         }
+        $query = $query->get()->keyBy('zone_id');
+        return $query;
     }
 
-    public function EPlPLCount($from, $to, $isNew, $issueStatus = 0) {
+    public function EPlPLCount($from, $to, $isNew, $issueStatus = 0)
+    {
         $query = EPL::join('clients', 'e_p_l_s.client_id', 'clients.id')
-                ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
-                ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
-                ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
-                ->join('users', 'assistant_directors.user_id', 'users.id')
-                ->where('assistant_directors.active_status', 1)
-                ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(e_p_l_s.id) as total'))
-                ->groupBy('zones.id')
-                ->orderBy('zones.name');
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
+            ->select('zones.id as zone_id', 'zones.name as zone_name', DB::raw('count(e_p_l_s.id) as total'))
+            ->groupBy('zones.id')
+            ->orderBy('zones.name');
         switch ($isNew) {
             case 1:
                 $query = $query->where('count', 0);
@@ -113,40 +133,39 @@ class EPLRepository {
                 break;
             case 1: // issued
                 $query = $query->where('e_p_l_s.status', 1)
-                        ->whereBetween('e_p_l_s.issue_date', [$from, $to]);
+                    ->whereBetween('e_p_l_s.issue_date', [$from, $to]);
                 break;
             case 2: // rejected
                 $query = $query->where('e_p_l_s.status', -1)
-                        ->whereBetween('e_p_l_s.rejected_date', [$from, $to]);
+                    ->whereBetween('e_p_l_s.rejected_date', [$from, $to]);
                 break;
             default:
                 abort(422, "invalid Argument for the isIssueStatus HCE-log");
         }
 
-        return $query->get();
+        return $query->get()->keyBy('zone_id');
     }
 
     /**
-     * 
+     *
      */
-    public function TowerEPlPLCount($from, $to, $isNew, $issueStatus = 0) {
+    public function TowerEPlPLCount($from, $to, $isNew, $issueStatus = 0)
+    {
         $query = EPL::join('clients', 'e_p_l_s.client_id', 'clients.id')
-                ->join('site_clearence_sessions', 'clients.id', 'site_clearence_sessions.client_id')
-                ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
-                ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
-                ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
-                ->join('users', 'assistant_directors.user_id', 'users.id')
-                ->where('assistant_directors.active_status', 1)
-                ->where('site_clearence_sessions.site_clearance_type', SiteClearance::SITE_TELECOMMUNICATION)
-                ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(e_p_l_s.id) as total'))
-                ->groupBy('zones.id')
-                ->orderBy('zones.name');
+            // ->join('site_clearence_sessions', 'clients.id', 'site_clearence_sessions.client_id')
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
+            //76 = telicommunication tower
+            ->where('clients.industry_category_id', 76)
+            ->select('zones.id as zone_id', 'zones.name as zone_name', DB::raw('count(e_p_l_s.id) as total'))
+            ->groupBy('zones.id')
+            ->orderBy('zones.name');
         switch ($isNew) {
-            case 1:
-                $query = $query->where('count', 0);
-                break;
             case 0:
                 $query = $query->where('count', '>', 0);
+                break;
+            case 1:
+                $query = $query->where('count', 0);
                 break;
             default:
         }
@@ -156,17 +175,34 @@ class EPLRepository {
                 break;
             case 1: // issued
                 $query = $query->where('e_p_l_s.status', 1)
-                        ->whereBetween('e_p_l_s.issue_date', [$from, $to]);
+                    ->whereBetween('e_p_l_s.issue_date', [$from, $to]);
                 break;
             case 2: // rejected
                 $query = $query->where('e_p_l_s.status', -1)
-                        ->whereBetween('e_p_l_s.rejected_date', [$from, $to]);
+                    ->whereBetween('e_p_l_s.rejected_date', [$from, $to]);
                 break;
             default:
                 abort(422, "invalid Argument for the isIssueStatus HCE-log");
         }
 
-        return $query->get();
+        // dd($query->toSql());
+        return $query->get()->keyBy('zone_id');
     }
-
+    public function eplBySubmitDate($from, $to, $isNew)
+    {
+        $query = EPL::whereBetween('submitted_date', [$from, $to])
+            ->join('clients', 'e_p_l_s.client_id', 'clients.id')
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
+            ->select('zones.name AS zone', 'e_p_l_s.code AS epl_code', 'clients.industry_name', 'e_p_l_s.submitted_date', 'clients.id AS client_id')
+            ->orderBy('zones.name');
+        switch ($isNew) {
+            case 1:
+                return $query->where('count', 0)->get();
+            case 0:
+                return $query->where('count', '>', 0)->get();
+            default:
+                abort(422, "invalid Argument for isNew");
+        }
+    }
 }

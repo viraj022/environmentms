@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class inspection_interviewers extends Model
 {
-
+    protected $fillable = [
+        'inspection_session_id',
+        'name',
+    ];
     public function InspectionSession()
     {
         return $this->belongsTo(InspectionSession::class);

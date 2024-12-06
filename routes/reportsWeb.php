@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
  * type: type of report (all,new,extend)
  */
 Route::get('/site_clearance_report/{from}/{to}/{type}', 'ReportController@siteClearanceApplicationReportBeta');
+
 /**
  * EPL Report
  * from : from date 2020-01-01
@@ -65,7 +66,7 @@ Route::get('/category_count_report_two/{from}/{to}', 'ReportController@categoryL
 Route::get('/get_row_data', 'ReportController@RowReport');
 
 /**
- * Field Officer Inspection Log 
+ * Field Officer Inspection Log
  * id file_id/client id
  */
 Route::get('/file_summary/{id}', 'ReportController@fileSummary');
@@ -80,3 +81,9 @@ Route::get('/attachments/{client}', 'ReportController@downloadContents');
 
 Route::get('/site_clearence_log/{from}/{to}', 'ReportController@siteClearanceApplicationLog');
 Route::get('/warn_report', 'ReportController@warnReport');
+Route::get('/pending_site_clear_report', 'ReportController@pendingSiteClearReport');//site clearence report
+Route::get('/pending_epl_report', 'ReportController@pendingEplReport');//pending epl report
+Route::get('/status_mismatch_report', 'ReportController@statusMismatchEpl');//status mismatch report
+Route::get('/cert_missing_report', 'ReportController@certMissingReport');//status mismatch report
+Route::get('/new_cs_report/{from}/{to}/{isNew}', 'ReportController@siteClearanceBySubmitDate')->name('new_cs_report');//new cs report
+Route::get('/new_epl_report/{from}/{to}/{isNew}', 'ReportController@eplBySubmitDate')->name('new_epl_report');//new epl report

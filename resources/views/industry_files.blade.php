@@ -63,18 +63,27 @@
 
                                 <hr>
                                 <table class="table table-condensed" id="tblAllFiles">
+                                    <colgroup>
+                                        <col style="width: 2%;">
+                                        <col style="width: 30%;">
+                                        <col style="width: 25%;">
+                                        <col style="width: 10%;">
+                                        <col style="width: 13%;">
+                                        <col style="width: 10%;">
+                                        <col style="width: 5%;">
+                                    </colgroup>
                                     <thead>
                                         <tr class="tblTrsec">
-                                            <th style="width: 10px">#</th>
-                                            <th style='width: 25em'>Industry Name</th>
-                                            <th style='width: 25em'>Client Name</th>
-                                            <th style='width: 20em'>EPL Code</th>
-                                            <th style='width: 20em'>Site Clearance Code</th>
-                                            <th style='width: 25em'>File No</th>
-                                            <th style='width: 25em'>#</th>
-                                            <th style='width: 25em'>Status</th>
+                                            <th>#</th>
+                                            <th>Industry Name</th>
+                                            {{-- <th style='width: 25em'>Client Name</th> --}}
+                                            <th>EPL\SC Code</th>
+                                            {{-- <th style='width: 20em'>Site Clearance Code</th> --}}
+                                            <th>File No</th>
+                                            <th>Application log date</th>
+                                            <th>File Status</th>
                                             <!--<th class="inspectTbl" style="width: 180px">Inspection</th>-->
-                                            <th style='width: 5em'>Action</th>
+                                            <th>#</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -110,8 +119,8 @@
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" id="setInspectionVal" class="btn btn-primary"><i
-                                    class="fa fa-check"></i> Submit</button>
+                            <button type="button" id="setInspectionVal" class="btn btn-primary"><i class="fa fa-check"></i>
+                                Submit</button>
                         </div>
                     </div>
                 </div>
@@ -127,14 +136,14 @@
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
-                                <label>Minute</label>
-                                <textarea id="getMinutes" type="text" class="form-control form-control-sm"
-                                    placeholder="Enter Minute..." value=""></textarea>
+                                <label>Add Minute</label>
+                                <textarea id="getMinutes" type="text" class="form-control form-control-sm" placeholder="Enter Minute..."
+                                    value=""></textarea>
                             </div>
                             <div class="form-group d-none" id="nominate_certificate">
                                 <label>For Certificate Prepare</label>
-                                <textarea id="cert_nominate" type="text" class="form-control form-control-sm"
-                                    placeholder="Add Comment" value=""></textarea>
+                                <textarea id="cert_nominate" type="text" class="form-control form-control-sm" placeholder="Add Comment"
+                                    value=""></textarea>
                             </div>
                         </div>
                         <div class="modal-footer justify-content-between">
@@ -150,8 +159,8 @@
                                     class="fa fa-check"></i>Upload Certificate</button>
                             <button type="button" id="viewCertificateBtn" class="btn btn-success d-none"><i
                                     class="fa fa-file"></i> View Certificate</button>
-                            <button type="button" id="downloadDocumentBtn" class="btn btn-info d-none"><i
-                                    class="fa fa-file"></i> Download Document</button>
+                            {{-- <button type="button" id="downloadDocumentBtn" class="btn btn-info d-none"><i
+                                    class="fa fa-file"></i> Download Document</button> --}}
                         </div>
                     </div>
                 </div>
@@ -203,7 +212,6 @@
     <script src="../../dist/js/demo.js"></script>
     <!-- AdminLTE App -->
     <script>
-
         var file_status = {
             0: 'pending',
             1: 'AD File Approval Pending',
@@ -215,7 +223,7 @@
             '-1': 'Rejected',
             '-2': 'Hold'
         };
-
+        const FILE_URL="{{ env('DO_URL') }}";
         function minute() {
             var data = {
                 minutes: $('#getMinutes').val().trim()
@@ -271,11 +279,13 @@
                 $('#setInspectionVal').val($(this).val());
             });
             $(document).on('click', '#setInspectionVal', function() {
+                document.querySelector('#setInspectionVal').disabled = true;
                 var fileData = JSON.parse(unescape($(this).val()));
                 let f_id = fileData.id;
                 checkInspectionStatus(f_id, $('#getInspection').val(), function(rep) {
                     show_mesege(rep);
                     $('#modal-xl').modal('hide');
+                    document.querySelector('#setInspectionVal').disabled = false;
                     forTypeFiles_table($('#getEnvOfficer').val(), $('#getFileType').val(),
                         file_status);
                     //                $("#tblAllFiles").DataTable().ajax.reload(null, false);
@@ -289,7 +299,6 @@
         $(document).on('click', '.detailsData', function() {
             var fileData = JSON.parse(unescape($(this).val()));
             let f_Status = fileData.file_status;
-            console.log(f_Status);
             $('#modal-x2').modal();
             $('#getMinutes').val('');
 
@@ -300,9 +309,9 @@
                 .val()); //<-- Share this button value to submitAdCerApproval button
             $('#setInspectionVal2').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
             $('#viewCertificateBtn').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
-            $('#downloadDocumentBtn').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
+            // $('#downloadDocumentBtn').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
             $('#upCertificate').val($(this).val()); //<-- Share this button value to setInspectionVal2 button
-            $('#modalTitlex2').html(fileData.file_no);
+            $('#modalTitlex2').html('File Number: ' + fileData.file_no);
             if (fileData.need_inspection != null && f_Status == 0) {
                 $('#nominate_certificate').removeClass('d-none');
             } else {
@@ -312,10 +321,10 @@
             $('#needApproval,#submitAdCerApproval,#rejectAdCerApproval,#setInspectionVal2,#viewCertificateBtn,#downloadDocumentBtn')
                 .addClass('d-none');
 
-            if(fileData.cer_status == 1){
+            if (fileData.cer_status == 1) {
                 $('.showCorrectedFileUi').removeClass('d-none');
                 $('.correctedFileShowUi').removeClass('d-none');
-            }else{
+            } else {
                 $('.showCorrectedFileUi').addClass('d-none');
                 $('.correctedFileShowUi').addClass('d-none');
             }
@@ -335,7 +344,7 @@
                     $('#submitAdCerApproval').removeClass('d-none');
                     $('#rejectAdCerApproval').removeClass('d-none');
                     $('#viewCertificateBtn').removeClass('d-none');
-                    $('#downloadDocumentBtn').removeClass('d-none');
+                    // $('#downloadDocumentBtn').removeClass('d-none');
                     $('#upCertificate').removeClass('d-none');
                 }
             } else if (f_Status == -1) {
@@ -404,18 +413,18 @@
         $(document).on('click', '#viewCertificateBtn', function() {
             var fileData = JSON.parse(unescape($(this).val()));
             loadCertificatePathsApi(parseInt(fileData.id), function(set) {
-                window.open(set.certificate_path, '_blank');
+                window.open(FILE_URL+'/'+set.certificate_path, '_blank');
             });
         });
 
-         //View document when btn click
-        $(document).on('click', '#downloadDocumentBtn', function() {
-            var fileData = JSON.parse(unescape($(this).val()));
-            loadCertificatePathsApi(parseInt(fileData.id), function(set) {
-               let path = set.corrected_file;
-               window.open(path, '_blank');
-            });
-        });
+        //View document when btn click
+        // $(document).on('click', '#downloadDocumentBtn', function() {
+        //     var fileData = JSON.parse(unescape($(this).val()));
+        //     loadCertificatePathsApi(parseInt(fileData.id), function(set) {
+        //        let path = set.corrected_file;
+        //        window.open(path, '_blank');
+        //     });
+        // });
 
         $(document).on('click', '#upCertificate', function() {
             var fileData = JSON.parse(unescape($(this).val()));

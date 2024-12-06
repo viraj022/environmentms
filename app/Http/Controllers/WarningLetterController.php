@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\WarningLetter;
+use Carbon\Carbon as CarbonCarbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
@@ -25,10 +26,22 @@ class WarningLetterController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        $warn_letter = WarningLetter::where('id', $id)->with('client.certificates', 'client.industryCategory')->first();
+        $warn_letter = WarningLetter::where('id', $id)->with('client.certificates', 'client.industryCategory', 'client.epls')->first();
         // dd($warn_letter);
         $address = explode(',', $warn_letter->client->address);
-        return view('warn_letter_view', ['pageAuth' => $pageAuth, 'warn_let_data' => $warn_letter, 'client_address' => $address]);
+        $certificate_count = count($warn_letter->client->certificates);
+
+        $lastEpl = $warn_letter->client->epls->last();
+        $exp_date = CarbonCarbon::parse($lastEpl->expire_date)->format('Y-m-d');
+        // dd($exp_date);
+        $cert_no = '';
+        if ($certificate_count > 0) {
+            $LastCertificate = $warn_letter->client->certificates->last();
+            $exp_date = (empty($warn_letter->expire_date)) ? $LastCertificate->expire_date : $warn_letter->expire_date;
+            $cert_no = $LastCertificate->cetificate_number;
+        }
+        // dd($cert_no);
+        return view('warn_letter_view', ['pageAuth' => $pageAuth, 'warn_let_data' => $warn_letter, 'client_address' => $address, 'expire_date' => $exp_date, 'cert_no' => $cert_no]);
     }
     public function warningLetterLog()
     {
@@ -45,6 +58,7 @@ class WarningLetterController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $current_date = Carbon::parse(date("Y-m-d"));
         $expired_date = Carbon::parse($request->expired_date);
         $user = Auth::user()->id;
@@ -56,7 +70,8 @@ class WarningLetterController extends Controller
             "user_id" => $user,
             "client_id" => $client_id,
             "expired_days" => $expired_days,
-            "file_type" => $file_type
+            "file_type" => $file_type,
+            "expire_date" => $expired_date->format('Y-m-d'),
         ]);
 
         if ($warning_letter == true) {

@@ -61,10 +61,10 @@
                 <section id="warn_letter" class="A4-paper mt-5">
                     <button onclick="print()" class="btn btn-success float-right" id="print-btn">Print</button>
                     <p style="font-size: 18px; line-height: 1.5" id="letter_address">
+                        <span
+                            style="line-height: 0.5cm">{{ $warn_let_data->client->first_name . ' ' . $warn_let_data->client->last_name }}
+                            , </span><br>
                         @forelse ($client_address as $add)
-                            <span
-                                style="line-height: 0.5cm">{{ $warn_let_data->client->first_name . ' ' . $warn_let_data->client->last_name }}
-                                , </span><br>
                             <span style="line-height: 0.5cm">{{ $add }} , </span><br>
                         @empty
                         @endforelse
@@ -76,13 +76,12 @@
                         {{ $warn_let_data->client->industry_address . ' - ' . $warn_let_data->client->industryCategory->name }}
                     </p>
                     <div class="mt-5" style="font-size: 18px">
+
                         <p class="text-justify">
-                            <?php
-                            $certificate_count = count($warn_let_data->client->certificates) - 1;
-                            ?>
+
                             උක්ත ලිපිනයෙහි සඳහන් කර්මාන්තය සඳහා මෙම අධිකාරිය විසින් නිකුත් කරන ලද
-                            {{ $warn_let_data->client->certificates[$certificate_count]->cetificate_number }}
-                            අංක දරණ බලපත්‍රය {{ $warn_let_data->client->certificates[0]->expire_date }} දින කල් ඉකුත්වීමට
+                            {{ $cert_no }}
+                            අංක දරණ බලපත්‍රය {{ $expire_date }} දින කල් ඉකුත්වීමට
                             නියමිතය. බලපත්‍රය අළුත් කීරීම සදහා “පාරිසරික
                             ආරක්ෂණ බලපත්‍රය වාර්ෂිකව අළුත් කීරීම සඳහා වූ ඉල්ලුම් පත්‍රය” ඉදිරිපත් කල යුතු බව කාරුණිකව
                             දන්වමි.

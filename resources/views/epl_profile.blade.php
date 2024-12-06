@@ -19,7 +19,6 @@
             width: 100%;
             /* The width is the width of the web page */
         }
-
     </style>
     <!-- Google Font: Source Sans Pro -->
 @endsection
@@ -52,9 +51,18 @@
                             <div class="card-body">
                                 <dt class="">Name : <a id="client_name"></a></dt> <br>
                                 <div class="">
-                                    <a href="#" class="btn btn-primary viewCert d-none" target="_blank">View Certificate</a>
+                                    <a href="#" class="btn btn-primary viewCert d-none" target="_blank">View
+                                        Certificate</a>
                                     <input type="hidden" id='cert_path' value="">
                                     <span id="no_certificate_span" class="text-danger"> No Certificate Uploaded</span>
+
+                                    {{-- draft certificate --}}
+                                    @if (!empty($certificate) && !empty($certificate->certificate_path))
+                                        <a data-toggle="tooltip" data-placement="top" title="Click to get draft certificate"
+                                            id="" href="{{ env('DO_URL').'/'.$certificate->certificate_path }}"
+                                            target="_blank" class="btn btn-primary" style="float: right;"> Draft Certificate
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -88,18 +96,15 @@
                                     </h6>
                                     <p>Add Comments</p>
                                 </div>
-                                <!--                        <div class="callout callout-danger">
-                                                                                                                                        <h6><a href="/issue_certificate/id/{{ $profile }}" class="text-success ">Certificate Information</a></h6>
-                                                                                                                                        <p>Issue Certificate / Certificate Information</p>
-                                                                                                                                    </div>-->
+
                             </div>
                             <!-- /.card-body -->
 
                             <div class="linkSectionCnf overlay dark">
                                 <a class="text-white">File Not Confirmed!</a>
                             </div>
-
                         </div>
+
                     </div>
                     <div class="col-md-6">
                         <div class="card">
@@ -121,8 +126,10 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <dt>Download Application :</dt>
-                                        <a href="" class="btn btn-dark navTodownload" target="_blank">View Application</a>
-                                        <button id="delete_application" class="btn btn-danger d-none"  data-file="">Delete Application</button>
+                                        <a href="" class="btn btn-dark navTodownload" target="_blank">View
+                                            Application</a>
+                                        <button id="delete_application" class="btn btn-danger d-none" data-file="">Delete
+                                            Application</button>
                                         <div class="row mt-3">
                                             <div class="input-group">
                                                 <div class="custom-file">
@@ -201,6 +208,7 @@
     <script async="" defer=""
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyaUNtnrMrJwLqWQmHoUbeHaLk6q4msXE&callback=initMap"></script>
     <script>
+        const FILE_URL="{{ env('DO_URL') }}";
         //Map Start
         // Initialize and add the map
         function initMap(_Latitude, _Longitude) {
@@ -253,13 +261,13 @@
                     $('#epl_hid').val(PROFILE);
 
                     if (result.path == null) {
-                        $(".navTodownload").attr("href", '/' + result.application_path);
+                        $(".navTodownload").attr("href", FILE_URL+'/' + result.application_path);
                     } else {
-                        $(".navTodownload").attr("href", '/' + result.path);
+                        $(".navTodownload").attr("href", FILE_URL+'/' + result.path);
                     }
-                    if(result.path != ''){
+                    if (result.path != '') {
                         $('#delete_application').removeClass('d-none');
-                        $('#delete_application').attr('data-file', '/' + result.path);
+                        $('#delete_application').attr('data-file', FILE_URL+'/' + result.path);
                     }
 
                 }
@@ -271,7 +279,7 @@
                         cert_no: result.certificate_no
                     };
                     getCertificatebyId(cert_num, function(set) { // get certificate by cert number
-                        $('.viewCert').attr('href', "/" + set[0].signed_certificate_path);
+                        $('.viewCert').attr('href', FILE_URL+"/" + set[0].signed_certificate_path);
                     });
                 }
             });
@@ -283,33 +291,33 @@
 
         $('#delete_application').click(function() {
             Swal.fire({
-              title: 'Are you sure?',
-              text: "You won't be able to revert this!",
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Yes, delete it!'
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
-              if (result.value) {
-                  delete_application();
-              }
+                if (result.value) {
+                    delete_application();
+                }
             });
 
         });
 
-        function delete_application(){
-          let data = {
-              "epl_id": $('#epl_hid').val(),
-              "file_path": $('#delete_application').attr('data-file')
-          };
-            ajaxRequest('DELETE', "/api/remove_epl_application", data, function (dataSet) {
-              if(dataSet.status == 1){
-               swal.fire('Success', 'File Deleted Successfully!', 'success');
-               window.location.reload();
-              }else{
-                swal.fire('Error', 'File Not Deleted!', 'error');
-              }
+        function delete_application() {
+            let data = {
+                "epl_id": $('#epl_hid').val(),
+                "file_path": $('#delete_application').attr('data-file')
+            };
+            ajaxRequest('DELETE', "/api/remove_epl_application", data, function(dataSet) {
+                if (dataSet.status == 1) {
+                    swal.fire('Success', 'File Deleted Successfully!', 'success');
+                    window.location.reload();
+                } else {
+                    swal.fire('Error', 'File Not Deleted!', 'error');
+                }
             });
         }
 

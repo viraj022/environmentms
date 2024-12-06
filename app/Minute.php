@@ -26,7 +26,7 @@ class Minute extends Model
     protected $fillable = ['file_type', 'file_type_id', 'user_id', 'minute_description', 'situation','file_id'];
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withTrashed();
     }
 
     public function fileTye()
@@ -37,5 +37,11 @@ class Minute extends Model
         } else if ($type === Minute::SITE_CLEARANCE) {
             return $this->belongsTo(SiteClearance::class, 'file_type_id', 'id');
         }
+    }
+
+    // file
+    public function client()
+    {
+        return $this->hasOne(Client::class, 'id', 'file_id')->withTrashed();
     }
 }

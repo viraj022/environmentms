@@ -24,22 +24,26 @@ function getaAttachmentbyId(id, callBack) {
     });
 
 }
-function iterateSavedImages(url_list) {
+
+function iterateSavedImages(url_list,file_url) {
     let content = '';
-    console.log(url_list);
     if (url_list.length == 0 || url_list == undefined) {
         content = '';
     } else {
         $.each(url_list, function (index, value) {
-            content += '<div class="col-sm-2">';
-            content += '<a href="/' + value.path + '" data-toggle="lightbox" data-title="' + value.id + '" data-gallery="gallery">';
-            content += '<img src="/' + value.path + '" class="img-fluid mb-2" alt="white sample"/>';
+            content += '<div>';
+            content += '<div class="thumbnail attachment_image"><a href="javascript:void(0)" class="delete_attachment" data-attachment_id="' + value.id + '">';
+            content += '<img src="/dist/img/delete-icon.png" alt="" style="width:32px; height:32px;"></a>';
+            content += '<a href="' + file_url + value.path + '"  data-title="' + value.id + '" data-fancybox="attachments">';
+            content += '<div class="m-3" style="width: 120px; height:120px; background-size: cover; background-image:url(' + file_url + value.path + ')"></div>';
             content += '</a>';
+            content += '</div>';
             content += '</div>';
         });
     }
     $('#image_row').html(content);
 }
+
 function readImage(selected_id, callback) {
     var img = document.getElementById(selected_id);
 
@@ -53,32 +57,9 @@ function readImage(selected_id, callback) {
         FR.readAsDataURL(img.files[0]);
     } else {
         return false;
-//        alert("No Image");
+        //        alert("No Image");
     }
 }
-
-//function save_Attachment(file_data, ref_id, callBack) {
-//    $.ajax({
-//        type: "POST",
-//        headers: {
-//            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-//            "Accept": "application/json"
-//        },
-//        url: "/api/epl/inspection/attach/id/" + ref_id,
-//        data: {file: file_data},
-//        dataType: "json",
-//        cache: false,
-//        processDaate: false,
-//        success: function (result) {
-//            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-//                callBack(result);
-//            }
-//        },
-//        error: function (xhr, textStatus, errorThrown) {
-//            alert(textStatus + ':' + errorThrown);
-//        }
-//    });
-//}
 
 function save_Attachment(id, data, callBack) {
     let url = "/api/epl/inspection/attach/id/" + id;
@@ -91,6 +72,7 @@ function save_Attachment(id, data, callBack) {
         }
     });
 }
+
 function remove_Image(attachment_id, callBack) {
     $.ajax({
         type: "DELETE",
@@ -105,6 +87,17 @@ function remove_Image(attachment_id, callBack) {
         cache: false,
         processDaate: false,
         success: function (result) {
+            if (result.id == 1) {
+                Toast.fire({
+                    type: 'success',
+                    title: 'Enviremontal MS</br>Attachment Succuessfully Removed !'
+                });
+            } else {
+                Toast.fire({
+                    type: 'error',
+                    title: result.message
+                });
+            }
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
             }

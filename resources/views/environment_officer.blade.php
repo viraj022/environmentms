@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12 col-sm-6">
-                <h1>Environment Officer</h1>
+                <h1>Assign Environment Officer to AD</h1>
             </div>
         </div>
     </div>
@@ -29,8 +29,8 @@
     <div class="row">
         <div class="col-md-5">
             <div class="card card-gray">
-                <div class="card-header">
-                    <label id="lblTitle">Add New Environment Officer</label>
+                <div class="card-header" id="lblTitle">
+                    Assign Environment Officer To Assistant Director
                 </div>
 
                 <div class="card-body">
@@ -45,12 +45,11 @@
                     </div>
                     <div class="form-group d-none" id="lblAssistantDirectorDiplay">
                         <label>Assistant Director</label>
-                        <label id="lblAssistantDirector" class="form-control form-control-sm">
-                            <5151/2151561 <label>
+                        <label id="lblAssistantDirector" class="form-control form-control-sm"><label>
                     </div>
 
                     <div class="form-group" id="comboUserDiplay">
-                        <label>Environment Officer*</label>
+                        <label>Environment Officer (Un-Assigned)*</label>
                         <select id="getUsers" class="form-control form-control-sm select2 select2-purple" data-dropdown-css-class="select2-purple" style="width: 100%;" name="level">
                             <option>Loading...</option>
                         </select>
@@ -62,9 +61,6 @@
                     <div class="form-group d-none" id="lblUserDiplay">
                         <label>Users</label>
                         <label id="lblUser" class="form-control form-control-sm"></label>
-
-
-
                     </div>
 
 
@@ -88,27 +84,14 @@
         <div class="col-md-7">
             <div class="card card-gray">
                 <div class="card-header">
-                    <div class="form-group">
-                        <div class="row">
-                            <div class=" card-title col-md-4"><label>Assistant Director</label></div>
-                            <div class="col-md-8">
-                                <select id="getAssistantDirectorTbl" class="form-control form-control-sm combo_AssistantDirector">
-                                    <option>Loading...</option>
-                                </select>
-                                <div id="valZone" class="d-none">
-                                    <p class="text-danger">Field is required</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    Assigened Environment Officers
                 </div>
-                <div class="card-body table-responsive" style="height: 450px;">
+                <div class="card-body table-responsive" style="height: 650px;">
                     <table class="table table-condensed" id="tblEnvOfficer">
                         <thead>
                             <tr>
                                 <th style="width: 10px">#</th>
                                 <th>Environment Officer Name</th>
-
                                 <th style="width: 140px">Action</th>
                             </tr>
                         </thead>
@@ -177,16 +160,11 @@
 <!-- AdminLTE App -->
 <script>
     $(function() {
-
-        //Load table
-        //loadTable();
-        //   loadZoneCombo();
         loadUsersCombo();
         loadAssistantDirectorCombo(function() {
-            loadEnvOficerTable($('#getAssistantDirectorTbl').val());
-
+            loadEnvOficerTable($('#getAssistantDirector').val());
         });
-        //loadTable();
+
         //click save button
         $('#btnSave').click(function() {
             var data = {
@@ -210,7 +188,7 @@
                 }
                 loadUsersCombo();
                 loadAssistantDirectorCombo(function() {
-                    loadEnvOficerTable($('#getAssistantDirectorTbl').val());
+                    loadEnvOficerTable($('#getAssistantDirector').val());
                 });
 
             });
@@ -221,7 +199,7 @@
             showSaveBtn();
             loadUsersCombo();
             loadAssistantDirectorCombo(function() {
-                loadEnvOficerTable($('#getAssistantDirectorTbl').val());
+                loadEnvOficerTable($('#getAssistantDirector').val());
             });
         });
         //click delete button
@@ -242,32 +220,22 @@
                 }
                 loadUsersCombo();
                 loadAssistantDirectorCombo(function() {
-                    loadEnvOficerTable($('#getAssistantDirectorTbl').val());
+                    loadEnvOficerTable($('#getAssistantDirector').val());
                 });
                 showSaveBtn();
-
-                // resetinputFields();
-                //hideAllErrors();
             });
         });
-        //select button action 
+        //select button action
         $(document).on('click', '.btnAction', function() {
             var jsonArray = JSON.parse(unescape($(this).data('raw_data')));
             $('#btnDelete').val(jsonArray.id);
-            //  getEnvOfficerById(this.id, function(result) {
-            //    alert(result.id);
-            // $('#lblAssistantDirector').text(result.assistant_director_first_name + ' ' + result.assistant_director_last_name);
-            // $('#lblUser').text(result.user_name + ' ' + result.last_name);
-            // $('#btnUpdate').val(result.id);
-            // $('#btnDelete').val(result.id);
-            // showUpdate_DeleteBtn();
         });
         // hideAllErrors();
 
         //   $('#modal-danger').toggle();
     });
 
-    //show update buttons    
+    //show update buttons
     function showUpdate_DeleteBtn() {
         $('#btnSave').addClass('d-none');
         //$('#btnUpdate').removeClass('d-none');
@@ -279,7 +247,7 @@
         $('#comboAssistantDirectorDisplay').addClass('d-none');
         $('#lblAssistantDirectorDiplay').removeClass('d-none');
     }
-    //show save button    
+    //show save button
     function showSaveBtn() {
         $('#btnReset').addClass('d-none');
         $('#btnSave').removeClass('d-none');
@@ -290,7 +258,7 @@
         $('#comboAssistantDirectorDisplay').removeClass('d-none');
         $('#lblAssistantDirectorDiplay').addClass('d-none');
     }
-    //Reset all fields    
+    //Reset all fields
     function resetinputFields() {
         $('#getName').val('');
         $('#getCode').val('');
@@ -298,7 +266,7 @@
         $('#btnDelete').val('');
     }
 
-    //HIDE ALL ERROR MSGS   
+    //HIDE ALL ERROR MSGS
     function hideAllErrors() {
         $('#valName').addClass('d-none');
         $('#valCode').addClass('d-none');
@@ -306,8 +274,8 @@
         $('#uniCode').addClass('d-none');
     }
 
-    $('#getAssistantDirectorTbl').change(function() {
-        loadEnvOficerTable($('#getAssistantDirectorTbl').val());
+    $('#getAssistantDirector').change(function() {
+        loadEnvOficerTable($('#getAssistantDirector').val());
     });
 </script>
 @endsection

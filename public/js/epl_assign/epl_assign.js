@@ -57,41 +57,16 @@ function loadEnvOfficers_combo(ass_dir_id, callBack) {
 }
 
 function assigned_EPL_table(officer_id, callBack) {
-    //    $('#assigned_epl_table tbody').html('<td colspan="3">No Data Found</td></tr>');
+    $('#assigned_epl_table tbody').html('');
+    if ($.fn.DataTable.isDataTable('#assigned_epl_table')) {
+        console.log('destroyed');
+        $('#assigned_epl_table').DataTable().destroy();
+        $('#assigned_epl_table tbody').html('<td colspan="4">No Data Found</td></tr>');
+    }
+
     if (isNaN(officer_id)) {
         return false;
     }
-    //    $('#assigned_epl_table').DataTable().destroy();
-    //    $.ajax({
-    //        type: "GET",
-    //        headers: {
-    //            "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
-    //            "Accept": "application/json"
-    //        },
-    //        url: "api/epl/env_officer/" + officer_id,
-    //        data: null,
-    //        dataType: "json",
-    //        cache: false,
-    //        processDaate: false,
-    //        success: function (result) {
-    //            var tbl = "";
-    //            $.each(result, function (index, value) {
-    //                tbl += "<tr>";
-    //                tbl += "<td>" + ++index + "</td>";
-    //                tbl += "<td>" + value.industry_name + "&nbsp&nbsp<a href='/industry_profile/id/" + value.id + "'  target='_blank' data-toggle='tooltip' data-placement='top' title='" + TYPE + "'>(" + CODE + ")</a></td>";
-    //                tbl += '<td><button type="button" class="btn btn-danger removePendingEpl" value="' + value.id + '">Remove</button></td>';
-    //                tbl += "</tr>";
-    //            });
-    //            if (!(result.length == 0 || result == undefined)) {
-    //                $('#assigned_epl_table tbody').html(tbl);
-    //                $('#assigned_epl_table').DataTable();
-    //            }
-    //            if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
-    //                callBack(result);
-    //            }
-    //        }
-    //    });
-
     assigned_epl = $('#assigned_epl_table').DataTable({
         "destroy": true,
         "processing": true,
@@ -112,7 +87,7 @@ function assigned_EPL_table(officer_id, callBack) {
             },
         },
         "columns": [{
-            "data": ""
+            "data": null,
         },
         {
             "data": "",
@@ -126,8 +101,8 @@ function assigned_EPL_table(officer_id, callBack) {
                     TYPE += 'EPL';
                 }
 
-                if (row.siteClearenceSessions != null) {
-                    CODE += '<br>' + row.siteClearenceSessions[0].code;
+                if (row.site_clearence_sessions.length != 0) {
+                    CODE += '<br>' + row.site_clearence_sessions[0].code;
                     TYPE += ' SiteClearance';
                 }
 

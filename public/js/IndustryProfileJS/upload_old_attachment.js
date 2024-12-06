@@ -1,18 +1,19 @@
 //Load Attachments
-function loadAllOldAttachments(result, callBack) {
+function loadAllOldAttachments(result, BASE_PATH, callBack) {
     var obj = '';
-    var num = 0;
-    $.each(result, function(index, row) {
+    console.log(BASE_PATH);
+    $.each(result, function (index, row) {
         obj += '<div class="col-3 text-center" style="padding: 7.5px 7.5px 7.5px 7.5px; height: 300px;">';
         if (row.type === 'pdf') {
-            obj += '<a href="/' + row.path + '" target="_blank"><img class="rounded" alt="PDF" style="width: auto; height: auto;" src="/dist/img/pdf-view.png" data-holder-rendered="true"></a>';
+            obj += '<a href="' + BASE_PATH + row.path + '" target="_blank"><img class="rounded" alt="PDF" style="width: auto; height: auto;" src="/dist/img/pdf-view.png" data-holder-rendered="true"></a>';
         } else {
-            obj += '<a href="/' + row.path + '" target="_blank"><img class="rounded img-thumbnail" alt="Attachment" style="" src="/' + row.path + '" data-holder-rendered="true"></a>';
+            obj += '<a href="' + BASE_PATH + row.path + '" target="_blank"><img class="rounded img-thumbnail" alt="Attachment" style="" src="' + BASE_PATH + row.path + '" data-holder-rendered="true"></a>';
         }
         if (row.description == null) {
             row.description = 'N/A';
         }
         obj += '<h6 class="text-center" >' + row.description + '</h6>';
+        obj += '<span>Uploaded at: ' + row.created_at + '</span><br>';
         obj += '<a type="button" id="' + row.id + '" class="btn btn-danger text-white removeAttachs" value="0">Remove Attachment</a>';
         obj += '</div>';
     });
@@ -22,14 +23,16 @@ function loadAllOldAttachments(result, callBack) {
     }
 }
 
-function deedList(profile_id, callBack) {
+function deedList(profile_id, FILE_BASE_PATH, callBack) {
     var obj = '';
-    ajaxRequest('GET', '/api/files/client/id/' + profile_id, null, function(respo) {
+    ajaxRequest('GET', '/api/files/client/id/' + profile_id, null, function (respo) {
         if (respo.length == 0) {
-            obj += '<li><a>No Result Found</a></li>';
+            obj += '<li><a>No Files Found</a></li>';
         } else {
-            $.each(respo, function(index, row) {
-                obj += '<li><a target="_blank" href="/' + row + '">File ' + ++index + '</a></li>';
+            $.each(respo, function (index, row) {
+                obj += '<li class="' + (row.is_latest ? 'text-success' : '') + '">\
+                <a target="_blank" href="/' + FILE_BASE_PATH + row.file_name + '" class="' + (row.is_latest ? 'text-success' : '') + '">' + (row.is_latest ? '<strong>' : '') + 'File ' + ++index + (row.is_latest ? ' (Latest)' : '') + (row.is_latest ? '<strong>' : '') + '</a>\
+                </li>';
             });
         }
         $('.deedListUsr').html(obj);
@@ -42,7 +45,7 @@ function deedList(profile_id, callBack) {
 //----Remove Old Attachments---
 function deleteOldAttachments(id, callBack) {
     let url = '/api/old/attachments/' + id;
-    ajaxRequest('DELETE', url, null, function(resp) {
+    ajaxRequest('DELETE', url, null, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
         }
@@ -54,7 +57,7 @@ function uploadOldAttacments(client_id, key, value, desc, callBack) {
     formData.append(key, value);
     formData.append('file_catagory', 'ATTACHMENT');
     formData.append('description', desc);
-    ulploadFile2("/api/old/attachments/" + client_id, formData, function(resp) {
+    ulploadFile2("/api/old/attachments/" + client_id, formData, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
         }
@@ -90,7 +93,7 @@ function oldFileConfirmSection(is_old) {
 //----Confirm Uploading Old Attachments---
 function ConfirmUploadingAttachs(id, callBack) {
     let url = '/api/old/industry/' + id;
-    ajaxRequest('PATCH', url, null, function(resp) {
+    ajaxRequest('PATCH', url, null, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
         }
@@ -100,7 +103,7 @@ function ConfirmUploadingAttachs(id, callBack) {
 //----Confirm Uploading Old Attachments---
 function UnConfirmUploadingAttachs(id, callBack) {
     let url = '/api/old/unconfirm_industry/' + id;
-    ajaxRequest('PATCH', url, null, function(resp) {
+    ajaxRequest('PATCH', url, null, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
         }
@@ -116,7 +119,7 @@ function uploadButtonHandler(value) {
 }
 
 function updateAttachmentData(status_of) {
-    (status_of.file_01 == null) ? $('.upld_roadMap').addClass('d-none'): $('.upld_roadMap').removeClass('d-none');
-    (status_of.file_02 == null) ? $('.upld_deed').addClass('d-none'): $('.upld_deed').removeClass('d-none');
-    (status_of.file_03 == null) ? $('.upld_SurveyPlan').addClass('d-none'): $('.upld_SurveyPlan').removeClass('d-none');
+    (status_of.file_01 == null) ? $('.upld_roadMap').addClass('d-none') : $('.upld_roadMap').removeClass('d-none');
+    (status_of.file_02 == null) ? $('.upld_deed').addClass('d-none') : $('.upld_deed').removeClass('d-none');
+    (status_of.file_03 == null) ? $('.upld_SurveyPlan').addClass('d-none') : $('.upld_SurveyPlan').removeClass('d-none');
 }

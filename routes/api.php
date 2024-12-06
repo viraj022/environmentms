@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
  */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-  return $request->user();
+    return $request->user();
 });
 
 //api
@@ -324,7 +324,7 @@ Route::middleware('auth:api')->delete('/payment_type/id/{id}', 'PaymentTypeContr
 //payments codes
 
 Route::middleware('auth:api')->post('/payment', 'PaymentsController@create');
-//data input example 
+//data input example
 /*
   {
   "payment_type_id": "2",
@@ -457,7 +457,7 @@ Route::middleware('auth:api')->get('/findRangedPayment/payment_id/{payment_id}',
  */
 //end ranged codes
 //Zone API START
-Route::middleware('auth:api')->post('/zone', 'ZoneController@create'); //Create 
+Route::middleware('auth:api')->post('/zone', 'ZoneController@create'); //Create
 Route::middleware('auth:api')->get('/zones', 'ZoneController@show'); //Get All Zones
 Route::middleware('auth:api')->get('/zone/id/{id}', 'ZoneController@find'); //Get A Zone By ID
 Route::middleware('auth:api')->put('/zone/id/{id}', 'ZoneController@store'); //Update Zone
@@ -508,7 +508,7 @@ Route::middleware('auth:api')->get('/AssistantDirector/unassign', 'AssistantDire
 
  */
 
-Route::middleware('auth:api')->get('/AssistantDirector/active', 'AssistantDirectorController@getAll_active_AssistantDirector'); //get  all where activestatus =1  assistant director 
+Route::middleware('auth:api')->get('/AssistantDirector/active', 'AssistantDirectorController@getAll_active_AssistantDirector'); //get  all where activestatus =1  assistant director
 // [
 // [
 //     {
@@ -529,7 +529,7 @@ Route::middleware('auth:api')->get('/AssistantDirector/active', 'AssistantDirect
 //     }
 // ]
 // ]
-Route::middleware('auth:api')->get('/AssistantDirector/active/zone/id/{id}', 'AssistantDirectorController@assistantDirectorByZone'); //get  all where activestatus =1 by zone id 
+Route::middleware('auth:api')->get('/AssistantDirector/active/zone/id/{id}', 'AssistantDirectorController@assistantDirectorByZone'); //get  all where activestatus =1 by zone id
 // [
 // [
 //     {
@@ -595,7 +595,7 @@ Route::middleware('auth:api')->post('/AssistantDirector', 'AssistantDirectorCont
 // }
 // */
 
-Route::middleware('auth:api')->delete('/unassistantdirector/id/{id}', 'AssistantDirectorController@destroy'); //delete AssistantDirector  
+Route::middleware('auth:api')->delete('/unassistantdirector/id/{id}', 'AssistantDirectorController@destroy'); //delete AssistantDirector
 /*
   server responce
 
@@ -610,7 +610,7 @@ Route::middleware('auth:api')->delete('/unassistantdirector/id/{id}', 'Assistant
 //end AssistantDirector API
 // Environment Officer
 
-Route::middleware('auth:api')->get('/environment_officers/unassigned', 'EnvironmentOfficerController@show'); // get unassigned environment officers  
+Route::middleware('auth:api')->get('/environment_officers/unassigned', 'EnvironmentOfficerController@show'); // get unassigned environment officers
 /*
 
   [
@@ -650,7 +650,7 @@ Route::middleware('auth:api')->get('/environment_officers/unassigned', 'Environm
   },
   ]
  */
-Route::middleware('auth:api')->post('/environment_officer', 'EnvironmentOfficerController@create'); //insert environment officer  
+Route::middleware('auth:api')->post('/environment_officer', 'EnvironmentOfficerController@create'); //insert environment officer
 /*
   ! input
   {
@@ -664,7 +664,7 @@ Route::middleware('auth:api')->post('/environment_officer', 'EnvironmentOfficerC
   "message": "true"
   }
  */
-Route::middleware('auth:api')->get('/environment_officer/id/{id}', 'EnvironmentOfficerController@getAEnvironmentOfficer'); //get an environment officer  
+Route::middleware('auth:api')->get('/environment_officer/id/{id}', 'EnvironmentOfficerController@getAEnvironmentOfficer'); //get an environment officer
 /*
   {
   "first_name": "Wasantha",
@@ -679,7 +679,7 @@ Route::middleware('auth:api')->get('/environment_officer/id/{id}', 'EnvironmentO
   "assistant_director_user_name": "National"
   }
  */
-Route::middleware('auth:api')->get('/environment_officers/assistant_director/id/{id}', 'EnvironmentOfficerController@getAEnvironmentOfficerByAssitantDirector'); //get an environment officer by assistant director id  
+Route::middleware('auth:api')->get('/environment_officers/assistant_director/id/{id}', 'EnvironmentOfficerController@getAEnvironmentOfficerByAssitantDirector'); //get an environment officer by assistant director id
 /*
   [
   {
@@ -709,11 +709,11 @@ Route::middleware('auth:api')->delete('/environment_officers/id/{id}', 'Environm
  */
 
 //end env officer api
-//Client  api codes 
+//Client  api codes
 
-Route::middleware('auth:api')->post('/client', 'ClientController@create'); //save Client 
+Route::middleware('auth:api')->post('/client', 'ClientController@create'); //save Client
 
-/* request Example 
+/* request Example
   {
   "first_name" : "test fname",
   "last_name" : "test lname",
@@ -725,7 +725,7 @@ Route::middleware('auth:api')->post('/client', 'ClientController@create'); //sav
   } */
 
 
-Route::middleware('auth:api')->get('/client', 'ClientController@show'); //get all Client 
+Route::middleware('auth:api')->get('/client', 'ClientController@show'); //get all Client
 
 /*
   response Example
@@ -749,9 +749,9 @@ Route::middleware('auth:api')->get('/client', 'ClientController@show'); //get al
   validation response Example
  */
 
-Route::middleware('auth:api')->get('/client/nic/{nic}', 'ClientController@findClient_by_nic'); //get a Client by nic  
+Route::middleware('auth:api')->get('/client/nic/{nic}', 'ClientController@findClient_by_nic'); //get a Client by nic
 
-/* response Example  
+/* response Example
   //validation response Example
   [
   {
@@ -771,9 +771,9 @@ Route::middleware('auth:api')->get('/client/nic/{nic}', 'ClientController@findCl
   ]
  */
 
-Route::middleware('auth:api')->put('/client/id/{id}', 'ClientController@store'); //update Client 
+Route::middleware('auth:api')->put('/client/id/{id}', 'ClientController@store'); //update Client
 
-/* request Example 
+/* request Example
   {
   "first_name" : "Nadun",
   }
@@ -787,12 +787,12 @@ Route::middleware('auth:api')->delete('/client/id/{id}', 'ClientController@destr
 //     "id": 1,
 //     "message": "true"
 // }
-// 
-// 
+//
+//
 
-Route::middleware('auth:api')->get('/client/id/{id}', 'ClientController@findClient_by_id'); //get a Client by ID  
+Route::middleware('auth:api')->get('/client/id/{id}', 'ClientController@findClient_by_id'); //get a Client by ID
 
-//end Client  api codes 
+//end Client  api codes
 
 
 /// application attachment map
@@ -825,7 +825,7 @@ Route::middleware('auth:api')->get('/applicationTypes', 'ApplicationTypeControll
                     "attachemnt_id": 1
                 }
             },
- ]           
+ ]
 
 */
 
@@ -863,16 +863,16 @@ Route::middleware('auth:api')->get('/applicationTypes/id/{id}', 'ApplicationType
         }
         ]
     }
-    
+
     */
 Route::middleware('auth:api')->post('/applicationType', 'ApplicationTypeController@create'); //   save attachements to a application
 
 /*
     {
         "id": "1",
-        "attachment": [  
+        "attachment": [
      * 1,
-     * 2    
+     * 2
         ]
     }
     */
@@ -946,10 +946,10 @@ Route::middleware('auth:api')->get('/applicationType/allAtachmentWithStatus/id/{
 /// application attachment map
 
 /// industry scale
-Route::middleware('auth:api')->get('/business_scale', 'BusinessScaleController@show'); // 
-Route::middleware('auth:api')->get('/files/client/id/{id}', 'EPLController@getDeadList'); // 
+Route::middleware('auth:api')->get('/business_scale', 'BusinessScaleController@show'); //
+Route::middleware('auth:api')->get('/files/client/id/{id}', 'EPLController@getDeadList'); //
 
-Route::middleware('auth:api')->get('/epl/certificate_information/id/{id}', 'EPLController@certificateInformation'); // 
+Route::middleware('auth:api')->get('/epl/certificate_information/id/{id}', 'EPLController@certificateInformation'); //
 
 /*
 
@@ -1065,4 +1065,8 @@ Route::get('/epl_site_count', [ResetSettingsController::class, 'get_epl_site_cou
 Route::put('/reset_counts', [ResetSettingsController::class, 'reset_site_counts']);
 
 Route::middleware('auth:api')->post('/save_notification', 'UserNotificationsController@create');
-Route::middleware('auth:api')->post('/send_sms', 'SmsController@sendSms');
+// Route::middleware('auth:api')->post('/send_sms', 'SmsController@sendSms');
+Route::post('/send_sms', 'SmsController@sendSms');
+
+
+Route::middleware('auth:api')->post('/change_ownership', 'ClientController@changeOwner'); //  change owner

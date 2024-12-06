@@ -48,21 +48,19 @@ class InspectionSessionAttachmentController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_create']) {
             $inspection = InspectionSession::find($id);
+            // check if inspection session completed
+            if ($inspection->status == 1) {
+                return array('id' => 0, 'message' => 'Inspection session already completed');
+            }
             if ($inspection) {
-                $e = Client::findOrFail($inspection->client_id);
                 $type = $request->file->extension();
-                $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-                $fileUrl = "/uploads/" . FieUploadController::getInspectionFilePath($inspection);
-                $storePath = 'public' . $fileUrl;
-                $path = 'storage' . $fileUrl . "/" . $file_name;
-                $request->file('file')->storeAs($storePath, $file_name);
+                $storePath = "uploads/" . FieUploadController::getInspectionFilePath($inspection);
+                $path = $request->file('file')->store($storePath);
                 $inspectionSessionAttachment = new InspectionSessionAttachment();
                 $inspectionSessionAttachment->inspection_session_id = $id;
                 $inspectionSessionAttachment->path = $path;
                 $inspectionSessionAttachment->type = $type;
                 $msg = $inspectionSessionAttachment->save();
-
-
                 if ($msg) {
                     LogActivity::addToLog('Add Inspection attachment', $inspectionSessionAttachment);
                     return array('id' => 1, 'message' => 'true');
@@ -139,7 +137,10 @@ class InspectionSessionAttachmentController extends Controller
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         if ($pageAuth['is_delete']) {
-            $inspectionSessionAttachment = InspectionSessionAttachment::findOrFail($id);
+            $inspectionSessionAttachment = InspectionSessionAttachment::with('InspectionSession')->findOrFail($id);
+            if ($inspectionSessionAttachment->InspectionSession->status == 1) {
+                return array('id' => 0, 'message' => 'File is Completed. You can not delete this file.');
+            }
             $msg = $inspectionSessionAttachment->delete();
 
             if ($msg) {

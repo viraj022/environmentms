@@ -44,4 +44,9 @@ class Complain extends Model
     {
         return $this->hasMany(Letter::class);
     }
+
+    public function pradesheeyasaba()
+    {
+        return $this->belongsTo(Pradesheeyasaba::class, 'pradeshiya_saba_id', 'id');
+    }
 }

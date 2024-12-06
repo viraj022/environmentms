@@ -15,7 +15,7 @@
     <!-- Google Font: Source Sans Pro -->
 @endsection
 @section('content')
-    @if ($pageAuth['is_read'] == 1 || false)
+    @if ((isset($pageAuth['is_read']) && $pageAuth['is_read'] == 1) || false)
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
@@ -30,7 +30,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-body table-responsive" style="height: 450px;">
+                            <div class="card-body table-responsive" style="">
                                 <table class="table table-condensed" id="tblApprovedAdList">
                                     <thead>
                                         <tr>

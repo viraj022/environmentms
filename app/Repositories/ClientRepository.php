@@ -4,10 +4,7 @@ namespace App\Repositories;
 
 use App\Client;
 use App\FileView;
-use App\IndustryCategory;
 use Carbon\Carbon;
-use App\SiteClearance;
-use App\InspectionSession;
 use App\SiteClearenceSession;
 use Illuminate\Support\Facades\DB;
 /*
@@ -116,66 +113,21 @@ class ClientRepository
                  */
                 'eo_users.first_name as officer_first_name',
                 'eo_users.last_name as officer_last_name'
-
-
             )
             ->get();
     }
 
     public function allPlain($from, $to)
     {
-
-        //         $psArray=array(
-        //             1=>'kurunegala',
-        //             2=>'2',
-        //             10=>'puttlam',
-        //         );
-        //         $eplArray = array(
-        //             'industry_file_id' => 10,
-        //             'new' => 10,
-        //             'renew' => 2,
-        //             'ps' => 2,
-        //             'cat' => 2,
-        //         );
-        //         $SiteArray = array(
-        //             10 => array(
-        //                 'new' => 10,
-        //                 'renew' => 2,
-        //                 'type' => 2,
-        //             )
-        //         );
-        //         $req_st = array(
-        //             10 => array(
-        //                 'clint_id' => 10,
-        //                 'epl_new' => 10,
-        //                 'epl_renew' => 10,
-        //                 'site_new' => 10,
-        //                 'site_renew' => 10,
-        //                 'ps' => 10,
-        //                 'cat' => 10,
-        //             )
-        //         );
-        // foreach($req_st as $ke)
-        // array(
-        //     1=>array(
-        //         'psName'=> $psArray[$ke['ps']],
-        //         'cat'=>array(
-        //             'cat_name'=>'cat 1',
-        //             'epl'=>10,
-        //             'epl_renew'=>10,
-        //         )
-        //         )
-        // )
-
         // echo $client;
-        $file = FileView::orWhereBetween('epl_issue_date', [$from, $to])
-            ->orWhereBetween('epl_expire_date', [$from, $to])
-            ->orWhereBetween('epl_submitted_date', [$from, $to])
-            ->orWhereBetween('epl_rejected_date', [$from, $to])
-            ->orWhereBetween('site_submit_date', [$from, $to])
-            ->orWhereBetween('site_issue_date', [$from, $to])
-            ->orWhereBetween('site_expire_date', [$from, $to])
-            ->orWhereBetween('site_rejected_date', [$from, $to]);
+        $file = FileView::orWhereRaw('DATE(epl_issue_date) BETWEEN DATE(?) AND DATE(?)', [$from, $to])
+            ->orWhereRaw('DATE(epl_expire_date) BETWEEN DATE(?) AND DATE(?)', [$from, $to])
+            ->orWhereRaw('DATE(epl_submitted_date) BETWEEN DATE(?) AND DATE(?)', [$from, $to])
+            ->orWhereRaw('DATE(epl_rejected_date) BETWEEN DATE(?) AND DATE(?)', [$from, $to])
+            ->orWhereRaw('DATE(site_submit_date) BETWEEN DATE(?) AND DATE(?)', [$from, $to])
+            ->orWhereRaw('DATE(site_issue_date) BETWEEN DATE(?) AND DATE(?)', [$from, $to])
+            ->orWhereRaw('DATE(site_expire_date) BETWEEN DATE(?) AND DATE(?)', [$from, $to])
+            ->orWhereRaw('DATE(site_rejected_date) BETWEEN DATE(?) AND DATE(?)', [$from, $to]);
         // dd(FileView::all());
         // echo $file->toSql();
         return $file->get();
@@ -201,9 +153,9 @@ class ClientRepository
             'industry_coordinate_x as GPS coordinate(X)',
             'industry_coordinate_y as GPS coordinate(Y) ',
             \DB::raw(
-                '(CASE 
-            WHEN industry_is_industry = "1" THEN "Industry Zone"            
-            ELSE "Normal Zone" 
+                '(CASE
+            WHEN industry_is_industry = "1" THEN "Industry Zone"
+            ELSE "Normal Zone"
             END) as `Industry Zone`'
             ),
             'industry_investment as Industry Investment',
@@ -220,9 +172,9 @@ class ClientRepository
             'officer_last_name as EO Last Name',
             'epl_code as EPL code',
             \DB::raw(
-                '(CASE 
-            WHEN epl_count = "0" THEN "New"            
-            ELSE "Renew" 
+                '(CASE
+            WHEN epl_count = "0" THEN "New"
+            ELSE "Renew"
             END) as `EPL Status`'
             ),
             'epl_issue_date as Issue Date',
@@ -233,19 +185,19 @@ class ClientRepository
             'epl_rejected_date',
             'site_code',
             \DB::raw(
-                '(CASE 
-            WHEN site_count = "0" THEN "New"            
-            ELSE "Extend" 
+                '(CASE
+            WHEN site_count = "0" THEN "New"
+            ELSE "Extend"
             END) as `Site Status`'
             ),
             'site_site_clearance_type as Site Clearance Type',
             \DB::raw(
-                '(CASE 
-            WHEN site_processing_status = "0" THEN "Pending"  
+                '(CASE
+            WHEN site_processing_status = "0" THEN "Pending"
             WHEN site_processing_status = "1" THEN "Site Clearance"
-            WHEN site_processing_status = "2" THEN "EIA"   
-            WHEN site_processing_status = "2" THEN "IEE"       
-            ELSE null 
+            WHEN site_processing_status = "2" THEN "EIA"
+            WHEN site_processing_status = "2" THEN "IEE"
+            ELSE null
             END) as `SC Processing Status`'
             ),
             'site_submit_date as SC Submit Date',
@@ -437,6 +389,70 @@ class ClientRepository
             ->with('inspectionSessions.inspectionSessionAttachments')
             ->Where('inspection_sessions.status', '0')
             ->Where('inspection_sessions.environment_officer_id', $id)
+            ->where('clients.need_inspection', Client::STATUS_INSPECTION_NEEDED)
+            ->where('clients.file_status', 0)
             ->get();
+    }
+    public function inspectionListForEo($eo_id)
+    {
+        return Client::select(
+            'clients.id',
+            'clients.name_title',
+            'clients.first_name',
+            'clients.last_name',
+            'clients.address',
+            'clients.contact_no',
+            'clients.nic',
+            'clients.industry_name',
+            'clients.industry_contact_no',
+            'clients.industry_address',
+            'clients.industry_coordinate_x',
+            'clients.industry_coordinate_y',
+            'clients.industry_investment',
+            'clients.industry_start_date',
+            'clients.industry_registration_no',
+            'clients.application_path',
+            'clients.file_01',
+            'clients.file_02',
+            'clients.file_03',
+            'clients.file_no',
+            'clients.is_old',
+            'clients.file_problem_status',
+            'clients.industry_sub_category',
+            'industry_categories.name as industry_category',
+            'pradesheeyasabas.name as pradesheeyasaba',
+            'inspection_sessions.id as inspection_session_id',
+            'inspection_sessions.schedule_date as inspection_schedule_date',
+            'inspection_sessions.application_type as inspection_application_type',
+            'business_scales.name as business_scale',
+        )
+            ->join('environment_officers', 'clients.environment_officer_id', 'environment_officers.id')
+            ->join('inspection_sessions', 'clients.id', 'inspection_sessions.client_id')
+            ->join('industry_categories', 'clients.industry_category_id', 'industry_categories.id')
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
+            ->join('business_scales', 'clients.business_scale_id', 'business_scales.id')
+            ->where('clients.file_status', 0)
+            ->where('environment_officers.user_id', $eo_id)
+            ->whereNull('inspection_sessions.deleted_at')
+            ->where('clients.need_inspection', Client::STATUS_PENDING)
+            ->with(['epls' => function ($query) {
+                $query->orderBy('count', 'desc');
+            }])
+            ->with(['minutes' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            }])
+            ->with('inspectionSessions.inspectionSessionAttachments')
+            // ->whereRelation('inspectionSessions', function ($query) {
+            //     $query->whereNotNull('deleted_at');
+            // })
+            ->with(['oldFiles' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            }])
+            ->with('certificates')
+            ->with('siteClearenceSessions.siteClearances')
+            ->where('inspection_sessions.status', '0')
+            ->groupBy('inspection_sessions.client_id')
+            ->get();
+        // ->toSql();
     }
 }

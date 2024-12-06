@@ -10,20 +10,23 @@ function ajaxRequest(Method, url, data, callBack) {
         url: url,
         data: data,
         cache: false,
-        success: function(result) {
+        success: function (result) {
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
                 callBack(result);
             }
         },
-        error: function(jqXHR, exception) {
+        error: function (jqXHR, exception) {
             console.log(jqXHR.responseJSON.message);
             var msg = '';
             if (jqXHR.status === 0) {
-                msg = 'Not connect.\n Verify Network.';
+                msg = 'Failed To Connect. Please Verify Your Network Connection.';
             } else if (jqXHR.status == 401) {
                 msg = 'You Dont Have Privilege To Performe This Action!';
             } else if (jqXHR.status == 422) {
-                msg = 'Validation Error ! \n' + jqXHR.responseJSON.message;
+                msg = 'Validation Error ! \n';
+                $.each(jqXHR.responseJSON.errors, function (key, value) {
+                    msg += value + '\n';
+                });
             } else if (jqXHR.status == 404) {
                 msg = 'Requested page not found. [404]';
             } else if (jqXHR.status == 500) {
@@ -35,7 +38,7 @@ function ajaxRequest(Method, url, data, callBack) {
             } else if (exception === 'abort') {
                 msg = 'Ajax request aborted.';
             } else {
-                msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                msg = 'Uncaught Error.\n' + jqXHR.responseJSON.message;
             }
             //            Toast.fire({
             //                type: 'error',
@@ -51,10 +54,10 @@ function ajaxRequest(Method, url, data, callBack) {
 function submitDataWithFile(url, frmDta, callBack, metod = false) {
     let formData = new FormData();
     // populate fields
-    $.each(frmDta, function(k, val) {
+    $.each(frmDta, function (k, val) {
         formData.append(k, val);
     });
-    ulploadFile2(url, formData, function(result) {
+    ulploadFile2(url, formData, function (result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }
@@ -62,15 +65,20 @@ function submitDataWithFile(url, frmDta, callBack, metod = false) {
 }
 
 function show_mesege(resp_id) {
+    console.log(resp_id);
     if (resp_id.id == 1) {
         Swal.fire({
             type: 'success',
             title: 'Envirmontal MS</br>Success!'
         });
     } else {
+        let message = '';
+        if (resp_id.message != undefined || resp_id.message != null || resp_id.message != '') {
+            message = resp_id.message;
+        }
         Swal.fire({
             type: 'error',
-            title: 'Enviremontal MS</br>' + resp_id
+            title: 'Enviremontal MS</br>' + message
         });
     }
 }

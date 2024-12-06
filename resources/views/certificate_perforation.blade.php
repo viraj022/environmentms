@@ -5,11 +5,7 @@
 @extends('layouts.sidebar')
 @extends('layouts.footer')
 @section('pageStyles')
-    <!-- Select2 -->
-    <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-    <!-- Bootstrap4 Duallistbox -->
-    <link rel="stylesheet" href="/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="/dist/css/adminlte.min.css">
     <!-- Google Font: Source Sans Pro -->
@@ -73,7 +69,7 @@
                                                             </dl>
                                                         </div>
                                                         <!--                                                <button class="btn btn-primary genCertificateNum d-none"><i class="fa fa-gear"></i> Generate Certificate Number</button>
-                                                                                         /.card-body -->
+                                                                                                                                                                                             /.card-body -->
                                                     </div>
                                                     <div class="card card-success">
                                                         <div class="card-header">
@@ -87,12 +83,14 @@
                                                                 <dt class="col-sm-4">Name :</dt>
                                                                 <dt class="col-sm-7"><a id="obj_name"
                                                                         style='font-weight:normal'></a></dt>
-                                                                <dt class="col-sm-4">File No : </dt>
-                                                                <dt class="col-sm-7"><a id="obj_regno"></a></dt>
-                                                                <dt class="col-sm-4">Industry Name : </dt>
-                                                                <dt class="col-sm-7"><a id="342"></a></dt>
+                                                                <dt class="col-sm-4">Industry Registration No : </dt>
+                                                                <dt class="col-sm-7"><a id="obj_regno"
+                                                                        style='font-weight:normal'></a></dt>
+                                                                {{-- <dt class="col-sm-4">Industry Name : </dt>
+                                                            <dt class="col-sm-7"><a id="industry_name"></a></dt> --}}
                                                                 <dt class="col-sm-4">Industry Address : </dt>
-                                                                <dt class="col-sm-7"><a id="34"></a></dt>
+                                                                <dt class="col-sm-7"><a id="industry_address"
+                                                                        style='font-weight:normal'></a></dt>
                                                                 <dt class="col-sm-7">
                                                                     <input type="hidden" id="cert_id" value="">
                                                                     <div class="form-group mt-2">
@@ -153,111 +151,97 @@
                                                             Certificate/Application</button>
                                                     </div>
                                                     <hr>
-                                                    <div class="form-group">
-                                                        <label>Issue Date*</label>
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    <i class="far fa-calendar-alt"></i>
-                                                                </span>
+                                                    <div id="upload_cert_section" class="d-none">
+                                                        <div class="form-group">
+                                                            <label>Issue Date*</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">
+                                                                        <i class="far fa-calendar-alt"></i>
+                                                                    </span>
+                                                                </div>
+                                                                <input id="issue_date" name="datepickerUi" type="text"
+                                                                    max="2999-12-31" class="form-control form-control-sm"
+                                                                    placeholder="Enter Issue Date..." value=""
+                                                                    autocomplete="off">
                                                             </div>
-                                                            <input id="issue_date" name="datepickerUi" type="text"
-                                                                max="2999-12-31" class="form-control form-control-sm"
-                                                                placeholder="Enter Issue Date..." value=""
-                                                                autocomplete="off">
                                                         </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Expire Date*</label>
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    <i class="far fa-calendar-alt"></i>
-                                                                </span>
+                                                        <div class="form-group">
+                                                            <label>Expire Date*</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">
+                                                                        <i class="far fa-calendar-alt"></i>
+                                                                    </span>
+                                                                </div>
+                                                                <input id="expire_date" name="datepickerUi"
+                                                                    type="text" max="2999-12-31"
+                                                                    class="form-control form-control-sm "
+                                                                    placeholder="Enter Expire Date..." value="">
                                                             </div>
-                                                            <input id="expire_date" name="datepickerUi" type="text"
-                                                                max="2999-12-31" class="form-control form-control-sm "
-                                                                placeholder="Enter Expire Date..." value="">
                                                         </div>
-                                                    </div>
-                                                    <div class="form-group fileUpDiv">
-                                                        <hr>
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label for="fileUploadInput">PDF Upload: </label><br>
-                                                                    <input id="fileUploadInput" type="file" accept=".doc, .docx, .pdf">
-                                                                    <button id="uploadCerfile" class="btn btn-success"><i class="fas fa-file-upload"></i> Upload</button>
+                                                        <div class="form-group fileUpDiv">
+                                                            <hr>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label for="fileUploadInput">Certificate Upload:
+                                                                        </label><br>
+                                                                        <input id="fileUploadInput" type="file"
+                                                                            accept=".doc, .docx, .pdf">
+                                                                        <button id="uploadCerfile"
+                                                                            class="btn btn-success"><i
+                                                                                class="fas fa-file-upload"></i>
+                                                                            Upload</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="progress d-none">
+                                                                <div class="progress-bar bg-primary progress-bar-striped Uploadprogress"
+                                                                    id="Uploadprogress" role="progressbar"
+                                                                    aria-valuenow="40" aria-valuemin="0"
+                                                                    aria-valuemax="100" style="width: 0%">
+                                                                    <!--<span class="sr-only">40% Complete (success)</span>-->
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="progress d-none">
-                                                            <div class="progress-bar bg-primary progress-bar-striped Uploadprogress"
-                                                                id="Uploadprogress" role="progressbar" aria-valuenow="40"
-                                                                aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                                                                <!--<span class="sr-only">40% Complete (success)</span>-->
+
+                                                        <h4 class="text-success d-none" id="certificateSubmittedLable">
+                                                            Certificate Submitted</h4>
+                                                        <button class="btn btn-primary complCertificate d-none"><i
+                                                                class="fa fa-check"></i> Complete Certificate</button>
+                                                        <div class="row">
+                                                            <div class="col-4">
+                                                                <div class="fileShowUi d-none" style=" height: 200px;">
+                                                                    <hr>
+                                                                    <a data-toggle="tooltip" data-placement="top"
+                                                                        title="Click to view file" id="fileuploadedPath"
+                                                                        href="" target="_blank">
+                                                                        <p>Drafted Certificate</p>
+                                                                        <img id="drafted_cert_view"
+                                                                            class="img-fluid rounded" alt="PDF"
+                                                                            style="width: 128px; height: 128px;"
+                                                                            src="/dist/img/pdf-view.png"
+                                                                            data-holder-rendered="true">
+                                                                    </a>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group showCorrectedFileUi d-none">
-                                                        <label for="uploadLabel">Word File Upload: </label><br>
-                                                        <input id="correctedFile" type="file" class="" accept=".doc, .docx, .pdf">
-                                                        <button id="uploadcorrectedFile" class="btn btn-success"><i
-                                                                class="fas fa-file-upload"></i> Upload</button>
-                                                        <div class="progress d-none">
-                                                            <div class="progress-bar bg-primary progress-bar-striped Uploadprogress"
-                                                                id="Uploadprogress" role="progressbar" aria-valuenow="40"
-                                                                aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                                                                <!--<span class="sr-only">40% Complete (success)</span>-->
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <h4 class="text-success d-none" id="certificateSubmittedLable">
-                                                        Certificate Submitted</h4>
-                                                    <button class="btn btn-primary complCertificate d-none"><i
-                                                            class="fa fa-check"></i> Complete Certificate</button>
-                                                    <div class="row">
-                                                        <div class="col-4">
-                                                            <div class="fileShowUi d-none" style=" height: 200px;">
-                                                                <hr>
-                                                                <a data-toggle="tooltip" data-placement="top"
-                                                                    title="Click to view file" id="fileuploadedPath" href=""
-                                                                    target="_blank">
-                                                                    <p>Drafted Certificate</p>
-                                                                    <img id="drafted_cert_view" class="img-fluid rounded" alt="PDF"
-                                                                        style="width: 128px; height: 128px;"
-                                                                        src="/dist/img/pdf-view.png"
-                                                                        data-holder-rendered="true">
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <div class="originalCertificateShowUi d-none"
-                                                                style=" height: 200px;">
-                                                                <hr>
-                                                                <a data-toggle="tooltip" data-placement="top"
-                                                                    title="Click to view file" id="originalCertificatePath"
-                                                                    href="" target="_blank">
-                                                                    <p>Original Certificate</p>
-                                                                    <img id="original_cert_view" class="img-fluid rounded" alt="PDF"
-                                                                        style="width: 128px; height: 128px;"
-                                                                        src="/dist/img/pdf-view.png"
-                                                                        data-holder-rendered="true">
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <div class="correctedFileShowUi d-none" style=" height: 200px;">
-                                                                <hr>
-                                                                <a data-toggle="tooltip" data-placement="top"
-                                                                    title="Click to view file" id="correctedCertificatePath"
-                                                                    href="" target="_blank">
-                                                                    <p>Corrected File</p>
-                                                                    <img class="img-fluid rounded" id="file_view" alt="PDF"
-                                                                        style="width: 128px; height: 128px;"
-                                                                        src=""
-                                                                        data-holder-rendered="true">
-                                                                </a>
+                                                            <div class="col-4">
+                                                                <div class="originalCertificateShowUi d-none"
+                                                                    style=" height: 200px;">
+                                                                    <hr>
+                                                                    <a data-toggle="tooltip" data-placement="top"
+                                                                        title="Click to view file"
+                                                                        id="originalCertificatePath" href=""
+                                                                        target="_blank">
+                                                                        <p>Original Certificate</p>
+                                                                        <img id="original_cert_view"
+                                                                            class="img-fluid rounded" alt="PDF"
+                                                                            style="width: 128px; height: 128px;"
+                                                                            src="/dist/img/pdf-view.png"
+                                                                            data-holder-rendered="true">
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -366,8 +350,8 @@
                     </div>
                 </div>
                 <!--        <div class="overlay dark loadingRenderUI">
-                                                            <i class="fas fa-2x fa-sync-alt"></i>
-                                                        </div>-->
+                                                                                                                                                                <i class="fas fa-2x fa-sync-alt"></i>
+                                                                                                                                                            </div>-->
             </div>
         </section>
         <!--//Tab Section END//-->
@@ -390,14 +374,20 @@
         var FILE_STATUS = '';
         var CER_STATUS = '';
         var CERTIFICATE_ID = '';
+        const FILE_URL="{{ env('DO_URL') }}";
         $(function() {
             //Load table
             getaProfilebyId(PROFILE_ID, function(parameters) {
                 FILE_STATUS = parseInt(parameters.file_status);
                 CER_STATUS = parseInt(parameters.cer_status);
-                
+
                 setProfileDetails(parameters);
                 setIndustryAndClientDb(parameters);
+
+                getCertificateDetails(PROFILE_ID,FILE_URL, function(resp) {
+                    loadCertRefNo(resp);
+                });
+
                 $(".loadingRenderUI").remove(); //<--Check Loading Status
                 //Control Gen Certificate Btn View
                 if (FILE_STATUS === 6 && CER_STATUS === 6) {
@@ -407,7 +397,7 @@
         });
 
         //Show Certificate Details
-        getCertificateDetails(PROFILE_ID, function(resp) {
+        getCertificateDetails(PROFILE_ID, FILE_URL,function(resp) {
             if (resp.length != 0) {
                 FILE_STATUS = parseInt(resp.client.file_status);
                 CERTIFICATE_ID = parseInt(resp.id);
@@ -420,7 +410,8 @@
                 genCertificateNumbyId(PROFILE_ID, function(resp) {
                     show_mesege(resp);
                     if (resp.id == 1) {
-                        getCertificateDetails(PROFILE_ID, function(resp) {
+                        getCertificateDetails(PROFILE_ID,FILE_URL, function(resp) {
+                            loadCertRefNo(resp);
                             CERTIFICATE_ID = parseInt(resp.id);
                         });
                     }
@@ -429,14 +420,57 @@
         });
 
         $('.navToFile1').click(function() {
-            //        $('.fileUpDiv').removeClass('d-none');
-            $('#issue_date', '#expire_date').val('');
-            daterangepicker.setValue(null);
+            $('#upload_cert_section').removeClass('d-none');
+            // $('#issue_date', '#expire_date').val('');
+            // daterangepicker.setValue(null);
         });
 
+        function loadCertRefNo(resp) {
+            if (resp == '' || resp.id == '') {
+                $('#man_cert_ref_no').prop('disabled', true);
+                $('#save_man_ref_no').prop('disabled', true);
+            } else {
+                $('#man_cert_ref_no').prop('disabled', false);
+                $('#save_man_ref_no').prop('disabled', false);
+            }
+        }
+
         $('#uploadCerfile').click(function() {
+            let uploaded_file_path = $('#drafted_cert_view').attr('src');
+            let file_input = $('#fileUploadInput').val();
+
+            if (file_input != '') {
+                if (uploaded_file_path != '') {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "Certificate file will be updated!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, update it!'
+                    }).then((result) => {
+                        if (result.value) {
+                            draft_file_upload();
+                        }
+                    });
+                } else {
+                    draft_file_upload();
+                }
+            } else {
+                Swal.fire(
+                    'File upload validation?',
+                    'File must select to upload?',
+                );
+            }
+
+        });
+
+        function draft_file_upload() {
+            $('#uploadCerfile').prop('disabled', true);
             let url_upload = '';
             if (isNaN(CERTIFICATE_ID)) {
+                $('#uploadCerfile').prop('disabled', false);
                 alert('Certificate ID Error!');
                 return false;
             }
@@ -445,6 +479,7 @@
                 file: file
             };
             if ($('#fileUploadInput')[0].files.length === 0) {
+                $('#uploadCerfile').prop('disabled', false);
                 alert('No File Selected!');
                 return false;
             }
@@ -453,57 +488,27 @@
                 DATA['issue_date'] = $('#issue_date').val().trim();
                 DATA['expire_date'] = $('#expire_date').val().trim();
                 if (DATA.issue_date.length == 0 || DATA.expire_date.length == 0) {
+                    $('#uploadCerfile').prop('disabled', false);
                     alert('Invalid Date !');
                     return false
                 }
-            } else if (FILE_STATUS == 2) {
+            } else if (FILE_STATUS == 2 || FILE_STATUS == 3) {
                 url_upload = '/api/certificate/draft/';
 
             }
-            
+
             submitDataWithFile(url_upload + CERTIFICATE_ID, DATA, function(resp) {
+                $('#uploadCerfile').prop('disabled', false);
                 show_mesege(resp);
                 if (resp.id == 1) {
-                    getCertificateDetails(PROFILE_ID, function(resp) {
+                    getCertificateDetails(PROFILE_ID,FILE_URL, function(resp) {
                         CERTIFICATE_ID = parseInt(resp.id);
                         FILE_STATUS = parseInt(resp.client.file_status);
                         $('#fileUploadInput').val('');
                     });
                 }
             });
-        });
-
-        $('#uploadcorrectedFile').click(function() { //upload corrected file
-            let url_upload = '';
-            if (isNaN(CERTIFICATE_ID)) {
-                alert('Certificate ID Error!');
-                return false;
-            }
-            let file = $('#correctedFile')[0].files[0];
-            let DATA = {
-                file: file
-            }
-            if ($('#correctedFile')[0].files.length === 0) {
-                alert('No File Selected!');
-                return false;
-            }
-            url_upload = '/api/certificate/corrected_file/';
-            submitDataWithFile(url_upload + CERTIFICATE_ID, DATA, function(resp) {
-                show_mesege(resp);
-                if (resp.id == 1) {
-                    getCertificateDetails(PROFILE_ID, function(resp) {
-                        CERTIFICATE_ID = parseInt(resp.id);
-                        FILE_STATUS = parseInt(resp.client.file_status);
-                        $('#correctedFile').val('');
-                    });
-                } else {
-                    // show errors
-
-                    // location.reload();
-                }
-            });
-            
-        });
+        }
 
         $('.complCertificate').click(function() {
             if (confirm('Are you sure you want to complete this certificate?')) {
@@ -512,17 +517,25 @@
                     expire_date: $('#expire_date').val().trim()
                 };
                 completeCertificateAPI(CERTIFICATE_ID, FILE_STATUS, dataB, function(resp) {
+
                     show_mesege(resp);
-                    // if (resp.id === 1) {
-                    //     window.location.href = "/industry_profile/id/" + PROFILE_ID;
-                    // }
+                    if (resp.id === 1) {
+                        $('.fileUpDiv').addClass('d-none');
+                        // window.location.href = "/industry_profile/id/" + PROFILE_ID;
+                    }
                     $('#certificateSubmittedLable').removeClass('d-none');
                     $('.complCertificate').addClass('d-none');
-                    
-                    getCertificateDetails(PROFILE_ID, function(resp) {
-                        CERTIFICATE_ID = parseInt(resp.id);
-                        FILE_STATUS = parseInt(resp.client.file_status);
-                    });
+                    //***
+                    $('.genCertificateNum').addClass('d-none');
+
+                    if (resp.id != 1) {
+                        getCertificateDetails(PROFILE_ID,FILE_URL, function(resp) {
+                            if (resp.length != 0) {
+                                CERTIFICATE_ID = parseInt(resp.id);
+                                FILE_STATUS = parseInt(resp.client.file_status);
+                            }
+                        });
+                    }
                 });
             }
         });
@@ -556,18 +569,20 @@
                 cert_ref_no: $('#man_cert_ref_no').val()
             };
 
-            if (data['cert_id'] != '' && data['cert_ref_no'] != '') {
+            if (data['cert_ref_no'] == '') {
+                swal.fire('Failed', 'Please enter reference no to save', 'error');
+            } else if (data['cert_id'] == '') {
+                swal.fire('Failed', 'Certificate Number is not generated', 'error');
+            } else {
                 ajaxRequest('POST', "/api/save_reference_no", data, function(resp) {
                     if (resp.status == 1) {
                         swal.fire('success', 'Reference Number Saved Successfully', 'success');
                         $('#man_cert_ref_no').val('');
-                        getCertificateDetails(PROFILE_ID)
+                        getCertificateDetails(PROFILE_ID,FILE_URL)
                     } else {
                         swal.fire('Failed', 'Reference Number Saving was Successfully', 'error');
                     }
                 });
-            } else {
-                swal.fire('Failed', 'Please enter reference no to save', 'error');
             }
         });
     </script>

@@ -90,6 +90,19 @@ function loadAdPendingListTable(id) {
                 "defaultContent": "-"
             },
             {
+                "data": "code_sc",
+                render: function (data, type, row) {
+
+                    let td = '-';
+
+                    if (row.site_clearence_sessions[0] != null) {
+                        td = row.site_clearence_sessions[0].code;
+                    }
+                    // console.log(td);
+                    return "<td>" + td + "</td>";
+                },
+            },
+            {
                 "data": "code_epl",
                 render: function (data, type, row) {
 
@@ -117,7 +130,7 @@ function loadAdPendingListTable(id) {
                 render: function (data, type, row) {
                     var myDate = new Date(row.created_at);
                     var fixMydate = myDate.toISOString().split('T')[0];
-                    return '<td>' + cer_type_status[row.cer_type_status] + '(' + fixMydate + ')</td>';
+                    return '<td>' + fixMydate + ' (' + cer_type_status[row.cer_type_status] +')' +'</td>';
                 },
                 "defaultContent": "-"
             },
@@ -140,9 +153,9 @@ function loadAdPendingListTable(id) {
                 "defaultContent": "-"
             }
         ],
-        "order": [
-            [1, "asc"]
-        ],
+        // "order": [
+        //     [1, "asc"]
+        // ],
     }
     );
 

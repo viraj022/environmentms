@@ -16,7 +16,6 @@
             word-break: break-all;
             /* MUST ADD THIS */
         }
-
     </style>
 @endsection
 
@@ -74,12 +73,11 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Complainer Contact Number*</label>
+                                    <label>Complainer Contact Number</label>
                                     <input id="contact_complainer_ipt" name="contact_complainer_ipt"
-                                        onKeyDown="if (this.value.length == 10 && event.keyCode != 8)
-                                                                                                                                return false;" type="number"
-                                        class="form-control form-control-sm"
-                                        placeholder="Enter Contact Number of complainer..." value="" required>
+                                        onKeyDown="if (this.value.length == 10 && event.keyCode != 8) return false;"
+                                        type="number" class="form-control form-control-sm"
+                                        placeholder="Enter Contact Number of complainer..." value="">
                                     <div id="contact_complainer_valid" class="d-none">
                                         <p class="text-danger">Complainer Contact Number is required</p>
                                     </div>
@@ -93,7 +91,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Attachment: </label>
+                                    <label>Attachment: </label><br>
                                     <input type="file" id="complain_attach" name="complain_attach"
                                         accept=".png, .jpg, .jpeg" multiple>
                                     <div id="complain_attach_valid" class="d-none">
@@ -227,7 +225,7 @@
                 if (result.value) {
                     delete_complain(id);
                 } else if (result.isDenied) {
-                    Swal.fire('Canceled!', 'Confirmation was cancelled', 'info')
+                    Swal.fire('Cancelled!', 'Confirmation was cancelled', 'info')
                 }
             })
         });
@@ -237,7 +235,7 @@
             errorClass: "invalid",
             rules: {
                 contact_complainer_ipt: {
-                    valid_lk_phone: true,
+                    valid_lk_phones: true,
                 },
             },
             errorElement: 'span',
@@ -291,6 +289,10 @@
         }, "Please enter a valid email addresss");
         jQuery.validator.addMethod("valid_lk_phone", function(value, element) {
             return this.optional(element) || /^0[7][0-9]{8}$/.test(value);
+        }, "Please enter a valid phone number");
+        jQuery.validator.addMethod("valid_lk_phones", function(value, element) {
+            return this.optional(element) ||
+                /^([0]{1}[12345689]{1}[0-9]{1}[0-9]{7})|([0]{1}[7]{1}[01245678]{1}[0-9]{7})$/.test(value);
         }, "Please enter a valid phone number");
         jQuery.validator.addMethod("valid_lk_nic", function(value, element) {
             return this.optional(element) || /^([0-9]{9}[x|X|v|V]|[0-9]{12})$/.test(value);

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Client extends Model
 {
-
+    //is old = 0 => old , 1 => new , 2 => confirmed
     public const STATUS_INSPECTION_NEEDED = 'Inspection Needed';
     public const STATUS_INSPECTION_NOT_NEEDED = 'Inspection Not Needed';
     public const STATUS_PENDING = 'Pending';
@@ -22,6 +22,18 @@ class Client extends Model
     // protected $appends = ['start_date_only', 'code_epl', 'code_site'];
     protected $hidden = [
         'password', 'api_token',
+    ];
+
+    public const FILE_STATUS = [
+        0 => 'pending',
+        1 => 'AD File Approval Pending',
+        2 => 'Certificate Preparation',
+        3 => 'AD Certificate Prenidng Approval',
+        4 => 'D Certificate Approval Prenidng',
+        5 => 'Complete',
+        6 => 'Issued',
+        '-1' => 'Rejected',
+        '-2' => 'Hold'
     ];
 
     public function getStartDateOnlyAttribute()
@@ -121,12 +133,12 @@ class Client extends Model
                 abort('422', 'unknown status type');
         }
         return $file->with('environmentOfficer.assistantDirector')
-            ->with('epls')
+            ->with('epls')->orderBy('created_at', 'desc')
             ->with('siteClearenceSessions');
-            // ->with('oldFiles')
-            // ->with('industryCategory')
-            // ->with('businessScale')
-            // ->with('pradesheeyasaba');
+        // ->with('oldFiles')
+        // ->with('industryCategory')
+        // ->with('businessScale')
+        // ->with('pradesheeyasaba');
     }
 
     public function generateCertificateNumber()
@@ -229,5 +241,10 @@ class Client extends Model
     public function certificates()
     {
         return $this->hasMany(Certificate::class);
+    }
+
+    public function fileLetters()
+    {
+        return $this->hasMany(FileLetter::class);
     }
 }

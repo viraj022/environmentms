@@ -31,15 +31,12 @@ class InspectionSessionRepository
             ->join('clients', 'inspection_sessions.client_id', 'clients.id')
             ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
             ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
-            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
-            ->join('users', 'assistant_directors.user_id', 'users.id')
-            ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(inspection_sessions.id) as total'))
-            ->where('assistant_directors.active_status', 1)
+            ->select('zones.id as zone_id', 'zones.name as zone_name', DB::raw('count(inspection_sessions.id) as total'))
             ->whereBetween('completed_at', [$from, $to])
             ->where('application_type', InspectionSession::TYPE_EPL)
             ->groupBy('zones.id')
             ->orderBy('zones.name');
-        // if()
+
         switch ($isNew) {
             case 1:
                 $query =  $query->where('count', 0);
@@ -50,22 +47,18 @@ class InspectionSessionRepository
             default:
                 abort(422, "invalid Argument for the switch HCE-log");
         }
-        return $query->get();
-        // dd($query->get()->toArray());
+        return $query->get()->keyBy('zone_id');
     }
 
     public function getSiteInspection($from, $to, $isNew)
     {
-        $query =
-            InspectionSession::join('site_clearence_sessions', 'inspection_sessions.profile_id', 'site_clearence_sessions.id')
+        $query = InspectionSession::join('site_clearence_sessions', 'inspection_sessions.profile_id', 'site_clearence_sessions.id')
             ->join('site_clearances', 'site_clearence_sessions.id', 'site_clearances.site_clearence_session_id')
             ->join('clients', 'inspection_sessions.client_id', 'clients.id')
             ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', 'pradesheeyasabas.id')
             ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
-            ->join('assistant_directors', 'zones.id', 'assistant_directors.zone_id')
-            ->join('users', 'assistant_directors.user_id', 'users.id')
-            ->select('assistant_directors.id as ass_id', 'users.first_name', 'users.last_name', DB::raw('count(inspection_sessions.id) as total'))
-            ->where('assistant_directors.active_status', 1)
+            ->select('zones.name as zone_name', 'zones.id as zone_id', DB::raw('count(inspection_sessions.id) as total'))
+            ->whereNotNull('completed_at')
             ->whereBetween('completed_at', [$from, $to])
             ->where('application_type', InspectionSession::SITE_CLEARANCE)
             ->groupBy('zones.id')
@@ -81,7 +74,8 @@ class InspectionSessionRepository
             default:
                 abort(422, "invalid Argument for the switch HCE-log");
         }
-        return $query->get();
+
+        return $query->get()->keyBy('zone_id');
     }
     public function getSiteInspectionDetails($from, $to, $eo_id = -1)
     {

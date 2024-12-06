@@ -65,7 +65,7 @@
                         </div>
                         <button id="btnLoadAc" class="btn btn-primary">Load</button>
                         <form id="old_data_form">
-                            <div class="eplSection legitSection mt-2 d-none"> 
+                            <div class="eplSection legitSection mt-2 d-none">
                                 <div class="form-group">
                                     <label class="txtCodeCn">EPL Code*</label>
                                     <div><input id="getEPLCode" name="getEPLCode" type="text" class="form-control form-control-sm" required="" placeholder="Enter Code..." value=""></div>
@@ -196,7 +196,7 @@
                         @if($pageAuth['is_delete']==1 || false)
                         <button  id="btnshowDelete" type="submit" class="btn btn-danger d-none">Delete</button>
                         @endif
-                    </div>                           
+                    </div>
                 </div>
             </div>
 
@@ -242,16 +242,16 @@
                                                 <button disabled id="btnUpload" type="submit" class="btn btn-success">Upload</button>
                                                 @endif
                                             </div>
-                                            <div class="card-body injectViewAttachs">                                
+                                            <div class="card-body injectViewAttachs">
                                                 <a href="#" target="_blank">Loading Attachments...</a>
-                                            </div>                                    
+                                            </div>
                                         </div>
                                     </div>
                                     <!--                                    <div class="card-footer">
-                                    
+
                                                                         </div> -->
                                 </div>
-                            </div>                                        
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -321,7 +321,7 @@
 <script>
     let PROFILE = '{{$id}}';
     $(function () {
-        
+
 //Load Combo Sets
         loadAssistantDirectorCombo(function () {
             loadEnvOfficers_combo(parseInt($('#ass_dir_combo').val()), function () {
@@ -371,14 +371,12 @@
                         $('#getsubmitDate').val(result.submit_date_only);
                         $('#btnUpdate').val(result.id);
                         $('#btnshowDelete').val(result.id);
-                        if (result.path.split('.')[1] == 'pdf') {
-                            $('.lastCertificatePath').attr('src', '/dist/img/pdf-view.png');
-                        } else {
-                            $('.lastCertificatePath').attr('src', '/' + result.path);
-                        }
-                        $('#addCertificateURL').attr('href', '/' + result.path);
-                        if (result.path !== null && result.path.length > 0) {
-                            $('.lastIssuedCer').removeClass('d-none');
+                        if(result.path != null){
+                            (result.path.split('.')[1] == 'pdf') ?  $('.lastCertificatePath').attr('src', '/dist/img/pdf-view.png') : $('.lastCertificatePath').attr('src', '/' + result.path)
+                            $('#addCertificateURL').attr('href', '/' + result.path);
+                            if (result.path !== null && result.path.length > 0) {
+                                $('.lastIssuedCer').removeClass('d-none');
+                            }
                         }
                         showUpdate();
                         $('.eplSection').removeClass('d-none');
@@ -411,7 +409,7 @@
                         $('.eplSection').removeClass('d-none');
                     }
                 });
-                //Telecomminication Section   
+                //Telecomminication Section
             } else if (load_val === '03') {
                 checkSiteClearExist(PROFILE, function (result) {
                     if (result.length === 0) {

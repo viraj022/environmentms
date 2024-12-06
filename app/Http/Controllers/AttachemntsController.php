@@ -208,11 +208,8 @@ class AttachemntsController extends Controller
         if ($pageAuth['is_create']) {
             $e = EPL::findOrFail($epl);
             $type = $request->file->extension();
-            $file_name = Carbon::now()->timestamp . '.' . $request->file->extension();
-            $fileUrl = "/uploads/" . FieUploadController::getEPLAttachmentPath($e);
-            $storePath = 'public' . $fileUrl;
-            $path = 'storage' . $fileUrl . "/" . $file_name;
-            $request->file('file')->storeAs($storePath, $file_name);
+            $fileUrl = "uploads/" . FieUploadController::getEPLAttachmentPath($e);
+            $path = $request->file('file')->store($fileUrl);
             return \DB::transaction(function () use ($attachment, $e, $path, $type) {
                 $e->attachemnts()->detach($attachment);
                 $e->attachemnts()->attach(
@@ -224,7 +221,7 @@ class AttachemntsController extends Controller
                     ]
                 );
                 LogActivity::addToLog('attachment added to file', $attachment);
-                LogActivity::fileLog($e->client_id, 'Attachments', "File attached", 1);
+                LogActivity::fileLog($e->client_id, 'Attachments', "File attached", 1, 'epl', $e->id);
                 return array('id' => 1, 'message' => 'true');
             });
         } else {
@@ -238,7 +235,7 @@ class AttachemntsController extends Controller
         $e = EPL::findOrFail($epl);
         $e->attachemnts()->detach($attachment);
         LogActivity::addToLog('File detached', $attachment);
-        LogActivity::fileLog($e->client_id, 'Attachments', "File detached", 1);
+        LogActivity::fileLog($e->client_id, 'Attachments', "File detached", 1, 'epl', $e->id);
         return array('id' => 1, 'message' => 'true');
     }
 
@@ -246,7 +243,7 @@ class AttachemntsController extends Controller
     {
         LogActivity::addToLog('EPL Attachment requested', $epl);
         return \DB::select(\DB::raw("SELECT b.path, b.type, b.attachment_epl_id, a.att_id, a.attachment_name FROM (SELECT
-	application_types.`name`, 
+	application_types.`name`,
 	attachemnts.`name` AS attachment_name,
 	attachemnts.id AS att_id
 FROM attachemnts
@@ -255,8 +252,8 @@ FROM attachemnts
 WHERE application_types.`name` = '" . ApplicationTypeController::EPL . "') AS a
 	LEFT JOIN
 	(SELECT
-	attachemnt_e_p_l.path, 
-	attachemnt_e_p_l.type, 
+	attachemnt_e_p_l.path,
+	attachemnt_e_p_l.type,
 	attachemnt_e_p_l.attachemnt_id,
 	attachemnt_e_p_l.id AS attachment_epl_id
 FROM attachemnt_e_p_l

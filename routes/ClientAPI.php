@@ -397,11 +397,11 @@ Route::middleware('auth:api')->get('/working_certificate/file/{file}', 'ClientCo
   "industry_investment": 1000,
   "industry_start_date": "2020-06-30 00:00:00",
   "industry_registration_no": "light/2020",
-  "application_path": "storage//uploads/industry_files/16/application/1599130463.pdf",
+  "application_path": "uploads/industry_files/16/application/1599130463.pdf",
   "environment_officer_id": 10,
-  "file_01": "storage/uploads/industry_files/16/application/file1/1599218113.png",
-  "file_02": "storage/uploads/industry_files/16/application/file2/1599218121.jpeg",
-  "file_03": "storage/uploads/industry_files/16/application/file3/1599218127.png",
+  "file_01": "uploads/industry_files/16/application/file1/1599218113.png",
+  "file_02": "uploads/industry_files/16/application/file2/1599218121.jpeg",
+  "file_03": "uploads/industry_files/16/application/file3/1599218127.png",
   "file_no": "PEA/604//3/AG/M/16/2020",
   "assign_date": "2020-09-04 12:06:01",
   "is_old": 1,
@@ -435,3 +435,6 @@ Route::middleware('auth:api')->get('/files/confirmed', 'ClientController@getCofi
 Route::middleware('auth:api')->get('/files/approved/director', 'ClientController@getDirectorApprovedList'); //  get director approved list
 Route::middleware('auth:api')->post('/certificate/word/cert_id/{cert_id}', 'ClientController@uploadDocumentFile'); //  upload document file
 Route::middleware('auth:api')->post('/pendingExpiredCert', 'ClientController@getPendingExpiredCertificates'); //  get all Expired Certificates and certificate that expired within  a month by environment
+
+//change file status to 0 (pending)
+Route::middleware('auth:api')->post('/change_file_status/id/{client_id}', 'ClientController@changeStatus'); //  change file status

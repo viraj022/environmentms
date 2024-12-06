@@ -139,7 +139,9 @@ return [
         'searchFiles' => 17,
         'complains' => 18,
         'reset' => 19,
-
+        'InvoiceCancel' => 20,
+        'Cashier' => 21,
+        'TaxRate'  => 22,
     ],
 
 ];

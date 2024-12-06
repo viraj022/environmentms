@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
   |
  */
 
-Route::middleware('auth:api')->post('/automatic_inspection/create/id/{id}', 'InspectionSessionController@createInspection'); //   create a new inspection session 
+Route::middleware('auth:api')->post('/automatic_inspection/create/id/{id}', 'InspectionSessionController@createInspection'); //   create a new inspection session
 
 /*
 {
@@ -35,7 +35,7 @@ Route::middleware('auth:api')->delete('/inspection/delete/id/{id}', 'InspectionS
 Route::middleware('auth:api')->get('/inspections/file/id/{id}', 'InspectionSessionController@showInspections');   // show all inspections by file
 
 /**
- * 
+ *
  [
     {
         "id": 10,
@@ -100,11 +100,11 @@ Route::middleware('auth:api')->get('/inspections/file/date/{date}/id/{id}', 'Ins
             "industry_investment": 5661321,
             "industry_start_date": "2020-08-01 00:00:00",
             "industry_registration_no": "asdsadsadad",
-            "application_path": "storage//uploads/industry_files/7/application/1598265083.jpeg",
+            "application_path": "uploads/industry_files/7/application/1598265083.jpeg",
             "environment_officer_id": 20,
-            "file_01": "storage/uploads/industry_files/7/application/file1/1598264709.jpeg",
-            "file_02": "storage/uploads/industry_files/7/application/file2/1598264714.jpeg",
-            "file_03": "storage/uploads/industry_files/7/application/file3/1598264720.jpeg",
+            "file_01": "uploads/industry_files/7/application/file1/1598264709.jpeg",
+            "file_02": "uploads/industry_files/7/application/file2/1598264714.jpeg",
+            "file_03": "uploads/industry_files/7/application/file3/1598264720.jpeg",
             "file_no": "PEA/testps/CR/M/07/2020",
             "assign_date": "2020-08-24 10:33:25",
             "is_working": 1,
@@ -118,7 +118,7 @@ Route::middleware('auth:api')->get('/inspections/file/date/{date}/id/{id}', 'Ins
 Route::middleware('auth:api')->get('/inspections/pending/file/id/{id}', 'InspectionSessionController@showInspectionsPending');   // show all pending inspections by file
 
 /**
- * 
+ *
  [
     {
         "id": 10,
@@ -141,7 +141,7 @@ Route::middleware('auth:api')->get('/inspections/pending/file/id/{id}', 'Inspect
 Route::middleware('auth:api')->get('/inspections/completed/file/id/{id}', 'InspectionSessionController@showInspectionsCompleted');   // show all compleate inspections by file
 
 /**
- * 
+ *
  [
     {
         "id": 10,
@@ -196,7 +196,7 @@ Route::middleware('auth:api')->patch('/inspection/pending/id/{id}', 'InspectionS
  */
 
 
-//Inspection Personal API Open 
+//Inspection Personal API Open
 
 Route::middleware('auth:api')->post('/inspection/personal/create/id/{id}', 'InspectionPersonalController@create');
 Route::middleware('auth:api')->get('/inspection/personal/id/{id}', 'InspectionPersonalController@find');

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class EPL extends Model
 {
     use SoftDeletes;
-    
+
     public const FINEDATE = '2012-01-01';
     public const EPL = 'epl';
     public const INSPECTION = 'inspection';
@@ -17,6 +17,7 @@ class EPL extends Model
     protected $appends = ['epl_instantNumber', 'expire_date_only', 'issue_date_only', 'submit_date_only'];
 
     public const INSPECTION_FEE = 'Inspection Fee';
+
 
     public function client()
     {
@@ -82,12 +83,12 @@ class EPL extends Model
         }
     }
 
-    public  function getNextRnumber()
+    public function getNextRnumber()
     {
         $count = EPLRenew::where('e_p_l_id', $this->id)->count();
         return 'R' . ($count + 1);
     }
-    public  function getRenewCount()
+    public function getRenewCount()
     {
         abort(404, "Method removed-hcw code");
     }
@@ -149,17 +150,26 @@ class EPL extends Model
     public function getIssueDateOnlyAttribute()
     {
         //return strtotime($this->schedule_date)->toDateString();
+        if ($this->issue_date == null) {
+            return 'N/A';
+        }
         return Carbon::parse($this->issue_date)->format('Y-m-d');
     }
 
     public function getExpireDateOnlyAttribute()
     {
         //return strtotime($this->schedule_date)->toDateString();
+        if ($this->expire_date == null) {
+            return 'N/A';
+        }
         return Carbon::parse($this->expire_date)->format('Y-m-d');
     }
     public function getSubmitDateOnlyAttribute()
     {
         //return strtotime($this->schedule_date)->toDateString();
+        if ($this->expire_date == null) {
+            return  'N/A';
+        }
         return Carbon::parse($this->submitted_date)->format('Y-m-d');
     }
     public function minutes()
