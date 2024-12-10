@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Faker\Provider\ar_SA\Payment;
 use Illuminate\Database\Eloquent\Model;
 
 class PaymentType extends Model

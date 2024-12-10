@@ -218,3 +218,5 @@ Route::middleware('auth')->group(function () {
 
 //test sms send
 Route::get('/test_sms', 'SmsController@sendTestSms');
+//migrate certificate table ep_id
+Route::get('/migrate_certificate', 'fileMigrationController@migrateEplIdToCertificate');

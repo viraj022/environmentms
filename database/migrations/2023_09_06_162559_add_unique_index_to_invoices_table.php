@@ -13,8 +13,9 @@ class AddUniqueIndexToInvoicesTable extends Migration
      */
     public function up()
     {
+        return;
         Schema::table('invoices', function (Blueprint $table) {
-            $table->unique(['invoice_number'], 'invoice_no_unique');
+            $table->unique(['invoice_number'], 'invoice_no_unique_index');
         });
     }
 
@@ -25,8 +26,9 @@ class AddUniqueIndexToInvoicesTable extends Migration
      */
     public function down()
     {
+        return;
         Schema::table('invoices', function (Blueprint $table) {
-            $table->dropUnique('invoice_no_unique');
+            $table->dropUnique('invoice_no_unique_index');
         });
     }
 }
