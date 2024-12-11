@@ -87,3 +87,6 @@ Route::get('/status_mismatch_report', 'ReportController@statusMismatchEpl');//st
 Route::get('/cert_missing_report', 'ReportController@certMissingReport');//status mismatch report
 Route::get('/new_cs_report/{from}/{to}/{isNew}', 'ReportController@siteClearanceBySubmitDate')->name('new_cs_report');//new cs report
 Route::get('/new_epl_report/{from}/{to}/{isNew}', 'ReportController@eplBySubmitDate')->name('new_epl_report');//new epl report
+
+#certificate report
+Route::get('/license_full_detail_report/{from}/{to}', 'ReportController@eplSiteClearenceReport')->name('license_full_detail_report');

@@ -41,6 +41,7 @@
                                                 <option value="4">Progress Report</option>
                                                 <option value="5">EO Inspection Report</option>
                                                 <option value="6">File Count By Category Report</option>
+                                                <option value="8">EPL/SC Full Detailed Report</option>
                                             </select>
                                         </div>
                                     </div>
@@ -57,13 +58,13 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>From Date*</label>
-                                    <input id="startDate" type="date" max="2999-12-31" class="form-control form-control-sm"
-                                        placeholder="Enter Date..." value="">
+                                    <input id="startDate" type="date" max="2999-12-31"
+                                        class="form-control form-control-sm" placeholder="Enter Date..." value="">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>To Date*</label>
-                                    <input id="endDate" type="date" max="2999-12-31" class="form-control form-control-sm"
-                                        placeholder="Enter Date..." value="">
+                                    <input id="endDate" type="date" max="2999-12-31"
+                                        class="form-control form-control-sm" placeholder="Enter Date..." value="">
                                 </div>
                                 <div class="col-md-6 d-none" id="officer_section">
                                     <div class="form-group">
@@ -170,6 +171,9 @@
                         break;
                     case 7:
                         URL = '/site_clearence_log/' + date_from + '/' + date_to;
+                        break;
+                    case 8:
+                        URL = '/license_full_detail_report/' + date_from + '/' + date_to;
                         break;
                 }
                 console.log('url: ' + URL);

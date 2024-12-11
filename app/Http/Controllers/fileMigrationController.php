@@ -9,6 +9,7 @@ use App\EPL;
 use App\InspectionSessionAttachment;
 use App\OldFiles;
 use App\SiteClearance;
+use DB;
 use Illuminate\Http\Request;
 
 class fileMigrationController extends Controller
@@ -167,5 +168,59 @@ class fileMigrationController extends Controller
             'message' => 'Certificate updated successfully',
             'status' => 'success',
         ], 200);
+    }
+
+    /**
+     * migrate epl id to certificate table
+     */
+    public function migrateEplIdToCertificate()
+    {
+        $certificates = Certificate::where('certificate_type', 0)->get();
+        // dd($certificates->count());
+        $failedCount = 0;
+        $failedIds = [];
+        $successCount = 0;
+
+
+        // $epl = EPL::where('certificate_no','4793/2020')
+        //     // ->whereRaw('DATE(expire_date) = DATE(?)', [$certificate->expire_date])
+        //     // ->where('client_id', 2798)
+        //     ->first();
+        //     dd($epl);
+        DB::enableQueryLog();
+        try {
+            DB::beginTransaction();
+            foreach ($certificates as $certificate) {
+                $epl = EPL::where('certificate_no', '=', $certificate->cetificate_number)
+                    ->first();
+                if (is_null($certificate->cetificate_number)) {
+                    dd($certificate);
+                }
+                if (empty($epl)) {
+                    // dd($epl, $certificate);
+                    //print last query
+                    dd(DB::getQueryLog());
+                    //throw new \Exception('EPL not found');
+                    $failedCount++;
+                    $failedIds[] = ['id' => $certificate->id, 'client_id' => $certificate->client_id, 'expire_date' => $certificate->expire_date, 'certificate_no' => $certificate->cetificate_number];
+                }
+                $certificate->epl_id = $epl->id;
+                $certificate->save();
+                if (!$certificate->epl_id) {
+                    throw new \Exception('EPL not found');
+                }
+                $successCount++;
+            }
+            if ($failedCount > 0) {
+                DB::rollBack();
+                dump('not found : ' . $failedCount);
+                // dump($failedIds);
+            } else {
+                DB::commit();
+                dump('done successfully : ' . $successCount);
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 }

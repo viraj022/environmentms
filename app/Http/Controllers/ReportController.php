@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\AssistantDirector;
+use App\BusinessScale;
 use App\Client;
 use Carbon\Carbon;
 use App\SiteClearance;
@@ -27,16 +29,21 @@ use App\Certificate;
 use App\EPL;
 use App\EPLNew;
 use App\FileLog;
+use App\IndustryCategory;
 use App\Repositories\ComplaintRepository;
+use App\Services\PaymentService;
 use App\SiteClearenceSession;
 use App\Zone;
 use DB;
+use Illuminate\Support\Facades\Cache;
 
 class ReportController extends Controller
 {
 
-    public function __construct()
+    protected $paymentService;
+    public function __construct(PaymentService $paymentService)
     {
+        $this->paymentService = $paymentService;
         $this->middleware(['auth']);
     }
 
@@ -272,7 +279,8 @@ class ReportController extends Controller
         $totalCount = $this->generateTotalField(array(
             $eplInspectionNewCount,
             $eplInspectionRenewCount,
-            $siteInspectionNewCount, $siteInspectionRenewCount
+            $siteInspectionNewCount,
+            $siteInspectionRenewCount
         ));
 
         $result[] = array('type' => 'Inspection', 'name' => 'SC(New)', 'application' => $siteInspectionNewCount->sum('total'), 'object' => $siteInspectionNewCount->toArray());
@@ -1198,5 +1206,92 @@ class ReportController extends Controller
         $minutes_data = $minutes->getDirectorApproveCertificate($start_data, $end_date);
         // dd($minutes_data);
         return view('Reports.minutes_report', compact('start_data', 'end_date', 'minutes_data'));
+    }
+
+    /**
+     * epl site clearence report by certificate issue date
+     */
+    public function eplSiteClearenceReport(Request $request)
+    {
+        // $from = "2024-01-01";
+        // $to = "2024-12-31";
+        $from = $request->from;
+        $to = $request->to;
+
+        // Generate a unique cache key based on the parameters
+        $cacheKey = "epl_site_clearance_report_{$from}_{$to}";
+        $data = Cache::remember($cacheKey, now()->addMinutes(15), function () use ($from, $to) {
+            $data = [];
+            $data['header_count'] = 0;
+            $data['results'] = [];
+            $num = 0;
+            $assistantDirectors = AssistantDirector::with('user')->get();
+            $adArray = [];
+            foreach ($assistantDirectors as $ad) {
+                $adArray[$ad->id] = $ad->user->first_name . ' ' . $ad->user->last_name;
+            }
+            $industryCategory = IndustryCategory::all()->keyBy('id')->toArray();
+
+            $businessScale = BusinessScale::all()->pluck('name', 'id')->toArray();
+
+            $epl = Epl::whereRaw('DATE(issue_date) BETWEEN ? AND ?', [$from, $to])
+                ->orderBy('issue_date', 'ASC')
+                // ->take(10)
+                ->get();
+
+            foreach ($epl as $row) {
+                $array = [];
+                $array['#'] = ++$num;
+                $client = Client::with(['environmentOfficer.user', 'pradesheeyasaba.zone'])->find($row->client_id)->toArray();
+
+                $array['epl_id'] =  $row->id;
+                $array['client_id'] =  $row->client_id;
+                $array['app_submitted_date'] =  'N/A';
+                $array['client_name'] =  $client['name_title'] . ' ' . $client['first_name'] . ' ' . $client['last_name'] . "\n";
+                $array['nic'] = empty($client['nic']) ? 'N/A' : $client['nic'];
+                $array['client_address'] = $client['address'];
+                $array['client_phone'] = $client['contact_no'];
+                $array['industry_name'] = $client['industry_name'];
+                $array['br_no'] = $client['industry_name'];
+                $array['industry_address'] = $client['industry_address'];
+                $array['industry_phone'] = $client['industry_contact_no'];
+                $array['industry_category'] = $industryCategory[$client['industry_category_id']]['name'];
+                $array['industry_category_type'] = $businessScale[$client['business_scale_id']];
+                $array['ad'] = empty($client['environment_officer']['assistant_director_id']) ? 'n/a' : $adArray[$client['environment_officer']['assistant_director_id']] ?? 'N/A';
+                $array['eo'] = empty($client['environment_officer']['user']) ? 'n/a' : $client['environment_officer']['user']['first_name'] . ' ' . $client['environment_officer']['user']['last_name'];
+                $array['district'] = $client['pradesheeyasaba']['zone']['name'];
+                $array['pra_sb'] = $client['pradesheeyasaba']['name'];
+                $array['file_no'] = $client['file_no'];
+                $array['sc_no'] = '';
+                $array['epl_no'] = $row['code'];
+                $array['cert_no'] = $row['certificate_no'];
+                $array['cert_issue_date'] = Carbon::parse($row['issue_date'])->format('Y-m-d');
+                $array['cert_exp_date'] = Carbon::parse($row['expire_date'])->format('Y-m-d');
+                $array['fee_inspection'] = 0;
+                $array['fee_license'] = 0;
+                $array['fee_fine'] = 0;
+                $array['license_payment_date'] = '-';
+
+                $payments = $this->paymentService->getPaymentList($row);
+                // dd($payments);
+                if (!empty($payments['inspection'])) {
+                    $array['fee_inspection'] = $payments['inspection']['amount'];
+                }
+                if (!empty($payments['license_fee'])) {
+                    $array['fee_license'] = $payments['license_fee']['amount'];
+                    $array['license_payment_date'] = $payments['license_fee']['created_at'];
+                }
+                if (!empty($payments['fine'])) {
+                    $array['fee_fine'] = $payments['fine']['amount'];
+                }
+
+
+                $array['fee_total'] = $array['fee_inspection'] + $array['fee_license'] + $array['fee_fine'];
+                // dd($array);
+                array_push($data['results'], $array);
+            }
+            return $data;
+        });
+        return view('Reports.epl_sc_issue_details', ['data' => $data, 'from' => $from, 'to' => $to]);
     }
 }

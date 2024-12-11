@@ -13,4 +13,14 @@ class Certificate extends Model
     {
         return $this->belongsTo(Client::class);
     }
+
+    public function epl()
+    {
+        return $this->belongsTo(EPL::class, 'epl_id');
+    }
+
+    public function siteClearance()
+    {
+        return $this->belongsTo(SiteClearance::class, 'sc_id');
+    }
 }
