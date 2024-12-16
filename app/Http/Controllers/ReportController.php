@@ -138,6 +138,14 @@ class ReportController extends Controller
 
     public function eplApplicationReport($from, $to)
     {
+        //create cache key
+        $cacheKey = 'eplApplicationReport' . $from . $to;
+
+        //check if cache exists
+        if (Cache::has($cacheKey)) {
+            $data = Cache::get($cacheKey);
+            return view('Reports.epl_report', ['data' => $data['data'], 'time_elapsed_secs' => $data['time_elapsed_secs'], 'from' => $from, 'to' => $to, 'generatedAt' => $data['generatedAt']]);
+        }
         $start = microtime(true);
         $epls = new EPLRepository();
         $result = $epls->getEPLReport($from, $to)->toArray();
@@ -145,6 +153,7 @@ class ReportController extends Controller
         $data['header_count'] = 0;
         $data['results'] = [];
         $num = 0;
+        $generatedAt = Carbon::now()->format('Y-m-d H:i:s');
         foreach ($result as $row) {
             // dd($row);
             $array = [];
@@ -188,7 +197,15 @@ class ReportController extends Controller
         }
         // dd($data);
         $time_elapsed_secs = round(microtime(true) - $start, 5);
-        return view('Reports.epl_report', ['data' => $data, 'time_elapsed_secs' => $time_elapsed_secs, 'from' => $from, 'to' => $to]);
+
+        // Store the result in the cache
+        Cache::put($cacheKey, [
+            'data' => $data,
+            'time_elapsed_secs' => $time_elapsed_secs,
+            'generatedAt' => $generatedAt
+        ], now()->addHours(1)); // Cache for 6 hours or adjust as needed
+
+        return view('Reports.epl_report', ['data' => $data, 'time_elapsed_secs' => $time_elapsed_secs, 'from' => $from, 'to' => $to, 'generatedAt' => $generatedAt]);
     }
 
     public function eplApplicationLog($from, $to)
@@ -236,6 +253,17 @@ class ReportController extends Controller
     {
         // $from = $from;
         // $to = $to;
+
+        //create cache key
+        $cacheKey = 'monthlyProgress' . $from . $to;
+
+        //check if cache exists
+        if (Cache::has($cacheKey)) {
+            $data = Cache::get($cacheKey);
+            // dd($data);
+            return view('Reports.monthly_progress_report', ['result' => $data['result'], 'zones' => $data['zones'], 'from' => $from, 'to' => $to, 'time_elapsed_secs' => $data['time_elapsed_secs']]);
+        }
+
         $start = microtime(true);
         $result = [];
         $epl = new EPLRepository();
@@ -365,6 +393,14 @@ class ReportController extends Controller
         $result[] = array('type' => '', 'name' => 'Tower SC', 'application' => $telecommunicationCount->sum('total'), 'object' => $telecommunicationCount->toArray());
         $result[] = array('type' => '', 'name' => 'Expert Committee Meetings', 'application' => "", 'object' => array());
         $time_elapsed_secs = round(microtime(true) - $start, 5);
+
+        // Store the result in the cache
+        Cache::put($cacheKey, [
+            'result' => $result,
+            'zones' => $zones,
+            'time_elapsed_secs' => $time_elapsed_secs
+        ], now()->addHours(1)); // Cache for 6 hours or adjust as needed
+
         return view('Reports.monthly_progress_report', compact('result', 'zones', 'time_elapsed_secs', 'from', 'to'));
     }
 
@@ -1242,12 +1278,12 @@ class ReportController extends Controller
             foreach ($epl as $row) {
                 $array = [];
                 $array['#'] = ++$num;
-                $client = Client::with(['environmentOfficer.user', 'pradesheeyasaba.zone'])->find($row->client_id)->toArray();
+                $client = Client::with(['environmentOfficer.user', 'pradesheeyasaba.zone', 'siteClearenceSessions'])->find($row->client_id)->toArray();
 
                 $array['epl_id'] =  $row->id;
                 $array['client_id'] =  $row->client_id;
-                $array['app_submitted_date'] =  'N/A';
-                $array['client_name'] =  $client['name_title'] . ' ' . $client['first_name'] . ' ' . $client['last_name'] . "\n";
+                $array['app_submitted_date'] =  Carbon::parse($row->submitted_date)->format('Y-m-d');
+                $array['client_name'] =  $client['name_title'] . ' ' . $client['first_name'] . ' ' . $client['last_name'];
                 $array['nic'] = empty($client['nic']) ? 'N/A' : $client['nic'];
                 $array['client_address'] = $client['address'];
                 $array['client_phone'] = $client['contact_no'];
@@ -1262,7 +1298,7 @@ class ReportController extends Controller
                 $array['district'] = $client['pradesheeyasaba']['zone']['name'];
                 $array['pra_sb'] = $client['pradesheeyasaba']['name'];
                 $array['file_no'] = $client['file_no'];
-                $array['sc_no'] = '';
+                $array['sc_no'] = count($client['site_clearence_sessions']);
                 $array['epl_no'] = $row['code'];
                 $array['cert_no'] = $row['certificate_no'];
                 $array['cert_issue_date'] = Carbon::parse($row['issue_date'])->format('Y-m-d');
