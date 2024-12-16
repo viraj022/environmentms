@@ -26,10 +26,12 @@ use App\Repositories\MinutesRepository;
 use PhpParser\Node\Expr\Print_;
 use Illuminate\Http\Request;
 use App\Certificate;
+use App\EnvironmentOfficer;
 use App\EPL;
 use App\EPLNew;
 use App\FileLog;
 use App\IndustryCategory;
+use App\Pradesheeyasaba;
 use App\Repositories\ComplaintRepository;
 use App\Services\PaymentService;
 use App\SiteClearenceSession;
@@ -51,7 +53,9 @@ class ReportController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        return view('report_dashboard', ['pageAuth' => $pageAuth]);
+        $pradeshiyaSaba = Pradesheeyasaba::all();
+        $industryCategory = IndustryCategory::all();
+        return view('report_dashboard', ['pageAuth' => $pageAuth, 'pradeshiyaSaba' => $pradeshiyaSaba, 'industryCategory' => $industryCategory]);
     }
 
     public function getFileLog($client_id)
@@ -138,6 +142,14 @@ class ReportController extends Controller
 
     public function eplApplicationReport($from, $to)
     {
+        //create cache key
+        $cacheKey = 'eplApplicationReport' . $from . $to;
+
+        //check if cache exists
+        if (Cache::has($cacheKey)) {
+            $data = Cache::get($cacheKey);
+            return view('Reports.epl_report', ['data' => $data['data'], 'time_elapsed_secs' => $data['time_elapsed_secs'], 'from' => $from, 'to' => $to, 'generatedAt' => $data['generatedAt']]);
+        }
         $start = microtime(true);
         $epls = new EPLRepository();
         $result = $epls->getEPLReport($from, $to)->toArray();
@@ -145,6 +157,7 @@ class ReportController extends Controller
         $data['header_count'] = 0;
         $data['results'] = [];
         $num = 0;
+        $generatedAt = Carbon::now()->format('Y-m-d H:i:s');
         foreach ($result as $row) {
             // dd($row);
             $array = [];
@@ -188,7 +201,15 @@ class ReportController extends Controller
         }
         // dd($data);
         $time_elapsed_secs = round(microtime(true) - $start, 5);
-        return view('Reports.epl_report', ['data' => $data, 'time_elapsed_secs' => $time_elapsed_secs, 'from' => $from, 'to' => $to]);
+
+        // Store the result in the cache
+        Cache::put($cacheKey, [
+            'data' => $data,
+            'time_elapsed_secs' => $time_elapsed_secs,
+            'generatedAt' => $generatedAt
+        ], now()->addHours(1)); // Cache for 6 hours or adjust as needed
+
+        return view('Reports.epl_report', ['data' => $data, 'time_elapsed_secs' => $time_elapsed_secs, 'from' => $from, 'to' => $to, 'generatedAt' => $generatedAt]);
     }
 
     public function eplApplicationLog($from, $to)
@@ -236,6 +257,17 @@ class ReportController extends Controller
     {
         // $from = $from;
         // $to = $to;
+
+        //create cache key
+        $cacheKey = 'monthlyProgress' . $from . $to;
+
+        //check if cache exists
+        if (Cache::has($cacheKey)) {
+            $data = Cache::get($cacheKey);
+            // dd($data);
+            return view('Reports.monthly_progress_report', ['result' => $data['result'], 'zones' => $data['zones'], 'from' => $from, 'to' => $to, 'time_elapsed_secs' => $data['time_elapsed_secs']]);
+        }
+
         $start = microtime(true);
         $result = [];
         $epl = new EPLRepository();
@@ -365,6 +397,14 @@ class ReportController extends Controller
         $result[] = array('type' => '', 'name' => 'Tower SC', 'application' => $telecommunicationCount->sum('total'), 'object' => $telecommunicationCount->toArray());
         $result[] = array('type' => '', 'name' => 'Expert Committee Meetings', 'application' => "", 'object' => array());
         $time_elapsed_secs = round(microtime(true) - $start, 5);
+
+        // Store the result in the cache
+        Cache::put($cacheKey, [
+            'result' => $result,
+            'zones' => $zones,
+            'time_elapsed_secs' => $time_elapsed_secs
+        ], now()->addHours(1)); // Cache for 6 hours or adjust as needed
+
         return view('Reports.monthly_progress_report', compact('result', 'zones', 'time_elapsed_secs', 'from', 'to'));
     }
 
@@ -1213,56 +1253,125 @@ class ReportController extends Controller
      */
     public function eplSiteClearenceReport(Request $request)
     {
-        // $from = "2024-01-01";
-        // $to = "2024-12-31";
+        // dd($request->all());
         $from = $request->from;
         $to = $request->to;
+        $industry_category_id = $request->industry_cat_id;
+        $request_env_officer_id = $request->eo_id;
+        $request_ad_id = $request->ad_id;
+        $request_pra_id = $request->pra_id;
+        $filterLable = "";
+        $filterLable .= "From: " . $from . " To: " . $to;
 
         // Generate a unique cache key based on the parameters
         $cacheKey = "epl_site_clearance_report_{$from}_{$to}";
-        $data = Cache::remember($cacheKey, now()->addMinutes(15), function () use ($from, $to) {
+        if (!empty($industry_category_id)) {
+            $cacheKey .= "_ic_{$request->industry_cat_id}";
+        }
+        if (!empty($request_env_officer_id)) {
+            $cacheKey .= "_eo_{$request_env_officer_id}";
+        }
+        if (!empty($request_ad_id)) {
+            $cacheKey .= "_ad_{$request_ad_id}";
+        }
+        //check if the request has hard_refresh
+        if ($request->has('hard_refresh')) {
+            Cache::forget($cacheKey);
+        }
+        $data = Cache::remember($cacheKey, now()->addMinutes(20), function () use ($from, $to, $industry_category_id, $request_env_officer_id, $request_ad_id, $request_pra_id, $filterLable) {
             $data = [];
             $data['header_count'] = 0;
             $data['results'] = [];
             $num = 0;
-            $assistantDirectors = AssistantDirector::with('user')->get();
+            $environmentOfficers = EnvironmentOfficer::with(['user', 'assistantDirector.user'])->get();
             $adArray = [];
-            foreach ($assistantDirectors as $ad) {
-                $adArray[$ad->id] = $ad->user->first_name . ' ' . $ad->user->last_name;
+            $eoArray = [];
+            foreach ($environmentOfficers as $eo) {
+                $ad = $eo->assistantDirector;
+                if (!empty($ad)) {
+                    $adArray[$ad->id] = empty($ad->user) ? 'N/A' : $ad->user->first_name . ' ' . $ad->user->last_name;
+                }
+                $eoArray[$eo->id] = empty($eo->user) ? 'N/A' : $eo->user->first_name . ' ' . $eo->user->last_name;
             }
-            $industryCategory = IndustryCategory::all()->keyBy('id')->toArray();
+            // dd($eoArray, $adArray);
+            $industryCategory = IndustryCategory::all()->pluck('name', 'id')->toArray();
 
             $businessScale = BusinessScale::all()->pluck('name', 'id')->toArray();
 
             $epl = Epl::whereRaw('DATE(issue_date) BETWEEN ? AND ?', [$from, $to])
-                ->orderBy('issue_date', 'ASC')
-                // ->take(10)
-                ->get();
+                ->select(
+                    'e_p_l_s.id',
+                    'e_p_l_s.client_id',
+                    'e_p_l_s.code',
+                    'e_p_l_s.certificate_no',
+                    'e_p_l_s.issue_date',
+                    'e_p_l_s.expire_date',
+                    'e_p_l_s.submitted_date',
+                    'clients.first_name',
+                    'clients.last_name',
+                    'clients.nic',
+                    'clients.address',
+                    'clients.contact_no',
+                    'clients.industry_name',
+                    'clients.industry_address',
+                    'clients.industry_registration_no',
+                    'clients.industry_contact_no',
+                    'clients.industry_category_id',
+                    'clients.business_scale_id',
+                    'clients.file_no',
+                    'clients.pradesheeyasaba_id',
+                    'clients.file_no',
+                    'clients.created_at',
+                    'zones.name as zone_name',
+                    'pradesheeyasabas.name as pradesheeyasaba_name',
+                    'environment_officers.assistant_director_id',
+                    'clients.environment_officer_id'
+                )
+                ->join('clients', 'e_p_l_s.client_id', '=', 'clients.id')
+                ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', '=', 'pradesheeyasabas.id')
+                ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
+                ->join('environment_officers', 'clients.environment_officer_id', '=', 'environment_officers.id')
+                ->orderBy('issue_date', 'ASC');
+            if (!empty($industry_category_id)) {
+                $epl->where('clients.industry_category_id', $industry_category_id);
+                $filterLable .= " Industry Category: " . $industryCategory[$industry_category_id];
+            }
+            if (!empty($request_env_officer_id)) {
+                $epl->where('clients.environment_officer_id', $request_env_officer_id);
+                $filterLable .= " EO: " . $eoArray[$request_env_officer_id];
+            }
+            if (!empty($request_ad_id)) {
+                $epl->where('environment_officers.assistant_director_id', $request_ad_id);
+                $filterLable .= " AD: " . $adArray[$request_ad_id];
+            }
+            // dd($epl->toSql());
+            $epl = $epl->get();
 
             foreach ($epl as $row) {
+                // dd($row);
                 $array = [];
                 $array['#'] = ++$num;
-                $client = Client::with(['environmentOfficer.user', 'pradesheeyasaba.zone'])->find($row->client_id)->toArray();
+                $siteClearance = SiteClearenceSession::where('client_id', $row->client_id)->count();
 
                 $array['epl_id'] =  $row->id;
                 $array['client_id'] =  $row->client_id;
-                $array['app_submitted_date'] =  'N/A';
-                $array['client_name'] =  $client['name_title'] . ' ' . $client['first_name'] . ' ' . $client['last_name'] . "\n";
-                $array['nic'] = empty($client['nic']) ? 'N/A' : $client['nic'];
-                $array['client_address'] = $client['address'];
-                $array['client_phone'] = $client['contact_no'];
-                $array['industry_name'] = $client['industry_name'];
-                $array['br_no'] = $client['industry_name'];
-                $array['industry_address'] = $client['industry_address'];
-                $array['industry_phone'] = $client['industry_contact_no'];
-                $array['industry_category'] = $industryCategory[$client['industry_category_id']]['name'];
-                $array['industry_category_type'] = $businessScale[$client['business_scale_id']];
-                $array['ad'] = empty($client['environment_officer']['assistant_director_id']) ? 'n/a' : $adArray[$client['environment_officer']['assistant_director_id']] ?? 'N/A';
-                $array['eo'] = empty($client['environment_officer']['user']) ? 'n/a' : $client['environment_officer']['user']['first_name'] . ' ' . $client['environment_officer']['user']['last_name'];
-                $array['district'] = $client['pradesheeyasaba']['zone']['name'];
-                $array['pra_sb'] = $client['pradesheeyasaba']['name'];
-                $array['file_no'] = $client['file_no'];
-                $array['sc_no'] = '';
+                $array['app_submitted_date'] =  Carbon::parse($row->submitted_date)->format('Y-m-d');
+                $array['client_name'] =  $row['name_title'] . ' ' . $row['first_name'] . ' ' . $row['last_name'];
+                $array['nic'] = empty($row['nic']) ? 'N/A' : $row['nic'];
+                $array['client_address'] = $row['address'];
+                $array['client_phone'] = $row['contact_no'];
+                $array['industry_name'] = $row['industry_name'];
+                $array['br_no'] = $row['industry_registration_no'];
+                $array['industry_address'] = $row['industry_address'];
+                $array['industry_phone'] = $row['industry_contact_no'];
+                $array['industry_category'] = $industryCategory[$row['industry_category_id']];
+                $array['industry_category_type'] = $businessScale[$row['business_scale_id']];
+                $array['ad'] = $adArray[$row->assistant_director_id];
+                $array['eo'] = $eoArray[$row->environment_officer_id] ?? 'N/A';
+                $array['district'] = $row->zone_name;
+                $array['pra_sb'] = $row->pradesheeyasaba_name;
+                $array['file_no'] = $row['file_no'];
+                $array['sc_no'] = $siteClearance;
                 $array['epl_no'] = $row['code'];
                 $array['cert_no'] = $row['certificate_no'];
                 $array['cert_issue_date'] = Carbon::parse($row['issue_date'])->format('Y-m-d');
@@ -1290,6 +1399,7 @@ class ReportController extends Controller
                 // dd($array);
                 array_push($data['results'], $array);
             }
+            $data['filterLable'] = $filterLable;
             return $data;
         });
         return view('Reports.epl_sc_issue_details', ['data' => $data, 'from' => $from, 'to' => $to]);
