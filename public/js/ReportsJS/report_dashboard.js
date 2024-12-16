@@ -1,4 +1,5 @@
 function env_officer_byAD(ad_id, callBack) {
+    $('#eoCombo').html("<option value=''>Select Data</option>");
     if (isNaN(ad_id)) {
         return false;
     }
@@ -7,6 +8,7 @@ function env_officer_byAD(ad_id, callBack) {
         if (dataSet.length == 0) {
             cbo = "<option value=''>No Data Found</option>";
         } else {
+            cbo += "<option value=''>Select data</option>";
             $.each(dataSet, function (index, row) {
                 cbo += '<option value="' + row.id + '">' + row.first_name + " " + row.last_name + '</option>';
             });
@@ -24,6 +26,7 @@ function loadAssDirCombo(callBack) {
         if (dataSet.length == 0) {
             cbo = "<option value=''>No Data Found</option>";
         } else {
+            cbo += "<option value=''>Select data</option>";
             $.each(dataSet, function (index, row) {
                 cbo += '<option value="' + row.id + '">' + row.first_name + " " + row.last_name + '</option>';
             });

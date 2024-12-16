@@ -14,7 +14,7 @@
 <body class="hold-transition sidebar-mini layout-fixed text-sm">
     <center>
         <h1>EPL/CS Report </h1>
-        <h5>Filtered by From: {{ $from }} - To: {{ $to }}</h5>
+        <h5>{{ $data['filterLable'] }}</h5>
     </center>
     <h4>(filter By Issue date)</h4>
     {{-- @dump($data['results'][2]); --}}
