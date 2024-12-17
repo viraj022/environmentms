@@ -31,6 +31,28 @@
                     </li>
                 </ul>
             </li>
+
+            <li class="nav-item has-treeview {{ Request::is('industry_files') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link active">
+                    <i class="nav-icon fas fa-file"></i>
+                    <p>Industry Files<i class="right fas fa-angle-left"></i></p>
+                </a>
+                <ul class="nav nav-treeview">
+                    @foreach (auth()->user()->privileges as $indexKey => $pre)
+                        @if ($pre['id'] === config('auth.privileges.industryFile') && auth()->user()->roll->level->value < 4)
+                            <li class="nav-item">
+                            <li class="nav-item">
+                                <a href="{{ url('/industry_files') }}"
+                                    class="nav-link {{ Request::is('industry_files') ? 'active' : '' }}">
+                                    <i class="far fa-file-alt nav-icon"></i>
+                                    <p>Industry Files</p>
+                                </a>
+                            </li>
+                        @endif
+                    @endforeach
+                </ul>
+            </li>
+
             <li
                 class="nav-item has-treeview {{ Request::is('attachments', 'attachment_map', 'pradesheyasaba', 'industry_category', 'payment_type', 'payments', 'payment_range', 'zone', 'assistant_director', 'environment_officer', 'committee_pool') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
@@ -148,7 +170,7 @@
                 </ul>
             </li>
             <li
-                class="nav-item has-treeview {{ Request::is('client_space', 'industry_files', 'epl_assign', 'old_file_list', 'env_officer', 'search_files') ? 'menu-open' : '' }}">
+                class="nav-item has-treeview {{ Request::is('client_space', 'epl_assign', 'old_file_list', 'env_officer', 'search_files') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-file-signature"></i>
                     <p>
@@ -173,16 +195,6 @@
                                     class="nav-link {{ Request::is('search_files') ? 'active' : '' }}">
                                     <i class="fas fa-id-card-alt nav-icon"></i>
                                     <p>Search Files</p>
-                                </a>
-                            </li>
-                        @endif
-                        @if ($pre['id'] === config('auth.privileges.industryFile') && auth()->user()->roll->level->value < 4)
-                            <li class="nav-item">
-                            <li class="nav-item">
-                                <a href="{{ url('/industry_files') }}"
-                                    class="nav-link {{ Request::is('industry_files') ? 'active' : '' }}">
-                                    <i class="fas fa-search nav-icon"></i>
-                                    <p>Industry Files</p>
                                 </a>
                             </li>
                         @endif
@@ -245,38 +257,19 @@
                     @endforeach
                 </ul>
             </li>
-            <li class="nav-item has-treeview {{ Request::is('industry_files', 'schedule') ? 'menu-open' : '' }}">
+            <li class="nav-item has-treeview {{ Request::is('schedule') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-users"></i>
                     <p>Environment Officer <i class="right fas fa-angle-left"></i></p>
                 </a>
                 <ul class="nav nav-treeview">
                     @foreach (auth()->user()->privileges as $indexKey => $pre)
-                        @if ($pre['id'] === config('auth.privileges.assistantDirector'))
-                            <li class="nav-item">
-                                <a href="{{ url('/industry_files') }}"
-                                    class="nav-link {{ Request::is('industry_files') ? 'active' : '' }}">
-                                    <i class="fas fa-clock nav-icon"></i>
-                                    <p>ENV Pending List</p>
-                                </a>
-                            </li>
-                        @endif
                         @if ($pre['id'] === config('auth.privileges.clientSpace'))
                             <li class="nav-item">
                                 <a href="{{ url('/schedule') }}"
                                     class="nav-link {{ Request::is('schedule') ? 'active' : '' }}">
                                     <i class="fas fa-clock nav-icon"></i>
                                     <p>Schedule</p>
-                                </a>
-                            </li>
-                        @endif
-                        @if ($pre['id'] === config('auth.privileges.industryFile') && auth()->user()->roll->level->value < 4)
-                            <li class="nav-item">
-                            <li class="nav-item">
-                                <a href="{{ url('/industry_files') }}"
-                                    class="nav-link {{ Request::is('industry_files') ? 'active' : '' }}">
-                                    <i class="far fa-file-alt nav-icon"></i>
-                                    <p>Industry Files</p>
                                 </a>
                             </li>
                         @endif

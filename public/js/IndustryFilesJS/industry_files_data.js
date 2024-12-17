@@ -27,7 +27,9 @@ function loadEnvOfficerCombo(uid, callBack) {
             cbo = "<option value=''>No Data Found</option>";
         } else {
             $.each(dataSet, function (index, row) {
-                cbo += '<option value="' + row.id + '">' + row.user.first_name + " " + row.user.last_name + '</option>';
+                if (row.user != '' && row.user != null) {
+                    cbo += '<option value="' + row.id + '">' + row.user.first_name + " " + row.user.last_name + '</option>';
+                }
             });
         }
         $('#getEnvOfficer').html(cbo);
@@ -131,7 +133,7 @@ function forTypeFiles_table(env_id, file_status, file_status_list, callBack) {
                     if (row.is_old != 0) {
                         tbl += '<tr style="' + tr_style + '">';
                         tbl += '<td>' + ++index + '</td>';
-                        tbl += '<td>' + row.industry_name + '<br>'+ row.name+'</td>';
+                        tbl += '<td>' + row.industry_name + '<br>' + row.name + '</td>';
                         // tbl += '<td>' + row.name + '</td>';
                         tbl += '<td>' + row.epl_code + '<br>' + row.site_clearance_code + '</td>';
                         if (row.file_no != null) {
