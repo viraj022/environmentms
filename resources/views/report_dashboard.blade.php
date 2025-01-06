@@ -58,6 +58,8 @@
                                                 value="">
                                         </div>
                                     </div>
+
+
                                     <div class="col-md-6">
 
                                         <div class="col-md-6">
@@ -93,6 +95,15 @@
                                                 @foreach ($industryCategory as $ic)
                                                     <option value="{{ $ic->id }}">{{ $ic->name }}</option>
                                                 @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group" id="epl_category_section">
+                                            <label>Get*</label>
+                                            <select id="epl_rep_type" class="form-control form-control-sm">
+                                                <option value="all">All Files</option>
+                                                <option value="new">New Files</option>
+                                                <option value="renew">Renewed Files</option>
                                             </select>
                                         </div>
 
@@ -147,6 +158,7 @@
                 $('#officer_section').addClass('d-none');
                 $('#generateBy_section').addClass('d-none');
                 $('#industryCat_section').addClass('d-none');
+                $('#epl_category_section').addClass('d-none');
                 let rep = parseInt($(this).val());
                 switch (rep) {
                     case 1:
@@ -158,6 +170,7 @@
                     case 8:
                         $('#officer_section').removeClass('d-none');
                         $('#industryCat_section').removeClass('d-none');
+                        $('#epl_category_section').removeClass('d-none');
                         break;
                 }
             });
@@ -208,6 +221,10 @@
                             qStr += (qStr.length > 0 ? '&' : '?') + 'ad_id=' + $(
                                 '#getAsDirect :selected').val();
                         }
+                        if ($('#epl_rep_type').val() != 'all') {
+                            qStr += (qStr.length > 0 ? '&' : '?') + 'epl_type=' + $('#epl_rep_type')
+                                .val();
+                        }
                         URL = '/license_full_detail_report/' + date_from + '/' + date_to + qStr;
                         break;
                 }
@@ -215,8 +232,7 @@
                 if ($('#hardRefresh').is(':checked')) {
                     URL += (qStr.length > 0 ? '&' : '?') + 'hard_refresh=1';
                 }
-                console.log('url: ' + URL);
-                //            return false;
+
                 window.open(URL, '_blank');
             });
         });

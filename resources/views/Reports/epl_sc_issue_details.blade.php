@@ -7,7 +7,7 @@
     <meta name="api-token" content="{{ auth()->user()->api_token }}" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EPL Report | North Western Province</title>
+    <title>EPL Report | PEA - North Western Province</title>
     <link rel="stylesheet" type="text/css" href="/dataTable/datatables.min.css" />
 </head>
 
@@ -29,6 +29,7 @@
                 <th>Client Tel</th>
                 <th>Industry Name</th>
                 <th>Br No</th>
+                <th>Count</th>
                 <th>Insustry Address</th>
                 <th>Insustry Tel</th>
                 <th>Insustry Category</th>
@@ -41,41 +42,14 @@
                 <th>SC No</th>
                 <th>EPL No</th>
                 <th>Certificate No</th>
-
-                <th colspan="2">Certificate Validity</th>
-                <th colspan="4">Payment Details</th>
-                <th>Certificate Collected At</th>
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th>Issued</th>
+                <th>Issued At</th>
                 <th>Expire At</th>
                 <th>Inspection Fee</th>
                 <th>License Fee</th>
                 <th>Fine</th>
                 <th>Total</th>
-                <th></th>
+                <th>Certificate Collected At</th>
             </tr>
-
         </thead>
         <tbody>
             @foreach ($data['results'] as $indexKey => $row)
@@ -88,6 +62,7 @@
                     <td>{{ $row['client_phone'] }}</td>
                     <td>{{ $row['industry_name'] }}</td>
                     <td>{{ $row['br_no'] }}</td>
+                    <td>{{ $row['count'] }}</td>
                     <td>{{ $row['industry_address'] }}</td>
                     <td>{{ $row['industry_phone'] }}</td>
                     <td>{{ $row['industry_category'] }}</td>
@@ -121,7 +96,7 @@
     <script type="text/javascript" src="/js/image.js"></script>
     <script>
         var img =
-            $('.table').DataTable();
+            // $('.table').DataTable();
         $(document).ready(function() {
             // alert(123);
             $('.table').DataTable({
