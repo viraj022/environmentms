@@ -1256,6 +1256,7 @@ class ReportController extends Controller
         // dd($request->all());
         $from = $request->from;
         $to = $request->to;
+        $eplType = null;
         $industry_category_id = $request->industry_cat_id;
         $request_env_officer_id = $request->eo_id;
         $request_ad_id = $request->ad_id;
@@ -1274,11 +1275,19 @@ class ReportController extends Controller
         if (!empty($request_ad_id)) {
             $cacheKey .= "_ad_{$request_ad_id}";
         }
+        // if (!empty($request_pra_id)) {
+        //     $cacheKey .= "_pra_{$request_pra_id}";
+        // }
+        if (!empty($request->epl_type)) {
+            $eplType = $request->epl_type;
+            $cacheKey .= "_eT_{$eplType}";
+        }
         //check if the request has hard_refresh
         if ($request->has('hard_refresh')) {
+            // dd('hard_refresh');
             Cache::forget($cacheKey);
         }
-        $data = Cache::remember($cacheKey, now()->addMinutes(20), function () use ($from, $to, $industry_category_id, $request_env_officer_id, $request_ad_id, $request_pra_id, $filterLable) {
+        $data = Cache::remember($cacheKey, now()->addMinutes(20), function () use ($from, $to, $industry_category_id, $request_env_officer_id, $request_ad_id, $request_pra_id, $filterLable, $eplType) {
             $data = [];
             $data['header_count'] = 0;
             $data['results'] = [];
@@ -1325,7 +1334,8 @@ class ReportController extends Controller
                     'zones.name as zone_name',
                     'pradesheeyasabas.name as pradesheeyasaba_name',
                     'environment_officers.assistant_director_id',
-                    'clients.environment_officer_id'
+                    'clients.environment_officer_id',
+                    'e_p_l_s.count'
                 )
                 ->join('clients', 'e_p_l_s.client_id', '=', 'clients.id')
                 ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', '=', 'pradesheeyasabas.id')
@@ -1343,6 +1353,20 @@ class ReportController extends Controller
             if (!empty($request_ad_id)) {
                 $epl->where('environment_officers.assistant_director_id', $request_ad_id);
                 $filterLable .= " AD: " . $adArray[$request_ad_id];
+            }
+
+            // if (!empty($request_pra_id)) {
+            //     $epl->where('clients.pradesheeyasaba_id', $request_pra_id);
+            //     $filterLable .= " PRA: " . $request_pra_id;
+            // }
+
+            if (!empty($eplType)) {
+                if ($eplType == 'new') {
+                    $epl->where('e_p_l_s.count', 0);
+                } else {
+                    $epl->where('e_p_l_s.count', '>', 0);
+                }
+                $filterLable .= " EPL Type: " . $eplType;
             }
             // dd($epl->toSql());
             $epl = $epl->get();
@@ -1380,6 +1404,8 @@ class ReportController extends Controller
                 $array['fee_license'] = 0;
                 $array['fee_fine'] = 0;
                 $array['license_payment_date'] = '-';
+                $array['count'] = $row->count;
+
 
                 $payments = $this->paymentService->getPaymentList($row);
                 // dd($payments);
