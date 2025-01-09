@@ -1375,7 +1375,7 @@ class ReportController extends Controller
                 // dd($row);
                 $array = [];
                 $array['#'] = ++$num;
-                $siteClearance = SiteClearenceSession::where('client_id', $row->client_id)->count();
+                $siteClearance = SiteClearenceSession::where('client_id', $row->client_id)->first()->licence_no ?? '-';
 
                 $array['epl_id'] =  $row->id;
                 $array['client_id'] =  $row->client_id;

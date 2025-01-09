@@ -113,7 +113,7 @@
                 // alert(123);
                 $('.table').DataTable({
                     // colReorder: true,
-                    responsive: true,
+                    responsive: false,
                     select: true,
                     dom: "Bfrtip",
                     // buttons: ["csv", "excel", "print",],
@@ -133,7 +133,11 @@
                                 .css('font-size', 'inherit');
                         }
                     }, "excel", "csv"],
-
+                    layout: {
+                        topStart: {
+                            buttons: ['colvis']
+                        }
+                    }
                 });
             });
     </script>
