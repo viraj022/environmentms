@@ -45,8 +45,11 @@
                 <th>Issued At</th>
                 <th>Expire At</th>
                 <th>Inspection Fee</th>
+                <th>Inspection invoice</th>
                 <th>License Fee</th>
+                <th>License invoice</th>
                 <th>Fine</th>
+                <th>Fine invoice</th>
                 <th>Total</th>
                 <th>Certificate Collected At</th>
             </tr>
@@ -82,8 +85,17 @@
                     <td>{{ $row['cert_exp_date'] }}</td>
 
                     <td style="text-align: right">{{ number_format($row['fee_inspection'], 2) }}</td>
+                    <td style="text-align: right">{{ $row['inv_inspection']['invoice_no'] ?? '' }}
+                        {{ $row['inv_inspection']['invoice_date'] ?? '' }}</td>
+
                     <td style="text-align: right">{{ number_format($row['fee_license'], 2) }}</td>
+                    <td style="text-align: right">{{ $row['inv_license']['invoice_no'] ?? '' }}
+                        {{ $row['inv_license']['invoice_date'] ?? '' }}</td>
+
                     <td style="text-align: right">{{ number_format($row['fee_fine'], 2) }}</td>
+                    <td style="text-align: right">{{ $row['inv_fine']['invoice_no'] ?? '' }}
+                        {{ $row['inv_fine']['invoice_date'] ?? '' }}</td>
+
                     <td style="text-align: right">{{ number_format($row['fee_total'], 2) }}</td>
 
                     <td>{{ $row['license_payment_date'] }}</td>
@@ -97,33 +109,33 @@
     <script>
         var img =
             // $('.table').DataTable();
-        $(document).ready(function() {
-            // alert(123);
-            $('.table').DataTable({
-                // colReorder: true,
-                responsive: true,
-                select: true,
-                dom: "Bfrtip",
-                // buttons: ["csv", "excel", "print",],
-                buttons: [{
-                    extend: 'print',
-                    title: '',
-                    customize: function(win) {
-                        $(win.document.body)
-                            .css('font-size', '10pt')
-                            .prepend(
-                                '<center><H1>PEA Report</h1></center><img src=' +
-                                img +
-                                ' style="position:absolute; filter: grayscale(100%); opacity: 0.5; top:0; left:0;" />'
-                            );
-                        $(win.document.body).find('table')
-                            .addClass('compact')
-                            .css('font-size', 'inherit');
-                    }
-                }, "excel", "csv"],
+            $(document).ready(function() {
+                // alert(123);
+                $('.table').DataTable({
+                    // colReorder: true,
+                    responsive: true,
+                    select: true,
+                    dom: "Bfrtip",
+                    // buttons: ["csv", "excel", "print",],
+                    buttons: [{
+                        extend: 'print',
+                        title: '',
+                        customize: function(win) {
+                            $(win.document.body)
+                                .css('font-size', '10pt')
+                                .prepend(
+                                    '<center><H1>PEA Report</h1></center><img src=' +
+                                    img +
+                                    ' style="position:absolute; filter: grayscale(100%); opacity: 0.5; top:0; left:0;" />'
+                                );
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }, "excel", "csv"],
 
+                });
             });
-        });
     </script>
 </body>
 
