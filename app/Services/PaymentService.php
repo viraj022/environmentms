@@ -19,21 +19,23 @@ class PaymentService
      */
     public function getPaymentList(EPL $epl): array
     {
-        $inspectionFee = Cache::remember('payment_type_inspection_fee', 60, function () {
-            return PaymentType::getpaymentByTypeName(PaymentType::INSPECTIONFEE);
-        });
-        $licenseFee = Cache::remember('payment_type_license_fee', 60, function () {
-            return PaymentType::getpaymentByTypeName(PaymentType::LICENCE_FEE);
-        });
-        $fine = Cache::remember('payment_type_fine', 60, function () {
-            return PaymentType::getpaymentByTypeName(PaymentType::FINE);
+        $paymentTypes = Cache::remember('p_types', 600, function () {
+            $inspectionFee = PaymentType::getpaymentByTypeName(PaymentType::INSPECTIONFEE);
+            $licenseFee = PaymentType::getpaymentByTypeName(PaymentType::LICENCE_FEE);
+            $fine = PaymentType::getpaymentByTypeName(PaymentType::FINE);
+            return [
+                $inspectionFee->id => 'inspection',
+                $licenseFee->id => 'license_fee',
+                $fine->id => 'fine',
+            ];
         });
 
-        return [
-            'inspection' => $this->getPaymentStatus($epl, $inspectionFee),
-            'license_fee' => $this->getPaymentStatus($epl, $licenseFee),
-            'fine' => $this->getPaymentStatus($epl, $fine),
-        ];
+        // return [
+        //     'inspection' => [],
+        //     'license_fee' => [],
+        //     'fine' => [],
+        // ];
+        return $this->getPaymentStatus($epl, $paymentTypes);
     }
 
     /**
@@ -43,24 +45,34 @@ class PaymentService
      * @param PaymentType|null $paymentType
      * @return array
      */
-    private function getPaymentStatus(EPL $epl, $paymentType): array
+    private function getPaymentStatus(EPL $epl, $paymentTypes): array
     {
-        if (!$paymentType) {
-            return [];
-        }
-
-        $transaction = TransactionItem::where('transaction_type', Transaction::TRANS_TYPE_EPL)
-            ->where('client_id', $epl->client_id)
-            ->where('payment_type_id', $paymentType->id)
+        $transactions = TransactionItem::where('transaction_type', Transaction::TRANS_TYPE_EPL)
+            ->join('transactions', 'transaction_items.transaction_id', '=', 'transactions.id')
+            ->join('invoices', 'transactions.invoice_id', '=', 'invoices.id')
+            ->where('transaction_items.client_id', $epl->client_id)
+            ->whereIn('payment_type_id', array_keys($paymentTypes))
             ->where('transaction_type_id', $epl->id)
-            ->first();
+            ->where('transactions.status', '1')
+            ->whereNull('transactions.canceled_at')
+            ->select('transaction_items.amount', 'transactions.created_at', 'invoices.invoice_number', 'invoices.invoice_date', 'transaction_items.payment_type_id')
+            ->get();
 
-        if (empty($transaction)) {
+        if (empty($transactions)) {
             return [];
         }
-        return [
-            'amount' => $transaction->amount,
-            'created_at' => Carbon::parse($transaction->created_at)->format('Y-m-d'),
-        ];
+
+        $ReturnData = [];
+        $transactions->each(function ($transaction) use (&$ReturnData, $paymentTypes) {
+            $paymentType = $paymentTypes[$transaction->payment_type_id];
+            $ReturnData[$paymentType] = [
+                'amount' => $transaction->amount,
+                'created_at' => Carbon::parse($transaction->created_at)->format('Y-m-d'),
+                'inv_no' => $transaction->invoice_number,
+                'invoice_date' => Carbon::parse($transaction->invoice_date)->format('Y-m-d'),
+            ];
+        });
+
+        return $ReturnData;
     }
 }

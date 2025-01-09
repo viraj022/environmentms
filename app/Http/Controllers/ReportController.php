@@ -1401,8 +1401,12 @@ class ReportController extends Controller
                 $array['cert_issue_date'] = Carbon::parse($row['issue_date'])->format('Y-m-d');
                 $array['cert_exp_date'] = Carbon::parse($row['expire_date'])->format('Y-m-d');
                 $array['fee_inspection'] = 0;
+                $array['inv_inspection'] = [];
                 $array['fee_license'] = 0;
+                $array['inv_license'] = [];
                 $array['fee_fine'] = 0;
+                $array['inv_fine'] = [];
+
                 $array['license_payment_date'] = '-';
                 $array['count'] = $row->count;
 
@@ -1411,13 +1415,25 @@ class ReportController extends Controller
                 // dd($payments);
                 if (!empty($payments['inspection'])) {
                     $array['fee_inspection'] = $payments['inspection']['amount'];
+                    $array['inv_inspection'] = [
+                        'invoice_no' => $payments['inspection']['inv_no'],
+                        'invoice_date' => $payments['inspection']['invoice_date'],
+                    ];
                 }
                 if (!empty($payments['license_fee'])) {
                     $array['fee_license'] = $payments['license_fee']['amount'];
                     $array['license_payment_date'] = $payments['license_fee']['created_at'];
+                    $array['inv_license'] = [
+                        'invoice_no' => $payments['license_fee']['inv_no'],
+                        'invoice_date' => $payments['license_fee']['invoice_date'],
+                    ];
                 }
                 if (!empty($payments['fine'])) {
                     $array['fee_fine'] = $payments['fine']['amount'];
+                    $array['inv_fine'] = [
+                        'invoice_no' => $payments['fine']['inv_no'],
+                        'invoice_date' => $payments['fine']['invoice_date'],
+                    ];
                 }
 
 
