@@ -1256,12 +1256,14 @@ class ReportController extends Controller
         // dd($request->all());
         $from = $request->from;
         $to = $request->to;
+        $fileType = $request->file_type;
         $eplType = null;
         $industry_category_id = $request->industry_cat_id;
         $request_env_officer_id = $request->eo_id;
         $request_ad_id = $request->ad_id;
         $request_pra_id = $request->pra_id;
         $filterLable = "";
+        $filterLable = $fileType == 'epl' ? "EPL" : "Site Clearence ";
         $filterLable .= "From: " . $from . " To: " . $to;
 
         // Generate a unique cache key based on the parameters
@@ -1282,12 +1284,13 @@ class ReportController extends Controller
             $eplType = $request->epl_type;
             $cacheKey .= "_eT_{$eplType}";
         }
+        $cacheKey .= "_{$fileType}";
         //check if the request has hard_refresh
         if ($request->has('hard_refresh')) {
             // dd('hard_refresh');
             Cache::forget($cacheKey);
         }
-        $data = Cache::remember($cacheKey, now()->addMinutes(20), function () use ($from, $to, $industry_category_id, $request_env_officer_id, $request_ad_id, $request_pra_id, $filterLable, $eplType) {
+        $data = Cache::remember($cacheKey, now()->addMinutes(20), function () use ($from, $to, $filterLable, $fileType, $request) {
             $data = [];
             $data['header_count'] = 0;
             $data['results'] = [];
@@ -1304,78 +1307,42 @@ class ReportController extends Controller
             }
             // dd($eoArray, $adArray);
             $industryCategory = IndustryCategory::all()->pluck('name', 'id')->toArray();
-
             $businessScale = BusinessScale::all()->pluck('name', 'id')->toArray();
 
-            $epl = Epl::whereRaw('DATE(issue_date) BETWEEN ? AND ?', [$from, $to])
-                ->select(
-                    'e_p_l_s.id',
-                    'e_p_l_s.client_id',
-                    'e_p_l_s.code',
-                    'e_p_l_s.certificate_no',
-                    'e_p_l_s.issue_date',
-                    'e_p_l_s.expire_date',
-                    'e_p_l_s.submitted_date',
-                    'clients.first_name',
-                    'clients.last_name',
-                    'clients.nic',
-                    'clients.address',
-                    'clients.contact_no',
-                    'clients.industry_name',
-                    'clients.industry_address',
-                    'clients.industry_registration_no',
-                    'clients.industry_contact_no',
-                    'clients.industry_category_id',
-                    'clients.business_scale_id',
-                    'clients.file_no',
-                    'clients.pradesheeyasaba_id',
-                    'clients.file_no',
-                    'clients.created_at',
-                    'zones.name as zone_name',
-                    'pradesheeyasabas.name as pradesheeyasaba_name',
-                    'environment_officers.assistant_director_id',
-                    'clients.environment_officer_id',
-                    'e_p_l_s.count'
-                )
-                ->join('clients', 'e_p_l_s.client_id', '=', 'clients.id')
-                ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', '=', 'pradesheeyasabas.id')
-                ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
-                ->join('environment_officers', 'clients.environment_officer_id', '=', 'environment_officers.id')
-                ->orderBy('issue_date', 'ASC');
-            if (!empty($industry_category_id)) {
-                $epl->where('clients.industry_category_id', $industry_category_id);
-                $filterLable .= " Industry Category: " . $industryCategory[$industry_category_id];
+            //label for filter
+            if ($request->has('industry_cat_id')) {
+                $filterLable .= " Industry Category: " . $industryCategory[$request->industry_cat_id];
             }
-            if (!empty($request_env_officer_id)) {
-                $epl->where('clients.environment_officer_id', $request_env_officer_id);
-                $filterLable .= " EO: " . $eoArray[$request_env_officer_id];
+            if ($request->has('eo_id')) {
+                $filterLable .= " Environment Officer: " . $eoArray[$request->eo_id];
             }
-            if (!empty($request_ad_id)) {
-                $epl->where('environment_officers.assistant_director_id', $request_ad_id);
-                $filterLable .= " AD: " . $adArray[$request_ad_id];
+            if ($request->has('ad_id')) {
+                $filterLable .= " Assistant Director: " . $adArray[$request->ad_id];
+            }
+            if ($fileType == 'epl') {
+                $repData = $this->eplDataForFullReport($from, $to, $request);
+            } else if ($fileType == 'sc') {
+                $repData = $this->siteClearanceDataForFullReport($from, $to);
+            } else {
+                return [];
             }
 
-            // if (!empty($request_pra_id)) {
-            //     $epl->where('clients.pradesheeyasaba_id', $request_pra_id);
-            //     $filterLable .= " PRA: " . $request_pra_id;
-            // }
-
-            if (!empty($eplType)) {
-                if ($eplType == 'new') {
-                    $epl->where('e_p_l_s.count', 0);
-                } else {
-                    $epl->where('e_p_l_s.count', '>', 0);
-                }
-                $filterLable .= " EPL Type: " . $eplType;
-            }
-            // dd($epl->toSql());
-            $epl = $epl->get();
-
-            foreach ($epl as $row) {
+            foreach ($repData as $row) {
                 // dd($row);
                 $array = [];
                 $array['#'] = ++$num;
-                $siteClearance = SiteClearenceSession::where('client_id', $row->client_id)->first()->licence_no ?? '-';
+                $siteCode = '-';
+                $eplCode = '-';
+                if ($fileType == 'epl') {
+                    $trnTypeId = $row->id;
+                    $eplCode = $row->code;
+                    $siteCode = SiteClearenceSession::where('client_id', $row->client_id)->first()->licence_no ?? '-';
+                } elseif ($fileType == 'sc') {
+                    $trnTypeId = $row->id;
+                    $siteCode = $row->code;
+                    // dd($row);
+                    $eplCode = Epl::where('client_id', $row->client_id)->first()->code ?? '-';
+                }
 
                 $array['epl_id'] =  $row->id;
                 $array['client_id'] =  $row->client_id;
@@ -1395,8 +1362,8 @@ class ReportController extends Controller
                 $array['district'] = $row->zone_name;
                 $array['pra_sb'] = $row->pradesheeyasaba_name;
                 $array['file_no'] = $row['file_no'];
-                $array['sc_no'] = $siteClearance;
-                $array['epl_no'] = $row['code'];
+                $array['sc_no'] = $siteCode;
+                $array['epl_no'] = $eplCode;
                 $array['cert_no'] = $row['certificate_no'];
                 $array['cert_issue_date'] = Carbon::parse($row['issue_date'])->format('Y-m-d');
                 $array['cert_exp_date'] = Carbon::parse($row['expire_date'])->format('Y-m-d');
@@ -1411,7 +1378,7 @@ class ReportController extends Controller
                 $array['count'] = $row->count;
 
 
-                $payments = $this->paymentService->getPaymentList($row);
+                $payments = $this->paymentService->getPaymentList($trnTypeId, $row->client_id);
                 // dd($payments);
                 if (!empty($payments['inspection'])) {
                     $array['fee_inspection'] = $payments['inspection']['amount'];
@@ -1445,5 +1412,132 @@ class ReportController extends Controller
             return $data;
         });
         return view('Reports.epl_sc_issue_details', ['data' => $data, 'from' => $from, 'to' => $to]);
+    }
+
+    /**
+     * epl data to full report
+     */
+    public function eplDataForFullReport($from, $to, $request)
+    {
+        $epl = Epl::whereRaw('DATE(issue_date) BETWEEN ? AND ?', [$from, $to])
+            ->select(
+                'e_p_l_s.id',
+                'e_p_l_s.client_id',
+                'e_p_l_s.code',
+                'e_p_l_s.certificate_no',
+                'e_p_l_s.issue_date',
+                'e_p_l_s.expire_date',
+                'e_p_l_s.submitted_date',
+                'e_p_l_s.count',
+                'clients.first_name',
+                'clients.last_name',
+                'clients.nic',
+                'clients.address',
+                'clients.contact_no',
+                'clients.industry_name',
+                'clients.industry_address',
+                'clients.industry_registration_no',
+                'clients.industry_contact_no',
+                'clients.industry_category_id',
+                'clients.business_scale_id',
+                'clients.file_no',
+                'clients.pradesheeyasaba_id',
+                'clients.file_no',
+                'clients.created_at',
+                'zones.name as zone_name',
+                'pradesheeyasabas.name as pradesheeyasaba_name',
+                'environment_officers.assistant_director_id',
+                'clients.environment_officer_id',
+            )
+            ->join('clients', 'e_p_l_s.client_id', '=', 'clients.id')
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', '=', 'pradesheeyasabas.id')
+            ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
+            ->join('environment_officers', 'clients.environment_officer_id', '=', 'environment_officers.id')
+            ->orderBy('issue_date', 'ASC');
+        if (!empty($request->industry_cat_id)) {
+            $epl->where('clients.industry_category_id', $request->industry_cat_id);
+        }
+        if (!empty($request->eo_id)) {
+            $epl->where('clients.environment_officer_id', $request->eo_id);
+        }
+        if (!empty($request->ad_id)) {
+            $epl->where('environment_officers.assistant_director_id', $request->ad_id);
+        }
+
+        // if (!empty($request_pra_id)) {
+        //     $epl->where('clients.pradesheeyasaba_id', $request_pra_id);
+        //     $filterLable .= " PRA: " . $request_pra_id;
+        // }
+
+        if (!empty($eplType)) {
+            if ($eplType == 'new') {
+                $epl->where('e_p_l_s.count', 0);
+            } else {
+                $epl->where('e_p_l_s.count', '>', 0);
+            }
+        }
+        return $epl->get();
+    }
+
+    /**
+     * site clearence data to full report
+     */
+    public function siteClearanceDataForFullReport($from, $to)
+    {
+        $site = SiteClearance::whereRaw('DATE(site_clearances.issue_date) BETWEEN ? AND ?', [$from, $to])
+            ->select(
+                'clients.first_name',
+                'clients.last_name',
+                'clients.nic',
+                'clients.address',
+                'clients.contact_no',
+                'clients.industry_name',
+                'clients.industry_address',
+                'clients.industry_registration_no',
+                'clients.industry_contact_no',
+                'clients.industry_category_id',
+                'clients.business_scale_id',
+                'clients.file_no',
+                'clients.pradesheeyasaba_id',
+                'clients.file_no',
+                'clients.created_at',
+                'zones.name as zone_name',
+                'pradesheeyasabas.name as pradesheeyasaba_name',
+                'environment_officers.assistant_director_id',
+                'clients.environment_officer_id',
+                'site_clearence_sessions.id',
+                'site_clearence_sessions.code',
+                'site_clearence_sessions.client_id',
+                'site_clearence_sessions.licence_no AS certificate_no',
+                'site_clearence_sessions.issue_date AS cert_issue_date',
+                'site_clearence_sessions.expire_date AS cert_exp_date',
+                'site_clearances.count',
+            )
+            ->join('site_clearence_sessions', 'site_clearances.site_clearence_session_id', '=', 'site_clearence_sessions.id')
+            ->join('clients', 'site_clearence_sessions.client_id', '=', 'clients.id')
+            ->join('pradesheeyasabas', 'clients.pradesheeyasaba_id', '=', 'pradesheeyasabas.id')
+            ->join('zones', 'pradesheeyasabas.zone_id', 'zones.id')
+            ->join('environment_officers', 'clients.environment_officer_id', '=', 'environment_officers.id')
+            ->orderBy('site_clearances.issue_date', 'ASC');
+
+        if (!empty($industry_category_id)) {
+            $site->where('clients.industry_category_id', $industry_category_id);
+            // $filterLable .= " Industry Category: " . $industryCategory[$industry_category_id];
+        }
+        if (!empty($request_env_officer_id)) {
+            $site->where('clients.environment_officer_id', $request_env_officer_id);
+            // $filterLable .= " EO: " . $eoArray[$request_env_officer_id];
+        }
+        if (!empty($request_ad_id)) {
+            $site->where('environment_officers.assistant_director_id', $request_ad_id);
+            // $filterLable .= " AD: " . $adArray[$request_ad_id];
+        }
+        // if (!empty($request_pra_id)) {
+        //     $site->where('clients.pradesheeyasaba_id', $request_pra_id);
+        //     $filterLable .= " PRA: " . $request_pra_id;
+        // }
+        // dd($site->toSql());
+        // dd($site->get());
+        return $site->get();
     }
 }

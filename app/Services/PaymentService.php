@@ -17,7 +17,7 @@ class PaymentService
      * @param EPL $epl
      * @return array
      */
-    public function getPaymentList(EPL $epl): array
+    public function getPaymentList($typeId, $clientId): array
     {
         $paymentTypes = Cache::remember('p_types', 600, function () {
             $inspectionFee = PaymentType::getpaymentByTypeName(PaymentType::INSPECTIONFEE);
@@ -29,13 +29,7 @@ class PaymentService
                 $fine->id => 'fine',
             ];
         });
-
-        // return [
-        //     'inspection' => [],
-        //     'license_fee' => [],
-        //     'fine' => [],
-        // ];
-        return $this->getPaymentStatus($epl, $paymentTypes);
+        return $this->getPaymentStatus($typeId, $clientId, $paymentTypes);
     }
 
     /**
@@ -45,14 +39,14 @@ class PaymentService
      * @param PaymentType|null $paymentType
      * @return array
      */
-    private function getPaymentStatus(EPL $epl, $paymentTypes): array
+    private function getPaymentStatus($typeId, $clientId, $paymentTypes): array
     {
         $transactions = TransactionItem::where('transaction_type', Transaction::TRANS_TYPE_EPL)
             ->join('transactions', 'transaction_items.transaction_id', '=', 'transactions.id')
             ->join('invoices', 'transactions.invoice_id', '=', 'invoices.id')
-            ->where('transaction_items.client_id', $epl->client_id)
+            ->where('transaction_items.client_id', $clientId)
             ->whereIn('payment_type_id', array_keys($paymentTypes))
-            ->where('transaction_type_id', $epl->id)
+            ->where('transaction_type_id', $typeId)
             ->where('transactions.status', '1')
             ->whereNull('transactions.canceled_at')
             ->select('transaction_items.amount', 'transactions.created_at', 'invoices.invoice_number', 'invoices.invoice_date', 'transaction_items.payment_type_id')

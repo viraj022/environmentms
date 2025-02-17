@@ -98,6 +98,14 @@
                                             </select>
                                         </div>
 
+                                        <div class="form-group d-none" id="fileType_section">
+                                            <label>File Type:</label>
+                                            <select id="fileTypeCombo" class="form-control form-control-sm">
+                                                <option value="epl">EPL</option>
+                                                <option value="sc">Site Clearance</option>
+                                            </select>
+                                        </div>
+
                                         <div class="form-group" id="epl_category_section">
                                             <label>Get*</label>
                                             <select id="epl_rep_type" class="form-control form-control-sm">
@@ -159,6 +167,7 @@
                 $('#generateBy_section').addClass('d-none');
                 $('#industryCat_section').addClass('d-none');
                 $('#epl_category_section').addClass('d-none');
+                $('#fileType_section').addClass('d-none');
                 let rep = parseInt($(this).val());
                 switch (rep) {
                     case 1:
@@ -171,6 +180,7 @@
                         $('#officer_section').removeClass('d-none');
                         $('#industryCat_section').removeClass('d-none');
                         $('#epl_category_section').removeClass('d-none');
+                        $('#fileType_section').removeClass('d-none');
                         break;
                 }
             });
@@ -225,6 +235,7 @@
                             qStr += (qStr.length > 0 ? '&' : '?') + 'epl_type=' + $('#epl_rep_type')
                                 .val();
                         }
+                        qStr += (qStr.length > 0 ? '&' : '?') + 'file_type=' + $('#fileTypeCombo').val();
                         URL = '/license_full_detail_report/' + date_from + '/' + date_to + qStr;
                         break;
                 }
