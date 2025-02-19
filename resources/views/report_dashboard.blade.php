@@ -88,11 +88,22 @@
                                                 </select>
                                             </div>
                                         </div>
+
                                         <div class="form-group" id="industryCat_section">
                                             <label>Industry Category:</label>
                                             <select id="industryCatCombo" class="form-control form-control-sm">
                                                 <option value="">Select Category</option>
                                                 @foreach ($industryCategory as $ic)
+                                                    <option value="{{ $ic->id }}">{{ $ic->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group d-none" id="praSabha_section">
+                                            <label>Pradeshiya Sabha:</label>
+                                            <select id="praSabhaCombo" class="form-control form-control-sm">
+                                                <option value="">Select Category</option>
+                                                @foreach ($pradeshiyaSaba as $ic)
                                                     <option value="{{ $ic->id }}">{{ $ic->name }}</option>
                                                 @endforeach
                                             </select>
@@ -168,6 +179,7 @@
                 $('#industryCat_section').addClass('d-none');
                 $('#epl_category_section').addClass('d-none');
                 $('#fileType_section').addClass('d-none');
+                $('#praSabha_section').addClass('d-none');
                 let rep = parseInt($(this).val());
                 switch (rep) {
                     case 1:
@@ -181,6 +193,7 @@
                         $('#industryCat_section').removeClass('d-none');
                         $('#epl_category_section').removeClass('d-none');
                         $('#fileType_section').removeClass('d-none');
+                        $('#praSabha_section').removeClass('d-none');
                         break;
                 }
             });
@@ -233,6 +246,10 @@
                         }
                         if ($('#epl_rep_type').val() != 'all') {
                             qStr += (qStr.length > 0 ? '&' : '?') + 'epl_type=' + $('#epl_rep_type')
+                                .val();
+                        }
+                        if ($('#praSabhaCombo').val() != '') {
+                            qStr += (qStr.length > 0 ? '&' : '?') + 'pra_sabha_id=' + $('#praSabhaCombo')
                                 .val();
                         }
                         qStr += (qStr.length > 0 ? '&' : '?') + 'file_type=' + $('#fileTypeCombo').val();

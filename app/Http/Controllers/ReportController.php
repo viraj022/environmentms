@@ -53,8 +53,8 @@ class ReportController extends Controller
     {
         $user = Auth::user();
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-        $pradeshiyaSaba = Pradesheeyasaba::all();
-        $industryCategory = IndustryCategory::all();
+        $pradeshiyaSaba = Pradesheeyasaba::orderBy('name', 'asc')->get();
+        $industryCategory = IndustryCategory::orderBy('name', 'asc')->get();
         return view('report_dashboard', ['pageAuth' => $pageAuth, 'pradeshiyaSaba' => $pradeshiyaSaba, 'industryCategory' => $industryCategory]);
     }
 
@@ -1260,11 +1260,9 @@ class ReportController extends Controller
         $eplType = null;
         $industry_category_id = $request->industry_cat_id;
         $request_env_officer_id = $request->eo_id;
-        $request_ad_id = $request->ad_id;
-        $request_pra_id = $request->pra_id;
         $filterLable = "";
-        $filterLable = $fileType == 'epl' ? "EPL" : "Site Clearence ";
-        $filterLable .= "From: " . $from . " To: " . $to;
+        $filterLable = $fileType == 'epl' ? "EPL" : "Site Clearence";
+        $filterLable .= " From: " . $from . " To: " . $to;
 
         // Generate a unique cache key based on the parameters
         $cacheKey = "epl_site_clearance_report_{$from}_{$to}";
@@ -1274,12 +1272,13 @@ class ReportController extends Controller
         if (!empty($request_env_officer_id)) {
             $cacheKey .= "_eo_{$request_env_officer_id}";
         }
-        if (!empty($request_ad_id)) {
-            $cacheKey .= "_ad_{$request_ad_id}";
+        if ($request->has('ad_id')) {
+            $cacheKey .= "_ad_{$request->ad_id}";
         }
-        // if (!empty($request_pra_id)) {
-        //     $cacheKey .= "_pra_{$request_pra_id}";
-        // }
+        if ($request->has('pra_sabha_id')) {
+            $cacheKey .= "_pra_{$request->pra_sabha_id}";
+        }
+
         if (!empty($request->epl_type)) {
             $eplType = $request->epl_type;
             $cacheKey .= "_eT_{$eplType}";
@@ -1298,6 +1297,7 @@ class ReportController extends Controller
             $environmentOfficers = EnvironmentOfficer::with(['user', 'assistantDirector.user'])->get();
             $adArray = [];
             $eoArray = [];
+
             foreach ($environmentOfficers as $eo) {
                 $ad = $eo->assistantDirector;
                 if (!empty($ad)) {
@@ -1305,9 +1305,10 @@ class ReportController extends Controller
                 }
                 $eoArray[$eo->id] = empty($eo->user) ? 'N/A' : $eo->user->first_name . ' ' . $eo->user->last_name;
             }
-            // dd($eoArray, $adArray);
+
             $industryCategory = IndustryCategory::all()->pluck('name', 'id')->toArray();
             $businessScale = BusinessScale::all()->pluck('name', 'id')->toArray();
+            $pradeshiyaSabha = Pradesheeyasaba::all()->pluck('name', 'id')->toArray();
 
             //label for filter
             if ($request->has('industry_cat_id')) {
@@ -1319,6 +1320,9 @@ class ReportController extends Controller
             if ($request->has('ad_id')) {
                 $filterLable .= " Assistant Director: " . $adArray[$request->ad_id];
             }
+            if ($request->has('pra_sabha_id')) {
+                $filterLable .= " Pradeshiya Sabha: " . $pradeshiyaSabha[$request->pra_sabha_id];
+            }
             if ($fileType == 'epl') {
                 $repData = $this->eplDataForFullReport($from, $to, $request);
             } else if ($fileType == 'sc') {
@@ -1328,7 +1332,6 @@ class ReportController extends Controller
             }
 
             foreach ($repData as $row) {
-                // dd($row);
                 $array = [];
                 $array['#'] = ++$num;
                 $siteCode = '-';
@@ -1340,7 +1343,6 @@ class ReportController extends Controller
                 } elseif ($fileType == 'sc') {
                     $trnTypeId = $row->id;
                     $siteCode = $row->code;
-                    // dd($row);
                     $eplCode = Epl::where('client_id', $row->client_id)->first()->code ?? '-';
                 }
 
@@ -1464,10 +1466,9 @@ class ReportController extends Controller
             $epl->where('environment_officers.assistant_director_id', $request->ad_id);
         }
 
-        // if (!empty($request_pra_id)) {
-        //     $epl->where('clients.pradesheeyasaba_id', $request_pra_id);
-        //     $filterLable .= " PRA: " . $request_pra_id;
-        // }
+        if (!empty($request->pra_sabha_id)) {
+            $epl->where('clients.pradesheeyasaba_id', $request->pra_sabha_id);
+        }
 
         if (!empty($eplType)) {
             if ($eplType == 'new') {
@@ -1522,15 +1523,12 @@ class ReportController extends Controller
 
         if (!empty($industry_category_id)) {
             $site->where('clients.industry_category_id', $industry_category_id);
-            // $filterLable .= " Industry Category: " . $industryCategory[$industry_category_id];
         }
         if (!empty($request_env_officer_id)) {
             $site->where('clients.environment_officer_id', $request_env_officer_id);
-            // $filterLable .= " EO: " . $eoArray[$request_env_officer_id];
         }
         if (!empty($request_ad_id)) {
             $site->where('environment_officers.assistant_director_id', $request_ad_id);
-            // $filterLable .= " AD: " . $adArray[$request_ad_id];
         }
         // if (!empty($request_pra_id)) {
         //     $site->where('clients.pradesheeyasaba_id', $request_pra_id);
