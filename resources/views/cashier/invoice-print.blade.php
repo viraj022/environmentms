@@ -58,6 +58,7 @@
 </head>
 
 <body>
+    {{-- @dd($invoice) --}}
     <div class="container-fluid">
         <button type="button" class="btn btn-primary mx-5 my-4" id="printBtn">Print</button>
         <div class="row">
@@ -69,8 +70,10 @@
                     <strong>:: Cash Reciept ::</strong>
                 </div>
                 <p>
-
-                    VAT Registration No. 409216765-7000 <span style="margin-left: 25px;">N.B.T. No.
+                    @if ($invoice->vat_amount > 0)
+                        Registration No. 409216765-7000
+                    @endif
+                    <span style="margin-left: 25px;">N.B.T. No.
                         409216765-9000</span> <span style="margin-left: 25px;">N.W.P.C මු/1 </span> <br> <br>
                     Recipt No. : {{ $invoice->invoice_number }}
                     <span style="margin-left: 35px">Date

@@ -173,7 +173,7 @@ function completeInspectionAPI(id, callBack) {
         return false;
     }
     var url = "/api/inspection/complete/id/" + id;
-    ajaxRequest('PATCH', url, null, function (result) {
+    ajaxRequest('POST', url, null, function (result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }

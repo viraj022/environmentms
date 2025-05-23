@@ -180,7 +180,7 @@ function preCertificateApi(file_id, assDir_id, DATA, callBack) {
         return false;
     }
     var url = "/api/assistant_director/approve/" + assDir_id + "/" + file_id;
-    ajaxRequest('PATCH', url, DATA, function (result) {
+    ajaxRequest('POST', url, DATA, function (result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }
@@ -191,7 +191,7 @@ function certificateApproveApi(file_id, assDir_id, DATA, callBack) {
         return false;
     }
     var url = "/api/assistant_director/approve_certificate/" + assDir_id + "/" + file_id;
-    ajaxRequest('PATCH', url, DATA, function (result) {
+    ajaxRequest('POST', url, DATA, function (result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }
@@ -202,7 +202,7 @@ function certificateRejectApi(file_id, assDir_id, DATA, callBack) {
         return false;
     }
     var url = "/api/assistant_director/reject_certificate/" + assDir_id + "/" + file_id;
-    ajaxRequest('PATCH', url, DATA, function (result) {
+    ajaxRequest('POST', url, DATA, function (result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }
@@ -214,7 +214,7 @@ function fileRejectApi(file_id, assDir_id, DATA, callBack) {
         return false;
     }
     var url = "/api/assistant_director/reject/" + assDir_id + "/" + file_id;
-    ajaxRequest('PATCH', url, DATA, function (result) {
+    ajaxRequest('POST', url, DATA, function (result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }
@@ -225,7 +225,7 @@ function fileApproveApi(file_id, assDir_id, DATA, callBack) {
         return false;
     }
     var url = "/api/assistant_director/approve/" + assDir_id + "/" + file_id;
-    ajaxRequest('PATCH', url, DATA, function (result) {
+    ajaxRequest('POST', url, DATA, function (result) {
         if (typeof callBack !== 'undefined' && callBack !== null && typeof callBack === "function") {
             callBack(result);
         }

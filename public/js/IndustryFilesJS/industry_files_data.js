@@ -89,7 +89,7 @@ function checkInspectionStatus(id, combo_val, callBack) {
     if (isNaN(id)) {
         return false;
     }
-    ajaxRequest('PATCH', "/api/inspection/" + combo_val + "/file/" + id, null, function (dataSet) {
+    ajaxRequest('POST', "/api/inspection/" + combo_val + "/file/" + id, null, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
@@ -174,7 +174,7 @@ function approvalApi(file_id, env_offi, DATA, callBack) {
         alert('Please Enter Minute Text !');
         return false;
     }
-    ajaxRequest('PATCH', "/api/environment_officer/approve/" + env_offi + "/" + file_id, DATA, function (dataSet) {
+    ajaxRequest('POST', "/api/environment_officer/approve/" + env_offi + "/" + file_id, DATA, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
@@ -186,7 +186,7 @@ function adCertificateApproval(file_id, env_offi, DATA, callBack) {
     if (isNaN(file_id)) {
         return false;
     }
-    ajaxRequest('PATCH', "/api/environment_officer/approve_certificate/" + env_offi + "/" + file_id, DATA, function (dataSet) {
+    ajaxRequest('POST', "/api/environment_officer/approve_certificate/" + env_offi + "/" + file_id, DATA, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }
@@ -197,7 +197,7 @@ function rejectCertificateApproval(file_id, env_offi, DATA, callBack) {
     if (isNaN(file_id)) {
         return false;
     }
-    ajaxRequest('PATCH', "/api/environment_officer/reject_certificate/" + env_offi + "/" + file_id, DATA, function (dataSet) {
+    ajaxRequest('POST', "/api/environment_officer/reject_certificate/" + env_offi + "/" + file_id, DATA, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }

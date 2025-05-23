@@ -212,7 +212,7 @@ Route::middleware('auth:api')->get('/application/applicationList', 'EPLPaymentCo
  */
 Route::middleware('auth:api')->get('/application/fine_list', 'EPLPaymentController@getFineList'); // get application List
 /*
-  
+
  */
 Route::middleware('auth:api')->get('/application/licenceList', 'EPLPaymentController@getLicenctList'); // get licence payment list
 /*
@@ -315,7 +315,7 @@ Route::middleware('auth:api')->get('/inspection/list', 'EPLPaymentController@get
   ]
  */
 
-Route::middleware('auth:api')->patch('/application/markPayment/id/{id}', 'EPLPaymentController@markApplicationPayment'); // mark payment
+Route::middleware('auth:api')->post('/application/markPayment/id/{id}', 'EPLPaymentController@markApplicationPayment'); // mark payment
 
 /*
   [
@@ -331,7 +331,7 @@ Route::middleware('auth:api')->patch('/application/markPayment/id/{id}', 'EPLPay
   }
   ]
  */
-Route::middleware('auth:api')->patch('/application/process/id/{id}', 'EPLPaymentController@processApplication'); // process application
+Route::middleware('auth:api')->post('/application/process/id/{id}', 'EPLPaymentController@processApplication'); // process application
 
 /*
   {
@@ -494,7 +494,7 @@ Route::middleware('auth:api')->get('/siteClearance/pay/id/{id}', 'EPLPaymentCont
     "processing_fee_type": "IEE",
     "status": "not_payed"
   }
-} 
+}
 
  */
 /**
@@ -585,7 +585,7 @@ Route::middleware('auth:api')->get('/siteClearance/pay/id/{id}', 'EPLPaymentCont
       }
     }
   }
-} 
+}
 
  */
 

@@ -1230,7 +1230,7 @@ class ClientController extends Controller
 
     public function issueCertificate(Request $request, $cer_id)
     {
-
+// dd($request->all());
         $issue_date = Carbon::parse($request->issue_date)->format('Y-m-d');
         $expire_date = Carbon::parse($request->expire_date)->format('Y-m-d');
         if (empty($request->issue_date) || empty($request->expire_date)) {
@@ -1242,7 +1242,7 @@ class ClientController extends Controller
         try {
             return DB::transaction(function () use ($cer_id, $issue_date, $expire_date) {
                 $user = Auth::user();
-                $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
+                // $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
                 $certificate = Certificate::findOrFail($cer_id);
                 if ($certificate->issue_status == 0) {
                     $file = Client::findOrFail($certificate->client_id);

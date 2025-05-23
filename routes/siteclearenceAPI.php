@@ -1,7 +1,7 @@
 <?php
 Route::middleware('auth:api')->post('/site_clearance_new', 'SiteClearanceController@create'); // save site clearance
 Route::middleware('auth:api')->get('/site_clearance/{id}', 'SiteClearanceController@find'); //  get site clearance data
-Route::middleware('auth:api')->patch('/site_clearance/processing_status/{siteClearanceSession}', 'SiteClearanceController@setProcessingStatus'); //  set site clearance processing status
+Route::middleware('auth:api')->post('/site_clearance/processing_status/{siteClearanceSession}', 'SiteClearanceController@setProcessingStatus'); //  set site clearance processing status
 /**
  * data
  * {

@@ -93,7 +93,7 @@ function oldFileConfirmSection(is_old) {
 //----Confirm Uploading Old Attachments---
 function ConfirmUploadingAttachs(id, callBack) {
     let url = '/api/old/industry/' + id;
-    ajaxRequest('PATCH', url, null, function (resp) {
+    ajaxRequest('POST', url, null, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
         }
@@ -103,7 +103,7 @@ function ConfirmUploadingAttachs(id, callBack) {
 //----Confirm Uploading Old Attachments---
 function UnConfirmUploadingAttachs(id, callBack) {
     let url = '/api/old/unconfirm_industry/' + id;
-    ajaxRequest('PATCH', url, null, function (resp) {
+    ajaxRequest('POST', url, null, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
         }

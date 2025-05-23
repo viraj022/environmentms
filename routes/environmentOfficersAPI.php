@@ -82,20 +82,20 @@ Route::middleware('auth:api')->get('/epl/env_officer/{id}', 'EnvironmentOfficerC
 //         "zone_id": 1
 //     }
 // ]
-Route::middleware('auth:api')->patch('/environment_officer/approve/{officer_id}/{file_id}', 'EnvironmentOfficerController@approveFile'); //   EO Approved file
-Route::middleware('auth:api')->patch('/assistant_director/approve/{adId}/{file_id}', 'AssistantDirectorController@approveFile'); //   AD Approved FILE
-Route::middleware('auth:api')->patch('/assistant_director/reject/{adId}/{file_id}', 'AssistantDirectorController@rejectFile'); //   AD Reject FILE
-Route::middleware('auth:api')->patch('/environment_officer/reject/{officer_id}/{file_id}', 'EnvironmentOfficerController@rejectFile'); //   EO rejectFile
+Route::middleware('auth:api')->post('/environment_officer/approve/{officer_id}/{file_id}', 'EnvironmentOfficerController@approveFile'); //   EO Approved file
+Route::middleware('auth:api')->post('/assistant_director/approve/{adId}/{file_id}', 'AssistantDirectorController@approveFile'); //   AD Approved FILE
+Route::middleware('auth:api')->post('/assistant_director/reject/{adId}/{file_id}', 'AssistantDirectorController@rejectFile'); //   AD Reject FILE
+Route::middleware('auth:api')->post('/environment_officer/reject/{officer_id}/{file_id}', 'EnvironmentOfficerController@rejectFile'); //   EO rejectFile
 
-Route::middleware('auth:api')->patch('/environment_officer/approve_certificate/{officer_id}/{file_id}', 'EnvironmentOfficerController@approveCertificate'); //   EO Approved  certificate
-Route::middleware('auth:api')->patch('/environment_officer/reject_certificate/{officer_id}/{file_id}', 'EnvironmentOfficerController@rejectCertificate'); //   EO reject certificate
+Route::middleware('auth:api')->post('/environment_officer/approve_certificate/{officer_id}/{file_id}', 'EnvironmentOfficerController@approveCertificate'); //   EO Approved  certificate
+Route::middleware('auth:api')->post('/environment_officer/reject_certificate/{officer_id}/{file_id}', 'EnvironmentOfficerController@rejectCertificate'); //   EO reject certificate
 
-Route::middleware('auth:api')->patch('/assistant_director/approve_certificate/{adId}/{file_id}', 'AssistantDirectorController@approveCertificate'); //   AD Approved certificate
-Route::middleware('auth:api')->patch('/assistant_director/reject_certificate/{adId}/{file_id}', 'AssistantDirectorController@rejectCertificate'); //   AD Approved certificate
+Route::middleware('auth:api')->post('/assistant_director/approve_certificate/{adId}/{file_id}', 'AssistantDirectorController@approveCertificate'); //   AD Approved certificate
+Route::middleware('auth:api')->post('/assistant_director/reject_certificate/{adId}/{file_id}', 'AssistantDirectorController@rejectCertificate'); //   AD Approved certificate
 
-Route::middleware('auth:api')->patch('/assistant_director/reject_certificate/{adId}/{file_id}', 'AssistantDirectorController@rejectCertificate'); //   AD Approved certificate
+Route::middleware('auth:api')->post('/assistant_director/reject_certificate/{adId}/{file_id}', 'AssistantDirectorController@rejectCertificate'); //   AD Approved certificate
 
-Route::middleware('auth:api')->patch('/director/approve_certificate/{file_id}', 'AssistantDirectorController@derectorApproveCertificate'); //   Director Approved certificate
-Route::middleware('auth:api')->patch('/director/reject/{file_id}', 'AssistantDirectorController@directorRejectCertificate'); //   Director reject certificate
-Route::middleware('auth:api')->patch('/director/hold/{file_id}', 'AssistantDirectorController@directorHoldCertificate'); //   Director hold certificate
-Route::middleware('auth:api')->patch('/director/un_hold/{file_id}', 'AssistantDirectorController@directorUnHoldCertificate'); //   Director hold certificate
+Route::middleware('auth:api')->post('/director/approve_certificate/{file_id}', 'AssistantDirectorController@derectorApproveCertificate'); //   Director Approved certificate
+Route::middleware('auth:api')->post('/director/reject/{file_id}', 'AssistantDirectorController@directorRejectCertificate'); //   Director reject certificate
+Route::middleware('auth:api')->post('/director/hold/{file_id}', 'AssistantDirectorController@directorHoldCertificate'); //   Director hold certificate
+Route::middleware('auth:api')->post('/director/un_hold/{file_id}', 'AssistantDirectorController@directorUnHoldCertificate'); //   Director hold certificate

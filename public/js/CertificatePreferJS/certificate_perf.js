@@ -166,7 +166,7 @@ function getCertificateDetails(file_id, FILE_URL, callBack) {
                     $(".showCorrectedFileUi").addClass("d-none");
                     // $('.correctedFileShowUi').addClass('d-none');
                     if (resp.certificate_path != null) {
-                        $(".complCertificate").removeClass("d-none");
+                       // $(".complCertificate").removeClass("d-none");
                     }
                 }
                 if (resp.corrected_file != null) {
@@ -245,7 +245,7 @@ function completeCertificateAPI(certificate_id, FILE_STATUS, data, callBack) {
     }
 
     url += certificate_id;
-    ajaxRequest("PATCH", url, data, function (result) {
+    ajaxRequest("POST", url, data, function (result) {
         if (
             typeof callBack !== "undefined" &&
             callBack !== null &&

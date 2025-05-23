@@ -30,7 +30,7 @@ Route::middleware('auth:api')->get('/assistant_directors/level', 'AssistantDirec
 
 Route::middleware('auth:api')->get('/environment_officer/level/assistant_director_id/{id}', 'EnvironmentOfficerController@getEnvironmentOfficersByLevel'); // get environment officer by logged user
 
-Route::middleware('auth:api')->patch('/inspection/{inspectionNeed}/file/{id}', 'ClientController@markInspection'); // mark inspection need or not need
+Route::middleware('auth:api')->post('/inspection/{inspectionNeed}/file/{id}', 'ClientController@markInspection'); // mark inspection need or not need
 
 /*
   values for inspectionNeed parameter
@@ -419,14 +419,14 @@ Route::middleware('auth:api')->post('/certificate/draft/{id}', 'ClientController
 Route::middleware('auth:api')->post('/certificate/corrected_file/{id}', 'ClientController@uploadCorrectedFile'); //  upload corrected file
 Route::middleware('auth:api')->post('/certificate/original/{id}', 'ClientController@uploadOriginalCertificate'); //  upload certificate original
 
-Route::middleware('auth:api')->patch('/certificate/drafted/{id}', 'ClientController@completeDraftingCertificate'); //  make certificate drafted
-Route::middleware('auth:api')->patch('/certificate/issue/{id}', 'ClientController@issueCertificate'); //  certificate issued
+Route::middleware('auth:api')->post('/certificate/drafted/{id}', 'ClientController@completeDraftingCertificate'); //  make certificate drafted
+Route::middleware('auth:api')->post('/certificate/issue/{id}', 'ClientController@issueCertificate'); //  certificate issued
 
-Route::middleware('auth:api')->patch('/certificate/complete/{id}', 'ClientController@completeCertificate'); //  complete certificate
+Route::middleware('auth:api')->post('/certificate/complete/{id}', 'ClientController@completeCertificate'); //  complete certificate
 Route::middleware('auth:api')->get('/certificate/expiredCertificates', 'ClientController@getExpiredCertificates'); //  get all Expired Certificates and certificate that expired within  a month by environment
 Route::middleware('auth:api')->get('/old_files/count_by_date', 'ClientController@oldFilesCountByDate');
 
-Route::middleware('auth:api')->patch('/reject/file/{file_id}', 'AssistantDirectorController@rejectFileAll'); //   reject file and current working file type
+Route::middleware('auth:api')->post('/reject/file/{file_id}', 'AssistantDirectorController@rejectFileAll'); //   reject file and current working file type
 
 
 //report api

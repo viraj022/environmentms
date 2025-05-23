@@ -111,7 +111,7 @@ Route::middleware('auth:api')->delete('/old/attachments/{id}', 'OldFilesControll
 
 
 
-Route::middleware('auth:api')->patch('/old/industry/{id}', 'ClientController@markOldFinish'); //   mark old data entry finish
+Route::middleware('auth:api')->post('/old/industry/{id}', 'ClientController@markOldFinish'); //   mark old data entry finish
 /*
 {
     "id": 1,
@@ -187,7 +187,7 @@ Route::middleware('auth:api')->delete('/site_clearance/old/site_clearance_sessio
 }
 */
 
-Route::middleware('auth:api')->patch('/old/unconfirm_industry/{id}', 'ClientController@markOldUnfinish');
+Route::middleware('auth:api')->post('/old/unconfirm_industry/{id}', 'ClientController@markOldUnfinish');
 
 
 Route::middleware('auth:api')->get('/old/confirmed_clients', 'ClientController@getConfirmedClients');

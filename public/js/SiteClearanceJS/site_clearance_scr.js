@@ -16,7 +16,7 @@ function setProcessingTypeAPI(site_clear_ses, data, callBack) {
         return false;
     }
     var url = "/api/site_clearance/processing_status/" + site_clear_ses;
-    ajaxRequest('PATCH', url, data, function (dataSet) {
+    ajaxRequest('POST', url, data, function (dataSet) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(dataSet);
         }

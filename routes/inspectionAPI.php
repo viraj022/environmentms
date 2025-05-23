@@ -180,14 +180,14 @@ Route::middleware('auth:api')->get('/inspection/id/{id}', 'InspectionSessionCont
         "inspection_personals": []
     }
  */
-Route::middleware('auth:api')->patch('/inspection/complete/id/{id}', 'InspectionSessionController@markComplete'); // make inspection complete
+Route::middleware('auth:api')->post('/inspection/complete/id/{id}', 'InspectionSessionController@markComplete'); // make inspection complete
 /**
  *  {
     "id": 1,
     "message": "true"
 }
  */
-Route::middleware('auth:api')->patch('/inspection/pending/id/{id}', 'InspectionSessionController@markPending'); // make inspection pending
+Route::middleware('auth:api')->post('/inspection/pending/id/{id}', 'InspectionSessionController@markPending'); // make inspection pending
 /**
  *  {
     "id": 1,
