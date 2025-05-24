@@ -161,7 +161,7 @@ function updateRole(id, data, callBack) {
 
 function activeDeletedUser(id, callBack) {
     $.ajax({
-        type: "PUT",
+        type: "POST",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),

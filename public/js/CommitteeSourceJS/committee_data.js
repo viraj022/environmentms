@@ -36,7 +36,6 @@ function selectedApplication_table(obj, callBack) {
 }
 //Method API
 function methodCommitteeAPI(data, method, id, callBack) {
-    //Current Usage Explained - POST/1 , PUT/2 , DELETE/3 , GET/4
     let DATA_METHOD = '';
     let URL = '';
 
@@ -44,7 +43,7 @@ function methodCommitteeAPI(data, method, id, callBack) {
         DATA_METHOD = 'POST';
         URL = '/api/committees';
     } else if (method === 2) {
-        DATA_METHOD = 'PUT';
+        DATA_METHOD = 'POST';
         URL = '/api/committees/' + id;
     } else if (method === 3) {
         DATA_METHOD = 'DELETE';

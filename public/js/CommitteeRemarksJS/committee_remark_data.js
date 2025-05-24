@@ -1,6 +1,5 @@
 //Method API
 function methodCommitteeRemarkAPI(data, method, id, callBack) {
-    //Current Usage Explained - POST/1 , PUT/2 , DELETE/3 , GET/4
     let DATA_METHOD = '';
     let URL = '';
 
@@ -14,7 +13,7 @@ function methodCommitteeRemarkAPI(data, method, id, callBack) {
         if (!data) {
             return false;
         }
-        DATA_METHOD = 'PUT';
+        DATA_METHOD = 'POST';
         URL = '/api/committees/' + id + '/c_remarks';
     } else if (method === 3) {
         DATA_METHOD = 'DELETE';

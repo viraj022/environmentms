@@ -83,7 +83,7 @@
 
     function reset_count() {
         let url = '/api/reset_counts';
-        ajaxRequest('PUT', url, null, function (resp) {
+        ajaxRequest('POST', url, null, function (resp) {
             if (resp.status == 1) {
                 swal.fire('success', 'Successfully Reset the counts', 'success');
                 location.reload();

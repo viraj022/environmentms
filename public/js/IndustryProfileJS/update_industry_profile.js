@@ -88,7 +88,7 @@ function updateClientFileAPI(id, data, callBack) {
         id = 0;
     }
     var url = "/api/client/id/" + id;
-    ajaxRequest("PUT", url, data, function (dataSet) {
+    ajaxRequest("POST", url, data, function (dataSet) {
         if (
             typeof callBack !== "undefined" &&
             callBack != null &&

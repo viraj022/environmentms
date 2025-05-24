@@ -14,10 +14,10 @@ Route::post('/users', 'UserController@create')->name('system_Rolls');
 Route::post('/rolls', 'RollController@create')->name('create_system_Rolls');
 
 #put
-Route::put('/users/id/{id}', 'UserController@store');
-Route::put('/users/password/{id}', 'UserController@storePassword');
+Route::post('/users/id/{id}', 'UserController@store');
+Route::post('/users/password/{id}', 'UserController@storePassword');
 
 #delete
 Route::delete('/users/id/{id}', 'UserController@delete');
 Route::get('/users/myProfile', 'UserController@myProfile');
-Route::put('/users/my_password', 'UserController@changeMyPass');
+Route::post('/users/my_password', 'UserController@changeMyPass');

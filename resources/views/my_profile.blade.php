@@ -49,7 +49,7 @@
 
                             <form method="POST" action="/users/id/{{ $user['id'] }}">
                                 @csrf
-                                @method('PUT')
+                                @method('POST')
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label>First Name</label>
@@ -125,7 +125,7 @@
                                     </div>
                                     <div class="card-body">
                                         @csrf
-                                        @method('PUT')
+                                        @method('POST')
                                         <div class="form-group">
                                             <label>Password</label>
                                             <input name="password" type="password" class="form-control form-control-sm"
