@@ -21,6 +21,12 @@ Route::get('/', 'HomeController@index')->name('home');
 Auth::routes(['register' => false]);
 
 // ui routs
+Route::put(
+    '/test_put',
+    function () {
+        echo 'This is a test PUT route';
+    }
+);
 
 Route::get('/attachments', 'AttachemntsController@index');
 Route::get('/pradesheyasaba', 'PradesheeyasabaController@index');
