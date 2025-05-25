@@ -18,6 +18,6 @@ Route::post('/users/id/{id}', 'UserController@store');
 Route::post('/users/password/{id}', 'UserController@storePassword');
 
 #delete
-Route::delete('/users/id/{id}', 'UserController@delete');
+Route::post('/users/id/{id}', 'UserController@delete');
 Route::get('/users/myProfile', 'UserController@myProfile');
 Route::post('/users/my_password', 'UserController@changeMyPass');

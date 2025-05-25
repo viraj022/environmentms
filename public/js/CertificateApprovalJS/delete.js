@@ -1,6 +1,6 @@
 function deleteEnvOfficer(data,id,callBack) {
     $.ajax({
-        type: "DELETE",
+        type: "POST",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -24,7 +24,7 @@ function deleteEnvOfficer(data,id,callBack) {
 }
 function deleteAssDir(data,id,callBack) {
     $.ajax({
-        type: "DELETE",
+        type: "POST",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -48,7 +48,7 @@ function deleteAssDir(data,id,callBack) {
 }
 function deleteDir(data,id,callBack) {
     $.ajax({
-        type: "DELETE",
+        type: "POST",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),

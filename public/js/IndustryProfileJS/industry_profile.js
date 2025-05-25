@@ -499,7 +499,7 @@ function removeClientFileAPI(id, callBack) {
     if (isNaN(id)) {
         return false;
     }
-    ajaxRequest("DELETE", "/api/client/id/" + id, null, function (dataSet) {
+    ajaxRequest("POST", "/api/client/id/" + id, null, function (dataSet) {
         if (
             typeof callBack !== "undefined" &&
             callBack != null &&
@@ -516,7 +516,7 @@ function removeEPLPaymentAPI(id, callBack) {
         return false;
     }
     ajaxRequest(
-        "DELETE",
+        "POST",
         "/api/epl/regPayment/id/" + id,
         null,
         function (dataSet) {

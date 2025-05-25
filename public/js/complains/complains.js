@@ -236,7 +236,7 @@ function update_complain() {
 
 function delete_complain(id) {
     let url = "/api/delete_complain/id/" + id;
-    ajaxRequest("DELETE", url, null, function (resp) {
+    ajaxRequest("POST", url, null, function (resp) {
         if (resp.status == 1) {
             $("#complain_tbl").DataTable().ajax.reload();
             swal.fire("success", resp.msg, "success");

@@ -157,7 +157,7 @@ function saveEPL_Attachment(file_data, epl_id, attachment_id, callBack) {
 }
 function removeEPL_Attachment(epl_id, attachment_id, callBack) {
     $.ajax({
-        type: "DELETE",
+        type: "POST",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),

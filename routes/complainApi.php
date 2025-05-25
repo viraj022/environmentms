@@ -5,7 +5,7 @@
 Route::middleware('auth:api')->group(function () {
     Route::post('save_complain', 'ComplainController@save_complain');
     Route::post('update_complain/id/{id}', 'ComplainController@update_complain');
-    Route::delete('delete_complain/id/{id}', 'ComplainController@delete_complain');
+    Route::post('delete_complain/id/{id}', 'ComplainController@delete_complain');
     Route::get('get_complain_data', 'ComplainController@show');
     Route::get('/complain_profile_data/id/{id}', 'ComplainController@complainProfileData');
     Route::post('/update_attachments/id/{id}', 'ComplainController@update_attachments');
@@ -18,7 +18,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/forward_to_letter_preforation/complain/{complain_id}', 'ComplainController@forward_to_letter_preforation');
     Route::get('/complain_log_data/complain/{complain_id}', 'ComplainController@get_complain_assign_log');
     Route::get('/forwarded_complains', 'ComplainController@forwarded_complains');
-    Route::delete('/delete_attach', 'ComplainController@removeAttach');
+    Route::post('/delete_attach', 'ComplainController@removeAttach');
     Route::get('/load_file_no', 'ComplainController@loadFileNo');
     Route::post('/assign_file_no', 'ComplainController@assignFileNo');
 });

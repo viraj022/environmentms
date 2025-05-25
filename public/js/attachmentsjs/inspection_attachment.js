@@ -75,7 +75,7 @@ function save_Attachment(id, data, callBack) {
 
 function remove_Image(attachment_id, callBack) {
     $.ajax({
-        type: "DELETE",
+        type: "POST",
         headers: {
             "Authorization": "Bearer " + $('meta[name=api-token]').attr("content"),
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),

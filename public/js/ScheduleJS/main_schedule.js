@@ -102,7 +102,7 @@ function InspectionRemoveApi(id, callBack) {
         return false;
     }
     let url = "/api/inspection/delete/id/" + id;
-    ajaxRequest("DELETE", url, null, function (parameters) {
+    ajaxRequest("POST", url, null, function (parameters) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(parameters);
         }
