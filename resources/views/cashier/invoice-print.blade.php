@@ -73,8 +73,11 @@
                     @if ($invoice->vat_amount > 0)
                         Registration No. 409216765-7000
                     @endif
-                    <span style="margin-left: 25px;">N.B.T. No.
-                        409216765-9000</span> <span style="margin-left: 25px;">N.W.P.C මු/1 </span> <br> <br>
+                    @if ($invoice->nbt_amount > 0)
+                        <span style="margin-left: 25px;">N.B.T. No.
+                            409216765-9000</span>
+                    @endif
+                    <span style="margin-left: 25px;">N.W.P.C මු/1 </span> <br> <br>
                     Recipt No. : {{ $invoice->invoice_number }}
                     <span style="margin-left: 35px">Date
                         :{{ Carbon\Carbon::parse($invoice->invoice_date)->format('Y-m-d') }}</span>
