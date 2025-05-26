@@ -69,7 +69,7 @@
                                                             </dl>
                                                         </div>
                                                         <!--                                                <button class="btn btn-primary genCertificateNum d-none"><i class="fa fa-gear"></i> Generate Certificate Number</button>
-                                                                                                                                                                                             /.card-body -->
+                                                                                                                                                                                                     /.card-body -->
                                                     </div>
                                                     <div class="card card-success">
                                                         <div class="card-header">
@@ -210,6 +210,8 @@
                                                             Certificate Submitted</h4>
                                                         <button class="btn btn-primary complCertificate d-none"><i
                                                                 class="fa fa-check"></i> Complete Certificate</button>
+                                                        <button class="btn btn-dark complDrafting d-none"><i
+                                                                class="fa fa-check"></i> Complete Drafting</button>
                                                         <div class="row">
                                                             <div class="col-4">
                                                                 <div class="fileShowUi d-none" style=" height: 200px;">
@@ -350,8 +352,8 @@
                     </div>
                 </div>
                 <!--        <div class="overlay dark loadingRenderUI">
-                                                                                                                                                                <i class="fas fa-2x fa-sync-alt"></i>
-                                                                                                                                                            </div>-->
+                                                                                                                                                                        <i class="fas fa-2x fa-sync-alt"></i>
+                                                                                                                                                                    </div>-->
             </div>
         </section>
         <!--//Tab Section END//-->
@@ -374,7 +376,7 @@
         var FILE_STATUS = '';
         var CER_STATUS = '';
         var CERTIFICATE_ID = '';
-        const FILE_URL="{{ env('DO_URL') }}";
+        const FILE_URL = "{{ env('DO_URL') }}";
         $(function() {
             //Load table
             getaProfilebyId(PROFILE_ID, function(parameters) {
@@ -384,7 +386,7 @@
                 setProfileDetails(parameters);
                 setIndustryAndClientDb(parameters);
 
-                getCertificateDetails(PROFILE_ID,FILE_URL, function(resp) {
+                getCertificateDetails(PROFILE_ID, FILE_URL, function(resp) {
                     loadCertRefNo(resp);
                 });
 
@@ -397,7 +399,7 @@
         });
 
         //Show Certificate Details
-        getCertificateDetails(PROFILE_ID, FILE_URL,function(resp) {
+        getCertificateDetails(PROFILE_ID, FILE_URL, function(resp) {
             if (resp.length != 0) {
                 FILE_STATUS = parseInt(resp.client.file_status);
                 CERTIFICATE_ID = parseInt(resp.id);
@@ -410,7 +412,7 @@
                 genCertificateNumbyId(PROFILE_ID, function(resp) {
                     show_mesege(resp);
                     if (resp.id == 1) {
-                        getCertificateDetails(PROFILE_ID,FILE_URL, function(resp) {
+                        getCertificateDetails(PROFILE_ID, FILE_URL, function(resp) {
                             loadCertRefNo(resp);
                             CERTIFICATE_ID = parseInt(resp.id);
                         });
@@ -501,7 +503,7 @@
                 $('#uploadCerfile').prop('disabled', false);
                 show_mesege(resp);
                 if (resp.id == 1) {
-                    getCertificateDetails(PROFILE_ID,FILE_URL, function(resp) {
+                    getCertificateDetails(PROFILE_ID, FILE_URL, function(resp) {
                         CERTIFICATE_ID = parseInt(resp.id);
                         FILE_STATUS = parseInt(resp.client.file_status);
                         $('#fileUploadInput').val('');
@@ -510,6 +512,7 @@
             });
         }
 
+        //compleate Certificate after file approved by director
         $('.complCertificate').click(function() {
             if (confirm('Are you sure you want to complete this certificate?')) {
                 var dataB = {
@@ -525,11 +528,34 @@
                     }
                     $('#certificateSubmittedLable').removeClass('d-none');
                     $('.complCertificate').addClass('d-none');
-                    //***
                     $('.genCertificateNum').addClass('d-none');
 
                     if (resp.id != 1) {
-                        getCertificateDetails(PROFILE_ID,FILE_URL, function(resp) {
+                        getCertificateDetails(PROFILE_ID, FILE_URL, function(resp) {
+                            if (resp.length != 0) {
+                                CERTIFICATE_ID = parseInt(resp.id);
+                                FILE_STATUS = parseInt(resp.client.file_status);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+        //compleate Drafting Certificate
+        $('.complDrafting').click(function() {
+            $('.complDrafting').attr('disabled', 'disabled');
+            if (confirm('Are you sure you want to complete this drafting?')) {
+                completeDraftedCertificate(CERTIFICATE_ID, function(resp) {
+                    show_mesege(resp);
+                    if (resp.id === 1) {
+                        $('.fileUpDiv').addClass('d-none');
+                    }
+                    $('#certificateSubmittedLable').removeClass('d-none');
+                    $('.complDrafting').addClass('d-none');
+                    $('.genCertificateNum').addClass('d-none');
+                    if (resp.id != 1) {
+                        getCertificateDetails(PROFILE_ID, FILE_URL, function(resp) {
                             if (resp.length != 0) {
                                 CERTIFICATE_ID = parseInt(resp.id);
                                 FILE_STATUS = parseInt(resp.client.file_status);
@@ -576,11 +602,13 @@
             } else {
                 ajaxRequest('POST', "/api/save_reference_no", data, function(resp) {
                     if (resp.status == 1) {
-                        swal.fire('success', 'Reference Number Saved Successfully', 'success');
+                        swal.fire('success', 'Reference Number Saved Successfully',
+                            'success');
                         $('#man_cert_ref_no').val('');
-                        getCertificateDetails(PROFILE_ID,FILE_URL)
+                        getCertificateDetails(PROFILE_ID, FILE_URL)
                     } else {
-                        swal.fire('Failed', 'Reference Number Saving was Successfully', 'error');
+                        swal.fire('Failed', 'Reference Number Saving was Successfully',
+                            'error');
                     }
                 });
             }

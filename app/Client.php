@@ -25,11 +25,11 @@ class Client extends Model
     ];
 
     public const FILE_STATUS = [
-        0 => 'pending',
+        0 => 'Pending',
         1 => 'AD File Approval Pending',
         2 => 'Certificate Preparation',
-        3 => 'AD Certificate Prenidng Approval',
-        4 => 'D Certificate Approval Prenidng',
+        3 => 'AD Certificate Approval Prenidng',
+        4 => 'D Certificate Approval Pending',
         5 => 'Complete',
         6 => 'Issued',
         '-1' => 'Rejected',

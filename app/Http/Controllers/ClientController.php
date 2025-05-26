@@ -164,7 +164,12 @@ class ClientController extends Controller
         $qrCode = $this->fileQr($client->file_no);
         if ($pageAuth['is_read']) {
             return view('industry_profile', [
-                'pageAuth' => $pageAuth, 'id' => $id, 'client' => $client, 'qrCode' => $qrCode, 'oldOwnerDetails' => $oldOwnerDetails, 'onlineTransactions' => $onlineTransactions,
+                'pageAuth' => $pageAuth,
+                'id' => $id,
+                'client' => $client,
+                'qrCode' => $qrCode,
+                'oldOwnerDetails' => $oldOwnerDetails,
+                'onlineTransactions' => $onlineTransactions,
                 'siteClearance' => $siteClearance
             ]);
         } else {
@@ -1230,7 +1235,7 @@ class ClientController extends Controller
 
     public function issueCertificate(Request $request, $cer_id)
     {
-// dd($request->all());
+        // dd($request->all());
         $issue_date = Carbon::parse($request->issue_date)->format('Y-m-d');
         $expire_date = Carbon::parse($request->expire_date)->format('Y-m-d');
         if (empty($request->issue_date) || empty($request->expire_date)) {
@@ -1244,6 +1249,7 @@ class ClientController extends Controller
                 $user = Auth::user();
                 // $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
                 $certificate = Certificate::findOrFail($cer_id);
+                //todo check this and add validations
                 if ($certificate->issue_status == 0) {
                     $file = Client::findOrFail($certificate->client_id);
                     $msg = setFileStatus($file->id, 'file_status', 5);
@@ -1323,7 +1329,11 @@ class ClientController extends Controller
         $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
         $certificate = Certificate::with('client.environmentOfficer')->whereId($id)->first();
         $client = $certificate->client;
-        // dd($client);
+
+        //if $client->file_status is not 2 or 3 then return error
+        if (!in_array($client->file_status, [2, 3])) {
+            return array('id' => 0, 'message' => 'File status is not valid for completing draft');
+        }
 
         $file_type = $client->cer_type_status;
         if ($file_type == 1 || $file_type == 2) {

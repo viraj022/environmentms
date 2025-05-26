@@ -149,59 +149,31 @@ function getCertificateDetails(file_id, FILE_URL, callBack) {
                     );
                 }
             }
-            if (resp.client.file_status == 2 || resp.client.file_status == 3) {
+            if (resp.client.file_status == 2 || resp.client.file_status == 3) {//certificate is in drafting status
+                console.log(resp.client.file_status);
                 $("#uploadFileSection").removeClass("d-none");
                 if (resp.client.cer_status == 2) {
-                    // $("#correctedCertificatePath").attr("href", "/" + resp.corrected_file);
-                    // $('#uploadFileSection').addClass('d-none');
                     $("#certificateSubmittedLable").removeClass("d-none");
-                    $(".showCorrectedFileUi").removeClass("d-none");
                     $(".originalCertificateShowUi").addClass("d-none");
-                    // $('.correctedFileShowUi').removeClass('d-none');
-                    // $('.fileUpDiv').addClass('d-none');
                 } else {
-                    // $('.fileUpDiv').removeClass('d-none');
                     $("#certificateSubmittedLable").addClass("d-none");
                     $("#uploadFileSection").removeClass("d-none");
-                    $(".showCorrectedFileUi").addClass("d-none");
-                    // $('.correctedFileShowUi').addClass('d-none');
-                    if (resp.certificate_path != null) {
-                       // $(".complCertificate").removeClass("d-none");
-                    }
                 }
-                if (resp.corrected_file != null) {
-                    $(".correctedFileShowUi").removeClass("d-none");
-                    $("#correctedCertificatePath").attr(
-                        "href",
-                        FILE_URL + '/' + resp.corrected_file
-                    );
-
-                    let file_ext = resp.corrected_file.split(".").pop();
-
-                    if (file_ext == "pdf") {
-                        $("#file_view").attr("src", "/dist/img/pdf-view.png");
-                    }
-
-                    if (file_ext == "docx" || file_ext == "docx") {
-                        $("#file_view").attr("src", "/dist/img/doc-view.png");
-                    }
+                if (resp.certificate_path != null) {
+                    console.log(resp.certificate_path);
+                    $(".complDrafting").removeClass("d-none");
                 }
-            } else if (resp.client.file_status == 5) {
+            } else if (resp.client.file_status == 5) { //if file is in complete status
                 $(".fileShowUi").removeClass("d-none");
                 if (resp.signed_certificate_path != null) {
-                    $(".complCertificate")
-                        .removeClass("d-none")
-                        .text("Issue Certificate")
-                        .addClass("btn-success");
+                    $(".complCertificate").removeClass("d-none").text("Issue Certificate").addClass("btn-success");
                     $(".originalCertificateShowUi").removeClass("d-none");
                     $("#originalCertificatePath").attr(
                         "href",
                         FILE_URL + '/' + resp.signed_certificate_path
                     );
 
-                    let file_ext = resp.signed_certificate_path
-                        .split(".")
-                        .pop();
+                    let file_ext = resp.signed_certificate_path.split(".").pop();
 
                     if (file_ext == "pdf") {
                         $("#original_cert_view").attr(
@@ -246,6 +218,23 @@ function completeCertificateAPI(certificate_id, FILE_STATUS, data, callBack) {
 
     url += certificate_id;
     ajaxRequest("POST", url, data, function (result) {
+        if (
+            typeof callBack !== "undefined" &&
+            callBack !== null &&
+            typeof callBack === "function"
+        ) {
+            callBack(result);
+        }
+    });
+}
+
+//compleate drafted certificate
+function completeDraftedCertificate(certificate_id, callBack) {
+    if (certificate_id.length == 0) {
+        return false;
+    }
+    var url = "/api/certificate/drafted/" + certificate_id;
+    ajaxRequest("POST", url, null, function (result) {
         if (
             typeof callBack !== "undefined" &&
             callBack !== null &&
