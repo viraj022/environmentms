@@ -81,7 +81,7 @@ function remove_Image(attachment_id, callBack) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
-        url: "/api/epl/inspection/attach/id/" + attachment_id,
+        url: "/api/epl/inspection/attach/delete/id/" + attachment_id,
         data: null,
         dataType: "json",
         cache: false,
