@@ -22,7 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 //api
 Route::middleware('auth:api')->post('/rolls/rollId/{id}', 'RollController@store');
-Route::middleware('auth:api')->delete('/rolls/rollId/{id}', 'RollController@destroy');
+Route::middleware('auth:api')->post('/rolls/rollId/{id}', 'RollController@destroy');
 Route::middleware('auth:api')->get('/rolls/levelId/{id}', 'LevelController@rollsByLevel')->name('rolls_by_level');
 Route::middleware('auth:api')->get('/rolls/rollPrivilege/{id}', 'RollController@getRollPrevilagesById')->name('Previlages_by_rollId');
 Route::middleware('auth:api')->get('/user/Privileges/{id}', 'UserController@previlagesById');
@@ -92,7 +92,7 @@ Route::middleware('auth:api')->post('/attachement/id/{id}', 'AttachemntsControll
 
 
 
-Route::middleware('auth:api')->delete('/attachement/id/{id}', 'AttachemntsController@destroy'); //delete attachment
+Route::middleware('auth:api')->post('/attachement/id/{id}', 'AttachemntsController@destroy'); //delete attachment
 
 Route::middleware('auth:api')->get('/attachements/name/{name}', 'AttachemntsController@isNameUnique'); //check for unique name
 /*
@@ -141,7 +141,7 @@ Route::middleware('auth:api')->get('/industrycategories', 'IndustryCategoryContr
   ]
  */
 
-Route::middleware('auth:api')->delete('/industrycategory/id/{id}', 'IndustryCategoryController@destroy'); //delete IndustryCategory
+Route::middleware('auth:api')->post('/industrycategory/id/{id}', 'IndustryCategoryController@destroy'); //delete IndustryCategory
 Route::middleware('auth:api')->post('/industrycategory/id/{id}', 'IndustryCategoryController@store'); //update IndustryCategory
 
 Route::middleware('auth:api')->get('/industrycategory/name/{name}', 'IndustryCategoryController@isNameUnique'); //check for unique name
@@ -206,7 +206,7 @@ Route::middleware('auth:api')->get('/pradesheeyasabas', 'PradesheeyasabaControll
   ]
  */
 
-Route::middleware('auth:api')->delete('/pradesheeyasaba/id/{id}', 'PradesheeyasabaController@destroy'); //delete Pradesheeyasaba
+Route::middleware('auth:api')->post('/pradesheeyasaba/id/{id}', 'PradesheeyasabaController@destroy'); //delete Pradesheeyasaba
 Route::middleware('auth:api')->post('/pradesheeyasaba/id/{id}', 'PradesheeyasabaController@store'); //update Pradesheeyasaba
 
 Route::middleware('auth:api')->get('/pradesheeyasaba/name/{name}', 'PradesheeyasabaController@isNameUnique'); //check for unique name
@@ -313,7 +313,7 @@ Route::middleware('auth:api')->get('/payment_type/id/{id}', 'PaymentTypeControll
  */
 
 
-Route::middleware('auth:api')->delete('/payment_type/id/{id}', 'PaymentTypeController@destroy'); //delete payment type
+Route::middleware('auth:api')->post('/payment_type/id/{id}', 'PaymentTypeController@destroy'); //delete payment type
 /*
   {
   "id": 1,
@@ -354,7 +354,7 @@ Route::middleware('auth:api')->get('/payment', 'PaymentsController@show'); //get
 Route::middleware('auth:api')->get('/payment/payment_type/id/{id}', 'PaymentsController@showByPaymentType'); //get  all payment details with payment type name
 
 
-Route::middleware('auth:api')->delete('/payment/id/{id}', 'PaymentsController@destroy'); //deletePayment
+Route::middleware('auth:api')->post('/payment/id/{id}', 'PaymentsController@destroy'); //deletePayment
 /*
   {
   "id": 1,
@@ -421,7 +421,7 @@ Route::middleware('auth:api')->post('/rangedpayment', 'PaymentsController@create
   ]
   }
  */
-Route::middleware('auth:api')->delete('/rangedpayment/id/{id}', 'PaymentsController@destroyRangedPayment'); //deletePayment
+Route::middleware('auth:api')->post('/rangedpayment/id/{id}', 'PaymentsController@destroyRangedPayment'); //deletePayment
 /*
   {
   "id": 1,
@@ -461,7 +461,7 @@ Route::middleware('auth:api')->post('/zone', 'ZoneController@create'); //Create
 Route::middleware('auth:api')->get('/zones', 'ZoneController@show'); //Get All Zones
 Route::middleware('auth:api')->get('/zone/id/{id}', 'ZoneController@find'); //Get A Zone By ID
 Route::middleware('auth:api')->post('/zone/id/{id}', 'ZoneController@store'); //Update Zone
-Route::middleware('auth:api')->delete('/zone/id/{id}', 'ZoneController@destroy'); //Delete Zone
+Route::middleware('auth:api')->post('/zone/id/{id}', 'ZoneController@destroy'); //Delete Zone
 Route::middleware('auth:api')->get('/zone/name/{name}', 'ZoneController@isNameUnique'); //Check Unique Name
 Route::middleware('auth:api')->get('/zone/code/{code}', 'ZoneController@isCodeUnique'); //Check Unique Code
 //Zone API END
@@ -566,7 +566,7 @@ Route::middleware('auth:api')->get('/get_a_AssistantDirector/id/{id}', 'Assistan
 
  */
 Route::middleware('auth:api')->post('/AssistantDirector', 'AssistantDirectorController@create'); //insert assistant_director
-Route::middleware('auth:api')->delete('/unassistantdirector/id/{id}', 'AssistantDirectorController@destroy'); //delete AssistantDirector
+Route::middleware('auth:api')->post('/unassistantdirector/id/{id}', 'AssistantDirectorController@destroy'); //delete AssistantDirector
 /*
   server responce
 
@@ -668,7 +668,7 @@ Route::middleware('auth:api')->get('/environment_officers/assistant_director/id/
   ]
  */
 
-Route::middleware('auth:api')->delete('/environment_officers/id/{id}', 'EnvironmentOfficerController@destroy'); // ! delete an environment officer by id
+Route::middleware('auth:api')->post('/environment_officers/id/{id}', 'EnvironmentOfficerController@destroy'); // ! delete an environment officer by id
 /*
   ! output
 
@@ -753,7 +753,7 @@ Route::middleware('auth:api')->post('/client/id/{id}', 'ClientController@store')
   response Example
   validation response Example */
 
-Route::middleware('auth:api')->delete('/client/id/{id}', 'ClientController@destroy'); //delete industry profile
+Route::middleware('auth:api')->post('/client/id/{id}', 'ClientController@destroy'); //delete industry profile
 // {
 //     "id": 1,
 //     "message": "true"

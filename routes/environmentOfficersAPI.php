@@ -18,7 +18,7 @@ Route::middleware('auth:api')->post('/epl/assign/id/{id}', 'EnvironmentOfficerCo
 
 Route::middleware('auth:api')->get('/epl/assistance_director/{id}', 'EnvironmentOfficerController@getEplByAssistantDirector'); //   get epls by assistance director
 
-Route::middleware('auth:api')->delete('/epl/remove/id/{id}', 'EnvironmentOfficerController@remove'); //   remove a epl
+Route::middleware('auth:api')->post('/epl/remove/id/{id}', 'EnvironmentOfficerController@remove'); //   remove a epl
 
 Route::middleware('auth:api')->get('/epl/envirnment_officers/', 'EnvironmentOfficerController@All'); //   get all environment officers
 

@@ -23,7 +23,7 @@ Route::middleware('auth:api')->post('/automatic_inspection/create/id/{id}', 'Ins
 */
 
 
-Route::middleware('auth:api')->delete('/inspection/delete/id/{id}', 'InspectionSessionController@destroyInspection'); //   delete a inspection session
+Route::middleware('auth:api')->post('/inspection/delete/id/{id}', 'InspectionSessionController@destroyInspection'); //   delete a inspection session
 
 /*
 {
@@ -201,7 +201,7 @@ Route::middleware('auth:api')->post('/inspection/pending/id/{id}', 'InspectionSe
 Route::middleware('auth:api')->post('/inspection/personal/create/id/{id}', 'InspectionPersonalController@create');
 Route::middleware('auth:api')->get('/inspection/personal/id/{id}', 'InspectionPersonalController@find');
 Route::middleware('auth:api')->get('/inspections/personal/id/{id}', 'InspectionPersonalController@showInspectionsPersonal');
-Route::middleware('auth:api')->delete('/inspections/personal/remove/id/{id}', 'InspectionPersonalController@destroy');
+Route::middleware('auth:api')->post('/inspections/personal/remove/id/{id}', 'InspectionPersonalController@destroy');
 
 
 

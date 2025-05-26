@@ -17,7 +17,7 @@ Route::middleware('auth:api')->post('/epl', 'EPLController@create'); //   save a
 
 /*
 {
-  
+
   {
   "name": "hcw copora79899",
   "client_id":"1",
@@ -36,7 +36,7 @@ Route::middleware('auth:api')->post('/epl', 'EPLController@create'); //   save a
   "remark": "abc",
   "is_old":"1",
   "created_date":"2020-01-03",
- * 
+ *
  * "certificate_no":"test cer",
  * "code":"code",
  *
@@ -237,7 +237,7 @@ Route::middleware('auth:api')->post('/epl/attachement/set/attachment/{attachment
 
 
  */
-Route::middleware('auth:api')->delete('/epl/attachement/unset/attachment/{attachment}/elp/{epl}', 'AttachemntsController@revoke');
+Route::middleware('auth:api')->post('/epl/attachement/unset/attachment/{attachment}/elp/{epl}', 'AttachemntsController@revoke');
 
 /*
   {
@@ -275,7 +275,7 @@ id : 1,
 
 */
 
-Route::middleware('auth:api')->delete('/epl/{epl}', 'EPLController@destroy');  // delete a epl
+Route::middleware('auth:api')->post('/epl/{epl}', 'EPLController@destroy');  // delete a epl
 
 
 

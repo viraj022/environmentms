@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
   |
  */
 
-Route::middleware('auth:api')->post('/epl/inspection/attach/id/{id}', 'InspectionSessionAttachmentController@createEPlInspection'); //   upload a new attachment  
-Route::middleware('auth:api')->delete('/epl/inspection/attach/id/{id}', 'InspectionSessionAttachmentController@destroy'); //   create a new inspection session 
+Route::middleware('auth:api')->post('/epl/inspection/attach/id/{id}', 'InspectionSessionAttachmentController@createEPlInspection'); //   upload a new attachment
+Route::middleware('auth:api')->post('/epl/inspection/attach/id/{id}', 'InspectionSessionAttachmentController@destroy'); //   create a new inspection session
 Route::middleware('auth:api')->get('/epl/inspection/attach/id/{id}', 'InspectionSessionAttachmentController@showEpl'); //   get all inspection attachments
-// 
+//

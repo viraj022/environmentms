@@ -40,7 +40,7 @@ Route::middleware('auth:api')->post('/epl/regPayment', 'EPLPaymentController@add
   "code": 3
   }
  */
-Route::middleware('auth:api')->delete('/epl/regPayment/id/{id}', 'EPLPaymentController@deleteApplicationPayment'); // save a registration  payment
+Route::middleware('auth:api')->post('/epl/regPayment/id/{id}', 'EPLPaymentController@deleteApplicationPayment'); // save a registration  payment
 /*
   {
   "name": "hansana",

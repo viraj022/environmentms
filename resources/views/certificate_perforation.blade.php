@@ -582,12 +582,6 @@
             console.log($('#issue_date').val());
         });
 
-        // $('input[name="datepickerUi"]').daterangepicker({
-        //     singleDatePicker: true,
-        //     locale: {
-        //         format: 'YYYY-MM-DD'
-        //     }
-        // });
 
         $('#save_man_ref_no').click(function() {
             const data = {

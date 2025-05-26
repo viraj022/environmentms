@@ -80,7 +80,7 @@ Route::middleware('auth:api')->post('/epl/old/epl/{id}', 'EPLController@updateOl
   "submit_date" : "2020-01-01",
   "file" : ""
 */
-Route::middleware('auth:api')->delete('/epl/old/epl/{id}', 'EPLController@deleteOldData'); //   delete a old epl
+Route::middleware('auth:api')->post('/epl/old/epl/{id}', 'EPLController@deleteOldData'); //   delete a old epl
 
 /*
 {
@@ -99,7 +99,7 @@ Route::middleware('auth:api')->post('/old/attachments/{id}', 'OldFilesController
 */
 
 
-Route::middleware('auth:api')->delete('/old/attachments/{id}', 'OldFilesController@delete'); //   delete old attachments
+Route::middleware('auth:api')->post('/old/attachments/{id}', 'OldFilesController@delete'); //   delete old attachments
 
 /*
 {
@@ -176,7 +176,7 @@ Route::middleware('auth:api')->post('/site_clearance/old/site_clearance_session/
   "submit_date" : "2020-01-01",
   "file" : "",
 */
-Route::middleware('auth:api')->delete('/site_clearance/old/site_clearance_session/{id}', 'SiteClearanceController@deleteOldData'); //   delete old site clearance data
+Route::middleware('auth:api')->post('/site_clearance/old/site_clearance_session/{id}', 'SiteClearanceController@deleteOldData'); //   delete old site clearance data
 
 
 

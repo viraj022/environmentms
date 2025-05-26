@@ -525,12 +525,12 @@
             loadAllOldAttachments(result, function () {
             });
         });
-        $('input[name="datepickerUi"]').daterangepicker({
-            singleDatePicker: true,
-            locale: {
-                format: 'YYYY-MM-DD'
-            }
-        });
+        // $('input[name="datepickerUi"]').daterangepicker({
+        //     singleDatePicker: true,
+        //     locale: {
+        //         format: 'YYYY-MM-DD'
+        //     }
+        // });
     });
     $('#btnAssignEnv').click(function () {
         let obj = {environment_officer_id: parseInt($("#env_officer_combo").val()), epl_id: PROFILE};

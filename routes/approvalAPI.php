@@ -23,8 +23,8 @@ Route::middleware('auth:api')->post('/approval/a_director/id/{id}', 'ApprovalLog
 
 Route::middleware('auth:api')->post('/approval/director/id/{id}', 'ApprovalLogController@approveDirector'); // approve by  director
 
-Route::middleware('auth:api')->delete('/approval/officer/id/{id}', 'ApprovalLogController@rejectOfficer'); // reject by env officer
+Route::middleware('auth:api')->post('/approval/officer/id/{id}', 'ApprovalLogController@rejectOfficer'); // reject by env officer
 
-Route::middleware('auth:api')->delete('/approval/a_director/id/{id}', 'ApprovalLogController@rejectAssitanceDirector'); // reject by assistance director
+Route::middleware('auth:api')->post('/approval/a_director/id/{id}', 'ApprovalLogController@rejectAssitanceDirector'); // reject by assistance director
 
-Route::middleware('auth:api')->delete('/approval/director/id/{id}', 'ApprovalLogController@rejectDirector'); // reject by  director
+Route::middleware('auth:api')->post('/approval/director/id/{id}', 'ApprovalLogController@rejectDirector'); // reject by  director

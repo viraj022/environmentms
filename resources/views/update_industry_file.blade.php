@@ -342,12 +342,12 @@
                 $(".loadingRenderUI").remove(); //<--Check Loading Status
             });
 
-            $('input[name="datepickerUi"]').daterangepicker({
-                singleDatePicker: true,
-                locale: {
-                    format: 'YYYY-MM-DD'
-                }
-            });
+            // $('input[name="datepickerUi"]').daterangepicker({
+            //     singleDatePicker: true,
+            //     locale: {
+            //         format: 'YYYY-MM-DD'
+            //     }
+            // });
 
         });
 
