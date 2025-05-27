@@ -1326,7 +1326,7 @@ class ReportController extends Controller
             if ($fileType == 'epl') {
                 $repData = $this->eplDataForFullReport($from, $to, $request);
             } else if ($fileType == 'sc') {
-                $repData = $this->siteClearanceDataForFullReport($from, $to);
+                $repData = $this->siteClearanceDataForFullReport($from, $to, $request);
             } else {
                 return [];
             }
@@ -1483,7 +1483,7 @@ class ReportController extends Controller
     /**
      * site clearence data to full report
      */
-    public function siteClearanceDataForFullReport($from, $to)
+    public function siteClearanceDataForFullReport($from, $to, $request)
     {
         $site = SiteClearance::whereRaw('DATE(site_clearances.issue_date) BETWEEN ? AND ?', [$from, $to])
             ->select(
@@ -1521,19 +1521,18 @@ class ReportController extends Controller
             ->join('environment_officers', 'clients.environment_officer_id', '=', 'environment_officers.id')
             ->orderBy('site_clearances.issue_date', 'ASC');
 
-        if (!empty($industry_category_id)) {
-            $site->where('clients.industry_category_id', $industry_category_id);
+        if (!empty($request->industry_cat_id)) {
+            $site->where('clients.industry_category_id', $request->industry_cat_id);
         }
-        if (!empty($request_env_officer_id)) {
-            $site->where('clients.environment_officer_id', $request_env_officer_id);
+        if (!empty($request->eo_id)) {
+            $site->where('clients.environment_officer_id', $request->eo_id);
         }
-        if (!empty($request_ad_id)) {
-            $site->where('environment_officers.assistant_director_id', $request_ad_id);
+        if (!empty($request->ad_id)) {
+            $site->where('environment_officers.assistant_director_id', $request->ad_id);
         }
-        // if (!empty($request_pra_id)) {
-        //     $site->where('clients.pradesheeyasaba_id', $request_pra_id);
-        //     $filterLable .= " PRA: " . $request_pra_id;
-        // }
+        if (!empty($request->pra_sabha_id)) {
+            $site->where('clients.pradesheeyasaba_id', $request->pra_sabha_id);
+        }
         // dd($site->toSql());
         // dd($site->get());
         return $site->get();

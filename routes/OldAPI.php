@@ -91,101 +91,22 @@ Route::middleware('auth:api')->post('/epl/old/epl/{id}', 'EPLController@deleteOl
 
 Route::middleware('auth:api')->post('/old/attachments/{id}', 'OldFilesController@create'); //   add old attachments
 
-/*
-{
-    "id": 1,
-    "message": "true"
-}
-*/
-
-
-Route::middleware('auth:api')->post('/old/attachments/{id}', 'OldFilesController@delete'); //   delete old attachments
-
-/*
-{
-    "id": 1,
-    "message": "true"
-}
-*/
-
-
-
+Route::middleware('auth:api')->post('/old/attachments/delete/{id}', 'OldFilesController@delete'); //   delete old attachments
 
 Route::middleware('auth:api')->post('/old/industry/{id}', 'ClientController@markOldFinish'); //   mark old data entry finish
-/*
-{
-    "id": 1,
-    "message": "true"
-}
-*/
 
 Route::middleware('auth:api')->get('/old/industry/{id}', 'ClientController@getOldFilesDetails'); //   get old file details
-/*
-{
-    "id": 1,
-    "message": "true"
-}
-*/
-
 
 /// apis for site clearance
 
 
 Route::middleware('auth:api')->get('/old/site_clearance/industry/{id}', 'ClientController@getOldSiteClearanceData'); //   get old side clearance file detail
-/*
-{
-    "id": 1,
-    "message": "true"
-}
-*/
 
 Route::middleware('auth:api')->post('/site_clearance/old/file/{id}', 'SiteClearanceController@saveOldData'); //   save a old site clearance
 
-/*
-  "code" : "EPL/2020/rt/ty90",
-  "remark" : "hansana",
-  "issue_date" :"2020-01-01",
-  "expire_date" : "2020-05-07",
-  "count" : "0",
-  "submit_date" : "2020-01-01",
-  "file" : "",
-  "type" : ""
-*/
-/*
-
-type should be one of the following
-
-Site Clearance
-Telecommunication
-Schedule Waste'
-
-
-*/
-
-
 Route::middleware('auth:api')->post('/site_clearance/old/site_clearance_session/{id}', 'SiteClearanceController@updateOldData'); //   update site clearance
 
-
-
-/*
-  "code" : "EPL/2020/rt/ty90",
-  "remark" : "hansana",
-  "issue_date" :"2020-01-01",
-  "expire_date" : "2020-05-07",
-  "count" : "0",
-  "submit_date" : "2020-01-01",
-  "file" : "",
-*/
 Route::middleware('auth:api')->post('/site_clearance/old/site_clearance_session/{id}', 'SiteClearanceController@deleteOldData'); //   delete old site clearance data
-
-
-
-/*
- {
-    "id": 1,
-    "message": "true"
-}
-*/
 
 Route::middleware('auth:api')->post('/old/unconfirm_industry/{id}', 'ClientController@markOldUnfinish');
 
