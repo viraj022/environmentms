@@ -6,7 +6,7 @@ function deletePaymentCat(id,callBack) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
-        url: "api/payment_type/id/"+ id,
+        url: "api/payment_type/delete/id/"+ id,
         data: null,
         dataType: "json",
         cache: false,

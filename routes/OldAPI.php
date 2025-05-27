@@ -80,7 +80,7 @@ Route::middleware('auth:api')->post('/epl/old/epl/{id}', 'EPLController@updateOl
   "submit_date" : "2020-01-01",
   "file" : ""
 */
-Route::middleware('auth:api')->post('/epl/old/epl/{id}', 'EPLController@deleteOldData'); //   delete a old epl
+Route::middleware('auth:api')->post('/epl/old/epl/delete/{id}', 'EPLController@deleteOldData'); //   delete a old epl
 
 /*
 {

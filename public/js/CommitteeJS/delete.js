@@ -6,7 +6,7 @@ function deleteCommittee(id, callBack) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
-        url: "api/committee/id/" + id,
+        url: "api/committee/delete/id/" + id,
         data: null,
         dataType: "json",
         cache: false,

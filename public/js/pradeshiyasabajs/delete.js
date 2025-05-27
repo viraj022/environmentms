@@ -6,7 +6,7 @@ function deletePradesheeyasaba(id,callBack) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
-        url: "api/pradesheeyasaba/id/"+ id,
+        url: "api/pradesheeyasaba/delete/id/"+ id,
         data: null,
         dataType: "json",
         cache: false,

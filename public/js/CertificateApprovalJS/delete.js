@@ -6,7 +6,7 @@ function deleteEnvOfficer(data,id,callBack) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
-        url: "/api/approval/officer/id/"+ id,
+        url: "/api/approval/officer/reject/id/"+ id,
         data: data,
         dataType: "json",
         cache: false,
@@ -30,7 +30,7 @@ function deleteAssDir(data,id,callBack) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
-        url: "/api/approval/a_director/id/"+ id,
+        url: "/api/approval/a_director/reject/id/"+ id,
         data: data,
         dataType: "json",
         cache: false,
@@ -54,7 +54,7 @@ function deleteDir(data,id,callBack) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
-        url: "/api/approval/director/id/"+ id,
+        url: "/api/approval/director/reject/id/"+ id,
         data: data,
         dataType: "json",
         cache: false,

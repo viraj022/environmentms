@@ -576,7 +576,8 @@
                             // alert('Environmental MS Error (' + Object.values(result.message) + ')');
                             Swal.fire({
                                 icon: 'error',
-                                text: 'Environmental MS Error (' + Object.values(result.message) + ')'
+                                text: 'Environmental MS Error (' + Object.values(result
+                                    .message) + ')'
                             })
                         }
                         resetinputFields();

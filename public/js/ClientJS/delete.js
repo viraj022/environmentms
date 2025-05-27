@@ -6,7 +6,7 @@ function deleteClient(id,callBack) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
-        url: "api/client/id/"+ id,
+        url: "api/client/delete/id/"+ id,
         data: null,
         dataType: "json",
         cache: false,

@@ -149,7 +149,7 @@ function updateRole(id, data, callBack) {
             "Accept": "application/json"
         },
         data: data,
-        url: "/api/rolls/rollId/" + id,
+        url: "/api/rolls/delete/rollId/" + id,
         cache: false,
         success: function (result) {
             if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {

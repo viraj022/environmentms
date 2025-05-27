@@ -22,6 +22,6 @@ Route::middleware('auth:api')->post('/committee/id/{id}', 'CommetyPoolController
 
 Route::middleware('auth:api')->get('/committee/id/{id}', 'CommetyPoolController@find'); // get A committee by id
 
-Route::middleware('auth:api')->post('/committee/id/{id}', 'CommetyPoolController@destroy'); // get A committee
+Route::middleware('auth:api')->post('/committee/delete/id/{id}', 'CommetyPoolController@destroy'); // get A committee
 
 Route::middleware('auth:api')->get('/committee/is_available/nic/{nic}', 'CommetyPoolController@uniqueNic'); // get A driver

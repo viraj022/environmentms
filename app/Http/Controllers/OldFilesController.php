@@ -20,6 +20,9 @@ class OldFilesController extends Controller
             'file_catagory' => 'required|string'
         ]);
         $client = Client::findOrFail($id);
+        if ($client->is_old != 0) {
+            return array('id' => 0, 'message' => 'This File is old file, you can not add new files to this client');
+        }
         $fileUrl = 'uploads/' . FieUploadController::getOldFilePath($client);
         // dd($fileUrl);
         $path = $request->file('file')->store($fileUrl);

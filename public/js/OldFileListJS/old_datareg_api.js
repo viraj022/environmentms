@@ -69,7 +69,7 @@ function uploadOldAttacments(client_id, key, value, callBack) {
 function deleteEPLOldFiles(id, type, callBack) {
     let url = '';
     if (type == 01) {
-        url = '/api/epl/old/epl/' + id;
+        url = '/api/epl/old/epl/delete/' + id;
     } else {
         url = "/api/site_clearance/old/site_clearance_session/" + id;
     }

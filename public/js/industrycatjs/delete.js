@@ -6,7 +6,7 @@ function deleteIndustry(id,callBack) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             "Accept": "application/json"
         },
-        url: "api/industrycategory/id/"+ id,
+        url: "api/industrycategory/delete/id/"+ id,
         data: null,
         dataType: "json",
         cache: false,
