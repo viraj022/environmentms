@@ -27,7 +27,7 @@ function methodMinuteAPI(data, method, id, callBack) {
         DATA_METHOD = 'POST';
         URL = '/api/file_minutes/' + id;
     } else if (method === 3) {
-        DATA_METHOD = 'DELETE';
+        DATA_METHOD = 'POST';
         URL = '/api/file_minutes/' + id;
     } else if (method === 4) {
         DATA_METHOD = 'GET';

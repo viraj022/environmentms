@@ -613,9 +613,12 @@ class EPLController extends Controller
             'submit_date' => 'required|date',
             'file' => 'required|mimes:jpeg,jpg,png,pdf'
         ]);
+        $client = Client::findOrFail($id);
+        if ($client->is_old != 0) {
+            return response(array("id" => 2, "message" => 'This File is not old file'), 403);
+        }
         // save epl main file
-        return \DB::transaction(function () use ($id, $request) {
-            $client = Client::findOrFail($id);
+        return \DB::transaction(function () use ($client, $request) {
             $epls = $client->epls;
             if (count($epls) > 0) {
                 return response(array("id" => 2, "message" => 'Record Already Exist Please Update the existing record'), 403);

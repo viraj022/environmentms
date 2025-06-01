@@ -46,7 +46,7 @@ function methodCommitteeAPI(data, method, id, callBack) {
         DATA_METHOD = 'POST';
         URL = '/api/committees/' + id;
     } else if (method === 3) {
-        DATA_METHOD = 'DELETE';
+        DATA_METHOD = 'POST';
         URL = '/api/committees/' + id;
     } else if (method === 4) {
         DATA_METHOD = 'GET';

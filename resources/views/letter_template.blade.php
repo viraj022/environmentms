@@ -243,7 +243,7 @@
                 if (result.value) {
                     let letter_temp_id = "{{ isset($template->id) ? $template->id : '' }}";
                     let url = "/api/delete_letter_temp/letter_template/" + letter_temp_id;
-                    ajaxRequest('DELETE', url, null, function(resp) {
+                    ajaxRequest('POST', url, null, function(resp) {
                         if (resp.status == 1) {
                             swal.fire('success', 'Successfully deleted the letter template', 'success');
                             window.location.replace("/letter_template");

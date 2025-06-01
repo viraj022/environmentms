@@ -590,7 +590,7 @@
                 "site_sess_id": $('#site_clear_sess_id').val(),
                 "file_path": $('#delete_application').attr('data-file')
             };
-            ajaxRequest('DELETE', "/api/remove_site_application", data, function(dataSet) {
+            ajaxRequest('POST', "/api/remove_site_application", data, function(dataSet) {
                 if (dataSet.status == 1) {
                     swal.fire('Success', 'File Deleted Successfully!', 'success');
                     window.location.reload();

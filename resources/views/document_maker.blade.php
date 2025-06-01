@@ -181,10 +181,10 @@
                     let letter_id = "{{ $id }}";
                     let complain_id = "{{ $complain_id }}";
                     let url = "/api/delete_letter/letter/" + letter_id;
-                    ajaxRequest('DELETE', url, null, function(resp) {
+                    ajaxRequest('POST', url, null, function(resp) {
                         if (resp.status == 1) {
                             swal.fire('success', 'Successfully deleted the letter', 'success');
-                            window.location.replace("/complain_profile/id/" + complain_id); 
+                            window.location.replace("/complain_profile/id/" + complain_id);
                         } else {
                             swal.fire('failed', 'Letter deletion was unsuccessful', 'warning');
                         }

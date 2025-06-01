@@ -311,7 +311,7 @@
                 "epl_id": $('#epl_hid').val(),
                 "file_path": $('#delete_application').attr('data-file')
             };
-            ajaxRequest('DELETE', "/api/remove_epl_application", data, function(dataSet) {
+            ajaxRequest('POST', "/api/remove_epl_application", data, function(dataSet) {
                 if (dataSet.status == 1) {
                     swal.fire('Success', 'File Deleted Successfully!', 'success');
                     window.location.reload();

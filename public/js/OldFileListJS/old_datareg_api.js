@@ -74,7 +74,7 @@ function deleteEPLOldFiles(id, type, callBack) {
         url = "/api/site_clearance/old/site_clearance_session/" + id;
     }
 
-    ajaxRequest('DELETE', url, null, function (resp) {
+    ajaxRequest('POST', url, null, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
         }
@@ -83,7 +83,7 @@ function deleteEPLOldFiles(id, type, callBack) {
 //----Remove Old Attachments---
 function deleteOldAttachments(id, callBack) {
     let url = '/api/old/attachments/delete/' + id;
-    ajaxRequest('DELETE', url, null, function (resp) {
+    ajaxRequest('POST', url, null, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
         }

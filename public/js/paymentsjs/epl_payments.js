@@ -324,7 +324,7 @@ function saveSiteClearPayment(data, site_id, callBack) {
 }
 //function deleteIssueApplication(id, callBack) {
 //    let url = 'api/epl/regPayment/id/' + id;
-//    ajaxRequest('DELETE', url, null, function (resp) {
+//    ajaxRequest('POST', url, null, function (resp) {
 //        if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
 //            callBack(resp);
 //        }

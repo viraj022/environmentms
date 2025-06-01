@@ -16,7 +16,7 @@ function methodCommitteeRemarkAPI(data, method, id, callBack) {
         DATA_METHOD = 'POST';
         URL = '/api/committees/' + id + '/c_remarks';
     } else if (method === 3) {
-        DATA_METHOD = 'DELETE';
+        DATA_METHOD = 'POST';
         URL = '/api/c_remarks/' + id;
     } else if (method === 4) {
         DATA_METHOD = 'GET';

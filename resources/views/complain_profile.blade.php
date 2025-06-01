@@ -369,7 +369,7 @@
                 "file_path": $(this).attr('data-name'),
             };
             let url = '/api/delete_attach';
-            ajaxRequest('DELETE', url, data, function(resp) {
+            ajaxRequest('POST', url, data, function(resp) {
                 if (resp.status == 1) {
                     swal.fire('success', 'Complain attachments successfully removed', 'success');
                     loadProfileData(user_id,FILE_URL);

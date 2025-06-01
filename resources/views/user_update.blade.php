@@ -301,7 +301,7 @@
                 <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
                 <form action="/users/id/{{$user['id']}}" method="POST">
                     @csrf
-                    @method('DELETE')
+                    @method('POST')
                     <button type="submit" class="btn btn-outline-light">Delete Permanently</button>
                 </form>
             </div>
