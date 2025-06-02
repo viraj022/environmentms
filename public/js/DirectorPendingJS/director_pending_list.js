@@ -179,7 +179,7 @@ function preCertificateApi(file_id, DATA, met, callBack) {
         return false;
     }
     var url = "/api/director/" + met + "/" + file_id;
-    ajaxRequest("PATCH", url, DATA, function (result) {
+    ajaxRequest("POST", url, DATA, function (result) {
         if (
             typeof callBack !== "undefined" &&
             callBack !== null &&

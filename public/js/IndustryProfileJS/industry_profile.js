@@ -440,7 +440,7 @@ function checkInspectionStatus(id, btn_val, callBack) {
         return false;
     }
     ajaxRequest(
-        "PATCH",
+        "POST",
         "/api/inspection/" + btn_val + "/file/" + id,
         null,
         function (dataSet) {
@@ -499,7 +499,7 @@ function removeClientFileAPI(id, callBack) {
     if (isNaN(id)) {
         return false;
     }
-    ajaxRequest("POST", "/api/client/id/" + id, null, function (dataSet) {
+    ajaxRequest("POST", "/api/client/delete/id/" + id, null, function (dataSet) {
         if (
             typeof callBack !== "undefined" &&
             callBack != null &&
