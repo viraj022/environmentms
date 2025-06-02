@@ -660,16 +660,18 @@ class EPLController extends Controller
 
     public function deleteOldData($id)
     {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.EnvironmentProtectionLicense'));
         // save epl main file
         $client = Client::findOrFail($id);
+        if ($client->is_old != 0) {
+            return response(array("id" => 2, "message" => 'This File is not old file'), 403);
+        }
         $epls = $client->epls;
         if (count($epls) == 0) {
             abort(404);
-        } else if (count($epls) == 1) {
+        }
+        if (count($epls) == 1) {
             if ($epls[0]->delete()) {
-                LogActivity::fileLog($client->id, 'Old_data', "Delete Old EPL Data", 1, 'epl', $epls->id);
+                LogActivity::fileLog($client->id, 'Old_data', "Delete Old EPL Data", 1, 'epl', $epls[0]->id);
                 LogActivity::addToLog('Delete old data EPL data', $client);
                 return array('id' => 1, 'message' => 'true');
             } else {

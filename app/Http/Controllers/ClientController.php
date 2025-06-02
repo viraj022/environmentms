@@ -879,8 +879,6 @@ class ClientController extends Controller
 
     public function getOldFilesDetails($id)
     {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $client = Client::where('is_old', 0)->where('id', $id)->first();
         if ($client) {
             $epls = $client->epls;
