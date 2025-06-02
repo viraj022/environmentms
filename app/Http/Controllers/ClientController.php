@@ -648,20 +648,12 @@ class ClientController extends Controller
 
     public function findClient_by_nic($nic)
     {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-
-        //    PaymentType::get();
         return Client::with('epls')->with('oldFiles')->where('nic', '=', $nic)
             ->get();
     }
 
     public function findClient_by_id($id)
     {
-        $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.clientSpace'));
-
-        //    PaymentType::get();
         $file = Client::with('epls')->with('siteClearenceSessions.siteClearances')
             ->with('environmentOfficer.user')
             ->with('oldFiles')
@@ -685,8 +677,6 @@ class ClientController extends Controller
     {
         $data = array();
         $user = Auth::user();
-        // dd($user->roll->level->name);
-        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         $data = Client::with(['epls' => function ($query) {
             $query->orderBy('submitted_date', 'desc');
         }, 'siteClearenceSessions', 'siteClearenceSessions.siteClearances' => function ($query) {
@@ -716,29 +706,6 @@ class ClientController extends Controller
         return Certificate::where('client_id', $client->id)->orderBy('id', 'desc')->first();
     }
 
-    public function workingFiles($id)
-    {
-        return array('id' => 'API removed contact hansana');
-        // $data = array();
-        // $user = Auth::user();
-        // $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
-        // if ($user->roll->level->name == Level::DIRECTOR) {
-        //     $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
-        // } else if ($user->roll->level->name == Level::ASSI_DIRECTOR) {
-        //     $data = Client::where('environment_officer_id', $id)->where('is_working', 1)->get();
-        // } else if ($user->roll->level->name == Level::ENV_OFFICER) {
-        //     $envOfficer = EnvironmentOfficer::where('user_id', $user->id)->where('active_status', 1)->first();
-        //     if ($envOfficer) {
-        //         $data = Client::where('environment_officer_id', $user->id)->where('is_working', 1)->get();
-        //     } else {
-        //         abort(404);
-        //     }
-        // } else {
-        //     abort(401);
-        // }
-        // //    Client::where()
-        // return $data;
-    }
 
     public function newlyAssigned($id)
     {
@@ -765,7 +732,6 @@ class ClientController extends Controller
     {
         $data = array();
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($user->roll->level->name == Level::DIRECTOR) {
             $data = Client::where('environment_officer_id', $id)
                 ->where('need_inspection', Client::STATUS_INSPECTION_NEEDED)
@@ -791,7 +757,6 @@ class ClientController extends Controller
     {
         $data = array();
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($user->roll->level->name == Level::DIRECTOR) {
             $data = Client::with('inspectionSessions')->whereHas('inspectionSessions', function ($sql) {
                 return $sql->where('inspection_sessions.status', '=', 0);
@@ -822,7 +787,6 @@ class ClientController extends Controller
     public function getOldFiles($count)
     {
         $user = Auth::user();
-        $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
         if ($count == -1) {
             return Client::where('is_old', 0)->with('epls')->with('oldFiles')->orderBy('id', 'desc')->get();
         } else {
@@ -835,7 +799,6 @@ class ClientController extends Controller
     {
         return DB::transaction(function () use ($id) {
             $user = Auth::user();
-            $pageAuth = $user->authentication(config('auth.privileges.environmentOfficer'));
             $client = Client::find($id);
             $this->generateCertificateForOldData($client, $user);
             $client->is_old = 2; // inspected state
@@ -861,7 +824,7 @@ class ClientController extends Controller
             $client->file_status = 0; // set file status
             $client->cer_status = 0; // set certificate status
             $client->save();
-            $certificate = DB::table('certificates')
+            DB::table('certificates')
                 ->where('client_id', '=', $id)
                 ->delete();
             LogActivity::addToLog("Old file confirm revert" . $id, $client);

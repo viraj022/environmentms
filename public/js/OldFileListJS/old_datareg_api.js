@@ -71,7 +71,7 @@ function deleteEPLOldFiles(id, type, callBack) {
     if (type == 01) {
         url = '/api/epl/old/epl/delete/' + id;
     } else {
-        url = "/api/site_clearance/old/site_clearance_session/" + id;
+        url = "/api/site_clearance/old/site_clearance_session/delete/" + id;
     }
 
     ajaxRequest('POST', url, null, function (resp) {

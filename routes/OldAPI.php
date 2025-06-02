@@ -78,7 +78,7 @@ Route::middleware('auth:api')->post('/site_clearance/old/file/{id}', 'SiteCleara
 
 Route::middleware('auth:api')->post('/site_clearance/old/site_clearance_session/{id}', 'SiteClearanceController@updateOldData'); //   update site clearance
 
-Route::middleware('auth:api')->post('/site_clearance/old/site_clearance_session/{id}', 'SiteClearanceController@deleteOldData'); //   delete old site clearance data
+Route::middleware('auth:api')->post('/site_clearance/old/site_clearance_session/delete/{id}', 'SiteClearanceController@deleteOldData'); //   delete old site clearance data
 
 Route::middleware('auth:api')->post('/old/unconfirm_industry/{id}', 'ClientController@markOldUnfinish');
 
