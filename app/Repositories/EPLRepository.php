@@ -40,18 +40,18 @@ class EPLRepository
 
         // Optimized query with better eager loading and reduced N+1 queries
         $query = EPL::select([
-                'e_p_l_s.id',
-                'e_p_l_s.client_id',
-                'e_p_l_s.code',
-                'e_p_l_s.certificate_no',
-                'e_p_l_s.issue_date',
-                'e_p_l_s.expire_date',
-                'e_p_l_s.submitted_date',
-                'e_p_l_s.created_at',
-                'e_p_l_s.count'
-            ])
+            'e_p_l_s.id',
+            'e_p_l_s.client_id',
+            'e_p_l_s.code',
+            'e_p_l_s.certificate_no',
+            'e_p_l_s.issue_date',
+            'e_p_l_s.expire_date',
+            'e_p_l_s.submitted_date',
+            'e_p_l_s.created_at',
+            'e_p_l_s.count'
+        ])
             ->with([
-                'client:id,first_name,last_name,name_title,address,industry_address,industry_sub_category,file_no',
+                'client:id,first_name,last_name,name_title,address,industry_address,industry_sub_category,file_no,industry_category_id',
                 'client.industryCategory:id,name',
                 'client.siteClearenceSessions:id,client_id,code',
                 'client.certificates:id,client_id,refference_no'
@@ -64,11 +64,11 @@ class EPLRepository
         // Load inspection fee data separately to avoid complex nested queries
         $clientIds = $query->pluck('client_id')->unique();
         $inspectionFees = TransactionItem::select([
-                'transaction_items.amount',
-                'transaction_items.transaction_id',
-                'transactions.client_id',
-                'transactions.billed_at'
-            ])
+            'transaction_items.amount',
+            'transaction_items.transaction_id',
+            'transactions.client_id',
+            'transactions.billed_at'
+        ])
             ->join('transactions', 'transaction_items.transaction_id', '=', 'transactions.id')
             ->where('transaction_items.payment_type_id', $inspectionTypes->id)
             ->where('transaction_items.transaction_type', Transaction::TRANS_TYPE_EPL)

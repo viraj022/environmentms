@@ -158,6 +158,7 @@ class ReportController extends Controller
         $data['results'] = [];
         $num = 0;
         $generatedAt = Carbon::now()->format('Y-m-d H:i:s');
+        $industryCategory = IndustryCategory::all()->keyBy('id')->toArray();
 
         foreach ($result as $row) {
             $array = [];
@@ -170,9 +171,10 @@ class ReportController extends Controller
 
             $array['code'] = $row['code'];
             $client = $row['client'];
+            // dd($client);
             $array['name_title'] =  $client['name_title'] . ' ' . $client['first_name'] . ' ' . $client['last_name'] . "\n";
             $array['address'] = $client['address'];
-            $array['category_name'] = $client['industry_category']['name'] . (($client['industry_sub_category'] != '') ? ' (' . $client['industry_sub_category'] . ')' : '');
+            $array['category_name'] = $industryCategory[$client['industry_category_id']]['name'] . (($client['industry_sub_category'] != '') ? ' (' . $client['industry_sub_category'] . ')' : '');
             $array['industry_address'] = $client['industry_address'];
 
             // Use optimized inspection fee data
