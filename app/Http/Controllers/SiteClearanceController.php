@@ -184,7 +184,7 @@ class SiteClearanceController extends Controller
                 $siteClearanceSession = SiteClearenceSession::where('id', $siteClearance->site_clearence_session_id)->first();
                 $msg = $siteClearance->delete();
                 if ($msg) {
-                    LogActivity::addToLog('delete old site clearanceer', $siteClearance);
+                    LogActivity::addToLog('delete old site clearance', $siteClearance);
                     LogActivity::fileLog($sites->client_id, 'site_clearance', "delete old site clearance", 1, 'sc', $siteClearanceSession->id);
                     return array('id' => 1, 'message' => 'true');
                 } else {

@@ -47,6 +47,7 @@ class EPLRepository
             // dd($query->take(1));
         return $query;
     }
+
     public function getEPLApplicationLog($from, $to)
     {
         $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);

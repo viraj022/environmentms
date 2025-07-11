@@ -1421,6 +1421,7 @@ class ReportController extends Controller
      */
     public function eplDataForFullReport($from, $to, $request)
     {
+        $eplType = $request->epl_type;
         $epl = Epl::whereRaw('DATE(issue_date) BETWEEN ? AND ?', [$from, $to])
             ->select(
                 'e_p_l_s.id',

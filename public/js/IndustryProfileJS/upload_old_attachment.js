@@ -44,7 +44,7 @@ function deedList(profile_id, FILE_BASE_PATH, callBack) {
 
 //----Remove Old Attachments---
 function deleteOldAttachments(id, callBack) {
-    let url = '/api/old/attachments/' + id;
+    let url = '/api/old/attachments/delete/' + id;
     ajaxRequest('POST', url, null, function (resp) {
         if (typeof callBack !== 'undefined' && callBack != null && typeof callBack === "function") {
             callBack(resp);
