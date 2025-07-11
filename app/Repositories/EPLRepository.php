@@ -12,6 +12,7 @@ use App\SiteClearance;
 use App\SiteClearenceSession;
 use App\Transaction;
 use Illuminate\Support\Facades\DB;
+use App\TransactionItem;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -36,15 +37,55 @@ class EPLRepository
     public function getEPLReport($from, $to)
     {
         $inspectionTypes = PaymentType::getpaymentByTypeName(EPL::INSPECTION_FEE);
-        $query = EPL::with(['client.industryCategory', 'client.siteClearenceSessions', 'client.certificates'])
-            ->with(['client.transactions.transactionItems' => function ($query) use ($inspectionTypes) {
-                $query->where('payment_type_id', $inspectionTypes->id)->where('transaction_type', Transaction::TRANS_TYPE_EPL);
-            }])
+
+        // Optimized query with better eager loading and reduced N+1 queries
+        $query = EPL::select([
+                'e_p_l_s.id',
+                'e_p_l_s.client_id',
+                'e_p_l_s.code',
+                'e_p_l_s.certificate_no',
+                'e_p_l_s.issue_date',
+                'e_p_l_s.expire_date',
+                'e_p_l_s.submitted_date',
+                'e_p_l_s.created_at',
+                'e_p_l_s.count'
+            ])
+            ->with([
+                'client:id,first_name,last_name,name_title,address,industry_address,industry_sub_category,file_no',
+                'client.industryCategory:id,name',
+                'client.siteClearenceSessions:id,client_id,code',
+                'client.certificates:id,client_id,refference_no'
+            ])
             ->whereBetween('issue_date', [$from, $to])
             ->orderBy('e_p_l_s.issue_date')
             ->groupBy('e_p_l_s.client_id')
             ->get();
-            // dd($query->take(1));
+
+        // Load inspection fee data separately to avoid complex nested queries
+        $clientIds = $query->pluck('client_id')->unique();
+        $inspectionFees = TransactionItem::select([
+                'transaction_items.amount',
+                'transaction_items.transaction_id',
+                'transactions.client_id',
+                'transactions.billed_at'
+            ])
+            ->join('transactions', 'transaction_items.transaction_id', '=', 'transactions.id')
+            ->where('transaction_items.payment_type_id', $inspectionTypes->id)
+            ->where('transaction_items.transaction_type', Transaction::TRANS_TYPE_EPL)
+            ->whereIn('transactions.client_id', $clientIds)
+            ->get()
+            ->groupBy('client_id');
+
+        // Attach inspection fee data to the results
+        $query->each(function ($epl) use ($inspectionFees) {
+            $clientId = $epl->client_id;
+            if (isset($inspectionFees[$clientId])) {
+                $epl->inspection_fee_data = $inspectionFees[$clientId]->first();
+            } else {
+                $epl->inspection_fee_data = null;
+            }
+        });
+
         return $query;
     }
 

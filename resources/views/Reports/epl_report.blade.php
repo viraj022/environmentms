@@ -14,7 +14,7 @@
 <body class="hold-transition sidebar-mini layout-fixed text-sm">
     <center>
         <h1>EPL Report </h1>
-        <h5>Filtered by created at - From: {{ $from }} - To: {{ $to }}</h5>
+        <h5>Filtered by issue date - From: {{ $from }} - To: {{ $to }}</h5>
     </center>
     <h4>Refreshed At :{{ $generatedAt }}, (filter By Issue date)</h4>
     {{-- @dump($data['results'][2]); --}}

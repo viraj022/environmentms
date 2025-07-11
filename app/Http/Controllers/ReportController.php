@@ -152,14 +152,14 @@ class ReportController extends Controller
         }
         $start = microtime(true);
         $epls = new EPLRepository();
-        $result = $epls->getEPLReport($from, $to)->toArray();
+        $result = $epls->getEPLReport($from, $to);
         $data = [];
         $data['header_count'] = 0;
         $data['results'] = [];
         $num = 0;
         $generatedAt = Carbon::now()->format('Y-m-d H:i:s');
+
         foreach ($result as $row) {
-            // dd($row);
             $array = [];
             $array['#'] = ++$num;
 
@@ -174,14 +174,16 @@ class ReportController extends Controller
             $array['address'] = $client['address'];
             $array['category_name'] = $client['industry_category']['name'] . (($client['industry_sub_category'] != '') ? ' (' . $client['industry_sub_category'] . ')' : '');
             $array['industry_address'] = $client['industry_address'];
-            if (isset($client['transactions']) && count($client['transactions']) > 0 && count($client['transactions'][0]['transaction_items']) > 0) {
-                $array['inspection_fee'] = $client['transactions'][0]['transaction_items'][0]['amount'];
-                // dd($client['transactions']);
-                $array['inspection_pay_date'] = Carbon::parse($client['transactions'][0]['billed_at'])->format('Y-m-d');
+
+            // Use optimized inspection fee data
+            if (isset($row->inspection_fee_data)) {
+                $array['inspection_fee'] = $row->inspection_fee_data->amount;
+                $array['inspection_pay_date'] = Carbon::parse($row->inspection_fee_data->billed_at)->format('Y-m-d');
             } else {
                 $array['inspection_fee'] = "N/A";
                 $array['inspection_pay_date'] = "N/A";
             }
+
             $certificate_no = isset($row['certificate_no']) ? $row['certificate_no'] : 'N/A';
             $file_no = isset($row['client']['file_no']) ? $row['client']['file_no'] : 'N/A';
             $ref_no = isset($row['client']['certificates'][0]['refference_no']) ? $row['client']['certificates'][0]['refference_no'] : 'N/A';
@@ -199,7 +201,7 @@ class ReportController extends Controller
 
             array_push($data['results'], $array);
         }
-        // dd($data);
+
         $time_elapsed_secs = round(microtime(true) - $start, 5);
 
         // Store the result in the cache
@@ -207,7 +209,7 @@ class ReportController extends Controller
             'data' => $data,
             'time_elapsed_secs' => $time_elapsed_secs,
             'generatedAt' => $generatedAt
-        ], now()->addHours(1)); // Cache for 6 hours or adjust as needed
+        ], now()->addHours(1)); // Cache for 1 hour
 
         return view('Reports.epl_report', ['data' => $data, 'time_elapsed_secs' => $time_elapsed_secs, 'from' => $from, 'to' => $to, 'generatedAt' => $generatedAt]);
     }
